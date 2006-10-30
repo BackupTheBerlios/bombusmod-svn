@@ -27,13 +27,14 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.Time;
+import util.ClipBoard;
 
 /**
  *
  * @author EvgS
  */
 public class vCardForm 
-        implements CommandListener, Runnable
+        implements CommandListener, Runnable, ItemCommandListener
 //#if (FILE_IO)
         , BrowserListener
 //#endif
@@ -55,6 +56,7 @@ public class vCardForm
 //#endif
     protected Command cmdDelPhoto=new Command("Clear Photo", Command.SCREEN,5); //locale
     protected Command cmdCamera=new Command("Camera", Command.SCREEN,6);
+    protected Command cmdCopy = new Command("Copy text", Command.SCREEN, 7);
     
     private Form f;
     private Vector items=new Vector();
@@ -67,6 +69,8 @@ public class vCardForm
     private int st=-1;
     
     private String phototype="jpg";
+    
+    private ClipBoard clipboard;  // The clipboard class
     
     /** Creates a new instance of vCardForm */
     public vCardForm(Display display, VCard vcard, boolean editable) {
@@ -88,6 +92,8 @@ public class vCardForm
                 items.addElement(item);
             } else if (data!=null) {
                 item=new StringItem (name, data);
+                item.addCommand(cmdCopy);
+                item.setItemCommandListener(this);
             }
             if (item!=null) {
                 f.append(item);
@@ -231,6 +237,20 @@ public class vCardForm
     private String getDate() {
         long dateGmt=Time.localTime();
         return Time.dayString(dateGmt); 
+    }
+
+    public void commandAction(Command command, Item item) {
+        if (command == cmdCopy)
+        {
+          try {
+            String text=((StringItem) item).getText();
+            CopyText(text);
+          } catch (Exception e) {/*no messages*/}
+        }
+    }
+
+    private void CopyText(String string) {
+        clipboard.s=string;
     }
 
 }
