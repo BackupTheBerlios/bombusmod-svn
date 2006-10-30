@@ -1395,6 +1395,7 @@ public class Roster
         querysign=requestState;
         updateTitle();
     }
+    
     void setMucMod(Contact contact, Hashtable itemAttributes){
         JabberDataBlock iq=new Iq(contact.jid.getBareJid(), Iq.TYPE_SET, "itemmuc");
         JabberDataBlock query=iq.addChild("query", null);
@@ -1402,6 +1403,19 @@ public class Roster
         JabberDataBlock item=new JabberDataBlock("item", null, itemAttributes);
         query.addChild(item);
         //System.out.println(iq);
+        theStream.send(iq);
+    }
+    
+    void setMucMod(String jid, Hashtable itemAttributes, String rizon){
+        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, "itemmuc");
+        JabberDataBlock query=iq.addChild("query", null);
+        query.setNameSpace("http://jabber.org/protocol/muc#admin");
+        JabberDataBlock item=new JabberDataBlock("item", null, itemAttributes);
+        query.addChild(item);
+        if (rizon!=null) {
+            JabberDataBlock reason=item.addChild("reason", null);
+            reason.setText(rizon);
+        }
         theStream.send(iq);
     }
     /**

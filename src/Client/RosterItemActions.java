@@ -312,19 +312,17 @@ public class RosterItemActions extends Menu{
                     
                     case 8: // kick
                     {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("role", "none");
-                        attrs.put("nick", mc.nick);
-                        roster.setMucMod(mc, attrs);
-                        break;
+                        String jid=mc.jid.getBareJid();
+                        String nick=mc.nick;
+                        new ReasonForm(display, nick, "role", "none", jid);
+                        return;
                     }
                     case 9: // ban
                     {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("affiliation", "outcast");
-                        attrs.put("jid", mc.realJid);
-                        roster.setMucMod(mc, attrs);
-                        break;
+                        String jid=mc.jid.getBareJid();
+                        String nick=mc.nick;
+                        new ReasonForm(display, nick, "affiliation", "outcast", jid);
+                        return;
                     }
                     case 31: //grant voice and revoke moderator
                     {

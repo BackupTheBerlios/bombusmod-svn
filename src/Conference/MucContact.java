@@ -55,6 +55,7 @@ public class MucContact extends Contact{
         if (presenceType==Presence.PRESENCE_ERROR) {
             String mucErrCode=presence.getChildBlock("error").getAttribute("code");            
             if (mucErrCode.equals("409")) return "Nickname is already in use by another occupant";
+            if (mucErrCode.equals("407")) return "Membership required to enter this room";
             if (mucErrCode.equals("403")) return "You are banned in this room";
         }
         
