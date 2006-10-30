@@ -1,0 +1,6 @@
+# version pattern
+bombus.revision=svn: This client is too old to work with working copy '.'; please get a newer Subversion client
+
+bombus.version=0.4.3.svn: This client is too old to work with working copy '.'; please get a newer Subversion client
+
+bombus.midlet=0.4
