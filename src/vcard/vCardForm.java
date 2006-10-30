@@ -26,6 +26,7 @@ import images.camera.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.Time;
 
 /**
  *
@@ -48,9 +49,12 @@ public class vCardForm
     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99); //locale
     protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK /*Command.SCREEN*/, 1); //locale
     protected Command cmdRefresh=new Command("Refresh", Command.SCREEN, 2); //locale
+//#if (FILE_IO)
     protected Command cmdPhoto=new Command("Load Photo", Command.SCREEN,3); //locale
-    protected Command cmdDelPhoto=new Command("Clear Photo", Command.SCREEN,4); //locale
-    protected Command cmdCamera=new Command("Camera", Command.SCREEN,5);
+    protected Command cmdSavePhoto=new Command("Save Photo", Command.SCREEN,4); //locale
+//#endif
+    protected Command cmdDelPhoto=new Command("Clear Photo", Command.SCREEN,5); //locale
+    protected Command cmdCamera=new Command("Camera", Command.SCREEN,6);
     
     private Form f;
     private Vector items=new Vector();
@@ -58,6 +62,11 @@ public class vCardForm
     
     private byte[] photo;
     private int photoIndex;
+    private String photoType;
+
+    private int st=-1;
+    
+    private String phototype="jpg";
     
     /** Creates a new instance of vCardForm */
     public vCardForm(Display display, VCard vcard, boolean editable) {
@@ -68,6 +77,7 @@ public class vCardForm
         
         f=new Form(SR.MS_VCARD);
         f.append(vcard.getJid());
+        photoType=vcard.getPhotoType();
         
         for (int index=0; index<vcard.getCount(); index++) {
             String data=vcard.getVCardData(index);
@@ -124,6 +134,12 @@ public class vCardForm
         
 //#if (FILE_IO)
         if (c==cmdPhoto) {
+            st=1;
+            new Browser(display, this, false);
+        }
+        
+        if (c==cmdSavePhoto) {
+            st=2;
             new Browser(display, this, false);
         }
 //#endif
@@ -159,20 +175,9 @@ public class vCardForm
     }
 
 //#if (FILE_IO)
-    static String replace(String str, String pattern, String replace) {
-        int s = 0;
-        int e = 0;
-        StringBuffer result = new StringBuffer();
-    
-        while ((e = str.indexOf(pattern, s)) >= 0) {
-            result.append(str.substring(s, e));
-            result.append(replace);
-            s = e+pattern.length();
-        }
-        result.append(str.substring(s));
-        return result.toString();
-    }
     public void BrowserFilePathNotify(String pathSelected) {
+        if (st>0) {
+            if (st==1) {
                 try {
                     FileIO f=FileIO.createConnection(pathSelected);
                     InputStream is=f.openInputStream();
@@ -184,6 +189,22 @@ public class vCardForm
                     photo=b;
                     setPhoto();
                 } catch (Exception e) {e.printStackTrace();}
+            }
+            if (st==2 & photo!=null) {
+                if (photoType!=null) {
+                        int slashPos=photoType.indexOf('/');
+                        if (slashPos>-1) {
+                            phototype=photoType.substring(slashPos+1).toLowerCase();
+                            if (phototype=="jpeg") phototype="jpg";
+                        }
+                }
+                
+                try {
+                    FileIO f=FileIO.createConnection(pathSelected+"photo_"+vcard.getNickName()+"_"+getDate()+"."+phototype);
+                    f.Write(photo);
+                } catch (Exception e) {}
+            }
+        }
     }
 //#endif
 
@@ -205,6 +226,11 @@ public class vCardForm
         } catch (Exception e) { photoItem=new StringItem(size, "[Unsupported format]"); }
         f.set(photoIndex, photoItem);
 //#endif
+    }
+
+    private String getDate() {
+        long dateGmt=Time.localTime();
+        return Time.dayString(dateGmt); 
     }
 
 }

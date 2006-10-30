@@ -304,8 +304,8 @@ public class Contact extends IconTextElement{
 
     public String getTipString() {
         int nm=getNewMsgsCount();
-        //return (nm==0)? null:String.valueOf(nm);
-        return "11111222223333344444555556666677777888889999900000aaaaabbbbbccccc";
+        return (nm==0)? null:String.valueOf(nm);
+        //return "11111222223333344444555556666677777888889999900000aaaaabbbbbccccc";
     }
 
     public Group getGroup() { return group; }

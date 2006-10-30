@@ -33,6 +33,8 @@ public class VCard {
     private String jid;
     
     byte photo[];
+
+    private String photoType;
     
     /** Creates a new instance of vCard */
     public VCard() {
@@ -65,8 +67,11 @@ public class VCard {
         }
         
        try {
-           JabberDataBlock photoXML=vcard.getChildBlock("PHOTO").getChildBlock("BINVAL");
-           photo=(byte[])photoXML.getChildBlocks().lastElement();
+           JabberDataBlock photoXML=vcard.getChildBlock("PHOTO");
+           try {
+                photoType=photoXML.getChildBlock("TYPE").getText();
+           } catch (Exception e) {System.out.println("error");};
+           photo=(byte[])photoXML.getChildBlock("BINVAL").getChildBlocks().lastElement();
        } catch (Exception e) {};
     }
 
@@ -139,5 +144,6 @@ public class VCard {
 
     public String getJid() { return jid; }
 
+    public String getPhotoType() { return photoType; }
 
 }
