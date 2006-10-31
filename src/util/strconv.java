@@ -12,6 +12,7 @@
  * @author Eugene Stahov
  */
 package util;
+import java.io.ByteArrayOutputStream;
 import java.lang.*;
 
 public class strconv {
@@ -131,6 +132,35 @@ public class strconv {
         return outbuf;
     }
     
+    public static byte[] fromBase64(String s) {
+        int len=0;
+        int ibuf=1;
+        ByteArrayOutputStream baos=new ByteArrayOutputStream(2048);
+        for (int i=0; i<s.length(); i++) {
+            int nextChar = s.charAt(i);
+            //if( nextChar == -1 )
+            //    throw new EndOfXMLException();
+            int base64=-1;
+            if (nextChar>'A'-1 && nextChar<'Z'+1) base64=nextChar-'A';
+            else if (nextChar>'a'-1 && nextChar<'z'+1) base64=nextChar+26-'a';
+            else if (nextChar>'0'-1 && nextChar<'9'+1) base64=nextChar+52-'0';
+            else if (nextChar=='+') base64=62;
+            else if (nextChar=='/') base64=63;
+            else if (nextChar=='=') {base64=0; len++;} else if (nextChar=='<') break;
+            if (base64>=0) ibuf=(ibuf<<6)+base64;
+            if (ibuf>=0x01000000){
+                baos.write((ibuf>>16) &0xff);
+                if (len==0) baos.write((ibuf>>8) &0xff);
+                if (len<2) baos.write(ibuf &0xff);
+                //len+=3;
+                ibuf=1;
+            }
+        }
+        try { baos.close(); } catch (Exception e) {};
+        //System.out.println(ibuf);
+        //System.out.println(baos.size());
+        return baos.toByteArray();
+    }
     
     public static String unicodeToUTF(String src) {
         return toUTFSb(new StringBuffer(src)).toString();

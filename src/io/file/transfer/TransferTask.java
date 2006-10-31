@@ -37,6 +37,7 @@ public class TransferTask
     private boolean sending;
     String jid;
     String id;
+    String sid;
     String fileName;
     String description;
     int fileSize;
@@ -47,10 +48,12 @@ public class TransferTask
     private Vector methods;
     
     /** Creates TransferTask for incoming file */
-    public TransferTask(String jid, String id, String name, String description, int size, Vector methods) {
+    public TransferTask(String jid, String id, String sid, String name, String description, int size, Vector methods) {
         super(RosterIcons.getInstance());
         state=IN_ASK;
         this.jid=jid;
+        this.id=id;
+        this.sid=sid;
         this.fileName=name;
         this.description=description;
         this.fileSize=size;
@@ -88,10 +91,31 @@ public class TransferTask
         error.setTypeAttribute("cancel");
         error.setAttribute("code","405");
         error.addChild("not-allowed",null).setNameSpace("urn:ietf:params:xml:ns:xmpp-stanzas");
+        TransferDispatcher.getInstance().send(reject);
+        
+        state=ERROR;
     }
 
     void accept() {
-        int state=HANDSHAKE;
+        JabberDataBlock accept=new Iq(jid, Iq.TYPE_RESULT, id);
+        
+        JabberDataBlock si=accept.addChild("si", null);
+        si.setNameSpace("http://jabber.org/protocol/si");
+        
+        JabberDataBlock feature=si.addChild("feature", null);
+        feature.setNameSpace("http://jabber.org/protocol/feature-neg");
+        
+        JabberDataBlock x=feature.addChild("x", null);
+        x.setNameSpace("jabber:x:data");
+        x.setTypeAttribute("submit");
+        
+        JabberDataBlock field=x.addChild("field", null);
+        field.setAttribute("var","stream-method");
+        field.addChild("value", "http://jabber.org/protocol/ibb");
+        
+        TransferDispatcher.getInstance().send(accept);
+        //todo: create file here
+        state=HANDSHAKE;
     }
 
     boolean isAcceptWaiting() { return state==IN_ASK; }
