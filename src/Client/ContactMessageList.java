@@ -39,6 +39,8 @@ public class ContactMessageList extends MessageList
     
     private ClipBoard clipboard;
     
+    Vector activeContacts;
+    
     StaticData sd;
     
     /** Creates a new instance of MessageList */
@@ -219,5 +221,47 @@ public class ContactMessageList extends MessageList
                 //}
             //};
         }
+        if (keyCode==KEY_NUM9) nextContact();
     }
+
+    private void nextContact() {
+	activeContacts=new Vector();
+        int nowContact = 0, contacts=0;
+	for (Enumeration r=StaticData.getInstance().roster.getHContacts().elements(); 
+	    r.hasMoreElements(); ) 
+	{
+	    Contact c=(Contact)r.nextElement();
+	    if (c.active()) {
+                //System.out.println("contacts "+contacts);
+               
+                if (c!=contact) {
+                    //если не текущий контакт, добавляем в вектор и увеличиваем счетчик
+                    activeContacts.addElement(c);
+                    contacts=contacts+1;
+                    nowContact=contacts;
+                } else {
+                    //если текущий контакт, не добавляем в вектор и не увеличиваем счетчик
+                    System.out.println("current Contact "+contacts);
+                    nowContact=contacts+1;
+                }
+
+            }
+	}
+	// не идем дальше, если нет активных контактов
+	if (getActiveCount()==0) return;
+        
+
+        if(nowContact>contacts) {
+            System.out.println("contacts>nowContact"); 
+            //переход через край списка
+            System.out.println("reverting "+nowContact+" to 0"); 
+            nowContact=0;
+        }
+        
+        System.out.println("switching to "+nowContact);        
+	Contact c=(Contact)activeContacts.elementAt(nowContact);
+	new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
+    }
+    
+    protected int getActiveCount() { return activeContacts.size(); }
 }
