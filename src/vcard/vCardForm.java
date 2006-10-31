@@ -127,6 +127,7 @@ public class vCardForm
 //#endif
             f.addCommand(cmdDelPhoto);
         }
+        f.addCommand(cmdSavePhoto);
         f.setCommandListener(this);
         display.setCurrent(f);
     }
