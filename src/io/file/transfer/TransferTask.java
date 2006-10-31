@@ -9,6 +9,8 @@
 
 package io.file.transfer;
 
+import com.alsutton.jabber.JabberDataBlock;
+import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
 import io.file.FileIO;
 import java.util.Vector;
@@ -34,6 +36,7 @@ public class TransferTask
     private int state=NONE;
     private boolean sending;
     String jid;
+    String id;
     String fileName;
     String description;
     int fileSize;
@@ -44,7 +47,7 @@ public class TransferTask
     private Vector methods;
     
     /** Creates TransferTask for incoming file */
-    public TransferTask(String jid, String name, String description, int size, Vector methods) {
+    public TransferTask(String jid, String id, String name, String description, int size, Vector methods) {
         super(RosterIcons.getInstance());
         state=IN_ASK;
         this.jid=jid;
@@ -80,6 +83,11 @@ public class TransferTask
     public String getTipString() { return String.valueOf(fileSize); }
 
     void decline() {
+        JabberDataBlock reject=new Iq(jid, Iq.TYPE_ERROR, id);
+        JabberDataBlock error=reject.addChild("error",null);
+        error.setTypeAttribute("cancel");
+        error.setAttribute("code","405");
+        error.addChild("not-allowed",null).setNameSpace("urn:ietf:params:xml:ns:xmpp-stanzas");
     }
 
     void accept() {

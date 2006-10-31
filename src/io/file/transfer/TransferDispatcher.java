@@ -39,6 +39,7 @@ public class TransferDispatcher implements JabberBlockListener{
 
     public int blockArrived(JabberDataBlock data) {
         if (data instanceof Iq) {
+            String id=data.getAttribute("id");
             
             JabberDataBlock si=data.getChildBlock("si");
             if (si==null) return BLOCK_REJECTED;
@@ -51,6 +52,7 @@ public class TransferDispatcher implements JabberBlockListener{
                 // sender initiates file sending process
                 TransferTask task=new TransferTask(
                         data.getAttribute("from"),
+                        id,
                         file.getAttribute("name"),
                         file.getChildBlockText("desc"),
                         Integer.parseInt(file.getAttribute("size")),
