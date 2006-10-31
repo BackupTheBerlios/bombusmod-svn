@@ -147,7 +147,7 @@ public class vCardForm
         
         if (c==cmdSavePhoto) {
             st=2;
-            new Browser(display, this, false);
+            new Browser(display, this, true);
         }
 //#endif
 

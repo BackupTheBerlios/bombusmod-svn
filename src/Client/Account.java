@@ -224,16 +224,8 @@ public class Account extends IconTextElement{
     public boolean getPlainAuth() { return plainAuth; }
     public void setPlainAuth(boolean plain) { this.plainAuth = plain; }
     
-//#if HALLOWEEN
-//#      public String getResource() { 
-//#          if (!resource.equals("Bombus")) return resource;
-//#          String now=ui.Time.dispLocalTime();
-//#          if (!now.startsWith("31.10")) return resource;
-//#          return "Jack'O'Lantern";
-//#      }
-//#else
     public String getResource() { return resource;  }
-//#endif
+
     public void setResource(String resource) { this.resource = resource;  }
 
     public String getNickName() { return (nick.length()==0)?getUserName():nick;  }

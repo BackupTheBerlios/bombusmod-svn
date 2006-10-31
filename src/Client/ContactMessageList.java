@@ -226,39 +226,32 @@ public class ContactMessageList extends MessageList
 
     private void nextContact() {
 	activeContacts=new Vector();
-        int nowContact = 0, contacts=0;
+        int nowContact = -1, contacts=-1;
 	for (Enumeration r=StaticData.getInstance().roster.getHContacts().elements(); 
 	    r.hasMoreElements(); ) 
 	{
 	    Contact c=(Contact)r.nextElement();
 	    if (c.active()) {
-                //System.out.println("contacts "+contacts);
-               
-                if (c!=contact) {
-                    //если не текущий контакт, добавляем в вектор и увеличиваем счетчик
-                    activeContacts.addElement(c);
-                    contacts=contacts+1;
-                    nowContact=contacts;
-                } else {
-                    //если текущий контакт, не добавляем в вектор и не увеличиваем счетчик
-                    System.out.println("current Contact "+contacts);
-                    nowContact=contacts+1;
-                }
-
+                contacts=contacts+1;
+                if (c==contact) nowContact=contacts;
+                activeContacts.addElement(c);
             }
 	}
+        
 	// не идем дальше, если нет активных контактов
 	if (getActiveCount()==0) return;
         
-
-        if(nowContact>contacts) {
-            System.out.println("contacts>nowContact"); 
-            //переход через край списка
-            System.out.println("reverting "+nowContact+" to 0"); 
+        if(nowContact<0) {
             nowContact=0;
+        } else {
+            if (nowContact+1>getActiveCount()) {
+                nowContact=0;
+            } else {
+                nowContact=nowContact+1;                
+            }
         }
         
-        System.out.println("switching to "+nowContact);        
+        if (nowContact+1>getActiveCount()) nowContact=0;
 	Contact c=(Contact)activeContacts.elementAt(nowContact);
 	new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
     }

@@ -72,12 +72,6 @@ public class Version {
     public static String getVersionLang() { return version+" (en)"; }
     
     public static String midletName() {
-//#if HALLOWEEN
-//#          String now=ui.Time.dispLocalTime();
-//#          if (!now.startsWith("31.10")) return "Bombus";
-//#          return "Jack'O'Lantern";
-//#else
-        return "Bombus";
-//#endif
+         return "Bombus";
     }
 }

@@ -596,6 +596,12 @@ public abstract class VirtualList
 			return;
                     }         
                 }
+                if (keyCode==702)  {
+                    if (Version.getPlatformName().indexOf("SIE") > -1) {
+                        destroyView();
+			return;
+                    }         
+                }
         switch (keyCode) {
             case 0: break;
             case NOKIA_PEN: { destroyView(); break; }
