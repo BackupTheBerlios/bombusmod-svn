@@ -1368,6 +1368,21 @@ public class Roster
             
             display.flashBacklight(blState);
         }
+        if (keyCode==-4)  {
+            if (Version.getPlatformName().indexOf("SIE") > -1) {
+                new RosterMenu(display, getFocusedObject());
+             }         
+        }
+        if (keyCode==-1)  {
+            if (Version.getPlatformName().indexOf("SIE") > -1) {
+                new RosterMenu(display, getFocusedObject());
+             }         
+        }     
+        if (keyCode==-7)  {
+            if (Version.getPlatformName().indexOf("Nokia") > -1) {
+                new RosterMenu(display, getFocusedObject());
+             }         
+        }
 //#endif
     }
     
