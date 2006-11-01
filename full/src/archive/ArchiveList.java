@@ -1,0 +1,196 @@
+/*
+ * ArchiveList.java
+ *
+ * Created on 11 Ltrf,hm 2005 пїЅ., 5:24
+ *
+ * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
+ * All rights reserved.
+ */
+
+package archive;
+
+import Client.Config;
+import Client.Msg;
+import Client.Title;
+import Messages.MessageList;
+import java.util.Vector;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextBox;
+import locale.SR;
+import ui.ComplexString;
+
+import io.file.FileIO;
+import io.file.browse.Browser;
+import io.file.browse.BrowserListener;
+
+import ui.Time;
+import util.strconv;
+
+/**
+ *
+ * @author EvgS
+ */
+public class ArchiveList 
+    extends MessageList
+//#if (FILE_IO)
+    implements BrowserListener
+//#endif
+{
+
+    Command cmdDelete=new Command(SR.MS_DELETE /*"Delete"*/, Command.SCREEN, 9);
+    Command cmdPaste=new Command(SR.MS_PASTE_BODY /*"Paste Body"*/, Command.SCREEN, 1);
+    Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT /*"Paste Subject"*/, Command.SCREEN, 3);
+//#if (FILE_IO)
+    Command cmdExport=new Command("Export to file..." /*"Paste Jid"*/, Command.SCREEN, 5);
+//#endif
+    Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
+    //Command cmdNick=new Command("Paste Nickname", Command.SCREEN, 3);
+    
+    MessageArchive archive=new MessageArchive();
+    TextBox target;
+    /** Creates a new instance of ArchiveList */
+    public ArchiveList(Display display, TextBox target) {
+	super ();
+	this.target=target;
+	setCommandListener(this);
+	addCommand(cmdBack);
+	addCommand(cmdDelete);
+	
+        addCommand(cmdExport);
+	if (target!=null) {
+	    addCommand(cmdPaste);
+	    addCommand(cmdJid);
+	}
+        
+        attachDisplay(display);
+        
+        
+        try {
+            focusedItem(0);
+        } catch (Exception e) {}
+	
+	Title title=new Title(SR.MS_ARCHIVE /*"Archive"*/);
+	title.addElement(null);
+	title.addRAlign();
+	title.addElement(null);
+	title.addElement(SR.MS_FREE /*"free "*/);
+        setTitleItem(title);
+        
+    }
+
+    protected void beginPaint() {
+        getTitleItem().setElementAt(" ("+String.valueOf(getItemCount())+")",1);
+	getTitleItem().setElementAt(String.valueOf(archive.freeSpace()),3);
+    }
+    
+    public int getItemCount() {
+	return archive.size();
+    }
+    
+    public Msg getMessage(int index) {
+	return archive.msg(index);
+    }
+
+    public void commandAction(Command c, Displayable d) {
+        super.commandAction(c,d);
+	if (c==cmdDelete) {
+	    archive.delete(cursor);
+	    messages=new Vector();
+	    redraw();
+	}
+	if (c==cmdPaste) { pasteData(0); }
+	if (c==cmdSubj) { pasteData(1); }
+	if (c==cmdJid) { pasteData(2); }
+        if (c==cmdExport) { new Browser(display, this, true); }
+    }
+    
+    private void pasteData(int field) {
+	if (target==null) return;
+	Msg m=getMessage(cursor);
+	if (m==null) return;
+	String data;
+	switch (field) {
+	case 1: 
+	    data=m.subject;
+	    break;
+	case 2: 
+	    data=m.from;
+	    break;
+	default:
+	    data=m.getBody();
+	}
+	try {
+	    int paste=target.getMaxSize()-target.size();
+	    if (paste>data.length()) paste=data.length();
+	    target.insert(data.substring(0,paste), target.size());
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	destroyView();
+    }
+    
+    public void keyGreen() { pasteData(0); }
+    
+    public void focusedItem(int index) {
+	if (target==null) return;
+	try {
+	    if (getMessage(index).subject!=null) {
+		addCommand(cmdSubj);
+		return;
+	    }
+	} catch (Exception e) { }
+	removeCommand(cmdSubj);
+    }
+    
+    public void exportData(String arhPath) {
+            Config cf=Config.getInstance();
+            
+            byte[] bodyMessage;
+            int items=getItemCount();
+            for(int i=0; i<items-1; i++){
+                Msg m=getMessage(i);
+                
+                StringBuffer body=new StringBuffer(m.getDayTime());
+                body.append(" <");
+                body.append(m.from);
+                body.append("> ");
+                
+                if (m.subject!=null) {
+                    body.append(m.subject);
+                    body.append("\r\n");
+                }
+                
+                body.append(m.getBody());
+                body.append("\r\n");
+                
+                if (cf.cp1251) {
+                    bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
+                } else {
+                    bodyMessage=body.toString().getBytes();
+                }
+                try {
+                    FileIO f=FileIO.createConnection(arhPath+"archive_"+getDate()+".txt");
+                    f.Write(bodyMessage);
+                } catch (Exception e) {}
+            }
+            arhPath=null;
+	destroyView();
+    }
+    
+    public void BrowserFilePathNotify(String pathSelected) {
+        exportData(pathSelected);
+    }
+
+    private String getDate() {
+        long dateGmt=Time.localTime();
+        return Time.dayString(dateGmt); 
+    }
+  
+    public void destroyView(){
+	super.destroyView();
+	archive.close();
+    }
+}

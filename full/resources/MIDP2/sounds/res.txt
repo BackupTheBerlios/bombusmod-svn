@@ -1,0 +1,7 @@
+//type	path	desc
+audio/amr	/sounds/message.amr	message.amr
+audio/x-wav	/sounds/message.wav	message.wav
+audio/midi	/sounds/message.mid	message.mid
+//audio/mp3	/sounds/message.mp3	message.mp3
+audio/x-tone-seq	/sounds/mary.seq	mary.seq
+tone		tone sequence
