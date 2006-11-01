@@ -1,0 +1,2 @@
+/skins/skin.txt	default
+/skins/pumpkin.txt	pumpkin

@@ -1027,9 +1027,24 @@ public class Roster
                         String errCode=message.getChildBlock("error").getAttribute("code");
                         
                         switch (Integer.parseInt(errCode)) {
+                            case 302: body="Redirect"; break;
+                            case 400: body="Bad Request"; break;
+                            case 401: body="Not Authorized"; break;
+                            case 402: body="Payment Required"; break;
                             case 403: body=SR.MS_VIZITORS_FORBIDDEN; break;
+                            case 404: body="User has left"; break;
+                            case 405: body="Not Allowed"; break;
+                            case 406: body="Cannot send message because you are not in room"; break;
+                            case 407: body="Registration Required"; break;
+                            case 408: body="Request Timeout"; break;
+                            case 409: body="Nickname is registered by another person"; break;
+                            case 500: body="Internal Server Error"; break;
+                            case 501: body="Not Implemented"; break;
+                            case 502: body="Remote Server Error"; break;
                             case 503: break;
-                            default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
+                            case 504: body="Remote Server Timeout"; break;
+                            case 510: body="Disconnected"; break;
+                            //default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
                         }
                     }
                 } catch (Exception e) {}
