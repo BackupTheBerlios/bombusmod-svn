@@ -85,6 +85,9 @@ public class Roster
     public Groups groups;
     
     public Vector bookmarks;
+    
+    public static boolean isAway=false;
+    public static int oldStatus=0;
 
     
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
@@ -116,8 +119,20 @@ public class Roster
 //#endif
     
     private long lastMessageTime=Time.localTime();
+    public static int keyTimer=0;
     //public JabberBlockListener discoveryListener;
+    
+    private int autoAwayTime;
+
+    private int pr;
+
+    private String ms;
+
+    private boolean setAutoStatus;
+
     private String myMessage;    
+
+    private TimerTaskAutoAway AutoAway;
     
     /**
      * Creates a new instance of Roster
@@ -132,6 +147,9 @@ public class Roster
         this.display=display;
         
         cf=Config.getInstance();
+        
+        autoAwayTime=cf.autoAwayTime*60;
+        setAutoStatus=cf.setAutoStatus;
         
         //msgNotify=new EventNotify(display, Profile.getProfile(0) );
         Title title=new Title(4, null, null);
@@ -596,13 +614,10 @@ public class Roster
             synchronized(hContacts) {
                 for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                     Contact c=(Contact)e.nextElement();
-                    //if (c.status<Presence.PRESENCE_UNKNOWN)
                         c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
                 }
             }
         }
-        //Vector v=sd.statusList;//StaticData.getInstance().statusList;
-        //ExtendedStatus es=null;
         
         // reconnect if disconnected        
         if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
@@ -637,6 +652,65 @@ public class Roster
         
         reEnumRoster();
     }
+
+    public void sendPresence(int status, String message) {
+        myStatus=status;
+        myMessage=message;
+        setQuerySign(false);
+        if (myStatus==Presence.PRESENCE_OFFLINE) {
+            synchronized(hContacts) {
+                for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                    Contact c=(Contact)e.nextElement();
+                        c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
+                        isAway=false;
+                }
+            }
+        }
+        
+        // reconnect if disconnected        
+        if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
+            reconnect=(hContacts.size()>1);
+            redraw();
+            
+            new Thread(this).start();
+            return;
+        }
+        
+        // send presence
+        //ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
+        //Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
+
+        ms=myMessage;
+ //       Roster.keyTimer=0;
+        ExtendedStatus es= StatusList.getInstance().getStatus(oldStatus);
+        pr=es.getPriority();
+        
+        
+        Presence presence = new Presence(myStatus, pr, ms);
+
+        if (theStream!=null) {
+            if (!StaticData.getInstance().account.isMucOnly() )
+		theStream.send( presence );
+            
+            //sendConferencePresence();
+            sendConferencePresence(myMessage);
+
+            // disconnect
+            if (status==Presence.PRESENCE_OFFLINE) {
+                try {
+                    theStream.close();
+                } catch (Exception e) { e.printStackTrace(); }
+                theStream=null;
+                isAway=false;
+                System.gc();
+            }
+        }
+        Contact c=selfContact();
+        c.status=myStatus;
+        sort(hContacts);
+        
+        reEnumRoster();
+    }
     
     public Contact selfContact() {
 	return getContact(myJid.getJid(), true);
@@ -654,6 +728,19 @@ public class Roster
         }
     }
     
+    public void sendConferencePresence(String message) {
+        myMessage=message;
+        ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
+        for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
+            Contact c=(Contact) e.nextElement();
+            if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
+            if (c.status==Presence.PRESENCE_OFFLINE) continue;
+            Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
+            presence.setAttribute("to", c.getJid());
+            theStream.send(presence);
+        }
+    }
+    
     public void sendPresence(String to, String type, JabberDataBlock child) {
         JabberDataBlock presence=new Presence(to, type);
         if (child!=null) presence.addChild(child);
@@ -665,6 +752,17 @@ public class Roster
     
     public void sendMessage(Contact to, final String body, final String subject , int composingState) {
         boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
+        
+        if (setAutoStatus) {
+            if (isAway) {
+                    ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
+                    String ms=es.getMessage();
+                    sendPresence(oldStatus, ms);
+                    isAway=false;
+                    myStatus=oldStatus;
+            }
+        }
+
         Message message = new Message( 
                 to.getJid(), 
                 body, 
@@ -684,6 +782,7 @@ public class Roster
         //System.out.println(simpleMessage.toString());
         theStream.send( message );
         lastMessageTime=Time.localTime();
+        keyTimer=0;
     }
     
     private Vector vCardQueue;
@@ -740,18 +839,55 @@ public class Roster
         // иначе будем читать ростер
         theStream.enableRosterNotify(true);
         rpercent=60;
+        AutoAway=new TimerTaskAutoAway(5);
         if (StaticData.getInstance().account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
             try {
                 reEnumRoster();
             } catch (Exception e) { e.printStackTrace(); }
             querysign=reconnect=false;
+            //conference autojoin
+            if (cf.autoJoinConferences) {
+                String server="conference."+sd.account.getServer();
+                String room=cf.defGcRoom;
+                int roomE=room.indexOf('@');
+                if (roomE>0) {
+                    server=room.substring(roomE+1);
+                    room=room.substring(0, roomE);
+                }
+                String nick=sd.account.getNickName();
+
+                StringBuffer gchat=new StringBuffer(room.trim());
+                gchat.append('@');
+                gchat.append(server.trim());
+                gchat.append('/');
+                gchat.append(nick.trim());
+                ConferenceForm.join(gchat.toString(), "", cf.confMessageCount);                
+            }
             SplashScreen.getInstance().close(); // display.setCurrent(this);
             theStream.addBlockListener(TransferDispatcher.getInstance());
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
+            //conference autojoin
+            if (cf.autoJoinConferences) {
+                String server="conference."+sd.account.getServer();
+                String room=cf.defGcRoom;
+                int roomE=room.indexOf('@');
+                if (roomE>0) {
+                    server=room.substring(roomE+1);
+                    room=room.substring(0, roomE);
+                }
+                String nick=sd.account.getNickName();
+
+                StringBuffer gchat=new StringBuffer(room.trim());
+                gchat.append('@');
+                gchat.append(server.trim());
+                gchat.append('/');
+                gchat.append(nick.trim());
+                ConferenceForm.join(gchat.toString(), "", cf.confMessageCount);                
+            }
         }
     }
     
@@ -1252,7 +1388,11 @@ public class Roster
     public void logoff(){
         if (theStream!=null)
         try {
-             sendPresence(Presence.PRESENCE_OFFLINE);
+             //sendPresence(Presence.PRESENCE_OFFLINE);
+             
+             ExtendedStatus es=StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);
+             sendPresence(Presence.PRESENCE_OFFLINE, es.getMessage());
+             
         } catch (Exception e) { 
             e.printStackTrace(); 
         }
@@ -1543,6 +1683,42 @@ public class Roster
             }
            removeCommand(state? cmdLightOn: cmdLightOff);
            addCommand(state? cmdLightOff: cmdLightOn);
+        }
+    }
+    
+    private class TimerTaskAutoAway extends TimerTask{
+        private Timer t;
+        public TimerTaskAutoAway(int periodSeconds){
+           t=new Timer();
+           long period=periodSeconds*1000; // milliseconds
+           t.schedule(this, period, period);
+        }
+        public void run() {
+            try {
+                if (setAutoStatus) {
+                    keyTimer=keyTimer+5;
+                    if (!isAway) {
+                        if (keyTimer>=autoAwayTime) {
+                            try {
+                                oldStatus=myStatus;
+                                if (myStatus==0 || myStatus==1) {
+                                    String away="Auto away since "+Time.timeString(Time.localTime());
+                                    isAway=true;
+                                    sendPresence(2, away);
+                                }
+                            } catch (Exception e) { e.printStackTrace(); }
+                        }
+                    }
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+	
+        public void destroyTask(){
+            if (t!=null){
+                this.cancel();
+                t.cancel();
+                t=null;
+            }
         }
     }
 }

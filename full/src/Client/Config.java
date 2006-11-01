@@ -55,7 +55,7 @@ public class Config {
     public char keyLock=getCharProperty("key_lock",'*');
     public char keyVibra=getCharProperty("key_vibra",'#');
     
-    public String msgPath="";
+     public String msgPath="";
      public boolean msgLog=false;
      public boolean msgLogPresence=false;
      public boolean msgLogConf=false;
@@ -78,7 +78,7 @@ public class Config {
 //#     public int m55LedPattern=0;
 //#endif
     
-    public String defGcRoom=getStringProperty("gc_room","bombus@conference.jabber.ru");
+    public String defGcRoom="bombus@conference.jabber.ru";
     
     //public String xmlLang=getStringProperty("xml_lang",null);
     
@@ -127,6 +127,11 @@ public class Config {
 
     // Singleton
     private static Config instance;
+
+    int autoAwayTime=5;
+    boolean setAutoStatus=false;
+
+    public int confMessageCount=20;
 
     
     public static Config getInstance(){
@@ -249,7 +254,12 @@ public class Config {
             msgLogConfPresence=inputStream.readBoolean();
             msgLogConf=inputStream.readBoolean();
             cp1251=inputStream.readBoolean();
-//#endif	    
+//#endif
+            autoAwayTime=inputStream.readInt();
+            setAutoStatus=inputStream.readBoolean();
+            
+            defGcRoom=inputStream.readUTF();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -327,7 +337,12 @@ public class Config {
             outputStream.writeBoolean(msgLogConf);
             outputStream.writeBoolean(cp1251);
 //#endif
-	    
+            
+            outputStream.writeInt(autoAwayTime);
+            outputStream.writeBoolean(setAutoStatus);
+            
+            outputStream.writeUTF(defGcRoom);
+            
 	} catch (IOException e) { e.printStackTrace(); }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

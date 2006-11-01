@@ -70,7 +70,7 @@ public class ConferenceForm implements CommandListener{
         passField=new TextField(SR.MS_PASSWORD, password, 32, TextField.ANY | ConstMIDP.TEXTFIELD_SENSITIVE );
         formJoin.append(passField);
         
-        msgLimitField=new NumberField(SR.MS_MSG_LIMIT, 20, 0, 20);
+        msgLimitField=new NumberField(SR.MS_MSG_LIMIT, Config.getInstance().confMessageCount, 0, 20);
         formJoin.append(msgLimitField);
         
         formJoin.addCommand(cmdJoin);
@@ -101,6 +101,9 @@ public class ConferenceForm implements CommandListener{
             if (c==cmdAdd) new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass));
             else {
                 try {
+                    Config.getInstance().confMessageCount=msgLimit;
+                    Config.getInstance().defGcRoom=room+"@"+host;
+                    Config.getInstance().saveToStorage();
                     gchat.append('/');
                     gchat.append(nick.trim());
                     join(gchat.toString(),pass, msgLimit);

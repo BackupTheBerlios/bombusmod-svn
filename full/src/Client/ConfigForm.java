@@ -81,6 +81,9 @@ public class ConfigForm implements
     ChoiceGroup history;
     TextField historyFolder;
     
+    ChoiceGroup autoaway;
+    NumberField autoAwayTime;
+
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     //Command cmdSign=new Command("- (Sign)",Command.ITEM,2);
     Command cmdPlaySound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
@@ -93,6 +96,7 @@ public class ConfigForm implements
     boolean ap[];
     boolean su[];
     boolean his[];
+    boolean aa[];
     Vector files[];
     
     /** Creates a new instance of ConfigForm */
@@ -266,6 +270,21 @@ public class ConfigForm implements
         f.append(historyFolder);
         historyFolder.setItemCommandListener(this);
 //#endif
+        //autostatus
+        autoaway=new ChoiceGroup("Set", Choice.MULTIPLE);
+        autoaway.append("Autostatus", null);
+        
+        boolean aa[]={
+            cf.setAutoStatus,
+        };
+        this.aa=aa;
+        autoaway.setSelectedFlags(aa);
+        f.append(autoaway);
+        
+        autoAwayTime=new NumberField("Time to AutoStatus", cf.autoAwayTime, -12, 12);
+        f.append(autoAwayTime);
+        //autostatus
+                
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);
         
@@ -282,6 +301,7 @@ public class ConfigForm implements
             application.getSelectedFlags(ap);
 	    startup.getSelectedFlags(su);
             history.getSelectedFlags(his);
+            autoaway.getSelectedFlags(aa);
 	    
             cf.showOfflineContacts=ra[0];
             cf.selfContact=ra[1];
@@ -333,6 +353,9 @@ public class ConfigForm implements
             cf.cp1251=his[4];
             
             cf.msgPath=historyFolder.getString();
+            
+            cf.setAutoStatus=aa[0];
+            cf.autoAwayTime=autoAwayTime.getValue();
 
             cf.loadSoundName();
             

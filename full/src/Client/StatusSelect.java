@@ -88,6 +88,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     public void run(){
         int status=getSel().getImageIndex();
         try {
+            Roster.isAway=false;
             StaticData.getInstance().roster.sendPresence(status);
         } catch (Exception e) { e.printStackTrace(); }
     }
