@@ -14,6 +14,7 @@ import archive.MessageArchive;
 import images.RosterIcons;
 import images.SmilesIcons;
 import locale.SR;
+import ui.controls.InputBox;
 import vcard.VCard;
 import ui.*;
 import java.util.*;
@@ -74,6 +75,9 @@ public class ContactMessageList extends MessageList
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
         //setRotator();
+        
+        InputBox bottom=new InputBox();
+        setInputBoxItem(bottom);
     }
     
     public void showNotify(){

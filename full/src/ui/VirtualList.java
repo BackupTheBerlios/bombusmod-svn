@@ -13,6 +13,7 @@ import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
 import ui.controls.Balloon;
+import ui.controls.InputBox;
 import ui.controls.ScrollBar;
 
 /**
@@ -167,6 +168,8 @@ public abstract class VirtualList
     
     protected VirtualElement title;
     
+    protected InputBox bottom;
+    
     private boolean wrapping = true;
 
     /** видимые границы элементов списка - зоны срабатывания touchscreen */
@@ -189,6 +192,9 @@ public abstract class VirtualList
      */
     public ComplexString getTitleItem() {return (ComplexString)title;}
     public void setTitleItem(ComplexString title) { this.title=title; }
+    
+    public InputBox getBottomItem() {return (InputBox)bottom;}
+    public void setInputBoxItem(InputBox bottom) { this.bottom=bottom; }
     
     /**
      * возвращает ссылку на объект в фокусе. 
@@ -320,7 +326,11 @@ public abstract class VirtualList
         }
 
         drawHeapMonitor(g);
-        winHeight=height-list_top;
+        if (bottom!=null) {
+            winHeight=height-list_top-bottom.getVHeight();
+        } else {
+            winHeight=height-list_top;
+        }
 
 
         itemBorder[0]=list_top;
@@ -415,7 +425,14 @@ public abstract class VirtualList
             if (text!=null)
                 drawBalloon(g, baloon, text);
         }
-
+        if (bottom!=null) {
+            setAbsOrg(g, 0, height-bottom.getVHeight());  
+            g.setClip(0,0, width, height);
+            g.setColor(getTitleBGndRGB());
+            g.fillRect(0,0, width, height);
+            g.setColor(getTitleRGB());
+            bottom.drawItem(g,0,false);
+        }
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
     }
@@ -922,5 +939,4 @@ public abstract class VirtualList
             e.printStackTrace(); /* ClassCastException */
         }
     }
-
 }
