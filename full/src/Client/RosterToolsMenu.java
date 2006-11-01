@@ -36,7 +36,7 @@ public class RosterToolsMenu
         
 //#if (FILE_IO)
         addItem("root",4);
-        addItem("File Transfers", 5);
+        //addItem("File Transfers", 5);
 //#endif
         
         attachDisplay(display);

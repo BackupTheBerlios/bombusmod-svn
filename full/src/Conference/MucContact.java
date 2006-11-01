@@ -85,7 +85,10 @@ public class MucContact extends Contact{
             key0=1;
             //jidHash &= 0x3fffffff;
         } else {
-            transport=0;
+            transport= (role.equals("visitor"))? RosterIcons.getInstance().getTransportIndex("conference_visitors") : 0;
+            if (role.equals("participant")) {
+                transport= (affiliation.equals("member"))? 0x00 : RosterIcons.getInstance().getTransportIndex("conference_visitors");
+            }    
             key0=2;
             //jidHash |= 0x40000000;
         }

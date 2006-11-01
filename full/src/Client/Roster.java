@@ -11,6 +11,7 @@
 
 package Client;
 
+import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 import Conference.QueryConfigForm;
@@ -1516,7 +1517,10 @@ public class Roster
             reEnumRoster();
         }
 
+       	if (keyCode==KEY_NUM1) new Bookmarks(display, null);
        	if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
+       	if (keyCode==KEY_NUM4) new ConfigForm(display);
+       	if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
 
         if (keyCode==cf.keyHide && cf.allowMinimize) {
             Bombus.getInstance().hideApp(true);
@@ -1690,7 +1694,7 @@ public class Roster
     }
     
     private void setLight(boolean state) {
-        if ((Version.getPlatformName().indexOf("SIE-S75")>-1) || (Version.getPlatformName().indexOf("SIE-EF81")>-1) || (Version.getPlatformName().indexOf("SIE-SXG75") > -1)) {
+        if ((Version.getPlatformName().indexOf("SIE-S75")>-1) || (Version.getPlatformName().indexOf("SIE-E71")>-1) || (Version.getPlatformName().indexOf("SIE-EF81")>-1) || (Version.getPlatformName().indexOf("SIE-SXG75") > -1)) {
             if (state){
                 com.siemens.mp.game.Light.setLightOn();
             } else { 
