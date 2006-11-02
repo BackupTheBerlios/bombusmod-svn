@@ -10,12 +10,7 @@
 package ui.controls;
 
 import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.TextField;
 import ui.Colors;
 import ui.FontCache;
 
@@ -28,19 +23,17 @@ import ui.polish.*;
 public class InputBox extends Canvas {
     
     private BitMapFont bitMapFont;
-    private BitMapFontViewer messageViewer;    
+    private BitMapFontViewer messageViewer;
     
     public InputBox() {
-        
-        this.bitMapFont = BitMapFont.getInstance("/fonts/aston.bmf");
-        this.messageViewer = this.bitMapFont.getViewer("Hello World!");
+       
+        this.bitMapFont = BitMapFont.getInstance("/fonts/B52.bmf");
+        this.messageViewer = this.bitMapFont.getViewer("Hello World! привет мир!");
         int availableWidth = getWidth() - 20;
         int padding = 2;
         int textOrientation = Graphics.LEFT;
         this.messageViewer.layout( availableWidth, availableWidth, padding, textOrientation );
-        
     }
-
     public int getVHeight() {
         return this.messageViewer.getHeight();
     }
@@ -50,12 +43,6 @@ public class InputBox extends Canvas {
         g.setColor(Colors.BAR_BGND);
         g.fillRect(0, 0, g.getClipWidth(), g.getClipHeight());
         paint(g);
-        /*
-         g.setColor(Colors.BALLOON_BGND);
-        g.fillRect(0, 0, width, height);
-        g.setColor(Colors.BALLOON_INK);
-        g.drawString("test", (width/2)+10, height/2, Graphics.TOP | Graphics.LEFT);
-         */
     }
 
     protected void paint(Graphics g) {

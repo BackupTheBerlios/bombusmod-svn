@@ -76,8 +76,8 @@ public class ContactMessageList extends MessageList
         moveCursorTo(contact.firstUnread(), true);
         //setRotator();
         
-        InputBox bottom=new InputBox();
-        setInputBoxItem(bottom);
+        //InputBox bottom=new InputBox();
+        //setInputBoxItem(bottom);
     }
     
     public void showNotify(){

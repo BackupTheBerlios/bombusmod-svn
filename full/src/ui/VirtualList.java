@@ -171,6 +171,8 @@ public abstract class VirtualList
     protected InputBox bottom;
     
     private boolean wrapping = true;
+    
+    private GradientItem gradientItem;
 
     /** видимые границы элементов списка - зоны срабатывания touchscreen */
     private int itemBorder[];
@@ -319,8 +321,14 @@ public abstract class VirtualList
         if (title!=null) {
             list_top=title.getVHeight();
             g.setClip(0,0, width, list_top);
-            g.setColor(getTitleBGndRGB());
-            g.fillRect(0,0, width, list_top);
+            //g.setColor(getTitleBGndRGB());
+            //g.fillRect(0,0, width, list_top);
+            this.gradientItem = new GradientItem(width, list_top);
+            this.gradientItem.setTopColor( 0xFF0000 );
+            this.gradientItem.setMidColor( 0x0000FF );
+            this.gradientItem.setBottomColor( 0xFFFF00 );
+            this.gradientItem.paint(g,width, list_top);
+
             g.setColor(getTitleRGB());
             title.drawItem(g,0,false);
         }
@@ -889,7 +897,14 @@ public abstract class VirtualList
      */
     protected void drawCursor (Graphics g, int width, int height){
         //g.setColor(VL_CURSOR_SHADE);   g.drawRoundRect(x+2, y+2, width-1, height-1, 3,3);
-        g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
+        //g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
+        
+            this.gradientItem = new GradientItem(width, height);
+            this.gradientItem.setTopColor( 0xFF0000 );
+            this.gradientItem.setMidColor( 0x0000FF );
+            this.gradientItem.setBottomColor( 0xFFFF00 );
+            this.gradientItem.paint(g,width, height);
+        
         g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
         /*
         g.drawLine(1,0,width-2,0);
