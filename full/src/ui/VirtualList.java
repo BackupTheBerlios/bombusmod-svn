@@ -120,10 +120,10 @@ public abstract class VirtualList
     
     /** 
      * окно приклеено к позиции курсора 
-     * ПР�?КЛЕ�?ВАЕТСЯ:
+     * ПР�?КЛЕ�?ВАЕТСЯ:
      *   при нажатии кнопок перемещения курсора
      *   при выборе стилусом элемента списка
-     * ОТКЛЕ�?ВАЕТСЯ:
+     * ОТКЛЕ�?ВАЕТСЯ:
      *   при использовании скролбара
      */
     protected boolean stickyWindow=true;
@@ -171,8 +171,6 @@ public abstract class VirtualList
     protected InputBox bottom;
     
     private boolean wrapping = true;
-    
-    private GradientItem gradientItem;
 
     /** видимые границы элементов списка - зоны срабатывания touchscreen */
     private int itemBorder[];
@@ -321,13 +319,8 @@ public abstract class VirtualList
         if (title!=null) {
             list_top=title.getVHeight();
             g.setClip(0,0, width, list_top);
-            //g.setColor(getTitleBGndRGB());
-            //g.fillRect(0,0, width, list_top);
-            this.gradientItem = new GradientItem(width, list_top);
-            this.gradientItem.setTopColor( 0xE0B000 );
-            this.gradientItem.setMidColor( 0xFCCA0F );
-            this.gradientItem.setBottomColor( 0xCD9030 );
-            this.gradientItem.paint(g,width, list_top);
+            g.setColor(getTitleBGndRGB());
+            g.fillRect(0,0, width, list_top);
 
             g.setColor(getTitleRGB());
             title.drawItem(g,0,false);
@@ -532,7 +525,7 @@ public abstract class VirtualList
                 // если нижний край ниже окна, выровнять по низу
                 if (bottom>win_top) win_top=bottom;  
             }
-            // случай, когда курсор больше окна, и он Н�?ЖЕ окна
+            // случай, когда курсор больше окна, и он Н�?ЖЕ окна
             if (top>=win_top+winHeight) win_top=top; 
         } catch (Exception e) { e.printStackTrace(); }
     }
@@ -831,7 +824,7 @@ public abstract class VirtualList
     }
     
     /**
-     * событие "Нажатие ЗЕЛЁНОЙ КНОПК�?"
+     * событие "Нажатие ЗЕЛЁНОЙ КНОПК�?"
      * в классе VirtualList функция выполняет вызов eventOk().
      * возможно переопределить (override) функцию для реализации необходимых действий
      */
@@ -897,15 +890,8 @@ public abstract class VirtualList
      */
     protected void drawCursor (Graphics g, int width, int height){
         //g.setColor(VL_CURSOR_SHADE);   g.drawRoundRect(x+2, y+2, width-1, height-1, 3,3);
-        //g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
-        
-            this.gradientItem = new GradientItem(width, height);
-            this.gradientItem.setTopColor( 0xE0B000 );
-            this.gradientItem.setMidColor( 0xFCCA0F );
-            this.gradientItem.setBottomColor( 0xCD9030 );
-            this.gradientItem.paint(g,width, height);
-            
-            g.setColor(0xCD9030); g.drawRect(0, 0, width-1, height-1);
+            g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
+            g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
         
         //g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
         /*

@@ -75,9 +75,10 @@ public class ContactMessageList extends MessageList
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
         //setRotator();
-        
-        //InputBox bottom=new InputBox();
-        //setInputBoxItem(bottom);
+        if (Config.getInstance().altInput) {
+            InputBox bottom=new InputBox(contact.getJid());
+            setInputBoxItem(bottom);
+        }
     }
     
     public void showNotify(){

@@ -64,11 +64,12 @@ public class TransferDispatcher implements JabberBlockListener{
                             Integer.parseInt(file.getAttribute("size")),
                             null);
                     taskList.addElement(task);
-                    
+                    eventNotify();
                     return BLOCK_PROCESSED;
                 }
                 if (type.equals("result")) {
                     // our file were accepted
+                    eventNotify();
                     return BLOCK_PROCESSED;
                 }
             }
@@ -79,6 +80,18 @@ public class TransferDispatcher implements JabberBlockListener{
                 
                 JabberDataBlock accept=new Iq(task.jid, Iq.TYPE_RESULT, id);
                 send(accept);
+                eventNotify();
+                return BLOCK_PROCESSED;
+            }
+            JabberDataBlock close=data.getChildBlock("close");
+            if (close!=null) {
+                String sid=close.getAttribute("sid");
+                TransferTask task=getTransferBySid(sid);
+                
+                JabberDataBlock done=new Iq(task.jid, Iq.TYPE_RESULT, id);
+                send(done);
+                task.closeFile();
+                eventNotify();
                 return BLOCK_PROCESSED;
             }
         }
@@ -91,6 +104,8 @@ public class TransferDispatcher implements JabberBlockListener{
             
             byte b[]=strconv.fromBase64(bdata.getText());
             System.out.println("data chunk received");
+            repaintNotify();
+            task.writeFile(b);
             
         }
         return BLOCK_REJECTED;
@@ -107,5 +122,20 @@ public class TransferDispatcher implements JabberBlockListener{
             if (task.sid.equals(sid)) return task;
         }
         return null;
+    }
+
+    void eventNotify() {
+        int event=-1;
+        for (Enumeration e=taskList.elements(); e.hasMoreElements(); ) {
+            TransferTask t=(TransferTask) e.nextElement();
+            if (t.showEvent) event=t.getImageIndex();
+        }
+        Integer icon=(event<0)? null:new Integer(event);
+        StaticData.getInstance().roster.getTitleItem().setElementAt(icon, 7);
+        repaintNotify();
+    }
+
+    void repaintNotify() {
+        StaticData.getInstance().roster.redraw();
     }
 }

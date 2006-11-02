@@ -48,14 +48,14 @@ public class EventNotify
 //#endif
     
     private final static String tone="A6E6J6";
-    //private int sndVolume;
+    private int sndVolume;
     
     /** Creates a new instance of EventNotify */
     public EventNotify(
 	Display display, 
 	String soundMediaType, 
 	String soundFileName, 
-	//int sndVolume,
+	int sndVolume,
 	int vibraLength, 
 	boolean enableLights
     ) {
@@ -65,7 +65,7 @@ public class EventNotify
 	this.lenVibra=vibraLength;
 	this.enableLights=enableLights;
 	if (soundType!=null) toneSequence= soundType.equals("tone");
-	//this.sndVolume=100;
+	this.sndVolume=sndVolume;
     }
     
     public void startNotify (){
@@ -86,10 +86,10 @@ public class EventNotify
 	    player.prefetch();
 	    
 
-//	    try {
-//		VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
-//		vol.setLevel(sndVolume);
-//	    } catch (Exception e) { e.printStackTrace(); }
+	    try {
+		VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
+		vol.setLevel(sndVolume);
+	    } catch (Exception e) { e.printStackTrace(); }
 
 	    player.start();
 //#endif

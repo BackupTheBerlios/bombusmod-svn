@@ -13,6 +13,8 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
 import io.file.FileIO;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import ui.Colors;
@@ -35,6 +37,7 @@ public class TransferTask
     
     private int state=NONE;
     private boolean sending;
+    boolean showEvent;
     String jid;
     String id;
     String sid;
@@ -44,6 +47,7 @@ public class TransferTask
     private int filePos;
     String filePath;
     private FileIO file;
+    private OutputStream os;
     
     private Vector methods;
     
@@ -51,6 +55,7 @@ public class TransferTask
     public TransferTask(String jid, String id, String sid, String name, String description, int size, Vector methods) {
         super(RosterIcons.getInstance());
         state=IN_ASK;
+        showEvent=true;
         this.jid=jid;
         this.id=id;
         this.sid=sid;
@@ -79,6 +84,7 @@ public class TransferTask
         g.setColor(oldColor);
         
         super.drawItem(g, ofs, sel);
+        showEvent=false;
     }
     
     public String toString() { return fileName; }
@@ -94,9 +100,19 @@ public class TransferTask
         TransferDispatcher.getInstance().send(reject);
         
         state=ERROR;
+        showEvent=true;
     }
 
     void accept() {
+        
+        try {
+            file=FileIO.createConnection(filePath+fileName);
+            os=file.openOutputStream();
+        } catch (Exception e) {
+            e.printStackTrace();
+            decline();
+            return;
+        }
         JabberDataBlock accept=new Iq(jid, Iq.TYPE_RESULT, id);
         
         JabberDataBlock si=accept.addChild("si", null);
@@ -114,10 +130,35 @@ public class TransferTask
         field.addChild("value", "http://jabber.org/protocol/ibb");
         
         TransferDispatcher.getInstance().send(accept);
-        //todo: create file here
         state=HANDSHAKE;
+    }
+    
+    void writeFile(byte b[]){
+        try {
+            os.write(b);
+            filePos+=b.length;
+            state=PROGRESS;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            state=ERROR;
+            showEvent=true;
+            //todo: terminate transfer
+        }
     }
 
     boolean isAcceptWaiting() { return state==IN_ASK; }
+
+    void closeFile() {
+        try {
+            if (os!=null)
+                os.close();
+            file.close();
+            state=COMPLETE;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            state=ERROR;
+        }
+        showEvent=true;
+    }
 
 }

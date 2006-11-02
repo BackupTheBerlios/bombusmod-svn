@@ -138,6 +138,7 @@ public class ConfigForm implements
         message.append(SR.MS_SMILES, null);
         message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
+        message.append("altInput", null);
 //#if (!MIDP1)
         message.append(SR.MS_CAPS_STATE, null);
 //#endif
@@ -145,7 +146,8 @@ public class ConfigForm implements
         boolean mv[]={
             cf.smiles,
             cf.storeConfPresence,
-            cf.eventComposing
+            cf.eventComposing,
+            cf.altInput
 //#if (!MIDP1)
             ,cf.capsState
 //#endif
@@ -329,8 +331,9 @@ public class ConfigForm implements
             cf.smiles=mv[0];
             cf.storeConfPresence=mv[1];
             cf.eventComposing=mv[2];
+            cf.altInput=mv[3];
 //#if (!MIDP1)
-            cf.capsState=mv[3];
+            cf.capsState=mv[4];
 //#endif
 
 	    
@@ -418,7 +421,8 @@ public class ConfigForm implements
 	int sound=sndFile.getSelectedIndex();
 	String soundFile=(String)files[1].elementAt(sound);
 	String soundType=(String)files[0].elementAt(sound);
-	new EventNotify(display, soundType, soundFile, 0, false).startNotify();
+        int sndVolume=sndVol.getValue()*10;
+	new EventNotify(display, soundType, soundFile,sndVolume, 0, false).startNotify();
     }
     
     public void BrowserFilePathNotify(String pathSelected) {

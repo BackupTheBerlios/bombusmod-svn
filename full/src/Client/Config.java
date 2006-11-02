@@ -133,6 +133,8 @@ public class Config {
 
     public int confMessageCount=20;
 
+    boolean altInput=false;
+
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -260,6 +262,8 @@ public class Config {
             
             defGcRoom=inputStream.readUTF();
             
+            altInput=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -342,6 +346,8 @@ public class Config {
             outputStream.writeBoolean(setAutoStatus);
             
             outputStream.writeUTF(defGcRoom);
+            
+            outputStream.writeBoolean(altInput);
             
 	} catch (IOException e) { e.printStackTrace(); }
 	

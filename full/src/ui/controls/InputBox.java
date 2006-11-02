@@ -24,12 +24,15 @@ public class InputBox extends Canvas {
     
     private BitMapFont bitMapFont;
     private BitMapFontViewer messageViewer;
+
+    private String text;
     
-    public InputBox() {
+    public InputBox(String text) {
+        this.text=text;
        
-        this.bitMapFont = BitMapFont.getInstance("/fonts/B52.bmf");
-        this.messageViewer = this.bitMapFont.getViewer("Hello World! привет мир!");
-        int availableWidth = getWidth() - 20;
+        this.bitMapFont = BitMapFont.getInstance("/fonts/sirclive.bmf");
+        this.messageViewer = this.bitMapFont.getViewer(text);
+        int availableWidth = getWidth() - 2;
         int padding = 2;
         int textOrientation = Graphics.LEFT;
         this.messageViewer.layout( availableWidth, availableWidth, padding, textOrientation );
@@ -41,7 +44,11 @@ public class InputBox extends Canvas {
     public void drawItem(Graphics g, int i, boolean b) {
 
         g.setColor(Colors.BAR_BGND);
-        g.fillRect(0, 0, g.getClipWidth(), g.getClipHeight());
+        g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(0xa0a0a0);
+        g.fillRect(1, 1, getWidth()-1, getHeight()-1);
+        g.setColor(0xffffff);
+        g.fillRect(2, 2, getWidth()-2, getHeight()-2);
         paint(g);
     }
 

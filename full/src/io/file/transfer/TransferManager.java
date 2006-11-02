@@ -9,6 +9,7 @@
 
 package io.file.transfer;
 
+import Client.Title;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -33,6 +34,7 @@ public class TransferManager extends VirtualList implements CommandListener{
         
         addCommand(cmdBack);
         setCommandListener(this);
+        setTitleItem(new Title(2, null, "Transfer tasks"));
         
         transfers=TransferDispatcher.getInstance().getTaskList();
     }
@@ -47,6 +49,7 @@ public class TransferManager extends VirtualList implements CommandListener{
     }
 
     public void commandAction(Command command, Displayable displayable) {
+        TransferDispatcher.getInstance().eventNotify();
         destroyView();
     }
 }

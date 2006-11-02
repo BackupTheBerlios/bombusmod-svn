@@ -158,6 +158,7 @@ public class Roster
         title.addRAlign();
         title.addElement(null);
         title.addElement(null);
+        title.addElement(null); //ft
         //displayStatus();
         
         //l.setTitleImgL(6); //connect
@@ -962,6 +963,7 @@ public class Roster
                         
                         SplashScreen.getInstance().close(); // display.setCurrent(this);
                         
+                        theStream.addBlockListener(TransferDispatcher.getInstance());
                     } 
                     
                 } else if (type.equals("get")){
