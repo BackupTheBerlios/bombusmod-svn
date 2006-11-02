@@ -68,7 +68,7 @@ public class ConfigForm implements
     ChoiceGroup lang;
     
     ChoiceGroup sndFile;
-    //Gauge sndVol;
+    Gauge sndVol;
     
     ChoiceGroup font1;
     ChoiceGroup font2;
@@ -183,15 +183,6 @@ public class ConfigForm implements
 	keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 20, 600 );
 	fieldGmt=new NumberField(SR.MS_GMT_OFFSET, cf.gmtOffset, -12, 12); 
         fieldLoc=new NumberField(SR.MS_CLOCK_OFFSET, cf.locOffset, -12, 12 );
-        
-        sndFile=new ChoiceGroup(SR.MS_SOUND, ConstMIDP.CHOICE_POPUP);
-	files=new StringLoader().stringLoader("/sounds/res.txt",3);
-	
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    sndFile.append( (String)f.nextElement(), null );
-	}
-	
-	sndFile.setSelectedIndex(cf.sounsMsgIndex, true);
 
         String fnts[]={"Normal", "Small", "Large"};
         font1=new ChoiceGroup(SR.MS_ROSTER_FONT, ConstMIDP.CHOICE_POPUP, fnts, null);
@@ -209,8 +200,28 @@ public class ConfigForm implements
 	textWrap=new ChoiceGroup(SR.MS_TEXTWRAP, ConstMIDP.CHOICE_POPUP, textWraps,null);
 	textWrap.setSelectedIndex(cf.textWrap, true);
 	f.append(textWrap);
+        
+        
+        sndFile=new ChoiceGroup(SR.MS_SOUND, ConstMIDP.CHOICE_POPUP);
+	files=new StringLoader().stringLoader("/sounds/res.txt",3);
+	
+	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
+	    sndFile.append( (String)f.nextElement(), null );
+	}
+	
+	sndFile.setSelectedIndex(cf.sounsMsgIndex, true);        
 	
 	f.append(sndFile);
+	
+        sndVol=new Gauge("Sound volume", true, 10,  cf.soundVol/10);
+	f.append(sndVol);
+
+//#if !(MIDP1)
+	sndFile.addCommand(cmdPlaySound);
+	sndFile.setItemCommandListener(this);
+//#else
+//# 	f.addCommand(cmdPlaySound);
+//#endif
 	
         lang=new ChoiceGroup("Language", ConstMIDP.CHOICE_POPUP);
 	Vector langs[]=new StringLoader().stringLoader("/lang/res.txt",2);
@@ -222,21 +233,8 @@ public class ConfigForm implements
         try {
             lang.setSelectedIndex(cf.lang, true);
         } catch (Exception e) {}
-
         
-        //sndVol=new Gauge("Sound volume", true, 10,  cf.soundVol/10);
-	//f.append(sndVol);
-
-//#if !(MIDP1)
-	sndFile.addCommand(cmdPlaySound);
-	sndFile.setItemCommandListener(this);
-	//sndVol.addCommand(cmdPlaySound);
-	//sndVol.setItemCommandListener(this);
-//#else
-//# 	f.addCommand(cmdPlaySound);
-//#endif
-	
-	f.append(startup);
+        f.append(startup);
 
 	f.append(application);
 
@@ -360,7 +358,7 @@ public class ConfigForm implements
 	    
 	    cf.textWrap=textWrap.getSelectedIndex();
 	    
-	    //cf.soundVol=sndVol.getValue()*10;
+	    cf.soundVol=sndVol.getValue()*10;
             cf.lang=lang.getSelectedIndex();
 	    
             

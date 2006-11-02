@@ -31,8 +31,8 @@ public class Colors {
     
     public static int DISCO_CMD           =0x000080;
     
-    public static int HEADER_BGND         =0x0033ff;
-    public static int HEADER_INK          =0x33ffff;
+    public static int BAR_BGND         =0x0033ff;
+    public static int BAR_INK          =0x33ffff;
     
     public static int CONTACT_DEFAULT     =0x000000;
     public static int CONTACT_CHAT        =0x39358b;

@@ -92,6 +92,13 @@ public class Bombus extends MIDlet implements Runnable{
 
         s.setProgress(10);
 	Config cf=Config.getInstance();
+        
+        s.setProgress(14);
+        try {
+            Colors cl=Colors.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 	s.setProgress(17);
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
