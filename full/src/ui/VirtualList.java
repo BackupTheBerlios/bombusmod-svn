@@ -324,9 +324,9 @@ public abstract class VirtualList
             //g.setColor(getTitleBGndRGB());
             //g.fillRect(0,0, width, list_top);
             this.gradientItem = new GradientItem(width, list_top);
-            this.gradientItem.setTopColor( 0xFF0000 );
-            this.gradientItem.setMidColor( 0x0000FF );
-            this.gradientItem.setBottomColor( 0xFFFF00 );
+            this.gradientItem.setTopColor( 0xE0B000 );
+            this.gradientItem.setMidColor( 0xFCCA0F );
+            this.gradientItem.setBottomColor( 0xCD9030 );
             this.gradientItem.paint(g,width, list_top);
 
             g.setColor(getTitleRGB());
@@ -900,12 +900,14 @@ public abstract class VirtualList
         //g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
         
             this.gradientItem = new GradientItem(width, height);
-            this.gradientItem.setTopColor( 0xFF0000 );
-            this.gradientItem.setMidColor( 0x0000FF );
-            this.gradientItem.setBottomColor( 0xFFFF00 );
+            this.gradientItem.setTopColor( 0xE0B000 );
+            this.gradientItem.setMidColor( 0xFCCA0F );
+            this.gradientItem.setBottomColor( 0xCD9030 );
             this.gradientItem.paint(g,width, height);
+            
+            g.setColor(0xCD9030); g.drawRect(0, 0, width-1, height-1);
         
-        g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
+        //g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
         /*
         g.drawLine(1,0,width-2,0);
         g.drawLine(0,1,0,height-2);
