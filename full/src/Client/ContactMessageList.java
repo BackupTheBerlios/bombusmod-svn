@@ -46,6 +46,8 @@ public class ContactMessageList extends MessageList
 
     StaticData sd;
     
+    boolean newmessage=false;
+    
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
         super(display);
@@ -75,10 +77,8 @@ public class ContactMessageList extends MessageList
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
         //setRotator();
-        if (Config.getInstance().altInput) {
-            InputBox bottom=new InputBox(contact.getJid());
-            setInputBoxItem(bottom);
-        }
+        InputBox bottom=new InputBox(contact.getJid());
+        setInputBoxItem(bottom);
     }
     
     public void showNotify(){
@@ -224,11 +224,28 @@ public class ContactMessageList extends MessageList
     public void userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
         if (keyCode==KEY_NUM9) nextContact();
+        if (keyCode==KEY_NUM5) {
+            if (Config.getInstance().altInput) {
+                    updateBottom();
+            }
+        }
         if (keyCode==keyClear) {
             new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
                 public void yes() { clearMessageList(); }
             };
         }
+    }
+    
+    public InputBox getBottomItem() {return (InputBox)bottom;}
+    public void setInputBoxItem(InputBox bottom) { this.bottom=bottom; }
+    
+    private void updateBottom(){
+        //InputBox bottom=new InputBox(contact.getJid());
+        //setInputBoxItem(bottom);
+        bottom=null;
+        InputBox bottom=new InputBox("test");
+        setInputBoxItem(bottom);
+        redraw();
     }
     
     private void nextContact() {

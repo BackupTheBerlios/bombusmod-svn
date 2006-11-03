@@ -25,7 +25,7 @@ public class InputBox extends Canvas {
     private BitMapFont bitMapFont;
     private BitMapFontViewer messageViewer;
 
-    private String text;
+    public String text;
     
     public InputBox(String text) {
         this.text=text;

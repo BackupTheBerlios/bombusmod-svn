@@ -11,21 +11,25 @@ package io.file.transfer;
 
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
+import com.alsutton.jabber.datablocks.Message;
 import images.RosterIcons;
 import io.file.FileIO;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import ui.Colors;
 import ui.IconTextElement;
+import util.strconv;
 
 /**
  *
  * @author Evg_S
  */
 public class TransferTask 
-        extends IconTextElement 
+        extends IconTextElement
+        implements Runnable
 {
     
     public final static int COMPLETE=1;
@@ -48,6 +52,7 @@ public class TransferTask
     String filePath;
     private FileIO file;
     private OutputStream os;
+    private InputStream is;
     
     private Vector methods;
     
@@ -63,6 +68,32 @@ public class TransferTask
         this.description=description;
         this.fileSize=size;
         this.methods=methods;
+    }
+    
+    /**
+     * Sending constructor
+     */
+    public TransferTask(String jid, String sid, String fileName, String description) {
+        super(RosterIcons.getInstance());
+        state=HANDSHAKE;
+        sending=true;
+        //showEvent=true;
+        this.jid=jid;
+        this.sid=sid;
+        this.fileName=fileName.substring( fileName.lastIndexOf('/')+1 );
+        this.description=description;
+        //this.fileSize=size;
+        //this.methods=methods;
+        try {
+            file=FileIO.createConnection(fileName);
+            is=file.openInputStream();
+            
+            fileSize=(int)file.fileSize();
+        } catch (Exception e) {
+            e.printStackTrace();
+            state=ERROR;
+            showEvent=true;
+        }
     }
 
     protected int getImageIndex() { return state; }
@@ -146,19 +177,123 @@ public class TransferTask
         }
     }
 
+    int readFile(byte b[]) {
+        try {
+            int len=is.read(b);
+            if (len<0) len=0;
+            filePos+=len;
+            state=PROGRESS;
+            return len;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            state=ERROR;
+            showEvent=true;
+            //todo: terminate transfer
+            return 0;
+        }
+    }
+
     boolean isAcceptWaiting() { return state==IN_ASK; }
 
     void closeFile() {
         try {
             if (os!=null)
                 os.close();
+            if (is!=null)
+                is.close();
             file.close();
-            state=COMPLETE;
-        } catch (IOException ex) {
+            if (state!=ERROR) state=COMPLETE;
+        } catch (Exception ex) {
             ex.printStackTrace();
             state=ERROR;
         }
         showEvent=true;
+    }
+
+    void sendInit() {
+            if (state==ERROR) return;
+            
+            JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid); 
+            
+            JabberDataBlock si=iq.addChild("si", null);
+            si.setNameSpace("http://jabber.org/protocol/si");
+            si.setAttribute("id",sid);
+            si.setAttribute("mime-type","text/plain");
+            si.setAttribute("profile", "http://jabber.org/protocol/si/profile/file-transfer");
+            
+            JabberDataBlock file=si.addChild("file",null);
+            file.setNameSpace("http://jabber.org/protocol/si/profile/file-transfer");
+            file.setAttribute("name", fileName);
+            file.setAttribute("size", String.valueOf(fileSize));
+            
+            JabberDataBlock feature=si.addChild("feature", null);
+            feature.setNameSpace("http://jabber.org/protocol/feature-neg");
+            
+            JabberDataBlock x=feature.addChild("x", null);
+            x.setNameSpace("jabber:x:data");
+            x.setTypeAttribute("form");
+            
+            JabberDataBlock field=x.addChild("field", null);
+            field.setTypeAttribute("list-single");
+            field.setAttribute("var", "stream-method");
+            
+            field.addChild("option", null).addChild("value", "http://jabber.org/protocol/ibb");
+            
+            TransferDispatcher.getInstance().send(iq);
+            
+        
+    }
+
+    void initIBB() {
+        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
+        JabberDataBlock open=iq.addChild("open", null);
+        open.setNameSpace("http://jabber.org/protocol/ibb");
+        open.setAttribute("sid", sid);
+        TransferDispatcher.getInstance().send(iq);
+    }
+
+    public void run() {
+        byte buf[]=new byte[2048];
+        int seq=0;
+        while (true) {
+            int sz=readFile(buf);
+            if (sz==0) break;
+            
+            JabberDataBlock msg=new Message(jid);
+            
+            JabberDataBlock data=msg.addChild("data", strconv.toBase64(buf, sz));
+            data.setNameSpace("http://jabber.org/protocol/ibb");
+            data.setAttribute("sid", sid);
+            data.setAttribute("seq", String.valueOf(seq));   seq++;
+            
+            JabberDataBlock amp=msg.addChild("amp",null);
+            amp.setNameSpace("http://jabber.org/protocol/amp");
+            
+            JabberDataBlock rule;
+            
+            rule=amp.addChild("rule", null);
+            rule.setAttribute("condition", "deliver-at"); 
+            rule.setAttribute("value", "stored");
+            rule.setAttribute("action", "error");
+            
+            rule=amp.addChild("rule", null);
+            rule.setAttribute("condition", "match-resource"); 
+            rule.setAttribute("value", "exact");
+            rule.setAttribute("action", "error");
+            
+            TransferDispatcher.getInstance().send(msg);
+        }
+        closeFile();
+        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, "close");
+        JabberDataBlock close=iq.addChild("close", null);
+        close.setNameSpace("http://jabber.org/protocol/ibb");
+        close.setAttribute("sid", sid);
+        TransferDispatcher.getInstance().send(iq);
+        
+    }
+
+    void startTransfer() {
+        new Thread(this).start();
     }
 
 }

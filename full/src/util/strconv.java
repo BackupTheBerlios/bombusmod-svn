@@ -79,10 +79,10 @@ public class strconv {
         return new String(out);
     }
     
-    public final static String toBase64( byte source[]) {
+    public final static String toBase64( byte source[], int len) {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         
-        int len=source.length;
+        if (len<0) len=source.length;
         char[] out = new char[((len+2)/3)*4];
         for (int i=0, index=0; i<len; i+=3, index +=4) {
             boolean trip=false;

@@ -69,6 +69,9 @@ public class TransferDispatcher implements JabberBlockListener{
                 }
                 if (type.equals("result")) {
                     // our file were accepted
+                    TransferTask task=getTransferBySid(id);
+                    task.initIBB();
+                    
                     eventNotify();
                     return BLOCK_PROCESSED;
                 }
@@ -93,6 +96,12 @@ public class TransferDispatcher implements JabberBlockListener{
                 task.closeFile();
                 eventNotify();
                 return BLOCK_PROCESSED;
+            }
+            if (data.getTypeAttribute().equals("result")) {
+                TransferTask task=getTransferBySid(id);
+                if (task!=null) {
+                    task.startTransfer();
+                }
             }
         }
         if (data instanceof Message) {
@@ -137,5 +146,10 @@ public class TransferDispatcher implements JabberBlockListener{
 
     void repaintNotify() {
         StaticData.getInstance().roster.redraw();
+    }
+
+    void sendFile(TransferTask task) {
+        taskList.addElement(task);
+        task.sendInit();
     }
 }
