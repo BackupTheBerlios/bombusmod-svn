@@ -9,6 +9,7 @@
 
 package io.file.transfer;
 
+import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Message;
@@ -103,13 +104,13 @@ public class TransferTask
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int xpgs=(g.getClipWidth()/3)*2;
         int pgsz=g.getClipWidth()-xpgs-4;
-        int filled=(pgsz*filePos)/fileSize; 
+        int filled=(fileSize==0)? 0 : (pgsz*filePos)/fileSize; 
         
         int oldColor=g.getColor();
         g.setColor(0xffffff);
         
         g.fillRect(xpgs, 3, pgsz, getVHeight()-6);
-        g.setColor(0xaaaaaa);
+        g.setColor(0x668866);
         g.drawRect(xpgs, 3, pgsz, getVHeight()-6);
         g.fillRect(xpgs, 3, filled, getVHeight()-6);
         g.setColor(oldColor);
@@ -128,7 +129,7 @@ public class TransferTask
         error.setTypeAttribute("cancel");
         error.setAttribute("code","405");
         error.addChild("not-allowed",null).setNameSpace("urn:ietf:params:xml:ns:xmpp-stanzas");
-        TransferDispatcher.getInstance().send(reject);
+        TransferDispatcher.getInstance().send(reject, true);
         
         state=ERROR;
         showEvent=true;
@@ -160,7 +161,7 @@ public class TransferTask
         field.setAttribute("var","stream-method");
         field.addChild("value", "http://jabber.org/protocol/ibb");
         
-        TransferDispatcher.getInstance().send(accept);
+        TransferDispatcher.getInstance().send(accept, true);
         state=HANDSHAKE;
     }
     
@@ -239,7 +240,7 @@ public class TransferTask
             
             field.addChild("option", null).addChild("value", "http://jabber.org/protocol/ibb");
             
-            TransferDispatcher.getInstance().send(iq);
+            TransferDispatcher.getInstance().send(iq, true);
             
         
     }
@@ -249,7 +250,7 @@ public class TransferTask
         JabberDataBlock open=iq.addChild("open", null);
         open.setNameSpace("http://jabber.org/protocol/ibb");
         open.setAttribute("sid", sid);
-        TransferDispatcher.getInstance().send(iq);
+        TransferDispatcher.getInstance().send(iq, false);
     }
 
     public void run() {
@@ -281,19 +282,24 @@ public class TransferTask
             rule.setAttribute("value", "exact");
             rule.setAttribute("action", "error");
             
-            TransferDispatcher.getInstance().send(msg);
+            TransferDispatcher.getInstance().send(msg, false);
+            TransferDispatcher.getInstance().repaintNotify();
         }
         closeFile();
         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, "close");
         JabberDataBlock close=iq.addChild("close", null);
         close.setNameSpace("http://jabber.org/protocol/ibb");
         close.setAttribute("sid", sid);
-        TransferDispatcher.getInstance().send(iq);
-        
+        TransferDispatcher.getInstance().send(iq, false);
+        TransferDispatcher.getInstance().eventNotify();
     }
 
     void startTransfer() {
         new Thread(this).start();
+    }
+
+    boolean isStopped() {
+        return ((state==COMPLETE) || (state==ERROR));
     }
 
 }

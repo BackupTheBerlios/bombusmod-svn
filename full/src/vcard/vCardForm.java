@@ -85,6 +85,9 @@ public class vCardForm
         f.append(vcard.getJid());
         photoType=vcard.getPhotoType();
         
+        photo=vcard.getPhoto();
+        setPhoto();
+        
         for (int index=0; index<vcard.getCount(); index++) {
             String data=vcard.getVCardData(index);
             String name=(String)VCard.vCardLabels.elementAt(index);
@@ -111,9 +114,6 @@ public class vCardForm
         photoIndex=f.append("[no photo available]");
         
         f.append("\n\n[end of vCard]");
-        
-        photo=vcard.getPhoto();
-        setPhoto();
         
         f.addCommand(cmdCancel);
         f.addCommand(cmdRefresh);

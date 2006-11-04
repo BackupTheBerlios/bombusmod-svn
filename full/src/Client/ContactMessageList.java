@@ -77,8 +77,8 @@ public class ContactMessageList extends MessageList
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
         //setRotator();
-        InputBox bottom=new InputBox(contact.getJid());
-        setInputBoxItem(bottom);
+        //InputBox bottom=new InputBox(contact.getJid());
+        //setInputBoxItem(bottom);
     }
     
     public void showNotify(){
@@ -224,7 +224,7 @@ public class ContactMessageList extends MessageList
     public void userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
         if (keyCode==KEY_NUM9) nextContact();
-        if (keyCode==KEY_NUM5) {
+        if (keyCode==KEY_STAR) {
             if (Config.getInstance().altInput) {
                     updateBottom();
             }
@@ -242,7 +242,7 @@ public class ContactMessageList extends MessageList
     private void updateBottom(){
         //InputBox bottom=new InputBox(contact.getJid());
         //setInputBoxItem(bottom);
-        bottom=null;
+        //bottom=null;
         InputBox bottom=new InputBox("test");
         setInputBoxItem(bottom);
         redraw();

@@ -25,9 +25,11 @@ import ui.VirtualList;
  */
 public class TransferManager extends VirtualList implements CommandListener{
     
-    private Vector transfers;
+    private Vector taskList;
     
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
+    Command cmdClrF=new Command("Hide finished", Command.SCREEN, 10);
+    
     /** Creates a new instance of TransferManager */
     public TransferManager(Display display) {
         super(display);
@@ -36,20 +38,32 @@ public class TransferManager extends VirtualList implements CommandListener{
         setCommandListener(this);
         setTitleItem(new Title(2, null, "Transfer tasks"));
         
-        transfers=TransferDispatcher.getInstance().getTaskList();
+        taskList=TransferDispatcher.getInstance().getTaskList();
     }
 
-    protected int getItemCount() { return transfers.size(); }
+    protected int getItemCount() { return taskList.size(); }
 
-    protected VirtualElement getItemRef(int index) { return (VirtualElement) transfers.elementAt(index); }
+    protected VirtualElement getItemRef(int index) { return (VirtualElement) taskList.elementAt(index); }
 
     public void eventOk() {
         TransferTask t=(TransferTask) getFocusedObject();
         if (t.isAcceptWaiting()) new TransferAcceptFile(display, t);
     }
 
-    public void commandAction(Command command, Displayable displayable) {
-        TransferDispatcher.getInstance().eventNotify();
-        destroyView();
+    public void commandAction(Command c, Displayable d) {
+        if (c==cmdClrF) {
+            synchronized (taskList) {
+                int i=0;
+                while (i<taskList.size()) {
+                    TransferTask task=(TransferTask) taskList.elementAt(i);
+                    if (task.isStopped()) taskList.removeElementAt(i);
+                }
+            }
+        }
+        if (c==cmdBack) {
+            TransferDispatcher.getInstance().eventNotify();
+            destroyView();
+        }
+        
     }
 }

@@ -99,6 +99,7 @@ public class Browser extends VirtualList implements CommandListener{
         if (command==cmdSelect) {
             String f=((FileItem)getFocusedObject()).name;
             if (f.endsWith("/")) {
+                if (f.startsWith("../")) f="";
                 if (browserListener==null) return;
                 destroyView();
                 browserListener.BrowserFilePathNotify(path+f);
@@ -117,11 +118,16 @@ public class Browser extends VirtualList implements CommandListener{
                 String info="Size="+String.valueOf(fio.fileSize());
                 String imgs="png.jpg.jpeg.gif";
                 if (imgs.indexOf(ext)>=0) {
-                    img=Image.createImage(is);
+                    if (fio.fileSize()<65536) 
+                        img=Image.createImage(is);
                 }
                 is.close();
                 fio.close();
-                display.setCurrent(new Alert(f, info, img, null), this);
+				
+                Alert finfo=new Alert(f, info, img, null);
+                finfo.setTimeout(15*1000);
+                display.setCurrent(finfo, this);
+				
             } catch (Exception e) { e.printStackTrace(); }
         }
         if (command==cmdCancel) { destroyView(); }

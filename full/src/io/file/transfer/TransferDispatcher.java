@@ -63,7 +63,9 @@ public class TransferDispatcher implements JabberBlockListener{
                             file.getChildBlockText("desc"),
                             Integer.parseInt(file.getAttribute("size")),
                             null);
-                    taskList.addElement(task);
+                    
+                    synchronized (taskList){ taskList.addElement(task); }
+                    
                     eventNotify();
                     return BLOCK_PROCESSED;
                 }
@@ -82,7 +84,7 @@ public class TransferDispatcher implements JabberBlockListener{
                 TransferTask task=getTransferBySid(sid);
                 
                 JabberDataBlock accept=new Iq(task.jid, Iq.TYPE_RESULT, id);
-                send(accept);
+                send(accept, true);
                 eventNotify();
                 return BLOCK_PROCESSED;
             }
@@ -92,7 +94,7 @@ public class TransferDispatcher implements JabberBlockListener{
                 TransferTask task=getTransferBySid(sid);
                 
                 JabberDataBlock done=new Iq(task.jid, Iq.TYPE_RESULT, id);
-                send(done);
+                send(done, true);
                 task.closeFile();
                 eventNotify();
                 return BLOCK_PROCESSED;
@@ -121,23 +123,35 @@ public class TransferDispatcher implements JabberBlockListener{
     }
     
     // send shortcut
-    void send(JabberDataBlock data) {
-        StaticData.getInstance().roster.theStream.send(data);
+    void send(JabberDataBlock data, boolean async) {
+        //StaticData.getInstance().roster.theStream.send(data);
+        try {
+            StringBuffer sb=new StringBuffer();
+            data.constructXML(sb);
+            StaticData.getInstance().roster.theStream.sendBuf( sb );
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private TransferTask getTransferBySid(String sid) {
-        for (Enumeration e=taskList.elements(); e.hasMoreElements(); ){
-            TransferTask task=(TransferTask)e.nextElement();
-            if (task.sid.equals(sid)) return task;
+        synchronized (taskList) {
+            for (Enumeration e=taskList.elements(); e.hasMoreElements(); ){
+                TransferTask task=(TransferTask)e.nextElement();
+                if (task.sid.equals(sid)) return task;
+            }
         }
         return null;
     }
 
     void eventNotify() {
         int event=-1;
-        for (Enumeration e=taskList.elements(); e.hasMoreElements(); ) {
-            TransferTask t=(TransferTask) e.nextElement();
-            if (t.showEvent) event=t.getImageIndex();
+        synchronized (taskList) {
+            for (Enumeration e=taskList.elements(); e.hasMoreElements(); ) {
+                TransferTask t=(TransferTask) e.nextElement();
+                if (t.showEvent) event=t.getImageIndex();
+            }
         }
         Integer icon=(event<0)? null:new Integer(event);
         StaticData.getInstance().roster.getTitleItem().setElementAt(icon, 7);
@@ -149,7 +163,7 @@ public class TransferDispatcher implements JabberBlockListener{
     }
 
     void sendFile(TransferTask task) {
-        taskList.addElement(task);
+        synchronized (taskList){ taskList.addElement(task); }
         task.sendInit();
     }
 }
