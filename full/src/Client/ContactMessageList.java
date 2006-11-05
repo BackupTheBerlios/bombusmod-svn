@@ -47,6 +47,10 @@ public class ContactMessageList extends MessageList
     StaticData sd;
     
     boolean newmessage=false;
+
+    private boolean startMessage;
+
+    private String text="";
     
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
@@ -219,20 +223,48 @@ public class ContactMessageList extends MessageList
 	if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
         if (keyCode==KEY_NUM0) clearMessageList();
 	else super.keyRepeated(keyCode);
-    }
+    }       
 
     public void userKeyPressed(int keyCode) {
-        super.userKeyPressed(keyCode);
-        if (keyCode==KEY_NUM9) nextContact();
-        if (keyCode==KEY_STAR) {
-            if (Config.getInstance().altInput) {
-                    updateBottom();
+        if (!startMessage) {
+            super.userKeyPressed(keyCode);
+            if (keyCode==KEY_NUM9) nextContact();
+            if (keyCode==KEY_STAR) {
+                if (Config.getInstance().altInput) {
+                        startMessage=true;
+                        updateBottom();
+                }
             }
-        }
-        if (keyCode==keyClear) {
-            new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
-                public void yes() { clearMessageList(); }
-            };
+            if (keyCode==keyClear) {
+                new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
+                    public void yes() { clearMessageList(); }
+                };
+            }
+        } else {
+            super.userKeyPressed(keyCode);
+            if (keyCode==KEY_NUM1) text=text+"\u00A0";
+            if (keyCode==KEY_NUM2) text=text+"\u0430";
+            if (keyCode==KEY_NUM3) text=text+"\u0434";
+            if (keyCode==KEY_NUM4) text=text+"\u0438";
+            if (keyCode==KEY_NUM5) text=text+"\u043C";
+            if (keyCode==KEY_NUM6) text=text+"\u043F";
+            if (keyCode==KEY_NUM7) text=text+"\u0442";
+            if (keyCode==KEY_NUM8) text=text+"\u0446";
+            if (keyCode==KEY_NUM9) text=text+"\u044a";
+            if (keyCode==KEY_NUM0) text=text+"\n";
+            if (keyCode==KEY_STAR) {
+                startMessage=false;
+                try {
+                    if (text!=null){
+                        Roster r=StaticData.getInstance().roster;
+                        r.sendMessage(contact, text, null, 0);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                redraw();
+            }
+            updateBottom();
         }
     }
     
@@ -240,12 +272,14 @@ public class ContactMessageList extends MessageList
     public void setInputBoxItem(InputBox bottom) { this.bottom=bottom; }
     
     private void updateBottom(){
-        //InputBox bottom=new InputBox(contact.getJid());
-        //setInputBoxItem(bottom);
-        //bottom=null;
-        InputBox bottom=new InputBox("test");
-        setInputBoxItem(bottom);
-        redraw();
+        if (startMessage) {
+            InputBox bottom=new InputBox(text);
+            setInputBoxItem(bottom);
+        } else {
+            bottom=null;
+            text="";
+        }
+        //redraw();
     }
     
     private void nextContact() {

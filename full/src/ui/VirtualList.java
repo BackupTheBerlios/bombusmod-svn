@@ -103,6 +103,7 @@ public abstract class VirtualList
     public static int greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
+    public static boolean altInput;
     
     /** метрика экрана */
     int width;
@@ -130,8 +131,7 @@ public abstract class VirtualList
     
     private int itemLayoutY[]=new int[1];
     private int listHeight;
-
-   
+    
     protected synchronized void updateLayout(){
         int size=getItemCount();
         if (size==0) {
@@ -432,7 +432,7 @@ public abstract class VirtualList
             g.setColor(getTitleBGndRGB());
             g.fillRect(0,0, width, height);
             g.setColor(getTitleRGB());
-            bottom.drawItem(g,0,false);
+            bottom.drawItem(g);
         }
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
@@ -610,7 +610,6 @@ public abstract class VirtualList
      * @param keyCode код нажатой кнопки
      */
     private void key(int keyCode) {
-       
                 if (keyCode==-4)  {
                     if (Version.getPlatformName().indexOf("SIE") > -1) {
                         destroyView();
@@ -628,28 +627,31 @@ public abstract class VirtualList
             case 0: break;
             case NOKIA_PEN: { destroyView(); break; }
             case MOTOE680_VOL_UP:
-            case KEY_NUM1:  { moveCursorHome();    break; }
-            case KEY_NUM7:  { moveCursorEnd();     break; }
-            case '5':{ eventOk(); break; }
             case MOTOROLA_FLIP: break;
             default:
                 try {
-                    switch (getGameAction(keyCode)){
-                        case UP:    { keyUp(); break; }
-                        case DOWN:  { keyDwn(); break; }
-                        case LEFT:  { keyLeft(); break; }
-                        case RIGHT: { keyRight(); break; }
-                        case FIRE:  { eventOk(); break; }
-                        default:
-                            if (keyCode==greenKeyCode) { keyGreen(); break; }
-			    if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-                            if (keyCode=='#') { System.gc(); break; }
+                        if (bottom!=null) {
                             userKeyPressed(keyCode);
-                    }
+                        } else {
+                            switch (getGameAction(keyCode)){
+                                case UP:    { keyUp(); break; }
+                                case DOWN:  { keyDwn(); break; }
+                                case LEFT:  { keyLeft(); break; }
+                                case RIGHT: { keyRight(); break; }
+                                case FIRE:  { eventOk(); break; }
+                                case KEY_NUM1:  { moveCursorHome();    break; }
+                                case KEY_NUM7:  { moveCursorEnd();     break; }
+                            default:
+                                if (keyCode==greenKeyCode) { keyGreen(); break; }
+                                if (keyCode==keyVolDown) { moveCursorEnd(); break; }
+                                if (keyCode=='#') { System.gc(); break; }
+                                if (keyCode=='5') {  eventOk(); break; }
+                                userKeyPressed(keyCode);
+                            }
+                       }
                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
         }
 
-        
         repaint();
     }
     

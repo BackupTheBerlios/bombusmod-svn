@@ -274,6 +274,7 @@ public class Config {
 	updateTime();
 	VirtualList.fullscreen=fullscreen;
 	VirtualList.memMonitor=memMonitor;
+        VirtualList.altInput=altInput;
     }
     
     public void loadSoundName(){

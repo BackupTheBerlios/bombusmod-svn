@@ -110,9 +110,6 @@ public class vCardForm
             }
         }
         
-        
-        photoIndex=f.append("[no photo available]");
-        
         f.append("\n\n[end of vCard]");
         
         f.addCommand(cmdCancel);
