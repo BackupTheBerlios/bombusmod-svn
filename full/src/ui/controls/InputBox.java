@@ -129,13 +129,13 @@ public class InputBox extends Canvas {
 
     protected void paint(Graphics g) {
         if (clrFlag) {
-            System.out.println("clear");
-            g.setColor(0xff0000);
+            //System.out.println("clear");
+            g.setColor(0xffffff);
             g.fillRect(0, 0,width, height);
             clrFlag=false;
         }
         if (showBalloon) {
-            System.out.println("paint showBalloon");
+            //System.out.println("paint showBalloon");
             g.setColor(0xa0a0a0); g.fillRect(1, 1, width-1, height-1);
             g.setColor(0xffffff); g.fillRect(2, 2, width-2, height-2);
             this.messageViewer.paint( 0, 0, g );
@@ -148,7 +148,7 @@ public class InputBox extends Canvas {
             g.setColor(0x000000);
             g.drawString(abc,width-abcWidth,0,Graphics.TOP | Graphics.LEFT);
         } else {
-            System.out.println("paint !showBalloon");
+            //System.out.println("paint !showBalloon");
             g.setColor(0xa0a0a0); g.fillRect(1, 1,width-1, height-1);
             g.setColor(0xffffff); g.fillRect(2, 2, width-2, height-2);
             this.messageViewer.paint( 0, 0, g );
@@ -166,26 +166,20 @@ public class InputBox extends Canvas {
         }
         public void run() {
             if (balloon==-1) {
-                System.out.println("run cancel");
-                redraw(false);
+                showBalloon=false;
+                clrFlag=true;
+                repaint();
                 cancel();
             }
             if (showBalloon=balloon>=0) balloon--;
         }
         public void destroyTask(){
             if (t!=null){
-                System.out.println("destroy t!=null");
+                //System.out.println("destroy t!=null");
                 this.cancel();
                 t.cancel();
                 t=null;
             }
         }
-    }
-    
-    private void redraw(boolean sb) {
-        showBalloon=sb;
-        clrFlag=true;
-        System.out.println("redraw !showBalloon");
-        repaint();
     }
 }
