@@ -113,7 +113,7 @@ public class InputBox extends Canvas {
 		this.messageViewer = this.bitMapFont.getViewer(text);
                 this.width=getWidth();
                 this.height=this.messageViewer.getHeight();
-		int availableWidth = width - 5;
+		int availableWidth = width - 6;
 		int padding = 2;
 		int orientation = Graphics.LEFT;
 		this.messageViewer.layout( availableWidth-abcWidth, availableWidth, padding, orientation );
@@ -187,11 +187,5 @@ public class InputBox extends Canvas {
         clrFlag=true;
         System.out.println("redraw !showBalloon");
         repaint();
-    }
-    
-    public void setTyper() {
-        typer.destroyTask();
-        typer=new TimerTaskRotate(5);
-        showBalloon=true;
     }
 }

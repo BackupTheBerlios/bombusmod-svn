@@ -280,7 +280,6 @@ public class ContactMessageList extends MessageList
         if (startMessage) {
                 InputBox bottom=new InputBox(text, key);
                 setInputBoxItem(bottom);
-                bottom.setTyper();
         } else {
             bottom=null;
         }
