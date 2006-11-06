@@ -208,6 +208,9 @@ public class TransferTask
             ex.printStackTrace();
             state=ERROR;
         }
+        file=null;
+        is=null;
+        os=null;
         showEvent=true;
     }
 
@@ -256,6 +259,7 @@ public class TransferTask
     public void run() {
         byte buf[]=new byte[2048];
         int seq=0;
+        try {
         while (true) {
             int sz=readFile(buf);
             if (sz==0) break;
@@ -285,6 +289,7 @@ public class TransferTask
             TransferDispatcher.getInstance().send(msg, false);
             TransferDispatcher.getInstance().repaintNotify();
         }
+        } catch (Exception e) { /*null pointer exception if terminated*/}
         closeFile();
         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, "close");
         JabberDataBlock close=iq.addChild("close", null);
@@ -302,4 +307,9 @@ public class TransferTask
         return ((state==COMPLETE) || (state==ERROR));
     }
 
+    void cancel() {
+        if (isStopped()) return;
+        state=ERROR;
+        closeFile();
+    }
 }

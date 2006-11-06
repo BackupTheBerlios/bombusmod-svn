@@ -328,7 +328,7 @@ public abstract class VirtualList
 
         drawHeapMonitor(g);
         if (bottom!=null) {
-            winHeight=height-list_top-bottom.getVHeight();
+            winHeight=height-list_top-bottom.height;
         } else {
             winHeight=height-list_top;
         }
@@ -427,7 +427,7 @@ public abstract class VirtualList
                 drawBalloon(g, baloon, text);
         }
         if (bottom!=null) {
-            setAbsOrg(g, 0, height-bottom.getVHeight());  
+            setAbsOrg(g, 0, height-bottom.height);  
             g.setClip(0,0, width, height);
             g.setColor(getTitleBGndRGB());
             g.fillRect(0,0, width, height);

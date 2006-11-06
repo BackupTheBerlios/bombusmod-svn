@@ -101,7 +101,7 @@ public class ContactMessageList extends MessageList
     }
     
     protected void beginPaint(){
-        getTitleItem().setElementAt(sd.roster.messageIcon,2);
+        getTitleItem().setElementAt(sd.roster.getEventIcon(), 2);
         //getTitleItem().setElementAt(contact.incomingComposing, 3);
     }
     
@@ -232,7 +232,7 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_STAR) {
                 if (Config.getInstance().altInput) {
                         startMessage=true;
-                        updateBottom();
+                        updateBottom(-1);
                 }
             }
             if (keyCode==keyClear) {
@@ -241,21 +241,27 @@ public class ContactMessageList extends MessageList
                 };
             }
         } else {
+           
             super.userKeyPressed(keyCode);
-            if (keyCode==KEY_NUM1) text=text+"\u00A0";
-            if (keyCode==KEY_NUM2) text=text+"\u0430";
-            if (keyCode==KEY_NUM3) text=text+"\u0434";
-            if (keyCode==KEY_NUM4) text=text+"\u0438";
-            if (keyCode==KEY_NUM5) text=text+"\u043C";
-            if (keyCode==KEY_NUM6) text=text+"\u043F";
-            if (keyCode==KEY_NUM7) text=text+"\u0442";
-            if (keyCode==KEY_NUM8) text=text+"\u0446";
-            if (keyCode==KEY_NUM9) text=text+"\u044a";
-            if (keyCode==KEY_NUM0) text=text+"\n";
+            if (keyCode==KEY_NUM1) updateBottom(1);
+            if (keyCode==KEY_NUM2) updateBottom(2);
+            if (keyCode==KEY_NUM3) updateBottom(3);
+            if (keyCode==KEY_NUM4) updateBottom(4);
+            if (keyCode==KEY_NUM5) updateBottom(5);
+            if (keyCode==KEY_NUM6) updateBottom(6);
+            if (keyCode==KEY_NUM7) updateBottom(7);
+            if (keyCode==KEY_NUM8) updateBottom(8);
+            if (keyCode==KEY_NUM9) updateBottom(9);
+            if (keyCode==KEY_NUM0) updateBottom(0);
             if (keyCode==KEY_STAR) {
                 startMessage=false;
                 try {
                     if (text!=null){
+                        if (contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+                            String from=StaticData.getInstance().account.toString();
+                            Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
+                            contact.addMessage(msg);
+                        }
                         Roster r=StaticData.getInstance().roster;
                         r.sendMessage(contact, text, null, 0);
                     }
@@ -264,22 +270,20 @@ public class ContactMessageList extends MessageList
                 }
                 redraw();
             }
-            updateBottom();
         }
     }
     
     public InputBox getBottomItem() {return (InputBox)bottom;}
     public void setInputBoxItem(InputBox bottom) { this.bottom=bottom; }
     
-    private void updateBottom(){
+    private void updateBottom(int key){
         if (startMessage) {
-            InputBox bottom=new InputBox(text);
-            setInputBoxItem(bottom);
+                InputBox bottom=new InputBox(text, key);
+                setInputBoxItem(bottom);
+                bottom.setTyper();
         } else {
             bottom=null;
-            text="";
         }
-        //redraw();
     }
     
     private void nextContact() {
@@ -315,4 +319,5 @@ public class ContactMessageList extends MessageList
     }
     
     protected int getActiveCount() { return activeContacts.size(); }
+
 }

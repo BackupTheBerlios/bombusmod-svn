@@ -89,27 +89,4 @@ public class AlertProfile extends VirtualList implements CommandListener {
     }
     
     public int getItemCount(){   return alertNames.length; }
-    
-
-    /** */
-    public static void playNotify(Display display, int event) {
-        Config cf=Config.getInstance();
-        String message=cf.messagesnd;
-	String type=cf.messageSndType;
-	int volume=cf.soundVol;
-        int profile=cf.profile;
-        if (profile==AUTO) profile=ALL;
-        
-        EventNotify notify=null;
-        
-        boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
-        
-        switch (profile) {
-            case ALL:   notify=new EventNotify(display, type, message,  volume, cf.vibraLen, blFlashEn); break;
-            case NONE:  notify=new EventNotify(display, null, null,  volume,    0,           false    ); break;
-            case VIBRA: notify=new EventNotify(display, null, null,  volume,    cf.vibraLen, blFlashEn); break;
-            case SOUND: notify=new EventNotify(display, type, message,  volume, 0,           blFlashEn); break;
-        }
-        if (notify!=null) notify.startNotify();
-    }
 }

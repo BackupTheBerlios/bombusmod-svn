@@ -47,7 +47,7 @@ public class TransferDispatcher implements JabberBlockListener{
             
             JabberDataBlock si=data.getChildBlock("si");
             if (si!=null) {
-                
+                // stream initiating
                 String sid=si.getAttribute("id");
                 
                 JabberDataBlock file=si.getChildBlock("file");
@@ -67,6 +67,7 @@ public class TransferDispatcher implements JabberBlockListener{
                     synchronized (taskList){ taskList.addElement(task); }
                     
                     eventNotify();
+                    StaticData.getInstance().roster.playNotify(0);
                     return BLOCK_PROCESSED;
                 }
                 if (type.equals("result")) {
@@ -103,6 +104,12 @@ public class TransferDispatcher implements JabberBlockListener{
                 TransferTask task=getTransferBySid(id);
                 if (task!=null) {
                     task.startTransfer();
+                }
+            }
+            if (data.getTypeAttribute().equals("error")) {
+                TransferTask task=getTransferBySid(id);
+                if (task!=null) {
+                    task.cancel();
                 }
             }
         }
@@ -154,8 +161,7 @@ public class TransferDispatcher implements JabberBlockListener{
             }
         }
         Integer icon=(event<0)? null:new Integer(event);
-        StaticData.getInstance().roster.getTitleItem().setElementAt(icon, 7);
-        repaintNotify();
+        StaticData.getInstance().roster.setEventIcon(icon);
     }
 
     void repaintNotify() {

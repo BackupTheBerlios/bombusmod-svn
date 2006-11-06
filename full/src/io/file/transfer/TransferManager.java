@@ -35,6 +35,7 @@ public class TransferManager extends VirtualList implements CommandListener{
         super(display);
         
         addCommand(cmdBack);
+        addCommand(cmdClrF);
         setCommandListener(this);
         setTitleItem(new Title(2, null, "Transfer tasks"));
         
@@ -57,8 +58,10 @@ public class TransferManager extends VirtualList implements CommandListener{
                 while (i<taskList.size()) {
                     TransferTask task=(TransferTask) taskList.elementAt(i);
                     if (task.isStopped()) taskList.removeElementAt(i);
+                    else i++;
                 }
             }
+            redraw();
         }
         if (c==cmdBack) {
             TransferDispatcher.getInstance().eventNotify();

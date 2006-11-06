@@ -11,6 +11,7 @@
 
 package Client;
 
+import Conference.BookmarkQurery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
@@ -40,7 +41,9 @@ import PrivacyLists.PrivacySelect;
 import Client.Config;
 
 import Info.Version;
-import io.file.transfer.TransferDispatcher;
+//#if FILE_TRANSFER
+//# import io.file.transfer.TransferDispatcher;
+//#endif
 //import Client.msg.*;
 
 /**
@@ -69,7 +72,8 @@ public class Roster
         
     int messageCount;
     
-    public Object messageIcon;
+    private Object messageIcon;
+    public Object transferIcon;
    
     boolean reconnect=false;
     boolean querysign=false;
@@ -313,6 +317,17 @@ public class Roster
         return paintVContacts.size();
     };
     
+    public void setEventIcon(Object icon){
+        transferIcon=icon;
+        getTitleItem().setElementAt(icon, 7);
+        redraw();
+    }
+    
+    public Object getEventIcon() {
+        if (transferIcon!=null) return transferIcon;
+        return messageIcon;
+    }
+  
     private void updateTitle(){
         int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus;
         int profile=cf.profile;//StaticData.getInstance().config.profile;
@@ -848,48 +863,18 @@ public class Roster
                 reEnumRoster();
             } catch (Exception e) { e.printStackTrace(); }
             querysign=reconnect=false;
-            //conference autojoin
-            if (cf.autoJoinConferences) {
-                String server="conference."+sd.account.getServer();
-                String room=cf.defGcRoom;
-                int roomE=room.indexOf('@');
-                if (roomE>0) {
-                    server=room.substring(roomE+1);
-                    room=room.substring(0, roomE);
-                }
-                String nick=sd.account.getNickName();
-
-                StringBuffer gchat=new StringBuffer(room.trim());
-                gchat.append('@');
-                gchat.append(server.trim());
-                gchat.append('/');
-                gchat.append(nick.trim());
-                ConferenceForm.join(gchat.toString(), "", cf.confMessageCount);                
-            }
             SplashScreen.getInstance().close(); // display.setCurrent(this);
-            theStream.addBlockListener(TransferDispatcher.getInstance());
+            
+            //loading bookmarks
+            //if (cf.autoJoinConferences)
+                theStream.addBlockListener(new BookmarkQurery(BookmarkQurery.LOAD));
+//#if (FILE_IO && FILE_TRANSFER)
+//#             theStream.addBlockListener(TransferDispatcher.getInstance());
+//#endif
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
-            //conference autojoin
-            if (cf.autoJoinConferences) {
-                String server="conference."+sd.account.getServer();
-                String room=cf.defGcRoom;
-                int roomE=room.indexOf('@');
-                if (roomE>0) {
-                    server=room.substring(roomE+1);
-                    room=room.substring(0, roomE);
-                }
-                String nick=sd.account.getNickName();
-
-                StringBuffer gchat=new StringBuffer(room.trim());
-                gchat.append('@');
-                gchat.append(server.trim());
-                gchat.append('/');
-                gchat.append(nick.trim());
-                ConferenceForm.join(gchat.toString(), "", cf.confMessageCount);                
-            }
         }
     }
     
@@ -1257,8 +1242,29 @@ public class Roster
         if (cf.autoFocus) focusToContact(c, false);
 
         if (message.messageType!=Msg.MESSAGE_TYPE_HISTORY) 
-            AlertProfile.playNotify(display, 0);
+            playNotify(0);
     }
+   
+    public void playNotify(int event) {
+        String message=cf.messagesnd;
+	String type=cf.messageSndType;
+	int volume=cf.soundVol;
+        int profile=cf.profile;
+        if (profile==AlertProfile.AUTO) profile=AlertProfile.ALL;
+        
+        EventNotify notify=null;
+        
+        boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
+        
+        switch (profile) {
+            case AlertProfile.ALL:   notify=new EventNotify(display, type, message,  volume, cf.vibraLen, blFlashEn); break;
+            case AlertProfile.NONE:  notify=new EventNotify(display, null, null,  volume,    0,           false    ); break;
+            case AlertProfile.VIBRA: notify=new EventNotify(display, null, null,  volume,    cf.vibraLen, blFlashEn); break;
+            case AlertProfile.SOUND: notify=new EventNotify(display, type, message,  volume, 0,           blFlashEn); break;
+        }
+        if (notify!=null) notify.startNotify();
+    }
+    
     
     Contact messageStore(Msg message){
         Contact c=getContact(message.from, true);
