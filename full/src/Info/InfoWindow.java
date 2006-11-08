@@ -34,12 +34,12 @@ public class InfoWindow implements CommandListener{
 
         form.append("Bombus v"+Version.version+"\nMobile Jabber client\n");
         form.append(Version.getOs());
-        form.append("\nCopyright (c) 2005-2006, Eugene Stahov (evgs),\n");
+        form.append("\nCopyright (c) 2005-2006, Eugene Stahov (evgs), ad(modification)\n");
+        
         
         StringBuffer memInfo=new StringBuffer("\n\nMemory:\n");
         memInfo.append("Free=");
-        //mem.append(Runtime.getRuntime().freeMemory()>>10);
-        //mem.append("\nFree=");
+
         System.gc();
         memInfo.append(Runtime.getRuntime().freeMemory()>>10);
         memInfo.append("\nTotal=");
@@ -55,6 +55,8 @@ public class InfoWindow implements CommandListener{
         }
         form.append(conn_stats);
 //#endif
+        form.setCommandListener(this);
+        display.setCurrent(form);
     }
 
     public void commandAction(Command c, Displayable d) {

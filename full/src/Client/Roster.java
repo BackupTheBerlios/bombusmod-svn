@@ -11,7 +11,7 @@
 
 package Client;
 
-import Conference.BookmarkQurery;
+import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
@@ -867,7 +867,7 @@ public class Roster
             
             //loading bookmarks
             //if (cf.autoJoinConferences)
-                theStream.addBlockListener(new BookmarkQurery(BookmarkQurery.LOAD));
+                theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#if (FILE_IO && FILE_TRANSFER)
 //#             theStream.addBlockListener(TransferDispatcher.getInstance());
 //#endif
@@ -875,6 +875,13 @@ public class Roster
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
+            
+            //loading bookmarks
+            //if (cf.autoJoinConferences)
+                theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#if (FILE_IO && FILE_TRANSFER)
+//#             theStream.addBlockListener(TransferDispatcher.getInstance());
+//#endif
         }
     }
     

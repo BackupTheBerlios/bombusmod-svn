@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/resources/version.properties</file>
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/Contact.java</file>
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/ContactMessageList.java</file>
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/io/file/FileIO.java</file>
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/io/file/FileJSR75.java</file>
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/io/file/FileSiemens.java</file>
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/io/file/transfer/TransferTask.java</file>
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/ui/VirtualList.java</file>
-        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/ui/controls/InputBox.java</file>
-    </open-files>
 </project-private>

@@ -1,5 +1,5 @@
 /*
- * BookmarkQurery.java
+ * BookmarkQuery.java
  *
  * Created on 6 Ноябрь 2006 г., 22:24
  *
@@ -20,13 +20,13 @@ import java.util.Vector;
  *
  * @author Evg_S
  */
-public class BookmarkQurery implements JabberBlockListener{
+public class BookmarkQuery implements JabberBlockListener{
 
     public final static boolean SAVE=true;
     public final static boolean LOAD=false;
     
     /** Creates a new instance of BookmarkQurery */
-    public BookmarkQurery(boolean saveBookmarks) {
+    public BookmarkQuery(boolean saveBookmarks) {
         
         JabberDataBlock request=new Iq(null, (saveBookmarks)?Iq.TYPE_SET: Iq.TYPE_GET, "getbookmarks");
         JabberDataBlock query=request.addChild("query", null);
