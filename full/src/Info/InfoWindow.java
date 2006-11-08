@@ -31,19 +31,10 @@ public class InfoWindow implements CommandListener{
         
         form=new Form(SR.MS_ABOUT);
         form.addCommand(new Command(SR.MS_CLOSE, Command.BACK, 99));
-        try {
-            Image icon=Bombus.programIcon;
-            if (icon==null) icon=Image.createImage("/_icon.png");
-            form.append(icon);
-        } catch (Exception e) { }
+
         form.append("Bombus v"+Version.version+"\nMobile Jabber client\n");
         form.append(Version.getOs());
         form.append("\nCopyright (c) 2005-2006, Eugene Stahov (evgs),\n");
-        form.append (new StringItem(null, Version.url
-//#if !(MIDP1)
-                , Item.HYPERLINK
-//#endif
-                ));
         
         StringBuffer memInfo=new StringBuffer("\n\nMemory:\n");
         memInfo.append("Free=");
@@ -64,32 +55,6 @@ public class InfoWindow implements CommandListener{
         }
         form.append(conn_stats);
 //#endif
-     
-        try {
-           int accu=getAccuLevel();
-           int net=getNetworkLevel();
-
-           if (accu>=0) {
-               form.append("\nAccum level: "+accu+"%");
-           }
-           if (net>=0) {
-               form.append("\nNetwork level: "+net+"db");
-           }
-        } catch (Exception e) {}
-
-        form.setCommandListener(this);
-        display.setCurrent(form);
-    }
-    
-    public static int getAccuLevel() {
-        String cap=System.getProperty("MPJC_CAP");
-        return (cap==null)? -1: Integer.parseInt(cap);
-    }
-    
-    public static int getNetworkLevel() {
-        String rx=System.getProperty("MPJCRXLS");
-        int rp=rx.indexOf(',');
-        return (rp<0)? -1: Integer.parseInt(rx.substring(0,rp));
     }
 
     public void commandAction(Command c, Displayable d) {

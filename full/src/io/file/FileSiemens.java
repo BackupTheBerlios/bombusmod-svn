@@ -70,7 +70,8 @@ public class FileSiemens extends FileIO{
     }
 
     public OutputStream openOutputStream() throws IOException {
-        return null;
+        openFile();
+        return new FileSiemensOutputStream(f, fd);
     }
 
     public InputStream openInputStream() throws IOException {
@@ -87,6 +88,24 @@ public class FileSiemens extends FileIO{
              F.close(fd);
          } catch (Exception e) {}
     }
+}
+
+class FileSiemensOutputStream extends OutputStream {
+    private int fileDescriptor;
+    private File f;
+
+    public FileSiemensOutputStream(File f, int fd) {
+        this.f=f; this.fileDescriptor=fd;
+    }
+    
+    public void write(int i) throws IOException {
+        byte buf[]=new byte[1];
+        f.write(fileDescriptor, buf, 0, 1);
+    }
+    
+    public void write(byte[] b, int off, int len) throws IOException {  f.write(fileDescriptor, b, off, len); }
+
+    public void write(byte[] b) throws IOException {  f.write(fileDescriptor, b, 0, b.length);  }
 }
 
 class FileSiemensInputStream extends InputStream {

@@ -9,24 +9,26 @@
 
 package ui.controls;
 
+import javax.microedition.lcdui.Canvas;
+import javax.microedition.lcdui.Graphics;
+/*
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.microedition.lcdui.Canvas;
+
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
 import ui.Colors;
 import ui.FontCache;
 import ui.VirtualList;
 
 import ui.polish.*;
-
+*/
 /**
  *
  * @author [AD]
  */
 public class InputBox extends Canvas {
-    
+    /*
     private BitMapFont bitMapFont;
     private BitMapFontViewer messageViewer;
 
@@ -48,10 +50,10 @@ public class InputBox extends Canvas {
     public int height;
 
     private boolean clrFlag = true;
-    private boolean showBalloon=false;
+    private boolean showBalloon=false;*/
 
     public InputBox(String text, int key) {
-        this.text=text;
+/*        this.text=text;
         this.key=key;
         
         switch (key) {
@@ -120,15 +122,15 @@ public class InputBox extends Canvas {
                
                 if (abc.length()>0) showBalloon=true;
                 
-                typer=new TimerTaskRotate(0);
+                typer=new TimerTaskRotate(0);*/
     }
-
+/*
     public void drawItem(Graphics g) {
         paint(g);
     }
-
+*/
     protected void paint(Graphics g) {
-        if (clrFlag) {
+/*        if (clrFlag) {
             //System.out.println("clear");
             g.setColor(0xffffff);
             g.fillRect(0, 0,width, height);
@@ -153,8 +155,8 @@ public class InputBox extends Canvas {
             g.setColor(0xffffff); g.fillRect(2, 2, width-2, height-2);
             this.messageViewer.paint( 0, 0, g );
         }
-    }
-
+*/    }
+/*
     private class TimerTaskRotate extends TimerTask{
         private Timer t;
         private int balloon;
@@ -181,5 +183,5 @@ public class InputBox extends Canvas {
                 t=null;
             }
         }
-    }
+    }*/
 }

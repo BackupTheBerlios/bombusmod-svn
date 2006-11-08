@@ -168,10 +168,17 @@ public abstract class VirtualList
     
     protected VirtualElement title;
     
-    protected InputBox bottom;
+    //protected InputBox bottom;
     
     private boolean wrapping = true;
+    
+    public static int fullMode; 
+    public static boolean paintTop=true;
+    public static boolean paintBottom=true;
 
+    public static int startGPRS=-1;
+    public static int offGPRS=0;
+    
     /** видимые границы элементов списка - зоны срабатывания touchscreen */
     private int itemBorder[];
     /** обработка doubleclick */
@@ -192,10 +199,10 @@ public abstract class VirtualList
      */
     public ComplexString getTitleItem() {return (ComplexString)title;}
     public void setTitleItem(ComplexString title) { this.title=title; }
-    
+/*    
     public InputBox getBottomItem() {return (InputBox)bottom;}
     public void setInputBoxItem(InputBox bottom) { this.bottom=bottom; }
-    
+*/    
     /**
      * возвращает ссылку на объект в фокусе. 
      * в классе VirtualList возвращает VirtualElement, на который указывает курсор,
@@ -309,32 +316,40 @@ public abstract class VirtualList
         width=getWidth();	// patch for SE
         height=getHeight();
 	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
-        // заголовок окна
         
+        fullMode=Config.getInstance().isbottom;
+        switch (fullMode) {
+            case 0: paintTop=false; paintBottom=false; break;
+            case 1: paintTop=true; paintBottom=false; break;
+            case 2: paintTop=false; paintBottom=true; break;
+            case 3: paintTop=true; paintBottom=true; break;
+        }
+        
+        // заголовок окна
         beginPaint();
         
         int list_top=0; // верхняя граница списка
         updateLayout(); //fixme: только при изменении списка
-        
-        if (title!=null) {
-            list_top=title.getVHeight();
-            g.setClip(0,0, width, list_top);
-            g.setColor(getTitleBGndRGB());
-            g.fillRect(0,0, width, list_top);
+                
+        if (paintTop) {
+            if (title!=null) {
+                list_top=title.getVHeight();
+                g.setClip(0,0, width, list_top);
 
-            g.setColor(getTitleRGB());
-            title.drawItem(g,0,false);
+                g.setColor(getTitleBGndRGB());
+                g.fillRect(0, 0, width, list_top);
+                
+                if (getTitleRGB()!=0x010101) {
+                        g.setColor(getTitleRGB());
+                        title.drawItem(g,0,false);
+                }
+            }
         }
 
         drawHeapMonitor(g);
-        if (bottom!=null) {
-            winHeight=height-list_top-bottom.height;
-        } else {
-            winHeight=height-list_top;
-        }
+        if (paintBottom) { winHeight=height-list_top-20; } else { winHeight=height-list_top; } //убрать жесткое задание высоты
 
-
-        itemBorder[0]=list_top;
+        if (paintTop) { itemBorder[0]=list_top-20; } else { itemBorder[0]=list_top; } //убрать жесткое задание высоты
         
         int count=getItemCount(); // размер списка
         
@@ -426,6 +441,45 @@ public abstract class VirtualList
             if (text!=null)
                 drawBalloon(g, baloon, text);
         }
+        if (paintBottom) {
+            setAbsOrg(g, 0, height-20);
+            
+            g.setColor(getTitleBGndRGB());
+            g.fillRect(0, 0, width, height);
+
+            int h=NetAccuFont.fontHeight;
+
+            String time=Time.timeString(Time.localTime());
+            if (memMonitor) {
+                int freemem=(int)Runtime.getRuntime().freeMemory();
+                NetAccuFont.drawString(g, time+" $"+freemem, 11,  h+1);
+            } else {
+                NetAccuFont.drawString(g, time, 11,  h+1);
+            }
+            
+            String traff = null;
+            int ngprs=-1;
+            int gprscount=0;
+            try {
+                try {
+                    ngprs=NetworkAccu.getGPRS();
+                } catch (Exception e) { }
+                if (ngprs>-1) {
+                    gprscount=ngprs;
+                } else {
+                    int in=StaticData.getInstance().roster.theStream.getBytesIn();
+                    int out=StaticData.getInstance().roster.theStream.getBytesOut();
+                    gprscount=in+out;
+                }
+                traff="&("+gprscount/1000+"<=)";
+            } catch (Exception e) {
+                traff="&(0)";
+            }
+            //Network.draw(g);
+            NetworkAccu.draw(g, width);
+            NetAccuFont.drawString(g, traff, 11, 1);
+        }
+        /*
         if (bottom!=null) {
             setAbsOrg(g, 0, height-bottom.height);  
             g.setClip(0,0, width, height);
@@ -433,7 +487,7 @@ public abstract class VirtualList
             g.fillRect(0,0, width, height);
             g.setColor(getTitleRGB());
             bottom.drawItem(g);
-        }
+        }*/
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
     }
@@ -628,27 +682,57 @@ public abstract class VirtualList
             case NOKIA_PEN: { destroyView(); break; }
             case MOTOE680_VOL_UP:
             case MOTOROLA_FLIP: break;
+            case KEY_NUM1:  { moveCursorHome();    break; }
+            case KEY_NUM7:  { moveCursorEnd();     break; }
+            
+                case KEY_POUND: {
+                    if (Config.getInstance().poundKey) {
+                        if (Version.getPlatformName().indexOf("SIE") > -1) {
+                            System.gc();
+                        } else {
+                            fullMode=Config.getInstance().isbottom;
+                            switch (fullMode) {
+                                case 0: Config.getInstance().isbottom=1; break;
+                                case 1: Config.getInstance().isbottom=2; break;
+                                case 2: Config.getInstance().isbottom=3; break;
+                                case 3: Config.getInstance().isbottom=0; break;
+                            }
+                            Config.getInstance().saveToStorage();
+                        }
+                    }
+                    break;
+                }
+                case KEY_STAR: {
+                    if (Config.getInstance().starKey) {
+                        if (Version.getPlatformName().indexOf("SIE") > -1) {
+                            fullMode=Config.getInstance().isbottom;
+                            switch (fullMode) {
+                                case 0: Config.getInstance().isbottom=1; break;
+                                case 1: Config.getInstance().isbottom=2; break;
+                                case 2: Config.getInstance().isbottom=3; break;
+                                case 3: Config.getInstance().isbottom=0; break;
+                            }
+                            Config.getInstance().saveToStorage();
+                        } else {
+                            System.gc();
+                        }
+                    }
+                    break;
+                }
             default:
                 try {
-                        if (bottom!=null) {
-                            userKeyPressed(keyCode);
-                        } else {
                             switch (getGameAction(keyCode)){
                                 case UP:    { keyUp(); break; }
                                 case DOWN:  { keyDwn(); break; }
                                 case LEFT:  { keyLeft(); break; }
                                 case RIGHT: { keyRight(); break; }
                                 case FIRE:  { eventOk(); break; }
-                                case KEY_NUM1:  { moveCursorHome();    break; }
-                                case KEY_NUM7:  { moveCursorEnd();     break; }
                             default:
                                 if (keyCode==greenKeyCode) { keyGreen(); break; }
                                 if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-                                if (keyCode=='#') { System.gc(); break; }
                                 if (keyCode=='5') {  eventOk(); break; }
                                 userKeyPressed(keyCode);
                             }
-                       }
                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
         }
 

@@ -138,7 +138,7 @@ public class ConfigForm implements
         message.append(SR.MS_SMILES, null);
         message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
-        message.append("altInput", null);
+        //message.append("altInput", null);
 //#if (!MIDP1)
         message.append(SR.MS_CAPS_STATE, null);
 //#endif
@@ -147,10 +147,8 @@ public class ConfigForm implements
             cf.smiles,
             cf.storeConfPresence,
             cf.eventComposing,
-            cf.altInput
-//#if (!MIDP1)
-            ,cf.capsState
-//#endif
+            cf.capsState
+            //,cf.altInput
         };
         this.mv=mv;
         
@@ -331,12 +329,9 @@ public class ConfigForm implements
             cf.smiles=mv[0];
             cf.storeConfPresence=mv[1];
             cf.eventComposing=mv[2];
-            cf.altInput=mv[3];
-//#if (!MIDP1)
-            cf.capsState=mv[4];
-//#endif
+            cf.capsState=mv[3];
+//            cf.altInput=mv[4];
 
-	    
 	    cf.autoLogin=su[0];
 	    cf.autoJoinConferences=su[1];
             

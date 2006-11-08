@@ -76,6 +76,10 @@ public class Bombus extends MIDlet implements Runnable{
         SplashScreen s= SplashScreen.getInstance();
         s.setProgress(5);
         
+        try {
+            NetworkAccu.getGPRS();
+        } catch (Exception e) { }
+        
         
         try {
             s.img=Image.createImage("/images/splash.png");
@@ -92,6 +96,13 @@ public class Bombus extends MIDlet implements Runnable{
 
         s.setProgress(10);
 	Config cf=Config.getInstance();
+        
+        try {
+            PNGCache.init();
+            s.setProgress(12);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         s.setProgress(14);
         try {

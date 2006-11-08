@@ -14,7 +14,7 @@ import archive.MessageArchive;
 import images.RosterIcons;
 import images.SmilesIcons;
 import locale.SR;
-import ui.controls.InputBox;
+//import ui.controls.InputBox;
 import vcard.VCard;
 import ui.*;
 import java.util.*;
@@ -45,13 +45,13 @@ public class ContactMessageList extends MessageList
     Vector activeContacts;
 
     StaticData sd;
-    
+/*    
     boolean newmessage=false;
 
     private boolean startMessage;
 
     private String text="";
-    
+*/    
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
         super(display);
@@ -73,16 +73,11 @@ public class ContactMessageList extends MessageList
         addCommand(cmdPurge);
         addCommand(cmdContact);
 	addCommand(cmdActive);
-        //if (getItemCount()>0) {
-            addCommand(cmdQuote);
-            addCommand(cmdArch);
-	//}
+        addCommand(cmdQuote);
+        addCommand(cmdArch);
         addCommand(cmdCopy);
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
-        //setRotator();
-        //InputBox bottom=new InputBox(contact.getJid());
-        //setInputBoxItem(bottom);
     }
     
     public void showNotify(){
@@ -102,22 +97,16 @@ public class ContactMessageList extends MessageList
     
     protected void beginPaint(){
         getTitleItem().setElementAt(sd.roster.getEventIcon(), 2);
-        //getTitleItem().setElementAt(contact.incomingComposing, 3);
     }
     
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;
-	//Msg msg=getMessage(msgIndex);
-        //if (msg.unread) contact.resetNewMsgCnt();
-        //msg.unread=false;
         if (msgIndex<contact.lastUnread) return;
-        //if (contact.needsCount())
             sd.roster.countNewMsgs();
     }
     
     
     public int getItemCount(){ return contact.msgs.size(); }
-    //public Element getItemRef(int Index){ return (Element) contact.msgs.elementAt(Index); }
 
     public Msg getMessage(int index) { 
 	Msg msg=(Msg) contact.msgs.elementAt(index); 
@@ -128,21 +117,10 @@ public class ContactMessageList extends MessageList
     
     public void focusedItem(int index){ 
         markRead(index); 
-        /*try {
-            Msg msg=(Msg) contact.msgs.elementAt(index); 
-            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) addCommand(cmdSubscribe);
-            else removeCommand(cmdSubscribe);
-        } catch (Exception e) {}*/
     }
         
     public void commandAction(Command c, Displayable d){
         super.commandAction(c,d);
-        /*if (c==cmdBack) {
-            //contact.lastReaded=contact.msgs.size();
-            //contact.resetNewMsgCnt();            
-            destroyView();
-            return;
-        }*/
         if (c==cmdMessage) { 
             contact.msgSuspended=null; 
             keyGreen(); 
@@ -226,21 +204,21 @@ public class ContactMessageList extends MessageList
     }       
 
     public void userKeyPressed(int keyCode) {
-        if (!startMessage) {
+//        if (!startMessage) {
             super.userKeyPressed(keyCode);
             if (keyCode==KEY_NUM9) nextContact();
-            if (keyCode==KEY_STAR) {
+            /*if (keyCode==KEY_STAR) {
                 if (Config.getInstance().altInput) {
                         startMessage=true;
                         updateBottom(-1);
                 }
-            }
+            }*/
             if (keyCode==keyClear) {
                 new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
                     public void yes() { clearMessageList(); }
                 };
             }
-        } else {
+/*        } else {
            
             super.userKeyPressed(keyCode);
             if (keyCode==KEY_NUM1) updateBottom(1);
@@ -270,9 +248,9 @@ public class ContactMessageList extends MessageList
                 }
                 redraw();
             }
-        }
+        }*/
     }
-    
+/*    
     public InputBox getBottomItem() {return (InputBox)bottom;}
     public void setInputBoxItem(InputBox bottom) { this.bottom=bottom; }
     
@@ -284,7 +262,7 @@ public class ContactMessageList extends MessageList
             bottom=null;
         }
     }
-    
+*/    
     private void nextContact() {
 	activeContacts=new Vector();
         int nowContact = -1, contacts=-1;

@@ -320,6 +320,13 @@ public class JabberStream implements XMLEventListener, Runnable {
     }
 //#endif
     
+    public int getBytesIn() {
+        return iostream.getBytesR();
+    }
+    public int getBytesOut() {
+        return iostream.getBytesS();
+    }
+    
     private class TimerTaskKeepAlive extends TimerTask{
         private Timer t;
         public TimerTaskKeepAlive(int periodSeconds){

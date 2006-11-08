@@ -268,4 +268,11 @@ public class Utf8IOStream implements Runnable{
         return stats.toString();
     }
 //#endif
+    public int getBytesR() {
+        return this.bytesRecv;
+    }
+    
+    public int getBytesS() {
+        return this.bytesRecv;
+    }
 }

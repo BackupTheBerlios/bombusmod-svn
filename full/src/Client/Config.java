@@ -135,6 +135,11 @@ public class Config {
 
     boolean altInput=false;
 
+    public int isbottom;
+
+    public boolean poundKey=getBooleanProperty("poundKey",true);
+    public boolean starKey=getBooleanProperty("starKey",true);
+
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -264,6 +269,8 @@ public class Config {
             
             altInput=inputStream.readBoolean();
             
+            isbottom=inputStream.readInt();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -349,6 +356,8 @@ public class Config {
             outputStream.writeUTF(defGcRoom);
             
             outputStream.writeBoolean(altInput);
+            
+            outputStream.writeInt(isbottom);
             
 	} catch (IOException e) { e.printStackTrace(); }
 	
