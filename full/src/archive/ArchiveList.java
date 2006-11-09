@@ -21,11 +21,11 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import locale.SR;
 import ui.ComplexString;
-
+//#if FILE_IO
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-
+//#endif
 import ui.Time;
 import util.strconv;
 
@@ -58,8 +58,9 @@ public class ArchiveList
 	setCommandListener(this);
 	addCommand(cmdBack);
 	addCommand(cmdDelete);
-	
+//#if (FILE_IO)	
         addCommand(cmdExport);
+//#endif
 	if (target!=null) {
 	    addCommand(cmdPaste);
 	    addCommand(cmdJid);
@@ -104,7 +105,9 @@ public class ArchiveList
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
 	if (c==cmdJid) { pasteData(2); }
+//#if FILE_IO
         if (c==cmdExport) { new Browser(display, this, true); }
+//#endif
     }
     
     private void pasteData(int field) {
@@ -144,7 +147,7 @@ public class ArchiveList
 	} catch (Exception e) { }
 	removeCommand(cmdSubj);
     }
-    
+//#if FILE_IO    
     public void exportData(String arhPath) {
             Config cf=Config.getInstance();
             
@@ -183,7 +186,7 @@ public class ArchiveList
     public void BrowserFilePathNotify(String pathSelected) {
         exportData(pathSelected);
     }
-
+//#endif
     private String getDate() {
         long dateGmt=Time.localTime();
         return Time.dayString(dateGmt); 

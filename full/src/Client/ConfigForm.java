@@ -8,8 +8,10 @@
  */
 
 package Client;
+//#if FILE_IO
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
+//#endif
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;

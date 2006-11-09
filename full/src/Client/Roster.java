@@ -952,8 +952,10 @@ public class Roster
                         //sendPresence(Presence.PRESENCE_INVISIBLE);
                         
                         SplashScreen.getInstance().close(); // display.setCurrent(this);
-                        
-                        theStream.addBlockListener(TransferDispatcher.getInstance());
+                theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#if (FILE_IO && FILE_TRANSFER)
+//#             theStream.addBlockListener(TransferDispatcher.getInstance());
+//#endif	                      
                     } 
                     
                 } else if (type.equals("get")){

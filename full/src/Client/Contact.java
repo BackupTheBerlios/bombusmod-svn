@@ -9,7 +9,9 @@
 
 package Client;
 import images.RosterIcons;
+//#if FILE_IO
 import io.file.FileIO;
+//#endif
 import ui.Colors;
 import util.strconv;
 import vcard.VCard;
