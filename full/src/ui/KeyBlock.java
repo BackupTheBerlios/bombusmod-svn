@@ -10,7 +10,10 @@
 package ui;
 
 import Client.Config;
+import Client.ExtendedStatus;
 import Client.Roster;
+import Client.StaticData;
+import Client.StatusList;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
