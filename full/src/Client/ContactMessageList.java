@@ -134,6 +134,7 @@ public class ContactMessageList extends MessageList
         if (c==cmdArch) {
             try {
                 MessageArchive.store(getMessage(cursor));
+                //ExtendedStatusList.store("test");
             } catch (Exception e) {/*no messages*/}
         }
         if (c==cmdPurge) {

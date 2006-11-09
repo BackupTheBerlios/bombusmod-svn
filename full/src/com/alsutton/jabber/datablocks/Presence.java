@@ -29,6 +29,7 @@ import com.alsutton.jabber.*;
 import images.RosterIcons;
 
 import java.util.*;
+import locale.SR;
 
 /**
  * Class representing the presence message block.

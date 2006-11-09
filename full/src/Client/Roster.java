@@ -170,7 +170,6 @@ public class Roster
         groups=new Groups();
         
         vContacts=new Vector(); // just for displaying
-        
         addCommand(cmdStatus);
         addCommand(cmdActions);
         addCommand(cmdActiveContact);
@@ -1460,6 +1459,7 @@ public class Roster
         if (c==cmdAccount){ new AccountSelect(display, false); }
         if (c==cmdStatus) { new StatusSelect(display); }
         if (c==cmdAlert) { new AlertProfile(display); }
+        
         if (c==cmdArchive) { new ArchiveList(display, null); }
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         

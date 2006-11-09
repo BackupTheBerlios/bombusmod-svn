@@ -99,6 +99,7 @@ public class MessageArchive {
 	} catch (Exception e) { e.printStackTrace(); }
 	rs=null;
     }
+    
     public static void store(Msg msg) {
 	try {
 	    ByteArrayOutputStream bout = new ByteArrayOutputStream();

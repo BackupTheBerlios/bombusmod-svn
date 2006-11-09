@@ -44,15 +44,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         //addCommand(cmdAll);
         addCommand(cmdCancel);
         setCommandListener(this);
-        
-        /*
-        int status=StaticData.getInstance().roster.myStatus;
-        int i;
-        for (i=0;i<statusList.size(); i++) {
-            if (status==((ExtendedStatus)getItemRef(i)).getImageIndex()) break;
-        }
-        moveCursorTo(i);
-        */
+
         
         defp=cf.loginstatus;
         moveCursorTo(defp, true);
@@ -107,12 +99,16 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         private NumberField tfPriority;
         private TextField tfMessage;
         
-        private ChoiceGroup chPriorityAll;
-        
         private ExtendedStatus status;
         
         private Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
         private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
+
+        private ChoiceGroup selStatus;
+        
+        ExtendedStatusList statuslist=new ExtendedStatusList();
+
+        private ChoiceGroup addNewStatusText;
         
         public StatusForm(Display display, ExtendedStatus status){
             this.display=display;
@@ -123,13 +119,24 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             
             tfPriority=new NumberField(SR.MS_PRIORITY, status.getPriority(), -128, 128);
             f.append(tfPriority);
-
-            chPriorityAll=new ChoiceGroup(null, ChoiceGroup.MULTIPLE);
-            chPriorityAll.append(SR.MS_ALL_STATUSES, null);
-            f.append(chPriorityAll);
             
             tfMessage=new TextField(SR.MS_MESSAGE, status.getMessage(), 100, 0);
             f.append(tfMessage);
+            
+            
+            selStatus=new ChoiceGroup("Choose status", ConstMIDP.CHOICE_POPUP);
+            selStatus.append(status.getMessage(), null );
+            for (int i=0;i<statuslist.size();i++) {
+                selStatus.append((String)statuslist.msg(i), null );
+            }
+            selStatus.setSelectedIndex(0, true);
+            f.append(selStatus);
+            
+            addNewStatusText=new ChoiceGroup(null, ChoiceGroup.MULTIPLE);
+            addNewStatusText.append(SR.MS_ALL_STATUSES, null);
+            addNewStatusText.append("Add Status", null);
+            addNewStatusText.append("Remove Status", null);
+            f.append(addNewStatusText);
             
             f.addCommand(cmdOk);
             f.addCommand(cmdCancel);
@@ -140,19 +147,33 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         
         public void commandAction(Command c, Displayable d){
             if (c==cmdOk) {
-                status.setMessage(tfMessage.getString());
+                boolean flags[]=new boolean[3];
                 
+                if (selStatus.getSelectedIndex()>0) {
+                    if (flags[2]) {
+                        status.setMessage(tfMessage.getString());
+                    } else {
+                        status.setMessage(selStatus.getString(selStatus.getSelectedIndex()));   
+                    }
+                } else {
+                    status.setMessage(tfMessage.getString());                    
+                }
+               
 		int priority=tfPriority.getValue();
                 status.setPriority(priority);
                 
-                boolean flags[]=new boolean[1];
-                chPriorityAll.getSelectedFlags(flags);
+                addNewStatusText.getSelectedFlags(flags);
                 if (flags[0]) {
                     for (Enumeration e=StatusList.getInstance().statusList.elements(); e.hasMoreElements();) {
                         ((ExtendedStatus)e.nextElement()).setPriority(priority);
                     }
                 }
-                
+                if (flags[1]) {
+                    statuslist.store(tfMessage.getString());
+                }
+                if (flags[2]) {
+                    statuslist.delete(selStatus.getSelectedIndex()-1);
+                }
                 save();
                 destroyView();
             }
