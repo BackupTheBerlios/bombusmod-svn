@@ -26,6 +26,7 @@ public class Colors {
     public static int LIST_BGND           =0xFFFFFF;
     public static int LIST_BGND_EVEN      =0xffeeff;
     public static int LIST_INK            =0x000000;
+    
     public static int MSG_SUBJ            =0xa00000;
     public static int MSG_HIGHLIGHT       =0x904090;
     
@@ -45,11 +46,11 @@ public class Colors {
     public static int BLK_INK             =0xffffff;
     public static int BLK_BGND            =0x000000;
 
-    public static int MESSAGE_IN      =0x0000b0;
-    public static int MESSAGE_OUT     =0xb00000;
-    public static int MESSAGE_PRESENCE=0x006000;
-    public static int MESSAGE_AUTH    =0x400040;
-    public static int MESSAGE_HISTORY =0x535353;
+    public static int MESSAGE_IN        =0x0000b0;
+    public static int MESSAGE_OUT       =0xb00000;
+    public static int MESSAGE_PRESENCE  =0x006000;
+    public static int MESSAGE_AUTH      =0x400040;
+    public static int MESSAGE_HISTORY   =0x535353;
 
     public static int PGS_REMAINED        =0xffffff;
     public static int PGS_COMPLETE        =0x0000ff;

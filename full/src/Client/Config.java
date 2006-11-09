@@ -271,6 +271,8 @@ public class Config {
             
             isbottom=inputStream.readInt();
             
+            confMessageCount=inputStream.readInt();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -358,6 +360,8 @@ public class Config {
             outputStream.writeBoolean(altInput);
             
             outputStream.writeInt(isbottom);
+            
+            outputStream.writeInt(confMessageCount);
             
 	} catch (IOException e) { e.printStackTrace(); }
 	

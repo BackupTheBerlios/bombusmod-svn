@@ -261,6 +261,16 @@ public class SR {
     public final static String MS_TEXTWRAP_WORD="by words";
 
     public final static String MS_INFO="Info";
+    
+    public  static String MS_ONLINE=loadString("online");
+    
+    public  static String MS_ERROR=loadString("error");
+    public  static String MS_CHAT=loadString("chat");
+    public  static String MS_AWAY=loadString("away");
+    public  static String MS_XA=loadString("xa");
+    public  static String MS_DND=loadString("dnd");
+    public  static String MS_INVISIBLE=loadString("invisible");
+    public  static String MS_OFFLINE=loadString("offline");
 
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

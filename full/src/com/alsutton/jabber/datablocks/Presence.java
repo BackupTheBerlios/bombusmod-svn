@@ -100,7 +100,13 @@ public class Presence extends JabberDataBlock
           }
       } else {
           // online-kinds
-          show=getShow(); text.append(show);
+          show=getShow();
+          if (show.equals(PRS_ONLINE)) text.append(SR.MS_ONLINE);
+          if (show.equals(PRS_CHAT)) text.append(SR.MS_CHAT);
+          if (show.equals(PRS_AWAY)) text.append(SR.MS_AWAY);
+          if (show.equals(PRS_XA)) text.append(SR.MS_XA);
+          if (show.equals(PRS_DND)) text.append(SR.MS_DND);
+
           presenceCode=PRESENCE_ONLINE;
           if (show.equals(PRS_CHAT)) presenceCode=PRESENCE_CHAT;
           if (show.equals(PRS_AWAY)) presenceCode=PRESENCE_AWAY;

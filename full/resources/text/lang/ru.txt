@@ -235,3 +235,11 @@ room presences	статусы в конференции
 
 Participants	Участники
 Abc	Абв
+
+error	ошибка
+chat	хочу поговорить
+away	отсутствую
+xa	давно отсутствую
+dnd	занят
+invisible	невидимка
+offline	не в сети

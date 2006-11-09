@@ -41,8 +41,8 @@ public class MessageView
 
     private MessageList msglist;
 
-    public int getTitleBGndRGB() {return 0x338888;} 
-    public int getTitleRGB() {return titlecolor;} 
+    public int getTitleBGndRGB() {return Colors.BAR_BGND;} 
+    public int getTitleRGB() {return Colors.BALLOON_INK;} 
     
     int repaintCounter=5;
     

@@ -875,7 +875,6 @@ public class Roster
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
-            
             //loading bookmarks
             //if (cf.autoJoinConferences)
                 theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
