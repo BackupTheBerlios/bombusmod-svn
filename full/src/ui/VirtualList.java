@@ -698,6 +698,7 @@ public abstract class VirtualList
                                 case 3: Config.getInstance().isbottom=0; break;
                             }
                             Config.getInstance().saveToStorage();
+                            System.gc();
                         }
                     }
                     break;
@@ -713,6 +714,7 @@ public abstract class VirtualList
                                 case 3: Config.getInstance().isbottom=0; break;
                             }
                             Config.getInstance().saveToStorage();
+                            System.gc();
                         } else {
                             System.gc();
                         }

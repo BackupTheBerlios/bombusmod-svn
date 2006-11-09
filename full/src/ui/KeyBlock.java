@@ -10,6 +10,7 @@
 package ui;
 
 import Client.Config;
+import Client.Roster;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
@@ -52,6 +53,19 @@ public class KeyBlock extends Canvas implements Runnable{
         this.motorola_backlight=motorola_backlight;
         
         parentView=display.getCurrent();
+        
+            if (!Roster.isAway) {
+                String away="Auto Status on KeyLock since "+Time.timeString(Time.localTime());
+                StaticData sd=StaticData.getInstance();
+                Roster.oldStatus=sd.roster.myStatus;
+                    try {
+                        if (Roster.oldStatus==0 || Roster.oldStatus==1) {
+                            Roster.isAway=true;
+                            sd.roster.sendPresence(3, away);
+                        }
+                    } catch (Exception e) { e.printStackTrace(); }
+            }
+        
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
         
@@ -138,6 +152,14 @@ public class KeyBlock extends Canvas implements Runnable{
         if (display!=null)   display.setCurrent(parentView);
         img=null;
         tc.stop();
+            if (Roster.isAway) {
+                StaticData sd=StaticData.getInstance();
+                int newStatus=sd.roster.oldStatus;
+                ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
+                String ms=es.getMessage();
+                Roster.isAway=false;
+                sd.roster.sendPresence(newStatus, ms);
+            }
 //#if USE_SIEMENS_API
 //--	com.siemens.mp.game.Light.setLightOn();
 //#endif

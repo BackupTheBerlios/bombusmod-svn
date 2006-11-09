@@ -1699,10 +1699,8 @@ public class Roster
                     vContacts=tContacts;
                     
                     //setRosterTitle("("+groups.getRosterOnline()+"/"+groups.getRosterContacts()+")");
-                    
-                    String time=Time.timeString(Time.localTime());
                      
-                    setRosterTitle("("+groups.getRosterOnline()+"/"+groups.getRosterContacts()+") "+time);
+                    setRosterTitle("("+groups.getRosterOnline()+"/"+groups.getRosterContacts()+")");
 
                     
                     //resetStrCache();
