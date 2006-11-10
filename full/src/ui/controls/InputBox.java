@@ -1,7 +1,7 @@
 /*
  * InputBox.java
  *
- * Created on 2 ÐÐ¾ÑÐ±Ñ€ÑŒ 2006 Ð³., 0:49
+ * Created on 2 Íîÿáðü 2006 ã., 0:49
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -11,7 +11,7 @@ package ui.controls;
 
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
-/*
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,26 +22,18 @@ import ui.FontCache;
 import ui.VirtualList;
 
 import ui.polish.*;
-*/
+
 /**
  *
  * @author [AD]
  */
 public class InputBox extends Canvas {
-    /*
+
     private BitMapFont bitMapFont;
     private BitMapFontViewer messageViewer;
-
-    int baloon=-1;
     
     public String text;
     public int key;
-        
-    private TimerTaskRotate typer;
-
-    private String abc;
-
-    private int abcWidth;
     
     private Graphics g;
 
@@ -49,139 +41,241 @@ public class InputBox extends Canvas {
 
     public int height;
 
-    private boolean clrFlag = true;
-    private boolean showBalloon=false;*/
+    private Timer timer;
+
+    private boolean openedChar=false;
+
+    private int lastkey;
+
+    private int keycount=0;
+
+    private int charsnum=0;
 
     public InputBox(String text, int key) {
-/*        this.text=text;
+        this.text=text;
         this.key=key;
-        
+        sendKey(key);
+    }
+
+    public void drawItem(Graphics g) {
+        paint(g);
+    }
+
+    protected void paint(Graphics g) {
+            g.setColor(0xa0a0a0); g.fillRect(1, 1,width-1, height-1);
+            g.setColor(0xffffff); g.fillRect(2, 2, width-2, height-2);
+            this.messageViewer.paint( 2, 2, g );
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void sendKey(int key) {
+        if (lastkey==key) {
+            if (openedChar) {
+                keycount++;                
+            } else {
+                keycount=0;    
+            }
+        } else {
+            openedChar=false;;
+            this.lastkey=key;
+            keycount=0;
+        }
         switch (key) {
             case 1: {
-                text=text+"\u00A0";
+                String chars[]={" ","1","!","@","?"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }
+                //text=text+"\u00A0";
                 break;
             }
             case 2: {
-                text=text+"\u0430";
-                abc="\u0430"+"\u0431"+"\u0432"+"\u0433"+"2abc";
+                String chars[]={"\u0430","\u0431","\u0432","\u0433","2","a","b","c"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                } 
+                //text=text+"\u0430";
                 break;
             }
             case 3: {
-                text=text+"\u0434";
-                abc="\u0434"+"\u0435"+"\u0436"+"\u0437"+"3def";
+                String chars[]={"\u0434","\u0435","\u0436","\u0437","3","d","e","f"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }   
+                //text=text+"\u0434";
                 break;
             }
             case 4: {
-                text=text+"\u0438";
-                abc="\u0438"+"\u0439"+"\u043A"+"\u043B"+"4ghi";
+                String chars[]={"\u0438","\u0439","\u043A","\u043B","4","g","h","i"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }
+                //text=text+"\u0438";
                 break;
             }
             case 5: {
-                text=text+"\u043C";
-                abc="\u043C"+"\u043D"+"\u043E"+"5jkl";
+                String chars[]={"\u043C","\u043D","\u043E","5","j","k","l"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }
+                //text=text+"\u043C";
                 break;
             }
             case 6: {
-                text=text+"\u043F";
-                abc="\u043F"+"\u0440"+"\u0441"+"6mno";
+                String chars[]={"\u043F","\u0440","\u0441","6","m","n","o"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }
+                //text=text+"\u043F";
                 break;
             }
             case 7: {
-                text=text+"\u0442";
-                abc="\u0442"+"\u0443"+"\u0444"+"\u0445"+"7pqrs";
+                String chars[]={"\u0442","\u0443","\u0444","\u0445","7","p","q","r","s"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }
+                //text=text+"\u0442";
                 break;
             }
            case 8: {
-                text=text+"\u0446";
-                abc="\u0446"+"\u0447"+"\u0448"+"\u0449"+"\u044A"+"8tuv";
+                String chars[]={"\u0446","\u0447","\u0448","\u0449","\u044A","8","t","u","v"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }
+                //text=text+"\u0446";
                 break;
             }
             case 9: {
-                text=text+"\u044B";
-                abc="\u044B"+"\u044C"+"\u044D"+"\u044E"+"\u044F"+"9wxyz";
+                String chars[]={"\u044B","\u044C","\u044D","\u044E","\u044F","9","w","x","y","z"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }
+                //text=text+"\u044B";
                 break;
             }
             case 0: {
-                text=text+"\n";
+                String chars[]={"\n",".",",","-","+",":"};
+                if (keycount>chars.length) {
+                    charsnum=0;
+                } else {
+                    charsnum=keycount;
+                }
+                if (openedChar) {
+                    text=text.substring(0,text.length()-1)+chars[charsnum];
+                } else {
+                    text=text+chars[charsnum];                    
+                }
+                //text=text+"\n";
+                break;
+            }
+            case -1: {
+                text=text.substring(0,text.length()-1);
                 break;
             }
             default : {
                 text="";
-                abc="";
+                String chars[]={};
             }
         }
 
-		this.bitMapFont = BitMapFont.getInstance("/fonts/sirclive.bmf");
+                this.text=text;
+		this.bitMapFont = BitMapFont.getInstance("/fonts/font.bmf");
 		this.messageViewer = this.bitMapFont.getViewer(text);
                 this.width=getWidth();
-                this.height=this.messageViewer.getHeight();
+                this.height=this.messageViewer.getHeight()+4;
 		int availableWidth = width - 6;
 		int padding = 2;
 		int orientation = Graphics.LEFT;
-		this.messageViewer.layout( availableWidth-abcWidth, availableWidth, padding, orientation );
-               
-                if (abc.length()>0) showBalloon=true;
+		this.messageViewer.layout( availableWidth, availableWidth, padding, orientation );
                 
-                typer=new TimerTaskRotate(0);*/
+                startTimer();
     }
-/*
-    public void drawItem(Graphics g) {
-        paint(g);
+    
+    public void startTimer() {
+        stopTimer();
+        timer = new Timer();
+        timer.schedule(new RemindTask(), 1500);
+        openedChar=true;
     }
-*/
-    protected void paint(Graphics g) {
-/*        if (clrFlag) {
-            //System.out.println("clear");
-            g.setColor(0xffffff);
-            g.fillRect(0, 0,width, height);
-            clrFlag=false;
+    
+    public void stopTimer() {
+        if (timer!=null){
+            timer.cancel();
+            timer=null;
         }
-        if (showBalloon) {
-            //System.out.println("paint showBalloon");
-            g.setColor(0xa0a0a0); g.fillRect(1, 1, width-1, height-1);
-            g.setColor(0xffffff); g.fillRect(2, 2, width-2, height-2);
-            this.messageViewer.paint( 0, 0, g );
+        openedChar=false;
+    }
 
-            Font f=FontCache.getBalloonFont();
-            g.setFont(f);
-            
-            abcWidth=f.stringWidth(abc)+2;
-            
-            g.setColor(0x000000);
-            g.drawString(abc,width-abcWidth,0,Graphics.TOP | Graphics.LEFT);
-        } else {
-            //System.out.println("paint !showBalloon");
-            g.setColor(0xa0a0a0); g.fillRect(1, 1,width-1, height-1);
-            g.setColor(0xffffff); g.fillRect(2, 2, width-2, height-2);
-            this.messageViewer.paint( 0, 0, g );
-        }
-*/    }
-/*
-    private class TimerTaskRotate extends TimerTask{
-        private Timer t;
-        private int balloon;
-        
-        public TimerTaskRotate(int time){
-            balloon=2;
-            t=new Timer();
-            t.schedule(this, 2000, 1000);
-        }
+
+    class RemindTask extends TimerTask {
         public void run() {
-            if (balloon==-1) {
-                showBalloon=false;
-                clrFlag=true;
-                repaint();
-                cancel();
-            }
-            if (showBalloon=balloon>=0) balloon--;
+            stopTimer();
         }
-        public void destroyTask(){
-            if (t!=null){
-                //System.out.println("destroy t!=null");
-                this.cancel();
-                t.cancel();
-                t=null;
-            }
-        }
-    }*/
+   }
 }

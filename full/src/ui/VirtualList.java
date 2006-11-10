@@ -168,7 +168,7 @@ public abstract class VirtualList
     
     protected VirtualElement title;
     
-    //protected InputBox bottom;
+    protected InputBox inputbox; //alt
     
     private boolean wrapping = true;
     
@@ -199,10 +199,9 @@ public abstract class VirtualList
      */
     public ComplexString getTitleItem() {return (ComplexString)title;}
     public void setTitleItem(ComplexString title) { this.title=title; }
-/*    
-    public InputBox getBottomItem() {return (InputBox)bottom;}
-    public void setInputBoxItem(InputBox bottom) { this.bottom=bottom; }
-*/    
+    
+    public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
+    public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
     /**
      * возвращает ссылку на объект в фокусе. 
      * в классе VirtualList возвращает VirtualElement, на который указывает курсор,
@@ -347,8 +346,12 @@ public abstract class VirtualList
         }
 
         drawHeapMonitor(g);
-        if (paintBottom) { winHeight=height-list_top-20; } else { winHeight=height-list_top; } //убрать жесткое задание высоты
-
+        if (inputbox!=null) { 
+            itemBorder[0]=list_top-inputbox.height;
+        } else {
+            if (paintBottom) { winHeight=height-list_top-20; } else { winHeight=height-list_top; } //убрать жесткое задание высоты
+        }
+        
         if (paintTop) { itemBorder[0]=list_top-20; } else { itemBorder[0]=list_top; } //убрать жесткое задание высоты
         
         int count=getItemCount(); // размер списка
@@ -441,53 +444,52 @@ public abstract class VirtualList
             if (text!=null)
                 drawBalloon(g, baloon, text);
         }
-        if (paintBottom) {
-            setAbsOrg(g, 0, height-20);
-            
-            g.setColor(getTitleBGndRGB());
-            g.fillRect(0, 0, width, height);
-
-            int h=NetAccuFont.fontHeight;
-
-            String time=Time.timeString(Time.localTime());
-            if (memMonitor) {
-                int freemem=(int)Runtime.getRuntime().freeMemory();
-                NetAccuFont.drawString(g, time+" $"+freemem, 11,  h+1);
-            } else {
-                NetAccuFont.drawString(g, time, 11,  h+1);
-            }
-            
-            String traff = null;
-            int ngprs=-1;
-            int gprscount=0;
-            try {
-                try {
-                    ngprs=NetworkAccu.getGPRS();
-                } catch (Exception e) { }
-                if (ngprs>-1) {
-                    gprscount=ngprs;
-                } else {
-                    int in=StaticData.getInstance().roster.theStream.getBytesIn();
-                    int out=StaticData.getInstance().roster.theStream.getBytesOut();
-                    gprscount=in+out;
-                }
-                traff="&("+gprscount/1000+"<=)";
-            } catch (Exception e) {
-                traff="&(0)";
-            }
-            //Network.draw(g);
-            NetworkAccu.draw(g, width);
-            NetAccuFont.drawString(g, traff, 11, 1);
-        }
-        /*
-        if (bottom!=null) {
-            setAbsOrg(g, 0, height-bottom.height);  
+        if (inputbox!=null) {
+            setAbsOrg(g, 0, height-inputbox.height);  
             g.setClip(0,0, width, height);
             g.setColor(getTitleBGndRGB());
             g.fillRect(0,0, width, height);
             g.setColor(getTitleRGB());
-            bottom.drawItem(g);
-        }*/
+            inputbox.drawItem(g);
+        } else {
+            if (paintBottom) {
+                setAbsOrg(g, 0, height-20);
+
+                g.setColor(getTitleBGndRGB());
+                g.fillRect(0, 0, width, height);
+
+                int h=NetAccuFont.fontHeight;
+
+                String time=Time.timeString(Time.localTime());
+                if (memMonitor) {
+                    int freemem=(int)Runtime.getRuntime().freeMemory();
+                    NetAccuFont.drawString(g, time+" $"+freemem, 11,  h+1);
+                } else {
+                    NetAccuFont.drawString(g, time, 11,  h+1);
+                }
+
+                String traff = null;
+                int ngprs=-1;
+                int gprscount=0;
+                try {
+                    try {
+                        ngprs=NetworkAccu.getGPRS();
+                    } catch (Exception e) { }
+                    if (ngprs>-1) {
+                        gprscount=ngprs;
+                    } else {
+                        int in=StaticData.getInstance().roster.theStream.getBytesIn();
+                        int out=StaticData.getInstance().roster.theStream.getBytesOut();
+                        gprscount=in+out;
+                    }
+                    traff="&("+gprscount/1000+"<=)";
+                } catch (Exception e) {
+                    traff="&(0)";
+                }
+                NetworkAccu.draw(g, width);
+                NetAccuFont.drawString(g, traff, 11, 1);
+            }
+        }
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
     }
@@ -676,68 +678,71 @@ public abstract class VirtualList
 			return;
                     }         
                 }
+        if (inputbox==null) {
+            switch (keyCode) {
+                case 0: break;
+                case NOKIA_PEN: { destroyView(); break; }
+                case MOTOE680_VOL_UP:
+                case MOTOROLA_FLIP: break;
+                case KEY_NUM1:  { moveCursorHome();    break; }
+                case KEY_NUM7:  { moveCursorEnd();     break; }
 
-        switch (keyCode) {
-            case 0: break;
-            case NOKIA_PEN: { destroyView(); break; }
-            case MOTOE680_VOL_UP:
-            case MOTOROLA_FLIP: break;
-            case KEY_NUM1:  { moveCursorHome();    break; }
-            case KEY_NUM7:  { moveCursorEnd();     break; }
-            
-                case KEY_POUND: {
-                    if (Config.getInstance().poundKey) {
-                        if (Version.getPlatformName().indexOf("SIE") > -1) {
-                            System.gc();
-                        } else {
-                            fullMode=Config.getInstance().isbottom;
-                            switch (fullMode) {
-                                case 0: Config.getInstance().isbottom=1; break;
-                                case 1: Config.getInstance().isbottom=2; break;
-                                case 2: Config.getInstance().isbottom=3; break;
-                                case 3: Config.getInstance().isbottom=0; break;
+                    case KEY_POUND: {
+                        if (Config.getInstance().poundKey) {
+                            if (Version.getPlatformName().indexOf("SIE") > -1) {
+                                System.gc();
+                            } else {
+                                fullMode=Config.getInstance().isbottom;
+                                switch (fullMode) {
+                                    case 0: Config.getInstance().isbottom=1; break;
+                                    case 1: Config.getInstance().isbottom=2; break;
+                                    case 2: Config.getInstance().isbottom=3; break;
+                                    case 3: Config.getInstance().isbottom=0; break;
+                                }
+                                Config.getInstance().saveToStorage();
+                                System.gc();
                             }
-                            Config.getInstance().saveToStorage();
-                            System.gc();
                         }
+                        break;
                     }
-                    break;
-                }
-                case KEY_STAR: {
-                    if (Config.getInstance().starKey) {
-                        if (Version.getPlatformName().indexOf("SIE") > -1) {
-                            fullMode=Config.getInstance().isbottom;
-                            switch (fullMode) {
-                                case 0: Config.getInstance().isbottom=1; break;
-                                case 1: Config.getInstance().isbottom=2; break;
-                                case 2: Config.getInstance().isbottom=3; break;
-                                case 3: Config.getInstance().isbottom=0; break;
+                    case KEY_STAR: {
+                        if (Config.getInstance().starKey) {
+                            if (Version.getPlatformName().indexOf("SIE") > -1) {
+                                fullMode=Config.getInstance().isbottom;
+                                switch (fullMode) {
+                                    case 0: Config.getInstance().isbottom=1; break;
+                                    case 1: Config.getInstance().isbottom=2; break;
+                                    case 2: Config.getInstance().isbottom=3; break;
+                                    case 3: Config.getInstance().isbottom=0; break;
+                                }
+                                Config.getInstance().saveToStorage();
+                                System.gc();
+                            } else {
+                                System.gc();
                             }
-                            Config.getInstance().saveToStorage();
-                            System.gc();
-                        } else {
-                            System.gc();
                         }
+                        userKeyPressed(keyCode);
+                        break;
                     }
-                    break;
-                }
-            default:
-                try {
-                            switch (getGameAction(keyCode)){
-                                case UP:    { keyUp(); break; }
-                                case DOWN:  { keyDwn(); break; }
-                                case LEFT:  { keyLeft(); break; }
-                                case RIGHT: { keyRight(); break; }
-                                case FIRE:  { eventOk(); break; }
-                            default:
-                                if (keyCode==greenKeyCode) { keyGreen(); break; }
-                                if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-                                if (keyCode=='5') {  eventOk(); break; }
-                                userKeyPressed(keyCode);
-                            }
-                } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+                default:
+                    try {
+                                switch (getGameAction(keyCode)){
+                                    case UP:    { keyUp(); break; }
+                                    case DOWN:  { keyDwn(); break; }
+                                    case LEFT:  { keyLeft(); break; }
+                                    case RIGHT: { keyRight(); break; }
+                                    case FIRE:  { eventOk(); break; }
+                                default:
+                                    if (keyCode==greenKeyCode) { keyGreen(); break; }
+                                    if (keyCode==keyVolDown) { moveCursorEnd(); break; }
+                                    if (keyCode=='5') {  eventOk(); break; }
+                                    userKeyPressed(keyCode);
+                                }
+                    } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+            }
+        } else {
+            userKeyPressed(keyCode);
         }
-
         repaint();
     }
     

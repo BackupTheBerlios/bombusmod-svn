@@ -134,7 +134,7 @@ public class Config {
 
     public int confMessageCount=20;
 
-    boolean altInput=false;
+    public boolean altInput;
 
     public int isbottom;
 

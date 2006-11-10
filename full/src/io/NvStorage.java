@@ -7,8 +7,7 @@
  * All rights reserved.
  */
 
-package Client;
-import com.alsutton.jabber.JabberDataBlock;
+package io;
 import java.io.*;
 import util.strconv;
 
@@ -31,7 +30,6 @@ public class NvStorage {
     static public DataInputStream ReadFileRecord(String name, int index){
         DataInputStream istream=null;
         
-//#if !(USE_SIEMENS_FILES)
         RecordStore recordStore=null;
         try {
             
@@ -44,7 +42,6 @@ public class NvStorage {
         } catch (Exception e) { }
         finally { 
             try { recordStore.closeRecordStore(); } catch (Exception e) {} }
-//#endif
         
         return istream;
     }
@@ -67,7 +64,7 @@ public class NvStorage {
         baos=null; // освободим для следующего
         byte[] b=lbaos.toByteArray();
         
-//#if !(USE_SIEMENS_FILES)
+
         try {
             if (rewrite) RecordStore.deleteRecordStore(name);
         } catch (Exception e) {}
@@ -84,7 +81,7 @@ public class NvStorage {
             recordStore.closeRecordStore();
             ostream.close();
         } catch (Exception e) { e.printStackTrace(); return false; }
+
         return true;
     }
-//#endif
 }

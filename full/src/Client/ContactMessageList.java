@@ -14,7 +14,7 @@ import archive.MessageArchive;
 import images.RosterIcons;
 import images.SmilesIcons;
 import locale.SR;
-//import ui.controls.InputBox;
+import ui.controls.InputBox;
 import vcard.VCard;
 import ui.*;
 import java.util.*;
@@ -45,13 +45,12 @@ public class ContactMessageList extends MessageList
     Vector activeContacts;
 
     StaticData sd;
-/*    
-    boolean newmessage=false;
 
-    private boolean startMessage;
-
+    private boolean startMessage=false;
     private String text="";
-*/    
+
+    private boolean composing=true;
+  
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
         super(display);
@@ -205,23 +204,21 @@ public class ContactMessageList extends MessageList
     }       
 
     public void userKeyPressed(int keyCode) {
-//        if (!startMessage) {
+        if (!startMessage) {
             super.userKeyPressed(keyCode);
             if (keyCode==KEY_NUM9) nextContact();
-            /*if (keyCode==KEY_STAR) {
-                if (Config.getInstance().altInput) {
+            if (keyCode==KEY_STAR) {
+                //if (Config.getInstance().altInput==true) {
                         startMessage=true;
-                        updateBottom(-1);
-                }
-            }*/
+                        updateBottom(keyCode);
+                //}
+            }
             if (keyCode==keyClear) {
                 new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
                     public void yes() { clearMessageList(); }
                 };
             }
-/*        } else {
-           
-            super.userKeyPressed(keyCode);
+        } else {
             if (keyCode==KEY_NUM1) updateBottom(1);
             if (keyCode==KEY_NUM2) updateBottom(2);
             if (keyCode==KEY_NUM3) updateBottom(3);
@@ -232,38 +229,55 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_NUM8) updateBottom(8);
             if (keyCode==KEY_NUM9) updateBottom(9);
             if (keyCode==KEY_NUM0) updateBottom(0);
-            if (keyCode==KEY_STAR) {
-                startMessage=false;
+            if (keyCode==KEY_POUND) updateBottom(-1);
+            if (keyCode==KEY_STAR) { 
                 try {
-                    if (text!=null){
-                        if (contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+                        int comp=0; // composing event off
+                        Roster r=StaticData.getInstance().roster;
+                        this.text=inputbox.getText();
+                        if (text!=null) {
                             String from=StaticData.getInstance().account.toString();
                             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
-                            contact.addMessage(msg);
+                            if (contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+                                contact.addMessage(msg);
+                                comp=1; // composing event in message
+                            }
+
+                        } else if (contact.acceptComposing) comp=(composing)? 1:2;
+
+                        if (!Config.getInstance().eventComposing) comp=0;
+
+                        try {
+                            if (text!=null || comp>0)
+                            r.sendMessage(contact, text, null, comp);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        Roster r=StaticData.getInstance().roster;
-                        r.sendMessage(contact, text, null, 0);
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                startMessage=false;
+                updateBottom(-10000);
                 redraw();
             }
-        }*/
+        }
     }
-/*    
-    public InputBox getBottomItem() {return (InputBox)bottom;}
-    public void setInputBoxItem(InputBox bottom) { this.bottom=bottom; }
+
+    public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; }
     
     private void updateBottom(int key){
         if (startMessage) {
-                InputBox bottom=new InputBox(text, key);
-                setInputBoxItem(bottom);
+                if (inputbox!=null) {
+                    inputbox.sendKey(key);
+                } else {
+                    InputBox inputbox=new InputBox("", key);
+                    setInputBoxItem(inputbox);
+                }
         } else {
-            bottom=null;
+            this.inputbox=null;
         }
-    }
-*/    
+    } 
+    
     private void nextContact() {
 	activeContacts=new Vector();
         int nowContact = -1, contacts=-1;

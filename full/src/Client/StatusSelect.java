@@ -14,7 +14,7 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import ui.controls.NumberField;
-import ui.controls.TextFieldCombo;
+//import ui.controls.TextFieldCombo;
 
 /**
  *
@@ -122,7 +122,8 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             tfPriority=new NumberField(SR.MS_PRIORITY, status.getPriority(), -128, 128);
             f.append(tfPriority);
             
-            tfMessage=new TextFieldCombo(SR.MS_MESSAGE, status.getMessage(), 100, 0, "status", display);
+            //tfMessage=new TextFieldCombo(SR.MS_MESSAGE, status.getMessage(), 100, 0, "status", display);
+            tfMessage=new TextField(SR.MS_MESSAGE, status.getMessage(), 100, 0);
             f.append(tfMessage);
             
             
