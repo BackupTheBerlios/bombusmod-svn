@@ -21,6 +21,7 @@ import util.StringLoader;
 import ui.Time;
 import ui.VirtualElement;
 import ui.VirtualList;
+import io.NvStorage;
 //import javax.microedition.rms.*;
 
 /**
@@ -363,7 +364,7 @@ public class Config {
             
             outputStream.writeInt(confMessageCount);
             
-	} catch (IOException e) { e.printStackTrace(); }
+	} catch (Exception e) { e.printStackTrace(); }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
     }

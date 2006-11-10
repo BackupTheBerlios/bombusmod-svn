@@ -14,6 +14,7 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import ui.controls.NumberField;
+import ui.controls.TextFieldCombo;
 
 /**
  *
@@ -27,6 +28,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
     /** Creates a new instance of SelectStatus */
     private Vector statusList=StatusList.getInstance().statusList;
+    
     
     private Config cf;
     private int defp;
@@ -120,7 +122,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             tfPriority=new NumberField(SR.MS_PRIORITY, status.getPriority(), -128, 128);
             f.append(tfPriority);
             
-            tfMessage=new TextField(SR.MS_MESSAGE, status.getMessage(), 100, 0);
+            tfMessage=new TextFieldCombo(SR.MS_MESSAGE, status.getMessage(), 100, 0, "status", display);
             f.append(tfMessage);
             
             

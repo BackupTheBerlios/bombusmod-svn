@@ -10,7 +10,6 @@
 package ui;
 
 import Client.Config;
-import Client.NvStorage;
 import javax.microedition.lcdui.*;
 
 /**

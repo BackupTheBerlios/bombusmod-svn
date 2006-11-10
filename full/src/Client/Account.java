@@ -21,6 +21,7 @@ import javax.microedition.rms.*;
 import javax.microedition.lcdui.*;
 import Client.Roster;
 import com.alsutton.jabber.*;
+import io.NvStorage;
 
 /**
  *
