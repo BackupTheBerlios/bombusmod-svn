@@ -1,7 +1,7 @@
 /*
  * InputBox.java
  *
- * Created on 2 Ноябрь 2006 г., 0:49
+ * Created on 2 пїЅпїЅпїЅпїЅпїЅпїЅ 2006 пїЅ., 0:49
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -85,153 +85,62 @@ public class InputBox extends Canvas {
         }
         switch (key) {
             case 1: {
-                String chars[]={" ","1","!","@","?"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }
-                //text=text+"\u00A0";
+                String chars[]={" ","\n","1"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
             case 2: {
-                String chars[]={"\u0430","\u0431","\u0432","\u0433","2","a","b","c"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                } 
-                //text=text+"\u0430";
+                String chars[]={"\u0430","\u0431","\u0432","\u0433","2","a","b","c","\u0410","\u0411","\u0412","\u0413","A","B","C"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
             case 3: {
-                String chars[]={"\u0434","\u0435","\u0436","\u0437","3","d","e","f"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }   
-                //text=text+"\u0434";
+                String chars[]={"\u0434","\u0435","\u0451","\u0436","\u0437","3","d","e","f","\u0414","\u0415","\u0401","\u0416","\u0417","D","E","F"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
             case 4: {
-                String chars[]={"\u0438","\u0439","\u043A","\u043B","4","g","h","i"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }
-                //text=text+"\u0438";
+                String chars[]={"\u0438","\u0439","\u043A","\u043B","4","g","h","i","\u0418","\u0419","\u041A","\u041B","G","H","I"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
             case 5: {
-                String chars[]={"\u043C","\u043D","\u043E","5","j","k","l"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }
-                //text=text+"\u043C";
+                String chars[]={"\u043C","\u043D","\u043E","5","j","k","l","\u041C","\u041D","\u041E","J","K","L"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
             case 6: {
-                String chars[]={"\u043F","\u0440","\u0441","6","m","n","o"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }
-                //text=text+"\u043F";
+                String chars[]={"\u043F","\u0440","\u0441","6","m","n","o","\u041F","\u0420","\u0421","M","N","O"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
             case 7: {
-                String chars[]={"\u0442","\u0443","\u0444","\u0445","7","p","q","r","s"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }
-                //text=text+"\u0442";
+                String chars[]={"\u0442","\u0443","\u0444","\u0445","7","p","q","r","s","\u0422","\u0423","\u0424","\u0425","P","Q","R","S"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
            case 8: {
-                String chars[]={"\u0446","\u0447","\u0448","\u0449","\u044A","8","t","u","v"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }
-                //text=text+"\u0446";
+                String chars[]={"\u0446","\u0447","\u0448","\u0449","\u044A","8","t","u","v","\u0426","\u0427","\u0428","\u0429","\u042A","T","U","V"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
             case 9: {
-                String chars[]={"\u044B","\u044C","\u044D","\u044E","\u044F","9","w","x","y","z"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }
-                //text=text+"\u044B";
-                break;
+                String chars[]={"\u044B","\u044C","\u044D","\u044E","\u044F","9","w","x","y","z","\u042B","\u042C","\u042D","\u042E","\u042F","W","X","Y","Z"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
             }
             case 0: {
-                String chars[]={"\n",".",",","-","+",":"};
-                if (keycount>chars.length) {
-                    charsnum=0;
-                } else {
-                    charsnum=keycount;
-                }
-                if (openedChar) {
-                    text=text.substring(0,text.length()-1)+chars[charsnum];
-                } else {
-                    text=text+chars[charsnum];                    
-                }
-                //text=text+"\n";
+                String chars[]={".",",","?","!","'","\"","0","+","-","(",")","@","/",":","_","~","#","$","%","^","&","*","в„–"};
+                charsnum=(keycount>chars.length)? 0 : keycount;
+                text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
                 break;
             }
             case -1: {

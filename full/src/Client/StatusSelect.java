@@ -1,3 +1,5 @@
+
+
 /*
  * SelectStatus.java
  *
@@ -28,17 +30,21 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
     /** Creates a new instance of SelectStatus */
     private Vector statusList=StatusList.getInstance().statusList;
-    
-    
-    private Config cf;
+
     private int defp;
 
-    public StatusSelect(Display d) {
+    private Contact to;
+    
+    private Config cf=Config.getInstance();
+     
+    public StatusSelect(Display d, Contact to) {
         super();
-        setTitleItem(new Title(SR.MS_STATUS));
-        
-        cf=Config.getInstance();
-        
+        this.to=to;
+        if (to==null) { 
+            setTitleItem(new Title(SR.MS_STATUS));
+        } else {
+            setTitleItem(new Title(to));
+        }
         addCommand(cmdOk);
         addCommand(cmdEdit);
         addCommand(cmdDef);
@@ -46,11 +52,9 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         //addCommand(cmdAll);
         addCommand(cmdCancel);
         setCommandListener(this);
-
         
         defp=cf.loginstatus;
         moveCursorTo(defp, true);
-        
         attachDisplay(d);
     }
     public VirtualElement getItemRef(int Index){
@@ -83,7 +87,8 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         int status=getSel().getImageIndex();
         try {
             Roster.isAway=false;
-            StaticData.getInstance().roster.sendPresence(status);
+            //StaticData.getInstance().roster.sendPresence(status);
+            StaticData.getInstance().roster.sendDirectPresence(status, to);
         } catch (Exception e) { e.printStackTrace(); }
     }
     

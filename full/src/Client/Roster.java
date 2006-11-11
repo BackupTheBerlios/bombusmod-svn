@@ -510,6 +510,7 @@ public class Roster
         c.transport=RosterIcons.ICON_GROUPCHAT_INDEX; //FIXME: убрать хардкод
         c.bareJid=from;
         c.origin=Contact.ORIGIN_GROUPCHAT;
+        c.commonPresence=true;
         //c.priority=99;
         //c.key1=0;
         grp.conferenceJoinTime=Time.localTime();
@@ -691,13 +692,9 @@ public class Roster
             new Thread(this).start();
             return;
         }
-        
-        // send presence
-        //ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
-        //Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
 
         ms=myMessage;
- //       Roster.keyTimer=0;
+
         ExtendedStatus es= StatusList.getInstance().getStatus(oldStatus);
         pr=es.getPriority();
         
@@ -727,7 +724,21 @@ public class Roster
         
         reEnumRoster();
     }
-    
+
+    public void sendDirectPresence(int status, Contact to) {
+        if (to==null) { 
+            sendPresence(status);
+            return;
+        }
+        ExtendedStatus es= StatusList.getInstance().getStatus(status);
+        Presence presence = new Presence(status, es.getPriority(), es.getMessage());
+        presence.setTo(to.getJid());
+        if (theStream!=null) {
+            theStream.send( presence );
+        }
+        if (to instanceof MucContact) ((MucContact)to).commonPresence=false;
+    }
+
     public Contact selfContact() {
 	return getContact(myJid.getJid(), true);
     }
@@ -738,8 +749,9 @@ public class Roster
             Contact c=(Contact) e.nextElement();
             if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
             if (c.status==Presence.PRESENCE_OFFLINE) continue;
-            Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
-            presence.setAttribute("to", c.getJid());
+            if (!((MucContact)c).commonPresence) continue;
+             Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
+            presence.setTo(c.getJid());
             theStream.send(presence);
         }
     }
@@ -1459,7 +1471,7 @@ public class Roster
         if (c==cmdActiveContact) { new ActiveContacts(display, null); }
         
         if (c==cmdAccount){ new AccountSelect(display, false); }
-        if (c==cmdStatus) { new StatusSelect(display); }
+        if (c==cmdStatus) { new StatusSelect(display, null); }
         if (c==cmdAlert) { new AlertProfile(display); }
         
         if (c==cmdArchive) { new ArchiveList(display, null); }

@@ -48,6 +48,7 @@ public class TransferTask
     String sid;
     String fileName;
     String description;
+    String errMsg;
     int fileSize;
     private int filePos;
     String filePath;
@@ -93,6 +94,7 @@ public class TransferTask
         } catch (Exception e) {
             e.printStackTrace();
             state=ERROR;
+            errMsg="Can't open file";
             showEvent=true;
         }
     }
@@ -121,7 +123,9 @@ public class TransferTask
     
     public String toString() { return fileName; }
 
-    public String getTipString() { return String.valueOf(fileSize); }
+    public String getTipString() { 
+        return (errMsg==null)? String.valueOf(fileSize) : errMsg; 
+    }
 
     void decline() {
         JabberDataBlock reject=new Iq(jid, Iq.TYPE_ERROR, id);
@@ -132,6 +136,7 @@ public class TransferTask
         TransferDispatcher.getInstance().send(reject, true);
         
         state=ERROR;
+        errMsg="Rejected";
         showEvent=true;
     }
 
@@ -140,7 +145,6 @@ public class TransferTask
         try {
             file=FileIO.createConnection(filePath+fileName);
             os=file.openOutputStream();
-           
         } catch (Exception e) {
             e.printStackTrace();
             decline();
@@ -174,6 +178,7 @@ public class TransferTask
         } catch (IOException ex) {
             ex.printStackTrace();
             state=ERROR;
+            errMsg="Write error";
             showEvent=true;
             //todo: terminate transfer
         }
@@ -189,6 +194,7 @@ public class TransferTask
         } catch (IOException ex) {
             ex.printStackTrace();
             state=ERROR;
+            errMsg="Read error";
             showEvent=true;
             //todo: terminate transfer
             return 0;
@@ -207,6 +213,7 @@ public class TransferTask
             if (state!=ERROR) state=COMPLETE;
         } catch (Exception ex) {
             ex.printStackTrace();
+            errMsg="File close error";
             state=ERROR;
         }
         file=null;
@@ -314,6 +321,7 @@ public class TransferTask
     void cancel() {
         if (isStopped()) return;
         state=ERROR;
+        errMsg="Canceled";
         closeFile();
     }
 }

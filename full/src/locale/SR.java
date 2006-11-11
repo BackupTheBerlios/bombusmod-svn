@@ -272,6 +272,9 @@ public class SR {
     public  static String MS_INVISIBLE=loadString("invisible");
     public  static String MS_OFFLINE=loadString("offline");
 
+    public static String MS_REPLY=loadString("reply");
+    public final static String MS_DIRECT_PRESENCE="Send status";
+
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
 

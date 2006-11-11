@@ -8,6 +8,7 @@
  */
 
 package Client;
+import Conference.MucContact;
 import Messages.MessageList;
 import Messages.MessageParser;
 import archive.MessageArchive;
@@ -30,7 +31,7 @@ public class ContactMessageList extends MessageList
     Contact contact;
     Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
     Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,2);
-    Command cmdQuoteNick=new Command("Quote nickname",Command.SCREEN,3);
+    Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
     Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
    
     Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,4);
@@ -45,6 +46,8 @@ public class ContactMessageList extends MessageList
     Vector activeContacts;
 
     StaticData sd;
+    
+    private Config cf=Config.getInstance();
 
     private boolean startMessage=false;
     private String text="";
@@ -68,7 +71,9 @@ public class ContactMessageList extends MessageList
         cursor=0;//activate
         
         addCommand(cmdMessage);
-        addCommand(cmdQuoteNick);
+        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+            addCommand(cmdReply);
+        }
         addCommand(cmdPurge);
         addCommand(cmdContact);
 	addCommand(cmdActive);
@@ -148,11 +153,14 @@ public class ContactMessageList extends MessageList
 	    new ActiveContacts(display, contact);
 	}
         
-        if (c==cmdQuoteNick) {
+        if (c==cmdReply) {
             try {
-                String Body=getMessage(cursor).getBody();
-                String nickname=Body.substring(0,Body.indexOf('>'));
-                new MessageEdit(display,contact,nickname+": ");
+                String body=getMessage(cursor).toString();
+                int nickLen=body.indexOf(">");
+                if (nickLen<0) nickLen=body.indexOf(" ");
+                if (nickLen<0) return;
+                
+                new MessageEdit(display,contact,body.substring(0, nickLen)+": ");
             } catch (Exception e) {/*no messages*/}
         }
         
@@ -208,10 +216,10 @@ public class ContactMessageList extends MessageList
             super.userKeyPressed(keyCode);
             if (keyCode==KEY_NUM9) nextContact();
             if (keyCode==KEY_STAR) {
-                //if (Config.getInstance().altInput==true) {
+                if (cf.altInput==true) {
                         startMessage=true;
                         updateBottom(keyCode);
-                //}
+                }
             }
             if (keyCode==keyClear) {
                 new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){

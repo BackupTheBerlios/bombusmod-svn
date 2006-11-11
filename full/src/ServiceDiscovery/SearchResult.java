@@ -109,7 +109,9 @@ public class SearchResult
     public void commandAction(Command c, Displayable d){
         if (c==cmdAdd){
             destroyView();
-            new ContactEdit(display, (Contact)getFocusedObject());
+            try {
+                new ContactMessageList((Contact) getFocusedObject(), display);
+            } catch (Exception e) {}
             return;
         }
         

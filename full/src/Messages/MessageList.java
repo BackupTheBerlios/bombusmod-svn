@@ -22,6 +22,7 @@ import locale.SR;
 import ui.ComplexString;
 import ui.VirtualElement;
 import ui.VirtualList;
+import ui.FontCache;
 
 /**
  *
@@ -54,6 +55,7 @@ public abstract class MessageList
         addCommand(cmdSmiles);
         addCommand(cmdBack);
         addCommand(cmdUrl);
+        stringHeight=FontCache.getMsgFont().getHeight();
     }
 
     public MessageList(Display display) {

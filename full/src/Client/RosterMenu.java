@@ -52,7 +52,7 @@ public class RosterMenu extends Menu
                 if (connected) new RosterItemActions(display, o); 
                 break;
 	    case 1: //status
-                new StatusSelect(display);
+                new StatusSelect(display, null);
 		return;
             case 2: //active
                 new ActiveContacts(display, null);
