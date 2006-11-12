@@ -3,8 +3,8 @@
  *
  * Created on 4 Ноябрь 2006 г., 0:08
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
+ * All rights reserved.
  */
 
 package io.file.transfer;
@@ -73,7 +73,7 @@ public class TransferSendFile
     public void BrowserFilePathNotify(String pathSelected) { fileName.setString(pathSelected); }
 
     public void commandAction(Command c, Displayable d) {
-        if (c==cmdPath) { new Browser(display, this, false); return; }
+        if (c==cmdPath) { new Browser(fileName.getString(), display, this, false); return; }
         if (c==cmdOk) {
             try {
                 TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getString(), description.getString());

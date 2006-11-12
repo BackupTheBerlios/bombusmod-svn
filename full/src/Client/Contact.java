@@ -62,6 +62,8 @@ public class Contact extends IconTextElement{
     private Group group;
     public int transport;
     
+    public String presence;
+    
     public boolean acceptComposing;
     public Integer incomingComposing;
     
@@ -186,10 +188,12 @@ public class Contact extends IconTextElement{
     
     public void addMessage(Msg m) {
         boolean first_replace=false;
-        if (m.isPresence()) 
+        if (m.isPresence()) { 
+            presence=m.getBody();
             if (msgs.size()==1) 
                 if ( ((Msg)msgs.firstElement()).isPresence())
                    if (origin!=ORIGIN_GROUPCHAT) first_replace=true;
+        }
 //#if FILE_IO
         Config cf=Config.getInstance();
 

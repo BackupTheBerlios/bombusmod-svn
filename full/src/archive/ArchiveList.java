@@ -106,7 +106,7 @@ public class ArchiveList
 	if (c==cmdSubj) { pasteData(1); }
 	if (c==cmdJid) { pasteData(2); }
 //#if FILE_IO
-        if (c==cmdExport) { new Browser(display, this, true); }
+        if (c==cmdExport) { new Browser(null, display, this, true); }
 //#endif
     }
     

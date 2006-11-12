@@ -136,6 +136,7 @@ public class InputBox extends Canvas {
                 String chars[]={"\u044B","\u044C","\u044D","\u044E","\u044F","9","w","x","y","z","\u042B","\u042C","\u042D","\u042E","\u042F","W","X","Y","Z"};
                 charsnum=(keycount>chars.length)? 0 : keycount;
                 text=(openedChar)? text.substring(0,text.length()-1)+chars[charsnum] : text+chars[charsnum];
+                break;
             }
             case 0: {
                 String chars[]={".",",","?","!","'","\"","0","+","-","(",")","@","/",":","_","~","#","$","%","^","&","*","№"};
@@ -169,7 +170,7 @@ public class InputBox extends Canvas {
     public void startTimer() {
         stopTimer();
         timer = new Timer();
-        timer.schedule(new RemindTask(), 1500);
+        timer.schedule(new RemindTask(), 1000);
         openedChar=true;
     }
     

@@ -39,19 +39,18 @@ import ui.VirtualList;
 public class Browser extends VirtualList implements CommandListener{
  
     private Vector dir;
-    private Vector backStack;
     
     Command cmdOk=new Command(SR.MS_BROWSE, Command.OK, 1);
     Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 2);
     Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 3);
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
-    Command cmdCancel=new Command(SR.MS_CANCEL, Command.CANCEL, 99);
+    Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
     
     private String path;
     private BrowserListener browserListener;
     
     /** Creates a new instance of Browser */
-    public Browser(Display display, BrowserListener browserListener, boolean getDirectory) {
+    public Browser(String path, Display display, BrowserListener browserListener, boolean getDirectory) {
         super(display);
         
         this.browserListener=browserListener;
@@ -68,10 +67,16 @@ public class Browser extends VirtualList implements CommandListener{
         addCommand(cmdCancel);
         setCommandListener(this);
         
-        path="/";
-        backStack=new Vector();
-        readDirectory(path);
-        sort(dir);
+        // test for empty path
+        if (path==null) path="/";
+        if (path.length()==0) path="/";
+       
+        // trim filename
+        int l=path.lastIndexOf('/');
+        if (l<0) {  path="/"; 
+        } else path=path.substring(0,l+1);
+
+        chDir(path);
     }
     
     protected int getItemCount() { return dir.size(); }
@@ -84,13 +89,6 @@ public class Browser extends VirtualList implements CommandListener{
                 destroyView();
                 return;
             }
-            readDirectory(path);
-            sort(dir);
-            try {
-                Integer pos=(Integer) backStack.lastElement();
-                backStack.removeElement(pos);
-                moveCursorTo(pos.intValue(), true);
-            } catch (Exception e) { moveCursorHome(); }
             redraw();
         }
         
@@ -134,15 +132,30 @@ public class Browser extends VirtualList implements CommandListener{
     }
     
     
-    private boolean chDir(String relativePath) {
-        if (relativePath.startsWith("../")) {
+     private boolean chDir(String relativePath) {
+        String focus="";
+        if (relativePath.startsWith("/")) {
+            path=relativePath;
+        } else if (relativePath.startsWith("../")) {
             if (path.length()<2) return false;
-            path=path.substring(0, 1+path.lastIndexOf('/', path.length()-2));
-        } else {
-            path+=relativePath;
+            int remainderPos=path.lastIndexOf('/', path.length()-2) + 1;
+            focus=path.substring(remainderPos);
+             path=path.substring(0, 1+path.lastIndexOf('/', path.length()-2));
+         } else {
+             path+=relativePath;
+         }
+        readDirectory(this.path);
+        sort(dir);
+
+        for (int i=0; i<dir.size(); i++) {
+            if ( ((FileItem)dir.elementAt(i)).name.equals(focus) ) {
+                moveCursorTo(i, true);
+                return true;
+            }
         }
-        return true;
-    }
+        moveCursorHome();
+         return true;
+     }
     
     private void readDirectory(String name) {
         getTitleItem().setElementAt(path, 0);
@@ -176,10 +189,6 @@ public class Browser extends VirtualList implements CommandListener{
             destroyView(); 
             return; 
         }
-        backStack.addElement(new Integer(cursor));
-        readDirectory(path);
-        sort(dir);
-        moveCursorHome();
         redraw();
     }
     

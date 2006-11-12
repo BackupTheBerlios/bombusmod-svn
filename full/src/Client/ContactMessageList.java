@@ -132,7 +132,7 @@ public class ContactMessageList extends MessageList
         if (c==cmdResume) { keyGreen(); }
         if (c==cmdQuote) {
             try {
-                new MessageEdit(display,contact,getMessage(cursor).toString());
+                new MessageEdit(display,contact,">> "+getMessage(cursor).toString()+"\n");
             } catch (Exception e) {/*no messages*/}
         }
         if (c==cmdArch) {
@@ -216,7 +216,7 @@ public class ContactMessageList extends MessageList
             super.userKeyPressed(keyCode);
             if (keyCode==KEY_NUM9) nextContact();
             if (keyCode==KEY_STAR) {
-                if (cf.altInput==true) {
+                if (altInput) {
                         startMessage=true;
                         updateBottom(keyCode);
                 }

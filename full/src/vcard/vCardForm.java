@@ -143,11 +143,11 @@ public class vCardForm
 //#if (FILE_IO)
         if (c==cmdPhoto) {
             st=1;
-            new Browser(display, this, false);
+            new Browser(null, display, this, false);
         }
         if (c==cmdSavePhoto) {
             st=2;
-            new Browser(display, this, true);
+            new Browser(null, display, this, true);
         }
 //#endif
 

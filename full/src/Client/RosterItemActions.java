@@ -17,6 +17,7 @@ import Conference.MucContact;
 import Conference.QueryConfigForm;
 import Conference.affiliation.Affiliations;
 import ServiceDiscovery.ServiceDiscovery;
+import com.alsutton.jabber.datablocks.IqLast;
 import com.alsutton.jabber.datablocks.IqVersionReply;
 import com.alsutton.jabber.datablocks.Presence;
 //#if FILE_TRANSFER
@@ -32,6 +33,7 @@ import ui.MenuItem;
 import ui.YesNoAlert;
 import vcard.VCard;
 import vcard.vCardForm;
+import Conference.affiliation.ConferenceQuickPrivelegeModify;
 
 /**
  *
@@ -58,9 +60,20 @@ public class RosterItemActions extends Menu{
 	    }
 	    //if (contact.group==Groups.SELF_INDEX) addItem("Commands",30);
 	    
+            addItem("Info",888);
 	    addItem(SR.MS_VCARD,1);
 	    addItem(SR.MS_CLIENT_INFO,0);
 	    addItem(SR.MS_COMMANDS,30);
+            
+            if (contact.getJid()==contact.getBareJid()) {
+                addItem("Seen",890);    
+            } else {
+                addItem("Idle",889);
+                addItem("On Line",890); 
+            }
+            
+                            
+            //if (from.indexOf("/")>-1) lastType="idle";
 	    
 	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
 		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
@@ -258,6 +271,23 @@ public class RosterItemActions extends Menu{
                     new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
                     return;
                 }
+                case 888: //info form
+                {
+                        new info(null,display, c);
+                        return;
+                }
+                case 889: //idle
+                {
+                    roster.setQuerySign(true);
+                    roster.theStream.send(new IqLast(c.getJid()));
+                    break;
+                }
+                case 890: //seen & online
+                {
+                    roster.setQuerySign(true);
+                    roster.theStream.send(new IqLast(c.getBareJid()));
+                    break;
+                }
                 
                 case 40: //invite
                 {
@@ -338,99 +368,63 @@ public class RosterItemActions extends Menu{
                         return;
                     }
                     
-                    case 8: // kick
-                    {
-                        //Hashtable attrs=new Hashtable();
-                        //attrs.put("role", "none");
-                        //attrs.put("nick", mc.nick);
-                        //roster.setMucMod(mc, attrs);
-                        //break;
-                        String jid=mc.jid.getBareJid();
-                        String nick=mc.nick;
-                        new ReasonForm(display, nick, "role", "none", jid);
+                     case 8: // kick
+                     {
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK);
                         return;
-                    }
-                    case 9: // ban
-                    {
-                        //Hashtable attrs=new Hashtable();
-                        //attrs.put("affiliation", "outcast");
-                        //attrs.put("jid", mc.realJid);
-                        //roster.setMucMod(mc, attrs);
-                        //break;
-                        String jid=mc.jid.getBareJid();
-                        String nick=mc.nick;
-                        new ReasonForm(display, nick, "affiliation", "outcast", jid);
+                     }
+                     case 9: // ban
+                     {
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST);
                         return;
-                    }
-                    case 31: //grant voice and revoke moderator
-                    {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("role", "participant");
-                        attrs.put("nick", mc.nick);
-                        roster.setMucMod(mc, attrs);
-                        break;
-                    }
-                    case 32: //revoke voice
-                    {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("role", "visitor");
-                        attrs.put("nick", mc.nick);
-                        roster.setMucMod(mc, attrs);
-                        break;
-                    }
-                    
-                    case 33: //grant moderator
-                    {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("role", "moderator");
-                        attrs.put("nick", mc.nick);
-                        roster.setMucMod(mc, attrs);
-                        break;
-                    }
-                    
-            /*case 34: //reserved
+                     }
+                     case 31: //grant voice and revoke moderator
+                     {
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
+                        return;
+                     }
+                     case 32: //revoke voice
+                     {
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.VISITOR);
+                        return;
+                     }
+                     
+                     case 33: //grant moderator
+                     {
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR);
+                        return;
+                     }
+                     
+             /*case 34: //reserved
             {
              
             }*/
                     
-                    case 35: //grant membership and revoke admin
-                    {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("affiliation", "member");
-                        attrs.put("jid", mc.realJid);
-                        roster.setMucMod(mc, attrs);
-                        break;
-                    }
-                    
-                    case 36: //revoke membership
-                    {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("affiliation", "none");
-                        attrs.put("jid", mc.realJid);
-                        roster.setMucMod(mc, attrs);
-                        break;
-                    }
-                    
-                    case 37: //grant admin and revoke owner
-                    {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("affiliation", "admin");
-                        attrs.put("jid", mc.realJid);
-                        roster.setMucMod(mc, attrs);
-                        break;
-                    }
-                    
-                    case 38: //grant owner
-                    {
-                        Hashtable attrs=new Hashtable();
-                        attrs.put("affiliation", "owner");
-                        attrs.put("jid", mc.realJid);
-                        roster.setMucMod(mc, attrs);
-                        break;
-                    }
-                    
-                }
-            }
+                     case 35: //grant membership and revoke admin
+                     {
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER);
+                        return;
+                     }
+                     
+                     case 36: //revoke membership
+                     {
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE);
+                        return;
+                     }
+                     
+                     case 37: //grant admin and revoke owner
+                     {
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN);
+                        return;
+                     }
+                     
+                     case 38: //grant owner
+                     {
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER);
+                        return;
+                     }
+                 }
+             }
             destroyView();
         } catch (Exception e) { e.printStackTrace();  }
     }

@@ -398,7 +398,7 @@ public class ConfigForm implements
 	}
 //#if (FILE_IO)
         if (command==cmdSetHistFolder) {
-           new Browser(display, this, true);
+           new Browser(null, display, this, true);
         }
 //#endif
     }

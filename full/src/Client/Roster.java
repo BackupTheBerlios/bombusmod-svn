@@ -969,7 +969,23 @@ public class Roster
 //#             theStream.addBlockListener(TransferDispatcher.getInstance());
 //#endif	                      
                     } 
-                    
+                    if (id.equals("last")) {
+                        JabberDataBlock tm=data.getChildBlock("query");
+                        if (tm!=null) {
+                            querysign=false;
+                            String from=data.getAttribute("from");
+                            String body=IqLast.dispatchLast(tm);
+                            
+                            String lastType="seen/online";
+                            
+                            if (from.indexOf("/")>-1) lastType="idle";
+                            
+                            //Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, lastType, body);
+                            //messageStore(m);
+                            //redraw();
+                            new info(lastType+" "+from+"\n"+body,display, null);
+                        }
+                    }
                 } else if (type.equals("get")){
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
@@ -1608,28 +1624,7 @@ public class Roster
         querysign=requestState;
         updateTitle();
     }
-    void setMucMod(Contact contact, Hashtable itemAttributes){
-        JabberDataBlock iq=new Iq(contact.jid.getBareJid(), Iq.TYPE_SET, "itemmuc");
-        JabberDataBlock query=iq.addChild("query", null);
-        query.setNameSpace("http://jabber.org/protocol/muc#admin");
-        JabberDataBlock item=new JabberDataBlock("item", null, itemAttributes);
-        query.addChild(item);
-        //System.out.println(iq);
-        theStream.send(iq);
-    }
     
-    void setMucMod(String jid, Hashtable itemAttributes, String rizon){
-        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, "itemmuc");
-        JabberDataBlock query=iq.addChild("query", null);
-        query.setNameSpace("http://jabber.org/protocol/muc#admin");
-        JabberDataBlock item=new JabberDataBlock("item", null, itemAttributes);
-        query.addChild(item);
-        if (rizon!=null) {
-            JabberDataBlock reason=item.addChild("reason", null);
-            reason.setText(rizon);
-        }
-        theStream.send(iq);
-    }
     /**
      * store cotnact on server
      */

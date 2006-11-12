@@ -3,8 +3,8 @@
  *
  * Created on 29 Октябрь 2006 г., 1:20
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
+ * All rights reserved.
  */
 
 package io.file.transfer;
@@ -69,7 +69,7 @@ public class TransferAcceptFile
 
     public void commandAction(Command c, Displayable d) {
         if (c==cmdDecline) { t.decline(); }
-        if (c==cmdPath) { new Browser(display, this, true); return; }
+        if (c==cmdPath) { new Browser(path.getString(), display, this, true); return; }
         if (c==cmdOk) {
             t.fileName=fileName.getString();
             t.filePath=path.getString();
