@@ -1,7 +1,7 @@
 /*
  * SearchResult.java
  *
- * Created on 10 Июль 2005 г., 21:40
+ * Created on 10 �?юль 2005 г., 21:40
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -15,6 +15,7 @@ import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
+import locale.SR;
 
 /**
  *
@@ -25,8 +26,8 @@ public class SearchResult
         implements CommandListener {
     
     StaticData sd=StaticData.getInstance();
-    private Command cmdBack=new Command("Back", Command.BACK, 98);
-    private Command cmdAdd=new Command("Add", Command.SCREEN, 1);
+    private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
+    private Command cmdAdd=new Command(SR.MS_ADD, Command.SCREEN, 1);
     
     private Vector items;
     boolean xData;

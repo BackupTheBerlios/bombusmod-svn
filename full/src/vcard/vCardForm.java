@@ -52,11 +52,11 @@ public class vCardForm
     protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK /*Command.SCREEN*/, 1);
     protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
 //#if (FILE_IO)
-    protected Command cmdPhoto=new Command("Load Photo", Command.SCREEN,3); //locale
+    protected Command cmdPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
     protected Command cmdSavePhoto=new Command("Save Photo", Command.SCREEN,4); //locale
 //#endif
-    protected Command cmdDelPhoto=new Command("Clear Photo", Command.SCREEN,4);
-    protected Command cmdCamera=new Command("Camera", Command.SCREEN,5);
+    protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,4);
+    protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,5);
     protected Command cmdCopy = new Command("Copy text", Command.SCREEN, 7);    
     
     private Form f;

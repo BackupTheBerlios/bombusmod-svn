@@ -47,8 +47,6 @@ public class ContactMessageList extends MessageList
 
     StaticData sd;
     
-    private Config cf=Config.getInstance();
-
     private boolean startMessage=false;
     private String text="";
 
@@ -216,10 +214,8 @@ public class ContactMessageList extends MessageList
             super.userKeyPressed(keyCode);
             if (keyCode==KEY_NUM9) nextContact();
             if (keyCode==KEY_STAR) {
-                if (altInput) {
                         startMessage=true;
                         updateBottom(keyCode);
-                }
             }
             if (keyCode==keyClear) {
                 new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
@@ -274,15 +270,17 @@ public class ContactMessageList extends MessageList
     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; }
     
     private void updateBottom(int key){
-        if (startMessage) {
-                if (inputbox!=null) {
-                    inputbox.sendKey(key);
-                } else {
-                    InputBox inputbox=new InputBox("", key);
-                    setInputBoxItem(inputbox);
-                }
-        } else {
-            this.inputbox=null;
+        if (Config.getInstance().altInput) {
+            if (startMessage) {
+                    if (inputbox!=null) {
+                        inputbox.sendKey(key);
+                    } else {
+                        InputBox inputbox=new InputBox("", key);
+                        setInputBoxItem(inputbox);
+                    }
+            } else {
+                this.inputbox=null;
+            }
         }
     } 
     

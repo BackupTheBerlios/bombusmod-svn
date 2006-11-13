@@ -140,11 +140,11 @@ public class ConfigForm implements
         message.append(SR.MS_SMILES, null);
         message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
-        message.append("Classic Chat", null);
 //#if (!MIDP1)
         message.append(SR.MS_CAPS_STATE, null);
 //#endif
-        
+        message.append("Classic Chat", null);
+
         boolean mv[]={
             cf.smiles,
             cf.storeConfPresence,
@@ -342,7 +342,8 @@ public class ConfigForm implements
             VirtualList.fullscreen=cf.fullscreen=ap[apctr++];
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
 //#endif
-	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
+	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];            
+            
 	    cf.blFlash=ap[apctr++];
 	    cf.popupFromMinimized=ap[apctr++];
             

@@ -272,8 +272,19 @@ public class SR {
     public  static String MS_INVISIBLE=loadString("invisible");
     public  static String MS_OFFLINE=loadString("offline");
 
-    public static String MS_REPLY=loadString("reply");
+    public static String MS_REPLY=loadString("Reply");
     public final static String MS_DIRECT_PRESENCE="Send status";
+    
+    public final static String MS_CONFIRM_BAN="Are you sure want to BAN this person?";
+    public final static String MS_NO_REASON="No reason";
+
+    public final static String MS_RECENT="Recent";
+    public final static String MS_CAMERASHOT="Shot";
+
+    public final static String MS_SELECT_FILE="Select file";
+    public final static String MS_LOAD_PHOTO="Load Photo";
+    public final static String MS_CLEAR_PHOTO="Clear Photo";
+    public final static String MS_CAMERA="Camera";
 
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

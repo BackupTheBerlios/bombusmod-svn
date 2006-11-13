@@ -21,6 +21,7 @@ import javax.microedition.lcdui.StringItem;
 import javax.microedition.lcdui.TextField;
 import ui.controls.TextFieldCombo;
 
+import locale.SR;
 /**
  *
  * @author Evg_S
@@ -39,9 +40,9 @@ public class TransferSendFile
 
     private String to;
     
-    Command cmdOk=new Command("Ok", Command.OK, 1);
-    Command cmdBack=new Command("Cancel", Command.BACK, 99);
-    Command cmdPath=new Command("Select File", Command.SCREEN, 2);
+    Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
+    Command cmdBack=new Command(SR.MS_CANCEL, Command.BACK, 99);
+    Command cmdPath=new Command(SR.MS_SELECT_FILE, Command.SCREEN, 2);
 
     /** Creates a new instance of TransferAcceptFile */
     public TransferSendFile(Display display, String recipientJid) {
