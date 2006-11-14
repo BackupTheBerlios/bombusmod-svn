@@ -875,23 +875,10 @@ public class Roster
             } catch (Exception e) { e.printStackTrace(); }
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
-            
-            //loading bookmarks
-            //if (cf.autoJoinConferences)
-                theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-//#if (FILE_IO && FILE_TRANSFER)
-//#             theStream.addBlockListener(TransferDispatcher.getInstance());
-//#endif
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
-            //loading bookmarks
-            //if (cf.autoJoinConferences)
-                theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-//#if (FILE_IO && FILE_TRANSFER)
-//#             theStream.addBlockListener(TransferDispatcher.getInstance());
-//#endif
         }
     }
     
