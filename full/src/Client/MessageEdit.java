@@ -136,9 +136,11 @@ public class MessageEdit
         t.addCommand(cmdSmile);
         if (to.origin>=Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdInsNick);
-	t.addCommand(cmdPaste);
+        t.addCommand(cmdPaste);
+       
         t.addCommand(cmdSuspend);
-        t.addCommand(cmdPasteText);
+        if (clipboard.s!=null)
+            t.addCommand(cmdPasteText);
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
         

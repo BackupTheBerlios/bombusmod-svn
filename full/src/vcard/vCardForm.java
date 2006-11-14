@@ -74,6 +74,12 @@ public class vCardForm
     
     private ClipBoard clipboard;  // The clipboard class
     
+    int fileSize;
+    private int filePos;
+    String filePath;
+    private FileIO file;
+    private OutputStream os;
+    
     /** Creates a new instance of vCardForm */
     public vCardForm(Display display, VCard vcard, boolean editable) {
         this.display=display;
@@ -206,11 +212,34 @@ public class vCardForm
                         }
                 }
                 
+                //try {
+                //    FileIO f=FileIO.createConnection(pathSelected+"photo_"+vcard.getNickName()+"_"+getDate()+"."+phototype);
+                //    f.Write(photo);
+                //} catch (Exception e) {}
+                file=FileIO.createConnection(pathSelected+"photo_"+vcard.getNickName()+"_"+getDate()+"."+phototype);
                 try {
-                    FileIO f=FileIO.createConnection(pathSelected+"photo_"+vcard.getNickName()+"_"+getDate()+"."+phototype);
-                    f.Write(photo);
-                } catch (Exception e) {}
+                    os=file.openOutputStream();
+                    writeFile(photo);
+                    os.close();
+                    file.close();
+                } catch (IOException ex) {
+                    try {
+                        file.close();
+                    } catch (IOException ex2) {
+                        ex2.printStackTrace();
+                    }
+                    ex.printStackTrace();
+                }
             }
+        }
+    }
+    
+    void writeFile(byte b[]){
+        try {
+            os.write(b);
+            filePos+=b.length;
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 //#endif

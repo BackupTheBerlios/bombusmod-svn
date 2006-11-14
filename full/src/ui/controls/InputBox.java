@@ -158,12 +158,11 @@ public class InputBox extends Canvas {
 		this.bitMapFont = BitMapFont.getInstance("/fonts/font.bmf");
 		this.messageViewer = this.bitMapFont.getViewer(text);
                 this.width=getWidth();
-                this.height=this.messageViewer.getHeight()+4;
-		int availableWidth = width - 6;
+                int availableWidth = width - 6;
 		int padding = 2;
 		int orientation = Graphics.LEFT;
 		this.messageViewer.layout( availableWidth, availableWidth, padding, orientation );
-                
+                this.height=this.messageViewer.getHeight()+4;
                 startTimer();
     }
     

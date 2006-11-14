@@ -1,7 +1,7 @@
 /*
  * File.java
  *
- * Created on 1 –û–∫—Ç—è–±—Ä—å 2006 –≥., 20:52
+ * Created on 1 ŒÍÚˇ·¸ 2006 „., 20:52
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -70,10 +70,10 @@ public abstract class FileIO {
     
     public abstract void close() throws IOException;
     
-    public abstract void Write(byte[] append_data);
-    
     public abstract long fileSize() throws IOException;
 
     protected abstract Vector rootDirs();
     protected abstract Vector dirs(boolean directoriesOnly) throws IOException;
+
+    public abstract OutputStream openOutputStream(long pos_eof) throws IOException;
 }

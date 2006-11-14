@@ -1730,7 +1730,7 @@ public class Roster
     }
     
     private void setLight(boolean state) {
-        if ((Version.getPlatformName().indexOf("SIE-S75")>-1) || (Version.getPlatformName().indexOf("SIE-E71")>-1) || (Version.getPlatformName().indexOf("SIE-EF81")>-1) || (Version.getPlatformName().indexOf("SIE-SXG75") > -1)) {
+        if ((Version.getPlatformName().indexOf("SIE-S75")>-1) || (Version.getPlatformName().indexOf("SIE-E71")>-1) || (Version.getPlatformName().indexOf("SIE-SL75")>-1) || (Version.getPlatformName().indexOf("SIE-EF81")>-1) || (Version.getPlatformName().indexOf("SIE-SXG75") > -1)) {
             if (state){
                 com.siemens.mp.game.Light.setLightOn();
             } else { 

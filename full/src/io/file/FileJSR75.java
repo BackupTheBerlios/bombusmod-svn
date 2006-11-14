@@ -1,7 +1,7 @@
 /*
  * FileJSR75.java
  *
- * Created on 1 –û–∫—Ç—è–±—Ä—å 2006 –≥., 20:53
+ * Created on 1 ŒÍÚˇ·¸ 2006 „., 20:53
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -43,6 +43,13 @@ class FileJSR75 extends FileIO{
         return fileConnection.openOutputStream();
     }
 
+    public OutputStream openOutputStream(long pos_eof) throws IOException {
+        if (fileConnection==null) openFile();
+        if (!fileConnection.exists()) fileConnection.create();
+        pos_eof=fileConnection.fileSize();
+        return fileConnection.openOutputStream(pos_eof);
+    }
+
     public InputStream openInputStream() throws IOException{
         if (fileConnection==null) openFile();
         return fileConnection.openInputStream(); 
@@ -79,19 +86,5 @@ class FileJSR75 extends FileIO{
             rd.addElement((String)dirs.nextElement());
         }
         return rd;
-    }
-    
-    public void Write(byte[] append_data)
-    {
-        try {
-            fileConnection = (javax.microedition.io.file.FileConnection) Connector.open("file://" + fileName);
-            if (!fileConnection.exists()) fileConnection.create();
-            long pos_eof=fileConnection.fileSize();
-            OutputStream os = fileConnection.openOutputStream(pos_eof);
-            os.write(append_data);
-            os.flush();
-            os.close();
-            fileConnection.close();
-        } catch (IOException e) {}
     }
 }

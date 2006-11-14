@@ -1,7 +1,7 @@
 /*
  * FileComMotorolaIo.java
  *
- * Created on 1 –û–∫—Ç—è–±—Ä—å 2006 –≥., 20:54
+ * Created on 1 ŒÍÚˇ·¸ 2006 „., 20:54
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -42,6 +42,12 @@ class FileComMotorolaIo extends FileIO{
         }
         return fileConnection.openOutputStream();
     }
+    
+    public OutputStream openOutputStream(long pos_eof) throws IOException {
+        if (fileConnection==null) openFile();
+        if (!fileConnection.exists()) fileConnection.create();
+        return fileConnection.openOutputStream();
+    }
 
     public InputStream openInputStream() throws IOException {
         if (fileConnection==null) openFile();
@@ -76,18 +82,5 @@ class FileComMotorolaIo extends FileIO{
             rd.addElement(list[i].substring(fileName.length()));
         }
         return rd;
-    }
-    
-    public void Write(byte[] append_data)
-    {
-        try {
-            openFile();
-            long pos_eof=fileConnection.fileSize();
-            OutputStream os = fileConnection.openOutputStream();
-            os.write(append_data, (int)pos_eof, append_data.length);
-            os.flush();
-            os.close();
-            fileConnection.close();
-        } catch (IOException e) {}
     }
 }

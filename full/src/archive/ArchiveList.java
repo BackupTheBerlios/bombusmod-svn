@@ -13,6 +13,8 @@ import Client.Config;
 import Client.Msg;
 import Client.Title;
 import Messages.MessageList;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -51,6 +53,13 @@ public class ArchiveList
     
     MessageArchive archive=new MessageArchive();
     TextBox target;
+    
+    int fileSize;
+    private int filePos;
+    String filePath;
+    private FileIO file;
+    private OutputStream os;
+    
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, TextBox target) {
 	super ();
@@ -174,13 +183,39 @@ public class ArchiveList
                 } else {
                     bodyMessage=body.toString().getBytes();
                 }
+                
+                //try {
+                //    FileIO f=FileIO.createConnection(arhPath+"archive_"+getDate()+".txt");
+                //    f.Write(bodyMessage);
+                //} catch (Exception e) {}
+                
+                file=FileIO.createConnection(arhPath+"archive_"+getDate()+".txt");
                 try {
-                    FileIO f=FileIO.createConnection(arhPath+"archive_"+getDate()+".txt");
-                    f.Write(bodyMessage);
-                } catch (Exception e) {}
+                    os=file.openOutputStream();
+                    writeFile(bodyMessage);
+                    os.close();
+                    file.close();
+                } catch (IOException ex) {
+                    try {
+                        file.close();
+                    } catch (IOException ex2) {
+                        ex2.printStackTrace();
+                    }
+                    ex.printStackTrace();
+                }
             }
             arhPath=null;
 	destroyView();
+    }
+    
+    
+    void writeFile(byte b[]){
+        try {
+            os.write(b);
+            filePos+=b.length;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     public void BrowserFilePathNotify(String pathSelected) {

@@ -11,6 +11,8 @@ package Client;
 import images.RosterIcons;
 //#if FILE_IO
 import io.file.FileIO;
+import java.io.IOException;
+import java.io.OutputStream;
 //#endif
 import ui.Colors;
 import util.strconv;
@@ -86,6 +88,12 @@ public class Contact extends IconTextElement{
     public int lastUnread;
     
     public VCard vcard;
+    
+    int fileSize;
+    private int filePos;
+    String filePath;
+    private FileIO file;
+    private OutputStream os;
     
     //public long conferenceJoinTime;
     
@@ -226,16 +234,31 @@ public class Contact extends IconTextElement{
                 body.append(m.getBody());
                 body.append("\r\n");
                 
-                //NvStorage.appendFile("Log_"+histRecord, body.toString());
-                           byte[] bodyMessage;
-                           String histRecord=(nick==null)?getBareJid():nick;
-                           if (cf.cp1251) {
-                                bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
-                           } else {
-                                bodyMessage=body.toString().getBytes();
-                           }
-                           FileIO f=FileIO.createConnection(cf.msgPath+histRecord+".txt");
-                           f.Write(bodyMessage);
+               byte[] bodyMessage;
+               String histRecord=(nick==null)?getBareJid():nick;
+               if (cf.cp1251) {
+                    bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
+               } else {
+                    bodyMessage=body.toString().getBytes();
+               }
+               //FileIO f=FileIO.createConnection(cf.msgPath+histRecord+".txt");
+               //f.Write(bodyMessage);
+               file=FileIO.createConnection(cf.msgPath+histRecord+".txt");
+                try {
+                    //os=file.openOutputStream();
+                    os = file.openOutputStream(0);
+                    writeFile(bodyMessage);
+                    os.close();
+                    os.flush();
+                    file.close();
+                } catch (IOException ex) {
+                    try {
+                        file.close();
+                    } catch (IOException ex2) {
+                        ex2.printStackTrace();
+                    }
+                    ex.printStackTrace();
+                }
             }
        }
 //#endif
@@ -251,7 +274,16 @@ public class Contact extends IconTextElement{
             if (newMsgCnt>=0) newMsgCnt++;
         }
     }
-    
+//#if (FILE_IO)    
+    void writeFile(byte b[]){
+        try {
+            os.write(b);
+            filePos+=b.length;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+//#endif
   
     public int getColor() { return (status>7)?0:COLORS[status]; }
 

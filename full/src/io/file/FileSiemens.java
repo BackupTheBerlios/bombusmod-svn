@@ -1,7 +1,7 @@
 /*
  * FileSiemens.java
  *
- * Created on 7 –û–∫—Ç—è–±—Ä—å 2006 –≥., 23:20
+ * Created on 7 ŒÍÚˇ·¸ 2006 „., 23:20
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -16,14 +16,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
 
-public class FileSiemens extends FileIO{
+public class FileSiemens extends FileIO {
     
     private File f;
     private int fd;
 
     public FileSiemens(String fileName) {
-        //System.out.println("Siemens fs accessor for "+fileName);
-        // Siemens requires backslashes
         this.fileName=fileName=fileName.replace('/', '\\').substring(1);
     }
     
@@ -71,41 +69,18 @@ public class FileSiemens extends FileIO{
 
     public OutputStream openOutputStream() throws IOException {
         openFile();
-        return new FileSiemensOutputStream(f, fd);
+        return new FileSiemensOutputStream(f, fd, 0);
     }
 
     public InputStream openInputStream() throws IOException {
         openFile();
         return new FileSiemensInputStream(f, fd);
     }
-    public void Write(byte[] append_data) {
-         try{
-             File F = new File();
-             int fd=F.open(fileName);
-             long bs=append_data.length;
-             F.seek(fd, F.length(fd));
-             F.write(fd,append_data,0,(int)bs);
-             F.close(fd);
-         } catch (Exception e) {}
-    }
-}
-
-class FileSiemensOutputStream extends OutputStream {
-    private int fileDescriptor;
-    private File f;
-
-    public FileSiemensOutputStream(File f, int fd) {
-        this.f=f; this.fileDescriptor=fd;
-    }
     
-    public void write(int i) throws IOException {
-        byte buf[]=new byte[1];
-        f.write(fileDescriptor, buf, 0, 1);
+    public OutputStream openOutputStream(long pos_eof) throws IOException {
+        openFile();
+        return new FileSiemensOutputStream(f, fd, pos_eof);
     }
-    
-    public void write(byte[] b, int off, int len) throws IOException {  f.write(fileDescriptor, b, off, len); }
-
-    public void write(byte[] b) throws IOException {  f.write(fileDescriptor, b, 0, b.length);  }
 }
 
 class FileSiemensInputStream extends InputStream {
@@ -125,4 +100,28 @@ class FileSiemensInputStream extends InputStream {
     public int read(byte[] b, int off, int len) throws IOException {  return f.read(fileDescriptor, b, off, len); }
 
     public int read(byte[] b) throws IOException {  return f.read(fileDescriptor, b, 0, b.length);  }
+}
+
+class FileSiemensOutputStream extends OutputStream {
+    private int fileDescriptor;
+    private File f;
+
+    public FileSiemensOutputStream(File f, int fd, long Seek) {
+        this.f=f;
+        this.fileDescriptor=fd;
+        try {
+            this.f.seek(fd, f.length(fd));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void write(int i) throws IOException {
+        byte buf[]=new byte[1];
+        f.write(fileDescriptor, buf, 0, 1);
+    }
+    
+    public void write(byte[] b, int off, int len) throws IOException {  f.write(fileDescriptor, b, off, len); }
+
+    public void write(byte[] b) throws IOException {  f.write(fileDescriptor, b, 0, b.length);  }
 }
