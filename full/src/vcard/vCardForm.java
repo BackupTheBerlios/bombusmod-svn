@@ -73,13 +73,13 @@ public class vCardForm
     private String phototype="jpg";
     
     private ClipBoard clipboard;  // The clipboard class
-    
+//#if FILE_IO    
     int fileSize;
     private int filePos;
     String filePath;
     private FileIO file;
     private OutputStream os;
-    
+//#endif
     /** Creates a new instance of vCardForm */
     public vCardForm(Display display, VCard vcard, boolean editable) {
         this.display=display;

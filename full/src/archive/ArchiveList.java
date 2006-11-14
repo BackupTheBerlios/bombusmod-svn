@@ -54,12 +54,13 @@ public class ArchiveList
     MessageArchive archive=new MessageArchive();
     TextBox target;
     
+//#if FILE_IO    
     int fileSize;
     private int filePos;
     String filePath;
     private FileIO file;
     private OutputStream os;
-    
+//#endif
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, TextBox target) {
 	super ();

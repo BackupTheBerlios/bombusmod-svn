@@ -89,11 +89,13 @@ public class Contact extends IconTextElement{
     
     public VCard vcard;
     
+//#if FILE_IO    
     int fileSize;
     private int filePos;
     String filePath;
     private FileIO file;
     private OutputStream os;
+//#endif
     
     //public long conferenceJoinTime;
     
