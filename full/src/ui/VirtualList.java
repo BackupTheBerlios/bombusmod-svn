@@ -62,6 +62,8 @@ public abstract class VirtualList
      */
     protected int getTitleRGB() {return Colors.BAR_INK;} 
     
+    private Config cf=Config.getInstance();
+    
     /**
      * событие "Нажатие кнопки ОК"
      * базовая реализация VirtualList вызывает функцию onSelect для выбранного элемента; 
@@ -687,39 +689,36 @@ public abstract class VirtualList
                 case KEY_NUM7:  { moveCursorEnd();     break; }
 
                     case KEY_POUND: {
-                        if (Config.getInstance().poundKey) {
-                            if (Version.getPlatformName().indexOf("SIE") > -1) {
-                                System.gc();
-                            } else {
-                                fullMode=Config.getInstance().isbottom;
+                        if (cf.poundKey) {
+                            if (Version.getPlatformName().indexOf("SIE") == -1) {
+                                fullMode=cf.isbottom;
                                 switch (fullMode) {
-                                    case 0: Config.getInstance().isbottom=1; break;
-                                    case 1: Config.getInstance().isbottom=2; break;
-                                    case 2: Config.getInstance().isbottom=3; break;
-                                    case 3: Config.getInstance().isbottom=0; break;
+                                    case 0: cf.isbottom=1; break;
+                                    case 1: cf.isbottom=2; break;
+                                    case 2: cf.isbottom=3; break;
+                                    case 3: cf.isbottom=0; break;
                                 }
-                                Config.getInstance().saveToStorage();
-                                System.gc();
+                                cf.saveToStorage();
                             }
                         }
+                        System.gc();
+                        userKeyPressed(keyCode);
                         break;
                     }
                     case KEY_STAR: {
                         if (Config.getInstance().starKey) {
                             if (Version.getPlatformName().indexOf("SIE") > -1) {
-                                fullMode=Config.getInstance().isbottom;
+                                fullMode=cf.isbottom;
                                 switch (fullMode) {
-                                    case 0: Config.getInstance().isbottom=1; break;
-                                    case 1: Config.getInstance().isbottom=2; break;
-                                    case 2: Config.getInstance().isbottom=3; break;
-                                    case 3: Config.getInstance().isbottom=0; break;
+                                    case 0: cf.isbottom=1; break;
+                                    case 1: cf.isbottom=2; break;
+                                    case 2: cf.isbottom=3; break;
+                                    case 3: cf.isbottom=0; break;
                                 }
-                                Config.getInstance().saveToStorage();
-                                System.gc();
-                            } else {
-                                System.gc();
+                                cf.saveToStorage();
                             }
                         }
+                        System.gc();
                         userKeyPressed(keyCode);
                         break;
                     }

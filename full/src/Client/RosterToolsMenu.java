@@ -13,6 +13,7 @@ import PrivacyLists.PrivacySelect;
 import ServiceDiscovery.ServiceDiscovery;
 import javax.microedition.lcdui.Display;
 import locale.SR;
+import ui.ColorForm;
 import ui.Menu;
 import ui.MenuItem;
 import vcard.VCard;
@@ -38,6 +39,7 @@ public class RosterToolsMenu
 //#         addItem("root",4);
 //#         addItem("File Transfers", 5);
 //#endif
+        addItem("Color Tune", 6);
         
         attachDisplay(display);
     }
@@ -75,6 +77,9 @@ public class RosterToolsMenu
                 new io.file.transfer.TransferManager(display);
                 return;
 //#endif
+            case 6:
+                new ColorForm(display);
+                return;
         }
     }
 }

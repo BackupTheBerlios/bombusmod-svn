@@ -51,6 +51,8 @@ public class ContactMessageList extends MessageList
     private String text="";
 
     private boolean composing=true;
+    
+    private Config cf=Config.getInstance();
   
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
@@ -249,7 +251,7 @@ public class ContactMessageList extends MessageList
 
                         } else if (contact.acceptComposing) comp=(composing)? 1:2;
 
-                        if (!Config.getInstance().eventComposing) comp=0;
+                        if (!cf.eventComposing) comp=0;
 
                         try {
                             if (text!=null || comp>0)
@@ -270,7 +272,7 @@ public class ContactMessageList extends MessageList
     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; }
     
     private void updateBottom(int key){
-        if (Config.getInstance().altInput) {
+        if (cf.altInput) {
             if (startMessage) {
                     if (inputbox!=null) {
                         inputbox.sendKey(key);

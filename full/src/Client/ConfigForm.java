@@ -443,6 +443,8 @@ public class ConfigForm implements
             cl.MSG_SUBJ=loadInt(skinFile, "MSG_SUBJ");
             cl.MSG_HIGHLIGHT=loadInt(skinFile, "MSG_HIGHLIGHT");
             cl.DISCO_CMD=loadInt(skinFile, "DISCO_CMD");
+            cl.BAR_BGND=loadInt(skinFile, "BAR_BGND");
+            cl.BAR_INK=loadInt(skinFile, "BAR_INK");
             cl.CONTACT_DEFAULT=loadInt(skinFile, "CONTACT_DEFAULT");
             cl.CONTACT_CHAT=loadInt(skinFile, "CONTACT_CHAT");
             cl.CONTACT_AWAY=loadInt(skinFile, "CONTACT_AWAY");

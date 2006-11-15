@@ -25,6 +25,8 @@ public class ConferenceForm implements CommandListener{
     private Display display;
     private Displayable parentView;
     
+    private Config cf=Config.getInstance();
+    
     Command cmdJoin=new Command(SR.MS_JOIN, Command.SCREEN, 1);
     Command cmdBookmarks=new Command(SR.MS_BOOKMARKS, Command.SCREEN, 2);
     Command cmdAdd=new Command(SR.MS_ADD_BOOKMARK, Command.SCREEN, 3);
@@ -47,7 +49,7 @@ public class ConferenceForm implements CommandListener{
         Form formJoin=new Form(SR.MS_JOIN_CONFERENCE);
 
         if (room==null && server==null) {
-            room=Config.getInstance().defGcRoom;
+            room=cf.defGcRoom;
             // trying to split string like room@server
             int roomE=room.indexOf('@');
             if (roomE>0) {
@@ -71,7 +73,7 @@ public class ConferenceForm implements CommandListener{
         passField=new TextField(SR.MS_PASSWORD, password, 32, TextField.ANY | ConstMIDP.TEXTFIELD_SENSITIVE );
         formJoin.append(passField);
         
-        msgLimitField=new NumberField(SR.MS_MSG_LIMIT, Config.getInstance().confMessageCount, 0, 20);
+        msgLimitField=new NumberField(SR.MS_MSG_LIMIT, cf.confMessageCount, 0, 20);
         formJoin.append(msgLimitField);
         
         formJoin.addCommand(cmdJoin);
@@ -102,9 +104,9 @@ public class ConferenceForm implements CommandListener{
             if (c==cmdAdd) new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass));
             else {
                 try {
-                    Config.getInstance().confMessageCount=msgLimit;
-                    Config.getInstance().defGcRoom=room+"@"+host;
-                    Config.getInstance().saveToStorage();
+                    cf.confMessageCount=msgLimit;
+                    cf.defGcRoom=room+"@"+host;
+                    cf.saveToStorage();
                     gchat.append('/');
                     gchat.append(nick.trim());
                     join(gchat.toString(),pass, msgLimit);

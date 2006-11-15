@@ -38,6 +38,8 @@ public class AccountSelect
     Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdQuit=new Command(SR.MS_APP_QUIT,Command.SCREEN,10);
     
+    private Config cf=Config.getInstance();
+    
     /** Creates a new instance of AccountPicker */
     public AccountSelect(Display display, boolean enableQuit) {
         super();
@@ -49,7 +51,7 @@ public class AccountSelect
         Account a;
         
         int index=0;
-        activeAccount=Config.getInstance().accountIndex;
+        activeAccount=cf.accountIndex;
         do {
             a=Account.createFromStorage(index);
             if (a!=null) {
@@ -126,7 +128,6 @@ public class AccountSelect
     
     private void switchAccount(boolean login){
         destroyView();
-	Config cf=Config.getInstance();
         cf.accountIndex=cursor;
         cf.saveToStorage();
         Account.loadAccount(login);

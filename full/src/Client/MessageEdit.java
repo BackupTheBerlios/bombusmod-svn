@@ -45,6 +45,8 @@ public class MessageEdit
     private Command cmdPasteText=new Command("Paste", Command.SCREEN, 98);    
 
     private boolean composing=true;
+    
+    private Config cf=Config.getInstance();
  
     private int charsCount=-1;
     //private Command cmdSubject=new Command("Subject",Command.SCREEN,10);
@@ -150,7 +152,7 @@ public class MessageEdit
         //t.setInitialInputMode("MIDP_LOWERCASE_LATIN");
         new Thread(this).start() ; // composing
         
-        setInitialCaps(Config.getInstance().capsState);
+        setInitialCaps(cf.capsState);
         
         display.setCurrent(t);
     }
@@ -218,7 +220,7 @@ public class MessageEdit
             
         } else if (to.acceptComposing) comp=(composing)? 1:2;
         
-        if (!Config.getInstance().eventComposing) comp=0;
+        if (!cf.eventComposing) comp=0;
         
         try {
             if (body!=null /*|| subj!=null*/ || comp>0)
@@ -238,7 +240,7 @@ public class MessageEdit
         t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
         t.removeCommand(state? cmdABC: cmdAbc);
         t.addCommand(state? cmdAbc: cmdABC);
-        Config.getInstance().capsState=state;
+        cf.capsState=state;
 //#endif
     }
 
