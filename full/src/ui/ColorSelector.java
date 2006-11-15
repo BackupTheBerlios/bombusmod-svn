@@ -199,8 +199,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                                 val = "0x"+reds+greens+blues;
 
                                 setValue(Integer.parseInt(val.substring(2),16));
+                                //ColorForm.reloadSkin();
+                                ColorForm.COLORS[paramName]=Integer.parseInt(val.substring(2),16);
                                 exit = true;
-                                ColorForm.reloadSkin();
                                 destroyView();
 				break;
 
@@ -243,8 +244,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                                         val = "0x"+reds+greens+blues;
 
                                         setValue(Integer.parseInt(val.substring(2),16));
+                                        //ColorForm.reloadSkin();
+                                        ColorForm.COLORS[paramName]=Integer.parseInt(val.substring(2),16);
                                         exit = true;
-                                        ColorForm.reloadSkin();
                                         destroyView();
                                         break;
                                 }
@@ -414,7 +416,8 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
             String val = "0x"+reds+greens+blues;
 
             setValue(Integer.parseInt(val.substring(2),16));
-            ColorForm.reloadSkin();
+            //ColorForm.reloadSkin();
+            ColorForm.COLORS[paramName]=Integer.parseInt(val.substring(2),16);
             exit = true;
             destroyView();
             return;

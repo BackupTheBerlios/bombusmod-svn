@@ -471,6 +471,7 @@ public class ConfigForm implements
             cl.saveToStorage();
             skin=null;
     }
+    
     private static int loadInt(String skinFile,String key) {
         if (skin==null) {
             skin=new StringLoader().hashtableLoader(skinFile);

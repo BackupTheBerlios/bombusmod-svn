@@ -1444,10 +1444,6 @@ public class Roster
         if (keyCode=='3') searchGroup(-1);
 	if (keyCode=='9') searchGroup(1);
         
-        if (keyCode==-22) {
-            setLight(false);
-            new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
-        } 
     }
     
     public void logoff(){

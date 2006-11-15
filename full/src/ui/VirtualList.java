@@ -55,7 +55,8 @@ public abstract class VirtualList
      * @return RGB-цвет фона заголовка
      */
     protected int getTitleBGndRGB() {return Colors.BAR_BGND;} 
-
+    
+    private StaticData sd=StaticData.getInstance();
     /**
      * цвет текста заголовка
      * @return RGB-цвет текста заголовка
@@ -479,8 +480,8 @@ public abstract class VirtualList
                     if (ngprs>-1) {
                         gprscount=ngprs;
                     } else {
-                        int in=StaticData.getInstance().roster.theStream.getBytesIn();
-                        int out=StaticData.getInstance().roster.theStream.getBytesOut();
+                        int in=sd.roster.theStream.getBytesIn();
+                        int out=sd.roster.theStream.getBytesOut();
                         gprscount=in+out;
                     }
                     traff="&("+gprscount/1000+"<=)";
@@ -667,7 +668,11 @@ public abstract class VirtualList
      * @param keyCode код нажатой кнопки
      */
     private void key(int keyCode) {
-                        
+        if (keyCode==-22) {
+            sd.roster.setLight(false);
+            new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
+        } 
+        
                 if (keyCode==-4)  {
                     if (Version.getPlatformName().indexOf("SIE") > -1) {
                         destroyView();

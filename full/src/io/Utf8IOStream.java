@@ -273,6 +273,6 @@ public class Utf8IOStream implements Runnable{
     }
     
     public int getBytesS() {
-        return this.bytesRecv;
+        return this.bytesSent;
     }
 }
