@@ -43,12 +43,15 @@ public class KeyBlock extends Canvas implements Runnable{
     boolean motorola_backlight;
     boolean singleflash;
     
+    private StaticData sd=StaticData.getInstance();
+    
     /** Creates a new instance */
     public KeyBlock(
             Display display, 
             ComplexString status, 
             char exitKey, 
-            boolean motorola_backlight) 
+            boolean motorola_backlight,
+            boolean siemens_slider) 
     {
         this.status=status;
         this.display=display;
@@ -58,8 +61,7 @@ public class KeyBlock extends Canvas implements Runnable{
         parentView=display.getCurrent();
         
             if (!Roster.isAway) {
-                String away="Auto Status on KeyLock since "+Time.timeString(Time.localTime());
-                StaticData sd=StaticData.getInstance();
+                String away=(siemens_slider)?"Slider closed ("+Time.timeString(Time.localTime())+") read-only mode":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
                 Roster.oldStatus=sd.roster.myStatus;
                     try {
                         if (Roster.oldStatus==0 || Roster.oldStatus==1) {
@@ -136,6 +138,10 @@ public class KeyBlock extends Canvas implements Runnable{
     
     public void keyPressed(int keyCode) { 
         //System.out.println("blocked press"+(char) keyCode);
+        if (keyCode==-24) {
+            destroyView();
+            sd.roster.setLight(true);
+        } 
         kHold=0; 
     }
     public void keyReleased(int keyCode) { 
@@ -156,7 +162,6 @@ public class KeyBlock extends Canvas implements Runnable{
         img=null;
         tc.stop();
             if (Roster.isAway) {
-                StaticData sd=StaticData.getInstance();
                 int newStatus=sd.roster.oldStatus;
                 ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
                 String ms=es.getMessage();

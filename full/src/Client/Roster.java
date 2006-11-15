@@ -1444,6 +1444,10 @@ public class Roster
         if (keyCode=='3') searchGroup(-1);
 	if (keyCode=='9') searchGroup(1);
         
+        if (keyCode==-22) {
+            setLight(false);
+            new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
+        } 
     }
     
     public void logoff(){
@@ -1544,7 +1548,7 @@ public class Roster
         kHold=keyCode;
         
         if (keyCode==cf.keyLock) 
-            new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor); 
+            new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, false); 
 
         if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles
@@ -1716,7 +1720,7 @@ public class Roster
         }
     }
     
-    private void setLight(boolean state) {
+    public void setLight(boolean state) {
         if ((Version.getPlatformName().indexOf("SIE-S75")>-1) || (Version.getPlatformName().indexOf("SIE-E71")>-1) || (Version.getPlatformName().indexOf("SIE-SL75")>-1) || (Version.getPlatformName().indexOf("SIE-EF81")>-1) || (Version.getPlatformName().indexOf("SIE-SXG75") > -1)) {
             if (state){
                 com.siemens.mp.game.Light.setLightOn();

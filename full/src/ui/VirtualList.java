@@ -667,6 +667,7 @@ public abstract class VirtualList
      * @param keyCode код нажатой кнопки
      */
     private void key(int keyCode) {
+                        
                 if (keyCode==-4)  {
                     if (Version.getPlatformName().indexOf("SIE") > -1) {
                         destroyView();
