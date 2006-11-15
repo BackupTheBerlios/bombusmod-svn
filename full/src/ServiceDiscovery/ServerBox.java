@@ -1,7 +1,7 @@
 /*
  * ServerBox.java
  *
- * Created on 8 �?юль 2005 г., 1:09
+ * Created on 8 Июль 2005 г., 1:09
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -10,9 +10,9 @@
 package ServiceDiscovery;
 
 import javax.microedition.lcdui.*;
+import locale.SR;
 import ui.VirtualList;
 import ui.controls.TextFieldCombo;
-import locale.SR;
 /**
  *
  * @author EvgS

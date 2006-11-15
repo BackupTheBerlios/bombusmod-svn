@@ -1,7 +1,7 @@
 /*
  * SearchResult.java
  *
- * Created on 10 �?юль 2005 г., 21:40
+ * Created on 10 Июль 2005 г., 21:40
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -11,11 +11,11 @@ package ServiceDiscovery;
 import images.RosterIcons;
 import java.util.*;
 import javax.microedition.lcdui.*;
+import locale.SR;
 import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
-import locale.SR;
 
 /**
  *
@@ -110,9 +110,7 @@ public class SearchResult
     public void commandAction(Command c, Displayable d){
         if (c==cmdAdd){
             destroyView();
-            try {
-                new ContactMessageList((Contact) getFocusedObject(), display);
-            } catch (Exception e) {}
+            new ContactEdit(display, (Contact)getFocusedObject());
             return;
         }
         
@@ -126,6 +124,8 @@ public class SearchResult
         f.setCommandListener(this);
         f.addCommand(cmdBack);
         f.addCommand(cmdAdd);*/
-        new ContactMessageList((Contact) getFocusedObject(), display);
+        try {
+            new ContactMessageList((Contact) getFocusedObject(), display);
+        } catch (Exception e) {}
     }
 }

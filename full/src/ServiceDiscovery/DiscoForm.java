@@ -1,7 +1,7 @@
 /*
  * RegForm.java
  *
- * Created on 5 �?юнь 2005 г., 20:04
+ * Created on 5 Июнь 2005 г., 20:04
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -84,12 +84,13 @@ public class DiscoForm implements CommandListener{
                     fields.addElement(unreg);
                 }
             }
-
+            
             for (e=fields.elements(); e.hasMoreElements(); ){
                 FormField field=(FormField) e.nextElement();
                 if (!field.hidden) form.append(field.formItem);
             }
         }
+        
        
         form.setCommandListener(this);
         
@@ -127,10 +128,12 @@ public class DiscoForm implements CommandListener{
             if (f==null) continue;
             JabberDataBlock ch=f.constructJabberDataBlock();
             if (ch!=null) {
-                cform=qry;
-                cform.getChildBlocks().removeAllElements();
+                if (ch.getTagName().equals("remove")) {
+                    cform=qry;
+                    cform.getChildBlocks().removeAllElements();
+                }
+                cform.addChild(ch);
             }
-            cform.addChild(ch);
         }
         
         //System.out.println(req.toString());
