@@ -273,7 +273,7 @@ public class RosterItemActions extends Menu{
                 }
                 case 888: //info form
                 {
-                        new info(null,display, c);
+                        new info(null,null,display, c);
                         return;
                 }
                 case 889: //idle

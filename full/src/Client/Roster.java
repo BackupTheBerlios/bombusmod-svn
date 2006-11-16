@@ -970,7 +970,7 @@ public class Roster
                             //Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, lastType, body);
                             //messageStore(m);
                             //redraw();
-                            new info(lastType+" "+from+"\n"+body,display, null);
+                            new info(lastType,from+"\n"+body,display, null);
                         }
                     }
                 } else if (type.equals("get")){

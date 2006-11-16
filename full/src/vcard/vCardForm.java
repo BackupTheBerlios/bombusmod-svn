@@ -39,10 +39,7 @@ public class vCardForm
 //#if (FILE_IO)
         , BrowserListener
 //#endif
-
-//#if (!MIDP1)
         , CameraImageListener
-//#endif
 {
     
     private Display display;
