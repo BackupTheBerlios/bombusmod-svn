@@ -43,6 +43,7 @@ public class Browser extends VirtualList implements CommandListener{
     Command cmdOk=new Command(SR.MS_BROWSE, Command.OK, 1);
     Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 2);
     Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 3);
+    Command cmdView=new Command("View", Command.SCREEN, 4);
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
     
@@ -58,6 +59,7 @@ public class Browser extends VirtualList implements CommandListener{
         setTitleItem(new Title(2, null, null));
         
         addCommand(cmdOk);
+        addCommand(cmdView);
         if (getDirectory) {
             addCommand(cmdSelect);
         } else {
@@ -127,6 +129,27 @@ public class Browser extends VirtualList implements CommandListener{
                 display.setCurrent(finfo, this);
 				
             } catch (Exception e) { e.printStackTrace(); }
+        }
+        if (command==cmdView) {
+            String f=((FileItem)getFocusedObject()).name;
+            String fl=((FileItem)getFocusedObject()).name.toLowerCase();
+            if (!f.endsWith("/")) {
+                if (fl.endsWith(".wav") || fl.endsWith(".mid") || fl.endsWith(".amr") || fl.endsWith(".wav") || fl.endsWith(".mp3") || fl.endsWith(".aac")) {
+                        //System.out.println("play "+f);
+                        new ShowFile(display, path+f, 1);
+                        return;
+                }
+                if (fl.endsWith(".png") || fl.endsWith(".bmp") || fl.endsWith(".gif") || fl.endsWith(".jpg") || fl.endsWith(".jpeg")) {
+                        //System.out.println("view "+f);
+                        new ShowFile(display, path+f, 2);
+                        return;
+                }
+                if (fl.endsWith(".txt")) {
+                        //System.out.println("read "+f);
+                        new ShowFile(display, path+f, 3);
+                        return;
+                }
+            }
         }
         if (command==cmdCancel) { destroyView(); }
     }
@@ -201,8 +224,12 @@ public class Browser extends VirtualList implements CommandListener{
         public FileItem(String name) {
             super(RosterIcons.getInstance());
             this.name=name;
+            String namel=name.toLowerCase();
             //TODO: file icons
             iconIndex=name.endsWith("/")? RosterIcons.ICON_COLLAPSED_INDEX: RosterIcons.ICON_PRIVACY_ACTIVE;
+            if (namel.endsWith(".txt")) iconIndex=RosterIcons.ICON_PRIVACY_ACTIVE;
+            if (namel.endsWith(".png") || namel.endsWith(".bmp") || namel.endsWith(".gif") || namel.endsWith(".jpg") || namel.endsWith(".jpeg")) iconIndex=0x57;
+            if (namel.endsWith(".wav") || namel.endsWith(".mid") || namel.endsWith(".amr") || namel.endsWith(".wav") || namel.endsWith(".mp3") || namel.endsWith(".aac")) iconIndex=0x33;
         }
         protected int getImageIndex() { return iconIndex; }
         
