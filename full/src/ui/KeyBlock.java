@@ -106,14 +106,12 @@ public class KeyBlock extends Canvas implements Runnable{
         g.setColor(Colors.BLK_BGND);
         g.fillRect(0,0, width, height);
         
-        if (img!=null) g.drawImage(img, width/2, 0, Graphics.TOP|Graphics.HCENTER);
+        if (img!=null) g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
         
         int h=f.getHeight()+1;
-//#if ALCATEL_FONT
-//#         int y=height-h-4;
-//#else
-        int y=height-h;
-//#endif
+
+        int y=0;
+
         g.setColor(Colors.BLK_INK);
         g.translate(0, y);
         status.drawItem(g, 0, false);
@@ -121,19 +119,21 @@ public class KeyBlock extends Canvas implements Runnable{
         String time=Time.timeString(Time.localTime());
         int tw=f.stringWidth(time);
         
-        g.translate(width/2, -h);
-        g.setColor(Colors.BLK_BGND);
-        g.fillRect(-tw/2-5, -h, tw+10, h);
+        g.translate(width/2, height);
+        //if (Colors.BLK_BGND!=0x010101) {
+        //    g.setColor(Colors.BLK_BGND);
+        //    g.fillRect(-tw/2-5, -h, tw+10, h);
+        //}
 
-        g.setColor(Colors.BLK_INK);
-        g.setFont(f);
-        g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
-//#if !(MIDP1)
-	//display.flashBacklight(0); // тест на самсунгах
+        if (Colors.BLK_INK!=0x010101) {
+            g.setColor(Colors.BLK_INK);
+            g.setFont(f);
+            g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
+        }
+        
         if (motorola_backlight) 
             if (singleflash) display.flashBacklight(1);
         singleflash=false;
-//#endif
     }
     
     public void keyPressed(int keyCode) { 

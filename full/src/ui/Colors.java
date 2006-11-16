@@ -83,6 +83,9 @@ public class Colors {
             MSG_HIGHLIGHT=inputStream.readInt();
 
             DISCO_CMD=inputStream.readInt();
+            
+            BAR_BGND=inputStream.readInt();
+            BAR_INK=inputStream.readInt();
 
             CONTACT_DEFAULT=inputStream.readInt();
             CONTACT_CHAT=inputStream.readInt();
@@ -134,6 +137,9 @@ public class Colors {
 	    outputStream.writeInt(MSG_HIGHLIGHT);
             
 	    outputStream.writeInt(DISCO_CMD);
+            
+            outputStream.writeInt(BAR_BGND);
+            outputStream.writeInt(BAR_INK);
             
 	    outputStream.writeInt(CONTACT_DEFAULT);
 	    outputStream.writeInt(CONTACT_CHAT);
