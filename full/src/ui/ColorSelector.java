@@ -363,12 +363,15 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                     cl.CURSOR_BGND=value; 
                     break;
                 case 30:
+                    cl.CURSOR_OUTLINE=value; 
+                    break;                    
+                case 31:
                     cl.SCROLL_BRD=value; 
                     break;
-                case 31:
+                case 32:
                     cl.SCROLL_BAR=value; 
                     break;
-                case 32:
+                case 33:
                     cl.SCROLL_BGND=value; 
                     break;
             }

@@ -60,9 +60,9 @@ public class RosterItemActions extends Menu{
 	    }
 	    //if (contact.group==Groups.SELF_INDEX) addItem("Commands",30);
 	    
-            addItem("Info",888);
 	    addItem(SR.MS_VCARD,1);
-	    addItem(SR.MS_CLIENT_INFO,0);
+            addItem("Info",888);
+            addItem(SR.MS_CLIENT_INFO,0);
 	    addItem(SR.MS_COMMANDS,30);
             
             if (contact.getJid()==contact.getBareJid()) {

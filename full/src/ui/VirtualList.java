@@ -668,19 +668,24 @@ public abstract class VirtualList
      * @param keyCode код нажатой кнопки
      */
     private void key(int keyCode) {
+        boolean isSiemens=false;
+        if (Version.getPlatformName().indexOf("SIE") > -1) isSiemens=true;
         if (keyCode==-22) {
-            sd.roster.setLight(false);
-            new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
+            if (isSiemens) {
+                sd.roster.setLight(false);
+                new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
+                return;
+            }
         } 
         
                 if (keyCode==-4)  {
-                    if (Version.getPlatformName().indexOf("SIE") > -1) {
+                    if (isSiemens) {
                         destroyView();
 			return;
                     }         
                 }
                 if (keyCode==702)  {
-                    if (Version.getPlatformName().indexOf("SIE") > -1) {
+                    if (isSiemens) {
                         destroyView();
 			return;
                     }         
@@ -696,7 +701,7 @@ public abstract class VirtualList
 
                     case KEY_POUND: {
                         if (cf.poundKey) {
-                            if (Version.getPlatformName().indexOf("SIE") == -1) {
+                            if (!isSiemens) {
                                 fullMode=cf.isbottom;
                                 switch (fullMode) {
                                     case 0: cf.isbottom=1; break;
@@ -713,7 +718,7 @@ public abstract class VirtualList
                     }
                     case KEY_STAR: {
                         if (Config.getInstance().starKey) {
-                            if (Version.getPlatformName().indexOf("SIE") > -1) {
+                            if (isSiemens) {
                                 fullMode=cf.isbottom;
                                 switch (fullMode) {
                                     case 0: cf.isbottom=1; break;

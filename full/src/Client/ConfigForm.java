@@ -218,12 +218,9 @@ public class ConfigForm implements
         sndVol=new Gauge("Sound volume", true, 10,  cf.soundVol/10);
 	f.append(sndVol);
 
-//#if !(MIDP1)
 	sndFile.addCommand(cmdPlaySound);
 	sndFile.setItemCommandListener(this);
-//#else
-//# 	f.addCommand(cmdPlaySound);
-//#endif
+
 	
         lang=new ChoiceGroup("Language", ConstMIDP.CHOICE_POPUP);
 	Vector langs[]=new StringLoader().stringLoader("/lang/res.txt",2);
@@ -299,9 +296,10 @@ public class ConfigForm implements
 	}
 	SkinFile.setSelectedIndex(0, true);
 	f.append(SkinFile);
+//#if FILE_IO
 	SkinFile.addCommand(cmdLoadSkin);
 	SkinFile.setItemCommandListener(this);
-        
+//#endif        
         
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);
@@ -318,7 +316,9 @@ public class ConfigForm implements
             message.getSelectedFlags(mv);
             application.getSelectedFlags(ap);
 	    startup.getSelectedFlags(su);
+//#if FILE_IO
             history.getSelectedFlags(his);
+//#endif
             autoaway.getSelectedFlags(aa);
 	    
             cf.showOfflineContacts=ra[0];
@@ -338,10 +338,10 @@ public class ConfigForm implements
 	    cf.autoJoinConferences=su[1];
             
 	    int apctr=0;
-//#if !(MIDP1)
+
             VirtualList.fullscreen=cf.fullscreen=ap[apctr++];
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
-//#endif
+
 	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];            
             
 	    cf.blFlash=ap[apctr++];
@@ -362,7 +362,7 @@ public class ConfigForm implements
 	    cf.soundVol=sndVol.getValue()*10;
             cf.lang=lang.getSelectedIndex();
 	    
-            
+//#if FILE_IO
             cf.msgLog=his[0];
             cf.msgLogPresence=his[1];
             cf.msgLogConf=his[2];
@@ -370,7 +370,7 @@ public class ConfigForm implements
             cf.cp1251=his[4];
             
             cf.msgPath=historyFolder.getString();
-            
+//#endif             
             cf.setAutoStatus=aa[0];
             cf.autoAwayTime=autoAwayTime.getValue();
 
@@ -383,13 +383,9 @@ public class ConfigForm implements
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();
         }
-//#if MIDP1
-//#         if (c==cmdPlaySound) testSound();
-//#endif
         if (c==cmdCancel) destroyView();
     }
 
-//#if !(MIDP1)
     public void commandAction(Command command, Item item) {
 	if (command==cmdPlaySound) {
 	    testSound();
@@ -403,7 +399,6 @@ public class ConfigForm implements
         }
 //#endif
     }
-//#endif
     
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
@@ -465,6 +460,7 @@ public class ConfigForm implements
             cl.HEAP_TOTAL=loadInt(skinFile, "HEAP_TOTAL");
             cl.HEAP_FREE=loadInt(skinFile, "HEAP_FREE");
             cl.CURSOR_BGND=loadInt(skinFile, "CURSOR_BGND");
+            cl.CURSOR_OUTLINE=loadInt(skinFile, "CURSOR_OUTLINE");
             cl.SCROLL_BRD=loadInt(skinFile, "SCROLL_BRD");
             cl.SCROLL_BAR=loadInt(skinFile, "SCROLL_BAR");
             cl.SCROLL_BGND=loadInt(skinFile, "SCROLL_BGND");

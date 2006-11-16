@@ -117,6 +117,8 @@ public class Colors {
             SCROLL_BRD=inputStream.readInt();
             SCROLL_BAR=inputStream.readInt();
             SCROLL_BGND=inputStream.readInt();
+            
+            CURSOR_OUTLINE=inputStream.readInt();
 
 	    inputStream.close();
 	} catch (Exception e) {
@@ -171,6 +173,8 @@ public class Colors {
 	    outputStream.writeInt(SCROLL_BRD);
 	    outputStream.writeInt(SCROLL_BAR);
 	    outputStream.writeInt(SCROLL_BGND);
+            
+            outputStream.writeInt(CURSOR_OUTLINE);
 
         } catch (IOException e) { e.printStackTrace(); }
 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
