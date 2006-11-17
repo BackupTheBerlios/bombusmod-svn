@@ -184,7 +184,7 @@ public class Roster
         addCommand(cmdInfo);
         addCommand(cmdAccount);
 
-        addCommand(cmdQuit);
+        if (Version.getPlatformName().indexOf("Nokia9500") < 0 || Version.getPlatformName().indexOf("Nokia9300") < 0 || Version.getPlatformName().indexOf("Nokia9300i") < 0) addCommand(cmdQuit);
         
         
         addOptionCommands();
@@ -875,8 +875,9 @@ public class Roster
             } catch (Exception e) { e.printStackTrace(); }
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
-            
-            theStream.addBlockListener(TransferDispatcher.getInstance());
+//#if FILE_TRANSFER            
+//#             theStream.addBlockListener(TransferDispatcher.getInstance());
+//#endif
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 60);
@@ -1411,7 +1412,7 @@ public class Roster
              }         
         }     
         if (keyCode==-7)  {
-            if (Version.getPlatformName().indexOf("Nokia") > -1) {
+            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
                 new RosterMenu(display, getFocusedObject());
              }         
         }
