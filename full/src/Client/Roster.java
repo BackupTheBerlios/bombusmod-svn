@@ -875,6 +875,8 @@ public class Roster
             } catch (Exception e) { e.printStackTrace(); }
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
+            
+            theStream.addBlockListener(TransferDispatcher.getInstance());
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 60);
