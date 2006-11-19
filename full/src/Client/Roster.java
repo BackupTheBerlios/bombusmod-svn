@@ -97,7 +97,7 @@ public class Roster
     
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
-    private Command cmdActiveContact=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
+    private Command cmdActiveContact;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
     private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
     private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 10);
@@ -138,6 +138,8 @@ public class Roster
     private String myMessage;    
 
     private TimerTaskAutoAway AutoAway;
+
+    public static boolean autoReconnect=true;
     
     /**
      * Creates a new instance of Roster
@@ -168,6 +170,13 @@ public class Roster
         //l.setTitleImgL(6); //connect
         hContacts=new Vector();
         groups=new Groups();
+        
+        int activeType=Command.SCREEN;
+        String platform=Version.getPlatformName();
+        if (platform.startsWith("Nokia")) activeType=Command.BACK;
+        if (platform.startsWith("Intent")) activeType=Command.BACK;
+        
+        cmdActiveContact=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
         
         vContacts=new Vector(); // just for displaying
         addCommand(cmdStatus);
@@ -634,6 +643,18 @@ public class Roster
                         c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
                 }
             }
+            //reconnect here
+                if (autoReconnect && status==Presence.PRESENCE_OFFLINE){
+                    System.out.println("reconnect");
+                    try {
+                        theStream.close();
+                    } catch (Exception e) { e.printStackTrace(); }
+                    theStream=null;
+                    System.gc();
+                    new Thread(this).start();
+                    return;
+                }
+            //reconnect end
         }
         
         // reconnect if disconnected        
@@ -856,6 +877,13 @@ public class Roster
     }
     
     public void loginSuccess() {
+        // enable File transfers
+//#if (FILE_IO && FILE_TRANSFER)
+//#             theStream.addBlockListener(TransferDispatcher.getInstance());
+//#endif
+        //query bookmarks
+        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+        
         // залогинились. теперь, если был реконнект, то просто пошлём статус
         if (reconnect) {
             querysign=reconnect=false;
@@ -875,9 +903,6 @@ public class Roster
             } catch (Exception e) { e.printStackTrace(); }
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
-//#if FILE_TRANSFER            
-//#             theStream.addBlockListener(TransferDispatcher.getInstance());
-//#endif
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 60);
@@ -950,14 +975,11 @@ public class Roster
                         reEnumRoster();
                         // теперь пошлём присутствие
                         querysign=reconnect=false;
-                        sendPresence(myStatus);
+                        //sendPresence(myStatus);
                         //sendPresence(Presence.PRESENCE_INVISIBLE);
+                        sendPresence(cf.loginstatus);
                         
-                        SplashScreen.getInstance().close(); // display.setCurrent(this);
-                theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-//#if (FILE_IO && FILE_TRANSFER)
-//#             theStream.addBlockListener(TransferDispatcher.getInstance());
-//#endif	                      
+                        SplashScreen.getInstance().close(); // display.setCurrent(this);                      
                     } 
                     if (id.equals("last")) {
                         JabberDataBlock tm=data.getChildBlock("query");
@@ -970,10 +992,8 @@ public class Roster
                             
                             if (from.indexOf("/")>-1) lastType="idle";
                             
-                            //Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, lastType, body);
-                            //messageStore(m);
-                            //redraw();
-                            new info(lastType,from+"\n"+body,display, null);
+                            String status=tm.getText();
+                            new info(lastType,from+"\n"+body+"\n"+status,display, null);
                         }
                     }
                 } else if (type.equals("get")){

@@ -54,6 +54,7 @@ public class vCardForm
 //#endif
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,4);
     protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,5);
+    protected Command cmdClear = new Command("Clear Photo", Command.SCREEN, 6);
     protected Command cmdCopy = new Command("Copy text", Command.SCREEN, 7);    
     
     private Form f;
@@ -129,6 +130,9 @@ public class vCardForm
 //#endif
             f.addCommand(cmdDelPhoto);
         }
+        if (!editable) {
+            f.addCommand(cmdClear);
+        }
 //#if (FILE_IO)
         f.addCommand(cmdSavePhoto);
 //#endif
@@ -140,6 +144,11 @@ public class vCardForm
         if (c==cmdCancel) destroyView();
         if (c==cmdRefresh) {
             VCard.request(vcard.getJid());
+            destroyView();
+        }
+        
+        if (c==cmdClear) {
+            vcard.photo=null;
             destroyView();
         }
         

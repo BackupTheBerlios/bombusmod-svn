@@ -106,6 +106,7 @@ public abstract class VirtualList
     public static int greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
+    public static boolean digitMemMonitor;
     
     /** метрика экрана */
     int width;
@@ -463,7 +464,8 @@ public abstract class VirtualList
                 int h=NetAccuFont.fontHeight;
 
                 String time=Time.timeString(Time.localTime());
-                if (memMonitor) {
+                
+                if (digitMemMonitor) {
                     int freemem=(int)Runtime.getRuntime().freeMemory();
                     NetAccuFont.drawString(g, time+" $"+freemem, 11,  h+1);
                 } else {

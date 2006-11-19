@@ -13,7 +13,7 @@ public class NetAccuFont {
     public static int fontHeight = 0;
 
     static final byte[] emptyByteArray = new byte[0];
-    static int numberStart = 48;
+    final static int numberStart = 48;
     static int font_offset [] = null;
     static int font_offset_y [] = null;
     static byte font_bbx[] = null;

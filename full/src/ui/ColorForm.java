@@ -44,7 +44,7 @@ public class ColorForm implements CommandListener
 
       private static Colors cl=Colors.getInstance();
 
-      public static String[] NAMES = {"balloon border and font",
+      public final static String[] NAMES = {"balloon border and font",
                                     "balloon back",
                                     "common back",
                                     "even back",
@@ -79,7 +79,7 @@ public class ColorForm implements CommandListener
                                     "scroll bar",
                                     "scroll back"};
       
-      public static int[] COLORS = {cl.BALLOON_INK,
+      public final static int[] COLORS = {cl.BALLOON_INK,
                                     cl.BALLOON_BGND,
                                     cl.LIST_BGND,
                                     cl.LIST_BGND_EVEN,

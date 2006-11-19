@@ -164,7 +164,7 @@ public class ConfigForm implements
         su[1]=cf.autoJoinConferences;
         startup.setSelectedFlags(su);
         
-        ap=new boolean[4];
+        ap=new boolean[5];
 	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
 //#if !(MIDP1)
@@ -172,11 +172,12 @@ public class ConfigForm implements
         application.append(SR.MS_FULLSCREEN,null);
 //#endif
         application.append(SR.MS_HEAP_MONITOR,null);
-	if (!cf.ghostMotor)
-            application.append(SR.MS_FLASHBACKLIGHT,null);
-	if (cf.allowMinimize)
-	    application.append(SR.MS_ENABLE_POPUP,null);
+        application.append("Digital "+SR.MS_HEAP_MONITOR,null);
+	if (!cf.ghostMotor) application.append(SR.MS_FLASHBACKLIGHT,null);
+	if (cf.allowMinimize) application.append(SR.MS_ENABLE_POPUP,null);
+        
 	ap[apctr++]=cf.memMonitor;
+        ap[apctr++]=cf.digitMemMonitor;
 	ap[apctr++]=cf.blFlash;
 	ap[apctr++]=cf.popupFromMinimized;
 	
@@ -342,7 +343,8 @@ public class ConfigForm implements
             VirtualList.fullscreen=cf.fullscreen=ap[apctr++];
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
 
-	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];            
+	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
+            VirtualList.digitMemMonitor=cf.digitMemMonitor=ap[apctr++];   
             
 	    cf.blFlash=ap[apctr++];
 	    cf.popupFromMinimized=ap[apctr++];

@@ -88,6 +88,12 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         int status=getSel().getImageIndex();
         try {
             Roster.isAway=false;
+            if (status==6) {
+                Roster.autoReconnect=false;    
+            } else {
+                Roster.autoReconnect=true;    
+            }
+            
             //StaticData.getInstance().roster.sendPresence(status);
             StaticData.getInstance().roster.sendDirectPresence(status, to);
         } catch (Exception e) { e.printStackTrace(); }

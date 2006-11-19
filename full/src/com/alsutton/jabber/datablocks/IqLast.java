@@ -33,13 +33,16 @@ public class IqLast extends Iq{
         super(to, Iq.TYPE_GET, "last");
         addChild("query",null).setNameSpace("jabber:iq:last");
     }
-    
+
     public static String dispatchLast(JabberDataBlock data) {
         if (!data.isJabberNameSpace("jabber:iq:last")) return "unknown last namespace";
         StringBuffer tm=new StringBuffer();
-            String field=data.getAttribute("seconds");
-            tm.append(field);
-            tm.append(" sec");
+        String field=data.getAttribute("seconds");
+        if (field==null || field=="0") {
+            tm.append("0 sec");    
+        } else {
+            tm.append(Time.secToDate(Integer.parseInt(field)));
+        }
         return tm.toString();
     }
 }

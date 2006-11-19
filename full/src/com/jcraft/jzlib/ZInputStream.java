@@ -122,7 +122,7 @@ public class ZInputStream extends FilterInputStream {
     /*    for (int i=0; i<len-z.avail_out; i++) {
             System.out.print((char) b[i]);
         }
-        System.out.println();
+        //System.out.println();
      */
     return(len-z.avail_out);
   }

@@ -110,6 +110,7 @@ public class Config {
     
     public boolean popupFromMinimized=true;
     public boolean memMonitor;
+    public boolean digitMemMonitor=false;
     
     public int font1=0;
     public int font2=0;
@@ -198,7 +199,7 @@ public class Config {
             istreamWaiting=true;
 	}*/
         
-        if (Version.isSiemens==true) {
+        if (platform.startsWith("SIE")) {
             keyLock='#';
             keyVibra='*';
         }
@@ -274,6 +275,8 @@ public class Config {
             
             confMessageCount=inputStream.readInt();
             
+            digitMemMonitor=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -284,6 +287,7 @@ public class Config {
 	updateTime();
 	VirtualList.fullscreen=fullscreen;
 	VirtualList.memMonitor=memMonitor;
+        VirtualList.digitMemMonitor=digitMemMonitor;
     }
     
     public void loadSoundName(){
@@ -362,6 +366,8 @@ public class Config {
             outputStream.writeInt(isbottom);
             
             outputStream.writeInt(confMessageCount);
+            
+            outputStream.writeBoolean(digitMemMonitor);
             
 	} catch (Exception e) { e.printStackTrace(); }
 	

@@ -226,6 +226,7 @@ public class BitMapFontViewer {
 	 * @param paddingVertical the space between lines
 	 * @param orientationSetting the orientation of this viewer, either Grapics.LEFT, Graphics.RIGHT or Graphics.HCENTER
 	 */
+        
 	public void layout( int firstLineWidth, int lineWidth, int paddingVertical, int orientationSetting ) {
 		this.orientation = orientationSetting;
 		this.verticalPadding = paddingVertical;
