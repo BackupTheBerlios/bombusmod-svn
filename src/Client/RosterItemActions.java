@@ -13,9 +13,6 @@ package Client;
 import Conference.ConferenceForm;
 import Conference.ConferenceGroup;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
-//#if (!SMALL)
-import Conference.InviteForm;
-//#endif
 import Conference.MucContact;
 import Conference.QueryConfigForm;
 import Conference.affiliation.Affiliations;
@@ -262,29 +259,6 @@ public class RosterItemActions extends Menu{
                     new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
                     return;
                 }
- //#if (!SMALL)               
-                case 40: //invite
-                {
-                    if (c.jid!=null) {
-                        new InviteForm(c, display);                        
-                    } else {
-                        MucContact mcJ=(MucContact) c;
-
-                        if (mcJ.realJid!=null) {
-                            boolean onlineConferences=false;
-                            for (Enumeration cJ=StaticData.getInstance().roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
-                                try {
-                                    MucContact mcN=(MucContact)cJ.nextElement();
-                                    if (mcN.origin==Contact.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)
-                                        onlineConferences=true;
-                                } catch (Exception e) {}
-                            }
-                            if (onlineConferences) new InviteForm(mcJ, display);
-                        }
-                    }
-                    return;
-                }
-//#endif                
                 case 45: //direct presence
                 {
                     new StatusSelect(display, c);
