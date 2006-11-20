@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 //#endif
 
-//#if (!MIDP1)
+//#if (!SMALL)
 import images.camera.*;
 //#endif
 
@@ -37,7 +37,7 @@ public class vCardForm
         , BrowserListener
 //#endif
 
-//#if (!MIDP1)
+//#if (!SMALL)
         , CameraImageListener
 //#endif
 {
@@ -129,7 +129,7 @@ public class vCardForm
         }
 //#endif
 
-//#if (!MIDP1)
+ //#if (!SMALL)
         if (c==cmdCamera)
             new CameraImage(display, this);
 //#endif

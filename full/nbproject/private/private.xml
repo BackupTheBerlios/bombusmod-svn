@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/Client/Config.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/Client/ConfigForm.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/Client/Roster.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/Client/RosterItemActions.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/Client/RosterToolsMenu.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/Client/info.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/Conference/ConferenceForm.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/archive/ArchiveList.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/images/RosterIcons.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/io/file/browse/Browser.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/io/file/browse/ShowFile.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/ui/ColorForm.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/ui/KeyBlock.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/ui/SplashScreen.java</file>
+        <file xmlns="">file:/C:/bombus/bombusmod/full/src/ui/VirtualList.java</file>
+    </open-files>
 </project-private>

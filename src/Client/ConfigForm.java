@@ -8,8 +8,10 @@
  */
 
 package Client;
+//#if (!SMALL)
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
+//#endif
 import java.util.Enumeration;
 import javax.microedition.lcdui.*;
 import locale.SR;

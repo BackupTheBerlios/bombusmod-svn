@@ -9,8 +9,9 @@
 
 
 package Client;
-
+//#if (!SMALL)
 import Conference.BookmarkQuery;
+//#endif
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 import Conference.QueryConfigForm;
@@ -665,7 +666,7 @@ public class Roster
     public Contact selfContact() {
 	return getContact(myJid.getJid(), true);
     }
-    
+ 
     public void sendConferencePresence() {
         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
@@ -758,8 +759,10 @@ public class Roster
 //#if (FILE_IO && FILE_TRANSFER)
             theStream.addBlockListener(TransferDispatcher.getInstance());
 //#endif
+ //#if (!SMALL)
         //query bookmarks
         theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
         // залогинились. теперь, если был реконнект, то просто пошлём статус
         if (reconnect) {
             querysign=reconnect=false;
@@ -778,9 +781,10 @@ public class Roster
             } catch (Exception e) { e.printStackTrace(); }
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
-            
+ //#if (!SMALL)            
             //query bookmarks
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress("Roster request", 60); //locale
@@ -857,10 +861,11 @@ public class Roster
                         //sendPresence(Presence.PRESENCE_INVISIBLE);
                         
                         SplashScreen.getInstance().close(); // display.setCurrent(this);
-                        
+ //#if (!SMALL)                        
                         //loading bookmarks
                         //if (cf.autoJoinConferences)
                             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
                     } 
                     
                 } else if (type.equals("get")){
