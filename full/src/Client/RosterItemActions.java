@@ -329,8 +329,6 @@ public class RosterItemActions extends Menu{
             
             if (c instanceof MucContact || g instanceof ConferenceGroup) {
                 MucContact mc=(MucContact) c;
-                ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
-                String myNick=mucGrp.getSelfContact().getName();
                 
                 switch (index) { // muc contact actions
                     case 10: // room config
@@ -373,28 +371,32 @@ public class RosterItemActions extends Menu{
                     
                      case 8: // kick
                      {
+                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                        String myNick=mucGrp.getSelfContact().getName();
                         new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                         return;
                      }
                      case 9: // ban
                      {
+                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                        String myNick=mucGrp.getSelfContact().getName();
                         new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
                         return;
                      }
                      case 31: //grant voice and revoke moderator
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,myNick);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null);
                         return;
                      }
                      case 32: //revoke voice
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.VISITOR,myNick);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.VISITOR,null);
                         return;
                      }
                      
                      case 33: //grant moderator
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR,myNick);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR,null);
                         return;
                      }
                      
@@ -405,25 +407,25 @@ public class RosterItemActions extends Menu{
                     
                      case 35: //grant membership and revoke admin
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,myNick);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,null);
                         return;
                      }
                      
                      case 36: //revoke membership
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,myNick);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,null);
                         return;
                      }
                      
                      case 37: //grant admin and revoke owner
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,myNick);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,null);
                         return;
                      }
                      
                      case 38: //grant owner
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,myNick);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
                         return;
                      }
                  }

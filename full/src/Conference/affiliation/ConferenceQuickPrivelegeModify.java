@@ -122,8 +122,11 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
 
         try {
             String rzn=reason.getString();
-            if (rzn.length()!=0) {
-               item.addChild("reason", myNick+": "+rzn);
+            String Nick=(myNick==null)?myNick+": ":myNick;
+            if (rzn.length()!=0 && myNick!=null) {
+               item.addChild("reason",Nick+rzn);
+            } else {
+                item.addChild("reason", Nick);
             }
             
             
