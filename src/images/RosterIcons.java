@@ -83,4 +83,6 @@ public class RosterIcons extends ImageList{
     public static final int ICON_PRIVACY_BLOCK = 0x37;
 
     public static final int ICON_KEYBLOCK_INDEX = 0x17;
+    
+    public static Integer iconHasVcard=new Integer(ICON_SEARCH_INDEX);
 }

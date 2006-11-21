@@ -46,7 +46,7 @@ public class BookmarkQuery implements JabberBlockListener{
     
     public int blockArrived(JabberDataBlock data) {
         try {
-            
+            if (!(data instanceof Iq)) return JabberBlockListener.BLOCK_REJECTED;
             if (data.getAttribute("id").equals("getbookmarks")) {
                 JabberDataBlock storage=data.findNamespace("jabber:iq:private").
                         findNamespace("storage:bookmarks");
@@ -63,7 +63,7 @@ public class BookmarkQuery implements JabberBlockListener{
                 System.out.println("Bookmark query result success");
                 return JabberBlockListener.NO_MORE_BLOCKS;
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {}
         return JabberBlockListener.BLOCK_REJECTED;
     }
 }
