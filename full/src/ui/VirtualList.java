@@ -99,6 +99,8 @@ public abstract class VirtualList
     public static final int MOTOE680_FMRADIO=-7;
     public static final int SE_GREEN=0;
     
+    public static final int SE_CLEAR=-8;
+    
     public int stringHeight=15;
 
     public static int keyClear=-8;

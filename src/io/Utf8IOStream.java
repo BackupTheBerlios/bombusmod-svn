@@ -274,7 +274,6 @@ public class Utf8IOStream implements Runnable{
         } 
         stats.append("\nLocal IP=");
         try {
-            stats.append(((SocketConnection)connection).getAddress()+"\n");
             stats.append(((SocketConnection)connection).getLocalAddress());
             stats.append(":"); 
             stats.append(((SocketConnection)connection).getLocalPort());

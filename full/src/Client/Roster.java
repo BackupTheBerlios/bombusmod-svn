@@ -1413,6 +1413,15 @@ public class Roster
 
     protected void keyPressed(int keyCode) {
         super.keyPressed(keyCode);
+        
+        if (keyCode==SE_CLEAR) {
+                    Contact c=(Contact)getFocusedObject();
+                    new YesNoAlert(display, this, SR.MS_DELETE_ASK, c.getNickJid()){
+                        public void yes() {
+                            deleteContact((Contact)getFocusedObject());
+                        };
+                    };
+        }
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {
             // backlight management
