@@ -110,6 +110,7 @@ public class MucContact extends Contact{
         
         if (presence.getTypeIndex()==Presence.PRESENCE_OFFLINE) {
             String reason=item.getChildBlockText("reason");
+            String realJid=item.getAttribute("jid");
             switch (statusCode) {
                 
                 case 303:
@@ -126,6 +127,11 @@ public class MucContact extends Contact{
                     
                 case 307: //kick
                 case 301: //ban
+                    if (realJid!=null) {
+                        b.append(" (");
+                        b.append(realJid);
+                        b.append(')');
+                    }
                     b.append(
                             (statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
                     b.append("(");
@@ -141,14 +147,12 @@ public class MucContact extends Contact{
                     break;
                     
                 default:
-                String realJid=item.getAttribute("jid");
-                if (realJid!=null) {
-                    b.append(" (");
-                    b.append(realJid);
-                    b.append(')');
-                    this.realJid=realJid;
-                }
-                b.append(SR.MS_HAS_LEFT_CHANNEL);
+                    if (realJid!=null) {
+                        b.append(" (");
+                        b.append(realJid);
+                        b.append(')');
+                    }
+                    b.append(SR.MS_HAS_LEFT_CHANNEL);
             } 
                 
         } else {

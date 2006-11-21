@@ -42,6 +42,6 @@ public class ConferenceGroup extends Group{
     // не считаем группу в числе участников
     public int getOnlines(){ return (onlines>0)? onlines-1:0; }
     public int getNContacts(){ return (nContacts>0)? nContacts-1:0; }
-    
+
     public long conferenceJoinTime;
 }

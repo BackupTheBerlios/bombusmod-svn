@@ -329,6 +329,9 @@ public class RosterItemActions extends Menu{
             
             if (c instanceof MucContact || g instanceof ConferenceGroup) {
                 MucContact mc=(MucContact) c;
+                ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                String myNick=mucGrp.getSelfContact().getName();
+                
                 switch (index) { // muc contact actions
                     case 10: // room config
                     {
@@ -370,28 +373,28 @@ public class RosterItemActions extends Menu{
                     
                      case 8: // kick
                      {
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK);
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                         return;
                      }
                      case 9: // ban
                      {
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST);
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
                         return;
                      }
                      case 31: //grant voice and revoke moderator
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,myNick);
                         return;
                      }
                      case 32: //revoke voice
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.VISITOR);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.VISITOR,myNick);
                         return;
                      }
                      
                      case 33: //grant moderator
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR,myNick);
                         return;
                      }
                      
@@ -402,25 +405,25 @@ public class RosterItemActions extends Menu{
                     
                      case 35: //grant membership and revoke admin
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,myNick);
                         return;
                      }
                      
                      case 36: //revoke membership
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,myNick);
                         return;
                      }
                      
                      case 37: //grant admin and revoke owner
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,myNick);
                         return;
                      }
                      
                      case 38: //grant owner
                      {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER);
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,myNick);
                         return;
                      }
                  }

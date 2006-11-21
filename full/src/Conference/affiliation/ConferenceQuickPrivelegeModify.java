@@ -52,13 +52,16 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
     
     private int action;
 
+    private String myNick;
+
     /**
      * Creates a new instance of ConferenceQuickPrivelegeModify
      */
-    public ConferenceQuickPrivelegeModify(Display display, MucContact victim, int action) {
+    public ConferenceQuickPrivelegeModify(Display display, MucContact victim, int action, String myNick) {
 
         this.victim=victim;
         this.action=action;
+        this.myNick=myNick;
         
         switch (action) {
             case KICK: 
@@ -119,7 +122,11 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
 
         try {
             String rzn=reason.getString();
-            if (rzn.length()!=0) item.addChild("reason", rzn);
+            if (rzn.length()!=0) {
+               item.addChild("reason", myNick+": "+rzn);
+            }
+            
+            
         } catch (Exception e) {}
         
         switch (action) {
