@@ -187,10 +187,8 @@ public class RosterItemActions extends Menu{
 		    }
 		}
 	    }
-	    //m.addItem(new MenuItem("Cleanup offlines"))
 	}
 	if (getItemCount()>0) attachDisplay(display);
-	
     }
     
     public void eventOk(){

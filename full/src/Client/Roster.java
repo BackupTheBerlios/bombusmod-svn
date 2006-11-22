@@ -1411,12 +1411,14 @@ public class Roster
         super.keyPressed(keyCode);
         
         if (keyCode==SE_CLEAR) {
-                    Contact c=(Contact)getFocusedObject();
-                    new YesNoAlert(display, this, SR.MS_DELETE_ASK, c.getNickJid()){
-                        public void yes() {
-                            deleteContact((Contact)getFocusedObject());
-                        };
+            Contact c=(Contact)getFocusedObject();
+            if (c.getGroupType()!=Groups.TYPE_TRANSP && c.getGroupType()!=Groups.TYPE_SELF && c.getGroupType()!=Groups.TYPE_SEARCH_RESULT && c.origin<Contact.ORIGIN_GROUPCHAT) {
+                new YesNoAlert(display, this, SR.MS_DELETE_ASK, c.getNickJid()){
+                    public void yes() {
+                        deleteContact((Contact)getFocusedObject());
                     };
+                };
+            }
         }
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {

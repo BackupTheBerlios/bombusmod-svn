@@ -39,7 +39,9 @@ public class AppendTemplate
 	addCommand(cmdDelete);
 	addCommand(cmdBack);
 
-        focusedItem(0);
+        try {
+            focusedItem(0);
+        } catch (Exception e) {}
 	
 	setCommandListener(this);
 	

@@ -1,6 +1,5 @@
 /*
  * TemplateContainer.java
- *
  */
 
 package templates;
