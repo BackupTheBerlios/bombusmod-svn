@@ -46,6 +46,8 @@ public class Msg //implements MessageList.Element
         if (messageType>=MESSAGE_TYPE_IN) unread=true;
         if (messageType==MESSAGE_TYPE_PRESENCE)
             itemCollapsed=true;
+        if (subj!=null && subject!=null)
+            itemCollapsed=true;
     }
     
     public void onSelect(){}

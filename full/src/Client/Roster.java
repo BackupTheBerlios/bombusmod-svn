@@ -1029,6 +1029,7 @@ public class Roster
                 if (oob!=null) body+=oob;
                 if (body.length()==0) body=null; 
                 String subj=message.getSubject().trim(); if (subj.length()==0) subj=null;
+                
                 String tStamp=message.getTimeStamp();
 		
                 int start_me=-1;    //  не добавлять ник
@@ -1156,11 +1157,6 @@ public class Roster
                 }
                 m.setHighlite(highlite);  
                 messageStore(m);
-                //Contact c=getContact(from);
-                //c.msgs.addElement(m);
-                //countNewMsgs();
-                //setFocusTo(c);
-                //redraw();
             }
             // присутствие
 
