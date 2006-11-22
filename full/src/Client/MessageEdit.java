@@ -12,6 +12,7 @@ import Conference.AppendNick;
 import archive.ArchiveList;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import templates.AppendTemplate;
 import ui.VirtualList;
 import util.ClipBoard;
 
@@ -42,6 +43,7 @@ public class MessageEdit
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 5);
     private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
     private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
+    private Command cmdTemplate=new Command("Template", Command.SCREEN, 97); 
     private Command cmdPasteText=new Command("Paste", Command.SCREEN, 98);    
 
     private boolean composing=true;
@@ -143,6 +145,8 @@ public class MessageEdit
         t.addCommand(cmdSuspend);
         if (clipboard.s!=null)
             t.addCommand(cmdPasteText);
+        
+        t.addCommand(cmdTemplate);
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
         
@@ -182,6 +186,7 @@ public class MessageEdit
         if (c==cmdABC) {setInitialCaps(true); return; }
 	if (c==cmdPaste) { new ArchiveList(display, t); return; }
         if (c==cmdPasteText) { t.insert(clipboard.s, charsCount); return; } 
+        if (c==cmdTemplate) { new AppendTemplate(display, t); return; }
         if (c==cmdCancel) { 
             composing=false; 
             body=null; 

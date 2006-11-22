@@ -15,6 +15,7 @@ import archive.MessageArchive;
 import images.RosterIcons;
 import images.SmilesIcons;
 import locale.SR;
+import templates.TemplateContainer;
 import ui.controls.InputBox;
 import vcard.VCard;
 import ui.*;
@@ -40,6 +41,7 @@ public class ContactMessageList extends MessageList
     Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,7);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,7);
     Command cmdCopy = new Command("Copy", Command.SCREEN, 8);
+    Command cmdTemplate=new Command("Save template",Command.SCREEN,9);
      
     private ClipBoard clipboard;
     
@@ -80,6 +82,7 @@ public class ContactMessageList extends MessageList
         addCommand(cmdQuote);
         addCommand(cmdArch);
         addCommand(cmdCopy);
+        addCommand(cmdTemplate);
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
     }
@@ -169,6 +172,12 @@ public class ContactMessageList extends MessageList
         {
             try {
                 clipboard.s=getMessage(cursor).getBody();
+            } catch (Exception e) {/*no messages*/}
+        }
+        
+        if (c==cmdTemplate) {
+            try {
+                TemplateContainer.store(getMessage(cursor));
             } catch (Exception e) {/*no messages*/}
         }
         
