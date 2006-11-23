@@ -1377,10 +1377,10 @@ public class Roster
                     try {
                         theStream.close();
                     } catch (Exception ex) { }
+        
                     theStream=null;
                     System.gc();
                     new Thread(this).start();
-                    return;
                 //}
             //reconnect end
         redraw();
