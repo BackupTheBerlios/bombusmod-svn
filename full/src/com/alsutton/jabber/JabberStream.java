@@ -26,6 +26,7 @@
 
 package com.alsutton.jabber;
 import Client.Config;
+import Client.StaticData;
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
@@ -340,7 +341,11 @@ public class JabberStream implements XMLEventListener, Runnable {
             try {
                 System.out.println("Keep-Alive");
                 sendKeepAlive();
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) { 
+                System.out.println("network down, try to send presence!");
+                StaticData.getInstance().roster.lightReconnect();
+                ///e.printStackTrace();
+            }
         }
 	
         public void destroyTask(){

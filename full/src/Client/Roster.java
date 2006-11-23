@@ -1,7 +1,7 @@
 /*
  * Roster.java
  *
- * Created on 6 Январь 2005 г., 19:16
+ * Created on 6 Январь 2005 г., 19:16a
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -644,18 +644,6 @@ public class Roster
                         c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
                 }
             }
-            //reconnect here
-                if (autoReconnect && status==Presence.PRESENCE_OFFLINE){
-                    System.out.println("reconnect");
-                    try {
-                        theStream.close();
-                    } catch (Exception e) { e.printStackTrace(); }
-                    theStream=null;
-                    System.gc();
-                    new Thread(this).start();
-                    return;
-                }
-            //reconnect end
         }
         
         // reconnect if disconnected        
@@ -888,8 +876,8 @@ public class Roster
         // залогинились. теперь, если был реконнект, то просто пошлём статус
         if (reconnect) {
             querysign=reconnect=false;
-            //sendPresence(myStatus);
-            sendPresence(cf.loginstatus);
+            sendPresence(myStatus);
+            //sendPresence(cf.loginstatus);
             return;
         }
         
@@ -976,9 +964,12 @@ public class Roster
                         reEnumRoster();
                         // теперь пошлём присутствие
                         querysign=reconnect=false;
-                        //sendPresence(myStatus);
-                        //sendPresence(Presence.PRESENCE_INVISIBLE);
-                        sendPresence(cf.loginstatus);
+                        
+                        if (cf.loginstatus>4) {
+                            sendPresence(Presence.PRESENCE_INVISIBLE);    
+                        } else {
+                            sendPresence(cf.loginstatus);
+                        }
                         
                         SplashScreen.getInstance().close(); // display.setCurrent(this);                      
                     } 
@@ -1356,6 +1347,10 @@ public class Roster
 //#endif
     }
     
+    public void lightReconnect() {
+        sendPresence(myStatus);
+    }
+    
     /**
      * If the connection is terminated then print a message
      *
@@ -1376,6 +1371,18 @@ public class Roster
         } catch (Exception e2) {
             e2.printStackTrace();
         }
+        
+            //reconnect here
+                //if (autoReconnect){
+                    try {
+                        theStream.close();
+                    } catch (Exception ex) { }
+                    theStream=null;
+                    System.gc();
+                    new Thread(this).start();
+                    return;
+                //}
+            //reconnect end
         redraw();
     }
     
