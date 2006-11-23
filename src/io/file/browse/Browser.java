@@ -123,6 +123,7 @@ public class Browser extends VirtualList implements CommandListener{
                 fio.close();
                 
                 Alert finfo=new Alert(f, info, img, null);
+				finfo.addCommand(cmdBack);
                 finfo.setTimeout(15*1000);
                 display.setCurrent(finfo, this);
                 

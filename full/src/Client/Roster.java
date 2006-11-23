@@ -307,6 +307,7 @@ public class Roster
         if (s==null) return;
         if (s.length()==0) return;
         Alert error=new Alert(SR.MS_ERROR_, s, null, null);
+		error.addCommand(new Command(SR.MS_OK, Command.BACK, 1));
         //error.setTimeout(30000);
         display.setCurrent(error, display.getCurrent());
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, myJid.getJid(), "Error", s);
