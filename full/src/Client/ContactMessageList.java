@@ -230,9 +230,7 @@ public class ContactMessageList extends MessageList
                         updateBottom(keyCode);
             }
             if (keyCode==keyClear) {
-                new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
-                    public void yes() { clearMessageList(); }
-                };
+                clearMessageList();
             }
         } else {
             if (keyCode==KEY_NUM1) updateBottom(1);
