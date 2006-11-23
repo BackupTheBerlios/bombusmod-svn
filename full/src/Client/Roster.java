@@ -1359,11 +1359,11 @@ public class Roster
      */
     public void connectionTerminated( Exception e ) {
         //l.setTitleImgL(0);
-        //System.out.println( "Connection terminated" );
+        System.out.println( "Connection terminated" );
         if( e != null ) {
             String error=e.getClass().getName()+"\n"+e.getMessage();
             errorLog(error);
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         setProgress(SR.MS_DISCONNECTED, 0);
         try {
