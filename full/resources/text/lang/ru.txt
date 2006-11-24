@@ -281,7 +281,7 @@ Idle	Бездействие
 
 Main menu	Главное меню
 
-Root	корень
+Root	Менеджер файлов
 
 File transfers	Передача файлов
 
@@ -295,7 +295,7 @@ Address Адрес
 Export to file	Экспорт в файл
 
 View	Просмотр
-Stop	Стоп(остановить)
+Stop	Остановить
 
 Path	Путь
 Accept file Принять файл
