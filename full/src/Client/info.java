@@ -42,7 +42,7 @@ public class info implements CommandListener, ItemCommandListener {
     
     private ClipBoard clipboard;  // The clipboard class
     
-    protected Command cmdCopy = new Command("Copy text", Command.SCREEN, 7);  
+    protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 7);  
 
     private String type;
     

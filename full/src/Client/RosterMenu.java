@@ -25,7 +25,7 @@ public class RosterMenu extends Menu
 
     /** Creates a new instance of RosterToolsMenu */
     public RosterMenu(Display display, Object o) {
-        super("Main menu");
+        super(SR.MS_MAIN_MENU);
         this.o=o;
         addItem(SR.MS_ITEM_ACTIONS, 0);
         addItem(SR.MS_STATUS_MENU, 1);

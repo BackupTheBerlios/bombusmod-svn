@@ -43,7 +43,7 @@ public class Account extends IconTextElement{
     private boolean mucOnly;
     
     private String nick="";
-    private String resource="Bombus";
+    private String resource="BombusMod";
     
     private boolean enableProxy;
     private String proxyHostAddr;

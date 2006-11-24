@@ -43,8 +43,8 @@ public class MessageEdit
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 5);
     private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
     private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
-    private Command cmdTemplate=new Command("Template", Command.SCREEN, 97); 
-    private Command cmdPasteText=new Command("Paste", Command.SCREEN, 98);    
+    private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 97); 
+    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);    
 
     private boolean composing=true;
     
@@ -200,7 +200,7 @@ public class MessageEdit
         if (c==cmdSubj) {
             if (body==null) return;
             subj=body;
-            body="/me has set the topic to: "+subj;
+            body="/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
         }
         // message/composing sending
         destroyView();

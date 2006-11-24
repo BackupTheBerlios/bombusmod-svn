@@ -46,7 +46,7 @@ public class ArchiveList
     Command cmdPaste=new Command(SR.MS_PASTE_BODY /*"Paste Body"*/, Command.SCREEN, 1);
     Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT /*"Paste Subject"*/, Command.SCREEN, 3);
 //#if (FILE_IO)
-    Command cmdExport=new Command("Export to file..." /*"Paste Jid"*/, Command.SCREEN, 5);
+    Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE /*"Paste Jid"*/, Command.SCREEN, 5);
 //#endif
     Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
     //Command cmdNick=new Command("Paste Nickname", Command.SCREEN, 3);

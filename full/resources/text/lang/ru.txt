@@ -243,3 +243,77 @@ xa	давно отсутствую
 dnd	занят
 invisible	невидимка
 offline	не в сети
+
+
+Clear Photo	Очистить фото
+Camera	Камера
+
+Hide finished	Скрыть завершенные
+Transfer tasks	Задачи передачи данных 
+
+Color tune	Настройка цветов
+Load Skin	Загрузить тему
+
+Select history folder	Выбор папки истории
+Classic chat	Классический чат
+Digital heap monitor	Цифровой монитор памяти
+Sound volume	Громкость звука
+Language	Язык
+Save history	Сохранять историю
+Save presences	Сохранять статусы
+Save conference history Сохранять историю конференции
+Save conference presences	Сохранять статусы конференции
+1251 correction Коррекция русской кодировки 1251
+History folder	Папка истории
+AutoStatus	Автостатус
+AutoStatus time Время автостатуса
+
+Copy	Копировать
+Paste	Вставить
+
+Save template Сохранить шаблон
+Template	Шаблон
+
+has set topic to	изменил топик на
+
+Seen	Видели
+Idle	Бездействие
+
+Main menu	Главное меню
+
+Root	корень
+
+File transfers	Передача файлов
+
+Choose status	Выбор статуса
+Add status	Добавить статус
+Remove status	Удалить статус
+
+User	Пользователь
+Reason	Причина
+Address Адрес
+Export to file	Экспорт в файл
+
+View	Просмотр
+Stop	Стоп(остановить)
+
+Path	Путь
+Accept file Принять файл
+File	Файл
+Save To Сохранить как
+Sender	Отправитель
+Size	Размер
+Description Описание
+Rejected	Отменено
+Send file	Послать файл
+To	Кому
+Can't open file Файл не открывается
+
+New Новый
+New Template	Новый шаблон
+
+Save photo	Сохранить фото
+
+User has removed autorization	Пользователь удалил авторизацию
+You are now autorized	Вы авторизированны
+User request autorization	Запрос авторизации

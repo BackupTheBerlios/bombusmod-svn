@@ -22,7 +22,7 @@ public class AppendTemplate
 
     
     Command cmdSelect=new Command(SR.MS_APPEND, Command.OK, 1);
-    Command cmdNew=new Command("New", Command.SCREEN, 1);
+    Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 1);
     Command cmdDelete=new Command(SR.MS_DELETE , Command.SCREEN, 2);
 
     TemplateContainer template=new TemplateContainer();

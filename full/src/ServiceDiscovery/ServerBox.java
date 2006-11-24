@@ -1,7 +1,7 @@
 /*
  * ServerBox.java
  *
- * Created on 8 Июль 2005 г., 1:09
+ * Created on 8 �?юль 2005 г., 1:09
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -33,9 +33,9 @@ public class ServerBox implements CommandListener {
         this.display=display;
         this.sd=sd;
         
-        f=new Form("Service Discovery");
+        f=new Form(SR.MS_DISCO);
         f.append("Enter Jabber server address here");
-        t=new TextFieldCombo("Address",service,500,TextField.URL, "disco", display);
+        t=new TextFieldCombo(SR.MS_ADRESS,service,500,TextField.URL, "disco", display);
         f.append(t);
         f.addCommand(cmdSend);
         f.addCommand(cmdCancel);

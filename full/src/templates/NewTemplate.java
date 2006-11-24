@@ -24,8 +24,8 @@ public class NewTemplate implements CommandListener, ItemStateListener
     public NewTemplate(Display display) {
         this.display=display;
         parentView=display.getCurrent();         
-        form=new Form("New Template");
-        templatebox=new TextField("New Template", null, 1024, TextField.ANY);
+        form=new Form(SR.MS_NEW_TEMPLATE);
+        templatebox=new TextField(SR.MS_NEW_TEMPLATE, null, 1024, TextField.ANY);
         
         form.append(templatebox);
         form.addCommand(cmdOk);

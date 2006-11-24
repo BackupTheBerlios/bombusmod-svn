@@ -43,7 +43,7 @@ public class Browser extends VirtualList implements CommandListener{
     Command cmdOk=new Command(SR.MS_BROWSE, Command.OK, 1);
     Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 2);
     Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 3);
-    Command cmdView=new Command("View", Command.SCREEN, 4);
+    Command cmdView=new Command(SR.MS_VIEW, Command.SCREEN, 4);
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
     

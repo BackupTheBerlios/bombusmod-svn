@@ -66,10 +66,10 @@ public class RosterItemActions extends Menu{
 	    addItem(SR.MS_COMMANDS,30);
             
             if (contact.getJid()==contact.getBareJid()) {
-                addItem("Seen",890);    
+                addItem(SR.MS_SEEN,890);    
             } else {
-                addItem("Idle",889);
-                addItem("On Line",890); 
+                addItem(SR.MS_IDLE,889);
+                addItem(SR.MS_ONLINE,890); 
             }
             
                             

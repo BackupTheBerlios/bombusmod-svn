@@ -50,12 +50,12 @@ public class vCardForm
     protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
 //#if (FILE_IO)
     protected Command cmdPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
-    protected Command cmdSavePhoto=new Command("Save Photo", Command.SCREEN,4); //locale
+    protected Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4); //locale
 //#endif
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,4);
     protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,5);
-    protected Command cmdClear = new Command("Clear Photo", Command.SCREEN, 6);
-    protected Command cmdCopy = new Command("Copy text", Command.SCREEN, 7);    
+    protected Command cmdClear = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN, 6);
+    protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 7);    
     
     private Form f;
     private Vector items=new Vector();

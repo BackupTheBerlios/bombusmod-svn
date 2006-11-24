@@ -24,7 +24,7 @@ public class Version {
 //#endif
     // this string will be patched by build.xml/post-preprocess
     
-    public final static String url="http://bombus.jrudevels.org";
+    public final static String url="http://bombusmod.net.ru";
 	
     private static String platformName;
     

@@ -93,8 +93,8 @@ public class ConfigForm implements
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     //Command cmdSign=new Command("- (Sign)",Command.ITEM,2);
     Command cmdPlaySound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
-    Command cmdLoadSkin=new Command("Load Skin", Command.ITEM,11);
-    Command cmdSetHistFolder=new Command("Select History", Command.ITEM,12);
+    Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,11);
+    Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,12);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
     Config cf;
@@ -143,7 +143,7 @@ public class ConfigForm implements
 //#if (!MIDP1)
         message.append(SR.MS_CAPS_STATE, null);
 //#endif
-        message.append("Classic Chat", null);
+        message.append(SR.CLASSIC_CHAT, null);
 
         boolean mv[]={
             cf.smiles,
@@ -172,7 +172,7 @@ public class ConfigForm implements
         application.append(SR.MS_FULLSCREEN,null);
 //#endif
         application.append(SR.MS_HEAP_MONITOR,null);
-        application.append("Digital "+SR.MS_HEAP_MONITOR,null);
+        application.append(SR.MS_DIGITAL_HEAP_MONITOR,null);
 	if (!cf.ghostMotor) application.append(SR.MS_FLASHBACKLIGHT,null);
 	if (cf.allowMinimize) application.append(SR.MS_ENABLE_POPUP,null);
         
@@ -216,14 +216,14 @@ public class ConfigForm implements
 	
 	f.append(sndFile);
 	
-        sndVol=new Gauge("Sound volume", true, 10,  cf.soundVol/10);
+        sndVol=new Gauge(SR.MS_SOUND_VOLUME, true, 10,  cf.soundVol/10);
 	f.append(sndVol);
 
 	sndFile.addCommand(cmdPlaySound);
 	sndFile.setItemCommandListener(this);
 
 	
-        lang=new ChoiceGroup("Language", ConstMIDP.CHOICE_POPUP);
+        lang=new ChoiceGroup(SR.MS_LANGUAGE, ConstMIDP.CHOICE_POPUP);
 	Vector langs[]=new StringLoader().stringLoader("/lang/res.txt",2);
 	
 	for (Enumeration f=langs[1].elements(); f.hasMoreElements(); ) {
@@ -249,12 +249,12 @@ public class ConfigForm implements
         f.append(lang);
         
 //#if FILE_IO
-        history=new ChoiceGroup("History", Choice.MULTIPLE); //locale
-        history.append("Save History", null); //locale
-        history.append("Save Presences",null);    //locale     
-        history.append("Save Conf History", null); //locale
-        history.append("Save Conf Presences", null); //locale
-        history.append("1251 correction", null); //locale
+        history=new ChoiceGroup(SR.MS_HISTORY, Choice.MULTIPLE); //locale
+        history.append(SR.MS_SAVE_HISTORY, null); //locale
+        history.append(SR.MS_SAVE_PRESENCES,null);    //locale     
+        history.append(SR.MS_SAVE_HISTORY_CONF, null); //locale
+        history.append(SR.MS_SAVE_PRESENCES_CONF, null); //locale
+        history.append(SR.MS_1251_CORRECTION, null); //locale
         
         boolean his[]={
             cf.msgLog,
@@ -269,15 +269,15 @@ public class ConfigForm implements
         f.append(history);
         
         
-        historyFolder=new TextField("History Folder", null, 200, TextField.ANY);
+        historyFolder=new TextField(SR.MS_HISTORY_FOLDER, null, 200, TextField.ANY);
         historyFolder.setString(cf.msgPath);
         historyFolder.addCommand(cmdSetHistFolder);
         f.append(historyFolder);
         historyFolder.setItemCommandListener(this);
 //#endif
         //autostatus
-        autoaway=new ChoiceGroup("Set", Choice.MULTIPLE);
-        autoaway.append("Autostatus", null);
+        autoaway=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
+        autoaway.append(SR.MS_AUTOSTATUS, null);
         
         boolean aa[]={
             cf.setAutoStatus,
@@ -286,11 +286,11 @@ public class ConfigForm implements
         autoaway.setSelectedFlags(aa);
         f.append(autoaway);
         
-        autoAwayTime=new NumberField("Time to AutoStatus", cf.autoAwayTime, -12, 12);
+        autoAwayTime=new NumberField(SR.MS_AUTOSTATUS_TIME, cf.autoAwayTime, -12, 12);
         f.append(autoAwayTime);
         //autostatus
                 
-        SkinFile=new ChoiceGroup("Load Skin", ConstMIDP.CHOICE_POPUP);
+        SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ConstMIDP.CHOICE_POPUP);
 	Skinfiles=new StringLoader().stringLoader("/skins/res.txt",2);
 	for (Enumeration f=Skinfiles[1].elements(); f.hasMoreElements(); ) {
 	    SkinFile.append( (String)f.nextElement(), null );

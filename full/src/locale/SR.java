@@ -271,28 +271,97 @@ public class SR {
     public  static String MS_DND=loadString("dnd");
     public  static String MS_INVISIBLE=loadString("invisible");
     public  static String MS_OFFLINE=loadString("offline");
+    
+    
 
     public static String MS_REPLY=loadString("Reply");
-    public final static String MS_DIRECT_PRESENCE="Send status";
+    public final static String MS_DIRECT_PRESENCE=loadString("Send status");
     
-    public final static String MS_CONFIRM_BAN="Are you sure want to BAN this person?";
-    public final static String MS_NO_REASON="No reason";
+    public final static String MS_CONFIRM_BAN=loadString("Are you sure want to BAN this person?");
+    public final static String MS_NO_REASON=loadString("No reason");
 
-    public final static String MS_RECENT="Recent";
-    public final static String MS_CAMERASHOT="Shot";
+    public final static String MS_RECENT=loadString("Recent");
+    public final static String MS_CAMERASHOT=loadString("Shot");
 
-    public final static String MS_SELECT_FILE="Select file";
-    public final static String MS_LOAD_PHOTO="Load Photo";
-    public final static String MS_CLEAR_PHOTO="Clear Photo";
-    public final static String MS_CAMERA="Camera";
+    public final static String MS_SELECT_FILE=loadString("Select file");
+    public final static String MS_LOAD_PHOTO=loadString("Load Photo");
+    public final static String MS_CLEAR_PHOTO=loadString("Clear Photo");
+    public final static String MS_CAMERA=loadString("Camera");
     
-    public final static String MS_HIDE_FINISHED="Hide finished";
-    public final static String MS_TRANSFERS="Transfer tasks";
+    public final static String MS_HIDE_FINISHED=loadString("Hide finished");
+    public final static String MS_TRANSFERS=loadString("Transfer tasks");
 
+
+    public static String MS_COLOR_TUNE=loadString("Color tune");
+    public static String MS_LOAD_SKIN=loadString("Load Skin");
+    
+    public static String MS_SELECT_HISTORY_FOLDER=loadString("Select history folder");
+    public static String CLASSIC_CHAT=loadString("Classic chat");
+    public static String MS_DIGITAL_HEAP_MONITOR=loadString("Digital heap monitor");
+    public static String MS_SOUND_VOLUME=loadString("Sound volume");
+    public static String MS_LANGUAGE=loadString("Language");
+    public static String MS_SAVE_HISTORY=loadString("Save history");
+    public static String MS_SAVE_PRESENCES=loadString("Save presences");
+    public static String MS_SAVE_HISTORY_CONF=loadString("Save conference history");
+    public static String MS_SAVE_PRESENCES_CONF=loadString("Save conference presences");
+    public static String MS_1251_CORRECTION=loadString("1251 correction");
+    public static String MS_HISTORY_FOLDER=loadString("History folder");
+    public static String MS_AUTOSTATUS=loadString("AutoStatus");
+    public static String MS_AUTOSTATUS_TIME=loadString("AutoStatus time");
+
+    public static String MS_COPY=loadString("Copy");
+    public static String MS_PASTE=loadString("Paste");
+    
+    public static String MS_SAVE_TEMPLATE=loadString("Save template");
+    public static String MS_TEMPLATE=loadString("Template");
+
+
+    public static String MS_HAS_SET_TOPIC_TO=loadString("has set topic to");
+
+    public static String MS_SEEN=loadString("Seen");
+    public static String MS_IDLE=loadString("Idle");
+
+    public static String MS_MAIN_MENU=loadString("Main menu");
+
+    public static String MS_ROOT=loadString("Root");
+    public static String MS_FILE_TRANSFERS=loadString("File transfers");
+
+    public static String MS_CHOOSE_STATUS=loadString("Choose status");
+    public static String MS_ADD_STATUS=loadString("Add status");
+    public static String MS_REMOVE_STATUS=loadString("Remove status");
+
+    public static String MS_USER=loadString("User");
+    public static String MS_REASON=loadString("Reason");
+
+    public static String MS_ADRESS=loadString("Address");
+    public static String MS_EXPORT_TO_FILE=loadString("Export to file");
+
+    public static String MS_VIEW=loadString("View");
+    public static String MS_STOP=loadString("Stop");
+
+    public static String MS_PATH=loadString("Path");
+    public static String MS_ACCEPT_FILE=loadString("Accept file");
+    public static String MS_FILE=loadString("File");
+    public static String MS_SAVE_TO=loadString("Save To");
+    public static String MS_SENDER=loadString("Sender");
+    public static String MS_SIZE=loadString("Size");
+    public static String MS_DESCRIPTION=loadString("Description");
+    public static String MS_REJECTED=loadString("Rejected");
+    public static String MS_SEND_FILE=loadString("Send file");
+    public static String MS_TO=loadString("To");
+    public static String MS_CANT_OPEN_FILE=loadString("Can't open file");
+    
+    public static String MS_NEW=loadString("New");
+    public static String MS_NEW_TEMPLATE=loadString("New Template");
+
+    public static String MS_SAVE_PHOTO=loadString("Save photo");
+
+    public static String MS_USER_REMOVED_AUTORIZATION=loadString("User has removed autorization");
+    public  static String MS_YOU_ARE_NOW_AUTHORIZED=loadString("You are now autorized");
+    public static String MS_USER_REQUEST_AUTORIZATION=loadString("User request autorization");
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
-
-
 
     private SR() { }
     

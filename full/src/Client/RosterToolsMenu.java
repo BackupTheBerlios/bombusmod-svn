@@ -36,10 +36,10 @@ public class RosterToolsMenu
         /*if (m.getItemCount()>0)*/
         
 //#if (FILE_IO && FILE_TRANSFER)
-//#         addItem("root",4);
-//#         addItem("File Transfers", 5);
+//#         addItem(SR.MS_ROOT,4);
+//#         addItem(SR.MS_FILE_TRANSFERS, 5);
 //#endif
-        addItem("Color Tune", 6);
+        addItem(SR.MS_COLOR_TUNE, 6);
         
         attachDisplay(display);
     }

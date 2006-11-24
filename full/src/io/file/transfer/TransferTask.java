@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
+import locale.SR;
 import ui.Colors;
 import ui.IconTextElement;
 import util.strconv;
@@ -94,7 +95,7 @@ public class TransferTask
         } catch (Exception e) {
             e.printStackTrace();
             state=ERROR;
-            errMsg="Can't open file";
+            errMsg=SR.MS_CANT_OPEN_FILE;
             showEvent=true;
         }
     }
@@ -136,7 +137,7 @@ public class TransferTask
         TransferDispatcher.getInstance().send(reject, true);
         
         state=ERROR;
-        errMsg="Rejected";
+        errMsg=SR.MS_REJECTED;
         showEvent=true;
     }
 

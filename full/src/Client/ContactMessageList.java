@@ -40,8 +40,8 @@ public class ContactMessageList extends MessageList
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 6);
     Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,7);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,7);
-    Command cmdCopy = new Command("Copy", Command.SCREEN, 8);
-    Command cmdTemplate=new Command("Save template",Command.SCREEN,9);
+    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 8);
+    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,9);
      
     private ClipBoard clipboard;
     

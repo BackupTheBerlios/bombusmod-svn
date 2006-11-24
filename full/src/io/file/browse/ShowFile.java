@@ -30,8 +30,8 @@ public class ShowFile implements CommandListener{
     private Display display;
     private Displayable parentView;
     
-    private Command back = new Command("Back", Command.BACK, 2);
-    private Command stop = new Command("Stop", Command.BACK, 3);
+    private Command back = new Command(SR.MS_BACK, Command.BACK, 2);
+    private Command stop = new Command(SR.MS_STOP, Command.BACK, 3);
 
     private int len;
 
