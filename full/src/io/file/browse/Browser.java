@@ -70,12 +70,11 @@ public class Browser extends VirtualList implements CommandListener{
         setCommandListener(this);
         
         // test for empty path
-        if (path==null) path="/";
-        if (path.length()==0) path="/";
+        if (path==null) path="";
        
         // trim filename
         int l=path.lastIndexOf('/');
-        if (l<0) {  path="/"; 
+        if (l<0) {  path=""; 
         } else path=path.substring(0,l+1);
 
         chDir(path);
@@ -158,17 +157,22 @@ public class Browser extends VirtualList implements CommandListener{
     
      private boolean chDir(String relativePath) {
         String focus="";
-        if (relativePath.startsWith("/")) {
-            path=relativePath;
-        } else if (relativePath.startsWith("../")) {
-            if (path.length()<2) return false;
-            int remainderPos=path.lastIndexOf('/', path.length()-2) + 1;
-            focus=path.substring(remainderPos);
-             path=path.substring(0, 1+path.lastIndexOf('/', path.length()-2));
+         if (relativePath.startsWith("/")) {
+             path=relativePath;
+         } else if (relativePath.startsWith("../")) {
+            if (path.length()==0) return false;
+            if (path.length()==1) { 
+                path="";
+            } else {
+                int remainderPos=path.lastIndexOf('/', path.length()-2) + 1;
+                focus=path.substring(remainderPos);
+                path=path.substring(0, 1+path.lastIndexOf('/', path.length()-2));
+            }
          } else {
+            if (path.length()==0) path="/";
              path+=relativePath;
          }
-        readDirectory(this.path);
+         readDirectory(this.path);
         sort(dir);
 
         for (int i=0; i<dir.size(); i++) {
