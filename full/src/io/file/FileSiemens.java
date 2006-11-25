@@ -22,7 +22,7 @@ public class FileSiemens extends FileIO {
     private int fd;
 
     public FileSiemens(String fileName) {
-        this.fileName=fileName=fileName.replace('/', '\\').substring(1);
+        this.fileName=fileName=fileName.replace('/', '\\');//.substring(1);
     }
     
     public void openFile() throws IOException{
