@@ -214,7 +214,6 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         }
     }
     public static String getMusic() {
-        String musicString=System.getProperty("MPJCPLYR");//"тест, test";
-        return (musicString==null)? null: musicString;
-   }
+        return System.getProperty("MPJCPLYR");
+    }
 }

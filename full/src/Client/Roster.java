@@ -838,7 +838,7 @@ public class Roster
 	    Contact k=(Contact) e.nextElement();
 	    if (k.jid.isTransport()) continue;
 	    if (k.transport==transportIndex && k.nick==null && k.getGroupType()>=Groups.TYPE_COMMON) {
-		vCardQueue.addElement(VCard.getVCardReq(k.getJid(), "nickvc"+k.bareJid));
+		vCardQueue.addElement(VCard.getQueryVCard(k.getJid(), "nickvc"+k.bareJid));
 	    }
 	}
 	setQuerySign(true);
@@ -932,7 +932,8 @@ public class Roster
                     if (id.startsWith("getvc")) {
                         setQuerySign(false);
                         VCard vcard=new VCard(data);
-                        Contact c=getContact(vcard.getJid(), true);
+                        String jid=id.substring(5);
+                        Contact c=getContact(jid, true);
                         if (c!=null) {
                             c.vcard=vcard;
                             new vCardForm(display, vcard, c.getGroupType()==Groups.TYPE_SELF);
@@ -1783,6 +1784,9 @@ public class Roster
         }
         public void run() {
             try {
+                if (getKeyLockState()>0) {
+                   setLight(false);
+                }
                 if (setAutoStatus) {
                     keyTimer=keyTimer+5;
                     if (!isAway) {
@@ -1808,5 +1812,9 @@ public class Roster
                 t=null;
             }
         }
+    }
+    
+    public static int getKeyLockState() {
+        return (System.getProperty("MPJCKEYL")=="1")?0:1;
     }
 }
