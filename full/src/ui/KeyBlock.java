@@ -61,7 +61,7 @@ public class KeyBlock extends Canvas implements Runnable{
         parentView=display.getCurrent();
         
             if (!Roster.isAway) {
-                String away=(siemens_slider)?"Slider closed ("+Time.timeString(Time.localTime())+") read-only mode":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
+                String away=(siemens_slider)?"Slider closed ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
                 Roster.oldStatus=sd.roster.myStatus;
                     try {
                         if (Roster.oldStatus==0 || Roster.oldStatus==1) {

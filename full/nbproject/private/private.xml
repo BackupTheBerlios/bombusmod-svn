@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/AccountForm.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/Config.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/ConfigForm.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/ContactMessageList.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/Msg.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/Roster.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/RosterItemActions.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/StatusList.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/StatusSelect.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Client/info.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Conference/BookmarkQuery.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Conference/affiliation/ConferenceQuickPrivelegeModify.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Info/InfoWindow.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/Info/Version.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/ServiceDiscovery/SearchResult.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/com/alsutton/jabber/JabberStream.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/com/alsutton/jabber/datablocks/IqLast.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/com/alsutton/jabber/datablocks/Presence.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/images/RosterIcons.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/io/Utf8IOStream.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/io/file/transfer/TransferManager.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/locale/SR.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/ui/ColorForm.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/ui/ColorSelector.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/ui/Time.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/ui/controls/InputBox.java</file>
+        <file xmlns="">file:/C:/Bombus/bombusmod/full/src/vcard/vCardForm.java</file>
+    </open-files>
 </project-private>

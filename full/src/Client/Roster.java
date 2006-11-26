@@ -186,7 +186,7 @@ public class Roster
         addCommand(cmdAdd);
         //addCommand(cmdServiceDiscovery);
         addCommand(cmdConference);
-        setLight(true);
+        setLight(cf.lightState);
         //addCommand(cmdPrivacy);
         addCommand(cmdTools);
         addCommand(cmdArchive);
@@ -1763,18 +1763,6 @@ public class Roster
         }
     }
     
-    public void setLight(boolean state) {
-        if (Version.getPlatformName().indexOf("SIE-")>-1) {
-            if (state){
-                com.siemens.mp.game.Light.setLightOn();
-            } else { 
-                com.siemens.mp.game.Light.setLightOff();
-            }
-           removeCommand(state? cmdLightOn: cmdLightOff);
-           addCommand(state? cmdLightOff: cmdLightOn);
-        }
-    }
-    
     private class TimerTaskAutoAway extends TimerTask{
         private Timer t;
         public TimerTaskAutoAway(int periodSeconds){
@@ -1784,8 +1772,10 @@ public class Roster
         }
         public void run() {
             try {
-                if (getKeyLockState()>0) {
-                   setLight(false);
+                if (getKeyLockState()) {
+                    setLight(false);
+                } else {
+                    setLight(true);    
                 }
                 if (setAutoStatus) {
                     keyTimer=keyTimer+5;
@@ -1814,7 +1804,23 @@ public class Roster
         }
     }
     
-    public static int getKeyLockState() {
-        return (System.getProperty("MPJCKEYL")=="1")?0:1;
+    public void setLight(boolean state) {
+        if (Version.getPlatformName().indexOf("SIE-")>-1) {
+            if (state){
+                com.siemens.mp.game.Light.setLightOn();
+            } else { 
+                com.siemens.mp.game.Light.setLightOff();
+            }
+           removeCommand(state? cmdLightOn: cmdLightOff);
+           addCommand(state? cmdLightOff: cmdLightOn);
+           
+           cf.lightState=state;
+           cf.saveToStorage();
+        }
+    }
+    
+    public static boolean getKeyLockState() {
+        boolean lightState=(System.getProperty("MPJCKEYL")=="1")?true:false;
+        return lightState;
     }
 }

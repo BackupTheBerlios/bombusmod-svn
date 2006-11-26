@@ -721,7 +721,7 @@ public abstract class VirtualList
                         break;
                     }
                     case KEY_STAR: {
-                        if (Config.getInstance().starKey) {
+                        if (cf.starKey) {
                             if (isSiemens) {
                                 fullMode=cf.isbottom;
                                 switch (fullMode) {
