@@ -212,7 +212,9 @@ public class ConfigForm implements
 	    sndFile.append( (String)f.nextElement(), null );
 	}
 	
-	sndFile.setSelectedIndex(cf.sounsMsgIndex, true);        
+    try {
+		sndFile.setSelectedIndex(cf.soundsMsgIndex, true);
+    } catch (Exception e) { cf.soundsMsgIndex=0; };
 	
 	f.append(sndFile);
 	
@@ -232,7 +234,7 @@ public class ConfigForm implements
 	
         try {
             lang.setSelectedIndex(cf.lang, true);
-        } catch (Exception e) {}
+        } catch (Exception e) { cf.lang=0; }
         
         f.append(startup);
 
@@ -353,7 +355,7 @@ public class ConfigForm implements
 	    cf.locOffset=fieldLoc.getValue();
 	    cf.keepAlive=keepAlive.getValue();
 	    
-	    cf.sounsMsgIndex=sndFile.getSelectedIndex();
+	    cf.soundsMsgIndex=sndFile.getSelectedIndex();
             
             FontCache.rosterFontSize=cf.font1=font1.getSelectedIndex()*8;
             FontCache.msgFontSize=cf.font2=font2.getSelectedIndex()*8;

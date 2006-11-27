@@ -45,7 +45,7 @@ public class Config {
     
     public boolean muc119=getBooleanProperty("muc_119",true);	// before muc 1.19 use muc#owner instead of muc#admin
     
-    public int sounsMsgIndex=0;
+    public int soundsMsgIndex=0;
 
     public String messagesnd;
     public String messageSndType;
@@ -230,7 +230,7 @@ public class Config {
 	    gmtOffset=inputStream.readInt();
 	    locOffset=inputStream.readInt();
 	    
-	    sounsMsgIndex=inputStream.readInt();
+	    soundsMsgIndex=inputStream.readInt();
 	    soundVol=inputStream.readInt();
 	    
 	    autoLogin=inputStream.readBoolean();
@@ -296,12 +296,14 @@ public class Config {
     
     public void loadSoundName(){
 	Vector files[]=new StringLoader().stringLoader("/sounds/res.txt", 3);
-	messageSndType=(String) files[0].elementAt(sounsMsgIndex);
-	messagesnd=(String) files[1].elementAt(sounsMsgIndex);
+        if (soundsMsgIndex>=files[0].size()) soundsMsgIndex=0;
+	messageSndType=(String) files[0].elementAt(soundsMsgIndex);
+	messagesnd=(String) files[1].elementAt(soundsMsgIndex);
     }
     public String langFileName(){
         if (lang==0) return null;   //english
 	Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 2);
+	if (lang>=files[0].size()) return null;
 	return (String) files[0].elementAt(lang);
     }
     
@@ -324,7 +326,7 @@ public class Config {
 	    outputStream.writeInt(gmtOffset);
 	    outputStream.writeInt(locOffset);
 	    
-	    outputStream.writeInt(sounsMsgIndex);
+	    outputStream.writeInt(soundsMsgIndex);
 	    outputStream.writeInt(soundVol);
 	    
 	    outputStream.writeBoolean(autoLogin);

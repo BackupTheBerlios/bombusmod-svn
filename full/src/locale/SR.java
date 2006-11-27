@@ -357,8 +357,10 @@ public class SR {
     public static String MS_SAVE_PHOTO=loadString("Save photo");
 
     public static String MS_USER_REMOVED_AUTORIZATION=loadString("User has removed autorization");
-    public  static String MS_YOU_ARE_NOW_AUTHORIZED=loadString("You are now autorized");
+    public static String MS_YOU_ARE_NOW_AUTHORIZED=loadString("You are now autorized");
     public static String MS_USER_REQUEST_AUTORIZATION=loadString("User request autorization");
+	
+	public final static String MS_SURE_DELETE="Are you sure want to delete this message?";
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

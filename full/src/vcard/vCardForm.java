@@ -89,6 +89,12 @@ public class vCardForm
         f.append(vcard.getJid());
         photoType=vcard.getPhotoType();
         
+        if (vcard.isEmpty() && !editable) 
+            f.append("[no vCard available]"); 
+        else { 
+            photoIndex=f.append("[no photo available]");
+        }
+		
         photo=vcard.getPhoto();
         setPhoto();
         
@@ -109,12 +115,10 @@ public class vCardForm
 //#if !(MIDP1)
                 f.append(new Spacer(256, 3));
 //#else
-//--                f.append("\n");
+//#                 f.append("\n");
 //#endif
             }
         }
-        
-        f.append("\n\n[end of vCard]");
         
         f.addCommand(cmdCancel);
         f.addCommand(cmdRefresh);
