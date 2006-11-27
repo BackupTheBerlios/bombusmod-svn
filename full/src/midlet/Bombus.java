@@ -96,6 +96,7 @@ public class Bombus extends MIDlet implements Runnable{
 
         s.setProgress(10);
 	Config cf=Config.getInstance();
+        AlertCustomize ac=AlertCustomize.getInstance();
         
         try {
             PNGCache.init();

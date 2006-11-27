@@ -67,7 +67,7 @@ public class TransferDispatcher implements JabberBlockListener{
                     synchronized (taskList){ taskList.addElement(task); }
                     
                     eventNotify();
-                    StaticData.getInstance().roster.playNotify(0);
+                    StaticData.getInstance().roster.playNotify(1000);
                     return BLOCK_PROCESSED;
                 }
                 if (type.equals("result")) {

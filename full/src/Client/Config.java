@@ -45,13 +45,6 @@ public class Config {
     
     public boolean muc119=getBooleanProperty("muc_119",true);	// before muc 1.19 use muc#owner instead of muc#admin
     
-    public int soundsMsgIndex=0;
-
-    public String messagesnd;
-    public String messageSndType;
-    
-    public int soundVol=100;
-    
 //#if !(MIDP1)
     public char keyLock=getCharProperty("key_lock",'*');
     public char keyVibra=getCharProperty("key_vibra",'#');
@@ -137,7 +130,7 @@ public class Config {
 
     public boolean altInput;
 
-    public int isbottom;
+    public int isbottom=3;
 
     public boolean poundKey=getBooleanProperty("poundKey",true);
     public boolean starKey=getBooleanProperty("starKey",true);
@@ -148,10 +141,7 @@ public class Config {
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
-	    // this method called outside class constructor to avoid recursion
-            // because using of NvStorage methods depending on Config.getInstance()
 	    instance.loadFromStorage();
-	    instance.loadSoundName();
 
             //FontCache.balloonFontSize=Font.SIZE_SMALL;
             FontCache.rosterFontSize=instance.font1;
@@ -194,13 +184,6 @@ public class Config {
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	}
         
-	/*if (platform.startsWith("j2me")) {
-	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
-	    VirtualList.keyClear=0x1000;
-	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
-            istreamWaiting=true;
-	}*/
-        
         if (platform.startsWith("SIE")) {
             keyLock='#';
             keyVibra='*';
@@ -229,9 +212,6 @@ public class Config {
 	    
 	    gmtOffset=inputStream.readInt();
 	    locOffset=inputStream.readInt();
-	    
-	    soundsMsgIndex=inputStream.readInt();
-	    soundVol=inputStream.readInt();
 	    
 	    autoLogin=inputStream.readBoolean();
 	    autoJoinConferences=inputStream.readBoolean();
@@ -294,12 +274,6 @@ public class Config {
         VirtualList.digitMemMonitor=digitMemMonitor;
     }
     
-    public void loadSoundName(){
-	Vector files[]=new StringLoader().stringLoader("/sounds/res.txt", 3);
-        if (soundsMsgIndex>=files[0].size()) soundsMsgIndex=0;
-	messageSndType=(String) files[0].elementAt(soundsMsgIndex);
-	messagesnd=(String) files[1].elementAt(soundsMsgIndex);
-    }
     public String langFileName(){
         if (lang==0) return null;   //english
 	Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 2);
@@ -325,9 +299,6 @@ public class Config {
 	    
 	    outputStream.writeInt(gmtOffset);
 	    outputStream.writeInt(locOffset);
-	    
-	    outputStream.writeInt(soundsMsgIndex);
-	    outputStream.writeInt(soundVol);
 	    
 	    outputStream.writeBoolean(autoLogin);
 	    outputStream.writeBoolean(autoJoinConferences);

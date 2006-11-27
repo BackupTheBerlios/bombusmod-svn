@@ -93,6 +93,9 @@ public class Roster
     
     public static boolean isAway=false;
     public static int oldStatus=0;
+    
+    public static boolean forme=false;
+    public static boolean conference=false;
 
     
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
@@ -193,7 +196,12 @@ public class Roster
         addCommand(cmdInfo);
         addCommand(cmdAccount);
 
-        if (Version.getPlatformName().indexOf("Nokia9500") < 0 || Version.getPlatformName().indexOf("Nokia9300") < 0 || Version.getPlatformName().indexOf("Nokia9300i") < 0) addCommand(cmdQuit);
+        if (Version.getPlatformName().startsWith("Nokia9500") || 
+            Version.getPlatformName().startsWith("Nokia9300") || 
+            Version.getPlatformName().startsWith("Nokia9300i")) {
+        } else {
+                addCommand(cmdQuit);
+        }
         
         
         addOptionCommands();
@@ -1031,11 +1039,13 @@ public class Roster
                 int start_me=-1;    //  не добавлять ник
                 String name=null;
                 boolean groupchat=false;
+                conference=false;
                 
                 try { // type=null
 		    String type=message.getTypeAttribute();
                     if (type.equals("groupchat")) {
                         groupchat=true;
+                        conference=true;
                         start_me=0; // добавить ник в начало
                         int rp=from.indexOf('/');
                         
@@ -1101,6 +1111,7 @@ public class Roster
                 // /me
 
                 if (body!=null) {
+                    forme=false;
                     if (body.startsWith("/me ")) start_me=3;
                     if (start_me>=0) {
                         StringBuffer b=new StringBuffer(name);
@@ -1119,6 +1130,7 @@ public class Roster
                     if (compose) c.acceptComposing=true;
                     if (body!=null) compose=false;
                     c.setComposing(compose);
+                    if (compose) playNotify(888);
                 }
                 redraw();
 
@@ -1151,6 +1163,7 @@ public class Roster
                         //TODO: custom highliting dictionary
                     } 
                 }
+                forme=highlite;
                 m.setHighlite(highlite);  
                 messageStore(m);
             }
@@ -1206,6 +1219,9 @@ public class Roster
                     c.priority=pr.getPriority();
                     if (ti>=0) c.status=ti;
                     if (ti==Presence.PRESENCE_OFFLINE) c.acceptComposing=false;
+                    if (ti>=0) {
+                        if (ti!=11) playNotify(ti);
+                    }
                     c.setComposing(false);
                 }
 		sort(hContacts);
@@ -1278,25 +1294,67 @@ public class Roster
 	
         if (cf.autoFocus) focusToContact(c, false);
 
-        if (message.messageType!=Msg.MESSAGE_TYPE_HISTORY) 
-            playNotify(0);
+        if (forme) {
+            playNotify(500);
+        } else if (conference) {
+            if (message.messageType==message.MESSAGE_TYPE_IN) playNotify(800);
+        } else {
+            playNotify(1000);
+        }
     }
    
     public void playNotify(int event) {
-        String message=cf.messagesnd;
-	String type=cf.messageSndType;
-	int volume=cf.soundVol;
-        int profile=cf.profile;
-        if (profile==AlertProfile.AUTO) profile=AlertProfile.ALL;
+        AlertCustomize ac=AlertCustomize.getInstance();
+        
+        int volume=ac.soundVol;
+        int vibraLen=cf.vibraLen;
+        String type, message;
+        
+        switch (event) {
+            case 0: //online
+                message=ac.soundOnline;
+                type=ac.soundOnlineType;
+                vibraLen=0;
+                break;
+            case 6: //offline
+                message=ac.soundOffline;
+                type=ac.soundOfflineType;
+                vibraLen=0;
+                break;
+            case 1000: //message
+                message=ac.messagesnd;
+                type=ac.messageSndType;
+                break;
+            case 800: //conference
+                message=ac.soundConference;
+                type=ac.soundConferenceType;
+                break;
+            case 500: //message for you
+                message=ac.soundForYou;
+                type=ac.soundForYouType;
+                break;
+            case 888: //composing
+                message=ac.soundComposing;
+                type=ac.soundComposingType;
+                vibraLen=0;
+                break;
+            default :
+                message="";
+                type="none";
+                vibraLen=0;
+                break;
+        }
+            int profile=cf.profile;
+            if (profile==AlertProfile.AUTO) profile=AlertProfile.ALL;
         
         EventNotify notify=null;
         
         boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
         
         switch (profile) {
-            case AlertProfile.ALL:   notify=new EventNotify(display, type, message,  volume, cf.vibraLen, blFlashEn); break;
+            case AlertProfile.ALL:   notify=new EventNotify(display, type, message,  volume, vibraLen, blFlashEn); break;
             case AlertProfile.NONE:  notify=new EventNotify(display, null, null,  volume,    0,           false    ); break;
-            case AlertProfile.VIBRA: notify=new EventNotify(display, null, null,  volume,    cf.vibraLen, blFlashEn); break;
+            case AlertProfile.VIBRA: notify=new EventNotify(display, null, null,  volume,    vibraLen, blFlashEn); break;
             case AlertProfile.SOUND: notify=new EventNotify(display, type, message,  volume, 0,           blFlashEn); break;
         }
         if (notify!=null) notify.startNotify();

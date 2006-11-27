@@ -50,10 +50,7 @@ import ui.*;
 
 public class ConfigForm implements
 	CommandListener 
-//#if !(MIDP1)
 	,ItemCommandListener
-//#endif
-	//,ItemStateListener
 //#if (FILE_IO)
         , BrowserListener
 //#endif
@@ -68,9 +65,6 @@ public class ConfigForm implements
     ChoiceGroup application;
 
     ChoiceGroup lang;
-    
-    ChoiceGroup sndFile;
-    Gauge sndVol;
     
     ChoiceGroup font1;
     ChoiceGroup font2;
@@ -91,8 +85,6 @@ public class ConfigForm implements
     private Vector[] Skinfiles;
 
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
-    //Command cmdSign=new Command("- (Sign)",Command.ITEM,2);
-    Command cmdPlaySound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
     Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,11);
     Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,12);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
@@ -140,9 +132,7 @@ public class ConfigForm implements
         message.append(SR.MS_SMILES, null);
         message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
-//#if (!MIDP1)
         message.append(SR.MS_CAPS_STATE, null);
-//#endif
         message.append(SR.CLASSIC_CHAT, null);
 
         boolean mv[]={
@@ -167,10 +157,8 @@ public class ConfigForm implements
         ap=new boolean[5];
 	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
-//#if !(MIDP1)
         ap[apctr++]=cf.fullscreen;
         application.append(SR.MS_FULLSCREEN,null);
-//#endif
         application.append(SR.MS_HEAP_MONITOR,null);
         application.append(SR.MS_DIGITAL_HEAP_MONITOR,null);
 	if (!cf.ghostMotor) application.append(SR.MS_FLASHBACKLIGHT,null);
@@ -205,26 +193,6 @@ public class ConfigForm implements
 	f.append(textWrap);
         
         
-        sndFile=new ChoiceGroup(SR.MS_SOUND, ConstMIDP.CHOICE_POPUP);
-	files=new StringLoader().stringLoader("/sounds/res.txt",3);
-	
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    sndFile.append( (String)f.nextElement(), null );
-	}
-	
-    try {
-		sndFile.setSelectedIndex(cf.soundsMsgIndex, true);
-    } catch (Exception e) { cf.soundsMsgIndex=0; };
-	
-	f.append(sndFile);
-	
-        sndVol=new Gauge(SR.MS_SOUND_VOLUME, true, 10,  cf.soundVol/10);
-	f.append(sndVol);
-
-	sndFile.addCommand(cmdPlaySound);
-	sndFile.setItemCommandListener(this);
-
-	
         lang=new ChoiceGroup(SR.MS_LANGUAGE, ConstMIDP.CHOICE_POPUP);
 	Vector langs[]=new StringLoader().stringLoader("/lang/res.txt",2);
 	
@@ -299,10 +267,8 @@ public class ConfigForm implements
 	}
 	SkinFile.setSelectedIndex(0, true);
 	f.append(SkinFile);
-//#if FILE_IO
 	SkinFile.addCommand(cmdLoadSkin);
 	SkinFile.setItemCommandListener(this);
-//#endif        
         
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);
@@ -354,16 +320,13 @@ public class ConfigForm implements
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();
 	    cf.keepAlive=keepAlive.getValue();
-	    
-	    cf.soundsMsgIndex=sndFile.getSelectedIndex();
             
             FontCache.rosterFontSize=cf.font1=font1.getSelectedIndex()*8;
             FontCache.msgFontSize=cf.font2=font2.getSelectedIndex()*8;
             FontCache.resetCache();
 	    
 	    cf.textWrap=textWrap.getSelectedIndex();
-	    
-	    cf.soundVol=sndVol.getValue()*10;
+
             cf.lang=lang.getSelectedIndex();
 	    
 //#if FILE_IO
@@ -378,7 +341,6 @@ public class ConfigForm implements
             cf.setAutoStatus=aa[0];
             cf.autoAwayTime=autoAwayTime.getValue();
 
-            cf.loadSoundName();
             
             cf.updateTime();
             
@@ -391,9 +353,6 @@ public class ConfigForm implements
     }
 
     public void commandAction(Command command, Item item) {
-	if (command==cmdPlaySound) {
-	    testSound();
-	}
 	if (command==cmdLoadSkin) {
             loadSkin();
 	}
@@ -406,21 +365,9 @@ public class ConfigForm implements
     
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
-//#if !(MIDP1)
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
-//#endif
     }
 
-    /*public void itemStateChanged(Item item) {
-	if (item==sndVol || item==soundFile) 
-     */
-    private void testSound(){
-	int sound=sndFile.getSelectedIndex();
-	String soundFile=(String)files[1].elementAt(sound);
-	String soundType=(String)files[0].elementAt(sound);
-        int sndVolume=sndVol.getValue()*10;
-	new EventNotify(display, soundType, soundFile,sndVolume, 0, false).startNotify();
-    }
     
     public void BrowserFilePathNotify(String pathSelected) {
         historyFolder.setString(pathSelected);  

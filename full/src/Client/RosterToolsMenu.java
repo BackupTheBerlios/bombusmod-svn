@@ -40,6 +40,7 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_FILE_TRANSFERS, 5);
 //#endif
         addItem(SR.MS_COLOR_TUNE, 6);
+        addItem("Sounds options", 7);
 /*		
         addItem("ArchiveDump", 10);
 */        
@@ -81,6 +82,9 @@ public class RosterToolsMenu
 //#endif
             case 6:
                 new ColorForm(display);
+                return;
+            case 7:
+                new AlertCustomizeForm(display);
                 return;
 /*
             case 10:
