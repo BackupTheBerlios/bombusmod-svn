@@ -140,7 +140,6 @@ public class KeyBlock extends Canvas implements Runnable{
         //System.out.println("blocked press"+(char) keyCode);
         if (keyCode==-24) {
             destroyView();
-            sd.roster.setLight(true);
         } 
         kHold=0; 
     }

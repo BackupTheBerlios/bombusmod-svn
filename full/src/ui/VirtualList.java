@@ -676,7 +676,6 @@ public abstract class VirtualList
         if (Version.getPlatformName().indexOf("SIE") > -1) isSiemens=true;
         if (keyCode==-22) {
             if (isSiemens) {
-                sd.roster.setLight(false);
                 new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
                 return;
             }

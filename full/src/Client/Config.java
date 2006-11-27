@@ -135,7 +135,7 @@ public class Config {
     public boolean poundKey=getBooleanProperty("poundKey",true);
     public boolean starKey=getBooleanProperty("starKey",true);
     
-    public boolean lightState=true;
+    public int lightState=0;
 
     
     public static Config getInstance(){
@@ -259,7 +259,7 @@ public class Config {
             
             digitMemMonitor=inputStream.readBoolean();
             
-            lightState=inputStream.readBoolean();
+            lightState=inputStream.readInt();
             
 	    inputStream.close();
 	} catch (Exception e) {
@@ -346,7 +346,7 @@ public class Config {
             
             outputStream.writeBoolean(digitMemMonitor);
             
-            outputStream.writeBoolean(lightState);
+            outputStream.writeInt(lightState);
             
 	} catch (Exception e) { e.printStackTrace(); }
 	

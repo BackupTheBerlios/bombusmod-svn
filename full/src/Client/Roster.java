@@ -24,6 +24,7 @@ import login.LoginListener;
 import login.NonSASLAuth;
 import login.SASLAuth;
 import midlet.Bombus;
+import ui.AlertBox;
 import vcard.VCard;
 import vcard.vCardForm;
 import com.alsutton.jabber.*;
@@ -108,8 +109,8 @@ public class Roster
     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
     private Command cmdAccount=new Command(SR.MS_ACCOUNT_, Command.SCREEN, 15);
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
-    private Command cmdLightOn=new Command("LightOn", Command.SCREEN, 16);
-    private Command cmdLightOff=new Command("LightOFF", Command.SCREEN, 16);
+    private Command cmdTurnOnLight=new Command("Turn On Light", Command.SCREEN, 16);
+    private Command cmdTurnOffLight=new Command("Turn Off Light", Command.SCREEN, 16);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
     private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
     
@@ -143,6 +144,10 @@ public class Roster
     private TimerTaskAutoAway AutoAway;
 
     public static boolean autoReconnect=true;
+
+    private static boolean elfPlatform=false;
+    
+    private int lightState=0;
     
     /**
      * Creates a new instance of Roster
@@ -189,7 +194,14 @@ public class Roster
         addCommand(cmdAdd);
         //addCommand(cmdServiceDiscovery);
         addCommand(cmdConference);
-        setLight(cf.lightState);
+        
+        if (Version.getPlatformName().startsWith("SIE-")) {
+            switch (cf.lightState) {
+                case 0: addCommand(cmdTurnOnLight); lightState=0;
+                case 1: addCommand(cmdTurnOffLight);  lightState=1;
+            }
+            LightControl.setLight(cf.lightState);
+        }
         //addCommand(cmdPrivacy);
         addCommand(cmdTools);
         addCommand(cmdArchive);
@@ -1580,8 +1592,16 @@ public class Roster
         if (c==cmdArchive) { new ArchiveList(display, null); }
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
-        if (c==cmdLightOn) { setLight(true); }
-        if (c==cmdLightOff) { setLight(false); }
+        if (c==cmdTurnOnLight) {
+            LightControl.setLight(1);
+            removeCommand(cmdTurnOnLight);
+            addCommand(cmdTurnOffLight);
+        }
+        if (c==cmdTurnOffLight) {
+            LightControl.setLight(0);
+            removeCommand(cmdTurnOffLight);
+            addCommand(cmdTurnOnLight);
+        }
         
         if (c==cmdTools) { new RosterToolsMenu(display); }
         // stream-sensitive commands
@@ -1818,6 +1838,7 @@ public class Roster
     
     private class TimerTaskAutoAway extends TimerTask{
         private Timer t;
+        
         public TimerTaskAutoAway(int periodSeconds){
            t=new Timer();
            long period=periodSeconds*1000; // milliseconds
@@ -1826,9 +1847,15 @@ public class Roster
         public void run() {
             try {
                 if (getKeyLockState()) {
-                    setLight(false);
+                    if (elfPlatform && lightState==1) {
+                        LightControl.setLight(0);
+                        lightState=0;
+                    }
                 } else {
-                    setLight(true);    
+                    if (elfPlatform && lightState==0) {
+                        LightControl.setLight(1);
+                        lightState=1;
+                    }
                 }
                 if (setAutoStatus) {
                     keyTimer=keyTimer+5;
@@ -1857,23 +1884,9 @@ public class Roster
         }
     }
     
-    public void setLight(boolean state) {
-        if (Version.getPlatformName().indexOf("SIE-")>-1) {
-            if (state){
-                com.siemens.mp.game.Light.setLightOn();
-            } else { 
-                com.siemens.mp.game.Light.setLightOff();
-            }
-           removeCommand(state? cmdLightOn: cmdLightOff);
-           addCommand(state? cmdLightOff: cmdLightOn);
-           
-           cf.lightState=state;
-           cf.saveToStorage();
-        }
-    }
-    
     public static boolean getKeyLockState() {
-        boolean lightState=(System.getProperty("MPJCKEYL")=="1")?true:false;
+        boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
+        if (lightState) elfPlatform=true;
         return lightState;
     }
 }

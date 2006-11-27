@@ -1,7 +1,7 @@
 /*
  * FileSiemens.java
  *
- * Created on 7 Октябрь 2006 г., 23:20
+ * Created on 7 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2006 пїЅ., 23:20
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -43,9 +43,6 @@ public class FileSiemens extends FileIO {
         //System.out.println("Siemens root");
         Vector rd = new Vector();
         rd.addElement("0:/");
-        rd.addElement("1:/");
-        rd.addElement("2:/");
-        rd.addElement("3:/");
         rd.addElement("4:/");
         return rd;
     }
