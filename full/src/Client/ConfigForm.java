@@ -171,7 +171,7 @@ public class ConfigForm implements
 	
         application.setSelectedFlags(ap);
         
-	keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 20, 600 );
+	keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 10, 10000 );
 	fieldGmt=new NumberField(SR.MS_GMT_OFFSET, cf.gmtOffset, -12, 12); 
         fieldLoc=new NumberField(SR.MS_CLOCK_OFFSET, cf.locOffset, -12, 12 );
 
