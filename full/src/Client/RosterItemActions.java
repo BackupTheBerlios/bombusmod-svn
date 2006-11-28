@@ -162,7 +162,7 @@ public class RosterItemActions extends Menu{
 //#if (FILE_IO && FILE_TRANSFER)
 //#             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
 //#                 if (contact!=StaticData.getInstance().roster.selfContact())
-//#                     addItem("Send file", 50);
+//#                     addItem(SR.MS_SEND_FILE, 50);
 //#             
 //#endif
         } else {

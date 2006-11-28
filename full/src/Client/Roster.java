@@ -196,10 +196,11 @@ public class Roster
         addCommand(cmdConference);
         
         if (Version.getPlatformName().startsWith("SIE-")) {
-            switch (cf.lightState) {
-                case 0: addCommand(cmdTurnOnLight); lightState=0;
-                case 1: addCommand(cmdTurnOffLight);  lightState=1;
-            }
+           if (cf.lightState) {
+                addCommand(cmdTurnOffLight);  lightState=1;
+           } else {
+                addCommand(cmdTurnOnLight); lightState=0;
+           }
             LightControl.setLight(cf.lightState);
         }
         //addCommand(cmdPrivacy);
@@ -1593,12 +1594,12 @@ public class Roster
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
         if (c==cmdTurnOnLight) {
-            LightControl.setLight(1);
+            LightControl.setLight(true);
             removeCommand(cmdTurnOnLight);
             addCommand(cmdTurnOffLight);
         }
         if (c==cmdTurnOffLight) {
-            LightControl.setLight(0);
+            LightControl.setLight(false);
             removeCommand(cmdTurnOffLight);
             addCommand(cmdTurnOnLight);
         }
@@ -1846,14 +1847,15 @@ public class Roster
         }
         public void run() {
             try {
-                if (getKeyLockState()) {
+                if (getKeyLockState() && lightState==1) {
                     if (elfPlatform && lightState==1) {
-                        LightControl.setLight(0);
+                        LightControl.setLight(false);
                         lightState=0;
                     }
-                } else {
+                }
+                if (getKeyLockState()==false && lightState==0) {
                     if (elfPlatform && lightState==0) {
-                        LightControl.setLight(1);
+                        LightControl.setLight(true);
                         lightState=1;
                     }
                 }

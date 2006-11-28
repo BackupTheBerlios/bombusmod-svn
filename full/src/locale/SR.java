@@ -209,7 +209,7 @@ public class SR {
     public   static String MS_ADD_TO_ROSTER = loadString( "Add to roster" );
     public   static String MS_CLEAR=loadString( "Clear" );
     public   static String MS_ALT_LANG="langfile";
-    public   static String MS_GRANT_MEMBERSHIP = "Grant Membership";
+    public   static String MS_GRANT_MEMBERSHIP=loadString("Grant Membership");
     public   static String MS_SELLOGIN = loadString( "Connect" );
 //--toon
     public   static String MS_UNAFFILIATE = loadString("Unaffiliate");
@@ -361,12 +361,50 @@ public class SR {
     public static String MS_USER_REQUEST_AUTORIZATION=loadString("User request autorization");
 	
     public final static String MS_SURE_DELETE="Are you sure want to delete this message?";
+
+    public static String MS_MESSAGE_FOR_ME="Message for me";
+    
+    public static String MS_BALLOON_INK=loadString("balloon ink");
+    public static String MS_BALLOON_BGND=loadString("balloon background");
+    public static String MS_LIST_BGND=loadString("messagelist & roster background");
+    public static String MS_LIST_BGND_EVEN=loadString("messagelist & roster even lines");
+    public static String MS_LIST_INK=loadString("messagelist & roster & common font");
+    public static String MS_MSG_SUBJ=loadString("message subject");
+    public static String MS_MSG_HIGHLIGHT=loadString("message highlight");
+    public static String MS_DISCO_CMD=loadString("service discovery commands");
+    public static String MS_BAR_BGND=loadString("Header & Bottom background");
+    public static String MS_BAR_INK=loadString("Header font");
+    public static String MS_CONTACT_DEFAULT=loadString("contact default");
+    public static String MS_CONTACT_CHAT=loadString("contact chat");
+    public static String MS_CONTACT_AWAY=loadString("contact away");
+    public static String MS_CONTACT_XA=loadString("contact extended away");
+    public static String MS_CONTACT_DND=loadString("contact do not disturb");
+    public static String MS_GROUP_INK=loadString("group color");
+    public static String MS_BLK_INK=loadString("keylock font");
+    public static String MS_BLK_BGND=loadString("keylock background");
+    public static String MS_MESSAGE_IN=loadString("message incoming");
+    public static String MS_MESSAGE_OUT=loadString("message outgoing");
+    public static String MS_MESSAGE_PRESENCE=loadString("message presence");
+    public static String MS_MESSAGE_AUTH=loadString("message auth");
+    public static String MS_MESSAGE_HISTORY=loadString("message history");
+    public static String MS_PGS_REMAINED=loadString("progress bar remained");
+    public static String MS_PGS_COMPLETE=loadString("progress bar complete");
+    public static String MS_PGS_BORDER=loadString("progress border");
+    public static String MS_PGS_BGND=loadString("progress bar background");
+    public static String MS_HEAP_TOTAL=loadString("Heap mon total");
+    public static String MS_HEAP_FREE=loadString("Heap mon free");
+    public static String MS_CURSOR_BGND=loadString("Cursor background");
+    public static String MS_CURSOR_OUTLINE=loadString("Cursor ink & outline");
+    public static String MS_SCROLL_BRD=loadString("Scroll border");
+    public static String MS_SCROLL_BAR=loadString("Scroll bar");
+    public static String MS_SCROLL_BGND=loadString("Scroll back");    
+
+    public static String MS_SOUNDS_OPTIONS=loadString("Sounds options");
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
 
-    public static String MS_MESSAGE_FOR_ME="Message for me";
-
+    
     private SR() { }
     
     private static Hashtable lang;

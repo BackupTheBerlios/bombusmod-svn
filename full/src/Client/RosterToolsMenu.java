@@ -40,7 +40,7 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_FILE_TRANSFERS, 5);
 //#endif
         addItem(SR.MS_COLOR_TUNE, 6);
-        addItem("Sounds options", 7);
+        addItem(SR.MS_SOUNDS_OPTIONS, 7);
 /*		
         addItem("ArchiveDump", 10);
 */        

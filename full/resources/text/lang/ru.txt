@@ -317,3 +317,45 @@ Save photo	Сохранить фото
 User has removed autorization	Пользователь удалил авторизацию
 You are now autorized	Вы авторизированны
 User request autorization	Запрос авторизации
+
+Grant Membership	Дать мембера
+Reply	Ответить
+Save template	Сохранить шаблон
+
+balloon ink	Шрифт баллона
+balloon background	Фон баллона
+messagelist & roster background	Цвет фона, общий
+messagelist & roster even lines	Цвет фона, чередование
+messagelist & roster & common font	Общий шрифт
+message subject	Тема сообщения
+message highlight	Подсвеченное сообещение
+service discovery commands	Команды диско
+Header & Bottom background	Цвет верхней и нижней панели
+Header font	Цвет шрифта верхней панели
+contact default	Обычный контакт
+contact chat	Чат контакт
+contact away	Отсутствую контакт
+contact extended away	Расширенное отсутствие контакт
+contact do not disturb	Не беспокоить контакт
+group color	Цвет групп
+keylock font	Шрифт при блоке
+keylock background	Фон в блоке
+message incoming	Входящее сообщение
+message outgoing	Исходящее сообщение
+message presence	Статусное сообщение
+message auth	Сообщение авторизации
+message history	История сообщений в конференции
+progress bar remained	Осталось прогресса
+progress bar complete	Сделано прогресса
+progress border	Ободок прогресса
+progress bar background	Фон прогресса
+Heap mon total	Всего кучи
+Heap mon free	Свободно кучи
+Cursor background	Фон курсора
+Cursor ink & outline	Цвет шрифта курсора и ободка
+Scroll border	Цвет ободка скролла
+Scroll bar	Цвет бегунка скролла
+Scroll back	Цвет фона скролла
+
+Send status	Отправить статус
+Sounds options	Настройки звуков
