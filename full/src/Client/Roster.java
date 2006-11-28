@@ -109,8 +109,8 @@ public class Roster
     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
     private Command cmdAccount=new Command(SR.MS_ACCOUNT_, Command.SCREEN, 15);
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
-    private Command cmdTurnOnLight=new Command("Turn On Light", Command.SCREEN, 16);
-    private Command cmdTurnOffLight=new Command("Turn Off Light", Command.SCREEN, 16);
+    private Command cmdTurnOnLight=new Command("TurnOn Light", Command.SCREEN, 16);
+    private Command cmdTurnOffLight=new Command("TurnOff Light", Command.SCREEN, 16);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
     private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
     
@@ -198,10 +198,11 @@ public class Roster
         if (Version.getPlatformName().startsWith("SIE-")) {
            if (cf.lightState) {
                 addCommand(cmdTurnOffLight);  lightState=1;
+                LightControl.setLight(true);
            } else {
                 addCommand(cmdTurnOnLight); lightState=0;
+                LightControl.setLight(false);
            }
-            LightControl.setLight(cf.lightState);
         }
         //addCommand(cmdPrivacy);
         addCommand(cmdTools);

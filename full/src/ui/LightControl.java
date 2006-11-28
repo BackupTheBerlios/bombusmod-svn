@@ -25,7 +25,7 @@ public class LightControl {
     }
     
     public static void setLight(boolean state) {
-            if (state) {
+            if (state==true) {
                 com.siemens.mp.game.Light.setLightOn();
             } else {
                 com.siemens.mp.game.Light.setLightOff();    
