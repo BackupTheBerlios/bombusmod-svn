@@ -1595,11 +1595,13 @@ public class Roster
         
         if (c==cmdTurnOnLight) {
             LightControl.setLight(true);
+            lightState=1;
             removeCommand(cmdTurnOnLight);
             addCommand(cmdTurnOffLight);
         }
         if (c==cmdTurnOffLight) {
             LightControl.setLight(false);
+            lightState=0;
             removeCommand(cmdTurnOffLight);
             addCommand(cmdTurnOnLight);
         }
@@ -1848,13 +1850,13 @@ public class Roster
         public void run() {
             try {
                 if (getKeyLockState() && lightState==1) {
-                    if (elfPlatform && lightState==1) {
+                    if (elfPlatform==true && lightState==1) {
                         LightControl.setLight(false);
                         lightState=0;
                     }
                 }
                 if (getKeyLockState()==false && lightState==0) {
-                    if (elfPlatform && lightState==0) {
+                    if (elfPlatform==true && lightState==0) {
                         LightControl.setLight(true);
                         lightState=1;
                     }
@@ -1888,7 +1890,7 @@ public class Roster
     
     public static boolean getKeyLockState() {
         boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
-        if (lightState) elfPlatform=true;
+        if (lightState==true) elfPlatform=true;
         return lightState;
     }
 }
