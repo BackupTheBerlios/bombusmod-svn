@@ -101,7 +101,7 @@ public class Roster
     
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
-    private Command cmdActiveContact;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
+    private Command cmdMenu;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
     private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
     private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 10);
@@ -183,13 +183,14 @@ public class Roster
         String platform=Version.getPlatformName();
         if (platform.startsWith("Nokia")) activeType=Command.BACK;
         if (platform.startsWith("Intent")) activeType=Command.BACK;
+        if (platform.startsWith("j2me")) activeType=Command.BACK;
         
-        cmdActiveContact=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
+        cmdMenu=new Command("Menu", activeType, 3);
         
         vContacts=new Vector(); // just for displaying
         addCommand(cmdStatus);
         addCommand(cmdActions);
-        addCommand(cmdActiveContact);
+        addCommand(cmdMenu);
         addCommand(cmdAlert);
         addCommand(cmdAdd);
         //addCommand(cmdServiceDiscovery);
@@ -198,10 +199,10 @@ public class Roster
         if (Version.getPlatformName().startsWith("SIE-")) {
            if (cf.lightState) {
                 addCommand(cmdTurnOffLight);  lightState=1;
-                LightControl.setLight(true);
+                setLight(true);
            } else {
                 addCommand(cmdTurnOnLight); lightState=0;
-                LightControl.setLight(false);
+                setLight(false);
            }
         }
         //addCommand(cmdPrivacy);
@@ -1585,7 +1586,9 @@ public class Roster
         }
         if (c==cmdMinimize) { Bombus.getInstance().hideApp(true);  }
         
-        if (c==cmdActiveContact) { new ActiveContacts(display, null); }
+        if (c==cmdMenu) {
+                new RosterMenu(display, getFocusedObject());
+        }
         
         if (c==cmdAccount){ new AccountSelect(display, false); }
         if (c==cmdStatus) { new StatusSelect(display, null); }
@@ -1595,16 +1598,20 @@ public class Roster
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
         if (c==cmdTurnOnLight) {
-            LightControl.setLight(true);
+            setLight(true);
             lightState=1;
             removeCommand(cmdTurnOnLight);
             addCommand(cmdTurnOffLight);
+            cf.lightState=true;
+            cf.saveToStorage();
         }
         if (c==cmdTurnOffLight) {
-            LightControl.setLight(false);
+            setLight(false);
             lightState=0;
             removeCommand(cmdTurnOffLight);
             addCommand(cmdTurnOnLight);
+            cf.lightState=false;
+            cf.saveToStorage();
         }
         
         if (c==cmdTools) { new RosterToolsMenu(display); }
@@ -1852,13 +1859,13 @@ public class Roster
             try {
                 if (getKeyLockState() && lightState==1) {
                     if (elfPlatform==true && lightState==1) {
-                        LightControl.setLight(false);
+                        setLight(false);
                         lightState=0;
                     }
                 }
                 if (getKeyLockState()==false && lightState==0) {
                     if (elfPlatform==true && lightState==0) {
-                        LightControl.setLight(true);
+                        setLight(true);
                         lightState=1;
                     }
                 }
@@ -1891,7 +1898,15 @@ public class Roster
     
     public static boolean getKeyLockState() {
         boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
-        if (lightState==true) elfPlatform=true;
+        if (lightState==true || elfPlatform==true) elfPlatform=true;
         return lightState;
+    }
+    
+    public void setLight(boolean state) {
+            if (state==true) {
+                com.siemens.mp.game.Light.setLightOn();
+            } else {
+                com.siemens.mp.game.Light.setLightOff();    
+            }
     }
 }

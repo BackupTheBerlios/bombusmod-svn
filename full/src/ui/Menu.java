@@ -42,8 +42,12 @@ public class Menu extends VirtualList implements CommandListener
         menuitems.addElement(mi);
     }
     
+    public void addItem(String label, int index, int iconIndex){
+        addItem(new MenuItem(label, index, iconIndex));
+    }
+    
     public void addItem(String label, int index){
-        addItem(new MenuItem(label, index));
+        addItem(new MenuItem(label, index, -1));
     }
     
     public void commandAction(Command c, Displayable d) {

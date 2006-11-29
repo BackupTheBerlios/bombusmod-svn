@@ -12,9 +12,11 @@ package Client;
 import Conference.ConferenceForm;
 import Conference.MucContact;
 import archive.ArchiveList;
+import images.RosterIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.Bombus;
+import ui.IconTextElement;
 import ui.Menu;
 import ui.MenuItem;
 
@@ -27,17 +29,17 @@ public class RosterMenu extends Menu
     public RosterMenu(Display display, Object o) {
         super(SR.MS_MAIN_MENU);
         this.o=o;
-        addItem(SR.MS_ITEM_ACTIONS, 0);
-        addItem(SR.MS_STATUS_MENU, 1);
-        addItem(SR.MS_ACTIVE_CONTACTS, 2);
-        addItem(SR.MS_ALERT_PROFILE_CMD, 3);
-        addItem(SR.MS_CONFERENCE, 4);
-        addItem(SR.MS_ARCHIVE, 5);
-        addItem(SR.MS_ADD_CONTACT, 6);
-        addItem(SR.MS_TOOLS, 7);    
-        addItem(SR.MS_ACCOUNT_, 8);
-        addItem(SR.MS_ABOUT, 10);
-        addItem(SR.MS_APP_QUIT, 11);
+        addItem(SR.MS_ITEM_ACTIONS, 0, 0x0f24);
+        addItem(SR.MS_STATUS_MENU, 1, 0x0f16);
+        addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x0f21);
+        addItem(SR.MS_ALERT_PROFILE_CMD, 3, 0x0f17);
+        addItem(SR.MS_CONFERENCE, 4,0x40);
+        addItem(SR.MS_ARCHIVE, 5,0x0f12);
+        addItem(SR.MS_ADD_CONTACT, 6, 0x0f02);
+        addItem(SR.MS_TOOLS, 7,0x0f24);    
+        addItem(SR.MS_ACCOUNT_, 8,0x0f01);
+        addItem(SR.MS_ABOUT, 10,0x0f04);
+        addItem(SR.MS_APP_QUIT, 11,0x0f22);
     
 	attachDisplay(display);
     }
