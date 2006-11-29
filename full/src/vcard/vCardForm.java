@@ -90,9 +90,9 @@ public class vCardForm
         photoType=vcard.getPhotoType();
         
         if (vcard.isEmpty() && !editable) 
-            f.append("[no vCard available]"); 
+            f.append("\n[no vCard available]"); 
         else { 
-            photoIndex=f.append("[no photo available]");
+            photoIndex=f.append("[]");
         }
 		
         photo=vcard.getPhoto();
@@ -103,7 +103,11 @@ public class vCardForm
             String name=(String)VCard.vCardLabels.elementAt(index);
             Item item=null;
             if (editable) {
-                item=new TextField(name, data, 200, TextField.ANY);
+                //truncating large string
+                if (data!=null) if (data.length()>500) 
+                    data=data.substring(0, 494)+"<...>";
+                
+                item=new TextField(name, data, 500, TextField.ANY);
                 items.addElement(item);
             } else if (data!=null) {
                 item=new StringItem (name, data);
@@ -172,7 +176,10 @@ public class vCardForm
             new CameraImage(display, this);
 //#endif
 
-    if (c==cmdDelPhoto) {photo=null; setPhoto();}
+        if (c==cmdDelPhoto) {
+            photo=null; 
+            setPhoto();
+        }
         
         if (c!=cmdPublish) return;
         
@@ -254,25 +261,23 @@ public class vCardForm
     }
 //#endif
 
-//#if (!MIDP1)
     public void cameraImageNotify(byte[] capturedPhoto) {
         photo=capturedPhoto;
         setPhoto();
     }
-//#endif
 
-    private void setPhoto() {
-        if (photo==null) return;
-        String size=String.valueOf(photo.length)+" bytes";
-        Item photoItem;
-//#if !(MIDP1)
-        try {
-            Image photoImg=Image.createImage(photo, 0, photo.length);
-            photoItem=new ImageItem(size, photoImg, 0, null);
-        } catch (Exception e) { photoItem=new StringItem(size, "[Unsupported format]"); }
-        f.set(photoIndex, photoItem);
-//#endif
-    }
+     private void setPhoto() {
+        Item photoItem=new StringItem(null, "[no photo available]");
+        if (photo!=null) {
+            String size=String.valueOf(photo.length)+" bytes";
+            try {
+                Image photoImg=Image.createImage(photo, 0, photo.length);
+                photoItem=new ImageItem(size, photoImg, 0, null);
+            } catch (Exception e) { photoItem=new StringItem(size, "[Unsupported format]"); }
+        }
+         f.set(photoIndex, photoItem);
+     }
+	 
     private String getDate() {
         long dateGmt=Time.localTime();
         return Time.dayString(dateGmt); 
