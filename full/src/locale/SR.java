@@ -250,7 +250,7 @@ public class SR {
     public final static String MS_MSG_LIMIT="Message limit";
     
     public final static String MS_OPENING_STREAM="Opening stream";
-    public final static String MS_SASL_STREAM="SASL handshake";
+    //public final static String MS_SASL_STREAM="SASL handshake";
     public final static String MS_ZLIB="Using compression";
     public final static String MS_AUTH="Authenticating";
     public final static String MS_RESOURCE_BINDING="Resource binding";
@@ -400,6 +400,8 @@ public class SR {
     public static String MS_SCROLL_BGND=loadString("Scroll back");    
 
     public static String MS_SOUNDS_OPTIONS=loadString("Sounds options");
+	
+	public static String MS_NEW_BOOKMARK=loadString("New conference");
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
