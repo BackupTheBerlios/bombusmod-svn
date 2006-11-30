@@ -194,13 +194,9 @@ public class MessageEdit
             body=null;
         }
         if (c==cmdSuspend) {
-            if (Version.getPlatformName().indexOf("SIE") > -1) {
-                return;
-            } else {
                 composing=false; 
                 to.msgSuspended=body; 
                 body=null;
-            }
         }
         if (c==cmdSend && body==null) return;
         if (c==cmdSubj) {
