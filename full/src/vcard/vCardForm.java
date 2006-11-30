@@ -91,12 +91,14 @@ public class vCardForm
         
         if (vcard.isEmpty() && !editable) 
             f.append("\n[no vCard available]"); 
-        else { 
-            photoIndex=f.append("[]");
-        }
-		
-        photo=vcard.getPhoto();
-        setPhoto();
+         else { 
+             photoIndex=f.append("[]");
+             
+            photo=vcard.getPhoto();
+            setPhoto();
+            
+             f.append("\n\n[end of vCard]");
+         }
         
         for (int index=0; index<vcard.getCount(); index++) {
             String data=vcard.getVCardData(index);
@@ -119,11 +121,7 @@ public class vCardForm
             }
             if (item!=null) {
                 f.append(item);
-//#if !(MIDP1)
                 f.append(new Spacer(256, 3));
-//#else
-//#                 f.append("\n");
-//#endif
             }
         }
         
@@ -134,11 +132,9 @@ public class vCardForm
 //#if (FILE_IO)
             f.addCommand(cmdPhoto);
 //#endif
-//#if !(MIDP1)
             String cameraAvailable=System.getProperty("supports.video.capture");
             if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
                 f.addCommand(cmdCamera);
-//#endif
             f.addCommand(cmdDelPhoto);
         }
         if (!editable) {
