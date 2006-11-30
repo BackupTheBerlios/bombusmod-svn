@@ -25,7 +25,7 @@ public class NetworkAccu {
             net=getNetworkLevel();
         } catch (Exception e) {}
 
-        int y=0;
+        int y=1;
                 
         int accuLevel=(accu>-1)?accu:-1;
         int netLevel=(net>-1)?net:-1;

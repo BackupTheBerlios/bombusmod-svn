@@ -160,7 +160,7 @@ public class ConfigForm implements
         ap[apctr++]=cf.fullscreen;
         application.append(SR.MS_FULLSCREEN,null);
         application.append(SR.MS_HEAP_MONITOR,null);
-        application.append(SR.MS_DIGITAL_HEAP_MONITOR,null);
+        application.append(SR.MS_NEW_MENU,null);
 	if (!cf.ghostMotor) application.append(SR.MS_FLASHBACKLIGHT,null);
 	if (cf.allowMinimize) application.append(SR.MS_ENABLE_POPUP,null);
         

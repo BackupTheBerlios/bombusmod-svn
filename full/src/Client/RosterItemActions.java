@@ -54,16 +54,16 @@ public class RosterItemActions extends Menu{
 	if (isContact) {
 	    Contact contact=(Contact)item;
 	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
-		addItem(SR.MS_LOGON,5);
-		addItem(SR.MS_LOGOFF,6);
+		addItem(SR.MS_LOGON,5, 0x36);
+		addItem(SR.MS_LOGOFF,6, 0x37);
 		addItem(SR.MS_RESOLVE_NICKNAMES, 7);
 	    }
 	    //if (contact.group==Groups.SELF_INDEX) addItem("Commands",30);
 	    
-	    addItem(SR.MS_VCARD,1);
-            addItem("Info",888);
-            addItem(SR.MS_CLIENT_INFO,0);
-	    addItem(SR.MS_COMMANDS,30);
+	    addItem(SR.MS_VCARD,1, 0x0f16);
+            addItem("Info",888, 0x0f11);
+            addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
+	    addItem(SR.MS_COMMANDS,30, 0x0f24);
             
             if (contact.getJid()==contact.getBareJid()) {
                 addItem(SR.MS_SEEN,890);    
@@ -77,10 +77,10 @@ public class RosterItemActions extends Menu{
 	    
 	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
 		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
-		    addItem(SR.MS_EDIT,2);
-		addItem(SR.MS_SUBSCRIPTION,3);
-		addItem(SR.MS_DELETE,4);
-                addItem(SR.MS_DIRECT_PRESENCE,45);
+		    addItem(SR.MS_EDIT,2, 0x0f13);
+		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
+		addItem(SR.MS_DELETE,4, 0x12);
+                addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
             
 	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return; //TODO: подключить тот же список, что и для ConferenceGroup
@@ -99,7 +99,7 @@ public class RosterItemActions extends Menu{
                                 onlineConferences=true;
                         } catch (Exception e) {}
                     }
-                    if (onlineConferences) addItem(SR.MS_INVITE,40);
+                    if (onlineConferences) addItem(SR.MS_INVITE,40, 0x0f20);
                 }
                 //invite
                 
@@ -108,15 +108,15 @@ public class RosterItemActions extends Menu{
 
                 
                 if (selfContact.roleCode==MucContact.ROLE_MODERATOR) {
-                    addItem(SR.MS_KICK,8);
+                    addItem(SR.MS_KICK,8, 0x0f06);
                     
                     if (myAffiliation>=MucContact.AFFILIATION_ADMIN && mc.affiliationCode<myAffiliation)
-                        addItem(SR.MS_BAN,9);
+                        addItem(SR.MS_BAN,9, 0x0f06);
                     
                     if (mc.affiliationCode<MucContact.AFFILIATION_ADMIN) 
                         /* 5.1.1 *** A moderator MUST NOT be able to revoke voice privileges from an admin or owner. */ 
                     if (mc.roleCode==MucContact.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31);
-                    else addItem(SR.MS_REVOKE_VOICE,32);
+                    else addItem(SR.MS_REVOKE_VOICE, 32);
                 }
                 
                 if (myAffiliation>=MucContact.AFFILIATION_ADMIN) {
@@ -157,12 +157,12 @@ public class RosterItemActions extends Menu{
                             onlineConferences=true;
                     } catch (Exception e) {}
                 }
-                if (onlineConferences) addItem(SR.MS_INVITE,40);
+                if (onlineConferences) addItem(SR.MS_INVITE,40, 0x0f20);
             }
 //#if (FILE_IO && FILE_TRANSFER)
 //#             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
 //#                 if (contact!=StaticData.getInstance().roster.selfContact())
-//#                     addItem(SR.MS_SEND_FILE, 50);
+//#                     addItem(SR.MS_SEND_FILE, 50, 0x0f34);
 //#             
 //#endif
         } else {
@@ -172,12 +172,12 @@ public class RosterItemActions extends Menu{
 	    if (group instanceof ConferenceGroup) {
 		MucContact self=((ConferenceGroup)group).getSelfContact();
 		if (self.status>=Presence.PRESENCE_OFFLINE) // offline or error
-		    addItem(SR.MS_REENTER,23);
+		    addItem(SR.MS_REENTER,23, 0x0f21);
 		else {
-		    addItem(SR.MS_LEAVE_ROOM,22);
+		    addItem(SR.MS_LEAVE_ROOM,22, 0x0f22);
                     addItem(SR.MS_DIRECT_PRESENCE,46);
 		    if (self.affiliationCode>=MucContact.AFFILIATION_OWNER) {
-			addItem(SR.MS_CONFIG_ROOM,10);
+			addItem(SR.MS_CONFIG_ROOM,10, 0x0f03);
                     }
 		    if (self.affiliationCode>=MucContact.AFFILIATION_ADMIN) {
 			addItem(SR.MS_OWNERS,11);

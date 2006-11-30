@@ -98,10 +98,10 @@ public class Roster
     public static boolean forme=false;
     public static boolean conference=false;
 
-    
+
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
-    private Command cmdMenu;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
+    private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
     private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
     private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 10);
@@ -147,7 +147,7 @@ public class Roster
 
     private static boolean elfPlatform=false;
     
-    private int lightState=0;
+    public int lightState=0;
     
     /**
      * Creates a new instance of Roster
@@ -179,61 +179,54 @@ public class Roster
         hContacts=new Vector();
         groups=new Groups();
         
-        int activeType=Command.SCREEN;
-        String platform=Version.getPlatformName();
-        if (platform.startsWith("Nokia")) activeType=Command.BACK;
-        if (platform.startsWith("Intent")) activeType=Command.BACK;
-        if (platform.startsWith("j2me")) activeType=Command.BACK;
-        
-        cmdMenu=new Command("Menu", activeType, 3);
-        
         vContacts=new Vector(); // just for displaying
-        addCommand(cmdStatus);
-        addCommand(cmdActions);
-        addCommand(cmdMenu);
-        addCommand(cmdAlert);
-        addCommand(cmdAdd);
-        //addCommand(cmdServiceDiscovery);
-        addCommand(cmdConference);
         
-        if (Version.getPlatformName().startsWith("SIE-")) {
-           if (cf.lightState) {
-                addCommand(cmdTurnOffLight);  lightState=1;
-                setLight(true);
-           } else {
-                addCommand(cmdTurnOnLight); lightState=0;
-                setLight(false);
-           }
-        }
-        //addCommand(cmdPrivacy);
-        addCommand(cmdTools);
-        addCommand(cmdArchive);
-        addCommand(cmdInfo);
-        addCommand(cmdAccount);
+        if (!cf.fullscreen && !cf.digitMemMonitor) {
 
-        if (Version.getPlatformName().startsWith("Nokia9500") || 
-            Version.getPlatformName().startsWith("Nokia9300") || 
-            Version.getPlatformName().startsWith("Nokia9300i")) {
-        } else {
-                addCommand(cmdQuit);
+            int activeType=Command.SCREEN;
+            String platform=Version.getPlatformName();
+            if (platform.startsWith("Nokia")) activeType=Command.BACK;
+            if (platform.startsWith("Intent")) activeType=Command.BACK;
+            if (platform.startsWith("j2me")) activeType=Command.BACK;
+
+            cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
+
+            addCommand(cmdStatus);
+            addCommand(cmdActions);
+            addCommand(cmdActiveContacts);
+            addCommand(cmdAlert);
+            addCommand(cmdAdd);
+            addCommand(cmdConference);
+
+
+            if (Version.getPlatformName().startsWith("SIE-")) {
+               if (cf.lightState) {
+                    addCommand(cmdTurnOffLight);  lightState=1;
+                    setLight(true);
+               } else {
+                    addCommand(cmdTurnOnLight); lightState=0;
+                    setLight(false);
+               }
+            }
+            addCommand(cmdTools);
+            addCommand(cmdArchive);
+            addCommand(cmdInfo);
+            addCommand(cmdAccount);
+
+            if (Version.getPlatformName().startsWith("Nokia9500") || 
+                Version.getPlatformName().startsWith("Nokia9300") || 
+                Version.getPlatformName().startsWith("Nokia9300i")) {
+            } else {
+                    addCommand(cmdQuit);
+            }
+
+
+            addOptionCommands();
+            setCommandListener(this);
         }
-        
-        
-        addOptionCommands();
-        //moveCursorTo(0);
-        setCommandListener(this);
-        //resetStrCache();
-        
-        //if (visible) display.setCurrent(this);
-        /*if (selAccount) {
-            new AccountSelect(display);
-        } else {
-            // connect whithout account select
-            Account.launchAccount();
-        }*/
-	//setRosterTitle("offline");
+
 	updateTitle();
-	
+
         SplashScreen.getInstance().setExit(display, this);
     }
     
@@ -1513,21 +1506,16 @@ public class Roster
             
             display.flashBacklight(blState);
         }
-        if (keyCode==-4)  {
-            if (Version.getPlatformName().indexOf("SIE") > -1) {
-                new RosterMenu(display, getFocusedObject());
-             }         
-        }
-        if (keyCode==-1)  {
+        if (keyCode==-4 || keyCode==-1)  {
             if (Version.getPlatformName().indexOf("SIE") > -1) {
                 new RosterMenu(display, getFocusedObject());
              }         
         }     
-        if (keyCode==-7)  {
-            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
+        if (keyCode==-7 || keyCode==-6)  {
+            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1) || (Version.getPlatformName().indexOf("j2me") > -1)) {
                 new RosterMenu(display, getFocusedObject());
              }         
-        }
+        } 
 //#endif
     }
     
@@ -1555,6 +1543,16 @@ public class Roster
                 if (p==c) pass++; // полный круг пройден
             }
         }
+        if (keyCode==-4 || keyCode==-1)  {
+            if (Version.getPlatformName().indexOf("SIE") > -1) {
+                new RosterMenu(display, getFocusedObject());
+             }         
+        }     
+        if (keyCode==-7 || keyCode==-6)  {
+            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1) || (Version.getPlatformName().indexOf("j2me") > -1)) {
+                new RosterMenu(display, getFocusedObject());
+             }         
+        } 
 
         if (keyCode=='3') searchGroup(-1);
 	if (keyCode=='9') searchGroup(1);
@@ -1586,8 +1584,8 @@ public class Roster
         }
         if (c==cmdMinimize) { Bombus.getInstance().hideApp(true);  }
         
-        if (c==cmdMenu) {
-                new RosterMenu(display, getFocusedObject());
+        if (c==cmdActiveContacts) {
+                new ActiveContacts(display, null);
         }
         
         if (c==cmdAccount){ new AccountSelect(display, false); }
@@ -1855,16 +1853,18 @@ public class Roster
         }
         public void run() {
             try {
-                if (getKeyLockState() && lightState==1) {
-                    if (elfPlatform==true && lightState==1) {
-                        setLight(false);
-                        lightState=0;
+                if (Version.getPlatformName().indexOf("SIE") > -1) {
+                    if (getKeyLockState() && lightState==1) {
+                        if (elfPlatform==true && lightState==1) {
+                            setLight(false);
+                            lightState=0;
+                        }
                     }
-                }
-                if (getKeyLockState()==false && lightState==0) {
-                    if (elfPlatform==true && lightState==0) {
-                        setLight(true);
-                        lightState=1;
+                    if (getKeyLockState()==false && lightState==0) {
+                        if (elfPlatform==true && lightState==0) {
+                            setLight(true);
+                            lightState=1;
+                        }
                     }
                 }
                 if (setAutoStatus) {

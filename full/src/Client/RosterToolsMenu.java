@@ -29,18 +29,17 @@ public class RosterToolsMenu
     /** Creates a new instance of RosterToolsMenu */
     public RosterToolsMenu(Display display) {
         super(SR.MS_JABBER_TOOLS);
-        addItem(SR.MS_DISCO, 0);
-        addItem(SR.MS_PRIVACY_LISTS, 1);
-        addItem(SR.MS_MY_VCARD, 2);
-        addItem(SR.MS_OPTIONS, 3);
-        /*if (m.getItemCount()>0)*/
+        addItem(SR.MS_DISCO, 0, 0x13);
+        addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
+        addItem(SR.MS_MY_VCARD, 2, 0x0f16);
+        addItem(SR.MS_OPTIONS, 3, 0x0f03);
         
 //#if (FILE_IO && FILE_TRANSFER)
-//#         addItem(SR.MS_ROOT,4);
-//#         addItem(SR.MS_FILE_TRANSFERS, 5);
+//#         addItem(SR.MS_ROOT,4, 0x0f10);
+//#         addItem(SR.MS_FILE_TRANSFERS, 5, 0x0f34);
 //#endif
-        addItem(SR.MS_COLOR_TUNE, 6);
-        addItem(SR.MS_SOUNDS_OPTIONS, 7);
+        addItem(SR.MS_COLOR_TUNE, 6, 0x0f25);
+        addItem(SR.MS_SOUNDS_OPTIONS, 7, 0x0f17);
 /*		
         addItem("ArchiveDump", 10);
 */        

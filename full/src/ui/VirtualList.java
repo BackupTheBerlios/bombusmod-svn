@@ -57,6 +57,8 @@ public abstract class VirtualList
     protected int getTitleBGndRGB() {return Colors.BAR_BGND;} 
     
     private StaticData sd=StaticData.getInstance();
+
+    private int h;
     /**
      * цвет текста заголовка
      * @return RGB-цвет текста заголовка
@@ -354,10 +356,15 @@ public abstract class VirtualList
         if (inputbox!=null) { 
             itemBorder[0]=list_top-inputbox.height;
         } else {
-            if (paintBottom) { winHeight=height-list_top-20; } else { winHeight=height-list_top; } //убрать жесткое задание высоты
+            if (paintBottom) {
+                h=NetAccuFont.fontHeight+2;
+                winHeight=height-list_top-h; 
+            } else { winHeight=height-list_top; } //убрать жесткое задание высоты
         }
         
-        if (paintTop) { itemBorder[0]=list_top-20; } else { itemBorder[0]=list_top; } //убрать жесткое задание высоты
+        if (paintTop) { 
+            itemBorder[0]=list_top-h; 
+        } else { itemBorder[0]=list_top; } //убрать жесткое задание высоты
         
         int count=getItemCount(); // размер списка
         
@@ -458,21 +465,15 @@ public abstract class VirtualList
             inputbox.drawItem(g);
         } else {
             if (paintBottom) {
-                setAbsOrg(g, 0, height-20);
+                setAbsOrg(g, 0, height-h);
 
                 g.setColor(getTitleBGndRGB());
                 g.fillRect(0, 0, width, height);
 
-                int h=NetAccuFont.fontHeight;
-
                 String time=Time.timeString(Time.localTime());
                 
-                if (digitMemMonitor) {
-                    int freemem=(int)Runtime.getRuntime().freeMemory();
-                    NetAccuFont.drawString(g, time+" $"+freemem, 11,  h+1);
-                } else {
-                    NetAccuFont.drawString(g, time, 11,  h+1);
-                }
+                NetAccuFont.drawString(g, time, 1,  1);
+                int w=(time.length()+1)*NetAccuFont.fontWidth;
 
                 String traff = null;
                 int ngprs=-1;
@@ -488,12 +489,12 @@ public abstract class VirtualList
                         int out=sd.roster.theStream.getBytesOut();
                         gprscount=in+out;
                     }
-                    traff="&("+gprscount/1000+"<=)";
+                    traff=gprscount/1000+"<=";
                 } catch (Exception e) {
-                    traff="&(0)";
+                    traff="0<=";
                 }
                 NetworkAccu.draw(g, width);
-                NetAccuFont.drawString(g, traff, 11, 1);
+                NetAccuFont.drawString(g, traff, w, 1);
             }
         }
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );

@@ -9,10 +9,12 @@
 
 package Client;
 import Conference.AppendNick;
+import Info.Version;
 import archive.ArchiveList;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import templates.AppendTemplate;
+import ui.AlertBox;
 import ui.VirtualList;
 import util.ClipBoard;
 
@@ -188,13 +190,17 @@ public class MessageEdit
         if (c==cmdPasteText) { t.insert(clipboard.s, charsCount); return; } 
         if (c==cmdTemplate) { new AppendTemplate(display, t); return; }
         if (c==cmdCancel) { 
-            composing=false; 
-            body=null; 
-        }
-        if (c==cmdSuspend) { 
-            composing=false; 
-            to.msgSuspended=body; 
+            composing=false;
             body=null;
+        }
+        if (c==cmdSuspend) {
+            if (Version.getPlatformName().indexOf("SIE") > -1) {
+                return;
+            } else {
+                composing=false; 
+                to.msgSuspended=body; 
+                body=null;
+            }
         }
         if (c==cmdSend && body==null) return;
         if (c==cmdSubj) {
@@ -241,12 +247,10 @@ public class MessageEdit
     }
 
     private void setInitialCaps(boolean state) {
-//#if (!MIDP1)
         t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
         t.removeCommand(state? cmdABC: cmdAbc);
         t.addCommand(state? cmdAbc: cmdABC);
         cf.capsState=state;
-//#endif
     }
 
 }

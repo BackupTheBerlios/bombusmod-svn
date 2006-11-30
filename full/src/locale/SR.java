@@ -297,7 +297,7 @@ public class SR {
     
     public static String MS_SELECT_HISTORY_FOLDER=loadString("Select history folder");
     public static String CLASSIC_CHAT=loadString("Classic chat");
-    public static String MS_DIGITAL_HEAP_MONITOR=loadString("Digital heap monitor");
+    public static String MS_NEW_MENU=loadString("Show new menu");
     public static String MS_SOUND_VOLUME=loadString("Sound volume");
     public static String MS_LANGUAGE=loadString("Language");
     public static String MS_SAVE_HISTORY=loadString("Save history");

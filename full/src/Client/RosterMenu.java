@@ -9,8 +9,10 @@
 
 package Client;
 
+import Conference.Bookmarks;
 import Conference.ConferenceForm;
 import Conference.MucContact;
+import Info.Version;
 import archive.ArchiveList;
 import images.RosterIcons;
 import javax.microedition.lcdui.Display;
@@ -24,12 +26,15 @@ public class RosterMenu extends Menu
 {
 
     private Object o;
+    
+    private Config cf=Config.getInstance();
+    private StaticData sd=StaticData.getInstance();
 
     /** Creates a new instance of RosterToolsMenu */
     public RosterMenu(Display display, Object o) {
         super(SR.MS_MAIN_MENU);
         this.o=o;
-        addItem(SR.MS_ITEM_ACTIONS, 0, 0x0f24);
+        addItem(SR.MS_ITEM_ACTIONS, 0, 0x0f27);
         addItem(SR.MS_STATUS_MENU, 1, 0x0f16);
         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x0f21);
         addItem(SR.MS_ALERT_PROFILE_CMD, 3, 0x0f17);
@@ -38,6 +43,18 @@ public class RosterMenu extends Menu
         addItem(SR.MS_ADD_CONTACT, 6, 0x0f02);
         addItem(SR.MS_TOOLS, 7,0x0f24);    
         addItem(SR.MS_ACCOUNT_, 8,0x0f01);
+        
+        if (Version.getPlatformName().startsWith("SIE-")) {
+            if (cf.lightState) {
+                addItem("TurnOff Light", 12,0x0f31);
+                sd.roster.lightState=1;
+                sd.roster.setLight(true);
+            } else {
+                addItem("TurnOn Light", 12,0x0f31);
+                sd.roster.lightState=0;
+                sd.roster.setLight(false);
+            }
+        }
         addItem(SR.MS_ABOUT, 10,0x0f04);
         addItem(SR.MS_APP_QUIT, 11,0x0f22);
     
@@ -63,7 +80,9 @@ public class RosterMenu extends Menu
                 new AlertProfile(display);
 		break;
             case 4: //conference
-                if (connected) new ConferenceForm(display);
+                if (connected) {
+                   new Bookmarks(display, null);
+                }
                 break;
             case 5: //archive
                 new ArchiveList(display, null);
@@ -95,6 +114,19 @@ public class RosterMenu extends Menu
                 Bombus.getInstance().notifyDestroyed();
                 return;
 	    }
+	    case 12: {//light
+                if (StaticData.getInstance().roster.lightState==1) {
+                    StaticData.getInstance().roster.setLight(false);
+                    StaticData.getInstance().roster.lightState=0;
+                    cf.lightState=false;
+                    cf.saveToStorage();
+                } else {
+                    StaticData.getInstance().roster.setLight(true);
+                    StaticData.getInstance().roster.lightState=1;
+                    cf.lightState=true;
+                    cf.saveToStorage();
+                }
+            }
 	}
     }
 }

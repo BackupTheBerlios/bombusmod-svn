@@ -121,8 +121,9 @@ public class ConferenceForm implements CommandListener{
             gchat.append('@');
             gchat.append(host.trim());
             //sd.roster.mucContact(gchat.toString(), Contact.ORIGIN_GROUPCHAT);
-            if (c==cmdAdd) new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass));
-            else {
+            if (c==cmdAdd) {
+                new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass));
+            } else {
                 try {
                     cf.confMessageCount=msgLimit;
                     cf.defGcRoom=room+"@"+host;

@@ -218,7 +218,6 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyRepeated(int keyCode) {
-	if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
         if (keyCode==KEY_NUM0) clearMessageList();
 	else super.keyRepeated(keyCode);
     }       
@@ -226,6 +225,7 @@ public class ContactMessageList extends MessageList
     public void userKeyPressed(int keyCode) {
         if (!startMessage) {
             super.userKeyPressed(keyCode);
+            if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
             if (keyCode==KEY_NUM9) nextContact();
             if (keyCode==KEY_STAR) {
                         startMessage=true;
