@@ -72,7 +72,11 @@ public class Config {
 //#     public int m55LedPattern=0;
 //#endif
     
-    public String defGcRoom="bombus@conference.jabber.ru";
+    public String defGcRoom="bombusmod@conference.jabber.ru";
+    
+    public String m_client=getStringProperty("m_client","");    
+    public String m_ver=getStringProperty("m_ver","");
+    public String m_os=getStringProperty("m_os",""); 
     
     //public String xmlLang=getStringProperty("xml_lang",null);
     

@@ -21,17 +21,22 @@ import Client.*;
  */
 public class IqVersionReply extends Iq{
     
+    private Config cf=Config.getInstance();
+    
     /** Creates a new instance of IqVersionReply */
     public IqVersionReply(JabberDataBlock request) {
         super(request.getAttribute("from"), Iq.TYPE_RESULT, request.getAttribute("id") );
         JabberDataBlock query=addChild("query",null);
         query.setNameSpace("jabber:iq:version");
-        query.addChild("name","Bombus");
-        query.addChild("version",Version.getVersionLang());
-        String os=Version.getOs();
-                //+" Locale="
-                //+System.getProperty("microedition.locale");
-        query.addChild("os",os);
+        
+        String m_client=(cf.m_client!=null)?cf.m_client:"Bombus";
+        query.addChild("name", m_client);
+        
+        String m_ver=(cf.m_ver!=null)?cf.m_ver:Version.getVersionLang();
+        query.addChild("version", m_ver);
+        
+        String m_os=(cf.m_os!=null)?cf.m_os:Version.getOs();
+        query.addChild("os", m_os);
     }
     
     // constructs version request
