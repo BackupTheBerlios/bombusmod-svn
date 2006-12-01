@@ -985,11 +985,13 @@ public class Roster
                         // теперь пошлём присутствие
                         querysign=reconnect=false;
                         
-                        if (cf.loginstatus>4) {
-                            sendPresence(Presence.PRESENCE_INVISIBLE);    
-                        } else {
-                            sendPresence(cf.loginstatus);
-                        }
+                        if (cf.autoLogin) {
+                            if (cf.loginstatus>4) {
+                                sendPresence(Presence.PRESENCE_INVISIBLE);    
+                            } else {
+                                sendPresence(cf.loginstatus);
+                            }
+                        } else sendPresence(Presence.PRESENCE_ONLINE);
                         
                         SplashScreen.getInstance().close(); // display.setCurrent(this);                      
                     } 
