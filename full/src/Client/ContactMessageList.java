@@ -228,8 +228,10 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
             if (keyCode==KEY_NUM9) nextContact();
             if (keyCode==KEY_STAR) {
+                if (cf.altInput) {
                         startMessage=true;
                         updateBottom(keyCode);
+                }
             }
             if (keyCode==keyClear) {
                 clearMessageList();

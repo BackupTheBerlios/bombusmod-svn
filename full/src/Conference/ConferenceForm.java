@@ -1,7 +1,7 @@
 /*
  * ConferenceForm.java
  *
- * Created on 24 �?юль 2005 г., 18:32
+ * Created on 24 �?юль 2005 г., 18:32
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -142,8 +142,6 @@ public class ConferenceForm implements CommandListener{
     }
     public static void join(String name, String pass, int maxStanzas) {
         StaticData sd=StaticData.getInstance();
-        
-        
         
         ConferenceGroup grp=sd.roster.initMuc(name, pass);
         // требуется для возможности нормального выхода

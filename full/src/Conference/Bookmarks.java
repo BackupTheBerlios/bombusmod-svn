@@ -32,10 +32,11 @@ public class Bookmarks
     private BookmarkItem toAdd;
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
-    private Command cmdJoin=new Command (SR.MS_JOIN, Command.SCREEN, 10);
+    private Command cmdJoin=new Command (SR.MS_JOIN, Command.OK, 1);
+    private Command cmdAdvJoin=new Command ("Advanced "+SR.MS_JOIN, Command.SCREEN, 10);
     private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 15);
     //private Command cmdRfsh=new Command (SR.MS_REFRESH, Command.SCREEN, 20);
-	private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 20);
+    private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 20);
     private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 30);
     
     Roster roster=StaticData.getInstance().roster;
@@ -59,6 +60,7 @@ public class Bookmarks
         
         addCommand(cmdCancel);
         addCommand(cmdJoin);
+        addCommand(cmdAdvJoin);
         //addCommand(cmdRfsh);
 		addCommand(cmdNew);
         addCommand(cmdDel);
@@ -96,13 +98,26 @@ public class Bookmarks
         BookmarkItem join=(BookmarkItem)getFocusedObject();
         if (join==null) return;
         if (join.isUrl) return;
-        new ConferenceForm(display, join.toString(), join.password);
+        
+        StaticData sd=StaticData.getInstance();
+        ConferenceGroup grp=sd.roster.initMuc(join.toString(), join.password);
+        JabberDataBlock x=new JabberDataBlock("x", null, null);
+        x.setNameSpace("http://jabber.org/protocol/muc");
+        sd.roster.sendPresence(join.toString(), null, x);
+        sd.roster.reEnumRoster();
+        display.setCurrent(roster);
     }
     
     public void commandAction(Command c, Displayable d){
         if (c==cmdCancel) exitBookmarks();
         if (c==cmdJoin) eventOk();
-		if (c==cmdNew) new ConferenceForm(display);
+        if (c==cmdAdvJoin) {
+            BookmarkItem join=(BookmarkItem)getFocusedObject();
+            if (join==null) return;
+            if (join.isUrl) return;
+            new ConferenceForm(display, join.toString(), join.password);
+        }
+	if (c==cmdNew) new ConferenceForm(display);
         //if (c==cmdRfsh) loadBookmarks();
         if (c==cmdDel) deleteBookmark();
         if (c==cmdDisco) new ServiceDiscovery(display, ((BookmarkItem)getFocusedObject()).getJid(), null);

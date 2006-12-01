@@ -68,24 +68,24 @@ public class RosterMenu extends Menu
 	int index=me.index;
 	switch (index) {
 	    case 0: //actions
-                if (connected) new RosterItemActions(display, o); 
+                if (connected) new RosterItemActions(display, o).setParentView(StaticData.getInstance().roster); 
                 break;
 	    case 1: //status
-                new StatusSelect(display, null);
-		return;
+                new StatusSelect(display, null).setParentView(StaticData.getInstance().roster);
+		break;
             case 2: //active
-                new ActiveContacts(display, null);
+                new ActiveContacts(display, null).setParentView(StaticData.getInstance().roster);
 		break;
             case 3: //alert
-                new AlertProfile(display);
+                new AlertProfile(display).setParentView(StaticData.getInstance().roster);
 		break;
             case 4: //conference
                 if (connected) {
-                   new Bookmarks(display, null);
+                   new Bookmarks(display, null).setParentView(StaticData.getInstance().roster);
                 }
                 break;
             case 5: //archive
-                new ArchiveList(display, null);
+                new ArchiveList(display, null).setParentView(StaticData.getInstance().roster);
 		break;
             case 6: {//add contact
                 if (connected)  {
@@ -100,10 +100,10 @@ public class RosterMenu extends Menu
                 }
             }
             case 7: //tools
-                new RosterToolsMenu(display);
+                new RosterToolsMenu(display).setParentView(StaticData.getInstance().roster);
 		break;
             case 8: //account
-                new AccountSelect(display, false);
+                new AccountSelect(display, false).setParentView(StaticData.getInstance().roster);
 		break; 
             case 10: //about
                 new Info.InfoWindow(display);
@@ -126,6 +126,7 @@ public class RosterMenu extends Menu
                     cf.lightState=true;
                     cf.saveToStorage();
                 }
+                break;
             }
 	}
     }
