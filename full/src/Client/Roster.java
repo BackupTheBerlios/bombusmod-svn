@@ -208,6 +208,7 @@ public class Roster
                     setLight(false);
                }
             }
+            
             addCommand(cmdTools);
             addCommand(cmdArchive);
             addCommand(cmdInfo);
@@ -991,7 +992,7 @@ public class Roster
                             } else {
                                 sendPresence(cf.loginstatus);
                             }
-                        } else sendPresence(Presence.PRESENCE_ONLINE);
+                        } else sendPresence(myStatus);
                         
                         SplashScreen.getInstance().close(); // display.setCurrent(this);                      
                     } 
@@ -1549,7 +1550,14 @@ public class Roster
             if (Version.getPlatformName().indexOf("SIE") > -1) {
                 new RosterMenu(display, getFocusedObject());
              }         
-        }     
+        }
+        
+        if (keyCode==-21 || keyCode==-22 || keyCode==21 || keyCode==22) {
+            if (cf.ghostMotor) {
+                new RosterMenu(display, getFocusedObject());
+            }
+        }
+        
         if (keyCode==-7 || keyCode==-6)  {
             if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1) || (Version.getPlatformName().indexOf("j2me") > -1)) {
                 new RosterMenu(display, getFocusedObject());

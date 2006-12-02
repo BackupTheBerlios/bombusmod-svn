@@ -168,10 +168,12 @@ public class ArchiveList
             
             byte[] bodyMessage;
             int items=getItemCount();
+            StringBuffer body=new StringBuffer();
+            
             for(int i=0; i<items-1; i++){
                 Msg m=getMessage(i);
                 
-                StringBuffer body=new StringBuffer(m.getDayTime());
+                body.append(m.getDayTime());
                 body.append(" <");
                 body.append(m.from);
                 body.append("> ");
@@ -183,17 +185,12 @@ public class ArchiveList
                 
                 body.append(m.getBody());
                 body.append("\r\n");
-                
+            }
                 if (cf.cp1251) {
                     bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
                 } else {
                     bodyMessage=body.toString().getBytes();
                 }
-                
-                //try {
-                //    FileIO f=FileIO.createConnection(arhPath+"archive_"+getDate()+".txt");
-                //    f.Write(bodyMessage);
-                //} catch (Exception e) {}
                 
                 file=FileIO.createConnection(arhPath+"archive_"+getDate()+".txt");
                 try {
@@ -209,7 +206,7 @@ public class ArchiveList
                     }
                     ex.printStackTrace();
                 }
-            }
+                
             arhPath=null;
 	destroyView();
     }

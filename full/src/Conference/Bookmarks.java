@@ -32,8 +32,8 @@ public class Bookmarks
     private BookmarkItem toAdd;
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
-    private Command cmdJoin=new Command (SR.MS_JOIN, Command.OK, 1);
-    private Command cmdAdvJoin=new Command ("Advanced "+SR.MS_JOIN, Command.SCREEN, 10);
+    private Command cmdJoin=new Command ("Select", Command.OK, 1);
+    private Command cmdAdvJoin=new Command ("Edit/join", Command.SCREEN, 10);
     private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 15);
     //private Command cmdRfsh=new Command (SR.MS_REFRESH, Command.SCREEN, 20);
     private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 20);
