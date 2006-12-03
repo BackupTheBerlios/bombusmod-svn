@@ -38,7 +38,7 @@ public class RosterIcons extends ImageList{
     
     /** Creates a new instance of RosterIcons */
     private RosterIcons() {
-	super("/images/skin.png", ICONS_IN_COL, ICONS_IN_ROW);
+	super("/images/skin", ICONS_IN_COL, ICONS_IN_ROW);
         
         transports=new StringLoader().hashtableLoader("/images/transports.txt"); //new Hashtable();
         transpSkins=new Vector(transports.size());

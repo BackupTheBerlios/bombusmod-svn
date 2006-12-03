@@ -96,8 +96,6 @@ public class vCardForm
              
             photo=vcard.getPhoto();
             setPhoto();
-            
-             f.append("\n\n[end of vCard]");
          }
         
         for (int index=0; index<vcard.getCount(); index++) {
