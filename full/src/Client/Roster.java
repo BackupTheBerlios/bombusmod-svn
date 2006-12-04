@@ -678,7 +678,7 @@ public class Roster
         // send presence
         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
         Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
-        if (theStream!=null) {
+        if (isLoggedIn()) {
             if (!StaticData.getInstance().account.isMucOnly() )
 		theStream.send( presence );
             
@@ -731,7 +731,7 @@ public class Roster
         
         Presence presence = new Presence(myStatus, pr, ms);
 
-        if (theStream!=null) {
+        if (isLoggedIn()) {
             if (!StaticData.getInstance().account.isMucOnly() )
 		theStream.send( presence );
             
@@ -767,6 +767,11 @@ public class Roster
             theStream.send( presence );
         }
         if (to instanceof MucContact) ((MucContact)to).commonPresence=false;
+    }
+	
+    public boolean isLoggedIn() {
+        if (theStream==null) return false;
+        return theStream.loggedIn;
     }
 
     public Contact selfContact() {
@@ -893,6 +898,8 @@ public class Roster
         //query bookmarks
         theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
         
+		theStream.loggedIn=true;
+		
         // залогинились. теперь, если был реконнект, то просто пошлём статус
         if (reconnect) {
             querysign=reconnect=false;
@@ -1570,7 +1577,7 @@ public class Roster
     }
     
     public void logoff(){
-        if (theStream!=null)
+        if (isLoggedIn())
         try {
              //sendPresence(Presence.PRESENCE_OFFLINE);
              
@@ -1625,7 +1632,7 @@ public class Roster
         if (c==cmdTools) { new RosterToolsMenu(display); }
         // stream-sensitive commands
         // check for closed socket
-        if (StaticData.getInstance().roster.theStream==null) return;
+        if (!isLoggedIn()) return;
         
         if (c==cmdConference) { 
             //new ConferenceForm(display); 

@@ -129,6 +129,20 @@ public class ContactMessageList extends MessageList
         
     public void commandAction(Command c, Displayable d){
         super.commandAction(c,d);
+		
+        /** login-insensitive commands */
+        if (c==cmdArch) {
+            try {
+                MessageArchive.store(getMessage(cursor));
+            } catch (Exception e) {/*no messages*/}
+        }
+        if (c==cmdPurge) {
+            clearMessageList();
+        }
+        
+        /** login-critical section */
+        if (!sd.roster.isLoggedIn()) return;
+
         if (c==cmdMessage) { 
             contact.msgSuspended=null; 
             keyGreen(); 
@@ -139,18 +153,8 @@ public class ContactMessageList extends MessageList
                 new MessageEdit(display,contact,">> "+getMessage(cursor).toString()+"\n");
             } catch (Exception e) {/*no messages*/}
         }
-        if (c==cmdArch) {
-            try {
-                MessageArchive.store(getMessage(cursor));
-                //ExtendedStatusList.store("test");
-            } catch (Exception e) {/*no messages*/}
-        }
-        if (c==cmdPurge) {
-            clearMessageList();
-        }
         if (c==cmdContact) {
-            if (sd.roster.theStream!=null)
-                new RosterItemActions(display, contact);
+            new RosterItemActions(display, contact);
         }
 	
 	if (c==cmdActive) {
