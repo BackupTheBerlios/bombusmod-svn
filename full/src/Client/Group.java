@@ -87,6 +87,7 @@ public class Group extends IconTextElement {
 	//|| gindex==Groups.TRANSP_INDEX
 	|| index==Groups.TYPE_NOT_IN_LIST
 	|| index==Groups.TYPE_TRANSP
+	|| index==Groups.TYPE_VISIBLE
 	|| c.origin==Contact.ORIGIN_GROUPCHAT
 	)
 	    contacts.addElement(c);

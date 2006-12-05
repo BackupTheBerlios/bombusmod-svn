@@ -1837,6 +1837,11 @@ public class Roster
                     if (cf.showTransports || transpGroup.unreadMessages>0)
                         groups.addToVector(tContacts,Groups.TYPE_TRANSP);
                     
+                    // always visible
+                    Group visibleGroup=groups.getGroup(Groups.TYPE_VISIBLE);
+                    //if (visibleGroup.unreadMessages>0)
+                        groups.addToVector(tContacts,Groups.TYPE_VISIBLE);
+                    
                     //if (groups.getGroup(Groups.SRC_RESULT_INDEX).tncontacts>0)
                     groups.addToVector(tContacts, Groups.TYPE_SEARCH_RESULT);
                     

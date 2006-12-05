@@ -21,7 +21,7 @@ import ui.ImageList;
 public class Groups{
     
     Vector groups;
-    
+
     public final static int TYPE_TRANSP=0;
     public final static String TRANSP_GROUP=SR.MS_TRANSPORTS;
     public final static int TYPE_SELF=1;
@@ -32,7 +32,9 @@ public class Groups{
     public final static String NIL_GROUP=SR.MS_NOT_IN_LIST;
     public final static int TYPE_IGNORE=4;
     public final static String IGNORE_GROUP=SR.MS_IGNORE_LIST;
-    public final static int TYPE_COMMON=5;
+    public final static int TYPE_VISIBLE=5;
+    public final static String VISIBLE_GROUP="Visible";    
+    public final static int TYPE_COMMON=6;
     public final static String COMMON_GROUP=SR.MS_GENERAL;
     
     public Groups(){
@@ -42,6 +44,7 @@ public class Groups{
         addGroup(Groups.SRC_RESULT_GROUP, false);
         addGroup(Groups.NIL_GROUP, false);
         addGroup(Groups.IGNORE_GROUP, false);
+        addGroup(Groups.VISIBLE_GROUP, false);
         addGroup(Groups.COMMON_GROUP, false);
     }
 
