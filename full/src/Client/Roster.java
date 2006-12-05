@@ -181,6 +181,14 @@ public class Roster
         
         vContacts=new Vector(); // just for displaying
         
+            if (Version.getPlatformName().startsWith("SIE-")) {
+               if (cf.lightState) {
+                    setLight(true);
+               } else {
+                    setLight(false);
+               }
+            }
+        
         if (!cf.fullscreen && !cf.digitMemMonitor) {
 
             int activeType=Command.SCREEN;
@@ -202,10 +210,8 @@ public class Roster
             if (Version.getPlatformName().startsWith("SIE-")) {
                if (cf.lightState) {
                     addCommand(cmdTurnOffLight);  lightState=1;
-                    setLight(true);
                } else {
                     addCommand(cmdTurnOnLight); lightState=0;
-                    setLight(false);
                }
             }
             
@@ -1522,7 +1528,7 @@ public class Roster
              }         
         }     
         if (keyCode==-7 || keyCode==-6)  {
-            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1) || (Version.getPlatformName().indexOf("j2me") > -1)) {
+            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
                 new RosterMenu(display, getFocusedObject());
              }         
         } 
