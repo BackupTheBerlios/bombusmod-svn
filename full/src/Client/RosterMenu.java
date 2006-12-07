@@ -64,7 +64,9 @@ public class RosterMenu extends Menu
 	destroyView();
         boolean connected= ( StaticData.getInstance().roster.theStream != null );
 	MenuItem me=(MenuItem) getFocusedObject();
+        
 	if (me==null)  return;
+        
 	int index=me.index;
 	switch (index) {
 	    case 0: //actions
@@ -85,7 +87,7 @@ public class RosterMenu extends Menu
                 }
                 break;
             case 5: //archive
-                new ArchiveList(display, null).setParentView(StaticData.getInstance().roster);
+                new ArchiveList(display, null, -1).setParentView(StaticData.getInstance().roster);
 		break;
             case 6: {//add contact
                 if (connected)  {

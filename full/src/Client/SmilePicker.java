@@ -47,18 +47,20 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     private ImageList il;
     
     private MessageEdit me;
-    
-    Command cmdBack=new Command(SR.MS_CANCEL,Command.BACK,99);
-    Command cmdOK=new Command(SR.MS_SELECT,Command.OK,1);
-    
-    private Vector smileTable;
-
-    /** Creates a new instance of SmilePicker */
-    public SmilePicker(Display display, MessageEdit me) {
-        super(display);
-        this.me=me;
-        
-        il = SmilesIcons.getInstance();
+    private int caretPos;
+     
+     Command cmdBack=new Command(SR.MS_CANCEL,Command.BACK,99);
+     Command cmdOK=new Command(SR.MS_SELECT,Command.OK,1);
+     
+     private Vector smileTable;
+ 
+     /** Creates a new instance of SmilePicker */
+    public SmilePicker(Display display, MessageEdit me, int caretPos) {
+         super(display);
+         this.me=me;
+        this.caretPos=caretPos;
+         
+         il = SmilesIcons.getInstance();
         
         smileTable=MessageParser.getInstance().getSmileTable();
         
@@ -93,7 +95,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     public int getColorBGnd(){ return Colors.LIST_BGND; }
     public void onSelect(){
         try {
-            me.addText( getTipString() );
+            me.insertText( getTipString() , caretPos);
         } catch (Exception e) { /*e.printStackTrace();*/  }
         destroyView();
     };

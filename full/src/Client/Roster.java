@@ -330,12 +330,14 @@ public class Roster
         if (s==null) return;
         if (s.length()==0) return;
 
-        new AlertBox(SR.MS_ERROR_, s, null, display, null);
+        //new AlertBox(SR.MS_ERROR_, s, null, display, null);
+        
         /*Alert error=new Alert(SR.MS_ERROR_, s, null, null);
         error.setTimeout(30000);
          error.addCommand(new Command(SR.MS_OK, Command.BACK, 1));
          display.setCurrent(error, display.getCurrent());
          */
+        
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, myJid.getJid(), "Error", s);
         messageStore(m);
     }
@@ -1562,6 +1564,7 @@ public class Roster
         if (keyCode==-4 || keyCode==-1)  {
             if (Version.getPlatformName().indexOf("SIE") > -1) {
                 new RosterMenu(display, getFocusedObject());
+                return;
              }         
         }
         
@@ -1572,7 +1575,7 @@ public class Roster
         }
         
         if (keyCode==-7 || keyCode==-6)  {
-            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1) || (Version.getPlatformName().indexOf("j2me") > -1)) {
+            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
                 new RosterMenu(display, getFocusedObject());
              }         
         } 
@@ -1615,7 +1618,7 @@ public class Roster
         if (c==cmdStatus) { new StatusSelect(display, null); }
         if (c==cmdAlert) { new AlertProfile(display); }
         
-        if (c==cmdArchive) { new ArchiveList(display, null); }
+        if (c==cmdArchive) { new ArchiveList(display, null, -1); }
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
         if (c==cmdTurnOnLight) {
@@ -1921,7 +1924,7 @@ public class Roster
             }
         }
     }
-    
+
     public static boolean getKeyLockState() {
         boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
         if (lightState==true || elfPlatform==true) elfPlatform=true;

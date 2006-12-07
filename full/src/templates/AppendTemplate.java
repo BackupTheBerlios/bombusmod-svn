@@ -5,6 +5,8 @@
 
 package templates;
 
+import Client.MessageEdit;
+
 import Messages.MessageList;
 import locale.SR;
 import ui.*;
@@ -26,12 +28,16 @@ public class AppendTemplate
     Command cmdDelete=new Command(SR.MS_DELETE , Command.SCREEN, 2);
 
     TemplateContainer template=new TemplateContainer();
-    TextBox target;
+
+    MessageEdit target;
+    
+    private int caretPos;
     
     /** Creates a new instance of AccountPicker */
-    public AppendTemplate(Display display, TextBox target) {
+    public AppendTemplate(Display display, MessageEdit target, int caretPos) {
 	super (display);
 	this.target=target;
+        this.caretPos=caretPos;
 	if (target!=null) {
 	    addCommand(cmdSelect);
 	}
@@ -89,13 +95,7 @@ public class AppendTemplate
 	if (m==null) return;
 	String data;
 	data=m.getBody();
-	try {
-	    int paste=target.getMaxSize()-target.size();
-	    if (paste>data.length()) paste=data.length();
-	    target.insert(data.substring(0,paste), target.size());
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+	target.insertText(data, caretPos);
 	destroyView();
     }
     

@@ -24,14 +24,17 @@ public class AppendNick
         implements CommandListener{
 
     Vector nicknames;
+    int caretPos; 
+    MessageEdit me;
     
     Command cmdSelect=new Command(SR.MS_APPEND, Command.OK, 1);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     
-    /** Creates a new instance of AccountPicker */
-    public AppendNick(Display display, Contact to) {
+    public AppendNick(Display display, Contact to, MessageEdit messageEdit, int caretPos) {
         super(display);
-        //this.display=display;
+        me=messageEdit;
+        this.caretPos=caretPos;
+         //this.display=display;
         
         setTitleItem(new Title(SR.MS_SELECT_NICKNAME));
         
@@ -60,24 +63,15 @@ public class AppendNick
         if (c==cmdSelect) eventOk();
         
     }
-    public void eventOk(){
-        TextBox t=(TextBox)parentView;
-
-        try {
-            String nick=((Contact)getFocusedObject()).getJid();
-            int rp=nick.indexOf('/');
-            StringBuffer b=new StringBuffer(nick.substring(rp+1));
-            
-            if (t.size()>0) {
-                b.insert(0, (char)0x20);
-                b.insert(0, t.getString());
-		b.append(' ');
-            } else {
-                b.append(": ");
-            }
-            t.setString(b.toString());
-        } catch (Exception e) {}
-        
+     public void eventOk(){
+         try {
+             String nick=((Contact)getFocusedObject()).getJid();
+             int rp=nick.indexOf('/');
+             StringBuffer b=new StringBuffer(nick.substring(rp+1));
+             
+            if (caretPos==0) b.append(':');
+            me.insertText(b.toString(), caretPos);
+         } catch (Exception e) {}
         destroyView();
     }
 

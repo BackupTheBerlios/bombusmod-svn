@@ -9,6 +9,8 @@
 
 package archive;
 
+import Client.MessageEdit;
+
 import Client.Config;
 import Client.Msg;
 import Client.Title;
@@ -54,7 +56,9 @@ public class ArchiveList
     //Command cmdNick=new Command("Paste Nickname", Command.SCREEN, 3);
     
     MessageArchive archive=new MessageArchive();
-    TextBox target;
+    MessageEdit target;
+    
+    private int caretPos;
     
 //#if FILE_IO    
     int fileSize;
@@ -64,9 +68,10 @@ public class ArchiveList
     private OutputStream os;
 //#endif
     /** Creates a new instance of ArchiveList */
-    public ArchiveList(Display display, TextBox target) {
-	super ();
-	this.target=target;
+    public ArchiveList(Display display, MessageEdit target, int caretPos) {
+ 	super ();
+ 	this.target=target;
+        this.caretPos=caretPos;
 	setCommandListener(this);
 	addCommand(cmdBack);
 	addCommand(cmdDelete);
@@ -140,13 +145,7 @@ public class ArchiveList
 	default:
 	    data=m.getBody();
 	}
-	try {
-	    int paste=target.getMaxSize()-target.size();
-	    if (paste>data.length()) paste=data.length();
-	    target.insert(data.substring(0,paste), target.size());
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+	target.insertText(data, caretPos);
 	destroyView();
     }
     
