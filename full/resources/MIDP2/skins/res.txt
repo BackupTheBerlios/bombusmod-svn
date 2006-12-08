@@ -1,2 +1,1 @@
-/skins/skin.txt	default
-/skins/pumpkin.txt	pumpkin
+/skins/newyear.txt	newyear

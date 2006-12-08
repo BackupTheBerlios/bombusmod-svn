@@ -1,5 +1,5 @@
-xmlSkin	default
-//(by evgs)
+xmlSkin	newyear
+//(by ad)
 
 BALLOON_INK	0x000000
 BALLOON_BGND	0xffffe0
