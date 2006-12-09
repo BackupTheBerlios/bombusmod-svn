@@ -1,7 +1,9 @@
 //type	path	desc
-audio/amr	/sounds/message.amr	message.amr
-audio/x-wav	/sounds/message.wav	message.wav
-audio/midi	/sounds/message.mid	message.mid
-//audio/mp3	/sounds/message.mp3	message.mp3
-audio/x-tone-seq	/sounds/mary.seq	mary.seq
 tone		tone sequence
+none		none
+audio/midi	/sounds/max_appear.mid	max_appear.mid
+audio/midi	/sounds/max_disappear.mid	max_disappear.mid
+audio/midi	/sounds/max_download.mid	max_download.mid
+audio/midi	/sounds/max_happy.mid	max_happy.mid
+audio/midi	/sounds/max_unhappy.mid	max_unhappy.mid
+audio/midi	/sounds/smax_idle3.mid	smax_idle3.mid
