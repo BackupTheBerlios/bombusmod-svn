@@ -121,7 +121,28 @@ public class MessageItem implements
     public Vector getUrlList() { 
         Vector urlList=new Vector();
         addUrls(msg.getBody(), urlList);
+        addTels(msg.getBody(), urlList);
         return (urlList.size()==0)? null: urlList;
+    }
+    
+    private void addTels(String text, Vector urlList) {
+        int pos=0;
+        int len=text.length();
+        while (pos<len) {
+            int head=text.indexOf("tel://", pos);
+            if (head>=0) {
+                pos=head;
+                
+                while (pos<len) {
+                    char c=text.charAt(pos);
+                    if (c==' ' || c==0x09 || c==0x0d || c==0x0a || c==0xa0 || c==')' )  
+                        break;
+                    pos++;
+                }
+                urlList.addElement(text.substring(head, pos));
+                
+            } else break;
+        }
     }
 
     private void addUrls(String text, Vector urlList) {

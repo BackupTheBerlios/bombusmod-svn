@@ -37,7 +37,7 @@ public abstract class MessageList
     
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
     protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
-
+    protected Command cmdTel = new Command("Call", Command.SCREEN, 81);
     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
     
     /** Creates a new instance of MessageList */
@@ -55,6 +55,7 @@ public abstract class MessageList
         addCommand(cmdSmiles);
         addCommand(cmdBack);
         addCommand(cmdUrl);
+        addCommand(cmdTel);
         stringHeight=FontCache.getMsgFont().getHeight();
     }
 
@@ -99,6 +100,12 @@ public abstract class MessageList
                 Vector urls=((MessageItem) getFocusedObject()).getUrlList();
                 new MessageUrl(display, urls); //throws NullPointerException if no urls
             } catch (Exception e) {/* no urls found */}
+        }
+        if (c==cmdTel) {
+            try {
+                Vector urls=((MessageItem) getFocusedObject()).getUrlList();
+                new MessageUrl(display, urls); //throws NullPointerException if no urls
+            } catch (Exception e) {/* no tels found */}
         }
         if (c==cmdSmiles) {
             try {

@@ -153,6 +153,7 @@ public final class MessageParser implements Runnable{
             e.printStackTrace();
         }
 	addSmile("http://",URL);
+        addSmile("tel://",URL);
     }
 
     public void parseMsg(MessageItem messageItem,  int width, boolean smiles)
