@@ -109,6 +109,7 @@ public class ContactMessageList extends MessageList
     
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;
+        contact.setViewing(false);
         if (msgIndex<contact.lastUnread) return;
             sd.roster.countNewMsgs();
     }

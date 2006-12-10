@@ -1028,15 +1028,23 @@ public class Roster
                 } else if (type.equals("get")){
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
+                        String from=data.getAttribute("from");
+                        Contact c=findContact(new Jid(from), false);
                         // проверяем на запрос версии клиента
-                        if (query.isJabberNameSpace("jabber:iq:version"))
+                        if (query.isJabberNameSpace("jabber:iq:version")) {
+                            c.setViewing(true);
                             theStream.send(new IqVersionReply(data));
+                        }
                         // проверяем на запрос локального времени клиента
-                        else if (query.isJabberNameSpace("jabber:iq:time"))
+                        else if (query.isJabberNameSpace("jabber:iq:time")) {
                             theStream.send(new IqTimeReply(data));
+                            c.setViewing(true);
+                        }
                         // проверяем на запрос idle
-                        else if (query.isJabberNameSpace("jabber:iq:last"))
+                        else if (query.isJabberNameSpace("jabber:iq:last")) {
                             theStream.send(new IqLast(data, lastMessageTime));
+                            c.setViewing(true);
+                        }
                         else replyError(data);
                     }
                 } else if (type.equals("set")) {

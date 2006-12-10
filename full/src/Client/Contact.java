@@ -47,6 +47,7 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GC_MEMBER=5;
     public final static byte ORIGIN_GC_MYSELF=6;
 
+    private Integer incomingViewing;
    
     /** Creates a new instance of Contact */
     protected Contact (){
@@ -144,6 +145,7 @@ public class Contact extends IconTextElement{
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;
+        if (incomingViewing!=null) return RosterIcons.ICON_VIEWING_INDEX;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
         return st;
@@ -343,6 +345,10 @@ public class Contact extends IconTextElement{
     
     public final void setSortKey(String sortKey){
         key1=(sortKey==null)? "": sortKey.toLowerCase();
+    }
+    
+    public void setViewing (boolean state) {
+        incomingViewing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
     }
 
     public String getTipString() {
