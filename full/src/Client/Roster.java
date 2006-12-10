@@ -182,54 +182,53 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
             if (Version.getPlatformName().startsWith("SIE-")) {
-               if (cf.lightState) {
+               if (cf.lightState==true) {
                     setLight(true);
                } else {
                     setLight(false);
                }
             }
         
-        if (!cf.fullscreen && !cf.digitMemMonitor) {
+        if (cf.fullscreen==false) {
+                int activeType=Command.SCREEN;
+                String platform=Version.getPlatformName();
+                if (platform.startsWith("Nokia")) activeType=Command.BACK;
+                if (platform.startsWith("Intent")) activeType=Command.BACK;
+                if (platform.startsWith("j2me")) activeType=Command.BACK;
 
-            int activeType=Command.SCREEN;
-            String platform=Version.getPlatformName();
-            if (platform.startsWith("Nokia")) activeType=Command.BACK;
-            if (platform.startsWith("Intent")) activeType=Command.BACK;
-            if (platform.startsWith("j2me")) activeType=Command.BACK;
+                cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
 
-            cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
-
-            addCommand(cmdStatus);
-            addCommand(cmdActions);
-            addCommand(cmdActiveContacts);
-            addCommand(cmdAlert);
-            addCommand(cmdAdd);
-            addCommand(cmdConference);
-
-
-            if (Version.getPlatformName().startsWith("SIE-")) {
-               if (cf.lightState) {
-                    addCommand(cmdTurnOffLight);  lightState=1;
-               } else {
-                    addCommand(cmdTurnOnLight); lightState=0;
-               }
-            }
-            
-            addCommand(cmdTools);
-            addCommand(cmdArchive);
-            addCommand(cmdInfo);
-            addCommand(cmdAccount);
-
-            if (Version.getPlatformName().startsWith("Nokia9500") || 
-                Version.getPlatformName().startsWith("Nokia9300") || 
-                Version.getPlatformName().startsWith("Nokia9300i")) {
-            } else {
-                    addCommand(cmdQuit);
-            }
+                addCommand(cmdStatus);
+                addCommand(cmdActions);
+                addCommand(cmdActiveContacts);
+                addCommand(cmdAlert);
+                addCommand(cmdAdd);
+                addCommand(cmdConference);
 
 
-            addOptionCommands();
-            setCommandListener(this);
+                if (Version.getPlatformName().startsWith("SIE-")) {
+                   if (cf.lightState) {
+                        addCommand(cmdTurnOffLight);  lightState=1;
+                   } else {
+                        addCommand(cmdTurnOnLight); lightState=0;
+                   }
+                }
+
+                addCommand(cmdTools);
+                addCommand(cmdArchive);
+                addCommand(cmdInfo);
+                addCommand(cmdAccount);
+
+                if (Version.getPlatformName().startsWith("Nokia9500") || 
+                    Version.getPlatformName().startsWith("Nokia9300") || 
+                    Version.getPlatformName().startsWith("Nokia9300i")) {
+                } else {
+                        addCommand(cmdQuit);
+                }
+
+
+                addOptionCommands();
+                setCommandListener(this);
         }
 
 	updateTitle();
@@ -1618,7 +1617,7 @@ public class Roster
         if (c==cmdStatus) { new StatusSelect(display, null); }
         if (c==cmdAlert) { new AlertProfile(display); }
         
-        if (c==cmdArchive) { new ArchiveList(display, null, -1); }
+    if (c==cmdArchive) { new ArchiveList(display, null, -1); }
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
         if (c==cmdTurnOnLight) {

@@ -180,14 +180,6 @@ public class Colors {
 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
     }
     
-    public int getIntProperty(final String key, int defvalue) {
-	try {
-	    String s=Bombus.getInstance().getAppProperty(key);
-	    return Integer.parseInt(s);
-	} catch (Exception e) { }
-	return defvalue;
-    }    
-
     public static Colors getInstance(){
 	if (instance==null) {
 	    instance=new Colors();
