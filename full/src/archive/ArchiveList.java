@@ -237,7 +237,7 @@ public class ArchiveList
     public void userKeyPressed(int keyCode) {
        super.userKeyPressed(keyCode);
         if (keyCode==keyClear) {
-            if (getItemCount()>0) new YesNoAlert(display, this, SR.MS_DELETE, SR.MS_SURE_DELETE);
+            if (getItemCount()>0) new YesNoAlert(display, SR.MS_DELETE, SR.MS_SURE_DELETE, this);
         }
     }
 	
