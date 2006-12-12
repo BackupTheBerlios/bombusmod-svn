@@ -174,7 +174,7 @@ public class ContactMessageList extends MessageList
 				if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_HISTORY) return;
 				
                 Msg msg=getMessage(cursor);
-+                	/*String body=msg.toString();
+                	/*String body=msg.toString();
 					int nickLen=body.indexOf(">");
 					if (nickLen<0) nickLen=body.indexOf(" ");
 					if (nickLen<0) return;*/

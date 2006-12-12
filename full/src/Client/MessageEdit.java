@@ -1,4 +1,4 @@
-﻿/*
+/*
  * MessageEdit.java
  *
  * Created on 20 Февраль 2005 пїЅ., 21:20
@@ -223,6 +223,7 @@ public class MessageEdit
             if (body==null) return;
             subj=body;
             body="/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
+			body=null; //"/me has set the topic to: "+subj;
         }
         // message/composing sending
         destroyView();
@@ -235,7 +236,7 @@ public class MessageEdit
         Roster r=StaticData.getInstance().roster;
         int comp=0; // composing event off
         
-        if (body!=null /*|| subj!=null*/ ) {
+        if (body!=null || subj!=null ) {
             String from=StaticData.getInstance().account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
             // не добавляем в групчат свои сообщения
@@ -250,7 +251,7 @@ public class MessageEdit
         if (!cf.eventComposing) comp=0;
         
         try {
-            if (body!=null /*|| subj!=null*/ || comp>0)
+            if (body!=null || subj!=null || comp>0)
             r.sendMessage(to, body, subj, comp);
         } catch (Exception e) {
             e.printStackTrace();

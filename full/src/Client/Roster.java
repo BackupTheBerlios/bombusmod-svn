@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Roster.java
  *
  * Created on 6 Январь 2005 г., 19:16a
@@ -860,7 +860,7 @@ public class Roster
                 subject, 
                 groupchat 
         );
-        if (groupchat && body==null /*&& subject==null*/) return;
+        if (groupchat && body==null && subject==null) return;
         if (composingState>0) {
             JabberDataBlock event=new JabberDataBlock("x", null,null);
             event.setNameSpace("jabber:x:event");
@@ -1114,7 +1114,8 @@ public class Roster
                         
                         // subject
                         if (subj!=null) {
-                            if (body==null) body=subj;
+                            if (body==null) 
+                                body=name+" "+SR.MS_HAS_SET_TOPIC_TO+" "+subj;
                             subj=null;
                             start_me=-1; // не добавлять /me к subj
                             highlite=true;
@@ -1263,7 +1264,6 @@ public class Roster
                     from=from.substring(0, from.indexOf('/'));
                     Msg chatPresence=new Msg(
                            Msg.MESSAGE_TYPE_PRESENCE,
-                           from,
 			   "prs",
                            null,
                            c.processPresence(xmuc, pr) );
