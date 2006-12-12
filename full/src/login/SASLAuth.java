@@ -1,4 +1,4 @@
-﻿/*
+/*
  * SASLAuth.java
  *
  * Created on 8 Июль 2006 г., 23:34

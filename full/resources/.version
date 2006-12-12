@@ -1,14 +1,6 @@
 # version pattern
-<<<<<<< .mine
-bombus.revision=129
-=======
-bombus.revision=130
->>>>>>> .r131
+bombus.revision=133:134M
 
-<<<<<<< .mine
-bombus.version=0.4.4.889.129
-=======
-bombus.version=0.4.4.889.130
->>>>>>> .r131
+bombus.version=0.4.4.893.133:134M
 
 bombus.midlet=0.4
