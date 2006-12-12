@@ -402,6 +402,10 @@ public class SR {
     public static String MS_SOUNDS_OPTIONS=loadString("Sounds options");
 	
 	public static String MS_NEW_BOOKMARK=loadString("New conference");
+	
+    public static String MS_DECLINE=loadString("Decline");
+    public static String MS_AUTH_NEW=loadString("Authorize new contacts");
+    public static String MS_AUTH_AUTO=loadString("[auto-subscribe]");
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

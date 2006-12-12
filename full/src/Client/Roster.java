@@ -816,7 +816,28 @@ public class Roster
         if (child!=null) presence.addChild(child);
         theStream.send(presence);
     }
-    /**
+	
+    
+    public void doSubscribe(Contact c) {
+        if (c.subscr==null) return;
+        boolean subscribe = 
+                c.subscr.startsWith("none") || 
+                c.subscr.startsWith("from");
+        if (c.ask_subscribe) subscribe=false;
+
+        boolean subscribed = 
+                c.subscr.startsWith("none") || 
+                c.subscr.startsWith("to");
+                //getMessage(cursor).messageType==Msg.MESSAGE_TYPE_AUTH;
+        
+        String to=c.getBareJid();
+        
+        if (subscribed) sendPresence(to,"subscribed", null);
+        if (subscribe) sendPresence(to,"subscribe", null);
+    }
+    
+  
+  /**
      * Method to send a message to the specified recipient
      */
     
@@ -1216,7 +1237,7 @@ public class Roster
                 int ti=pr.getTypeIndex();
                 //PresenceContact(from, ti);
                 Msg m=new Msg(
-                        (ti==Presence.PRESENCE_AUTH)?
+                        (ti==Presence.PRESENCE_AUTH || ti==Presence.PRESENCE_AUTH_ASK)?
                             Msg.MESSAGE_TYPE_AUTH:Msg.MESSAGE_TYPE_PRESENCE,
                         from,
                         null,
@@ -1254,6 +1275,14 @@ public class Roster
                     Contact c=getContact(m.from, false); 
                     if (c==null) return; // drop presence
                     messageStore(c, m);
+					
+                    if (ti==Presence.PRESENCE_AUTH_ASK) {
+                        if (cf.autoSubscribe) {
+                            doSubscribe(c);
+                            messageStore(c, new Msg(Msg.MESSAGE_TYPE_AUTH, from, null, SR.MS_AUTH_AUTO));
+                        }
+                    }
+					
                     c.priority=pr.getPriority();
                     if (ti>=0) c.status=ti;
                     if (ti==Presence.PRESENCE_OFFLINE) c.acceptComposing=false;

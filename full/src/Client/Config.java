@@ -116,7 +116,8 @@ public class Config {
     public int lang=0;  //en
     public boolean capsState=true;
     public int textWrap=0;
-    
+    public boolean autoSubscribe=false;
+	
     // runtime values
     public boolean allowMinimize=false;
     public int profile=0;
@@ -264,6 +265,8 @@ public class Config {
             digitMemMonitor=inputStream.readBoolean();
             
             lightState=inputStream.readBoolean();
+			
+			autoSubscribe=inputStream.readBoolean();
             
 	    inputStream.close();
 	} catch (Exception e) {
@@ -351,6 +354,8 @@ public class Config {
             outputStream.writeBoolean(digitMemMonitor);
             
             outputStream.writeBoolean(lightState);
+			
+			outputStream.writeBoolean(autoSubscribe);
             
 	} catch (Exception e) { e.printStackTrace(); }
 	

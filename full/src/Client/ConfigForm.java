@@ -115,6 +115,7 @@ public class ConfigForm implements
         roster.append(SR.MS_IGNORE_LIST, null);
         roster.append(SR.MS_NOT_IN_LIST, null);
         roster.append(SR.MS_AUTOFOCUS,null);
+		roster.append(SR.MS_AUTH_NEW,null);
         
         boolean ra[]={
             cf.showOfflineContacts,
@@ -122,7 +123,8 @@ public class ConfigForm implements
             cf.showTransports, 
             cf.ignore, 
             cf.notInList,
-            cf.autoFocus
+            cf.autoFocus,
+			cf.autoSubscribe
         };
         this.ra=ra;
         //ra[5]=false;
@@ -296,6 +298,7 @@ public class ConfigForm implements
             cf.ignore=ra[3];
             cf.notInList=ra[4];
             cf.autoFocus=ra[5];
+			cf.autoSubscribe=ra[6];
 
             cf.smiles=mv[0];
             cf.storeConfPresence=mv[1];
