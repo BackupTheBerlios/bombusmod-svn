@@ -1,4 +1,4 @@
-/*
+﻿/*
  * MessageEdit.java
  *
  * Created on 20 Февраль 2005 пїЅ., 21:20
@@ -165,6 +165,11 @@ public class MessageEdit
     
     public void insertText(String s, int caretPos) {
         String src=t.getString();
+
+        // MOTOROLA STUB
+        String platform=Info.Version.getPlatformName();
+        if (platform.startsWith("Moto"))
+            if (!platform.startsWith("Motorola-EZX")) caretPos=-1;
 
         StringBuffer sb=new StringBuffer(s);
         

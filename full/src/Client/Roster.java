@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Roster.java
  *
  * Created on 6 Январь 2005 г., 19:16a
@@ -337,8 +337,8 @@ public class Roster
          display.setCurrent(error, display.getCurrent());
          */
         
-        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, myJid.getJid(), "Error", s);
-        messageStore(m);
+        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Error", s);
+        messageStore(selfContact(), m);
     }
     
     public void beginPaint() {
@@ -1006,9 +1006,9 @@ public class Roster
                             querysign=false;
                         }
                         
-                        Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, SR.MS_CLIENT_INFO, body);
+                        Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "ver", SR.MS_CLIENT_INFO, body);
                         if (body!=null) { 
-                            messageStore(m);
+                            messageStore( getContact(from, false), m);
                             redraw();
                         }
                     }
@@ -1220,11 +1220,15 @@ public class Roster
                         if (body.indexOf(" "+myNick+".")>-1) highlite |=true;
 
                         //TODO: custom highliting dictionary
-                    } 
+                    }
+		m.from=name;
+
                 }
                 forme=highlite;
-                m.setHighlite(highlite);  
-                messageStore(m);
+                m.setHighlite(highlite); 
+ 
+                if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST || cf.notInList)
+                    messageStore(c, m);
             }
             // присутствие
 
@@ -1260,10 +1264,11 @@ public class Roster
                     Msg chatPresence=new Msg(
                            Msg.MESSAGE_TYPE_PRESENCE,
                            from,
+			   "prs",
                            null,
                            c.processPresence(xmuc, pr) );
                     if (cf.storeConfPresence) {
-                        messageStore(chatPresence);
+                        messageStore(c, chatPresence);
                     }
                     
                     c.addMessage(m);
@@ -1272,7 +1277,7 @@ public class Roster
                     
                 } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
                 else {
-                    Contact c=getContact(m.from, false); 
+                    Contact c=getContact(from, false); 
                     if (c==null) return; // drop presence
                     messageStore(c, m);
 					
@@ -1427,7 +1432,7 @@ public class Roster
         if (notify!=null) notify.startNotify();
     }
     
-    
+/*    
     Contact messageStore(Msg message){
         Contact c=getContact(message.from, true);
         if (c.getGroupType()==Groups.TYPE_NOT_IN_LIST) 
@@ -1436,7 +1441,7 @@ public class Roster
         messageStore(c, message);
         return c;
     }
-
+*/
     private void focusToContact(final Contact c, boolean force) {
 	
 	Group g=c.getGroup();

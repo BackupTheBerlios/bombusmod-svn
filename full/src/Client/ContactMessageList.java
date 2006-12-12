@@ -173,12 +173,13 @@ public class ContactMessageList extends MessageList
             try {
 				if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_HISTORY) return;
 				
-                String body=getMessage(cursor).toString();
-                int nickLen=body.indexOf(">");
-                if (nickLen<0) nickLen=body.indexOf(" ");
-                if (nickLen<0) return;
+                Msg msg=getMessage(cursor);
++                	/*String body=msg.toString();
+					int nickLen=body.indexOf(">");
+					if (nickLen<0) nickLen=body.indexOf(" ");
+					if (nickLen<0) return;*/
                 
-                new MessageEdit(display,contact,body.substring(0, nickLen)+": ");
+                new MessageEdit(display,contact,msg.from+": ");
             } catch (Exception e) {/*no messages*/}
         }
         
