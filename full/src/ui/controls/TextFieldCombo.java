@@ -21,7 +21,6 @@ import locale.SR;
  *
  * @author Evg_S
  */
-//#if (!MIDP1)
 public class TextFieldCombo 
         extends TextField
         implements ItemCommandListener, CommandListener
@@ -30,7 +29,7 @@ public class TextFieldCombo
     private Command cmdRecent;
     private Command cmdBack;
     private Command cmdSelect;
-	private Command cmdClear;
+    private Command cmdClear;
     
     private Display display;
     private Displayable parentView;
@@ -127,15 +126,3 @@ public class TextFieldCombo
         } catch (Exception e) { }
     }
 }
-//#else
-//# public class TextFieldCombo 
-//#         extends TextField
-//# {
-//# 
-//#     /** Creates a new instance of TextFieldCombo */
-//#     public TextFieldCombo(String label, String value, int maxlen, int constraints, String id, Display display) {
-//#         super(label, value, maxlen, constraints);
-//#     }
-//# 
-//# }
-//#endif

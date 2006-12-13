@@ -16,6 +16,7 @@ import images.RosterIcons;
 import images.SmilesIcons;
 import locale.SR;
 import templates.TemplateContainer;
+import History.HistoryList;
 import ui.controls.InputBox;
 import vcard.VCard;
 import ui.*;
@@ -43,6 +44,8 @@ public class ContactMessageList extends MessageList
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,7);
     Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 8);
     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,9);
+    
+    Command cmdRecent=new Command(SR.MS_RECENT,Command.SCREEN,10);
      
     private ClipBoard clipboard;
     
@@ -83,6 +86,7 @@ public class ContactMessageList extends MessageList
         addCommand(cmdQuote);
         addCommand(cmdArch);
         addCommand(cmdCopy);
+        addCommand(cmdRecent);
         addCommand(cmdTemplate);
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
@@ -202,6 +206,9 @@ public class ContactMessageList extends MessageList
 		
         if (c==cmdUnsubscribed) {
             sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
+        }
+        if (c==cmdRecent) {
+            new HistoryList(contact.getBareJid(), display);
         }
     }
 

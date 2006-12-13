@@ -8,6 +8,7 @@
  */
 
 package Client;
+import History.HistoryStorage;
 import images.RosterIcons;
 //#if FILE_IO
 import io.file.FileIO;
@@ -206,6 +207,13 @@ public class Contact extends IconTextElement{
                 if ( ((Msg)msgs.firstElement()).isPresence())
                    if (origin!=ORIGIN_GROUPCHAT) first_replace=true;
         }
+        
+        if (m.messageType==Msg.MESSAGE_TYPE_OUT) {
+            System.out.println("add");  
+            HistoryStorage his= new HistoryStorage(bareJid, m.getBody());
+            his.saveMessage(m.getBody());
+        }
+        
 //#if FILE_IO
         Config cf=Config.getInstance();
 
@@ -317,26 +325,6 @@ public class Contact extends IconTextElement{
         return nick+" <"+bareJid+">";
     }
     
-    /**
-     * Splits string like "name@jabber.ru/resource" to vector 
-     * containing 2 substrings
-     * @return Vector.elementAt(0)="name@jabber.ru"
-     * Vector.elementAt(1)="resource"
-     */
-    /*
-     public static final Vector SplitJid(final String jid) {
-        Vector result=new Vector();
-        int i=jid.lastIndexOf('/');
-        if (i==-1){
-            result.addElement(jid);
-            result.addElement(null);
-        } else {
-            result.addElement(jid.substring(0,i));
-            result.addElement(jid.substring(i+1));
-        }
-        return result;
-    }
-     */
     public final void purge() {
         msgs=new Vector();
         vcard=null;
@@ -368,4 +356,23 @@ public class Contact extends IconTextElement{
     }*/
     public void setGroup(Group group) { this.group = group; }
 
+    
+    
+//last messages realization   
+/*
+    final static private int MAX_HIST_LAST_MESS = 3;
+    
+    public void fillFormHistory(String Jid, String name)
+    {
+        int recCount = HistoryStorage.getRecordCount(Jid);
+        if (recCount == 0) return;
+
+
+        int insSize = (recCount > MAX_HIST_LAST_MESS) ? MAX_HIST_LAST_MESS : recCount;
+        for (int i = recCount-insSize; i < recCount; i++)
+        {
+                String text=HistoryStorage.getRecord(Jid, i);
+        }
+    }
+ */
 }

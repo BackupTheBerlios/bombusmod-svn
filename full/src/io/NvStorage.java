@@ -11,11 +11,7 @@ package io;
 import java.io.*;
 import util.strconv;
 
-//#if !(USE_SIEMENS_FILES)
 import javax.microedition.rms.*;
-//#else
-//# import com.siemens.mp.io.File;
-//#endif
 
 /**
  *

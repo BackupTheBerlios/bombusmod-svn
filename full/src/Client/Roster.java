@@ -1268,7 +1268,7 @@ public class Roster
                            null,
                            c.processPresence(xmuc, pr) );
                     if (cf.storeConfPresence) {
-                        messageStore(c, chatPresence);
+                        messageStore(getContact(from, false), chatPresence);
                     }
                     
                     c.addMessage(m);
@@ -1278,7 +1278,7 @@ public class Roster
                 } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
                 else {
                     Contact c=getContact(from, false); 
-                    if (c==null) return; // drop presence
+                    //if (c==null) return; // drop presence
                     messageStore(c, m);
 					
                     if (ti==Presence.PRESENCE_AUTH_ASK) {
@@ -1622,8 +1622,10 @@ public class Roster
              }         
         } 
 
-        if (keyCode=='3') searchGroup(-1);
-	if (keyCode=='9') searchGroup(1);
+        //if (keyCode=='3') searchGroup(-1);
+        if (keyCode=='3') new Bookmarks(display, null);
+	
+        if (keyCode=='9') searchGroup(1);
         
     }
     
