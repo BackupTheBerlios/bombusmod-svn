@@ -63,7 +63,8 @@ public class MucContact extends Contact{
             } catch (Exception e) { return "Unsupported MUC error"; }
             ConferenceGroup grp=(ConferenceGroup)getGroup();
             if (status>=Presence.PRESENCE_OFFLINE) testMeOffline();
-			setStatus(presenceType);
+			if (errCode!=409 || status>=Presence.PRESENCE_OFFLINE)
+				setStatus(presenceType);
             switch (errCode) {
                 case 401: return "Password required";
                 case 403: return "You are banned in this room";

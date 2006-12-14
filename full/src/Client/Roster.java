@@ -542,6 +542,10 @@ public class Roster
             c=new MucContact(room, roomJid);
             addContact(c);
         }
+		        
+        // change nick
+        if (c.getStatus()==Presence.PRESENCE_ONLINE) return grp;
+
         c.setStatus(Presence.PRESENCE_ONLINE);
         c.transport=RosterIcons.ICON_GROUPCHAT_INDEX; //FIXME: убрать хардкод
         c.bareJid=from;
