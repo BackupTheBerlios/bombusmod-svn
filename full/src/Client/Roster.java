@@ -190,7 +190,7 @@ public class Roster
                }
             }
         
-        if (cf.fullscreen==false) {
+        if (cf.digitMemMonitor==false) {
                 int activeType=Command.SCREEN;
                 String platform=Version.getPlatformName();
                 if (platform.startsWith("Nokia")) activeType=Command.BACK;
@@ -670,6 +670,8 @@ public class Roster
                         c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
                 }
             }
+        } else {
+            lastOnlineStatus=myStatus;
         }
         
         // reconnect if disconnected        
@@ -1508,12 +1510,12 @@ public class Roster
         error=e.getClass().getName()+"\n"+e.getMessage();
         e.printStackTrace();
 
-        lastStatus=myStatus;
+        lastOnlineStatus=myStatus;
          try {
              sendPresence(Presence.PRESENCE_OFFLINE);
         } catch (Exception e2) { }
 
-        if (e instanceof SecurityException || reconnectCount>maxReconnect) {
+        if (e instanceof SecurityException || reconnectCount>=maxReconnect) {
             errorLog(error);
         } else {
             reconnectCount++;
@@ -1521,10 +1523,11 @@ public class Roster
             new Reconnect(title, error, display);
          }
      }
-    private int lastStatus;
-    public void doReconnect() {
-        sendPresence(lastStatus);
-    }
+    
+     private int lastOnlineStatus;
+     public void doReconnect() {
+        sendPresence(lastOnlineStatus);
+     }
     
     public void eventOk(){
         super.eventOk();

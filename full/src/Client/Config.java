@@ -141,6 +141,8 @@ public class Config {
     public boolean starKey=getBooleanProperty("starKey",true);
     
     public boolean lightState=true;
+    
+    public boolean lastMessages=false;
 
     
     public static Config getInstance(){
@@ -266,7 +268,9 @@ public class Config {
             
             lightState=inputStream.readBoolean();
 			
-			autoSubscribe=inputStream.readBoolean();
+            autoSubscribe=inputStream.readBoolean();
+            
+            lastMessages=inputStream.readBoolean();
             
 	    inputStream.close();
 	} catch (Exception e) {
@@ -355,7 +359,9 @@ public class Config {
             
             outputStream.writeBoolean(lightState);
 			
-			outputStream.writeBoolean(autoSubscribe);
+            outputStream.writeBoolean(autoSubscribe);
+            
+            outputStream.writeBoolean(lastMessages);
             
 	} catch (Exception e) { e.printStackTrace(); }
 	

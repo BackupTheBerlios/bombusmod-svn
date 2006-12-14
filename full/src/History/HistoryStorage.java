@@ -35,24 +35,37 @@ public class HistoryStorage {
     
     public Vector recentList;
     
-    private int count=3;
+    private int count=4;
     
     /**
      * Creates a new instance of HistoryStorage
      */
-    public HistoryStorage(String bareJid, String message) {
+    public HistoryStorage(String bareJid, String message, boolean clear) {
+        
+        if (bareJid==null) return;
+        
         this.bareJid=bareJid.replace('@', '%');
-        loadRecentList();
-        if (message!=null) saveMessage(message);
+        recentList=new Vector(count);
+        if (clear==false) {
+            loadRecentList();
+        } else {
+            recentList.removeAllElements();
+            saveRecentList();
+            return;
+        }
+        
+        if (message==null) return;
+        saveMessage(message);
         //if (recentList.isEmpty()) return;
     }
 
     public boolean saveMessage(String message) {
         int i=0;
-        if (message.length()==0) return false;
+        int tempCount=count-1;
+        //if (message.length()==0) return false;
         while (i<recentList.size()) {
-            if ( message.equals((String)recentList.elementAt(i)) || i>(count-1) ) recentList.removeElementAt(i);
-            else i++;
+            if (i>tempCount) recentList.removeElementAt(i);
+             else i++;
         }
         recentList.insertElementAt(message, 0);
         saveRecentList();
@@ -77,13 +90,9 @@ public class HistoryStorage {
     
     private boolean loadRecentList() {
         boolean result = false;
-        recentList=new Vector(count);
         try {
-
             DataInputStream is=NvStorage.ReadFileRecord(bareJid, 0);
-            
             while (is.available()>0)
-                System.out.println(is.readUTF());
                 recentList.addElement(is.readUTF());
             is.close();
             result = true;

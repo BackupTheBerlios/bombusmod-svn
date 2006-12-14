@@ -124,7 +124,7 @@ public class ConfigForm implements
             cf.ignore, 
             cf.notInList,
             cf.autoFocus,
-			cf.autoSubscribe
+            cf.autoSubscribe
         };
         this.ra=ra;
         //ra[5]=false;
@@ -136,13 +136,16 @@ public class ConfigForm implements
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
         message.append(SR.CLASSIC_CHAT, null);
+        message.append("Last messages", null);
+        
 
         boolean mv[]={
             cf.smiles,
             cf.storeConfPresence,
             cf.eventComposing,
             cf.capsState,
-            cf.altInput
+            cf.altInput,
+            cf.lastMessages
         };
         this.mv=mv;
         
@@ -298,13 +301,14 @@ public class ConfigForm implements
             cf.ignore=ra[3];
             cf.notInList=ra[4];
             cf.autoFocus=ra[5];
-			cf.autoSubscribe=ra[6];
+            cf.autoSubscribe=ra[6];
 
             cf.smiles=mv[0];
             cf.storeConfPresence=mv[1];
             cf.eventComposing=mv[2];
             cf.capsState=mv[3];
             cf.altInput=mv[4];
+            cf.lastMessages=mv[5];
 
 	    cf.autoLogin=su[0];
 	    cf.autoJoinConferences=su[1];

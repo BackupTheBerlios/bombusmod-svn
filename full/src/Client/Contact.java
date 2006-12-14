@@ -10,8 +10,10 @@
 package Client;
 import History.HistoryStorage;
 import images.RosterIcons;
+import io.NvStorage;
 //#if FILE_IO
 import io.file.FileIO;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 //#endif
@@ -49,6 +51,8 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GC_MYSELF=6;
 
     private Integer incomingViewing;
+
+    private String hisJid;
    
     /** Creates a new instance of Contact */
     protected Contact (){
@@ -91,6 +95,8 @@ public class Contact extends IconTextElement{
     
     public VCard vcard;
     
+    private Config cf=Config.getInstance();
+    
 //#if FILE_IO    
     int fileSize;
     private int filePos;
@@ -117,10 +123,22 @@ public class Contact extends IconTextElement{
         this.subscr=subscr;
     
         setSortKey((Nick==null)?sJid:Nick);
-        //msgs.removeAllElements();
         
         //calculating transport
         transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
+        
+        if (cf.lastMessages
+            && sJid!=null
+            /*&& (getGroupType()!=Groups.TYPE_SELF)
+            && (getGroupType()!=Groups.TYPE_TRANSP)
+            && (getGroupType()!=Groups.TYPE_SEARCH_RESULT)
+            && (getGroupType()!=Groups.TYPE_NOT_IN_LIST)
+            && (getGroupType()!=Groups.TYPE_IGNORE)
+            && (origin!=ORIGIN_GROUPCHAT)*/) {
+                loadRecentList(sJid);
+        } else {
+            System.out.println(Nick);
+        }
     }
     
     public Contact clone(Jid newjid, final int status) {
@@ -207,17 +225,18 @@ public class Contact extends IconTextElement{
                 if ( ((Msg)msgs.firstElement()).isPresence())
                    if (origin!=ORIGIN_GROUPCHAT) first_replace=true;
         }
-        
-        if (m.messageType==Msg.MESSAGE_TYPE_OUT) {
-            System.out.println("add");  
-            //HistoryStorage his= new HistoryStorage(bareJid, m.getBody());
-            //his.saveMessage(m.getBody());
-            new HistoryStorage(bareJid, m.getBody());
+
+        if (cf.lastMessages
+            && (m.messageType==Msg.MESSAGE_TYPE_IN)
+            && (group.index!=Groups.TYPE_TRANSP)
+            && (group.index!=Groups.TYPE_SEARCH_RESULT)
+            && (group.index!=Groups.TYPE_NOT_IN_LIST)
+            && (group.index!=Groups.TYPE_IGNORE)
+            && (origin!=ORIGIN_GROUPCHAT)) {
+                new HistoryStorage(bareJid, m.getBody(), false);
         }
         
 //#if FILE_IO
-        Config cf=Config.getInstance();
-
         if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
         {
             //String histRecord=(nick==null)?getBareJid():nick;
@@ -327,6 +346,7 @@ public class Contact extends IconTextElement{
     }
     
     public final void purge() {
+        new HistoryStorage(getBareJid(), "", true);
         msgs=new Vector();
         vcard=null;
         resetNewMsgCnt();
@@ -359,21 +379,20 @@ public class Contact extends IconTextElement{
 
     
     
-//last messages realization   
-/*
-    final static private int MAX_HIST_LAST_MESS = 3;
-    
-    public void fillFormHistory(String Jid, String name)
-    {
-        int recCount = HistoryStorage.getRecordCount(Jid);
-        if (recCount == 0) return;
+//last messages loading   
+    public void loadRecentList(String bareJid) {
+        try {
+            if (bareJid.indexOf("@")>-1) {
+                hisJid=bareJid.replace('@', '%');
+                DataInputStream is=NvStorage.ReadFileRecord(hisJid, 0);
 
-
-        int insSize = (recCount > MAX_HIST_LAST_MESS) ? MAX_HIST_LAST_MESS : recCount;
-        for (int i = recCount-insSize; i < recCount; i++)
-        {
-                String text=HistoryStorage.getRecord(Jid, i);
-        }
+                while (is.available()>0) {
+                    System.out.println(bareJid+" "+is.readUTF());
+                    Msg m=new Msg(Msg.MESSAGE_TYPE_IN, getJid(), null, is.readUTF());
+                    msgs.addElement(m);
+                }
+                is.close();
+            }
+        } catch (Exception e) { e.printStackTrace(); }
     }
- */
 }
