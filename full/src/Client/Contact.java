@@ -65,7 +65,7 @@ public class Contact extends IconTextElement{
     public String nick;
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
-    public int status;
+    protected int status;
     public int priority;
     private Group group;
     public int transport;
@@ -394,5 +394,15 @@ public class Contact extends IconTextElement{
                 is.close();
             }
         } catch (Exception e) { e.printStackTrace(); }
+    }
+	
+    public void setStatus(int status) {
+        setComposing(false);
+        this.status = status;
+       if (status>=Presence.PRESENCE_OFFLINE) acceptComposing=false;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

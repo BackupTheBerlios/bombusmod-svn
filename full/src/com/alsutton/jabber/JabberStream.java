@@ -57,7 +57,7 @@ public class JabberStream implements XMLEventListener, Runnable {
     
     private String server; // for ping
     
-    boolean pingSent;
+    public boolean pingSent;
 	
 	public boolean loggedIn;
     
@@ -102,8 +102,6 @@ public class JabberStream implements XMLEventListener, Runnable {
         new Thread( this ). start();
         
         initiateStream(server, xmppV1);
-        
-        keepAlive=new TimerTaskKeepAlive(Config.getInstance().keepAlive);
     }
 
     public void initiateStream(final String server, final boolean xmppV1) throws IOException {
@@ -117,7 +115,10 @@ public class JabberStream implements XMLEventListener, Runnable {
         header.append( '>' );
         send(header.toString());
     }
-    
+	
+    public void startKeepAliveTask(){
+        keepAlive=new TimerTaskKeepAlive(Config.getInstance().keepAlive);
+    }
     
     /**
      * The threads run method. Handles the parsing of incomming data in its
@@ -332,23 +333,36 @@ public class JabberStream implements XMLEventListener, Runnable {
         return iostream.getBytesS();
     }
     
-    private class TimerTaskKeepAlive extends TimerTask{
-        private Timer t;
-        public TimerTaskKeepAlive(int periodSeconds){
-            t=new Timer();
-            long period=periodSeconds*1000; // milliseconds
-            t.schedule(this, period, period);
-        }
-        public void run() {
-            try {
-                System.out.println("Keep-Alive");
-                sendKeepAlive();
+     private class TimerTaskKeepAlive extends TimerTask{
+         private Timer t;
+        private int verifyCtr;
+        private int period;
+         public TimerTaskKeepAlive(int periodSeconds){
+             t=new Timer();
+            this.period=periodSeconds;
+            long periodRun=periodSeconds*1000; // milliseconds
+            t.schedule(this, periodRun, periodRun);
+         }
+         public void run() {
+             try {
+                 System.out.println("Keep-Alive");
+                 sendKeepAlive();
+                
+                verifyCtr+=period;
+                if (verifyCtr>=200) {
+                    verifyCtr=0;
+                    if (pingSent) {
+                        dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
+                    } else {
+                        System.out.println("Ping myself");
+                        ping();
+                    }
+                }
             } catch (Exception e) { 
-                //System.out.println("network down, try to send presence!");
-                //StaticData.getInstance().roster.lightReconnect();
-                e.printStackTrace();
+                dispatcher.broadcastTerminatedConnection(e);
+                e.printStackTrace(); 
             }
-        }
+         }
 	
         public void destroyTask(){
             if (t!=null){
@@ -369,6 +383,7 @@ public class JabberStream implements XMLEventListener, Runnable {
         }
         public void run(){
             try {
+				Thread.sleep(100);
                 StringBuffer buf=new StringBuffer();
                 data.constructXML(buf);
                 sendBuf( buf );

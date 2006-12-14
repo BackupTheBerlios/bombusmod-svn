@@ -416,8 +416,8 @@ public class Roster
         
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg= (ConferenceGroup) g;
-            if (cg.getSelfContact().status==Presence.PRESENCE_OFFLINE)
-                cg.getConference().status=Presence.PRESENCE_OFFLINE;
+            if (cg.getSelfContact().status>=Presence.PRESENCE_OFFLINE)
+                cg.getConference().setStatus(Presence.PRESENCE_OFFLINE);
         }
         //int gi=g.index;
 
@@ -430,7 +430,7 @@ public class Roster
                 Contact contact=(Contact)hContacts.elementAt(index);
                 if (contact.inGroup(g)) {
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
-                         && contact.status==Presence.PRESENCE_OFFLINE
+                         && contact.status>=Presence.PRESENCE_OFFLINE
                          && contact.getNewMsgsCount()==0 )
                         hContacts.removeElementAt(index);
                     else { 
@@ -536,13 +536,13 @@ public class Roster
             groups.addGroup(grp=new ConferenceGroup(roomJid, room) );
         grp.password=joinPassword;
         
-        MucContact c=findMucContact( new Jid(from.substring(0, rp)) );
+        MucContact c=findMucContact( new Jid(roomJid) );
         
         if (c==null) {
             c=new MucContact(room, roomJid);
             addContact(c);
         }
-        c.status=Presence.PRESENCE_ONLINE;
+        c.setStatus(Presence.PRESENCE_ONLINE);
         c.transport=RosterIcons.ICON_GROUPCHAT_INDEX; //FIXME: убрать хардкод
         c.bareJid=from;
         c.origin=Contact.ORIGIN_GROUPCHAT;
@@ -559,7 +559,7 @@ public class Roster
         if (c==null)
             c=findMucContact( new Jid(from) );
 
-        if (c!=null) if (c.status==Presence.PRESENCE_OFFLINE) { 
+        if (c!=null) if (c.status>=Presence.PRESENCE_OFFLINE) {
             c.nick=nick;
             c.jid.setJid(from);
             c.bareJid=from;
@@ -628,7 +628,7 @@ public class Roster
             // здесь jid с новым ресурсом
             if (c.origin==Contact.ORIGIN_ROSTER) {
                 c.origin=Contact.ORIGIN_ROSTERRES;
-                c.status=Presence.PRESENCE_OFFLINE;
+                c.setStatus(Presence.PRESENCE_OFFLINE);
                 c.jid=J;
                 //System.out.println("add resource");
             } else {
@@ -667,7 +667,7 @@ public class Roster
             synchronized(hContacts) {
                 for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                     Contact c=(Contact)e.nextElement();
-                        c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
+                        c.setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
                 }
             }
         } else {
@@ -688,7 +688,7 @@ public class Roster
         Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
         if (isLoggedIn()) {
             if (!StaticData.getInstance().account.isMucOnly() )
-		theStream.send( presence );
+				theStream.send( presence );
             
             sendConferencePresence();
 
@@ -702,7 +702,7 @@ public class Roster
             }
         }
         Contact c=selfContact();
-        c.status=myStatus;
+        c.setStatus(myStatus);
         sort(hContacts);
         
         reEnumRoster();
@@ -927,6 +927,9 @@ public class Roster
         //query bookmarks
         theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
         
+        //enable keep-alive packets
+        theStream.startKeepAliveTask();
+		
 		theStream.loggedIn=true;
 		
 		reconnectCount=0;
@@ -969,6 +972,8 @@ public class Roster
                 String id=(String) data.getAttribute("id");
                 
                 if (id!=null) {
+					if (id.startsWith("ping")) theStream.pingSent=false;
+				
                     if (id.startsWith("nickvc")) {
                         VCard vc=new VCard(data);//.getNickName();
                         String from=vc.getJid();
@@ -1275,7 +1280,7 @@ public class Roster
                     
                     c.addMessage(m);
                     c.priority=pr.getPriority();
-                    if (ti>=0) c.status=ti;
+                    //if (ti>=0) c.setStatus(ti);
                     
                 } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
                 else {
@@ -1291,12 +1296,12 @@ public class Roster
                     }
 					
                     c.priority=pr.getPriority();
-                    if (ti>=0) c.status=ti;
-                    if (ti==Presence.PRESENCE_OFFLINE) c.acceptComposing=false;
+                    if (ti>=0) c.setStatus(ti);
+                    /*if (ti==Presence.PRESENCE_OFFLINE) c.acceptComposing=false;
+					c.setComposing(false);*/
                     if (ti>=0) {
                         if (ti!=11) playNotify(ti);
                     }
-                    c.setComposing(false);
                 }
 		sort(hContacts);
                 reEnumRoster();
@@ -1729,12 +1734,17 @@ public class Roster
 	ConferenceGroup confGroup=(ConferenceGroup)group;
 	Contact myself=confGroup.getSelfContact();
         sendPresence(myself.getJid(), "unavailable", null);
-	
+		//roomOffline(group);
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact contact=(Contact)e.nextElement();
-            if (contact.inGroup(group)) contact.status=Presence.PRESENCE_OFFLINE; 
+            if (contact.inGroup(group)) contact.setStatus(Presence.PRESENCE_OFFLINE);
         }
-
+	}
+    public void roomOffline(final Group group) {
+         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
+             Contact contact=(Contact)e.nextElement();
+            if (contact.inGroup(group)) contact.setStatus(Presence.PRESENCE_OFFLINE);
+         }
     }
     
     protected void showNotify() { super.showNotify(); countNewMsgs(); }
@@ -1797,7 +1807,8 @@ public class Roster
 	for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
 	    Contact c2=(Contact)e. nextElement();
 	    if (c.jid.equals(c2. jid,false)) {
-		c2.status=c2.offline_type=Presence.PRESENCE_TRASH;
+			c2.setStatus(Presence.PRESENCE_TRASH);
+			c2.offline_type=Presence.PRESENCE_TRASH;
 	    }
 	}
 	
