@@ -73,7 +73,8 @@ public class RosterMenu extends Menu
                 if (connected) new RosterItemActions(display, o).setParentView(StaticData.getInstance().roster); 
                 break;
 	    case 1: //status
-                new StatusSelect(display, null).setParentView(StaticData.getInstance().roster);
+                StaticData.getInstance().roster.reconnectCount=0; 
+				new StatusSelect(display, null).setParentView(StaticData.getInstance().roster);
 		break;
             case 2: //active
                 new ActiveContacts(display, null).setParentView(StaticData.getInstance().roster);

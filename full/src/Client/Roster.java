@@ -143,11 +143,12 @@ public class Roster
 
     private TimerTaskAutoAway AutoAway;
 
-    public static boolean autoReconnect=true;
-
     private static boolean elfPlatform=false;
     
     public int lightState=0;
+	
+    private final static int maxReconnect=5;
+    private int reconnectCount;
     
     /**
      * Creates a new instance of Roster
@@ -303,11 +304,9 @@ public class Roster
             reconnect=false;
             myStatus=Presence.PRESENCE_OFFLINE;
             e.printStackTrace();
-            String error=e.getClass().getName()+"\n"+e.getMessage();
-            errorLog( error );
             setQuerySign(false);
             redraw();
-            //l.setTitleImgL(0);//offline
+            askReconnect(e);
         }
         //l.setCallback(this);
     }
@@ -928,6 +927,7 @@ public class Roster
         
 		theStream.loggedIn=true;
 		
+		reconnectCount=0;
         // залогинились. теперь, если был реконнект, то просто пошлём статус
         if (reconnect) {
             querysign=reconnect=false;
@@ -1492,36 +1492,43 @@ public class Roster
      *  receiving a SocketException is normal when the client closes the stream.
      */
     public void connectionTerminated( Exception e ) {
-        //l.setTitleImgL(0);
-        System.out.println( "Connection terminated" );
-        if( e != null ) {
-            String error=e.getClass().getName()+"\n"+e.getMessage();
-            errorLog(error);
-            //e.printStackTrace();
-        }
+        String error=null;
         setProgress(SR.MS_DISCONNECTED, 0);
-        try {
-            sendPresence(Presence.PRESENCE_OFFLINE);
-        } catch (Exception e2) {
-            e2.printStackTrace();
-        }
-        
-            //reconnect here
-                //if (autoReconnect){
-                    try {
-                        theStream.close();
-                    } catch (Exception ex) { }
-        
-                    theStream=null;
-                    System.gc();
-                    new Thread(this).start();
-                //}
-            //reconnect end
+         if( e != null ) {
+            askReconnect(e);
+            
+        } else {
+            try {
+                sendPresence(Presence.PRESENCE_OFFLINE);
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+         }
         redraw();
     }
-    
-    //private VList l;
-    //private IconTextList l;
+
+    private void askReconnect(final Exception e) {
+        String error;
+        error=e.getClass().getName()+"\n"+e.getMessage();
+        e.printStackTrace();
+
+        lastStatus=myStatus;
+         try {
+             sendPresence(Presence.PRESENCE_OFFLINE);
+        } catch (Exception e2) { }
+
+        if (e instanceof SecurityException || reconnectCount>maxReconnect) {
+            errorLog(error);
+        } else {
+            reconnectCount++;
+            String title="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
+            new Reconnect(title, error, display);
+         }
+     }
+    private int lastStatus;
+    public void doReconnect() {
+        sendPresence(lastStatus);
+    }
     
     public void eventOk(){
         super.eventOk();
@@ -1659,10 +1666,10 @@ public class Roster
         }
         
         if (c==cmdAccount){ new AccountSelect(display, false); }
-        if (c==cmdStatus) { new StatusSelect(display, null); }
+        if (c==cmdStatus) { reconnectCount=0; new StatusSelect(display, null); }
         if (c==cmdAlert) { new AlertProfile(display); }
         
-    if (c==cmdArchive) { new ArchiveList(display, null, -1); }
+		if (c==cmdArchive) { new ArchiveList(display, null, -1); }
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
         if (c==cmdTurnOnLight) {
