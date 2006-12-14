@@ -75,7 +75,7 @@ public class ContactMessageList extends MessageList
         //setTitleLine(title);
 
         cursor=0;//activate
-        
+        addCommand(cmdRecent);        
         addCommand(cmdMessage);
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
             addCommand(cmdReply);
@@ -86,7 +86,6 @@ public class ContactMessageList extends MessageList
         addCommand(cmdQuote);
         addCommand(cmdArch);
         addCommand(cmdCopy);
-        addCommand(cmdRecent);
         addCommand(cmdTemplate);
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);

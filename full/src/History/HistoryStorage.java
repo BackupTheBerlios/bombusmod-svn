@@ -40,43 +40,43 @@ public class HistoryStorage {
     /**
      * Creates a new instance of HistoryStorage
      */
-    public HistoryStorage(String bareJid, String Message) {
+    public HistoryStorage(String bareJid, String message) {
+        this.bareJid=bareJid.replace('@', '%');
         loadRecentList();
-        System.out.println("init");        
-        if (recentList.isEmpty()) return;
+        if (message!=null) saveMessage(message);
+        //if (recentList.isEmpty()) return;
     }
 
-    public void saveMessage(String message) {
-        System.out.println("save");
+    public boolean saveMessage(String message) {
         int i=0;
-        if (message.length()==0) return;
+        if (message.length()==0) return false;
         while (i<recentList.size()) {
             if ( message.equals((String)recentList.elementAt(i)) || i>(count-1) ) recentList.removeElementAt(i);
             else i++;
         }
         recentList.insertElementAt(message, 0);
-        System.out.println("saveMessage "+recentList.size());
         saveRecentList();
-        return;
+        return true;
     }
     
-    
-
-    private void saveRecentList() {
+    private boolean saveRecentList() {
+        boolean result = false;
         DataOutputStream os=NvStorage.CreateDataOutputStream();
         try {
             for (Enumeration e=recentList.elements(); e.hasMoreElements(); ) {
                 String s=(String)e.nextElement();
                 os.writeUTF(s);
             }
-        } catch (Exception e) { e.printStackTrace(); }
+            result = true;
+        } catch (Exception e) { result = false; }
         
         NvStorage.writeFileRecord(os, bareJid, 0, true);
         
-        System.out.println("saveRecentList() "+recentList.size());
+        return result;
     }
     
-    private void loadRecentList() {
+    private boolean loadRecentList() {
+        boolean result = false;
         recentList=new Vector(count);
         try {
 
@@ -86,8 +86,9 @@ public class HistoryStorage {
                 System.out.println(is.readUTF());
                 recentList.addElement(is.readUTF());
             is.close();
-        } catch (Exception e) { System.out.println(e); }
+            result = true;
+        } catch (Exception e) { result = false; }
         
-        System.out.println("loadRecentList() "+recentList.size());
+        return result;
     }
 }

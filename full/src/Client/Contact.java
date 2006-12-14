@@ -210,8 +210,9 @@ public class Contact extends IconTextElement{
         
         if (m.messageType==Msg.MESSAGE_TYPE_OUT) {
             System.out.println("add");  
-            HistoryStorage his= new HistoryStorage(bareJid, m.getBody());
-            his.saveMessage(m.getBody());
+            //HistoryStorage his= new HistoryStorage(bareJid, m.getBody());
+            //his.saveMessage(m.getBody());
+            new HistoryStorage(bareJid, m.getBody());
         }
         
 //#if FILE_IO

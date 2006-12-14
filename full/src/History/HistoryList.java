@@ -48,26 +48,20 @@ public class HistoryList
     public HistoryList(String bareJid, Display display) {
         
         this.display=display;
-        this.bareJid=bareJid;
-        
-        System.out.println("list");
-        
+        this.bareJid=bareJid.replace('@', '%');
+       
         loadRecentList();
         
         if (recentList.isEmpty()) return;
         
-        System.out.println("list!=null");
-        
         parentView=display.getCurrent();
         
         cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
-        cmdSelect=new Command(SR.MS_SELECT, Command.OK, 1);
-	cmdClear=new Command(SR.MS_CLEAR, Command.SCREEN,2);
+        cmdClear=new Command(SR.MS_CLEAR, Command.OK, 1);
         
         list=new List(bareJid, List.IMPLICIT);
         list.addCommand(cmdBack);
 	list.addCommand(cmdClear);
-        list.setSelectCommand(cmdSelect);
         
         for (Enumeration e=recentList.elements(); e.hasMoreElements();)
             list.append((String)e.nextElement(), null);
@@ -84,7 +78,7 @@ public class HistoryList
 
     private void loadRecentList() {
         recentList=new Vector(count);
-        System.out.println(bareJid);
+        System.out.println(bareJid+" ");
         try {
             DataInputStream is=NvStorage.ReadFileRecord(bareJid, 0);
             
@@ -92,6 +86,6 @@ public class HistoryList
                 recentList.addElement(is.readUTF());
             is.close();
         } catch (Exception e) { }
-        System.out.println(recentList.size());
+        System.out.print(recentList.size());
     }
 }

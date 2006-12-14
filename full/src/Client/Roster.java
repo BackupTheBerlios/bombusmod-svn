@@ -148,7 +148,7 @@ public class Roster
     public int lightState=0;
 	
     private final static int maxReconnect=5;
-    private int reconnectCount;
+    public int reconnectCount;
     
     /**
      * Creates a new instance of Roster
@@ -1479,10 +1479,6 @@ public class Roster
 //#else
 //#         new NonSASLAuth(sd.account, SessionId, this, theStream);
 //#endif
-    }
-    
-    public void lightReconnect() {
-        sendPresence(myStatus);
     }
     
     /**

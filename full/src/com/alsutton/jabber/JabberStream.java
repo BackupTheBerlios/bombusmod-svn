@@ -344,9 +344,9 @@ public class JabberStream implements XMLEventListener, Runnable {
                 System.out.println("Keep-Alive");
                 sendKeepAlive();
             } catch (Exception e) { 
-                System.out.println("network down, try to send presence!");
-                StaticData.getInstance().roster.lightReconnect();
-                ///e.printStackTrace();
+                //System.out.println("network down, try to send presence!");
+                //StaticData.getInstance().roster.lightReconnect();
+                e.printStackTrace();
             }
         }
 	
