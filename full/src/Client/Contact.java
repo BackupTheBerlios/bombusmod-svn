@@ -127,17 +127,16 @@ public class Contact extends IconTextElement{
         //calculating transport
         transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
         
-        if (cf.lastMessages
-            && sJid!=null
+        if (cf.lastMessages) {
+            if (sJid!=null) {
             /*&& (getGroupType()!=Groups.TYPE_SELF)
             && (getGroupType()!=Groups.TYPE_TRANSP)
             && (getGroupType()!=Groups.TYPE_SEARCH_RESULT)
             && (getGroupType()!=Groups.TYPE_NOT_IN_LIST)
             && (getGroupType()!=Groups.TYPE_IGNORE)
-            && (origin!=ORIGIN_GROUPCHAT)*/) {
+            && (origin!=ORIGIN_GROUPCHAT)*/
                 loadRecentList(sJid);
-        } else {
-            System.out.println(Nick);
+            }
         }
     }
     
