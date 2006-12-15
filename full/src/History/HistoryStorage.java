@@ -1,7 +1,7 @@
 /*
  * HistoryStorage.java
  *
- * Created on 13 Декабрь 2006 г., 14:49
+ * Created on 13 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2006 пїЅ., 14:49
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -10,6 +10,8 @@
 package History;
 
 
+import Client.Contact;
+import Client.Msg;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -36,33 +38,44 @@ public class HistoryStorage {
     public Vector recentList;
     
     private int count=4;
+
+    private String hisJid;
+
+    private Contact c;
     
     /**
      * Creates a new instance of HistoryStorage
      */
-    public HistoryStorage(String bareJid, String message, boolean clear) {
+    public HistoryStorage(Contact c, String message, boolean clear, boolean fill) {
+        
+        this.c=c;
+        this.bareJid=c.getBareJid();
         
         if (bareJid==null) return;
         
         this.bareJid=bareJid.replace('@', '%');
-        recentList=new Vector(count);
-        if (clear==false) {
-            loadRecentList();
-        } else {
-            recentList.removeAllElements();
-            saveRecentList();
-            return;
-        }
         
-        if (message==null) return;
-        saveMessage(message);
-        //if (recentList.isEmpty()) return;
+        if (fill) {
+            loadRecentList(true);
+        } else {
+            recentList=new Vector(count);
+
+            if (clear==false) {
+                loadRecentList(false);
+            } else {
+                recentList.removeAllElements();
+                saveRecentList();
+                return;
+            }
+
+            if (message==null) return;
+            saveMessage(message);
+        }
     }
 
     public boolean saveMessage(String message) {
         int i=0;
         int tempCount=count-1;
-        //if (message.length()==0) return false;
         while (i<recentList.size()) {
             if (i>tempCount) recentList.removeElementAt(i);
              else i++;
@@ -88,12 +101,16 @@ public class HistoryStorage {
         return result;
     }
     
-    private boolean loadRecentList() {
+    private boolean loadRecentList(boolean fill) {
         boolean result = false;
         try {
             DataInputStream is=NvStorage.ReadFileRecord(bareJid, 0);
             while (is.available()>0)
-                recentList.addElement(is.readUTF());
+                if (fill) {
+                    c.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, bareJid, null, is.readUTF()));
+                } else {
+                    recentList.addElement(is.readUTF());
+                }
             is.close();
             result = true;
         } catch (Exception e) { result = false; }

@@ -129,13 +129,13 @@ public class Contact extends IconTextElement{
         
         if (cf.lastMessages) {
             if (sJid!=null) {
-            /*&& (getGroupType()!=Groups.TYPE_SELF)
-            && (getGroupType()!=Groups.TYPE_TRANSP)
-            && (getGroupType()!=Groups.TYPE_SEARCH_RESULT)
-            && (getGroupType()!=Groups.TYPE_NOT_IN_LIST)
-            && (getGroupType()!=Groups.TYPE_IGNORE)
-            && (origin!=ORIGIN_GROUPCHAT)*/
-                loadRecentList(sJid);
+                /*if ((getGroupType()!=Groups.TYPE_SELF)
+                    && (getGroupType()!=Groups.TYPE_TRANSP)
+                    && (getGroupType()!=Groups.TYPE_SEARCH_RESULT)
+                    && (getGroupType()!=Groups.TYPE_NOT_IN_LIST)
+                    && (getGroupType()!=Groups.TYPE_IGNORE)) {*/
+                        new HistoryStorage(this, "", false, true);
+                 //}
             }
         }
     }
@@ -232,7 +232,7 @@ public class Contact extends IconTextElement{
             && (group.index!=Groups.TYPE_NOT_IN_LIST)
             && (group.index!=Groups.TYPE_IGNORE)
             && (origin!=ORIGIN_GROUPCHAT)) {
-                new HistoryStorage(bareJid, m.getBody(), false);
+                new HistoryStorage(this, m.getBody(), false, false);
         }
         
 //#if FILE_IO
@@ -345,7 +345,7 @@ public class Contact extends IconTextElement{
     }
     
     public final void purge() {
-        new HistoryStorage(getBareJid(), "", true);
+        new HistoryStorage(this, "", true, false);
         msgs=new Vector();
         vcard=null;
         resetNewMsgCnt();
@@ -376,24 +376,6 @@ public class Contact extends IconTextElement{
     }*/
     public void setGroup(Group group) { this.group = group; }
 
-    
-    
-//last messages loading   
-    public void loadRecentList(String bareJid) {
-        try {
-            if (bareJid.indexOf("@")>-1) {
-                hisJid=bareJid.replace('@', '%');
-                DataInputStream is=NvStorage.ReadFileRecord(hisJid, 0);
-
-                while (is.available()>0) {
-                    System.out.println(bareJid+" "+is.readUTF());
-                    Msg m=new Msg(Msg.MESSAGE_TYPE_IN, getJid(), null, is.readUTF());
-                    msgs.addElement(m);
-                }
-                is.close();
-            }
-        } catch (Exception e) { e.printStackTrace(); }
-    }
 	
     public void setStatus(int status) {
         setComposing(false);
