@@ -16,7 +16,7 @@ import javax.microedition.lcdui.*;
 import ui.controls.NumberField;
 import ui.controls.TextFieldCombo;
 
-import History.HistoryList;
+//import History.HistoryList;
 
 /**
  *

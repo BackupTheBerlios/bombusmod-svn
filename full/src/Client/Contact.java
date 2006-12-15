@@ -8,6 +8,7 @@
  */
 
 package Client;
+import Conference.MucContact;
 import History.HistoryStorage;
 import images.RosterIcons;
 import io.NvStorage;
@@ -127,17 +128,13 @@ public class Contact extends IconTextElement{
         //calculating transport
         transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
         
-        if (cf.lastMessages) {
-            if (sJid!=null) {
-                /*if ((getGroupType()!=Groups.TYPE_SELF)
-                    && (getGroupType()!=Groups.TYPE_TRANSP)
-                    && (getGroupType()!=Groups.TYPE_SEARCH_RESULT)
-                    && (getGroupType()!=Groups.TYPE_NOT_IN_LIST)
-                    && (getGroupType()!=Groups.TYPE_IGNORE)) {*/
-                        new HistoryStorage(this, "", false, true);
-                 //}
-            }
-        }
+        //if (cf.lastMessages) {
+        //   if (sJid!=null) {
+        //        if (getGroupType()==Groups.TYPE_COMMON) {
+        //               new HistoryStorage(this, "", false, true);
+        //       }
+        //    }
+        //}
     }
     
     public Contact clone(Jid newjid, final int status) {
@@ -226,13 +223,12 @@ public class Contact extends IconTextElement{
         }
 
         if (cf.lastMessages
-            && (m.messageType==Msg.MESSAGE_TYPE_IN)
-            && (group.index!=Groups.TYPE_TRANSP)
-            && (group.index!=Groups.TYPE_SEARCH_RESULT)
-            && (group.index!=Groups.TYPE_NOT_IN_LIST)
-            && (group.index!=Groups.TYPE_IGNORE)
-            && (origin!=ORIGIN_GROUPCHAT)) {
-                new HistoryStorage(this, m.getBody(), false, false);
+            && (origin!=ORIGIN_GROUPCHAT)
+            && (getGroupType()!=Groups.TYPE_TRANSP)
+            && (getGroupType()!=Groups.TYPE_IGNORE)
+            && (this instanceof MucContact==false)
+            && (m.messageType==Msg.MESSAGE_TYPE_IN)) {
+                new HistoryStorage(this, m.getBody(), false);
         }
         
 //#if FILE_IO
@@ -345,7 +341,7 @@ public class Contact extends IconTextElement{
     }
     
     public final void purge() {
-        new HistoryStorage(this, "", true, false);
+        new HistoryStorage(this, "", true);
         msgs=new Vector();
         vcard=null;
         resetNewMsgCnt();
@@ -380,7 +376,7 @@ public class Contact extends IconTextElement{
     public void setStatus(int status) {
         setComposing(false);
         this.status = status;
-       if (status>=Presence.PRESENCE_OFFLINE) acceptComposing=false;
+        if (status>=Presence.PRESENCE_OFFLINE) acceptComposing=false;
     }
 
     public int getStatus() {

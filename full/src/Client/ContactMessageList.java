@@ -9,14 +9,17 @@
 
 package Client;
 import Conference.MucContact;
+import History.HistoryStorage;
 import Messages.MessageList;
 import Messages.MessageParser;
 import archive.MessageArchive;
 import images.RosterIcons;
 import images.SmilesIcons;
+import io.NvStorage;
+import java.io.DataInputStream;
 import locale.SR;
 import templates.TemplateContainer;
-import History.HistoryList;
+//import History.HistoryList;
 import ui.controls.InputBox;
 import vcard.VCard;
 import ui.*;
@@ -40,12 +43,12 @@ public class ContactMessageList extends MessageList
     Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,5);
     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 6);
-    Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,7);
-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,7);
-    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 8);
-    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,9);
+    Command cmdRecent=new Command(SR.MS_RECENT,Command.SCREEN,7);
+    Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,8);
+    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,8);
+    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 9);
+    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,10);
     
-    Command cmdRecent=new Command(SR.MS_RECENT,Command.SCREEN,10);
      
     private ClipBoard clipboard;
     
@@ -75,7 +78,9 @@ public class ContactMessageList extends MessageList
         //setTitleLine(title);
 
         cursor=0;//activate
-        addCommand(cmdRecent);        
+        
+        if (cf.lastMessages && contact instanceof MucContact==false) addCommand(cmdRecent);
+        
         addCommand(cmdMessage);
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
             addCommand(cmdReply);
@@ -207,7 +212,8 @@ public class ContactMessageList extends MessageList
             sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
         }
         if (c==cmdRecent) {
-            new HistoryList(contact.getBareJid(), display);
+            //new HistoryList(contact.getBareJid(), display);
+            loadRecentList();
         }
     }
 
@@ -339,5 +345,14 @@ public class ContactMessageList extends MessageList
     }
     
     protected int getActiveCount() { return activeContacts.size(); }
-
+    
+    private void loadRecentList() {
+        try {
+            DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
+            while (is.available()>0) {
+                    contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
+            }
+            is.close();
+        } catch (Exception e) {}
+    }
 }

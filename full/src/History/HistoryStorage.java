@@ -46,34 +46,24 @@ public class HistoryStorage {
     /**
      * Creates a new instance of HistoryStorage
      */
-    public HistoryStorage(Contact c, String message, boolean clear, boolean fill) {
+    public HistoryStorage(Contact c, String message, boolean clear) {
         
         this.c=c;
-        this.bareJid=c.getBareJid();
+        this.bareJid=c.getBareJid().replace('@', '%');
         
-        if (bareJid==null) return;
-        
-        this.bareJid=bareJid.replace('@', '%');
-        
-        if (fill) {
-            loadRecentList(true);
-        } else {
             recentList=new Vector(count);
-
-            if (clear==false) {
-                loadRecentList(false);
-            } else {
+            loadRecentList();
+            
+            if (clear==true) {
                 recentList.removeAllElements();
                 saveRecentList();
-                return;
+            } else {
+                if (message==null) return;
+                saveMessage(message);
             }
-
-            if (message==null) return;
-            saveMessage(message);
-        }
     }
 
-    public boolean saveMessage(String message) {
+    public void saveMessage(String message) {
         int i=0;
         int tempCount=count-1;
         while (i<recentList.size()) {
@@ -82,39 +72,26 @@ public class HistoryStorage {
         }
         recentList.insertElementAt(message, 0);
         saveRecentList();
-        return true;
     }
     
-    private boolean saveRecentList() {
-        boolean result = false;
+    private void saveRecentList() {
         DataOutputStream os=NvStorage.CreateDataOutputStream();
         try {
             for (Enumeration e=recentList.elements(); e.hasMoreElements(); ) {
                 String s=(String)e.nextElement();
                 os.writeUTF(s);
             }
-            result = true;
-        } catch (Exception e) { result = false; }
+        } catch (Exception e) {}
         
         NvStorage.writeFileRecord(os, bareJid, 0, true);
-        
-        return result;
     }
     
-    private boolean loadRecentList(boolean fill) {
-        boolean result = false;
+    private void loadRecentList() {
         try {
             DataInputStream is=NvStorage.ReadFileRecord(bareJid, 0);
             while (is.available()>0)
-                if (fill) {
-                    c.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, bareJid, null, is.readUTF()));
-                } else {
                     recentList.addElement(is.readUTF());
-                }
             is.close();
-            result = true;
-        } catch (Exception e) { result = false; }
-        
-        return result;
+        } catch (Exception e) {}
     }
 }
