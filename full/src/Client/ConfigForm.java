@@ -71,7 +71,7 @@ public class ConfigForm implements
     
     ChoiceGroup textWrap;
     
-    NumberField keepAlive;
+    //NumberField keepAlive;
     NumberField fieldLoc;
     NumberField fieldGmt;
     
@@ -176,7 +176,7 @@ public class ConfigForm implements
 	
         application.setSelectedFlags(ap);
         
-	keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 10, 10000 );
+	//keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 10, 10000 );
 	fieldGmt=new NumberField(SR.MS_GMT_OFFSET, cf.gmtOffset, -12, 12); 
         fieldLoc=new NumberField(SR.MS_CLOCK_OFFSET, cf.locOffset, -12, 12 );
 
@@ -213,7 +213,7 @@ public class ConfigForm implements
 
 	f.append(application);
 
-	f.append(keepAlive);
+	//f.append(keepAlive);
 	
         f.append(SR.MS_TIME_SETTINGS);
         f.append("\n");
@@ -326,7 +326,7 @@ public class ConfigForm implements
             
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();
-	    cf.keepAlive=keepAlive.getValue();
+	    //cf.keepAlive=keepAlive.getValue();
             
             FontCache.rosterFontSize=cf.font1=font1.getSelectedIndex()*8;
             FontCache.msgFontSize=cf.font2=font2.getSelectedIndex()*8;

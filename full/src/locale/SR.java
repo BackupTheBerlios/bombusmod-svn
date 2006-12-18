@@ -406,6 +406,8 @@ public class SR {
     public static String MS_DECLINE=loadString("Decline");
     public static String MS_AUTH_NEW=loadString("Authorize new contacts");
     public static String MS_AUTH_AUTO=loadString("[auto-subscribe]");
+	
+	public final static String MS_KEEPALIVE="Keep-alive";
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

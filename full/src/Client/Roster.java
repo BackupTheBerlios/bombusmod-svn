@@ -1122,6 +1122,8 @@ public class Roster
                 String name=null;
                 boolean groupchat=false;
                 conference=false;
+				
+				int mType=Msg.MESSAGE_TYPE_IN;
                 
                 try { // type=null
 		    String type=message.getTypeAttribute();
@@ -1142,7 +1144,7 @@ public class Roster
                             subj=null;
                             start_me=-1; // не добавлять /me к subj
                             highlite=true;
-                            sendConferencePresence();
+                            //sendConferencePresence();
                         }
                     }
                     if (type.equals("error")) {
@@ -1170,6 +1172,7 @@ public class Roster
                             //default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
                         }
                     }
+					if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
                 } catch (Exception e) {}
                 
                 try {
@@ -1219,15 +1222,15 @@ public class Roster
 
                 if (body==null) return;
                 
-                Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, subj, body);
+                Msg m=new Msg(mType, from, subj, body);
                 if (tStamp!=null) 
                     m.dateGmt=Time.dateIso8601(tStamp);
                 if (groupchat) {
-                    if (c.bareJid.equals(message.getFrom())) {
+                    ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                    if (mucGrp.getSelfContact().getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
                         m.unread=false;
                     } else {
-                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
                         if (m.dateGmt<= ((ConferenceGroup)c.getGroup()).conferenceJoinTime) m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
                         String myNick=mucGrp.getSelfContact().getName();

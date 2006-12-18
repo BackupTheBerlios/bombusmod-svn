@@ -43,7 +43,7 @@ public class ContactMessageList extends MessageList
     Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,5);
     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 6);
-    Command cmdRecent=new Command(SR.MS_RECENT,Command.SCREEN,7);
+    Command cmdRecent=new Command("Last Messages",Command.SCREEN,7);
     Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,8);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,8);
     Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 9);
