@@ -1657,6 +1657,36 @@ public class Roster
 	
         if (keyCode=='9') searchGroup(1);
         
+        if (keyCode==KEY_POUND) {
+            if (cf.poundKey) {
+                if (Version.getPlatformName().indexOf("SIE") == -1) {
+                    fullMode=cf.isbottom;
+                    switch (fullMode) {
+                        case 0: cf.isbottom=1; break;
+                        case 1: cf.isbottom=2; break;
+                        case 2: cf.isbottom=3; break;
+                        case 3: cf.isbottom=0; break;
+                    }
+                    cf.saveToStorage();
+                }
+            }
+            System.gc();
+        }
+        if (keyCode==KEY_STAR) {
+            if (cf.starKey) {
+                if (Version.getPlatformName().indexOf("SIE") > -1) {
+                    fullMode=cf.isbottom;
+                    switch (fullMode) {
+                        case 0: cf.isbottom=1; break;
+                        case 1: cf.isbottom=2; break;
+                        case 2: cf.isbottom=3; break;
+                        case 3: cf.isbottom=0; break;
+                    }
+                    cf.saveToStorage();
+                }
+            }
+            System.gc();
+        }        
     }
     
     public void logoff(){

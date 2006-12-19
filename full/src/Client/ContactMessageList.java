@@ -237,65 +237,74 @@ public class ContactMessageList extends MessageList
     }       
 
     public void userKeyPressed(int keyCode) {
-        if (!startMessage) {
-            super.userKeyPressed(keyCode);
-            if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
-            if (keyCode==KEY_NUM9) nextContact();
-            if (keyCode==KEY_STAR) {
-                if (cf.altInput) {
-                        startMessage=true;
-                        updateBottom(keyCode);
+        super.userKeyPressed(keyCode);
+        if (cf.altInput) {
+            if (!startMessage) {
+                if (keyCode==KEY_STAR) {
+                    startMessage=true;
+                    updateBottom(keyCode);
                 }
-            }
-            if (keyCode==keyClear) {
-                clearMessageList();
+                
+                if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
+                if (keyCode==KEY_NUM9) nextContact();
+                if (keyCode==keyClear) {
+                    clearMessageList();
+                }
+            } else {
+                if (keyCode==KEY_NUM1) updateBottom(1);
+                if (keyCode==KEY_NUM2) updateBottom(2);
+                if (keyCode==KEY_NUM3) updateBottom(3);
+                if (keyCode==KEY_NUM4) updateBottom(4);
+                if (keyCode==KEY_NUM5) updateBottom(5);
+                if (keyCode==KEY_NUM6) updateBottom(6);
+                if (keyCode==KEY_NUM7) updateBottom(7);
+                if (keyCode==KEY_NUM8) updateBottom(8);
+                if (keyCode==KEY_NUM9) updateBottom(9);
+                if (keyCode==KEY_NUM0) updateBottom(0);
+                if (keyCode==KEY_POUND) updateBottom(-1);
+                if (keyCode==KEY_STAR) { 
+                    sendMessage();
+                    startMessage=false;
+                    updateBottom(-10000);
+                    redraw();
+                }
             }
         } else {
-            if (keyCode==KEY_NUM1) updateBottom(1);
-            if (keyCode==KEY_NUM2) updateBottom(2);
-            if (keyCode==KEY_NUM3) updateBottom(3);
-            if (keyCode==KEY_NUM4) updateBottom(4);
-            if (keyCode==KEY_NUM5) updateBottom(5);
-            if (keyCode==KEY_NUM6) updateBottom(6);
-            if (keyCode==KEY_NUM7) updateBottom(7);
-            if (keyCode==KEY_NUM8) updateBottom(8);
-            if (keyCode==KEY_NUM9) updateBottom(9);
-            if (keyCode==KEY_NUM0) updateBottom(0);
-            if (keyCode==KEY_POUND) updateBottom(-1);
-            if (keyCode==KEY_STAR) { 
-                try {
-                        int comp=0; // composing event off
-                        Roster r=StaticData.getInstance().roster;
-                        this.text=inputbox.getText();
-                        if (text!=null) {
-                            String from=StaticData.getInstance().account.toString();
-                            Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
-                            if (contact.origin!=Contact.ORIGIN_GROUPCHAT) {
-                                contact.addMessage(msg);
-                                comp=1; // composing event in message
-                            }
-
-                        } else if (contact.acceptComposing) comp=(composing)? 1:2;
-
-                        if (!cf.eventComposing) comp=0;
-
-                        try {
-                            if (text!=null || comp>0)
-                            r.sendMessage(contact, text, null, comp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                startMessage=false;
-                updateBottom(-10000);
-                redraw();
-            }
+            if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
+            if (keyCode==KEY_NUM9) nextContact();
+            if (keyCode==keyClear) clearMessageList();
         }
     }
 
     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; }
+
+    private void sendMessage(){
+        try {
+                int comp=0; // composing event off
+                Roster r=StaticData.getInstance().roster;
+                this.text=inputbox.getText();
+                if (text!=null) {
+                    String from=StaticData.getInstance().account.toString();
+                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
+                    if (contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+                        contact.addMessage(msg);
+                        comp=1; // composing event in message
+                    }
+
+                } else if (contact.acceptComposing) comp=(composing)? 1:2;
+
+                if (!cf.eventComposing) comp=0;
+
+                try {
+                    if (text!=null || comp>0)
+                    r.sendMessage(contact, text, null, comp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } 
     
     private void updateBottom(int key){
         if (cf.altInput) {

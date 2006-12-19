@@ -508,9 +508,6 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g) {
         if (memMonitor) {
-            //int ram=(int)((Runtime.getRuntime().freeMemory()*32)/Runtime.getRuntime().totalMemory());
-            //g.setColor(0xffffff);  g.fillRect(width-34,0,34,3);
-            //g.setColor(0x00007f);  g.fillRect(width-33,1,ram,2);
             int freemem=(int)Runtime.getRuntime().freeMemory();
             int totalmem=(int)Runtime.getRuntime().totalMemory();
             int ram=(int)((freemem*width)/totalmem);
@@ -682,19 +679,19 @@ public abstract class VirtualList
             }
         } 
         
-                if (keyCode==-4)  {
-                    if (isSiemens) {
-                        destroyView();
-			return;
-                    }         
-                }
-                if (keyCode==702)  {
-                    if (isSiemens) {
-                        destroyView();
-			return;
-                    }         
-                }
-        if (inputbox==null) {
+        if (keyCode==-4)  {
+            if (isSiemens) {
+                destroyView();
+                return;
+            }         
+        }
+        if (keyCode==702)  {
+            if (isSiemens) {
+                destroyView();
+                return;
+            }         
+        }
+        if (inputbox==null) {        
             switch (keyCode) {
                 case 0: break;
                 case NOKIA_PEN: { destroyView(); break; }
@@ -703,40 +700,6 @@ public abstract class VirtualList
                 case KEY_NUM1:  { moveCursorHome();    break; }
                 case KEY_NUM7:  { moveCursorEnd();     break; }
 
-                    case KEY_POUND: {
-                        if (cf.poundKey) {
-                            if (!isSiemens) {
-                                fullMode=cf.isbottom;
-                                switch (fullMode) {
-                                    case 0: cf.isbottom=1; break;
-                                    case 1: cf.isbottom=2; break;
-                                    case 2: cf.isbottom=3; break;
-                                    case 3: cf.isbottom=0; break;
-                                }
-                                cf.saveToStorage();
-                            }
-                        }
-                        System.gc();
-                        userKeyPressed(keyCode);
-                        break;
-                    }
-                    case KEY_STAR: {
-                        if (cf.starKey) {
-                            if (isSiemens) {
-                                fullMode=cf.isbottom;
-                                switch (fullMode) {
-                                    case 0: cf.isbottom=1; break;
-                                    case 1: cf.isbottom=2; break;
-                                    case 2: cf.isbottom=3; break;
-                                    case 3: cf.isbottom=0; break;
-                                }
-                                cf.saveToStorage();
-                            }
-                        }
-                        System.gc();
-                        userKeyPressed(keyCode);
-                        break;
-                    }
                 default:
                     try {
                                 switch (getGameAction(keyCode)){
@@ -995,17 +958,8 @@ public abstract class VirtualList
      * @param height высота курсора
      */
     protected void drawCursor (Graphics g, int width, int height){
-        //g.setColor(VL_CURSOR_SHADE);   g.drawRoundRect(x+2, y+2, width-1, height-1, 3,3);
             g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
             g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
-        
-        //g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
-        /*
-        g.drawLine(1,0,width-2,0);
-        g.drawLine(0,1,0,height-2);
-        g.drawLine(0,width-1,0,height-2);
-        g.drawLine(1,height-1,width-2,height-1);
-         */
     }
 
     public void setParentView(Displayable parentView){
