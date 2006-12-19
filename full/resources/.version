@@ -1,6 +1,10 @@
 # version pattern
 bombus.revision=149M
 
+<<<<<<< .mine
+bombus.version=0.4.5.922.149M
+=======
 bombus.version=0.4.5.929.149M
+>>>>>>> .r150
 
 bombus.midlet=0.4
