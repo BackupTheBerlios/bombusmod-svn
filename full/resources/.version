@@ -1,6 +1,6 @@
 # version pattern
-bombus.revision=150:151M
+bombus.revision=152M
 
-bombus.version=0.4.5.930.150:151M
+bombus.version=0.4.5.932.152M
 
 bombus.midlet=0.4

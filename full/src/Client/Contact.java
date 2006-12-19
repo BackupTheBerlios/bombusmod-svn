@@ -52,6 +52,8 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GC_MYSELF=6;
 
     private Integer incomingViewing;
+    
+    private Integer hasSavedMessages;
 
     private String hisJid;
    
@@ -128,13 +130,16 @@ public class Contact extends IconTextElement{
         //calculating transport
         transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
         
-        //if (cf.lastMessages) {
-        //   if (sJid!=null) {
-        //        if (getGroupType()==Groups.TYPE_COMMON) {
-        //               new HistoryStorage(this, "", false, true);
-        //       }
-        //    }
-        //}
+        /*
+        if (cf.lastMessages) {
+           if (sJid!=null) {
+                try {
+                    DataInputStream is=NvStorage.ReadFileRecord(bareJid.replace('@', '%'), 0);
+                    if (is.available()>0) setSavedMessages(true);
+                    is.close();
+                } catch (Exception e) {}
+            }
+        }*/
     }
     
     public Contact clone(Jid newjid, final int status) {
@@ -161,6 +166,7 @@ public class Contact extends IconTextElement{
             }
         if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;
         if (incomingViewing!=null) return RosterIcons.ICON_VIEWING_INDEX;
+        if (hasSavedMessages!=null) return 0x30;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
         return st;
@@ -353,6 +359,10 @@ public class Contact extends IconTextElement{
     
     public void setViewing (boolean state) {
         incomingViewing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
+    }
+    
+    public void setSavedMessages (boolean state) {
+        hasSavedMessages=(state)? new Integer(0x30):null;
     }
 
     public String getTipString() {
