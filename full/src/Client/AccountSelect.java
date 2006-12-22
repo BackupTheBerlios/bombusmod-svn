@@ -127,8 +127,9 @@ public class AccountSelect
     }
     
     private void switchAccount(boolean login){
-		if (!login) parentView=StaticData.getInstance().roster;
+        if (!login) parentView=StaticData.getInstance().roster;
         destroyView();
+	Config cf=Config.getInstance();
         cf.accountIndex=cursor;
         cf.saveToStorage();
         Account.loadAccount(login);

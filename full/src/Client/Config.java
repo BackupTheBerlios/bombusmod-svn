@@ -71,7 +71,7 @@ public class Config {
     
     public String defGcRoom="bombusmod@conference.jabber.ru";
     
-    public String m_client=getStringProperty("m_client","Bombus");    
+    public String m_client=getStringProperty("m_client","BombusMod");    
     public String m_ver=getStringProperty("m_ver",Version.getVersionLang());
     public String m_os=getStringProperty("m_os",Version.getOs()); 
     

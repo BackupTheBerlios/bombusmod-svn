@@ -18,9 +18,9 @@ import ui.ConstMIDP;
  */
 public class Version {
 //#if (!ZLIB)
-//#     public final static String version="$BOMBUSVERSION$(ad)";
+//#     public final static String version="$BOMBUSVERSION$";
 //#else
-    public final static String version="$BOMBUSVERSION$-Zlib(ad)";
+    public final static String version="$BOMBUSVERSION$-Z";
 //#endif
     // this string will be patched by build.xml/post-preprocess
     

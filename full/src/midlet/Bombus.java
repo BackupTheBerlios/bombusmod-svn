@@ -89,7 +89,7 @@ public class Bombus extends MIDlet implements Runnable{
                 programIcon=Image.createImage("/_icon.png");
             }
             
-            s.setProgress("Bombus "+Version.version,7);
+            s.setProgress("BombusMod "+Version.version,7);
         } catch (Exception e) {
             e.printStackTrace();
         }
