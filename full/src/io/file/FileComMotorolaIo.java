@@ -29,7 +29,8 @@ class FileComMotorolaIo extends FileIO{
     }
 
     protected void openFile() throws IOException {
-        fileConnection = (com.motorola.io.FileConnection) Connector.open("file:///" + fileName);
+        String uri="file:///" + fileName;
+        fileConnection = (com.motorola.io.FileConnection) Connector.open(uri);
     }
 
     public OutputStream openOutputStream() throws IOException {
@@ -78,8 +79,8 @@ class FileComMotorolaIo extends FileIO{
         
         Vector rd=new Vector(list.length + 1);
         for (int i = 0; i < list.length; i++) {
-            if (directoriesOnly & !list[i].endsWith("/")) continue;
-            rd.addElement(list[i].substring(fileName.length()));
+            int st=(list[i].startsWith("/")) ? 1 : 0;
+            rd.addElement(list[i].substring(st+fileName.length()));
         }
         return rd;
     }

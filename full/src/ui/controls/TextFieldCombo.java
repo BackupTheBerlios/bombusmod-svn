@@ -100,7 +100,10 @@ public class TextFieldCombo
         if (command==cmdSelect) {        
             setString( list.getString(list.getSelectedIndex()));
         }
-		if (command==cmdClear) recentList.removeAllElements();
+        if (command==cmdClear) {
+            recentList.removeAllElements();
+            saveRecentList();
+        }
     }
 
     private void saveRecentList() {
