@@ -101,6 +101,12 @@ public class SASLAuth implements JabberBlockListener{
 //#endif
 
                 if (mech.getChildBlockByText("PLAIN")!=null) {
+
+                    if (!account.getPlainAuth()) {
+                        listener.loginFailed("SASL: Plain auth required");
+                        return JabberBlockListener.NO_MORE_BLOCKS;
+                    }
+                    
                     auth.setAttribute("mechanism", "PLAIN");
                     String plain=
                             strconv.unicodeToUTF(account.getJid())
@@ -189,7 +195,7 @@ public class SASLAuth implements JabberBlockListener{
                 // second stream - step 2. resource binded - opening session
                 if (data.getAttribute("id").equals("bind")) {
                     String myJid=data.getChildBlock("bind").getChildBlockText("jid");
-		    listener.bindResource(myJid);
+                    listener.bindResource(myJid);
                     JabberDataBlock session=new Iq(null, Iq.TYPE_SET, "sess");
                     session.addChild("session",null).setNameSpace("urn:ietf:params:xml:ns:xmpp-session");
                     stream.send(session);
