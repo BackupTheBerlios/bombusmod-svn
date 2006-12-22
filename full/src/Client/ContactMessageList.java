@@ -153,6 +153,7 @@ public class ContactMessageList extends MessageList
             } catch (Exception e) {/*no messages*/}
         }
         if (c==cmdPurge) {
+			if (messages.isEmpty()) return;
             clearMessageList();
         }
         
@@ -248,6 +249,7 @@ public class ContactMessageList extends MessageList
                 if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
                 if (keyCode==KEY_NUM9) nextContact();
                 if (keyCode==keyClear) {
+					if (messages.isEmpty()) return;
                     clearMessageList();
                 }
             } else {
@@ -272,7 +274,10 @@ public class ContactMessageList extends MessageList
         } else {
             if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
             if (keyCode==KEY_NUM9) nextContact();
-            if (keyCode==keyClear) clearMessageList();
+            if (keyCode==keyClear) {
+				if (messages.isEmpty()) return;
+				clearMessageList();
+			}
         }
     }
 

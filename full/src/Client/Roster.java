@@ -929,7 +929,13 @@ public class Roster
         setProgress(SR.MS_LOGIN_FAILED, 0);
         
         errorLog(error);
-        
+		
+        try {
+            theStream.close();
+        } catch (Exception e) { e.printStackTrace(); }
+        theStream=null;
+        System.gc();
+		
         reconnect=false;
         setQuerySign(false);
         redraw();
@@ -1185,7 +1191,7 @@ public class Roster
                     String inviteReason=invite.getChildBlockText("reason");
                             
                     String room=from+'/'+sd.account.getNickName();
-                    initMuc(room, password);
+                    initMuc(room, password).getConference().status=Presence.PRESENCE_OFFLINE;
                     
                     body=inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
                     
