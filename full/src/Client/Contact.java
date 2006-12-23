@@ -171,6 +171,7 @@ public class Contact extends IconTextElement{
         if (st<8) st+=transport; 
         return st;
     }
+    
     public int getNewMsgsCount() {
         if (getGroupType()==Groups.TYPE_IGNORE) return 0;
         //return msgs.size()-lastReaded;
@@ -347,7 +348,7 @@ public class Contact extends IconTextElement{
     }
     
     public final void purge() {
-        new HistoryStorage(this, "", true);
+        if (cf.lastMessages) new HistoryStorage(this, "", true);
         msgs=new Vector();
         vcard=null;
         resetNewMsgCnt();
