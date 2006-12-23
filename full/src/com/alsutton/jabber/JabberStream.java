@@ -146,7 +146,7 @@ public class JabberStream implements XMLEventListener, Runnable {
      */
     
     public void close() {
-        keepAlive.destroyTask();
+        if (keepAlive!=null) keepAlive.destroyTask();
         
         dispatcher.setJabberListener( null );
         try {
