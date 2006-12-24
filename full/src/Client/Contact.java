@@ -52,10 +52,6 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GC_MYSELF=6;
 
     private Integer incomingViewing;
-    
-    private Integer hasSavedMessages;
-
-    private String hisJid;
    
     /** Creates a new instance of Contact */
     protected Contact (){
@@ -129,17 +125,6 @@ public class Contact extends IconTextElement{
         
         //calculating transport
         transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
-        
-        /*
-        if (cf.lastMessages) {
-           if (sJid!=null) {
-                try {
-                    DataInputStream is=NvStorage.ReadFileRecord(bareJid.replace('@', '%'), 0);
-                    if (is.available()>0) setSavedMessages(true);
-                    is.close();
-                } catch (Exception e) {}
-            }
-        }*/
     }
     
     public Contact clone(Jid newjid, final int status) {
@@ -166,7 +151,6 @@ public class Contact extends IconTextElement{
             }
         if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;
         if (incomingViewing!=null) return RosterIcons.ICON_VIEWING_INDEX;
-        if (hasSavedMessages!=null) return 0x30;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
         return st;
@@ -174,7 +158,6 @@ public class Contact extends IconTextElement{
     
     public int getNewMsgsCount() {
         if (getGroupType()==Groups.TYPE_IGNORE) return 0;
-        //return msgs.size()-lastReaded;
         if (newMsgCnt>-1) return newMsgCnt;
         int nm=0;
         unreadType=Msg.MESSAGE_TYPE_IN;
@@ -200,24 +183,16 @@ public class Contact extends IconTextElement{
     
     public void setComposing (boolean state) {
         incomingComposing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
-        //System.out.println("Composing:"+state);
     }
     
     public int compare(IconTextElement right){
         Contact c=(Contact) right;
-        //1. status
         int cmp;
-        //if (origin>=ORIGIN_GROUPCHAT && c.origin>=ORIGIN_GROUPCHAT) {
-        //    if ((cmp=origin-c.origin) !=0) return cmp;
-        //} else {
-        //    if ((cmp=status-c.status) !=0) return cmp;
-        //}
         if ((cmp=key0-c.key0) !=0) return cmp;
         if ((cmp=status-c.status) !=0) return cmp;
         if ((cmp=key1.compareTo(c.key1)) !=0) return cmp;
         if ((cmp=c.priority-priority) !=0) return cmp;
         return c.transport-transport;
-        //return 0;
     };
     
     public void addMessage(Msg m) {
@@ -348,7 +323,6 @@ public class Contact extends IconTextElement{
     }
     
     public final void purge() {
-        if (cf.lastMessages) new HistoryStorage(this, "", true);
         msgs=new Vector();
         vcard=null;
         resetNewMsgCnt();
@@ -360,10 +334,6 @@ public class Contact extends IconTextElement{
     
     public void setViewing (boolean state) {
         incomingViewing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
-    }
-    
-    public void setSavedMessages (boolean state) {
-        hasSavedMessages=(state)? new Integer(0x30):null;
     }
 
     public String getTipString() {
@@ -378,9 +348,6 @@ public class Contact extends IconTextElement{
     }
     public boolean inGroup(Group ingroup) {  return group==ingroup;  }
 
-    /*public void setGroupIndex(int groupIndex) {
-        this.group = groupIndex;
-    }*/
     public void setGroup(Group group) { this.group = group; }
 
 	

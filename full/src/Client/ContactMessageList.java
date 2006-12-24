@@ -153,7 +153,7 @@ public class ContactMessageList extends MessageList
             } catch (Exception e) {/*no messages*/}
         }
         if (c==cmdPurge) {
-			if (messages.isEmpty()) return;
+            if (messages.isEmpty()) return;
             clearMessageList();
         }
         
@@ -220,6 +220,7 @@ public class ContactMessageList extends MessageList
 
     private void clearMessageList() {
         //TODO: fix scrollbar size
+        if (cf.lastMessages) new HistoryStorage(contact, "", true);
         moveCursorHome();
         contact.purge();
         messages=new Vector();
