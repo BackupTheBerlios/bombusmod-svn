@@ -58,17 +58,17 @@
 	<property file="resources/.version" />
 	<replace 
 	    file="ftp/config.php" 
-	    token="$BOMBUSVERSION$"
-	    value="${bombus.version}"/>
+	    token="$DAMAFONVERSION$"
+	    value="${damafon.version}"/>
 
 	<delete>
-	    <fileset dir="ftp" includes="bombus*.*" />
+	    <fileset dir="ftp" includes="damafon*.*" />
 	</delete>
 	
 	<tstamp>
-	    <format property="bombus.tstamp" pattern="MM_dd"/>	    
+	    <format property="damafon.tstamp" pattern="MM_dd"/>	    
 	</tstamp>
-	<property name="destfile" location="ftp/bombus_${bombus.revision}(all)${bombus.tstamp}" />
+	<property name="destfile" location="ftp/damafon_${damafon.revision}(all)${damafon.tstamp}" />
 	<zip destfile="${destfile}.zip">
 	    <zipfileset dir="ftp/midp1.0" prefix="siemens-midp1.0"/>
 	    <zipfileset dir="ftp/midp2.0" prefix="midp2.0"/>
@@ -84,7 +84,7 @@
 	</tar>
 	<bzip2 src="${destfile}.tar" destfile="${destfile}.tar.bz2"/>
 	<delete>
-	    <fileset dir="ftp" includes="bombus*.tar" />
+	    <fileset dir="ftp" includes="damafon*.tar" />
 	</delete>
     </target>
 
@@ -92,12 +92,12 @@
     <!-- prepare version patch -->
     <target name="post-init">
 	<exec executable="svnversion" output="resources/.svnrev" />
-	<loadfile srcFile="resources/.svnrev" property="bombus.svnrev"/>
+	<loadfile srcFile="resources/.svnrev" property="damafon.svnrev"/>
 	<copy file="resources/version.properties" tofile="resources/.version" overwrite="true" />
 	<replace 
 	    file="resources/.version" 
 	    token="$WCREV$"
-	    value="${bombus.svnrev}"/>
+	    value="${damafon.svnrev}"/>
     </target>
     <!-- old version patcher 
     <target name="post-init-tsvn">
@@ -118,31 +118,31 @@
 	<property file="resources/.version" />
 	<replace 
 	    file="${preprocessed.dir}\Info\Version.java"  
-	    token="$BOMBUSVERSION$"
-	    value="${bombus.version}"/>
+	    token="$DAMAFONVERSION$"
+	    value="${Damafon.version}"/>
     </target>
 
     <!-- version patch in manifest -->
     <target name="pre-jar">
 	<property file="resources/.version" />
 	<replace file="${build.dir}/manifest.mf"  
-	    token="$BOMBUSVERSION$"
-	    value="${bombus.version}"/>
+	    token="$DAMAFONVERSION$"
+	    value="${damafon.version}"/>
 	<replace file="${build.dir}/manifest.mf"  
 	    token="$MIDLETVERSION$"
-	    value="${bombus.midlet}"/>
+	    value="${damafon.midlet}"/>
     </target>
 
 
     <target name="post-jar">
         <!-- version patch in jad -->
 	<property file="resources/.version" />
-	<replace file="${dist.dir}/Bombus.jad"
-	    token="$BOMBUSVERSION$"
-	    value="${bombus.version}"/>
-	<replace file="${dist.dir}/Bombus.jad"
+	<replace file="${dist.dir}/Damafon.jad"
+	    token="$DAMAFONVERSION$"
+	    value="${damafon.version}"/>
+	<replace file="${dist.dir}/Damafon.jad"
 	    token="$MIDLETVERSION$"
-	    value="${bombus.midlet}"/>
+	    value="${damafon.midlet}"/>
     </target>
 
     <!-- overrided to change bootclasspath -->
@@ -152,11 +152,11 @@
             <filterchain>
                 <containsregex replace="\1" pattern="^configs\.${config.active}\.(.*)"/>
                 <concatfilter prepend="nbproject/project.properties"/>
-                <containsregex pattern="^platform.active=|^deployment.method=|^bombus.bootclasspath="/>
+                <containsregex pattern="^platform.active=|^deployment.method=|^damafon.bootclasspath="/>
             </filterchain>
         </loadproperties>
-	<property name="bombus.bootclasspath" value=""/>
-	<echo message="${bombus.bootclasspath}"/>
+	<property name="damafon.bootclasspath" value=""/>
+	<echo message="${damafon.bootclasspath}"/>
 
         <loadproperties srcfile="${user.properties.file}">
             <filterchain>
@@ -168,12 +168,12 @@
 	<!-- patching bootclasspath -->
         <loadproperties srcfile="nbproject/project.properties">
             <filterchain>
-                <containsregex replace="platform.bootclasspath=\1${bombus.bootclasspath}" pattern="^configs\.${config.active}\.platform\.bootclasspath=(.*)"/>
+                <containsregex replace="platform.bootclasspath=\1${damafon.bootclasspath}" pattern="^configs\.${config.active}\.platform\.bootclasspath=(.*)"/>
             </filterchain>
         </loadproperties>
         <loadproperties srcfile="nbproject/project.properties">
             <filterchain>
-                <containsregex replace="platform.bootclasspath=\1${bombus.bootclasspath}" pattern="^platform\.bootclasspath=(.*)"/>
+                <containsregex replace="platform.bootclasspath=\1${damafon.bootclasspath}" pattern="^platform\.bootclasspath=(.*)"/>
             </filterchain>
         </loadproperties>
 

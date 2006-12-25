@@ -595,7 +595,33 @@ public class Roster
     }
 */    
     
-    void messageStore(Contact c, Msg message) {
+    public void messageStore(Contact c, Msg message) {
+        if (c==null) return;  
+        c.addMessage(message);
+        
+        if (cf.ghostMotor) System.gc(); 
+
+        if (!message.unread) return;
+        //TODO: clear unread flag if not-in-list IS HIDDEN
+        
+        if (countNewMsgs()) reEnumRoster();
+        
+        if (c.getGroupType()==Groups.TYPE_IGNORE) return;    // no signalling/focus on ignore
+        
+	if (cf.popupFromMinimized)
+	    Damafon.getInstance().hideApp(false);
+	
+        if (cf.autoFocus) focusToContact(c, false);
+
+        if (message.messageType!=Msg.MESSAGE_TYPE_HISTORY) 
+            playNotify(0);
+    }
+    
+    public void messageStore(String id, Msg message) {
+        if (id==null) return;
+        //Jid J=new Jid(id);
+        Contact c=getContact(id,false);
+        
         if (c==null) return;  
         c.addMessage(message);
         
@@ -761,9 +787,8 @@ public class Roster
             }
         }
 
-    if (keyCode=='3') searchGroup(-1);
+        if (keyCode=='3') searchGroup(-1);
 	if (keyCode=='9') searchGroup(1);
-        
     }
     
     public void logoff(){

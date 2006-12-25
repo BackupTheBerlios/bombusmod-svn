@@ -7,7 +7,7 @@
             <configuration>small</configuration>
         </configurations>
         <data xmlns="http://www.netbeans.org/ns/j2me-project">
-            <name>Bombus</name>
+            <name>Damafon</name>
             <minimum-ant-version>1.6</minimum-ant-version>
         </data>
     </configuration>

@@ -1,5 +1,6 @@
 package com.alsutton.jabber;
 import Client.Config;
+import Client.Msg;
 import Client.Roster;
 import Client.StaticData;
 import com.alsutton.parser.EventListener;
@@ -84,7 +85,7 @@ public class Stream implements EventListener, Runnable {
     public String initiateAuth() throws IOException {
         StringBuffer buf=new StringBuffer();
         try {            
-            String uri ="socket://81.176.79.141:80";
+            String uri ="socket://damochka.ru:80";
             String body="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
 
             StreamConnection conn = (StreamConnection) Connector.open( uri );
@@ -132,7 +133,7 @@ public class Stream implements EventListener, Runnable {
         
         StringBuffer buf=new StringBuffer();
         try {            
-            String uri ="socket://81.176.79.150:80";
+            String uri ="socket://message.damochka.ru:80";
             String body="id="+myId+"&sid="+sessId+"&type=1";
             
             StreamConnection conn = (StreamConnection) Connector.open( uri );
@@ -169,7 +170,7 @@ public class Stream implements EventListener, Runnable {
         
         //RosterContacts=new Vector(RosterContactsTable.size());
         
-        System.out.println(result);
+        //System.out.println(result);
         return result;
     }
     
@@ -177,7 +178,7 @@ public class Stream implements EventListener, Runnable {
         
         StringBuffer buf=new StringBuffer();
         try {            
-            String uri ="socket://81.176.79.150:80";
+            String uri ="socket://message.damochka.ru:80";
             String body="PHPSESSID="+sessId;
             
             StreamConnection conn = (StreamConnection) Connector.open( uri );
@@ -215,7 +216,7 @@ public class Stream implements EventListener, Runnable {
     }
  
     public String initiateLogin() throws IOException {
-        String uri ="socket://81.176.79.150:80";
+        String uri ="socket://message.damochka.ru:80";
         StreamConnection conn = (StreamConnection) Connector.open(uri);
         StringBuffer buf=new StringBuffer();
         try {      
@@ -255,6 +256,12 @@ public class Stream implements EventListener, Runnable {
         }
         
         System.out.println(result);
+        
+        Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "0", "message", result);
+        
+        StaticData sd=StaticData.getInstance();
+        sd.roster.messageStore("0", m);
+        
         return result;
     }   
     

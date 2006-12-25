@@ -17,7 +17,7 @@ import ui.ConstMIDP;
  * @author Evg_S
  */
 public class Version {
-    public final static String version="$BOMBUSVERSION$";
+    public final static String version="$DAMAFONVERSION$";
 
     // this string will be patched by build.xml/post-preprocess
     
