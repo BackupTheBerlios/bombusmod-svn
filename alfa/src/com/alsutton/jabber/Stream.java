@@ -56,23 +56,28 @@ public class Stream implements EventListener, Runnable {
     
     public Stream( String server, String hostAddr) throws IOException {
         this.server=server;
-        //boolean waiting=Config.getInstance().istreamWaiting;
+
+        boolean waiting=Config.getInstance().istreamWaiting;
+
+        //StreamConnection connection = (StreamConnection) Connector.open(hostAddr);
+        //iostream=new Utf8IOStream(connection);
+        //iostream.setStreamWaiting(waiting);
+       
+        /*
+        dispatcher = new JabberDataBlockDispatcher();
+        if( theListener != null ) {
+            setJabberListener( theListener );
+        }
+        */
+     
+        //new Thread( this ). start();
+        
 
         if (initiateAuth()!=null) {
             getMyId();
-            
         } else {
             return;
         }
-
-        //iostream=new Utf8IOStream(connection);
-        //iostream.setStreamWaiting(waiting);
-        
-        //dispatcher = new JabberDataBlockDispatcher();
-        //if( theListener != null ) {
-        //    setJabberListener( theListener );
-        //}
-        
 
         //new Thread( this ). start();
         getRoster();
@@ -84,9 +89,10 @@ public class Stream implements EventListener, Runnable {
 
     public String initiateAuth() throws IOException {
         StringBuffer buf=new StringBuffer();
+        String body="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
+
         try {            
             String uri ="socket://damochka.ru:80";
-            String body="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
 
             StreamConnection conn = (StreamConnection) Connector.open( uri );
 
@@ -124,6 +130,7 @@ public class Stream implements EventListener, Runnable {
                 result=sessId=buf.toString().substring(i+7,i+39);
             }
         }
+        
         System.out.println(result);
         return result;
     }
@@ -257,11 +264,27 @@ public class Stream implements EventListener, Runnable {
         
         System.out.println(result);
         
-        Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "0", "message", result);
-        
         StaticData sd=StaticData.getInstance();
-        sd.roster.messageStore("0", m);
         
+        try {
+            while (result.indexOf("type:'0'")>-1) {
+                String line=result.substring(0,result.indexOf("type:'0'"));
+                result=result.substring(result.indexOf("type:'0'")+2,result.length());
+
+                Vector MessageItem=new Vector();
+                MessageItem=MessageParser(line);
+
+                for (Enumeration e=MessageItem.elements(); e.hasMoreElements();){
+
+                        String from=(String)e.nextElement().toString().trim();
+                        String text=(String)e.nextElement().toString().trim();
+
+                        Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, null, text);
+
+                        sd.roster.messageStore(from, m);
+                }
+            }
+        } catch (Exception e) {}
         return result;
     }   
     
@@ -278,6 +301,40 @@ public class Stream implements EventListener, Runnable {
         }
         */
     }
+    
+    public Vector MessageParser(String data) {
+	Vector v = new Vector();
+        String line=null;
+        int cnt=0;
+        int pos=0;
+        int pos2=0;
+        int pos3=0;
+        
+        System.out.println("MessageParser");
+        
+	try {
+            while (data.indexOf("fromid:'",pos)>-1) {
+                    pos2=data.indexOf("fromid:'",pos)+8;
+                    pos3=data.indexOf("'",pos2);
+                    line=data.substring(pos2,pos3);
+                    System.out.println(line);
+                    pos=pos3;
+                    v.addElement(line);
+                    line=null;
+                    
+                    pos2=data.indexOf("text:'",pos)+6;
+                    pos3=data.indexOf("'",pos2);
+                    line=data.substring(pos2,pos3);
+                    System.out.println(line);
+                    pos=pos3;
+                    v.addElement(line);
+                    data=data.substring(pos3,data.length());
+                    line=null;
+            }
+        } catch (Exception e)	{ }
+	return v;
+    }
+    
 
     
     public void close() {

@@ -620,7 +620,7 @@ public class Roster
     public void messageStore(String id, Msg message) {
         if (id==null) return;
         //Jid J=new Jid(id);
-        Contact c=getContact(id,false);
+        Contact c=getContact(id,true);
         
         if (c==null) return;  
         c.addMessage(message);
