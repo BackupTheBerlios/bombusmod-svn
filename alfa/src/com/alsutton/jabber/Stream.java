@@ -94,11 +94,13 @@ public class Stream implements EventListener, Runnable {
         try {            
             String uri ="socket://damochka.ru:80";
 
-            StreamConnection conn = (StreamConnection) Connector.open( uri );
+            SocketConnection conn = (SocketConnection) Connector.open( uri );
+            conn.setSocketOption(SocketConnection.KEEPALIVE, 1);
 
             PrintStream out = new PrintStream(conn.openOutputStream());
-            out.print( "POST /auth.phtml HTTP/1.0\r\n" +
-                    "Content-Type: application/x-www-form-urlencoded\r\n" +
+            
+            out.println( "POST /auth.phtml HTTP/1.0" );
+            out.print( "Content-Type: application/x-www-form-urlencoded\r\n" +
                     "User-Agent: Damafon 2.1.12.4000\r\n" +
                     "Cookie: VIPID=3062637b04-80236754;\r\n" +
                     "Host: damochka.ru:80\r\n" +
