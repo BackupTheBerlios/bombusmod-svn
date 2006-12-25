@@ -35,11 +35,11 @@ public class Stream implements EventListener, Runnable {
     
     private String server; // for ping
     
-    public String sessId;
+    public static String sessId;
 
     boolean pingSent;
 
-    public String myId;
+    public static String myId;
 
     public String RosterContacts;
 
@@ -57,20 +57,9 @@ public class Stream implements EventListener, Runnable {
     public Stream( String server, String hostAddr) throws IOException {
         this.server=server;
 
-        boolean waiting=Config.getInstance().istreamWaiting;
+        //boolean waiting=Config.getInstance().istreamWaiting;
 
-        //StreamConnection connection = (StreamConnection) Connector.open(hostAddr);
-        //iostream=new Utf8IOStream(connection);
-        //iostream.setStreamWaiting(waiting);
-       
-        /*
-        dispatcher = new JabberDataBlockDispatcher();
-        if( theListener != null ) {
-            setJabberListener( theListener );
-        }
-        */
-     
-        //new Thread( this ). start();
+       // initiateAuth();
         
 
         if (initiateAuth()!=null) {
@@ -79,14 +68,85 @@ public class Stream implements EventListener, Runnable {
             return;
         }
 
-        //new Thread( this ). start();
         getRoster();
         StaticData sd=StaticData.getInstance();
         sd.roster.updateRoster(RosterContacts);
 
         if (initiateLogin()!=null) initiateLogin();
+ 
     }
+/*
+    public String initiateAuth() throws IOException {
+        String uri ="http://damochka.ru/auth.phtml";
+        String requeststring="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
+        byte[] request_body = requeststring.getBytes();
+        String messagebuffer=null;
+        
+        HttpConnection http = null;
+        OutputStream oStrm= null;
+        InputStream iStrm = null;
+        
+        try{
+            http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
+            http.setRequestMethod(HttpConnection.POST);
+            http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            http.setRequestProperty("User-Agent","Damafon 2.1.12.4000");
+            http.setRequestProperty("Cookie","VIPID=3062637b04-80236754;");
+            http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
+            
+            oStrm = http.openOutputStream();
+            oStrm.write(request_body);
+            oStrm.flush();
+            
+            
+            iStrm = http.openInputStream();
+            
+            if (http.getResponseCode() == HttpConnection.HTTP_OK || http.getResponseCode() == 302 )
+            {
+                int length = (int) http.getLength();
+                String str;
 
+                if (length != -1)
+                {
+                    byte servletData[] = new byte[length];
+                    iStrm.read(servletData);
+                    str = new String(servletData);
+                } else {
+                    ByteArrayOutputStream bStrm = new ByteArrayOutputStream();
+                    int ch;
+                    while ((ch = iStrm.read()) != -1)
+                        bStrm.write(ch);
+                    str = new String(bStrm.toByteArray());
+                    bStrm.close();
+                }
+                messagebuffer=str;
+            } else messagebuffer=null;
+            
+            System.out.println(messagebuffer);
+         }
+            finally
+            {
+            // Clean up
+            if (iStrm != null) iStrm.close();
+            if (oStrm != null) oStrm.close();
+            if (http != null) http.close();
+        }
+
+
+        String result = null;
+                
+        if (messagebuffer.length()>0) {
+            if (messagebuffer.indexOf("SITEID")>-1) {
+                int i=messagebuffer.indexOf("SITEID");
+                result=sessId=messagebuffer.substring(i+7,i+39);
+            }
+        }
+        
+        System.out.println(result);
+        return result;
+    }
+*/
     public String initiateAuth() throws IOException {
         StringBuffer buf=new StringBuffer();
         String body="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
@@ -136,7 +196,7 @@ public class Stream implements EventListener, Runnable {
         System.out.println(result);
         return result;
     }
-   
+
     
     public String getRoster() throws IOException {
         
@@ -384,5 +444,61 @@ public class Stream implements EventListener, Runnable {
 
     public void cancelBlockListenerByClass(Class removeClass) {
         dispatcher.cancelBlockListenerByClass(removeClass);
+    }
+
+
+    private String processServerResponse(HttpConnection http,InputStream iStrm) throws IOException
+    {
+        if (http.getResponseCode() == HttpConnection.HTTP_OK || http.getResponseCode() == 302 )
+        {
+            int length = (int) http.getLength();
+            String str;
+
+            if (length != -1)
+            {
+                byte servletData[] = new byte[length];
+                iStrm.read(servletData);
+                str = new String(servletData);
+            } else {
+                ByteArrayOutputStream bStrm = new ByteArrayOutputStream();
+                int ch;
+                while ((ch = iStrm.read()) != -1)
+                bStrm.write(ch);
+                str = new String(bStrm.toByteArray());
+                bStrm.close();
+            }
+            return str;
+        } else return null;
+    }
+
+    
+    public static void sendMessage(final String to, final String message) {
+        StringBuffer buf=new StringBuffer();
+        try {            
+            String uri ="socket://message.damochka.ru:80";
+            String body="fromid="+myId+"&toid="+to+"&myid="+myId+"&ses_id="+sessId+"&smsg="+message+"&font_size=9&font_color=black&background_color=white&sendsms=1&inform=0";
+
+            StreamConnection conn = (StreamConnection) Connector.open( uri );
+            PrintStream out = new PrintStream(conn.openOutputStream());
+            
+            out.print( "POST /SMS HTTP/1.0\r\n" +
+                "Pragma: no-cache\r\n" +
+                "Content-Type: application/x-www-form-urlencoded\r\n" +
+                "Host: message.damochka.ru:80\r\n" +
+                "Content-Length: "+body.length()+"\r\n\r\n"+body);
+            out.flush();
+
+            InputStream in = conn.openInputStream();
+            int ch;
+            
+            while( ( ch = in.read() ) != -1 ){
+                buf.append((char) ch);
+            }
+            
+            in.close();
+            out.close();
+            conn.close();
+        }
+        catch(ConnectionNotFoundException e){ System.out.println("Socket could not be opened"); } catch(IOException e){ System.out.println(e.toString()); }
     }
 }

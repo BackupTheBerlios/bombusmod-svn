@@ -9,6 +9,7 @@
 
 package Client;
 import archive.ArchiveList;
+import com.alsutton.jabber.Stream;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;
@@ -212,7 +213,7 @@ public class MessageEdit
         
         try {
             if (body!=null /*|| subj!=null*/ || comp>0)
-            r.sendMessage(to, body, subj, comp);
+            Stream.sendMessage(to.bareJid, body);
         } catch (Exception e) {
             e.printStackTrace();
         }
