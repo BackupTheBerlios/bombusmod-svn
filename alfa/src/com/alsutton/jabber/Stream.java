@@ -40,7 +40,7 @@ public class Stream implements EventListener, Runnable {
 
     public String myId;
 
-    public Vector RosterContacts;
+    public String RosterContacts;
 
     private int afterEol;
 
@@ -161,15 +161,15 @@ public class Stream implements EventListener, Runnable {
         if (buf.toString().length()>0) {
             if (buf.toString().indexOf("\r\n\r\n")>-1) {
                 int i=buf.toString().indexOf("\r\n\r\n");
-                result=buf.toString().substring(i+4, buf.toString().length());
+                result=strconv.convCp1251ToUnicode(buf.toString().substring(i+4, buf.toString().length()));
             }
         }
         
-        RosterParser(strconv.convUnicodeToCp1251(result));
+        RosterContacts=result;
         
         //RosterContacts=new Vector(RosterContactsTable.size());
         
-        System.out.println(strconv.convUnicodeToCp1251(result));
+        System.out.println(result);
         return result;
     }
     
@@ -250,11 +250,11 @@ public class Stream implements EventListener, Runnable {
         if (buf.toString().length()>0) {
             if (buf.toString().indexOf("\r\n\r\n")>-1) {
                 int i=buf.toString().indexOf("\r\n\r\n");
-                result=myId=buf.toString().substring(i+4, buf.toString().length());
+                result=strconv.convCp1251ToUnicode(buf.toString().substring(i+4, buf.toString().length()));
             }
         }
         
-        System.out.println(strconv.convUnicodeToCp1251(result));
+        System.out.println(result);
         return result;
     }   
     
@@ -316,49 +316,6 @@ public class Stream implements EventListener, Runnable {
         dispatcher.cancelBlockListener(listener);
     }
 
-    public Vector RosterParser(String data) {
-	Vector v = new Vector();
-        RosterContacts=new Vector();
-        
-	try {
-            while (data.indexOf("\r\n")>-1) {
-                String line=data.substring(0,data.indexOf("\r\n"));
-                RosterContacts.addElement(line.substring(0,data.indexOf(" ")));
-                data=data.substring(data.indexOf("\r\n")+2,data.length());
-            }
-             
-            
-/*            
-	    while(data!=null) {
-                
-		String line=data.substring(0,data.indexOf("/r/n"));
-                
-                System.out.println(line);
-                
-                data=data.substring(data.indexOf("/r/n")+1,data.length());
-                
-                RosterContacts.addElement(line);
-                
-                
-                // String key, value;
-		if (line.length()<3) data=null;
-
-                String cell=null;
-                try {
-                    int indexTab=line.indexOf(0x20);
-                    
-                    if (indexTab<=0) continue; // process next line
-                    
-                    key=line.substring(0, indexTab);
-                    value=line.substring(indexTab+1, line.length() );
-                    hash.put(key, value);
-                } catch (Exception e) { e.printStackTrace(); }
-	    }
- */
-        } catch (Exception e)	{ }
-	return v;
-    }
-    
     public void cancelBlockListenerByClass(Class removeClass) {
         dispatcher.cancelBlockListenerByClass(removeClass);
     }

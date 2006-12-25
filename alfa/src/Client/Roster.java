@@ -12,7 +12,7 @@ package Client;
 
 import Info.Version;
 import archive.ArchiveList;
-import com.sun.pisces.LineSink;
+//import com.sun.pisces.LineSink;
 import images.RosterIcons;
 import locale.SR;
 import login.LoginListener;
@@ -364,18 +364,20 @@ public class Roster
     
     public Vector getHContacts() {return hContacts;}
     
-    public final void updateContact(final String nick, final String jid, final String grpName, String subscr, boolean ask) {
+    public final void updateContact(final String nick, final String jid, final String grpName, String subscr, boolean ask, final String newStatus) {
         // called only on roster read
-        int status=Presence.PRESENCE_OFFLINE;
-        if (subscr.equals("none")) status=Presence.PRESENCE_UNKNOWN;
-        if (ask) status=Presence.PRESENCE_ASK;
-        //if (subscr.equals("remove")) status=Presence.PRESENCE_TRASH;
-        if (subscr.equals("remove")) status=-1;
-        
+        int status;
+        if (newStatus.equals("1")) {
+            status=Presence.PRESENCE_ONLINE;    
+            System.out.println(status);
+        } else {
+            status=Presence.PRESENCE_OFFLINE;
+        }
+            
         Jid J=new Jid(jid);
         Contact c=findContact(J,false); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ bare jid
         if (c==null) {
-            c=new Contact(nick, jid, Presence.PRESENCE_OFFLINE, null);
+            c=new Contact(nick, jid, status, null);
             addContact(c);
         }
         for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
@@ -390,9 +392,10 @@ public class Roster
                 c.subscr=subscr;
                 c.offline_type=status;
                 c.ask_subscribe=ask;
+                c.status=status;
                 
-                Group g=c.getGroup();
-                g.collapsed=true;     
+                //Group g=c.getGroup();
+                //g.collapsed=true;     
 
                 //if (status==Presence.PRESENCE_TRASH) c.status=status;
                 //if (status!=Presence.PRESENCE_OFFLINE) c.status=status;
@@ -1020,10 +1023,8 @@ redirect=%2F
         }
     }
 
-    public void updateRoster(Vector RosterContacts) {
+    public void updateRoster(String RosterContacts) {
         theStream.enableRosterNotify(false);
-        
-        System.out.println(RosterContacts.size());
         
         processRoster(RosterContacts);
 
@@ -1034,27 +1035,60 @@ redirect=%2F
         SplashScreen.getInstance().close(); // display.setCurrent(this);
     }
     
-    void processRoster(Vector cont){
+    void processRoster(String RosterContacts){
         int type=0;
         
-        if (cont!=null) {
-            for (Enumeration e=cont.elements(); e.hasMoreElements();){
+        if (RosterContacts!=null) {
             
-                String i=(String)e.nextElement();
-  
-                    String name=i.toString();
-                    String jid=i.toString();
-                    String subscr="both";
-                    boolean ask= false;
+            try {
+                while (RosterContacts.indexOf("\r\n")>-1) {
+                    String line=RosterContacts.substring(0,RosterContacts.indexOf("\r\n"));
+                    RosterContacts=RosterContacts.substring(RosterContacts.indexOf("\r\n")+2,RosterContacts.length());
+                    
+                    Vector ContactItem=new Vector();
+                    ContactItem=RosterParser(line);
+                    
+                    for (Enumeration e=ContactItem.elements(); e.hasMoreElements();){
 
-                    // РЅР°Р№РґС‘Рј РіСЂСѓРїРїСѓ
-                    String group="General";
-                    if (group.length()==0) group=Groups.COMMON_GROUP;
+                            String id=(String)e.nextElement().toString().trim();
+                            String sex=(String)e.nextElement().toString().trim();
+                            String status=(String)e.nextElement().toString().trim();
+                            String client=(String)e.nextElement().toString().trim();
+                            String name=(String)e.nextElement().toString().trim();
+                            boolean ask= false;
 
-                    updateContact(name,jid,group, subscr, ask);
-                    sort(hContacts);            
-            }
+                            String group="General";
+
+                            updateContact(name,id,group, "both", ask, status);
+                            sort(hContacts);            
+                    }
+                }
+            } catch (Exception e) {}
         }
     }
+    
+    public Vector RosterParser(String data) {
+	Vector v = new Vector();
+        int cnt=0;
+        int pos=0;
+        int pos2=0;
+        
+	try {
+            while (cnt<5) {
+                if (cnt<4) {
+                    pos2=data.indexOf(" ",pos)+1;
+                    String line=data.substring(pos,pos2);
+                    pos=pos2;
+                    v.addElement(line);
+                } else {
+                    String line=data.substring(pos,data.length());
+                    v.addElement(line);
+                }
+                cnt++;
+            }
+        } catch (Exception e)	{ }
+	return v;
+    }
+    
 }
 
