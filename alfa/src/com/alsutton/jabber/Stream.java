@@ -46,6 +46,7 @@ public class Stream implements EventListener, Runnable {
     private int afterEol;
 
     private Vector RosterContactsTable;
+
     
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
     
@@ -58,9 +59,9 @@ public class Stream implements EventListener, Runnable {
         this.server=server;
 
         //boolean waiting=Config.getInstance().istreamWaiting;
-
+getGradeWithPost();
        // initiateAuth();
-        
+        /*
 
         if (initiateAuth()!=null) {
             getMyId();
@@ -73,7 +74,7 @@ public class Stream implements EventListener, Runnable {
         sd.roster.updateRoster(RosterContacts);
 
         if (initiateLogin()!=null) initiateLogin();
- 
+ */
     }
 /*
     public String initiateAuth() throws IOException {
@@ -469,6 +470,75 @@ public class Stream implements EventListener, Runnable {
             }
             return str;
         } else return null;
+    }
+
+    private String getGradeWithPost() {
+        HttpConnection c = null;
+        InputStream is = null;
+        OutputStream os = null;
+        StringBuffer b = new StringBuffer();
+        
+        String uri ="http://damochka.ru/auth.phtml";
+        String str="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
+        try {
+            c = ( HttpConnection )Connector.open(uri);
+            c.setRequestMethod( HttpConnection.POST );
+            c.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            c.setRequestProperty("User-Agent","Damafon 2.1.12.4000");
+            c.setRequestProperty("Cookie","VIPID=3062637b04-80236754;");
+            c.setRequestProperty("Host","damochka.ru:80");
+            c.setRequestProperty("Pragma","no-cache");
+            c.setRequestProperty("Content-Length", Integer.toString(str.length()));
+            
+            getConnectionInformation(c);
+
+            os = c.openOutputStream();
+
+            os.write(str.getBytes());
+            //os.flush();
+            System.out.println(c.getResponseCode());
+            
+            is = c.openDataInputStream();
+            /*
+            int chr;
+            while ((chr = is.read()) != -1)
+               b.append((char) chr);
+             */
+            System.out.println(processServerResponse(c, is));
+        } catch(ConnectionNotFoundException e){ System.out.println("Socket could not be opened"); } catch(IOException e){ System.out.println("ioException"); }
+        finally {
+                try {
+                    if ( is != null ) is.close();
+                    if ( c != null ) c.close();
+                    if(c != null) c.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+        }
+        
+        String result=b.toString();
+        
+        if (b.toString().length()>0) {
+            if (b.toString().indexOf("SITEID")>-1) {
+                int i=b.toString().indexOf("SITEID");
+                result=sessId=b.toString().substring(i+7,i+39);
+            }
+        }
+        
+        System.out.println(result);
+        return result;
+    }
+    
+    void getConnectionInformation(HttpConnection hc) {
+
+    System.out.println("Request Method for this connection is " + hc.getRequestMethod());
+    System.out.println("URL in this connection is " + hc.getURL());
+    // It better be HTTP:)
+    System.out.println("Protocol for this connection is " + hc.getProtocol()); 
+    System.out.println("This object is connected to " + hc.getHost() + " host");
+    System.out.println("HTTP Port in use is " + hc.getPort());
+    System.out.println("Query parameter in this request are  " + hc.getQuery());
+
     }
 
     
