@@ -37,15 +37,9 @@ public class Stream implements EventListener, Runnable {
     
     public static String sessId;
 
-    boolean pingSent;
-
     public static String myId;
 
     public String RosterContacts;
-
-    private int afterEol;
-
-    private Vector RosterContactsTable;
 
     
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
@@ -57,31 +51,32 @@ public class Stream implements EventListener, Runnable {
     
     public Stream( String server, String hostAddr) throws IOException {
         this.server=server;
-
-        //boolean waiting=Config.getInstance().istreamWaiting;
-getGradeWithPost();
-       // initiateAuth();
-        /*
-
-        if (initiateAuth()!=null) {
+        
+        new Thread( this ). start();
+        
+        initiateAuth();
+        if (sessId!=null) 
             getMyId();
-        } else {
-            return;
-        }
+        else return;
+        
+        if (myId!=null) 
+            getRoster();
+        else return;
 
-        getRoster();
-        StaticData sd=StaticData.getInstance();
-        sd.roster.updateRoster(RosterContacts);
+        if (RosterContacts!=null) {
+            StaticData sd=StaticData.getInstance();
+            sd.roster.updateRoster(RosterContacts);
+        } else return;
 
-        if (initiateLogin()!=null) initiateLogin();
- */
+        initiateLogin();
     }
-/*
-    public String initiateAuth() throws IOException {
+
+    private void initiateAuth() throws IOException {
         String uri ="http://damochka.ru/auth.phtml";
         String requeststring="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
         byte[] request_body = requeststring.getBytes();
-        String messagebuffer=null;
+        String buf=null;
+        StringBuffer buf2=new StringBuffer();
         
         HttpConnection http = null;
         OutputStream oStrm= null;
@@ -98,33 +93,16 @@ getGradeWithPost();
             
             oStrm = http.openOutputStream();
             oStrm.write(request_body);
-            oStrm.flush();
-            
-            
-            iStrm = http.openInputStream();
-            
-            if (http.getResponseCode() == HttpConnection.HTTP_OK || http.getResponseCode() == 302 )
-            {
-                int length = (int) http.getLength();
-                String str;
 
-                if (length != -1)
-                {
-                    byte servletData[] = new byte[length];
-                    iStrm.read(servletData);
-                    str = new String(servletData);
-                } else {
-                    ByteArrayOutputStream bStrm = new ByteArrayOutputStream();
-                    int ch;
-                    while ((ch = iStrm.read()) != -1)
-                        bStrm.write(ch);
-                    str = new String(bStrm.toByteArray());
-                    bStrm.close();
-                }
-                messagebuffer=str;
-            } else messagebuffer=null;
+            buf=http.getHeaderField(11);
             
-            System.out.println(messagebuffer);
+
+            iStrm = http.openInputStream();
+            int ch;
+            
+            while( ( ch = iStrm.read() ) != -1 ){
+                buf2.append((char) ch);
+            }
          }
             finally
             {
@@ -133,206 +111,149 @@ getGradeWithPost();
             if (oStrm != null) oStrm.close();
             if (http != null) http.close();
         }
-
-
-        String result = null;
                 
-        if (messagebuffer.length()>0) {
-            if (messagebuffer.indexOf("SITEID")>-1) {
-                int i=messagebuffer.indexOf("SITEID");
-                result=sessId=messagebuffer.substring(i+7,i+39);
-            }
+        if (buf.indexOf("SITEID=")>-1) {
+            int i=buf.indexOf("SITEID=")+7;
+            int i2=buf.indexOf(";",i);
+            sessId=buf.substring(i,i2);
+            System.out.println(sessId);
         }
-        
-        System.out.println(result);
-        return result;
-    }
-*/
-    public String initiateAuth() throws IOException {
-        StringBuffer buf=new StringBuffer();
-        String body="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
-
-        try {            
-            String uri ="socket://damochka.ru:80";
-
-            SocketConnection conn = (SocketConnection) Connector.open( uri );
-            conn.setSocketOption(SocketConnection.KEEPALIVE, 1);
-
-            PrintStream out = new PrintStream(conn.openOutputStream());
-            
-            out.println( "POST /auth.phtml HTTP/1.0" );
-            out.print( "Content-Type: application/x-www-form-urlencoded\r\n" +
-                    "User-Agent: Damafon 2.1.12.4000\r\n" +
-                    "Cookie: VIPID=3062637b04-80236754;\r\n" +
-                    "Host: damochka.ru:80\r\n" +
-                    "Content-Length: "+body.length()+"\r\n" +
-                    "Pragma: no-cache\r\n\r\n"+body );
-            out.flush();
-
-            InputStream in = conn.openInputStream();
-            int ch;
-
-            while(( ch = in.read() ) != -1 ){
-                buf.append((char) ch);
-            }
-            in.close();
-            out.close();
-            conn.close();
-        }
-        catch( ConnectionNotFoundException e ){
-            System.out.println( "Socket could not be opened" );
-        }
-        catch( IOException e ){
-            System.out.println( e.toString() );
-        }
-        String result = null;
-                
-        if (buf.toString().length()>0) {
-            if (buf.toString().indexOf("SITEID")>-1) {
-                int i=buf.toString().indexOf("SITEID");
-                result=sessId=buf.toString().substring(i+7,i+39);
-            }
-        }
-        
-        System.out.println(result);
-        return result;
-    }
-
-    
-    public String getRoster() throws IOException {
-        
-        StringBuffer buf=new StringBuffer();
-        try {            
-            String uri ="socket://message.damochka.ru:80";
-            String body="id="+myId+"&sid="+sessId+"&type=1";
-            
-            StreamConnection conn = (StreamConnection) Connector.open( uri );
-            PrintStream out = new PrintStream(conn.openOutputStream());
-            
-            out.print( "POST /GETCLIST HTTP/1.0\r\n" +
-                    "Pragma: no-cache+\r\n" +
-                    "Host: message.damochka.ru:80\r\n" +
-                    "Content-Length: "+body.length()+"\r\n\r\n"+body);
-            out.flush();
-
-            InputStream in = conn.openInputStream();
-            int ch;
-            
-            while( ( ch = in.read() ) != -1 ){
-                buf.append((char) ch);
-            }
-            
-            in.close();
-            out.close();
-            conn.close();
-        }
-        catch(ConnectionNotFoundException e){ System.out.println("Socket could not be opened"); } catch(IOException e){ System.out.println(e.toString()); }
-        String result = null;
-                
-        if (buf.toString().length()>0) {
-            if (buf.toString().indexOf("\r\n\r\n")>-1) {
-                int i=buf.toString().indexOf("\r\n\r\n");
-                result=strconv.convCp1251ToUnicode(buf.toString().substring(i+4, buf.toString().length()));
-            }
-        }
-        
-        RosterContacts=result;
-        
-        //RosterContacts=new Vector(RosterContactsTable.size());
-        
-        //System.out.println(result);
-        return result;
     }
     
-    public String getMyId() throws IOException {
+    private void getMyId() throws IOException {
+        String uri ="http://message.damochka.ru/GETIDFROMSID";
+        String requeststring="PHPSESSID="+sessId;
+        byte[] request_body = requeststring.getBytes();
+        
+        HttpConnection http = null;
+        OutputStream oStrm= null;
+        InputStream iStrm = null;
+        
         
         StringBuffer buf=new StringBuffer();
         try {            
-            String uri ="socket://message.damochka.ru:80";
-            String body="PHPSESSID="+sessId;
+            http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
+            http.setRequestMethod(HttpConnection.POST);
+            http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
-            StreamConnection conn = (StreamConnection) Connector.open( uri );
-            PrintStream out = new PrintStream(conn.openOutputStream());
-            
-            out.print( "POST /GETIDFROMSID HTTP/1.0\r\n" +
-                "Pragma: no-cache\r\n" +
-                "Content-Type: application/x-www-form-urlencoded\r\n" +
-                "Host: message.damochka.ru:80\r\n" +
-                "Content-Length: "+body.length()+"\r\n\r\n"+body);
-            out.flush();
+            oStrm = http.openOutputStream();
+            oStrm.write(request_body);
 
-            InputStream in = conn.openInputStream();
+
+            iStrm = http.openInputStream();
             int ch;
             
-            while( ( ch = in.read() ) != -1 ){
+            while( ( ch = iStrm.read() ) != -1 ){
                 buf.append((char) ch);
             }
-            
-            in.close();
-            out.close();
-            conn.close();
         }
-        catch(ConnectionNotFoundException e){ System.out.println("Socket could not be opened"); } catch(IOException e){ System.out.println(e.toString()); }
-        String result = null;
+        finally
+        {
+            // Clean up
+            if (iStrm != null) iStrm.close();
+            if (oStrm != null) oStrm.close();
+            if (http != null) http.close();
+        }
                 
         if (buf.toString().length()>0) {
-            if (buf.toString().indexOf("\r\n\r\n")>-1) {
-                int i=buf.toString().indexOf("\r\n\r\n");
-                result=myId=buf.toString().substring(i+4, buf.toString().length());
-            }
+            myId=buf.toString();
         }
-        System.out.println(result);
-        return result;
+        System.out.println(myId);
     }
  
-    public String initiateLogin() throws IOException {
-        String uri ="socket://message.damochka.ru:80";
-        StreamConnection conn = (StreamConnection) Connector.open(uri);
+    private void getRoster() throws IOException {
+        String uri ="http://message.damochka.ru/GETCLIST";
+        String requeststring="id="+myId+"&sid="+sessId+"&type=1";
+        byte[] request_body = requeststring.getBytes();
+        
+        HttpConnection http = null;
+        OutputStream oStrm= null;
+        InputStream iStrm = null;
+        
+        
         StringBuffer buf=new StringBuffer();
-        try {      
-            String body="PHPSESSID="+sessId+"&df_ver=2.1.12.4000&ver=51";
+        try {            
+            http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
+            http.setRequestMethod(HttpConnection.POST);
+            http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
-            PrintStream out = new PrintStream(conn.openOutputStream());
-            out.print( "POST /DAMAFON HTTP/1.0\r\n" +
-                    "Host: message.damochka.ru:80\r\n" +
-                    "Content-Type: application/x-www-form-urlencoded\r\n" +
-                    "Pragma: no-cache\r\n" +
-                    "Content-Length: 68\r\n\r\n"+body );
-            out.flush();
+            oStrm = http.openOutputStream();
+            oStrm.write(request_body);
 
-            InputStream in = conn.openInputStream();
+
+            iStrm = http.openInputStream();
             int ch;
-
-            while(( ch = in.read() ) != -1 ){
+            
+            while( ( ch = iStrm.read() ) != -1 ){
                 buf.append((char) ch);
             }
-            in.close();
-            out.close();
-            conn.close();
         }
-        catch( ConnectionNotFoundException e ){
-            System.out.println( "Socket could not be opened" );
-        }
-        catch( IOException e ){
-            System.out.println( e.toString() );
-        }
-        String result = buf.toString();
-
-        if (buf.toString().length()>0) {
-            if (buf.toString().indexOf("\r\n\r\n")>-1) {
-                int i=buf.toString().indexOf("\r\n\r\n");
-                result=strconv.convCp1251ToUnicode(buf.toString().substring(i+4, buf.toString().length()));
-            }
+        finally
+        {
+            // Clean up
+            if (iStrm != null) iStrm.close();
+            if (oStrm != null) oStrm.close();
+            if (http != null) http.close();
         }
         
-        System.out.println(result);
+        if (buf.toString().length()>0) {
+            RosterContacts=strconv.convCp1251ToUnicode(buf.toString());
+        }
+        
+        System.out.println(RosterContacts);
+    }
+
+    private void initiateLogin() throws IOException {
+        String uri ="http://message.damochka.ru/DAMAFON";
+        String requeststring="PHPSESSID="+sessId+"&df_ver=2.1.12.4000&ver=51";
+        byte[] request_body = requeststring.getBytes();
+        String messagebuffer=null;
+        
+        HttpConnection http = null;
+        OutputStream oStrm= null;
+        InputStream iStrm = null;
+        
+        StringBuffer buf=new StringBuffer();
+
+        try {      
+            http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
+            http.setRequestMethod(HttpConnection.POST);
+            http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
+            
+            oStrm = http.openOutputStream();
+            oStrm.write(request_body);
+
+
+            iStrm = http.openInputStream();
+            int ch;
+            
+            while( ( ch = iStrm.read() ) != -1 ){
+                buf.append((char) ch);
+            }
+        }
+        finally
+        {
+            // Clean up
+            if (iStrm != null) iStrm.close();
+            if (oStrm != null) oStrm.close();
+            if (http != null) http.close();
+        }
+
+        if (buf.toString().length()>0) {
+            messagebuffer=strconv.convCp1251ToUnicode(buf.toString());
+        }
         
         StaticData sd=StaticData.getInstance();
         
         try {
-            while (result.indexOf("type:'0'")>-1) {
-                String line=result.substring(0,result.indexOf("type:'0'"));
-                result=result.substring(result.indexOf("type:'0'")+2,result.length());
+            while (messagebuffer.indexOf("type:'0'")>-1) {
+                String line=messagebuffer.substring(0,messagebuffer.indexOf("type:'0'"));
+                messagebuffer=messagebuffer.substring(messagebuffer.indexOf("type:'0'")+2,messagebuffer.length());
 
                 Vector MessageItem=new Vector();
                 MessageItem=MessageParser(line);
@@ -341,14 +262,15 @@ getGradeWithPost();
 
                         String from=(String)e.nextElement().toString().trim();
                         String text=(String)e.nextElement().toString().trim();
-
+                        
+                        System.out.println(text);
+                        
                         Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, null, text);
 
                         sd.roster.messageStore(from, m);
                 }
             }
         } catch (Exception e) {}
-        return result;
     }   
     
     public void run() {
@@ -399,7 +321,6 @@ getGradeWithPost();
     }
     
 
-    
     public void close() {
         
         //dispatcher.setJabberListener( null );
@@ -446,101 +367,6 @@ getGradeWithPost();
     public void cancelBlockListenerByClass(Class removeClass) {
         dispatcher.cancelBlockListenerByClass(removeClass);
     }
-
-
-    private String processServerResponse(HttpConnection http,InputStream iStrm) throws IOException
-    {
-        if (http.getResponseCode() == HttpConnection.HTTP_OK || http.getResponseCode() == 302 )
-        {
-            int length = (int) http.getLength();
-            String str;
-
-            if (length != -1)
-            {
-                byte servletData[] = new byte[length];
-                iStrm.read(servletData);
-                str = new String(servletData);
-            } else {
-                ByteArrayOutputStream bStrm = new ByteArrayOutputStream();
-                int ch;
-                while ((ch = iStrm.read()) != -1)
-                bStrm.write(ch);
-                str = new String(bStrm.toByteArray());
-                bStrm.close();
-            }
-            return str;
-        } else return null;
-    }
-
-    private String getGradeWithPost() {
-        HttpConnection c = null;
-        InputStream is = null;
-        OutputStream os = null;
-        StringBuffer b = new StringBuffer();
-        
-        String uri ="http://damochka.ru/auth.phtml";
-        String str="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
-        try {
-            c = ( HttpConnection )Connector.open(uri);
-            c.setRequestMethod( HttpConnection.POST );
-            c.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-            c.setRequestProperty("User-Agent","Damafon 2.1.12.4000");
-            c.setRequestProperty("Cookie","VIPID=3062637b04-80236754;");
-            c.setRequestProperty("Host","damochka.ru:80");
-            c.setRequestProperty("Pragma","no-cache");
-            c.setRequestProperty("Content-Length", Integer.toString(str.length()));
-            
-            getConnectionInformation(c);
-
-            os = c.openOutputStream();
-
-            os.write(str.getBytes());
-            //os.flush();
-            System.out.println(c.getResponseCode());
-            
-            is = c.openDataInputStream();
-            /*
-            int chr;
-            while ((chr = is.read()) != -1)
-               b.append((char) chr);
-             */
-            System.out.println(processServerResponse(c, is));
-        } catch(ConnectionNotFoundException e){ System.out.println("Socket could not be opened"); } catch(IOException e){ System.out.println("ioException"); }
-        finally {
-                try {
-                    if ( is != null ) is.close();
-                    if ( c != null ) c.close();
-                    if(c != null) c.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-        }
-        
-        String result=b.toString();
-        
-        if (b.toString().length()>0) {
-            if (b.toString().indexOf("SITEID")>-1) {
-                int i=b.toString().indexOf("SITEID");
-                result=sessId=b.toString().substring(i+7,i+39);
-            }
-        }
-        
-        System.out.println(result);
-        return result;
-    }
-    
-    void getConnectionInformation(HttpConnection hc) {
-
-    System.out.println("Request Method for this connection is " + hc.getRequestMethod());
-    System.out.println("URL in this connection is " + hc.getURL());
-    // It better be HTTP:)
-    System.out.println("Protocol for this connection is " + hc.getProtocol()); 
-    System.out.println("This object is connected to " + hc.getHost() + " host");
-    System.out.println("HTTP Port in use is " + hc.getPort());
-    System.out.println("Query parameter in this request are  " + hc.getQuery());
-
-    }
-
     
     public static void sendMessage(final String to, final String message) {
         StringBuffer buf=new StringBuffer();
