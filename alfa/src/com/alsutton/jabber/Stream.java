@@ -249,11 +249,13 @@ public class Stream implements EventListener, Runnable {
         
         try {
             while (messagebuffer.indexOf("type:'0'")>-1) {
-                String line=messagebuffer.substring(0,messagebuffer.indexOf("type:'0'"));
-                messagebuffer=messagebuffer.substring(messagebuffer.indexOf("type:'0'")+2,messagebuffer.length());
+                String line=messagebuffer.substring(messagebuffer.indexOf("type:'0'"),messagebuffer.length());
+                messagebuffer=line.substring(messagebuffer.indexOf("type:'0'")+9);
 
                 Vector MessageItem=new Vector();
                 MessageItem=MessageParser(line);
+                
+                sd.roster.errorLog(line);
 
                 for (Enumeration e=MessageItem.elements(); e.hasMoreElements();){
 
@@ -272,8 +274,8 @@ public class Stream implements EventListener, Runnable {
     }   
     
     public void run() {
+        StaticData sd=StaticData.getInstance();
         try {
-            StaticData sd=StaticData.getInstance();
             initiateAuth();
 
             if (sessId!=null) {
@@ -282,6 +284,7 @@ public class Stream implements EventListener, Runnable {
             } else {
                 //System.out.println("не получили сессию!");
                 sd.roster.setProgress("SessId failed", 0);
+                sd.roster.errorLog("SessId failed");
                 return;
             }
 
@@ -291,6 +294,7 @@ public class Stream implements EventListener, Runnable {
             } else {
                 //System.out.println("не получили свой id!");
                 sd.roster.setProgress("myId failed", 0);
+                sd.roster.errorLog("myId failed");
                 return;
             }
 
@@ -300,12 +304,14 @@ public class Stream implements EventListener, Runnable {
             } else {
                 //System.out.println("не получили ростер, он пустой?!");
                 sd.roster.setProgress("Roster clear?", 65);
+                sd.roster.errorLog("Roster clear?");
             }
 
             initiateLogin();
             sd.roster.setProgress("Login", 80);
         } catch( Exception e ) {
             System.out.println("Exception:");
+            sd.roster.errorLog(e.toString());
             e.printStackTrace();
         }
     }
@@ -322,6 +328,10 @@ public class Stream implements EventListener, Runnable {
         
 	try {
             while (data.indexOf("fromid:'",pos)>-1) {
+                //int i=messagebuffer.indexOf("type:'")+6;
+                //int i2=messagebuffer.indexOf("'",i);
+                //sessId=messagebuffer.substring(i,i2);
+                
                     pos2=data.indexOf("fromid:'",pos)+8;
                     pos3=data.indexOf("'",pos2);
                     line=data.substring(pos2,pos3);

@@ -248,12 +248,18 @@ public class Roster
 	System.gc();
     }
     
+    
     public void errorLog(String s){
         if (s==null) return;
         if (s.length()==0) return;
-
-        Msg m=new Msg(Msg.MESSAGE_TYPE_IN, myJid.getId(), "Error", s);
-        messageStore(m);
+        /*
+        Alert error=new Alert("Error", s, null, null);
+        error.setTimeout(30000);
+        error.addCommand(new Command("Ok", Command.BACK, 1));
+        display.setCurrent(error, display.getCurrent());
+         */
+        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Error", s);
+        messageStore("0", m);
     }
     
     public void beginPaint() {
