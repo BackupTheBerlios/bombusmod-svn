@@ -220,7 +220,7 @@ public class Roster
             //SR.loaded();
             theStream= a.openJabberStream();
             setProgress(SR.MS_OPENING_STREAM, 40); //locale
-            theStream.setJabberListener( this );
+            //theStream.setJabberListener( this );
         } catch( Exception e ) {
             setProgress("Failed", 0); //locale
             reconnect=false;

@@ -33,13 +33,15 @@ public class Stream implements EventListener, Runnable {
     
     private boolean rosterNotify;
     
-    private String server; // for ping
-    
     public static String sessId;
 
     public static String myId;
 
     public String RosterContacts;
+
+    private String userName;
+
+    private String passWord;
 
     
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
@@ -49,31 +51,17 @@ public class Stream implements EventListener, Runnable {
      *
      */
     
-    public Stream( String server, String hostAddr) throws IOException {
-        this.server=server;
+    public Stream( String userName, String passWord) throws IOException {
+        
+        this.userName=userName;
+        this.passWord=passWord;
         
         new Thread( this ). start();
-        
-        initiateAuth();
-        if (sessId!=null) 
-            getMyId();
-        else return;
-        
-        if (myId!=null) 
-            getRoster();
-        else return;
-
-        if (RosterContacts!=null) {
-            StaticData sd=StaticData.getInstance();
-            sd.roster.updateRoster(RosterContacts);
-        } else return;
-
-        initiateLogin();
     }
 
     private void initiateAuth() throws IOException {
         String uri ="http://damochka.ru/auth.phtml";
-        String requeststring="redirect=%2F&act=auth&auth2_login=adeen&auth2_pwd=336699&auth2_save=on";
+        String requeststring="redirect=%2F&act=auth&auth2_login="+userName+"&auth2_pwd="+passWord+"&auth2_save=on";
         byte[] request_body = requeststring.getBytes();
         String buf=null;
         StringBuffer buf2=new StringBuffer();
@@ -89,14 +77,20 @@ public class Stream implements EventListener, Runnable {
             http.setRequestProperty("User-Agent","Damafon 2.1.12.4000");
             http.setRequestProperty("Cookie","VIPID=3062637b04-80236754;");
             http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Host","damochka.ru:80");
             http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
             oStrm = http.openOutputStream();
             oStrm.write(request_body);
 
-            buf=http.getHeaderField(11);
+            int sid=30;
+            for(int i=0; i < sid; i++) {
+                if (http.getHeaderField(i).indexOf("SITEID=")>-1) {
+                    buf=http.getHeaderField(i);
+                    break;
+                }
+            }
             
-
             iStrm = http.openInputStream();
             int ch;
             
@@ -116,7 +110,7 @@ public class Stream implements EventListener, Runnable {
             int i=buf.indexOf("SITEID=")+7;
             int i2=buf.indexOf(";",i);
             sessId=buf.substring(i,i2);
-            System.out.println(sessId);
+            //System.out.println(sessId);
         }
     }
     
@@ -136,6 +130,7 @@ public class Stream implements EventListener, Runnable {
             http.setRequestMethod(HttpConnection.POST);
             http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
             http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Host","message.damochka.ru:80");
             http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
             oStrm = http.openOutputStream();
@@ -160,7 +155,7 @@ public class Stream implements EventListener, Runnable {
         if (buf.toString().length()>0) {
             myId=buf.toString();
         }
-        System.out.println(myId);
+        //System.out.println(myId);
     }
  
     private void getRoster() throws IOException {
@@ -178,6 +173,7 @@ public class Stream implements EventListener, Runnable {
             http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
             http.setRequestMethod(HttpConnection.POST);
             http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Host","message.damochka.ru:80");
             http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
             oStrm = http.openOutputStream();
@@ -203,7 +199,7 @@ public class Stream implements EventListener, Runnable {
             RosterContacts=strconv.convCp1251ToUnicode(buf.toString());
         }
         
-        System.out.println(RosterContacts);
+        //System.out.println(RosterContacts);
     }
 
     private void initiateLogin() throws IOException {
@@ -223,6 +219,7 @@ public class Stream implements EventListener, Runnable {
             http.setRequestMethod(HttpConnection.POST);
             http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
             http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Host","message.damochka.ru:80");
             http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
             oStrm = http.openOutputStream();
@@ -263,7 +260,7 @@ public class Stream implements EventListener, Runnable {
                         String from=(String)e.nextElement().toString().trim();
                         String text=(String)e.nextElement().toString().trim();
                         
-                        System.out.println(text);
+                        //System.out.println(text);
                         
                         Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, null, text);
 
@@ -271,20 +268,46 @@ public class Stream implements EventListener, Runnable {
                 }
             }
         } catch (Exception e) {}
+        initiateLogin();
     }   
     
     public void run() {
-        /*
         try {
-            Parser parser = new Parser( this );
-            parser.parse( iostream );
-            //dispatcher.broadcastTerminatedConnection( null );
+            StaticData sd=StaticData.getInstance();
+            initiateAuth();
+
+            if (sessId!=null) {
+                getMyId();
+                sd.roster.setProgress("SessId", 45);
+            } else {
+                //System.out.println("не получили сессию!");
+                sd.roster.setProgress("SessId failed", 0);
+                return;
+            }
+
+            if (myId!=null) { 
+                getRoster();
+                sd.roster.setProgress("myId", 50);
+            } else {
+                //System.out.println("не получили свой id!");
+                sd.roster.setProgress("myId failed", 0);
+                return;
+            }
+
+            if (RosterContacts!=null) {
+                sd.roster.updateRoster(RosterContacts);
+                sd.roster.setProgress("Roster", 60);
+            } else {
+                //System.out.println("не получили ростер, он пустой?!");
+                sd.roster.setProgress("Roster clear?", 65);
+            }
+
+            initiateLogin();
+            sd.roster.setProgress("Login", 80);
         } catch( Exception e ) {
-            System.out.println("Exception in parser:");
+            System.out.println("Exception:");
             e.printStackTrace();
-            dispatcher.broadcastTerminatedConnection(e);
         }
-        */
     }
     
     public Vector MessageParser(String data) {
@@ -332,7 +355,7 @@ public class Stream implements EventListener, Runnable {
                 "Pragma: no-cache\r\n" +
                 "Host: damochka.ru:80\r\n" +
                 "Content-Length: 12\r\n" +
-                "Cookie: SITEID=24825b1ae9ad72a2f5314d70448a0d08; auth2_login=adeen; lastUpdate=1166961844; auth2_clean: ok-1166961769; auth2_pwd: 0%3A2c3bae7a8869af158d85bc766d1e323635b7; VIPID: ; news_last=2; auth2_logged=1; auth2_save=1; meet_nr=1; hotlog=1\r\n\r\n" +
+                "Cookie: SITEID="+sessId+"; auth2_login="+userName+"; lastUpdate=1166961844; auth2_clean: ok-1166961769; auth2_pwd: 0%3A2c3bae7a8869af158d85bc766d1e323635b7; VIPID: ; news_last=2; auth2_logged=1; auth2_save=1; meet_nr=1; hotlog=1\r\n\r\n" +
                 "redirect=%2F";
         try {
             send( logoff );

@@ -119,7 +119,7 @@
 	<replace 
 	    file="${preprocessed.dir}\Info\Version.java"  
 	    token="$DAMAFONVERSION$"
-	    value="${Damafon.version}"/>
+	    value="${damafon.version}"/>
     </target>
 
     <!-- version patch in manifest -->

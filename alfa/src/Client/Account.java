@@ -129,6 +129,7 @@ public class Account extends IconTextElement{
     public void setPassword(String password) { this.password = password;  }
 
     public Stream openJabberStream() throws java.io.IOException{
+        /*
         String proxy=null;
 	StringBuffer url=new StringBuffer();
         url.append(server);
@@ -136,9 +137,9 @@ public class Account extends IconTextElement{
         url.append(port);
         
         url.insert(0, "socket://");
-        
+        */
         //System.out.println(url);
-        return new Stream(getServer(), url.toString());    
+        return new Stream( getUserName(), getPassword());    
     }
 
     public String getServer() {

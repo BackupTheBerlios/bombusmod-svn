@@ -33,12 +33,10 @@ public class InfoWindow implements CommandListener{
         form.addCommand(new Command(SR.MS_CLOSE, Command.BACK, 99));
         form.append("Damafon v"+Version.version+"\nMobile client\n");
         form.append(Version.getOs());
-        form.append("\nCopyright (c) 2006, Daniel Apatin (ad),\n");
+        form.append("\nCopyright (c) 2006, Daniel Apatin (ad)\n");
         
         StringBuffer memInfo=new StringBuffer("\n\nMemory:\n");
         memInfo.append("Free=");
-        //mem.append(Runtime.getRuntime().freeMemory()>>10);
-        //mem.append("\nFree=");
         System.gc();
         memInfo.append(Runtime.getRuntime().freeMemory()>>10);
         memInfo.append("\nTotal=");
