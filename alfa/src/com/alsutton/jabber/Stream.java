@@ -5,7 +5,7 @@ import Client.Roster;
 import Client.StaticData;
 import com.alsutton.parser.EventListener;
 import com.alsutton.parser.Parser;
-import com.sun.midp.io.BufferedConnectionAdapter;
+//import com.sun.midp.io.BufferedConnectionAdapter;
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
@@ -60,7 +60,7 @@ public class Stream implements EventListener, Runnable {
     }
 
     private void initiateAuth() throws IOException {
-        String uri ="http://damochka.ru/auth.phtml";
+        String uri ="http:/81.176.79.141:80/auth.phtml";
         String requeststring="redirect=%2F&act=auth&auth2_login="+userName+"&auth2_pwd="+passWord+"&auth2_save=on";
         byte[] request_body = requeststring.getBytes();
         String buf=null;
@@ -77,7 +77,6 @@ public class Stream implements EventListener, Runnable {
             http.setRequestProperty("User-Agent","Damafon 2.1.12.4000");
             http.setRequestProperty("Cookie","VIPID=3062637b04-80236754;");
             http.setRequestProperty("Pragma","no-cache");
-            http.setRequestProperty("Host","damochka.ru:80");
             http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
             oStrm = http.openOutputStream();
@@ -95,8 +94,11 @@ public class Stream implements EventListener, Runnable {
             int ch;
             
             while( ( ch = iStrm.read() ) != -1 ){
+                if (ch>4096) break;
                 buf2.append((char) ch);
             }
+            StaticData sd=StaticData.getInstance();
+            sd.roster.errorLog(buf2.toString());
          }
             finally
             {
@@ -141,8 +143,11 @@ public class Stream implements EventListener, Runnable {
             int ch;
             
             while( ( ch = iStrm.read() ) != -1 ){
+                if (ch>4096) break;
                 buf.append((char) ch);
             }
+            StaticData sd=StaticData.getInstance();
+            sd.roster.errorLog(buf.toString());
         }
         finally
         {
@@ -159,7 +164,7 @@ public class Stream implements EventListener, Runnable {
     }
  
     private void getRoster() throws IOException {
-        String uri ="http://message.damochka.ru/GETCLIST";
+        String uri ="http://81.176.79.150:80/GETCLIST";
         String requeststring="id="+myId+"&sid="+sessId+"&type=1";
         byte[] request_body = requeststring.getBytes();
         
@@ -173,7 +178,6 @@ public class Stream implements EventListener, Runnable {
             http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
             http.setRequestMethod(HttpConnection.POST);
             http.setRequestProperty("Pragma","no-cache");
-            http.setRequestProperty("Host","message.damochka.ru:80");
             http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
             oStrm = http.openOutputStream();
@@ -184,8 +188,11 @@ public class Stream implements EventListener, Runnable {
             int ch;
             
             while( ( ch = iStrm.read() ) != -1 ){
+                if (ch>4096) break;
                 buf.append((char) ch);
             }
+            StaticData sd=StaticData.getInstance();
+            sd.roster.errorLog(buf.toString());
         }
         finally
         {
@@ -203,7 +210,7 @@ public class Stream implements EventListener, Runnable {
     }
 
     private void initiateLogin() throws IOException {
-        String uri ="http://message.damochka.ru/DAMAFON";
+        String uri ="http://81.176.79.150:80/DAMAFON";
         String requeststring="PHPSESSID="+sessId+"&df_ver=2.1.12.4000&ver=51";
         byte[] request_body = requeststring.getBytes();
         String messagebuffer=null;
@@ -219,7 +226,6 @@ public class Stream implements EventListener, Runnable {
             http.setRequestMethod(HttpConnection.POST);
             http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
             http.setRequestProperty("Pragma","no-cache");
-            http.setRequestProperty("Host","message.damochka.ru:80");
             http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
             oStrm = http.openOutputStream();
@@ -230,8 +236,11 @@ public class Stream implements EventListener, Runnable {
             int ch;
             
             while( ( ch = iStrm.read() ) != -1 ){
+                if (ch>4096) break;
                 buf.append((char) ch);
             }
+            StaticData sd=StaticData.getInstance();
+            sd.roster.errorLog(buf.toString());
         }
         finally
         {
@@ -282,7 +291,7 @@ public class Stream implements EventListener, Runnable {
                 getMyId();
                 sd.roster.setProgress("SessId", 45);
             } else {
-                //System.out.println("не получили сессию!");
+                //System.out.println("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
                 sd.roster.setProgress("SessId failed", 0);
                 sd.roster.errorLog("SessId failed");
                 return;
@@ -292,7 +301,7 @@ public class Stream implements EventListener, Runnable {
                 getRoster();
                 sd.roster.setProgress("myId", 50);
             } else {
-                //System.out.println("не получили свой id!");
+                //System.out.println("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ id!");
                 sd.roster.setProgress("myId failed", 0);
                 sd.roster.errorLog("myId failed");
                 return;
@@ -302,7 +311,7 @@ public class Stream implements EventListener, Runnable {
                 sd.roster.updateRoster(RosterContacts);
                 sd.roster.setProgress("Roster", 60);
             } else {
-                //System.out.println("не получили ростер, он пустой?!");
+                //System.out.println("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ?!");
                 sd.roster.setProgress("Roster clear?", 65);
                 sd.roster.errorLog("Roster clear?");
             }
@@ -421,6 +430,7 @@ public class Stream implements EventListener, Runnable {
             int ch;
             
             while( ( ch = in.read() ) != -1 ){
+                if (ch>4096) break;
                 buf.append((char) ch);
             }
             

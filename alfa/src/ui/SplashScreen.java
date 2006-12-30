@@ -41,7 +41,9 @@ public class SplashScreen extends Canvas implements CommandListener{
     
     /** Creates a new instance of SplashScreen */
     private SplashScreen() {
+//#if !(MIDP1)
         setFullScreenMode(Config.getInstance().fullscreen);
+//#endif
 //#if HALLOWEEN
 //#         String now=ui.Time.dispLocalTime();
 //#         if (!now.startsWith("31.10")) ui.Colors.switchPalette();

@@ -286,4 +286,6 @@ public class Account extends IconTextElement{
     public void setSasl(boolean sasl) {
         this.sasl = sasl;
     }
+    
+    public String getTipString() { return getJid(); }
 }

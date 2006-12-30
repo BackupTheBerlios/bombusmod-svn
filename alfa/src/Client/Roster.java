@@ -757,7 +757,7 @@ public class Roster
 
     protected void keyPressed(int keyCode) {
         super.keyPressed(keyCode);
-//#if (MOTOROLA_BACKLIGHT)
+//#if (MOTOROLA_BACKLIGHT) && !(MIDP1)
         if (cf.ghostMotor) {
             // backlight management
             if (keyCode=='*') blState=(blState==1)? Integer.MAX_VALUE : 1;

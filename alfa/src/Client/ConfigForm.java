@@ -220,8 +220,8 @@ public class ConfigForm implements
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();
         }
-//#if MIDP1
-//#         if (c==cmdPlaySound) testSound();
+//#if !(MIDP1)
+        if (c==cmdPlaySound) testSound();
 //#endif
         if (c==cmdCancel) destroyView();
     }

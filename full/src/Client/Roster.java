@@ -1150,6 +1150,7 @@ public class Roster
                             subj=null;
                             start_me=-1; // не добавлять /me к subj
                             highlite=true;
+                            mType=Msg.MESSAGE_TYPE_SUBJ;
                             //sendConferencePresence();
                         }
                     }
@@ -1550,6 +1551,8 @@ public class Roster
         } else {
             reconnectCount++;
             String title="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
+            Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", title, error);
+            messageStore(selfContact(), m);
             new Reconnect(title, error, display);
          }
      }

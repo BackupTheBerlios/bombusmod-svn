@@ -41,12 +41,13 @@ public class Utf8IOStream implements Runnable{
     /** Creates a new instance of Utf8IOStream */
     public Utf8IOStream(StreamConnection connection) throws IOException {
 	this.connection=connection;
+//#if !(MIDP1)
         try {
             Config cf=Config.getInstance();
             SocketConnection sc=(SocketConnection)connection;
             sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
         } catch (Exception e) {}
-	
+//#endif	
 	inpStream = connection.openInputStream();
 	outStream = connection.openOutputStream();	
 
