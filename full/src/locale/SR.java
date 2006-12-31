@@ -401,13 +401,15 @@ public class SR {
 
     public static String MS_SOUNDS_OPTIONS=loadString("Sounds options");
 	
-	public static String MS_NEW_BOOKMARK=loadString("New conference");
+    public static String MS_NEW_BOOKMARK=loadString("New conference");
 	
     public static String MS_DECLINE=loadString("Decline");
     public static String MS_AUTH_NEW=loadString("Authorize new contacts");
     public static String MS_AUTH_AUTO=loadString("[auto-subscribe]");
 	
-	public final static String MS_KEEPALIVE="Keep-alive";
+    public final static String MS_KEEPALIVE="Keep-alive";
+        
+    public final static String MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM=" has been unaffiliated and kicked from members-only room";
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

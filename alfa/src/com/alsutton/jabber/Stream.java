@@ -42,6 +42,8 @@ public class Stream implements EventListener, Runnable {
     private String userName;
 
     private String passWord;
+    
+    private static Config cf;
 
     
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
@@ -56,11 +58,13 @@ public class Stream implements EventListener, Runnable {
         this.userName=userName;
         this.passWord=passWord;
         
+        cf=Config.getInstance();
+        
         new Thread( this ). start();
     }
 
     private void initiateAuth() throws IOException {
-        String uri ="http:/81.176.79.141:80/auth.phtml";
+        String uri ="http://damochka.ru:80/auth.phtml";
         String requeststring="redirect=%2F&act=auth&auth2_login="+userName+"&auth2_pwd="+passWord+"&auth2_save=on";
         byte[] request_body = requeststring.getBytes();
         String buf=null;
@@ -97,8 +101,10 @@ public class Stream implements EventListener, Runnable {
                 if (ch>4096) break;
                 buf2.append((char) ch);
             }
-            StaticData sd=StaticData.getInstance();
-            sd.roster.errorLog(buf2.toString());
+            if (cf.eventComposing) {
+                StaticData sd=StaticData.getInstance();
+                sd.roster.errorLog(buf2.toString());
+            }
          }
             finally
             {
@@ -146,8 +152,10 @@ public class Stream implements EventListener, Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            StaticData sd=StaticData.getInstance();
-            sd.roster.errorLog(buf.toString());
+            if (cf.eventComposing) {
+                StaticData sd=StaticData.getInstance();
+                sd.roster.errorLog(buf.toString());
+            }
         }
         finally
         {
@@ -164,7 +172,7 @@ public class Stream implements EventListener, Runnable {
     }
  
     private void getRoster() throws IOException {
-        String uri ="http://81.176.79.150:80/GETCLIST";
+        String uri ="http://message.damochka.ru:80/GETCLIST";
         String requeststring="id="+myId+"&sid="+sessId+"&type=1";
         byte[] request_body = requeststring.getBytes();
         
@@ -191,8 +199,10 @@ public class Stream implements EventListener, Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            StaticData sd=StaticData.getInstance();
-            sd.roster.errorLog(buf.toString());
+            if (cf.eventComposing) {
+                StaticData sd=StaticData.getInstance();
+                sd.roster.errorLog(buf.toString());
+            }
         }
         finally
         {
@@ -210,7 +220,7 @@ public class Stream implements EventListener, Runnable {
     }
 
     private void initiateLogin() throws IOException {
-        String uri ="http://81.176.79.150:80/DAMAFON";
+        String uri ="http://message.damochka.ru:80/DAMAFON";
         String requeststring="PHPSESSID="+sessId+"&df_ver=2.1.12.4000&ver=51";
         byte[] request_body = requeststring.getBytes();
         String messagebuffer=null;
@@ -239,8 +249,10 @@ public class Stream implements EventListener, Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            StaticData sd=StaticData.getInstance();
-            sd.roster.errorLog(buf.toString());
+            if (cf.eventComposing) {
+                StaticData sd=StaticData.getInstance();
+                sd.roster.errorLog(buf.toString());
+            }
         }
         finally
         {
@@ -264,7 +276,9 @@ public class Stream implements EventListener, Runnable {
                 Vector MessageItem=new Vector();
                 MessageItem=MessageParser(line);
                 
-                sd.roster.errorLog(line);
+                if (cf.eventComposing) {
+                    sd.roster.errorLog(line);
+                }
 
                 for (Enumeration e=MessageItem.elements(); e.hasMoreElements();){
 
@@ -285,6 +299,10 @@ public class Stream implements EventListener, Runnable {
     public void run() {
         StaticData sd=StaticData.getInstance();
         try {
+            if (sessId!=null) {
+                    logOut();
+            }
+            
             initiateAuth();
 
             if (sessId!=null) {
@@ -325,7 +343,7 @@ public class Stream implements EventListener, Runnable {
         }
     }
     
-    public Vector MessageParser(String data) {
+    public static Vector MessageParser(String data) {
 	Vector v = new Vector();
         String line=null;
         int cnt=0;
@@ -362,32 +380,6 @@ public class Stream implements EventListener, Runnable {
 	return v;
     }
     
-
-    public void close() {
-        
-        //dispatcher.setJabberListener( null );
-        
-        
-        String logoff="POST /auth.phtml?act=logout HTTP/1.0\r\n" +
-                "Content-Type: application/x-www-form-urlencoded\r\n" +
-                "User-Agent: Damafon 2.1.12.4000\r\n" +
-                "Pragma: no-cache\r\n" +
-                "Host: damochka.ru:80\r\n" +
-                "Content-Length: 12\r\n" +
-                "Cookie: SITEID="+sessId+"; auth2_login="+userName+"; lastUpdate=1166961844; auth2_clean: ok-1166961769; auth2_pwd: 0%3A2c3bae7a8869af158d85bc766d1e323635b7; VIPID: ; news_last=2; auth2_logged=1; auth2_save=1; meet_nr=1; hotlog=1\r\n\r\n" +
-                "redirect=%2F";
-        try {
-            send( logoff );
-            try {  Thread.sleep(500); } catch (Exception e) {};
-        } catch( IOException e ) {
-            // Ignore an IO Exceptions because they mean that the stream is
-            // unavailable, which is irrelevant.
-        } finally {
-	    iostream.close();
-            //dispatcher.halt();
-        }
-    }
-    
     public void send( String data ) throws IOException {
         // iostream.send(new StringBuffer(data));
     }
@@ -410,34 +402,138 @@ public class Stream implements EventListener, Runnable {
         dispatcher.cancelBlockListenerByClass(removeClass);
     }
     
-    public static void sendMessage(final String to, final String message) {
+    
+    public static boolean sendMessage(final String to, final String message) {
+        String uri ="http://message.damochka.ru:80/SMS";
+        String requeststring="fromid="+myId+"&toid="+to+"&myid="+myId+"&ses_id="+sessId+"&smsg="+message+"&font_size=9&font_color=black&background_color=white&sendsms=1&inform=0";
+        byte[] request_body = requeststring.getBytes();
+        String messagebuffer=null;
+        
+        HttpConnection http = null;
+        OutputStream oStrm= null;
+        InputStream iStrm = null;
+        
         StringBuffer buf=new StringBuffer();
-        try {            
-            String uri ="socket://message.damochka.ru:80";
-            String body="fromid="+myId+"&toid="+to+"&myid="+myId+"&ses_id="+sessId+"&smsg="+message+"&font_size=9&font_color=black&background_color=white&sendsms=1&inform=0";
 
-            StreamConnection conn = (StreamConnection) Connector.open( uri );
-            PrintStream out = new PrintStream(conn.openOutputStream());
+        try {      
+            http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
+            http.setRequestMethod(HttpConnection.POST);
+            http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
             
-            out.print( "POST /SMS HTTP/1.0\r\n" +
-                "Pragma: no-cache\r\n" +
-                "Content-Type: application/x-www-form-urlencoded\r\n" +
-                "Host: message.damochka.ru:80\r\n" +
-                "Content-Length: "+body.length()+"\r\n\r\n"+body);
-            out.flush();
+            oStrm = http.openOutputStream();
+            oStrm.write(request_body);
 
-            InputStream in = conn.openInputStream();
+
+            iStrm = http.openInputStream();
             int ch;
             
-            while( ( ch = in.read() ) != -1 ){
+            while( ( ch = iStrm.read() ) != -1 ){
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            
-            in.close();
-            out.close();
-            conn.close();
+            if (cf.eventComposing) {
+                StaticData sd=StaticData.getInstance();
+                sd.roster.errorLog(buf.toString());
+            }
+        } catch (IOException ex) {
+                ex.printStackTrace();
         }
-        catch(ConnectionNotFoundException e){ System.out.println("Socket could not be opened"); } catch(IOException e){ System.out.println(e.toString()); }
-    }
+        finally
+        {
+            // Clean up
+                try {
+                    if (http != null) http.close();
+                    if (iStrm != null) iStrm.close();
+                    if (oStrm != null) oStrm.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+        }
+
+        if (buf.toString().length()>0) {
+            messagebuffer=strconv.convCp1251ToUnicode(buf.toString());
+        }
+        
+        StaticData sd=StaticData.getInstance();
+        
+        try {
+            while (messagebuffer.indexOf("type:'0'")>-1) {
+                String line=messagebuffer.substring(messagebuffer.indexOf("type:'0'"),messagebuffer.length());
+                messagebuffer=line.substring(messagebuffer.indexOf("type:'0'")+9);
+
+                Vector MessageItem=new Vector();
+                MessageItem=MessageParser(line);
+                
+                sd.roster.errorLog(line);
+
+                for (Enumeration e=MessageItem.elements(); e.hasMoreElements();){
+
+                        String from=(String)e.nextElement().toString().trim();
+                        String text=(String)e.nextElement().toString().trim();
+                        
+                        //System.out.println(text);
+                        
+                        Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, null, text);
+
+                        sd.roster.messageStore(from, m);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+        
+    } 
+    
+    public void logOut() throws IOException {
+        String uri ="http://damochka.ru:80/auth.phtml?act=logout";
+        String requeststring="redirect=%2F";
+                
+        byte[] request_body = requeststring.getBytes();
+        String messagebuffer=null;
+        
+        HttpConnection http = null;
+        OutputStream oStrm= null;
+        InputStream iStrm = null;
+        
+        StringBuffer buf=new StringBuffer();
+
+        try {      
+            http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
+            http.setRequestMethod(HttpConnection.POST);
+            http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
+            http.setRequestProperty("Cookie", "SITEID="+sessId+"; auth2_login="+userName+"; lastUpdate=1166961844; auth2_clean: ok-1166961769; auth2_pwd: 0%3A2c3bae7a8869af158d85bc766d1e323635b7; VIPID: ; news_last=2; auth2_logged=1; auth2_save=1; meet_nr=1; hotlog=1");
+            
+            oStrm = http.openOutputStream();
+            oStrm.write(request_body);
+
+
+            iStrm = http.openInputStream();
+            int ch;
+            
+            while( ( ch = iStrm.read() ) != -1 ){
+                if (ch>4096) break;
+                buf.append((char) ch);
+            }
+            if (cf.eventComposing) {
+                StaticData sd=StaticData.getInstance();
+                sd.roster.errorLog(buf.toString());
+            }
+        }
+        finally
+        {
+            // Clean up
+            if (iStrm != null) iStrm.close();
+            if (oStrm != null) oStrm.close();
+            if (http != null) http.close();
+        }
+
+        if (buf.toString().length()>0) {
+            messagebuffer=strconv.convCp1251ToUnicode(buf.toString());
+        }
+    } 
 }

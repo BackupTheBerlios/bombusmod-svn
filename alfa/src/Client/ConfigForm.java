@@ -41,11 +41,7 @@ import ui.*;
  *  [] fullscreen
  */
 
-public class ConfigForm implements
-	CommandListener 
-//#if !(MIDP1)
-	,ItemCommandListener
-//#endif
+public class ConfigForm implements CommandListener 
 {
     private Display display;
     private Displayable parentView;
@@ -101,7 +97,7 @@ public class ConfigForm implements
         roster.setSelectedFlags(ra);
 
         message=new ChoiceGroup("Messages", Choice.MULTIPLE);   
-        message.append(SR.MS_COMPOSING_EVENTS, null);
+        message.append("debug", null);
         
         boolean mv[]={
             cf.eventComposing
@@ -220,16 +216,8 @@ public class ConfigForm implements
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();
         }
-//#if !(MIDP1)
-        if (c==cmdPlaySound) testSound();
-//#endif
         if (c==cmdCancel) destroyView();
     }
-
-//#if !(MIDP1)
-    public void commandAction(Command command, Item item) {
-    }
-//#endif
     
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);

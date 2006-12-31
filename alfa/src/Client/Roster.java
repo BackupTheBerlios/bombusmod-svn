@@ -508,7 +508,7 @@ public class Roster
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
                 try {
-                    theStream.close();
+                    theStream.logOut();
                 } catch (Exception e) { e.printStackTrace(); }
                 theStream=null;
                 System.gc();
