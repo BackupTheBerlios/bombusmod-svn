@@ -16,7 +16,7 @@ import java.util.Vector;
 import ui.Colors;
 import ui.IconTextElement;
 import ui.ImageList;
-import com.alsutton.jabber.datablocks.Presence;
+import Network.Presence;
 /**
  *
  * @author Eugene Stahov

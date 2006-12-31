@@ -8,7 +8,8 @@
  */
 
 package Client;
-import com.alsutton.jabber.datablocks.Presence;
+import Network.Stream;
+import Network.Presence;
 import images.RosterIcons;
 import io.NvStorage;
 import java.util.*;
@@ -21,7 +22,6 @@ import ui.ImageList;
 import javax.microedition.rms.*;
 import javax.microedition.lcdui.*;
 import Client.Roster;
-import com.alsutton.jabber.*;
 
 /**
  *
@@ -31,16 +31,10 @@ public class Account extends IconTextElement{
     
     public final static String storage="accnt_db";
             
-    private String userName="adeen";
-    private String password="336699";
+    private String userName="";
+    private String password="";
     public boolean active;
 
-    private String server="damochka.ru";
-
-    private int port=80;
-
-    private String messageServer="message.damochka.ru";
-        
     /** Creates a new instance of Account */
     public Account() {
         super(RosterIcons.getInstance());
@@ -140,9 +134,5 @@ public class Account extends IconTextElement{
         */
         //System.out.println(url);
         return new Stream( getUserName(), getPassword());    
-    }
-
-    public String getServer() {
-        return server;
     }
 }

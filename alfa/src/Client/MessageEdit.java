@@ -9,7 +9,7 @@
 
 package Client;
 import archive.ArchiveList;
-import com.alsutton.jabber.Stream;
+import Network.Stream;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;

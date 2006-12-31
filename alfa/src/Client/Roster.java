@@ -11,15 +11,14 @@
 package Client;
 
 import Info.Version;
+import Network.Presence;
+import Network.Stream;
 import archive.ArchiveList;
 //import com.sun.pisces.LineSink;
 import images.RosterIcons;
 import locale.SR;
 import login.LoginListener;
-import login.NonSASLAuth;
 import midlet.Damafon;
-import com.alsutton.jabber.*;
-import com.alsutton.jabber.datablocks.*;
 import java.io.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -37,7 +36,6 @@ import Client.Config;
 public class Roster
         extends VirtualList
         implements
-        JabberListener,
         CommandListener,
         Runnable,
         LoginListener
@@ -82,7 +80,7 @@ public class Roster
 //    private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10); //locale
     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 3); //locale
 //    private Command cmdAdd=new Command(SR.MS_ADD_CONTACT, Command.SCREEN, 12); //locale
-    private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 4);     //locale
+    private Command cmdOptions=new Command(SR.MS_OPTIONS, Command.SCREEN, 4);     //locale
     private Command cmdAccount=new Command("Account >", Command.SCREEN, 5); //locale
     private Command cmdLightOn=new Command("LightOn", Command.SCREEN, 6);
     private Command cmdLightOff=new Command("LightOFF", Command.SCREEN, 6);
@@ -152,7 +150,7 @@ public class Roster
         //addCommand(cmdConference);
         setLight(true);
         //addCommand(cmdPrivacy);
-        addCommand(cmdTools);
+        addCommand(cmdOptions);
         addCommand(cmdArchive);
         addCommand(cmdInfo);
         addCommand(cmdAccount);
@@ -205,7 +203,6 @@ public class Roster
     
     // establishing connection process
     public void run(){
-        Iq.setXmlLang("en");
         setQuerySign(true);
         setProgress(25);
 	if (!reconnect) {
@@ -258,7 +255,7 @@ public class Roster
         error.addCommand(new Command("Ok", Command.BACK, 1));
         display.setCurrent(error, display.getCurrent());
          */
-        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Error", s);
+        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Debug", s);
         messageStore("0", m);
     }
     
@@ -478,78 +475,8 @@ public class Roster
      * Method to inform the server we are now online
      */
     
-    public void sendPresence(int status) {
-        myStatus=status;
-        setQuerySign(false);
-        if (myStatus==Presence.PRESENCE_OFFLINE) {
-            synchronized(hContacts) {
-                for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                    Contact c=(Contact)e.nextElement();
-                    c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
-                }
-            }
-        }
-        //Vector v=sd.statusList;//StaticData.getInstance().statusList;
-        //ExtendedStatus es=null;
-        
-        // reconnect if disconnected        
-        if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
-            reconnect=(hContacts.size()>1);
-            redraw();
-            
-            new Thread(this).start();
-            return;
-        }
-        
-        // send presence
-        ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
-        Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
-        if (theStream!=null) {
-            // disconnect
-            if (status==Presence.PRESENCE_OFFLINE) {
-                try {
-                    theStream.logOut();
-                } catch (Exception e) { e.printStackTrace(); }
-                theStream=null;
-                System.gc();
-            }
-        }
-        Contact c=selfContact();
-        c.status=myStatus;
-        sort(hContacts);
-        
-        reEnumRoster();
-    }
-    
     public Contact selfContact() {
 	return getContact(myJid.getId(), true);
-    }
-
-    /**
-     * Method to send a message to the specified recipient
-     */
-    
-    public void sendMessage(Contact to, final String body, final String subject , int composingState) {
-        boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
-        Message message = new Message( 
-                to.getJid(), 
-                body, 
-                subject, 
-                groupchat 
-        );
-        if (groupchat && body==null /*&& subject==null*/) return;
-        if (composingState>0) {
-            JabberDataBlock event=new JabberDataBlock("x", null,null);
-            event.setNameSpace("jabber:x:event");
-            if (body==null) event.addChild(new JabberDataBlock("id",null, null));
-            if (composingState==1) {
-                event.addChild("composing", null);
-            }
-            message.addChild(event);
-        }
-        //System.out.println(simpleMessage.toString());
-        //theStream.send( message );
-        lastMessageTime=Time.localTime();
     }
 
     /**
@@ -573,33 +500,17 @@ public class Roster
         // залогинились. теперь, если был реконнект, то просто пошлём статус
         if (reconnect) {
             querysign=reconnect=false;
-            //sendPresence(myStatus);
-            sendPresence(cf.loginstatus);
             return;
         }
         
         // иначе будем читать ростер
         theStream.enableRosterNotify(true);
         rpercent=60;
-        
-        JabberDataBlock qr=new IqQueryRoster();
+
         setProgress("Roster request", 60); //locale
         //theStream.send( qr );
     }
-    
-    public void blockArrived( JabberDataBlock data ) { // тут листенер потока!!!
-        try {
 
-        } catch( Exception e ) {
-            e.printStackTrace();
-        }
-    }
-/*    
-    void processRoster(String data){
-        //updateContact(name,jid,group, subscr, ask);
-        sort(hContacts);
-    }
-*/    
     
     public void messageStore(Contact c, Msg message) {
         if (c==null) return;  
@@ -656,7 +567,7 @@ public class Roster
         
         EventNotify notify=null;
         
-        boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
+        boolean blFlashEn=false;   // motorola e398 backlight bug
         
         switch (profile) {
             case AlertProfile.ALL:   notify=new EventNotify(display, true, cf.vibraLen, blFlashEn); break;
@@ -690,42 +601,7 @@ public class Roster
 	    if (index>=0) moveCursorTo(index, force);
 	}
     }
-    
-    
-    /**
-     * Method to begin talking to the server (i.e. send a login message)
-     */
-    
-    public void beginConversation(String SessionId) {
-        //try {
-        setProgress(SR.MS_LOGINPGS, 42);
-        
-        new NonSASLAuth(sd.account, SessionId, this, theStream);
-    }
-    
-    /**
-     * If the connection is terminated then print a message
-     *
-     * @e The exception that caused the connection to be terminated, Note that
-     *  receiving a SocketException is normal when the client closes the stream.
-     */
-    public void connectionTerminated( Exception e ) {
-        //l.setTitleImgL(0);
-        //System.out.println( "Connection terminated" );
-        if( e != null ) {
-            String error=e.getClass().getName()+"\n"+e.getMessage();
-            errorLog(error);
-            e.printStackTrace();
-        }
-        setProgress(SR.MS_DISCONNECTED, 0);
-        try {
-            sendPresence(Presence.PRESENCE_OFFLINE);
-        } catch (Exception e2) {
-            e2.printStackTrace();
-        }
-        redraw();
-    }
-    
+
     //private VList l;
     //private IconTextList l;
     
@@ -801,18 +677,7 @@ public class Roster
         if (theStream!=null)
         try {
              //sendPresence(Presence.PRESENCE_OFFLINE);
-            /*
-81.176.79.141:80  
-POST /auth.phtml?act=logout HTTP/1.0
-Content-Type: application/x-www-form-urlencoded
-User-Agent: Damafon 2.1.12.4000
-Pragma: no-cache
-Host: damochka.ru:80
-Content-Length: 12
-Cookie: SITEID=24825b1ae9ad72a2f5314d70448a0d08; auth2_login=adeen; lastUpdate=1166961844; auth2_clean: ok-1166961769; auth2_pwd: 0%3A2c3bae7a8869af158d85bc766d1e323635b7; VIPID: ; news_last=2; auth2_logged=1; auth2_save=1; meet_nr=1; hotlog=1
-
-redirect=%2F
-            */
+            theStream.logOut();
         } catch (Exception e) { 
             e.printStackTrace(); 
         }
@@ -821,7 +686,11 @@ redirect=%2F
    
     public void commandAction(Command c, Displayable d){
         if (c==cmdUpdate) {
-            updateRoster(null);
+            try {
+                theStream.getRoster();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             return;
         }
         
@@ -847,7 +716,7 @@ redirect=%2F
         if (c==cmdLightOff) { setLight(false); }
         
         
-        if (c==cmdTools) { new RosterToolsMenu(display); }
+        if (c==cmdOptions) { new ConfigForm(display); }
         // stream-sensitive commands
         // check for closed socket
         if (StaticData.getInstance().roster.theStream==null) return;
@@ -1055,8 +924,7 @@ redirect=%2F
     }
 
     public void updateRoster(String RosterContacts) {
-        theStream.enableRosterNotify(false);
-        
+       
         processRoster(RosterContacts);
 
         setProgress("Connected",100);

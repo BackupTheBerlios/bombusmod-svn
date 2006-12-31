@@ -121,16 +121,14 @@ public class ConfigForm implements CommandListener
 //#endif
         application.append(SR.MS_HEAP_MONITOR,null); //locale
 	if (!cf.ghostMotor)
-            application.append(SR.MS_FLASHBACKLIGHT,null); //locale
+            application.append("1251",null); //locale
 	if (cf.allowMinimize)
 	    application.append(SR.MS_ENABLE_POPUP,null); //locale
 	ap[apctr++]=cf.memMonitor;
-	ap[apctr++]=cf.blFlash;
+	ap[apctr++]=cf.win1251;
 	ap[apctr++]=cf.popupFromMinimized;
 	
         application.setSelectedFlags(ap);
-        
-	keepAlive=new NumberField("Keep-Alive period", cf.keepAlive, 20, 600 ); //locale
 	fieldGmt=new NumberField("GMT offset", cf.gmtOffset, -12, 12);  //locale
         fieldLoc=new NumberField(SR.MS_CLOCK_OFFSET, cf.locOffset, -12, 12 ); //locale
 
@@ -155,8 +153,6 @@ public class ConfigForm implements CommandListener
 
 	f.append(application);
 
-	f.append(keepAlive);
-	
         f.append("Time settings (hours)"); //locale
         f.append("\n");
         
@@ -196,12 +192,11 @@ public class ConfigForm implements CommandListener
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
 //#endif
 	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
-	    cf.blFlash=ap[apctr++];
+	    cf.win1251=ap[apctr++];
 	    cf.popupFromMinimized=ap[apctr++];
             
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();
-	    cf.keepAlive=keepAlive.getValue();
             
             FontCache.rosterFontSize=cf.font1=font1.getSelectedIndex()*8;
             FontCache.msgFontSize=cf.font2=font2.getSelectedIndex()*8;

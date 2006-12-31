@@ -176,7 +176,7 @@ public class SR {
     public final static String MS_NO_VERSION_AVAILABLE="No client version available";
     public final static String MS_MSG_LIMIT="Message limit";
     
-    public final static String MS_OPENING_STREAM="Opening stream";
+    public final static String MS_OPENING_STREAM="Loading";
     public final static String MS_SASL_STREAM="SASL handshake";
     public final static String MS_ZLIB="Using compression";
     public final static String MS_AUTH="Authenticating";

@@ -1,18 +1,11 @@
-package com.alsutton.jabber;
+package Network;
 import Client.Config;
 import Client.Msg;
 import Client.Roster;
 import Client.StaticData;
-import com.alsutton.parser.EventListener;
-import com.alsutton.parser.Parser;
-//import com.sun.midp.io.BufferedConnectionAdapter;
-import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
 import javax.microedition.io.*;
-import com.alsutton.jabber.datablocks.*;
-import login.NonSASLAuth;
-import util.StringLoader;
 import util.strconv;
 
 
@@ -21,15 +14,7 @@ import util.strconv;
  * The stream to a jabber server.
  */
 
-public class Stream implements EventListener, Runnable {
-    
-    private Utf8IOStream iostream;
-    
-    /**
-     * The dispatcher thread.
-     */
-    
-    private JabberDataBlockDispatcher dispatcher;
+public class Stream implements Runnable {
     
     private boolean rosterNotify;
     
@@ -44,6 +29,8 @@ public class Stream implements EventListener, Runnable {
     private String passWord;
     
     private static Config cf;
+    
+    private static StaticData sd;
 
     
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
@@ -59,6 +46,7 @@ public class Stream implements EventListener, Runnable {
         this.passWord=passWord;
         
         cf=Config.getInstance();
+        sd=StaticData.getInstance();
         
         new Thread( this ). start();
     }
@@ -102,7 +90,6 @@ public class Stream implements EventListener, Runnable {
                 buf2.append((char) ch);
             }
             if (cf.eventComposing) {
-                StaticData sd=StaticData.getInstance();
                 sd.roster.errorLog(buf2.toString());
             }
          }
@@ -153,7 +140,6 @@ public class Stream implements EventListener, Runnable {
                 buf.append((char) ch);
             }
             if (cf.eventComposing) {
-                StaticData sd=StaticData.getInstance();
                 sd.roster.errorLog(buf.toString());
             }
         }
@@ -171,7 +157,7 @@ public class Stream implements EventListener, Runnable {
         //System.out.println(myId);
     }
  
-    private void getRoster() throws IOException {
+    public void getRoster() throws IOException {
         String uri ="http://message.damochka.ru:80/GETCLIST";
         String requeststring="id="+myId+"&sid="+sessId+"&type=1";
         byte[] request_body = requeststring.getBytes();
@@ -200,7 +186,6 @@ public class Stream implements EventListener, Runnable {
                 buf.append((char) ch);
             }
             if (cf.eventComposing) {
-                StaticData sd=StaticData.getInstance();
                 sd.roster.errorLog(buf.toString());
             }
         }
@@ -214,9 +199,8 @@ public class Stream implements EventListener, Runnable {
         
         if (buf.toString().length()>0) {
             RosterContacts=strconv.convCp1251ToUnicode(buf.toString());
+            sd.roster.updateRoster(RosterContacts);
         }
-        
-        //System.out.println(RosterContacts);
     }
 
     private void initiateLogin() throws IOException {
@@ -250,7 +234,6 @@ public class Stream implements EventListener, Runnable {
                 buf.append((char) ch);
             }
             if (cf.eventComposing) {
-                StaticData sd=StaticData.getInstance();
                 sd.roster.errorLog(buf.toString());
             }
         }
@@ -263,10 +246,8 @@ public class Stream implements EventListener, Runnable {
         }
 
         if (buf.toString().length()>0) {
-            messagebuffer=strconv.convCp1251ToUnicode(buf.toString());
+            messagebuffer=buf.toString();
         }
-        
-        StaticData sd=StaticData.getInstance();
         
         try {
             while (messagebuffer.indexOf("type:'0'")>-1) {
@@ -283,6 +264,7 @@ public class Stream implements EventListener, Runnable {
                 for (Enumeration e=MessageItem.elements(); e.hasMoreElements();){
 
                         String from=(String)e.nextElement().toString().trim();
+                        String time=(String)e.nextElement().toString().trim();
                         String text=(String)e.nextElement().toString().trim();
                         
                         //System.out.println(text);
@@ -290,6 +272,8 @@ public class Stream implements EventListener, Runnable {
                         Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, null, text);
 
                         sd.roster.messageStore(from, m);
+                        
+                        sendNotify(from, time);
                 }
             }
         } catch (Exception e) {}
@@ -297,7 +281,6 @@ public class Stream implements EventListener, Runnable {
     }   
     
     public void run() {
-        StaticData sd=StaticData.getInstance();
         try {
             if (sessId!=null) {
                     logOut();
@@ -307,29 +290,25 @@ public class Stream implements EventListener, Runnable {
 
             if (sessId!=null) {
                 getMyId();
-                sd.roster.setProgress("SessId", 45);
+                sd.roster.setProgress("get SessId", 45);
             } else {
-                //System.out.println("�� �������� ������!");
-                sd.roster.setProgress("SessId failed", 0);
+                sd.roster.setProgress("get SessId failed", 0);
                 sd.roster.errorLog("SessId failed");
                 return;
             }
 
             if (myId!=null) { 
                 getRoster();
-                sd.roster.setProgress("myId", 50);
+                sd.roster.setProgress("get myId", 50);
             } else {
-                //System.out.println("�� �������� ���� id!");
-                sd.roster.setProgress("myId failed", 0);
+                sd.roster.setProgress("get myId failed", 0);
                 sd.roster.errorLog("myId failed");
                 return;
             }
 
             if (RosterContacts!=null) {
-                sd.roster.updateRoster(RosterContacts);
-                sd.roster.setProgress("Roster", 60);
+                sd.roster.setProgress("get Roster", 60);
             } else {
-                //System.out.println("�� �������� ������, �� ������?!");
                 sd.roster.setProgress("Roster clear?", 65);
                 sd.roster.errorLog("Roster clear?");
             }
@@ -350,6 +329,7 @@ public class Stream implements EventListener, Runnable {
         int pos=0;
         int pos2=0;
         int pos3=0;
+        int pos4=0;
         
         System.out.println("MessageParser");
         
@@ -367,9 +347,20 @@ public class Stream implements EventListener, Runnable {
                     v.addElement(line);
                     line=null;
                     
+                    pos2=data.indexOf("time:'",pos)+6;
+                    pos3=data.indexOf("'",pos2);
+                    line=data.substring(pos2,pos3);
+                    System.out.println(line);
+                    pos=pos3;
+                    v.addElement(line);
+                    line=null;
+                    
                     pos2=data.indexOf("text:'",pos)+6;
                     pos3=data.indexOf("'",pos2);
                     line=data.substring(pos2,pos3);
+                    if (!cf.win1251) {
+                        line=strconv.convCp1251ToUnicode(line);
+                    }
                     System.out.println(line);
                     pos=pos3;
                     v.addElement(line);
@@ -379,32 +370,13 @@ public class Stream implements EventListener, Runnable {
         } catch (Exception e)	{ }
 	return v;
     }
+
     
-    public void send( String data ) throws IOException {
-        // iostream.send(new StringBuffer(data));
-    }
-
-    public void plaintextEncountered(String text) {
-    }
-
-    public void setJabberListener( JabberListener listener ) {
-        dispatcher.setJabberListener( listener );
-    }
-
-    public void addBlockListener(JabberBlockListener listener) { 
-        dispatcher.addBlockListener(listener);
-    }
-    public void cancelBlockListener(JabberBlockListener listener) { 
-        dispatcher.cancelBlockListener(listener);
-    }
-
-    public void cancelBlockListenerByClass(Class removeClass) {
-        dispatcher.cancelBlockListenerByClass(removeClass);
-    }
-    
-    
-    public static boolean sendMessage(final String to, final String message) {
+    public static boolean sendMessage(final String to, String message) {
         String uri ="http://message.damochka.ru:80/SMS";
+        if (!cf.win1251) {
+            message=strconv.convUnicodeToCp1251(message);
+        }
         String requeststring="fromid="+myId+"&toid="+to+"&myid="+myId+"&ses_id="+sessId+"&smsg="+message+"&font_size=9&font_color=black&background_color=white&sendsms=1&inform=0";
         byte[] request_body = requeststring.getBytes();
         String messagebuffer=null;
@@ -434,7 +406,6 @@ public class Stream implements EventListener, Runnable {
                 buf.append((char) ch);
             }
             if (cf.eventComposing) {
-                StaticData sd=StaticData.getInstance();
                 sd.roster.errorLog(buf.toString());
             }
         } catch (IOException ex) {
@@ -453,10 +424,8 @@ public class Stream implements EventListener, Runnable {
         }
 
         if (buf.toString().length()>0) {
-            messagebuffer=strconv.convCp1251ToUnicode(buf.toString());
+            messagebuffer=buf.toString();
         }
-        
-        StaticData sd=StaticData.getInstance();
         
         try {
             while (messagebuffer.indexOf("type:'0'")>-1) {
@@ -520,7 +489,6 @@ public class Stream implements EventListener, Runnable {
                 buf.append((char) ch);
             }
             if (cf.eventComposing) {
-                StaticData sd=StaticData.getInstance();
                 sd.roster.errorLog(buf.toString());
             }
         }
@@ -534,6 +502,54 @@ public class Stream implements EventListener, Runnable {
 
         if (buf.toString().length()>0) {
             messagebuffer=strconv.convCp1251ToUnicode(buf.toString());
+        }
+    } 
+    
+    public void sendNotify(final String to, final String time) {
+        String uri ="http://message.damochka.ru:80/SMS?notify="+sessId+"."+myId+"."+to+"."+time+".0";
+        String requeststring="";
+        byte[] request_body = requeststring.getBytes();
+        String messagebuffer=null;
+        
+        HttpConnection http = null;
+        OutputStream oStrm= null;
+        InputStream iStrm = null;
+        
+        StringBuffer buf=new StringBuffer();
+
+        try {      
+            http = (HttpConnection) Connector.open(uri, Connector.READ_WRITE);
+            http.setRequestMethod(HttpConnection.GET);
+            http.setRequestProperty("Pragma","no-cache");
+            http.setRequestProperty("Content-Length", Integer.toString(requeststring.length()));
+            
+            oStrm = http.openOutputStream();
+            oStrm.write(request_body);
+
+
+            iStrm = http.openInputStream();
+            int ch;
+            
+            while( ( ch = iStrm.read() ) != -1 ){
+                if (ch>4096) break;
+                buf.append((char) ch);
+            }
+            if (cf.eventComposing) {
+                sd.roster.errorLog(buf.toString());
+            }
+        } catch (IOException ex) {
+                ex.printStackTrace();
+        }
+        finally
+        {
+            // Clean up
+                try {
+                    if (http != null) http.close();
+                    if (iStrm != null) iStrm.close();
+                    if (oStrm != null) oStrm.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
         }
     } 
 }

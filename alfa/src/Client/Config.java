@@ -31,13 +31,8 @@ public class Config {
     
     public final int vibraLen=getIntProperty("vibra_len",500);
     
-    public int keepAlive=200;//getIntProperty("keep_alive",200);
-    public int keepAliveType=getIntProperty("keep_alive_type",0);
-
     public boolean ghostMotor=getBooleanProperty("moto_e398",false);
-    public boolean blFlash=!ghostMotor; //true;
-    
-    public boolean muc119=getBooleanProperty("muc_119",true);	// before muc 1.19 use muc#owner instead of muc#admin
+    public boolean win1251=false; //true;
     
     public char keyLock=getCharProperty("key_lock",'*');
     public char keyVibra=getCharProperty("key_vibra",'#');
@@ -120,12 +115,10 @@ public class Config {
             greenKeyCode=VirtualList.SE_GREEN;
 	}
 	if (platform.startsWith("Nokia")) {
-	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	}
 	if (platform.startsWith("Moto")) {
 	    ghostMotor=true;
-	    blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    VirtualList.keyClear=0x1000;
@@ -157,11 +150,9 @@ public class Config {
 	    
 	    autoLogin=inputStream.readBoolean();
 	    
-	    keepAlive=inputStream.readInt();
-	    
 	    popupFromMinimized=inputStream.readBoolean();
 	    
-	    blFlash=inputStream.readBoolean();
+	    win1251=inputStream.readBoolean();
 	    memMonitor=inputStream.readBoolean();
             
             font1=inputStream.readInt();
@@ -205,12 +196,10 @@ public class Config {
 	    outputStream.writeInt(locOffset);
 	    
 	    outputStream.writeBoolean(autoLogin);
-	    
-	    outputStream.writeInt(keepAlive);
 
 	    outputStream.writeBoolean(popupFromMinimized);
 	    
-	    outputStream.writeBoolean(blFlash);
+	    outputStream.writeBoolean(win1251);
 	    outputStream.writeBoolean(memMonitor);
             
             outputStream.writeInt(font1);

@@ -10,8 +10,7 @@
 
 package Client;
 
-import com.alsutton.jabber.datablocks.IqVersionReply;
-import com.alsutton.jabber.datablocks.Presence;
+import Network.Presence;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.microedition.lcdui.Display;

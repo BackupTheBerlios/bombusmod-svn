@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2000,2001 Al Sutton (al@alsutton.com)
+  Copyright (c) 2000, Al Sutton (al@alsutton.com)
   All rights reserved.
   Redistribution and use in source and binary forms, with or without modification, are permitted
   provided that the following conditions are met:
@@ -24,36 +24,41 @@
   THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.alsutton.jabber;
+package Network;
+import images.RosterIcons;
+
+import java.util.*;
 
 /**
- * The interface classes that listen for jabber messages should implement
+ * Class representing the presence message block.
  */
 
-public interface JabberListener
+public class Presence
 {
-  /**
-   * Method called once the stream has been set up
-   */
-
-  public void beginConversation(String SessionId);
-
-  /**
-   * Method to handle an incomming block.
-   *
-   * @parameter data The incomming block
-   */
-
-  public void blockArrived( JabberDataBlock data );
-
-  /**
-   * Method called when the stream is terminated for some reason
-   *
-   * @param exception The exception that caused the termination. May be
-   *  null if the connection was terminated normally.
-   */
+  public final static int PRESENCE_ONLINE=0;
+  public final static int PRESENCE_CHAT=1;
+  public final static int PRESENCE_AWAY=2;
+  public final static int PRESENCE_XA=3;
+  public final static int PRESENCE_DND=4;
+  public final static int PRESENCE_OFFLINE=5;
+  public final static int PRESENCE_ASK=6;
+  public final static int PRESENCE_UNKNOWN=7;
+  public final static int PRESENCE_INVISIBLE=RosterIcons.ICON_INVISIBLE_INDEX;
+  public final static int PRESENCE_ERROR=RosterIcons.ICON_ERROR_INDEX;
+  public final static int PRESENCE_TRASH=RosterIcons.ICON_ERROR_INDEX+1;
+  public final static int PRESENCE_AUTH=-1;
   
-  public void rosterItemNotify();
+  public final static String PRS_OFFLINE="unavailable";
+  public final static String PRS_ERROR="error";
+  public final static String PRS_CHAT="chat";
+  public final static String PRS_AWAY="away";
+  public final static String PRS_XA="xa";
+  public final static String PRS_DND="dnd";
+  public final static String PRS_ONLINE="online";
+  public final static String PRS_INVISIBLE="invisible";
 
-  public void connectionTerminated( Exception e );
+  public final static String SUBSCRIBE="This user wants to subscribe to your presence.";
+  public final static String SUBSCRIBED="You are now authorized";
+  public final static String UNSUBSCRIBED="Your authorization has been removed!";
+  
 }

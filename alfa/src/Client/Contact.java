@@ -14,7 +14,7 @@ import util.strconv;
 import java.util.*;
 import ui.IconTextElement;
 import ui.ImageList;
-import com.alsutton.jabber.datablocks.Presence;
+import Network.Presence;
 
 /**
  * Contact
