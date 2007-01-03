@@ -27,15 +27,13 @@ public class ContactMessageList extends MessageList
     Contact contact;
     Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
     Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,2);
-    Command cmdQuoteNick=new Command("Quote nickname",Command.SCREEN,3);
     Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
     Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,3);
     Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,5);
-    Command cmdCopy = new Command("Copy", Command.SCREEN, 8);
-    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
-    Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,11);
-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
+    Command cmdCopy = new Command("Copy", Command.SCREEN, 6);
+    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
+    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN, 8);
     
     private ClipBoard clipboard;
     
@@ -58,14 +56,10 @@ public class ContactMessageList extends MessageList
         cursor=0;//activate
         
         addCommand(cmdMessage);
-        addCommand(cmdQuoteNick);
         addCommand(cmdPurge);
-        addCommand(cmdContact);
 	addCommand(cmdActive);
-        //if (getItemCount()>0) {
         addCommand(cmdQuote);
         addCommand(cmdArch);
-	//}
         addCommand(cmdCopy);
 
         setCommandListener(this);
@@ -95,12 +89,8 @@ public class ContactMessageList extends MessageList
     
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;
-	//Msg msg=getMessage(msgIndex);
-        //if (msg.unread) contact.resetNewMsgCnt();
-        //msg.unread=false;
         if (msgIndex<contact.lastUnread) return;
-        //if (contact.needsCount())
-            sd.roster.countNewMsgs();
+        sd.roster.countNewMsgs();
     }
     
     
@@ -116,31 +106,13 @@ public class ContactMessageList extends MessageList
     
     public void focusedItem(int index){ 
         markRead(index); 
-        /*try {
-            Msg msg=(Msg) contact.msgs.elementAt(index); 
-            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) addCommand(cmdSubscribe);
-            else removeCommand(cmdSubscribe);
-        } catch (Exception e) {}*/
     }
         
     public void commandAction(Command c, Displayable d){
         super.commandAction(c,d);
-        /*if (c==cmdBack) {
-            //contact.lastReaded=contact.msgs.size();
-            //contact.resetNewMsgCnt();            
-            destroyView();
-            return;
-        }*/
         if (c==cmdMessage) { 
             contact.msgSuspended=null; 
             keyGreen(); 
-        }
-        if (c==cmdQuoteNick) {
-            try {
-                String Body=getMessage(cursor).getBody();
-                String nickname=Body.substring(0,Body.indexOf('>'));
-                new MessageEdit(display,contact,nickname+": ");
-            } catch (Exception e) {/*no messages*/}
         }
         if (c==cmdResume) { keyGreen(); }
         if (c==cmdQuote) {
@@ -167,10 +139,6 @@ public class ContactMessageList extends MessageList
         }
         if (c==cmdPurge) {
             clearMessageList();
-        }
-        if (c==cmdContact) {
-            if (sd.roster.theStream!=null)
-                new RosterItemActions(display, contact);
         }
 	
 	if (c==cmdActive) {
@@ -220,12 +188,6 @@ public class ContactMessageList extends MessageList
 
     public void userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
-        if (keyCode==keyClear) {
-            //new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
-               // public void yes() { 
-                    clearMessageList();
-                //}
-            //};
-        }
+        if (keyCode==keyClear) clearMessageList();
     }
 }

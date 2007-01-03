@@ -58,8 +58,6 @@ public class Group extends IconTextElement {
 
     public void setIndex(int index) {
 	this.index = index;
-        if (index==Groups.TYPE_SEARCH_RESULT) 
-            imageExpandedIndex=RosterIcons.ICON_SEARCH_INDEX;
     }
 
     public void startCount(){
@@ -86,8 +84,8 @@ public class Group extends IconTextElement {
 	//|| gindex==Groups.NIL_INDEX
 	//|| gindex==Groups.TRANSP_INDEX
 	|| index==Groups.TYPE_NOT_IN_LIST
-	|| index==Groups.TYPE_TRANSP
-	|| c.origin==Contact.ORIGIN_GROUPCHAT
+	//|| index==Groups.TYPE_TRANSP
+	//|| c.origin==Contact.ORIGIN_GROUPCHAT
 	)
 	    contacts.addElement(c);
 	//grp.addContact(c);

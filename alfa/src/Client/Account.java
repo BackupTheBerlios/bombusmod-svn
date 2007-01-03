@@ -29,7 +29,7 @@ import Client.Roster;
  */
 public class Account extends IconTextElement{
     
-    public final static String storage="accnt_db";
+    public final static String storage="dmf_accnt";
             
     private String userName="";
     private String password="";
@@ -44,8 +44,6 @@ public class Account extends IconTextElement{
 	StaticData sd=StaticData.getInstance();
         
 	Account a=sd.account=Account.createFromStorage(Config.getInstance().accountIndex);
-        
-        System.out.println("loadAccount");
         
 	if (a!=null) {
             sd.roster.logoff();
@@ -123,16 +121,6 @@ public class Account extends IconTextElement{
     public void setPassword(String password) { this.password = password;  }
 
     public Stream openJabberStream() throws java.io.IOException{
-        /*
-        String proxy=null;
-	StringBuffer url=new StringBuffer();
-        url.append(server);
-        url.append(':');
-        url.append(port);
-        
-        url.insert(0, "socket://");
-        */
-        //System.out.println(url);
         return new Stream( getUserName(), getPassword());    
     }
 }

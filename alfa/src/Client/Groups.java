@@ -22,26 +22,26 @@ public class Groups{
     
     Vector groups;
     
-    public final static int TYPE_TRANSP=0;
-    public final static String TRANSP_GROUP=SR.MS_TRANSPORTS;//locale
+    //public final static int TYPE_TRANSP=0;
+    //public final static String TRANSP_GROUP=SR.MS_TRANSPORTS;//locale
     public final static int TYPE_SELF=1;
     public final static String SELF_GROUP=SR.MS_SELF_CONTACT;//locale
-    public final static int TYPE_SEARCH_RESULT=2;
-    public final static String SRC_RESULT_GROUP="Search Results"; //locale
+    //public final static int TYPE_SEARCH_RESULT=2;
+    //public final static String SRC_RESULT_GROUP="Search Results"; //locale
     public final static int TYPE_NOT_IN_LIST=3;
     public final static String NIL_GROUP=SR.MS_NOT_IN_LIST;//locale
-    public final static int TYPE_IGNORE=4;
-    public final static String IGNORE_GROUP="Ignore-List";
+    //public final static int TYPE_IGNORE=4;
+    //public final static String IGNORE_GROUP="Ignore-List";
     public final static int TYPE_COMMON=5;
     public final static String COMMON_GROUP=SR.MS_GENERAL;//locale
     
     public Groups(){
         groups=new Vector();
-        addGroup(Groups.TRANSP_GROUP, false);
+        //addGroup(Groups.TRANSP_GROUP, false);
         addGroup(Groups.SELF_GROUP, false);
-        addGroup(Groups.SRC_RESULT_GROUP, false);
+        //addGroup(Groups.SRC_RESULT_GROUP, false);
         addGroup(Groups.NIL_GROUP, false);
-        addGroup(Groups.IGNORE_GROUP, false);
+        //addGroup(Groups.IGNORE_GROUP, false);
         addGroup(Groups.COMMON_GROUP, false);
     }
 
@@ -66,7 +66,7 @@ public class Groups{
         }
 	gr.finishCount();
         
-        if (index==Groups.TYPE_SEARCH_RESULT) return; ;//don't count this contacts
+        //if (index==Groups.TYPE_SEARCH_RESULT) return; ;//don't count this contacts
         if (index==Groups.TYPE_NOT_IN_LIST) return; ;//don't count this contacts
         
 	rosterContacts+=gr.getNContacts();
@@ -123,7 +123,7 @@ public class Groups{
 	    if (grp.imageExpandedIndex==RosterIcons.ICON_EXPANDED_INDEX)
             s.addElement(grp.name);
         }
-        s.addElement(Groups.IGNORE_GROUP);
+        //s.addElement(Groups.IGNORE_GROUP);
         return s;
     }
     public int getCount() {return groups.size();}

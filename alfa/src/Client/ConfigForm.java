@@ -1,10 +1,5 @@
 /*
  * ConfigForm.java
- *
- * Created on 2 Май 2005 г., 18:19
- *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
  */
 
 package Client;
@@ -15,31 +10,6 @@ import ui.controls.NumberField;
 import util.StringLoader;
 import ui.*;
 
-/**
- *
- * @author Evg_S
- */
-
-/*
- * roster elements:
- *  [] self-contact
- *  [] offline contacts
- *  [] transports
- *  [] hidden group
- *  [] not-in-list
- *  [] clock
- *
- * message
- *  [] history
- *  [] composing
- *
- * startup actions
- *  [] login
- *  [] Join conferences
- *
- * application
- *  [] fullscreen
- */
 
 public class ConfigForm implements CommandListener 
 {
@@ -80,15 +50,11 @@ public class ConfigForm implements CommandListener
         f=new Form(SR.MS_OPTIONS);
         roster=new ChoiceGroup(SR.MS_ROSTER_ELEMENTS, Choice.MULTIPLE);
         roster.append(SR.MS_OFFLINE_CONTACTS, null);
-        roster.append(SR.MS_SELF_CONTACT, null);
-        roster.append("Ignore-List", null);
         roster.append(SR.MS_NOT_IN_LIST, null);
         roster.append(SR.MS_AUTOFOCUS,null);
         
         boolean ra[]={
             cf.showOfflineContacts,
-            cf.selfContact,
-            cf.ignore, 
             cf.notInList,
             cf.autoFocus
         };
@@ -100,7 +66,7 @@ public class ConfigForm implements CommandListener
         message.append("debug", null);
         
         boolean mv[]={
-            cf.eventComposing
+            cf.debug
         };
         this.mv=mv;
         
@@ -176,13 +142,10 @@ public class ConfigForm implements CommandListener
 	    startup.getSelectedFlags(su);
 	    
             cf.showOfflineContacts=ra[0];
-            cf.selfContact=ra[1];
-            cf.ignore=ra[2];
-            cf.notInList=ra[3];
-            cf.autoFocus=ra[4];
-
-            int haIdx=0;
-            cf.eventComposing=mv[haIdx++];
+            cf.notInList=ra[1];
+            cf.autoFocus=ra[2];
+            
+            cf.debug=mv[0];
 
 	    cf.autoLogin=su[0];
             

@@ -36,26 +36,11 @@ public class RosterItemActions extends Menu{
 
 	if (isContact) {
 	    Contact contact=(Contact)item;
-	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
-		addItem(SR.MS_LOGON,5); //locale
-		addItem(SR.MS_LOGOFF,6); //locale
-		addItem("Resolve Nicknames", 7); //locale
-	    }
-	    //if (contact.group==Groups.SELF_INDEX) addItem("Commands",30);
-	    
-	    addItem(SR.MS_VCARD,1); //locale
-	    addItem("Client Version",0); //locale
-	    addItem(SR.MS_COMMANDS,30); //locale
-	    
-	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
-		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
-		    addItem(SR.MS_EDIT,2); //locale
+	    if (contact.getGroupType()!=Groups.TYPE_SELF) {
+		addItem(SR.MS_EDIT,2); //locale
 		addItem(SR.MS_SUBSCRIPTION,3); //locale
 		addItem(SR.MS_DELETE,4); //locale
-                addItem(SR.MS_DIRECT_PRESENCE,45);
 	    }
-            
-	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return; //TODO: подключить тот же список, что и для ConferenceGroup
         }
 	if (getItemCount()>0) attachDisplay(display);
 	
@@ -88,16 +73,6 @@ public class RosterItemActions extends Menu{
                 case 4:
                     roster.deleteContact((Contact)item);
                     return;
-                case 21:
-                {
-                    roster.cleanupSearch();
-                    break;
-                }
-                case 45: //direct presence
-                {
-                    new StatusSelect(display, c);
-                    return;
-                }
             }
             
             destroyView();

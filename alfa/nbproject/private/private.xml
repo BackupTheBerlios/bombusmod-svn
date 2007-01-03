@@ -5,11 +5,16 @@
         <file>file:/C:/Bombus/bombusmod/alfa/src/Client/Account.java</file>
         <file>file:/C:/Bombus/bombusmod/alfa/src/Client/Config.java</file>
         <file>file:/C:/Bombus/bombusmod/alfa/src/Client/ConfigForm.java</file>
+        <file>file:/C:/Bombus/bombusmod/alfa/src/Client/Contact.java</file>
+        <file>file:/C:/Bombus/bombusmod/alfa/src/Client/ContactEdit.java</file>
+        <file>file:/C:/Bombus/bombusmod/alfa/src/Client/ContactMessageList.java</file>
+        <file>file:/C:/Bombus/bombusmod/alfa/src/Client/Group.java</file>
+        <file>file:/C:/Bombus/bombusmod/alfa/src/Client/Groups.java</file>
+        <file>file:/C:/Bombus/bombusmod/alfa/src/Client/Jid.java</file>
         <file>file:/C:/Bombus/bombusmod/alfa/src/Client/MessageEdit.java</file>
         <file>file:/C:/Bombus/bombusmod/alfa/src/Client/Roster.java</file>
-        <file>file:/C:/Bombus/bombusmod/alfa/src/Client/RosterItemActions.java</file>
-        <file>file:/C:/Bombus/bombusmod/alfa/src/Network/Presence.java</file>
         <file>file:/C:/Bombus/bombusmod/alfa/src/Network/Stream.java</file>
         <file>file:/C:/Bombus/bombusmod/alfa/src/locale/SR.java</file>
+        <file>file:/C:/Bombus/bombusmod/alfa/src/util/strconv.java</file>
     </open-files>
 </project-private>

@@ -92,7 +92,7 @@ public final class ContactEdit
             tNick.setString(c.nick);
             
             
-            if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST  && c.getGroupType()!=Groups.TYPE_SEARCH_RESULT) {
+            if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST) {
                 // edit contact
                 f.setTitle(jid);
                 cmdOk=new Command("Update", Command.OK, 1); //locale

@@ -89,7 +89,7 @@ public class Stream implements Runnable {
                 if (ch>4096) break;
                 buf2.append((char) ch);
             }
-            if (cf.eventComposing) {
+            if (cf.debug) {
                 sd.roster.errorLog(buf2.toString());
             }
          }
@@ -139,7 +139,7 @@ public class Stream implements Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            if (cf.eventComposing) {
+            if (cf.debug) {
                 sd.roster.errorLog(buf.toString());
             }
         }
@@ -185,7 +185,7 @@ public class Stream implements Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            if (cf.eventComposing) {
+            if (cf.debug) {
                 sd.roster.errorLog(buf.toString());
             }
         }
@@ -233,7 +233,7 @@ public class Stream implements Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            if (cf.eventComposing) {
+            if (cf.debug) {
                 sd.roster.errorLog(buf.toString());
             }
         }
@@ -257,7 +257,7 @@ public class Stream implements Runnable {
                 Vector MessageItem=new Vector();
                 MessageItem=MessageParser(line);
                 
-                if (cf.eventComposing) {
+                if (cf.debug) {
                     sd.roster.errorLog(line);
                 }
 
@@ -405,7 +405,7 @@ public class Stream implements Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            if (cf.eventComposing) {
+            if (cf.debug) {
                 sd.roster.errorLog(buf.toString());
             }
         } catch (IOException ex) {
@@ -488,7 +488,7 @@ public class Stream implements Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            if (cf.eventComposing) {
+            if (cf.debug) {
                 sd.roster.errorLog(buf.toString());
             }
         }
@@ -534,7 +534,7 @@ public class Stream implements Runnable {
                 if (ch>4096) break;
                 buf.append((char) ch);
             }
-            if (cf.eventComposing) {
+            if (cf.debug) {
                 sd.roster.errorLog(buf.toString());
             }
         } catch (IOException ex) {

@@ -14,7 +14,6 @@ import Info.Version;
 import Network.Presence;
 import Network.Stream;
 import archive.ArchiveList;
-//import com.sun.pisces.LineSink;
 import images.RosterIcons;
 import locale.SR;
 import login.LoginListener;
@@ -73,13 +72,7 @@ public class Roster
     public Vector bookmarks;
 
     private Command cmdUpdate=new Command("Update Roster", Command.SCREEN, 1); //locale
-//    private Command cmdActions=new Command("Actions >", Command.SCREEN, 2); //locale
-//    private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 3); //locale
-//    private Command cmdActiveContact;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
-    private Command cmdAlert=new Command("Alert Profile", Command.SCREEN, 2); //locale
-//    private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10); //locale
     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 3); //locale
-//    private Command cmdAdd=new Command(SR.MS_ADD_CONTACT, Command.SCREEN, 12); //locale
     private Command cmdOptions=new Command(SR.MS_OPTIONS, Command.SCREEN, 4);     //locale
     private Command cmdAccount=new Command("Account >", Command.SCREEN, 5); //locale
     private Command cmdLightOn=new Command("LightOn", Command.SCREEN, 6);
@@ -93,11 +86,6 @@ public class Roster
 
 //#if (MOTOROLA_BACKLIGHT)
     private int blState=Integer.MAX_VALUE;
-
-//#endif
-
-//#if SASL
-    private String token;
 
 //#endif
     
@@ -134,22 +122,7 @@ public class Roster
         
         addCommand(cmdUpdate);
         
-        //int activeType=Command.SCREEN;
-        //String platform=Version.getPlatformName();
-        //if (platform.startsWith("Nokia")) activeType=Command.BACK;
-        //if (platform.startsWith("Intent")) activeType=Command.BACK;
-        
-        //cmdActiveContact=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
-        
-        //addCommand(cmdStatus);
-        //addCommand(cmdActions);
-        //addCommand(cmdActiveContact);
-        addCommand(cmdAlert);
-        //addCommand(cmdAdd);
-        //addCommand(cmdServiceDiscovery);
-        //addCommand(cmdConference);
         setLight(true);
-        //addCommand(cmdPrivacy);
         addCommand(cmdOptions);
         addCommand(cmdArchive);
         addCommand(cmdInfo);
@@ -284,11 +257,8 @@ public class Roster
     
     private void updateTitle(){
         int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus;
-        int profile=cf.profile;//StaticData.getInstance().config.profile;
-        Object en=(profile>1)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX):null;
         Title title=(Title) getTitleItem();
         title.setElementAt(new Integer(s), 2);
-        title.setElementAt(en, 5);
         if (messageCount==0) {
             messageIcon=null;
             title.setElementAt(null,1);
@@ -317,9 +287,7 @@ public class Roster
         int index=0;
         synchronized (hContacts) {
             while (index<hContacts.size()) {
-                if ( ((Contact) hContacts.elementAt(index)).getGroupType()==Groups.TYPE_SEARCH_RESULT )
-                    hContacts.removeElementAt(index);
-                else index++;
+                index++;
             }
         }
         reEnumRoster();
@@ -523,8 +491,6 @@ public class Roster
         
         if (countNewMsgs()) reEnumRoster();
         
-        if (c.getGroupType()==Groups.TYPE_IGNORE) return;    // no signalling/focus on ignore
-        
 	if (cf.popupFromMinimized)
 	    Damafon.getInstance().hideApp(false);
 	
@@ -549,8 +515,6 @@ public class Roster
         
         if (countNewMsgs()) reEnumRoster();
         
-        if (c.getGroupType()==Groups.TYPE_IGNORE) return;    // no signalling/focus on ignore
-        
 	if (cf.popupFromMinimized)
 	    Damafon.getInstance().hideApp(false);
 	
@@ -562,19 +526,13 @@ public class Roster
     
     public void playNotify(int event) {
         Config cf=Config.getInstance();
-        int profile=cf.profile;
-        if (profile==AlertProfile.AUTO) profile=AlertProfile.ALL;
         
         EventNotify notify=null;
         
         boolean blFlashEn=false;   // motorola e398 backlight bug
         
-        switch (profile) {
-            case AlertProfile.ALL:   notify=new EventNotify(display, true, cf.vibraLen, blFlashEn); break;
-            case AlertProfile.NONE:  notify=new EventNotify(display, false,    0,           false    ); break;
-            case AlertProfile.VIBRA: notify=new EventNotify(display, false,    cf.vibraLen, blFlashEn); break;
-            case AlertProfile.SOUND: notify=new EventNotify(display, true, 0,           blFlashEn); break;
-        }
+        notify=new EventNotify(display, true, cf.vibraLen, blFlashEn); 
+
         if (notify!=null) notify.startNotify();
     }
     
@@ -708,7 +666,6 @@ public class Roster
         
         if (c==cmdAccount){ new AccountSelect(display, false); }
         //if (c==cmdStatus) { new StatusSelect(display, null); }
-        if (c==cmdAlert) { new AlertProfile(display); }
         if (c==cmdArchive) { new ArchiveList(display, null); }
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
@@ -751,16 +708,6 @@ public class Roster
         if (keyCode==cf.keyLock) 
             new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor); 
 //#endif
-        if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
-            // swap profiles
-            int profile=cf.profile;
-            cf.profile=(profile==AlertProfile.VIBRA)? 
-                cf.lastProfile : AlertProfile.VIBRA;
-            cf.lastProfile=profile;
-            
-            updateTitle();
-            redraw();
-        }
         
         if (keyCode==cf.keyOfflines /* || keyCode==MOTOE680_REALPLAYER CONFLICT WITH ALCATEL. (platform=J2ME) 
          TODO: redifine keyOfflines*/) {
@@ -873,19 +820,13 @@ public class Roster
                     }
                     // self-contact group
                     Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
-                    if (cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 )
+                    if (selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 )
                         groups.addToVector(tContacts, Groups.TYPE_SELF);
                     // adding groups
                     for (i=Groups.TYPE_COMMON;i<groups.getCount();i++)
                         groups.addToVector(tContacts,i);
-                    // hiddens
-                    if (cf.ignore) groups.addToVector(tContacts,Groups.TYPE_IGNORE);
                     // not-in-list
                     if (cf.notInList) groups.addToVector(tContacts,Groups.TYPE_NOT_IN_LIST);
-
-                    // search result
-                    //if (groups.getGroup(Groups.SRC_RESULT_INDEX).tncontacts>0)
-                    groups.addToVector(tContacts, Groups.TYPE_SEARCH_RESULT);
                     
                     vContacts=tContacts;
                     

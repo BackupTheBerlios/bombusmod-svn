@@ -154,6 +154,8 @@ public final class MessageParser implements Runnable{
         }
 	addSmile("http://",URL);
         addSmile("tel://",URL);
+        addSmile("https://",URL);
+        addSmile("native:",URL);
     }
 
     public void parseMsg(MessageItem messageItem,  int width, boolean smiles)

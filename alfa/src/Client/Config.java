@@ -45,12 +45,8 @@ public class Config {
     //public TimeZone tz=new RuGmt(0);
     public int accountIndex=-1;
     public boolean fullscreen=false;
-    public int def_profile=0;
     public boolean showOfflineContacts=true;
-    public boolean selfContact=false;
     public boolean notInList=true;
-    public boolean ignore=false;
-    public boolean eventComposing=false;
     
     public boolean autoLogin=true;
     
@@ -70,15 +66,13 @@ public class Config {
     
     // runtime values
     public boolean allowMinimize=false;
-    public int profile=0;
-    public int lastProfile=0;
-    
-    public int loginstatus=0;//loginstatus
     
     public boolean istreamWaiting;
 
     // Singleton
     private static Config instance;
+
+    public boolean debug = false;
 
     
     public static Config getInstance(){
@@ -135,15 +129,12 @@ public class Config {
     
     protected void loadFromStorage(){
 	try {
-	    DataInputStream inputStream=NvStorage.ReadFileRecord("config", 0);
+	    DataInputStream inputStream=NvStorage.ReadFileRecord("dmf_config", 0);
+            
 	    accountIndex = inputStream.readInt();
 	    showOfflineContacts=inputStream.readBoolean();
 	    fullscreen=inputStream.readBoolean();
-	    def_profile = inputStream.readInt();
-	    selfContact=inputStream.readBoolean();
 	    notInList=inputStream.readBoolean();
-	    ignore=inputStream.readBoolean();
-	    eventComposing=inputStream.readBoolean();
 	    
 	    gmtOffset=inputStream.readInt();
 	    locOffset=inputStream.readInt();
@@ -162,17 +153,13 @@ public class Config {
 	    
 	    textWrap=inputStream.readInt();
             
-            loginstatus=inputStream.readInt();
+            debug=inputStream.readBoolean();
 	    
 	    inputStream.close();
 	} catch (Exception e) {
 	    System.out.println("trouble in Config load :(");
 	}
         
-        
-	
-	lastProfile=profile=def_profile;
-        if (lastProfile==AlertProfile.VIBRA) lastProfile=0;
 	updateTime();
 	VirtualList.fullscreen=fullscreen;
 	VirtualList.memMonitor=memMonitor;
@@ -186,11 +173,7 @@ public class Config {
 	    outputStream.writeInt(accountIndex);
 	    outputStream.writeBoolean(showOfflineContacts);
 	    outputStream.writeBoolean(fullscreen);
-	    outputStream.writeInt(def_profile);
-	    outputStream.writeBoolean(selfContact);
 	    outputStream.writeBoolean(notInList);
-	    outputStream.writeBoolean(ignore);
-	    outputStream.writeBoolean(eventComposing);
 	    
 	    outputStream.writeInt(gmtOffset);
 	    outputStream.writeInt(locOffset);
@@ -208,11 +191,12 @@ public class Config {
             outputStream.writeBoolean(autoFocus);
 
 	    outputStream.writeInt(textWrap);
-	    
-            outputStream.writeInt(loginstatus);
+            
+            outputStream.writeBoolean(debug);
+            
 	} catch (Exception e) { e.printStackTrace(); }
 	
-	NvStorage.writeFileRecord(outputStream, "config", 0, true);
+	NvStorage.writeFileRecord(outputStream, "dmf_config", 0, true);
     }
     
     

@@ -35,9 +35,7 @@ public class MessageEdit
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90); //locale
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99); //locale
     private Command cmdSend=new Command("Send", Command.OK /*Command.SCREEN*/,1); //locale
-    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3); //locale
     private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me  //locale
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10); //locale
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 5); //locale
     private Command cmdPasteText=new Command("Paste", Command.SCREEN, 98);
     
@@ -131,18 +129,12 @@ public class MessageEdit
         }
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
-        if (to.origin>=Contact.ORIGIN_GROUPCHAT)
-            t.addCommand(cmdInsNick);
 	t.addCommand(cmdPaste);
         t.addCommand(cmdSuspend);
         t.addCommand(cmdPasteText);
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
-        
-        if (to.origin==Contact.ORIGIN_GROUPCHAT)
-            t.addCommand(cmdSubj);
-        
-        //t.setInitialInputMode("MIDP_LOWERCASE_LATIN");
+
         new Thread(this).start() ; // composing
         
         display.setCurrent(t);
@@ -181,11 +173,7 @@ public class MessageEdit
             body=null;
         }
         if (c==cmdSend && body==null) return;
-        if (c==cmdSubj) {
-            if (body==null) return;
-            subj=body;
-            body="/me has set the topic to: "+subj;
-        }
+
         // message/composing sending
         destroyView();
         new Thread(this).start();
@@ -195,7 +183,6 @@ public class MessageEdit
     
     public void run(){
         Roster r=StaticData.getInstance().roster;
-        int comp=0; // composing event off
         
         if (body!=null /*|| subj!=null*/ ) {
             String from=StaticData.getInstance().account.toString();
@@ -204,15 +191,12 @@ public class MessageEdit
             // не шлём composing
             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
                 to.addMessage(msg);
-                comp=1; // composing event in message
             }
             
-        } else if (to.acceptComposing) comp=(composing)? 1:2;
-        
-        if (!Config.getInstance().eventComposing) comp=0;
+        }
         
         try {
-            if (body!=null /*|| subj!=null*/ || comp>0)
+            if (body!=null)
             Stream.sendMessage(to.bareJid, body);
         } catch (Exception e) {
             e.printStackTrace();

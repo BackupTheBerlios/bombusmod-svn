@@ -128,7 +128,6 @@ public class Contact extends IconTextElement{
         return st;
     }
     public int getNewMsgsCount() {
-        if (getGroupType()==Groups.TYPE_IGNORE) return 0;
         //return msgs.size()-lastReaded;
         if (newMsgCnt>-1) return newMsgCnt;
         int nm=0;
