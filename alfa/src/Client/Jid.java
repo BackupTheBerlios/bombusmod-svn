@@ -19,7 +19,7 @@ public class Jid {
     
     private String id;
     private String sex;
-    private String client;
+    private int client;
     private String status;
     private String nickName;
     
@@ -47,4 +47,6 @@ public class Jid {
     private void setJid(String s) {
         id=s;
     }
+    public int getClient(){ return client; }
+    public void setClient(int i){ client=i; }
 }

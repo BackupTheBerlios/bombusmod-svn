@@ -57,6 +57,7 @@ public class Contact extends IconTextElement{
     public int priority;
     private Group group;
     public int transport;
+    public Integer client;   
     
     public boolean acceptComposing;
     public Integer incomingComposing;
@@ -118,12 +119,8 @@ public class Contact extends IconTextElement{
     
     public int getImageIndex() {
         if (getNewMsgsCount()>0) 
-            switch (unreadType) {
-                case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
-                default: return RosterIcons.ICON_MESSAGE_INDEX;
-            }
-        if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;
-        int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
+            return RosterIcons.ICON_MESSAGE_INDEX;
+        int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:jid.getClient();
         if (st<8) st+=transport; 
         return st;
     }
@@ -136,7 +133,6 @@ public class Contact extends IconTextElement{
             Msg m=(Msg)e.nextElement();
             if (m.unread) { 
                 nm++;
-                if (m.messageType==Msg.MESSAGE_TYPE_AUTH) unreadType=m.messageType;
             }
         }
         return newMsgCnt=nm;
@@ -152,20 +148,10 @@ public class Contact extends IconTextElement{
     
     public void resetNewMsgCnt() { newMsgCnt=-1;}
     
-    public void setComposing (boolean state) {
-        incomingComposing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
-        //System.out.println("Composing:"+state);
-    }
-    
     public int compare(IconTextElement right){
         Contact c=(Contact) right;
         //1. status
         int cmp;
-        //if (origin>=ORIGIN_GROUPCHAT && c.origin>=ORIGIN_GROUPCHAT) {
-        //    if ((cmp=origin-c.origin) !=0) return cmp;
-        //} else {
-        //    if ((cmp=status-c.status) !=0) return cmp;
-        //}
         if ((cmp=key0-c.key0) !=0) return cmp;
         if ((cmp=status-c.status) !=0) return cmp;
         if ((cmp=key1.compareTo(c.key1)) !=0) return cmp;
@@ -223,27 +209,7 @@ public class Contact extends IconTextElement{
         if (nick==null) return bareJid;
         return nick+" <"+bareJid+">";
     }
-    
-    /**
-     * Splits string like "name@jabber.ru/resource" to vector 
-     * containing 2 substrings
-     * @return Vector.elementAt(0)="name@jabber.ru"
-     * Vector.elementAt(1)="resource"
-     */
-    /*
-     public static final Vector SplitJid(final String jid) {
-        Vector result=new Vector();
-        int i=jid.lastIndexOf('/');
-        if (i==-1){
-            result.addElement(jid);
-            result.addElement(null);
-        } else {
-            result.addElement(jid.substring(0,i));
-            result.addElement(jid.substring(i+1));
-        }
-        return result;
-    }
-     */
+
     public final void purge() {
         msgs=new Vector();
         resetNewMsgCnt();

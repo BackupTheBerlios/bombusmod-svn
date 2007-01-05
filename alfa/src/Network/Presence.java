@@ -36,29 +36,10 @@ import java.util.*;
 public class Presence
 {
   public final static int PRESENCE_ONLINE=0;
-  public final static int PRESENCE_CHAT=1;
-  public final static int PRESENCE_AWAY=2;
-  public final static int PRESENCE_XA=3;
-  public final static int PRESENCE_DND=4;
-  public final static int PRESENCE_OFFLINE=5;
-  public final static int PRESENCE_ASK=6;
-  public final static int PRESENCE_UNKNOWN=7;
-  public final static int PRESENCE_INVISIBLE=RosterIcons.ICON_INVISIBLE_INDEX;
-  public final static int PRESENCE_ERROR=RosterIcons.ICON_ERROR_INDEX;
-  public final static int PRESENCE_TRASH=RosterIcons.ICON_ERROR_INDEX+1;
-  public final static int PRESENCE_AUTH=-1;
+  public final static int PRESENCE_OFFLINE=1;
+  public final static int PRESENCE_UNKNOWN=2;
+  public final static int PRESENCE_MOBILE=3;
   
   public final static String PRS_OFFLINE="unavailable";
-  public final static String PRS_ERROR="error";
-  public final static String PRS_CHAT="chat";
-  public final static String PRS_AWAY="away";
-  public final static String PRS_XA="xa";
-  public final static String PRS_DND="dnd";
   public final static String PRS_ONLINE="online";
-  public final static String PRS_INVISIBLE="invisible";
-
-  public final static String SUBSCRIBE="This user wants to subscribe to your presence.";
-  public final static String SUBSCRIBED="You are now authorized";
-  public final static String UNSUBSCRIBED="Your authorization has been removed!";
-  
 }

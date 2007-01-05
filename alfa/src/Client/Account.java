@@ -90,7 +90,6 @@ public class Account extends IconTextElement{
             do {
                 if (is.available()==0) {a=null; break;}
                 a=createFromDataInputStream(is);
-                //a.updateJidCache();
                 index--;
             } while (index>-1);
             is.close();

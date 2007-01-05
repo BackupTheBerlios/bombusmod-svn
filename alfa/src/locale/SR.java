@@ -23,7 +23,7 @@ public class SR {
     public   static String MS_SELF_CONTACT = "self-contact" ;
     public   static String MS_NOT_IN_LIST = "Not-in-list" ;
     public   static String MS_GENERAL = "General" ;
-    public final static String MS_SHOWPWD="Show password";    
+    public   static String MS_SHOWPWD="Show password";    
     public   static String MS_ENT_SETUP = "Entering setup" ;
     public   static String MS_ADD_ARCHIVE = "to Archive" ;
     public   static String MS_BACK = "Back" ;
@@ -44,10 +44,10 @@ public class SR {
     public   static String MS_APPLICATION = "Application" ;
     public   static String MS_ENABLE_POPUP = "popup from background" ;
     public   static String MS_CLOCK_OFFSET = "Clock offset" ;    
-    public final static String MS_TEXTWRAP="Text wrapping";
-    public final static String MS_TEXTWRAP_CHARACTER="by chars";
-    public final static String MS_TEXTWRAP_WORD="by words";
-    public final static String MS_INFO="Info";
+    public   static String MS_TEXTWRAP="Text wrapping";
+    public   static String MS_TEXTWRAP_CHARACTER="by chars";
+    public   static String MS_TEXTWRAP_WORD="by words";
+    public   static String MS_INFO="Info";
     public   static String MS_CHSIGN = "- (Sign)" ;
     public   static String MS_SETDEFAULT = "Set default" ;    
     public   static String MS_CLEAR_LIST = "Clear List" ;
@@ -71,22 +71,23 @@ public class SR {
     public   static String MS_NEW_MESSAGE = "New Message" ;    
     public   static String MS_RESUME = "Resume Message" ;
     public   static String MS_QUOTE = "Quote" ;    
-    public final static String MS_REPLY="Reply";
+    public   static String MS_REPLY="Reply";
     public   static String MS_CONTACT = "Contact >" ;
-    public final static String MS_SLASHME = "/me";
+    public   static String MS_SLASHME = "/me";
     public   static String MS_NICKNAMES = "Nicknames" ;    
     public   static String MS_SET_SUBJECT = "Set Subject" ;    
     public   static String MS_LOGON = "Logon" ;
     public   static String MS_VCARD = "vCard" ;    
     public   static String MS_COMMANDS = "Commands" ;    
-    public final static String MS_DIRECT_PRESENCE="Send status";
+    public   static String MS_DIRECT_PRESENCE="Send status";
     public   static String MS_STATUS = "Status" ;
     public   static String MS_ALL_STATUSES = "for all status types" ;    
     public   static String MS_MESSAGE = "Message" ;    
     public   static String MS_SUBSCR_REMOVE = "Remove subscription" ;
     public   static String MS_PASTE_JID = "Paste Jid" ;
-    public final static String MS_RECENT="Recent";    
-
+    public   static String MS_RECENT="Recent";    
+    public   static String MS_OK="Ok";
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
 

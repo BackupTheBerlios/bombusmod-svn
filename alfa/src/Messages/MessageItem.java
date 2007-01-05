@@ -71,7 +71,7 @@ public class MessageItem implements
             int h=line.getVHeight();
             if (y>=0 && y<g.getClipHeight()) {
                 if (msg.itemCollapsed) if (msgLines.size()>1) {
-                    RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
+                    RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_COLLAPSED_INDEX, 0,0);
                     g.translate(8,0); //FIXME: хардкод
                 }
                 line.drawItem(g, 0, selected);

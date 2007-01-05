@@ -335,12 +335,11 @@ public class Roster
     
     public Vector getHContacts() {return hContacts;}
     
-    public final void updateContact(final String nick, final String jid, final String grpName, String subscr, boolean ask, final String newStatus) {
+    public final void updateContact(final String nick, final String jid, final String grpName, String subscr, boolean ask, final String newStatus, Integer client) {
         // called only on roster read
         int status;
         if (newStatus.equals("1")) {
             status=Presence.PRESENCE_ONLINE;    
-            System.out.println(status);
         } else {
             status=Presence.PRESENCE_OFFLINE;
         }
@@ -364,12 +363,7 @@ public class Roster
                 c.offline_type=status;
                 c.ask_subscribe=ask;
                 c.status=status;
-                
-                //Group g=c.getGroup();
-                //g.collapsed=true;     
-
-                //if (status==Presence.PRESENCE_TRASH) c.status=status;
-                //if (status!=Presence.PRESENCE_OFFLINE) c.status=status;
+                c.client=client;
                 c.setSortKey((nick==null)? jid:nick);
             }
         }
@@ -738,23 +732,7 @@ public class Roster
 	    } catch (Exception e) { }
 	}
     }
-
-    public void deleteContact(Contact c) {
-	for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
-	    Contact c2=(Contact)e. nextElement();
-	    if (c.jid.equals(c2.jid)) {
-		c2.status=c2.offline_type=Presence.PRESENCE_TRASH;
-	    }
-	}
-	
-	if (c.getGroupType()==Groups.TYPE_NOT_IN_LIST) {
-	    hContacts.removeElement(c);
-            countNewMsgs();
-	    reEnumRoster();
-	}// else
-	    //theStream.send(new IqQueryRoster(c.getBareJid(),null,null,"remove")); // тут обновляем ростер!
-    }
-   
+  
     
     public void setQuerySign(boolean requestState) {
         querysign=requestState;
@@ -893,13 +871,13 @@ public class Roster
                             String id=(String)e.nextElement().toString().trim();
                             String sex=(String)e.nextElement().toString().trim();
                             String status=(String)e.nextElement().toString().trim();
-                            String client=(String)e.nextElement().toString().trim();
+                            Integer client=(Integer)e.nextElement();
                             String name=(String)e.nextElement().toString().trim();
                             boolean ask= false;
 
                             String group="General";
 
-                            updateContact(name,id,group, "both", ask, status);
+                            updateContact(name,id,group, "both", ask, status, client);
                             sort(hContacts);            
                     }
                 }

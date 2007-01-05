@@ -34,7 +34,7 @@ class AccountForm implements CommandListener, ItemStateListener {
     private TextField userbox;
     private TextField passbox;
     
-    Command cmdOk = new Command("Ok", Command.OK, 1); //locale
+    Command cmdOk = new Command(SR.MS_OK, Command.OK, 1); //locale
     Command cmdPwd = new Command(SR.MS_SHOWPWD, Command.SCREEN, 2); //locale
     Command cmdCancel = new Command(SR.MS_BACK /*"Back"*/, Command.BACK, 99); //locale
     
