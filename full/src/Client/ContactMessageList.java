@@ -201,7 +201,7 @@ public class ContactMessageList extends MessageList
         
         if (c==cmdTemplate) {
             try {
-                TemplateContainer.store(getMessage(cursor));
+                new TemplateContainer(getMessage(cursor).getBody(), -1);
             } catch (Exception e) {/*no messages*/}
         }
         

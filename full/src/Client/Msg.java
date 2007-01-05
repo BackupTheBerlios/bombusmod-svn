@@ -73,8 +73,9 @@ public class Msg //implements MessageList.Element
             case MESSAGE_TYPE_AUTH: return Colors.MESSAGE_AUTH;
             case MESSAGE_TYPE_HISTORY: return Colors.MESSAGE_HISTORY;
             case MESSAGE_TYPE_SUBJ:return Colors.MSG_SUBJ;
+            default: return Colors.MESSAGE_HISTORY;
         }
-        return 0;
+        //return 0;
     }
     public String toString(){
         return (messageType==MESSAGE_TYPE_PRESENCE)?getTime()+body:body; 

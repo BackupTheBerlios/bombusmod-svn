@@ -62,9 +62,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	if (newaccount) account=new Account();
 	this.account=account;
 	
-	String title = (newaccount)?
-	    SR.MS_NEW_ACCOUNT /*"New Account"*/:
-	    (account.toString());
+	String title = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
 	f = new Form(title);
 	userbox = new TextField(SR.MS_USERNAME, account.getUserName(), 32, TextField.ANY); f.append(userbox);
 	passbox = new TextField(SR.MS_PASSWORD, account.getPassword(), 32, TextField.PASSWORD);	f.append(passbox);
