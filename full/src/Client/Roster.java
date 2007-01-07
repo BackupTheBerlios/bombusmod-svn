@@ -694,7 +694,7 @@ public class Roster
         if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
             reconnect=(hContacts.size()>1);
             redraw();
-            
+
             new Thread(this).start();
             return;
         }
@@ -959,7 +959,11 @@ public class Roster
         if (reconnect) {
             querysign=reconnect=false;
             sendPresence(myStatus);
-            //sendPresence(cf.loginstatus);
+            
+            //тут будем реконнектить конференции 
+            if (cf.autoJoinConferences)
+                    mucReconnect();
+            
             return;
         }
         
@@ -1781,12 +1785,12 @@ public class Roster
     public void reEnterRoom(Group group) {
 	ConferenceGroup confGroup=(ConferenceGroup)group;
         String confJid=confGroup.getSelfContact().getJid();
-		
-		new ConferenceForm(display, confJid, confGroup.password);
+	new ConferenceForm(display, confJid, confGroup.password);
         //sendPresence(confGroup.getSelfContact().getJid(), null, null);
 
 	//confGroup.getConference().status=Presence.PRESENCE_ONLINE;
     }
+    
     public void leaveRoom(int index, Group group){
 	//Group group=groups.getGroup(index);
 	ConferenceGroup confGroup=(ConferenceGroup)group;
@@ -1942,6 +1946,7 @@ public class Roster
 			    grp.addContact(c);
                         }
                     }
+                    
                     // self-contact group
                     Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
                     if (cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 )
@@ -2061,4 +2066,33 @@ public class Roster
                 com.siemens.mp.game.Light.setLightOff();    
             }
     }
+    
+    public void mucReconnect() {
+        Enumeration e;
+        
+        synchronized (hContacts) {
+            for (e=hContacts.elements();e.hasMoreElements();){
+                Contact c=(Contact)e.nextElement();
+                
+                if (c.origin==Contact.ORIGIN_GROUPCHAT) {
+                    if (c.getGroup() instanceof ConferenceGroup) {
+                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                        MucContact self=mucGrp.getSelfContact();
+                        if (self.status>=Presence.PRESENCE_OFFLINE) {
+                            confJoin(mucGrp.getConference().bareJid);
+                            System.out.println("reconnect "+mucGrp.getConference().bareJid);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public void confJoin(String conference){
+        ConferenceGroup grp=initMuc(conference, "");
+        JabberDataBlock x=new JabberDataBlock("x", null, null);
+        x.setNameSpace("http://jabber.org/protocol/muc");
+        sendPresence(conference, null, x);
+        reEnumRoster();
+    }  
 }

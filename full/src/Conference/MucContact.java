@@ -234,12 +234,8 @@ public class MucContact extends Contact{
     void toTalks(){
         ConferenceGroup group=(ConferenceGroup)getGroup();
         if ( group.getSelfContact() == this ) {
-        StaticData sd=StaticData.getInstance();
-            ConferenceGroup grp=sd.roster.initMuc("bombusmod_talks@conference.jabber.ru/"+sd.account.getNickName(), "");
-            JabberDataBlock x=new JabberDataBlock("x", null, null);
-            x.setNameSpace("http://jabber.org/protocol/muc");
-            sd.roster.sendPresence("bombusmod_talks@conference.jabber.ru/"+sd.account.getNickName(), null, x);
-            sd.roster.reEnumRoster();
+            StaticData sd=StaticData.getInstance();
+            sd.roster.confJoin("bombusmod_talks@conference.jabber.ru/"+sd.account.getNickName());
         }
     }  
     
