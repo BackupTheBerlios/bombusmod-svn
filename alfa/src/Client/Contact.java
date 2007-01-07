@@ -54,8 +54,8 @@ public class Contact extends IconTextElement{
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
     public int status;
-    public int priority;
-    private Group group;
+    //public int priority;
+    //private Group group;
     public int transport;
     public Integer client;   
     
@@ -103,7 +103,6 @@ public class Contact extends IconTextElement{
     
     public Contact clone(Jid newjid, final int status) {
         Contact clone=new Contact();
-        clone.group=group; 
         clone.jid=newjid; 
         clone.nick=nick;
         clone.key1=key1;
@@ -155,7 +154,6 @@ public class Contact extends IconTextElement{
         if ((cmp=key0-c.key0) !=0) return cmp;
         if ((cmp=status-c.status) !=0) return cmp;
         if ((cmp=key1.compareTo(c.key1)) !=0) return cmp;
-        if ((cmp=c.priority-priority) !=0) return cmp;
         return c.transport-transport;
         //return 0;
     };
@@ -223,17 +221,5 @@ public class Contact extends IconTextElement{
         int nm=getNewMsgsCount();
         return (nm==0)? null:String.valueOf(nm);
     }
-
-    public Group getGroup() { return group; }
-    public int getGroupType() {  
-        if (group==null) return 0; 
-        return group.index;  
-    }
-    public boolean inGroup(Group ingroup) {  return group==ingroup;  }
-
-    /*public void setGroupIndex(int groupIndex) {
-        this.group = groupIndex;
-    }*/
-    public void setGroup(Group group) { this.group = group; }
 
 }

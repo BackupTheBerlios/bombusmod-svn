@@ -16,7 +16,6 @@ import Network.Stream;
 import archive.ArchiveList;
 import images.RosterIcons;
 import locale.SR;
-import login.LoginListener;
 import midlet.Damafon;
 import java.io.*;
 import java.util.*;
@@ -36,10 +35,7 @@ public class Roster
         extends VirtualList
         implements
         CommandListener,
-        Runnable,
-        LoginListener
-        //ContactEdit.StoreContact
-        //Thread
+        Runnable
 {
     
     
@@ -708,8 +704,6 @@ public class Roster
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
         }
-
-       	if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
 
         if (keyCode==cf.keyHide && cf.allowMinimize) {
             Damafon.getInstance().hideApp(true);

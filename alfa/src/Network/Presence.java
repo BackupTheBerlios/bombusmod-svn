@@ -35,10 +35,10 @@ import java.util.*;
 
 public class Presence
 {
-  public final static int PRESENCE_ONLINE=0;
-  public final static int PRESENCE_OFFLINE=1;
-  public final static int PRESENCE_UNKNOWN=2;
-  public final static int PRESENCE_MOBILE=3;
+  public final static int PRESENCE_OFFLINE=0;
+  public final static int PRESENCE_ONLINE=1;
+  public final static int PRESENCE_MOBILE=2;
+  public final static int PRESENCE_UNKNOWN=3;
   
   public final static String PRS_OFFLINE="unavailable";
   public final static String PRS_ONLINE="online";

@@ -33,7 +33,6 @@ public class ContactMessageList extends MessageList
     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,5);
     Command cmdCopy = new Command("Copy", Command.SCREEN, 6);
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN, 8);
     
     private ClipBoard clipboard;
     
@@ -57,7 +56,6 @@ public class ContactMessageList extends MessageList
         
         addCommand(cmdMessage);
         addCommand(cmdPurge);
-	addCommand(cmdActive);
         addCommand(cmdQuote);
         addCommand(cmdArch);
         addCommand(cmdCopy);
@@ -140,10 +138,7 @@ public class ContactMessageList extends MessageList
         if (c==cmdPurge) {
             clearMessageList();
         }
-	
-	if (c==cmdActive) {
-	    new ActiveContacts(display, contact);
-	}
+
         if (c == cmdCopy)
         {
             try {
@@ -181,7 +176,6 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyRepeated(int keyCode) {
-	if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
         if (keyCode==KEY_NUM0) clearMessageList();
 	else super.keyRepeated(keyCode);
     }
