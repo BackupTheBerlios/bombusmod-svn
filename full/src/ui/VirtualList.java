@@ -231,11 +231,12 @@ public abstract class VirtualList
         width=getWidth();
         height=getHeight();
         // rotator
-        rotator=new TimerTaskRotate(0);
-//#if !(MIDP1)
-        //addCommand(cmdSetFullScreen);
-        setFullScreenMode(fullscreen);
+//#if (USE_ROTATOR)        
+//#         rotator=new TimerTaskRotate(0);
 //#endif
+
+        setFullScreenMode(fullscreen);
+
 	
 	itemBorder=new int[32];
 	
@@ -901,55 +902,58 @@ public abstract class VirtualList
     
     /** перезапуск ротации скроллера длинных строк */
     protected  void setRotator(){
-        focusedItem(cursor);
-        rotator.destroyTask();
-        if (getItemCount()<1) return;
-        if (cursor>=0) {
-            int itemWidth=getItemRef(cursor).getVWidth();
-            if (itemWidth>=width-scrollbar.getScrollWidth() ) itemWidth-=width/2; else itemWidth=0;
-            rotator=new TimerTaskRotate( itemWidth );
-        }
+//#if (USE_ROTATOR)
+//#         focusedItem(cursor);
+//#         rotator.destroyTask();
+//#         if (getItemCount()<1) return;
+//#         if (cursor>=0) {
+//#             int itemWidth=getItemRef(cursor).getVWidth();
+//#             if (itemWidth>=width-scrollbar.getScrollWidth() ) itemWidth-=width/2; else itemWidth=0;
+//#             rotator=new TimerTaskRotate( itemWidth );
+//#         }
+ //#endif
     }
     // cursor rotator
-    
-    private class TimerTaskRotate extends TimerTask{
-        private Timer t;
-        private int Max;
-        private int balloon;
-        
-        public TimerTaskRotate(int max){
-            offset=0;
-            balloon=6;
-            //if (max<1) return;
-            Max=max;
-            t=new Timer();
-            t.schedule(this, 2000, 300);
-        }
-        public void run() {
-            // прокрутка только раз
-            //stickyWindow=false;
-            
-            if (Max==-1 && balloon==-1) cancel();
-            if (offset>=Max) {
-                Max=-1;
-                offset=0;
-            } else offset+=20;
-            
-            if (showBalloon=balloon>=0) balloon--;
-            redraw();
-            //System.out.println("Offset "+offset);
-        }
-        public void destroyTask(){
-            offset=0;
-            if (t!=null){
-                this.cancel();
-                t.cancel();
-                t=null;
-            }
-        }
-    }
-    private TimerTaskRotate rotator;
-
+//#if (USE_ROTATOR)    
+//#     private class TimerTaskRotate extends TimerTask{
+//#         private Timer t;
+//#         private int Max;
+//#         private int balloon;
+//#         
+//#         public TimerTaskRotate(int max){
+//#             offset=0;
+//#             balloon=6;
+//#             //if (max<1) return;
+//#             Max=max;
+//#             t=new Timer();
+//#             t.schedule(this, 2000, 300);
+//#         }
+//#         public void run() {
+//#             // прокрутка только раз
+//#             //stickyWindow=false;
+//#             
+//#             if (Max==-1 && balloon==-1) cancel();
+//#             if (offset>=Max) {
+//#                 Max=-1;
+//#                 offset=0;
+//#             } else offset+=20;
+//#             
+//#             if (showBalloon=balloon>=0) balloon--;
+//#             redraw();
+//#             //System.out.println("Offset "+offset);
+//#         }
+//#         public void destroyTask(){
+//#             offset=0;
+//#             if (t!=null){
+//#                 this.cancel();
+//#                 t.cancel();
+//#                 t=null;
+//#             }
+//#         }
+//#     }
+//#   
+//#     private TimerTaskRotate rotator;
+//#endif
     
     /**
      * рисование прямоугольного курсора
