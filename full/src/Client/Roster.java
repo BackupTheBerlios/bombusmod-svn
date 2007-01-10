@@ -1088,7 +1088,10 @@ public class Roster
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
                         String from=data.getAttribute("from");
-                        Contact c=findContact(new Jid(from), false);
+                        //System.out.println(from);
+                        //Contact c=findContact(new Jid(from), false);
+                        Contact c=getContact(from, true);
+                        //Contact c=findContact(from, false);
                         // проверяем на запрос версии клиента
                         if (query.isJabberNameSpace("jabber:iq:version")) {
                             c.setViewing(true);
@@ -1227,7 +1230,7 @@ public class Roster
                     if (compose) c.acceptComposing=true;
                     if (body!=null) compose=false;
                     c.setComposing(compose);
-                    if (compose) playNotify(888);
+                if (compose) playNotify(888);
                 }
                 redraw();
 

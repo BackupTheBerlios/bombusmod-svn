@@ -185,6 +185,10 @@ public class Contact extends IconTextElement{
         incomingComposing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
     }
     
+    public void setViewing (boolean state) {
+        incomingViewing=(state)? new Integer(RosterIcons.ICON_VIEWING_INDEX):null;
+    }
+    
     public int compare(IconTextElement right){
         Contact c=(Contact) right;
         int cmp;
@@ -330,10 +334,6 @@ public class Contact extends IconTextElement{
     
     public final void setSortKey(String sortKey){
         key1=(sortKey==null)? "": sortKey.toLowerCase();
-    }
-    
-    public void setViewing (boolean state) {
-        incomingViewing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
     }
 
     public String getTipString() {
