@@ -2083,7 +2083,7 @@ public class Roster
                         MucContact self=mucGrp.getSelfContact();
                         if (self.status>=Presence.PRESENCE_OFFLINE) {
                             confJoin(mucGrp.getConference().bareJid);
-                            System.out.println("reconnect "+mucGrp.getConference().bareJid);
+                            //System.out.println("reconnect "+mucGrp.getConference().bareJid);
                         }
                     }
                 }
@@ -2093,8 +2093,24 @@ public class Roster
     
     public void confJoin(String conference){
         ConferenceGroup grp=initMuc(conference, "");
+        
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
+        
+        if (grp.password.length()!=0) {
+            // adding password to presence
+            x.addChild("password", grp.password);
+        }
+        
+        JabberDataBlock history=x.addChild("history", null);
+        history.setAttribute("maxstanzas", String.valueOf(cf.confMessageCount));
+        history.setAttribute("maxchars","32768");
+        try {
+            long last=grp.getConference().lastMessageTime;
+            long delay= ( grp.conferenceJoinTime - last ) /1000 ;
+            if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
+        } catch (Exception e) {};
+
         sendPresence(conference, null, x);
         reEnumRoster();
     }  
