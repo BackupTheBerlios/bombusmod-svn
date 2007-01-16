@@ -289,4 +289,12 @@ public class Account extends IconTextElement{
     }
     
     public String getTipString() { return getJid(); }
+    
+    public boolean useGoogleToken() {
+        if (useSSL) return false;
+        /*if (hostAddr==null) return false;
+        if (hostAddr.indexOf("google")<0) return false; */
+        if (!server.startsWith("gmail")) return false;
+        return isSASL();
+    }
 }

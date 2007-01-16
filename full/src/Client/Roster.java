@@ -288,7 +288,7 @@ public class Roster
         try {
             Account a=sd.account;
 //#if SASL_XGOOGLETOKEN
-            if (a.isSASL() && a.getServer().startsWith("gmail")) {
+            if (a.useGoogleToken()) {
                 setProgress(SR.MS_TOKEN, 30);
                 token=new SASLAuth(a, null, this, null).responseXGoogleToken();
                 if (token==null) throw new Exception("Can't get Google token");
@@ -1199,7 +1199,10 @@ public class Roster
                     String inviteReason=invite.getChildBlockText("reason");
                             
                     String room=from+'/'+sd.account.getNickName();
-                    initMuc(room, password).getConference().status=Presence.PRESENCE_OFFLINE;
+
+                    ConferenceGroup invConf=initMuc(room, password);
+                    if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
+                        invConf.getConference().status=Presence.PRESENCE_OFFLINE;
                     
                     body=inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
                     

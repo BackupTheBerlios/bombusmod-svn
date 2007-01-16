@@ -1,20 +1,20 @@
 :-)	:)	=)
 ;-)	;)
-:-))	:-))	=))
-:-)))	:)))	=)))
+:-))
+:-D :D
 ^^
 LOL	lol	LoL	:lol:
 :-]	:]
 ;-]	;]
-ROTFL	rotfl
+gg
 (:
 8-D	8D
-8-P	8P
-:-o	:o	:-O	:O	;-o	;o
+:-P	:P
+:-O	:o	:-O	:O	;-o	;o
 :-/	:/
 :-\	:\
 ]:-<	]:<	>:-<	>:<	]:->	]:>	>:->	>:>
-:-"	:-"
+:-"
 :-?	(?)
 (Y)	:yes:	(y)	(yes)
 (N)	:no:	(n)	(no)
@@ -25,4 +25,4 @@ ROTFL	rotfl
 (pl)	*FOOD*
 @}->--	@}->-	(F)
 *PODAROK*	(g)	*gift*
-*in love*	*IN LOVE*	*IN_LOVE*
+*IN LOVE*	*in love*	*IN_LOVE*	:-*
