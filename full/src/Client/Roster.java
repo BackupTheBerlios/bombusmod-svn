@@ -784,6 +784,7 @@ public class Roster
             sendPresence(status);
             return;
         }
+        lastMessageTime=Time.localTime();
         ExtendedStatus es= StatusList.getInstance().getStatus(status);
         Presence presence = new Presence(status, es.getPriority(), es.getMessage());
         presence.setTo(to.getJid());
