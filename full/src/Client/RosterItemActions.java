@@ -18,6 +18,7 @@ import Conference.QueryConfigForm;
 import Conference.affiliation.Affiliations;
 import ServiceDiscovery.ServiceDiscovery;
 import com.alsutton.jabber.datablocks.IqLast;
+import com.alsutton.jabber.datablocks.IqTimeReply;
 import com.alsutton.jabber.datablocks.IqVersionReply;
 import com.alsutton.jabber.datablocks.Presence;
 //#if FILE_TRANSFER
@@ -77,6 +78,8 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 addItem(SR.MS_IDLE,889);
                 addItem(SR.MS_ONLINE,890); 
             }
+            
+            addItem(SR.MS_TIME,891); 
             
                             
             //if (from.indexOf("/")>-1) lastType="idle";
@@ -286,6 +289,13 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 {
                     roster.setQuerySign(true);
                     roster.theStream.send(new IqLast(c.getBareJid()));
+                    break;
+                }
+                
+                case 891: //time
+                {
+                    roster.setQuerySign(true);
+                    roster.theStream.send(new IqTimeReply(c.getBareJid()));
                     break;
                 }
                 

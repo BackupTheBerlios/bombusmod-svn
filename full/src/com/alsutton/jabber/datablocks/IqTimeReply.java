@@ -10,6 +10,7 @@
 package com.alsutton.jabber.datablocks;
 
 import com.alsutton.jabber.JabberDataBlock;
+import ui.Time;
 
 /**
  *
@@ -26,5 +27,22 @@ public class IqTimeReply extends Iq{
         query.setNameSpace("jabber:iq:time");
         query.addChild("utc",ui.Time.utcLocalTime());
         query.addChild("display", ui.Time.dispLocalTime());
+    }
+    
+    public IqTimeReply(String to) {
+        super(to, Iq.TYPE_GET, "time");
+        addChild("query",null).setNameSpace("jabber:iq:time");
+    }
+
+    public static String dispatchTime(JabberDataBlock data) {
+        if (!data.isJabberNameSpace("jabber:iq:time")) return "unknown time namespace";
+        StringBuffer tm=new StringBuffer();
+        String field=data.getAttribute("seconds");
+        if (field==null || field=="0") {
+            tm.append("0 sec");    
+        } else {
+            tm.append(Time.secToDate(Integer.parseInt(field)));
+        }
+        return tm.toString();
     }
 }

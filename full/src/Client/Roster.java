@@ -1085,6 +1085,17 @@ public class Roster
                             new info(lastType,from+"\n"+body+"\n"+status,display, null);
                         }
                     }
+                    if (id.equals("time")) {
+                        JabberDataBlock tm=data.getChildBlock("query");
+                        if (tm!=null) {
+                            querysign=false;
+                            String from=data.getAttribute("from");
+                            String body=IqTimeReply.dispatchTime(tm);
+                            
+                            String status=tm.getText();
+                            new info(SR.MS_TIME,from+"\n"+body+"\n"+status,display, null);
+                        }
+                    }
                 } else if (type.equals("get")){
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){

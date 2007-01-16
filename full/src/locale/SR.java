@@ -307,7 +307,7 @@ public class SR {
     public static String MS_1251_CORRECTION=loadString("1251 correction");
     public static String MS_HISTORY_FOLDER=loadString("History folder");
     public static String MS_AUTOSTATUS=loadString("AutoStatus");
-    public static String MS_AUTOSTATUS_TIME=loadString("AutoStatus time");
+    public static String MS_AUTOSTATUS_TIME=loadString("AutoStatus time (min)");
 
     public static String MS_COPY=loadString("Copy");
     public static String MS_PASTE=loadString("Paste");
@@ -408,6 +408,9 @@ public class SR {
     public static String MS_AUTH_AUTO=loadString("[auto-subscribe]");
 	
     public final static String MS_KEEPALIVE="Keep-alive";
+    
+
+    public static String MS_TIME=loadString("Time");
         
     public final static String MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM=" has been unaffiliated and kicked from members-only room";
     
