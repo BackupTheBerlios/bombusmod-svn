@@ -1,7 +1,7 @@
 /*
  * RosterItemActions.java
  *
- * Created on 11 Декабрь 2005 г., 19:05
+ * Created on 11 п■п╣п╨п╟п╠я─я▄ 2005 пЁ., 19:05
  *
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
@@ -79,8 +79,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 addItem(SR.MS_ONLINE,890); 
             }
             
-            addItem(SR.MS_TIME,891); 
-            
                             
             //if (from.indexOf("/")>-1) lastType="idle";
 	    
@@ -92,7 +90,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
             
-	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return; //TODO: подключить тот же список, что и для ConferenceGroup
+	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return; //TODO: п©п╬п╢п╨п╩я▌я┤п╦я┌я▄ я┌п╬я┌ п╤п╣ я│п©п╦я│п╬п╨, я┤я┌п╬ п╦ п╢п╩я▐ ConferenceGroup
             
             if (contact instanceof MucContact) {
                 MucContact selfContact= ((ConferenceGroup) contact.getGroup()).getSelfContact();
@@ -115,6 +113,8 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 int myAffiliation=selfContact.affiliationCode;
                 if (myAffiliation==MucContact.AFFILIATION_OWNER) myAffiliation++; // allow owner to change owner's affiliation
 
+            
+                addItem(SR.MS_TIME,891); 
                 
                 if (selfContact.roleCode==MucContact.ROLE_MODERATOR) {
                     addItem(SR.MS_KICK,8, 0x0f06);

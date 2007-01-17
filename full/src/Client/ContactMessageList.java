@@ -1,7 +1,7 @@
 /*
  * ContactMessageList.java
  *
- * Created on 19 Февраль 2005 г., 23:54
+ * Created on 19 п╓п╣п╡я─п╟п╩я▄ 2005 пЁ., 23:54
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -230,6 +230,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyGreen(){
+        if (!sd.roster.isLoggedIn()) return;
         (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
         contact.msgSuspended=null;
     }

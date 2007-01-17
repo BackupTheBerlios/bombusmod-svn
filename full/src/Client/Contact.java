@@ -1,7 +1,7 @@
 /*
  * Contact.java
  *
- * Created on 6 января 2005 г., 19:16
+ * Created on 6 я▐п╫п╡п╟я─я▐ 2005 пЁ., 19:16
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -275,7 +275,7 @@ public class Contact extends IconTextElement{
             }
        }
 //#endif
-        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - presence, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+        // п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘ п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘ п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘ - presence, п©я≈п┘п©я≈п┘ п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘ п©я≈п┘п©я≈п┘п©я≈п┘
         if (first_replace) {
             msgs.setElementAt(m,0);
             return;
@@ -338,7 +338,9 @@ public class Contact extends IconTextElement{
 
     public String getTipString() {
         int nm=getNewMsgsCount();
-        return (nm==0)? null:String.valueOf(nm);
+        if (nm!=0) return String.valueOf(nm);
+        if (nick!=null) return bareJid;
+        return null;
     }
 
     public Group getGroup() { return group; }
