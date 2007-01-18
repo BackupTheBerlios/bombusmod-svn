@@ -190,7 +190,7 @@ public class Roster
                }
             }
         
-        if (cf.digitMemMonitor==false) {
+        if (!cf.digitMemMonitor) {
                 int activeType=Command.SCREEN;
                 String platform=Version.getPlatformName();
                 if (platform.startsWith("Nokia")) activeType=Command.BACK;
@@ -1803,7 +1803,7 @@ public class Roster
     public void reEnterRoom(Group group) {
 	ConferenceGroup confGroup=(ConferenceGroup)group;
         String confJid=confGroup.getSelfContact().getJid();
-	new ConferenceForm(display, confJid, confGroup.password);
+	new ConferenceForm(display, confJid, confGroup.password, false);
         //sendPresence(confGroup.getSelfContact().getJid(), null, null);
 
 	//confGroup.getConference().status=Presence.PRESENCE_ONLINE;

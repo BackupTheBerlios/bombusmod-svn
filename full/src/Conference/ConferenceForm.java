@@ -40,9 +40,13 @@ public class ConferenceForm implements CommandListener{
     TextField passField;
     NumberField msgLimitField;
     
+    ChoiceGroup AutoJoin;
+    boolean aa[];   
+    
     StaticData sd=StaticData.getInstance();
+    
     /** Creates a new instance of GroupChatForm */
-    public ConferenceForm(Display display, String confJid, String password) {
+    public ConferenceForm(Display display, String confJid, String password, boolean autojoin) {
         int roomEnd=confJid.indexOf('@');
         String room="";
         if (roomEnd>0) room=confJid.substring(0, roomEnd);
@@ -55,7 +59,7 @@ public class ConferenceForm implements CommandListener{
         } else {
             server=confJid.substring(roomEnd+1);
         }
-        createForm(display, room, server, nick, password);
+        createForm(display, room, server, nick, password, autojoin);
     }
     
     /** Creates a new instance of GroupChatForm */
@@ -70,14 +74,14 @@ public class ConferenceForm implements CommandListener{
         }
         // default server
         if (server==null) server="conference."+sd.account.getServer();
-        createForm(display, room, server, null, null); 
+        createForm(display, room, server, null, null, false); 
     }
 	
     /** Creates a new instance of GroupChatForm */
-    public ConferenceForm(Display display, String room, String server, String nick, String password) {
-        createForm(display, room, server, nick, password);
+    public ConferenceForm(Display display, String room, String server, String nick, String password, boolean autojoin) {
+        createForm(display, room, server, nick, password, autojoin);
     }
-     private void createForm(final Display display, String room, String server, String nick, final String password) {
+     private void createForm(final Display display, String room, String server, String nick, final String password, boolean autojoin) {
         this.display=display;
         parentView=display.getCurrent();
         
@@ -99,6 +103,17 @@ public class ConferenceForm implements CommandListener{
         
         msgLimitField=new NumberField(SR.MS_MSG_LIMIT, cf.confMessageCount, 0, 20);
         formJoin.append(msgLimitField);
+        
+        //autostatus
+        AutoJoin=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
+        AutoJoin.append("AutoJoin", null);
+        
+        boolean aa[]={
+            autojoin,
+        };
+        this.aa=aa;
+        AutoJoin.setSelectedFlags(aa);
+        formJoin.append(AutoJoin);
         
         formJoin.addCommand(cmdJoin);
         //formJoin.addCommand(cmdBookmarks);
@@ -124,9 +139,13 @@ public class ConferenceForm implements CommandListener{
             StringBuffer gchat=new StringBuffer(room.trim());
             gchat.append('@');
             gchat.append(host.trim());
+            
+            AutoJoin.getSelectedFlags(aa);
+            boolean autojoin=aa[0];
+            System.out.println(autojoin);
             //sd.roster.mucContact(gchat.toString(), Contact.ORIGIN_GROUPCHAT);
             if (c==cmdAdd) {
-                new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass));
+                new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
             } else {
                 try {
                     cf.confMessageCount=msgLimit;

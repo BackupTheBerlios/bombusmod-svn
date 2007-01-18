@@ -1,7 +1,7 @@
 /*
  * ServiceDiscovery.java
  *
- * Created on 4 Июнь 2005 г., 21:12
+ * Created on 4 �?юнь 2005 г., 21:12
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -338,7 +338,7 @@ public class ServiceDiscovery
                         room=service.substring(0,rp);
                         server=service.substring(rp+1);
                     }
-                    new ConferenceForm(display, service, null);
+                    new ConferenceForm(display, service, null, false);
                     break;
                 }
                 case RosterIcons.ICON_SEARCH_INDEX:

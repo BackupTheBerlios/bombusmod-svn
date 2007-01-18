@@ -115,7 +115,7 @@ public class Bookmarks
             BookmarkItem join=(BookmarkItem)getFocusedObject();
             if (join==null) return;
             if (join.isUrl) return;
-            new ConferenceForm(display, join.toString(), join.password);
+            new ConferenceForm(display, join.toString(), join.password, join.autojoin);
         }
 	if (c==cmdNew) new ConferenceForm(display);
         //if (c==cmdRfsh) loadBookmarks();
