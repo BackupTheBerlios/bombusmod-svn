@@ -127,7 +127,7 @@ public class Roster
 
 //#endif
     
-    private long lastMessageTime=Time.localTime();
+    public long lastMessageTime=Time.localTime();
     public static int keyTimer=0;
     //public JabberBlockListener discoveryListener;
     
@@ -784,7 +784,6 @@ public class Roster
             sendPresence(status);
             return;
         }
-        lastMessageTime=Time.localTime();
         ExtendedStatus es= StatusList.getInstance().getStatus(status);
         Presence presence = new Presence(status, es.getPriority(), es.getMessage());
         presence.setTo(to.getJid());
