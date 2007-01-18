@@ -1600,6 +1600,7 @@ public class Roster
         return null;
     }
     protected void keyGreen(){
+        if (!isLoggedIn()) return;
         Displayable pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
