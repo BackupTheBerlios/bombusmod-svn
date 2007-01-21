@@ -9,6 +9,7 @@
 
 package Conference;
 import Client.*;
+import Conference.affiliation.Affiliations;
 import ServiceDiscovery.ServiceDiscovery;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
@@ -34,9 +35,16 @@ public class Bookmarks
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
     private Command cmdAdvJoin=new Command ("Edit/join", Command.SCREEN, 10);
-    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 15);
-    //private Command cmdRfsh=new Command (SR.MS_REFRESH, Command.SCREEN, 20);
-    private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 20);
+    private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 15);
+    
+    private Command cmdRoomCfg=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 20);
+    
+    private Command cmdRoomOwners=new Command (SR.MS_OWNERS, Command.SCREEN, 21);
+    private Command cmdRoomAdmins=new Command (SR.MS_ADMINS, Command.SCREEN, 22);
+    private Command cmdRoomMembers=new Command (SR.MS_MEMBERS, Command.SCREEN, 23);
+    private Command cmdRoomBanned=new Command (SR.MS_BANNED, Command.SCREEN, 24);
+    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 25);
+    
     private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 30);
     
     Roster roster=StaticData.getInstance().roster;
@@ -62,7 +70,12 @@ public class Bookmarks
         addCommand(cmdJoin);
         addCommand(cmdAdvJoin);
         //addCommand(cmdRfsh);
-		addCommand(cmdNew);
+	addCommand(cmdNew);
+        addCommand(cmdRoomCfg);
+        addCommand(cmdRoomOwners);
+        addCommand(cmdRoomAdmins);
+        addCommand(cmdRoomMembers);
+        addCommand(cmdRoomBanned);
         addCommand(cmdDel);
         addCommand(cmdDisco);
         setCommandListener(this);
@@ -109,6 +122,10 @@ public class Bookmarks
     }
     
     public void commandAction(Command c, Displayable d){
+        String roomJid="";
+        try {
+            roomJid=((BookmarkItem)getFocusedObject()).getJid();
+        } catch (Exception e) {}
         if (c==cmdCancel) exitBookmarks();
         if (c==cmdJoin) eventOk();
         if (c==cmdAdvJoin) {
@@ -121,6 +138,21 @@ public class Bookmarks
         //if (c==cmdRfsh) loadBookmarks();
         if (c==cmdDel) deleteBookmark();
         if (c==cmdDisco) new ServiceDiscovery(display, ((BookmarkItem)getFocusedObject()).getJid(), null);
+        if (c==cmdRoomCfg) {
+            new QueryConfigForm(display, roomJid);   
+        }
+        if (c==cmdRoomOwners) {
+            new Affiliations(display, roomJid, 1);  
+        }
+        if (c==cmdRoomAdmins) {
+            new Affiliations(display, roomJid, 2);  
+        }
+        if (c==cmdRoomMembers) {
+            new Affiliations(display, roomJid, 3);  
+        }
+        if (c==cmdRoomBanned) {
+            new Affiliations(display, roomJid, 4);  
+        }
     }
     
     private void deleteBookmark(){
