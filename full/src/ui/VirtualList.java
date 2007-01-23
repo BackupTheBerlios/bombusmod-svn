@@ -1,4 +1,4 @@
-﻿/*
+/*
  * VirtualList.java
  *
  * Created on 30 Январь 2005 г., 14:46

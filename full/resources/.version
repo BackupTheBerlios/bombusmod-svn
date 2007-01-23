@@ -1,6 +1,6 @@
 # version pattern
-bombus.revision=Type 'svnversion --help' for usage.
+bombus.revision=198M
 
-bombus.version=0.4.6.979.Type 'svnversion --help' for usage.
+bombus.version=0.4.6.979.198M
 
 bombus.midlet=0.4
