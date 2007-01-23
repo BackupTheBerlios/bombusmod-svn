@@ -1,4 +1,4 @@
-/*
+﻿/*
  * VirtualList.java
  *
  * Created on 30 Январь 2005 г., 14:46
@@ -997,6 +997,7 @@ public abstract class VirtualList
 //#         }
 //#         
 //#         synchronized (instance) {
+//#             list.offset=0;
 //#             instance.Max=max;
 //#             instance.balloon=6;
 //#             //instance.balloon=0;
@@ -1023,7 +1024,7 @@ public abstract class VirtualList
 //#                         attachedList=null;
 //#                         break;
 //#                     }
-//#                     if (Max==-1 && balloon==-1) {
+//#                     if (Max<0 && balloon<0) {
 //#                         attachedList.offset=0;
 //#                         //showBalloon=false;
 //#                         stop=true;
@@ -1050,6 +1051,7 @@ public abstract class VirtualList
 //#      }
 //#      public void destroyTask(){
 //#         synchronized (this) { 
+//#             if (attachedList!=null) attachedList.offset=0;
 //#             stop=true; 
 //#         }
 //#      }
