@@ -290,6 +290,7 @@ public abstract class VirtualList
     protected void showNotify() {
 	if (!isDoubleBuffered()) 
 	    offscreen=Image.createImage(width, height);
+		TimerTaskRotate.startRotate(0, this);
     }
     
     /** Вызывается при изменении размера отображаемой области. переопределяет наследуемый метод 
@@ -903,9 +904,11 @@ public abstract class VirtualList
     /** перезапуск ротации скроллера длинных строк */
     protected  void setRotator(){
 //#if (USE_ROTATOR)
-//#         focusedItem(cursor);
-//#         rotator.startRotate(0, this);
-//#         if (getItemCount()<1) return;
+//#         TimerTaskRotate.startRotate(0, this);
+//#         try {
+//#         	if (getItemCount()<1) return;
+//#         	focusedItem(cursor);
+//#         } catch (Exception e) { return; }
 //#         if (cursor>=0) {
 //#             int itemWidth=getItemRef(cursor).getVWidth();
 //#             if (itemWidth>=width-scrollbar.getScrollWidth() ) itemWidth-=width/2; else itemWidth=0;
@@ -915,7 +918,7 @@ public abstract class VirtualList
     }
     // cursor rotator
 //#if (USE_ROTATOR)    
-//#     private TimerTaskRotate rotator;
+//#     //private TimerTaskRotate rotator;
 //#endif
     
     /**

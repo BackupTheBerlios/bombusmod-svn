@@ -1683,10 +1683,8 @@ public class Roster
              }         
         } 
 
-        if (keyCode=='3') searchGroup(-1);
-        //if (keyCode=='3') new Bookmarks(display, null);
-	
-        if (keyCode=='9') searchGroup(1);
+		if (keyCode=='3') { searchGroup(-1); setRotator(); }
+		if (keyCode=='9') { searchGroup(1); setRotator(); }
         
         if (keyCode==KEY_POUND) {
             if (cf.poundKey) {
