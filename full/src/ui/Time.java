@@ -19,6 +19,9 @@ public class Time {
     private static Calendar c=Calendar.getInstance( TimeZone.getTimeZone("GMT") );
     private static long offset=0; 
     private static long locToGmtoffset=0;
+    
+    private static globalCalendar now;
+ 
     /** Creates a new instance of Time */
     private Time() { }
     
@@ -90,12 +93,46 @@ public class Time {
         return c.getTime().getTime(); 
     }
     
+    //now.kolTimes (10,11,12,now.getDay(),now.getMonth(),now.getYear(),10,17,13,eventDay,eventMonth,eventYear)
+    
+    public static String secDiffToDate(long seconds){
+        Calendar c=calDate(localTime()-(seconds*1000));
+        int s1=c.get(Calendar.SECOND);
+        int mi1=c.get(Calendar.MINUTE);
+        int h1=c.get(Calendar.HOUR_OF_DAY);
+        int d1=c.get(Calendar.DAY_OF_MONTH);
+        int m1=c.get(Calendar.MONTH)+1;
+        int y1=c.get(Calendar.YEAR);
+        
+        Calendar n=calDate(localTime());
+        int s2=n.get(Calendar.SECOND);
+        int mi2=n.get(Calendar.MINUTE);
+        int h2=n.get(Calendar.HOUR_OF_DAY);
+        int d2=n.get(Calendar.DAY_OF_MONTH);
+        int m2=n.get(Calendar.MONTH)+1;
+        int y2=n.get(Calendar.YEAR);
+        
+        now=new globalCalendar ();
+        
+       
+        String diff=now.kolTimes (s1,mi1,h1,d1,m1,y1, s2,mi2,h2,d2,m2,y2);
+        
+        //System.out.println(diff);
+        return diff;
+    }
+    
     public static String secToDate(long seconds){
         Calendar c=calDate(System.currentTimeMillis()+locToGmtoffset-(seconds*1000));
         return lz2(c.get(Calendar.DAY_OF_MONTH))+"."+
                lz2(c.get(Calendar.MONTH)+1)+"."+
                lz2(c.get(Calendar.YEAR) % 100)+" "+lz2(c.get(Calendar.HOUR_OF_DAY))+":"+lz2(c.get(Calendar.MINUTE))+":"+lz2(c.get(Calendar.SECOND));
-    }    
+    }
     
+    public static String secToTime(long seconds){
+        Calendar c=calDate(System.currentTimeMillis()+locToGmtoffset-(seconds*1000));
+        return lz2(c.get(Calendar.DAY_OF_MONTH))+"."+
+               lz2(c.get(Calendar.MONTH)+1)+"."+
+               lz2(c.get(Calendar.YEAR) % 100)+" "+lz2(c.get(Calendar.HOUR_OF_DAY))+":"+lz2(c.get(Calendar.MINUTE))+":"+lz2(c.get(Calendar.SECOND));
+    }  
 }
 

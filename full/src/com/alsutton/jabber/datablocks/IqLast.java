@@ -1,7 +1,7 @@
 /*
  * IqLast.java
  *
- * Created on 25 Июль 2006 г., 19:14
+ * Created on 25 �?юль 2006 г., 19:14
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -38,11 +38,14 @@ public class IqLast extends Iq{
         if (!data.isJabberNameSpace("jabber:iq:last")) return "unknown last namespace";
         StringBuffer tm=new StringBuffer();
         String field=data.getAttribute("seconds");
+        
         if (field==null || field=="0") {
             tm.append("0 sec");    
         } else {
-            tm.append(Time.secToDate(Integer.parseInt(field)));
+            tm.append(Time.secDiffToDate(Integer.parseInt(field)));
         }
+        
+        System.out.println(tm.toString());
         return tm.toString();
     }
 }
