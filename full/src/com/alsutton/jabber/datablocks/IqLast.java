@@ -45,7 +45,7 @@ public class IqLast extends Iq{
             tm.append(Time.secDiffToDate(Integer.parseInt(field)));
         }
         
-        System.out.println(tm.toString());
+        //System.out.println(tm.toString());
         return tm.toString();
     }
 }

@@ -521,6 +521,7 @@ public class Roster
     }
     
     public final ConferenceGroup initMuc(String from, String joinPassword){
+        keyTimer=0;
         // muc message
         int ri=from.indexOf('@');
         int rp=from.indexOf('/');
