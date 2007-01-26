@@ -290,7 +290,7 @@ public abstract class VirtualList
     protected void showNotify() {
 	if (!isDoubleBuffered()) 
 	    offscreen=Image.createImage(width, height);
-		TimerTaskRotate.startRotate(0, this);
+        TimerTaskRotate.startRotate(0, this);
     }
     
     /** Вызывается при изменении размера отображаемой области. переопределяет наследуемый метод 
