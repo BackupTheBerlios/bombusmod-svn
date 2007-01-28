@@ -1,7 +1,7 @@
 /*
  * ActiveContacts.java
  *
- * Created on 20 Январь 2005 г., 21:20
+ * Created on 20 РЇРЅРІР°СЂСЊ 2005 Рі., 21:20
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -30,6 +30,8 @@ public class ActiveContacts
     
     Vector activeContacts;
     
+    StaticData sd;
+    
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 1);
     /** Creates a new instance of ActiveContacts */
@@ -42,7 +44,7 @@ public class ActiveContacts
 	    Contact c=(Contact)r.nextElement();
 	    if (c.active()) activeContacts.addElement(c);
 	}
-	// не создаём вид, если нет активных контактов
+	// РЅРµ СЃРѕР·РґР°С‘Рј РІРёРґ, РµСЃР»Рё РЅРµС‚ Р°РєС‚РёРІРЅС‹С… РєРѕРЅС‚Р°РєС‚РѕРІ
 	if (getItemCount()==0) return;
 	
         Title title=new Title(2, String.valueOf(getItemCount()), " ");
@@ -80,5 +82,12 @@ public class ActiveContacts
     public void keyPressed(int keyCode) {
 	if (keyCode==KEY_NUM3) destroyView();
 	else super.keyPressed(keyCode);
+    }
+    
+    protected void keyGreen(){
+        if (!sd.roster.isLoggedIn()) return;
+	Contact c=(Contact)getFocusedObject();
+	new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
+        contact.msgSuspended=null;
     }
 }

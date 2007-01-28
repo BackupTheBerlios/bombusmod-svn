@@ -191,7 +191,7 @@ public class MessageEdit
     }
     
     public void commandAction(Command c, Displayable d){
-        body=t.getString();
+        body=t.getString().trim();
 		
         
         int caretPos=t.getCaretPosition();
