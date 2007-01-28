@@ -95,6 +95,8 @@ public class RosterIcons extends ImageList{
     public static final int ICON_GROUPCHAT_INDEX = 0x40;
 
     public static final int ICON_GCJOIN_INDEX = 0x41;
+    
+    public static final int ICON_GCCOLLAPSED_INDEX = 0x42;
 
     public static final int ICON_SEARCH_INDEX = 0x14;
 

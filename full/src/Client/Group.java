@@ -1,7 +1,7 @@
 /*
  * Group.java
  *
-+ * Created on 8 Май 2005 2005, 0:36
++ * Created on 8 пїЅпїЅпїЅ 2005 2005, 0:36
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -23,7 +23,8 @@ public class Group extends IconTextElement {
     protected int nContacts;
     protected int onlines;
     public int imageExpandedIndex=RosterIcons.ICON_EXPANDED_INDEX;
-        
+    public int imageCollapsedIndex=RosterIcons.ICON_COLLAPSED_INDEX;
+    
     public Vector contacts;
     
     private Vector tcontacts;
@@ -32,7 +33,7 @@ public class Group extends IconTextElement {
     public int unreadMessages=0;
     
     boolean collapsed;
-    
+
     public Group(String name /*, String label*/) {
         super(RosterIcons.getInstance());
         this.name=name;
@@ -42,7 +43,7 @@ public class Group extends IconTextElement {
     public int getColor(){ return Colors.GROUP_INK; }
     public int getImageIndex() {
         return collapsed?
-            RosterIcons.ICON_COLLAPSED_INDEX
+            imageCollapsedIndex
             :imageExpandedIndex;
     }
     
@@ -60,6 +61,8 @@ public class Group extends IconTextElement {
 	this.index = index;
         if (index==Groups.TYPE_SEARCH_RESULT) 
             imageExpandedIndex=RosterIcons.ICON_SEARCH_INDEX;
+        if (index==Groups.TYPE_COMMON) 
+            imageCollapsedIndex=RosterIcons.ICON_GROUPCHAT_INDEX;
     }
 
     public void startCount(){

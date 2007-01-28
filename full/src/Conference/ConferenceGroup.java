@@ -26,6 +26,7 @@ public class ConferenceGroup extends Group{
 	super(name);
 	this.label=label;
 	imageExpandedIndex=RosterIcons.ICON_GCJOIN_INDEX;
+        imageCollapsedIndex=RosterIcons.ICON_GCCOLLAPSED_INDEX; 
     }
 
     String label;

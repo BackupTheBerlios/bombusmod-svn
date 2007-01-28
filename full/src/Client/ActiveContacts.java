@@ -84,10 +84,11 @@ public class ActiveContacts
 	else super.keyPressed(keyCode);
     }
     
-    protected void keyGreen(){
+    public void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;
+        
 	Contact c=(Contact)getFocusedObject();
 	new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
-        contact.msgSuspended=null;
+        c.msgSuspended=null;
     }
 }
