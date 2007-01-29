@@ -135,17 +135,20 @@ public class ConfigForm implements
         message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
-        message.append(SR.CLASSIC_CHAT, null);
         message.append("Last messages", null);
-        
+//#if ALT_INPUT
+//#         message.append(SR.CLASSIC_CHAT, null);
+//#endif        
 
         boolean mv[]={
             cf.smiles,
             cf.storeConfPresence,
             cf.eventComposing,
             cf.capsState,
-            cf.altInput,
             cf.lastMessages
+//#if ALT_INPUT
+//#             ,cf.altInput
+//#endif
         };
         this.mv=mv;
         
@@ -309,9 +312,11 @@ public class ConfigForm implements
             cf.storeConfPresence=mv[1];
             cf.eventComposing=mv[2];
             cf.capsState=mv[3];
-            cf.altInput=mv[4];
-            cf.lastMessages=mv[5];
-
+            cf.lastMessages=mv[4];
+//#if ALT_INPUT
+//#             cf.altInput=mv[5];
+//#endif
+            
 	    cf.autoLogin=su[0];
 	    cf.autoJoinConferences=su[1];
             

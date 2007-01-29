@@ -13,7 +13,9 @@ import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
 import ui.controls.Balloon;
-import ui.controls.InputBox;
+//#if ALT_INPUT
+//# import ui.controls.InputBox;
+//#endif
 import ui.controls.ScrollBar;
 
 /**
@@ -57,8 +59,6 @@ public abstract class VirtualList
     protected int getTitleBGndRGB() {return Colors.BAR_BGND;} 
     
     private StaticData sd=StaticData.getInstance();
-
-    private int h;
     /**
      * цвет текста заголовка
      * @return RGB-цвет текста заголовка
@@ -174,9 +174,9 @@ public abstract class VirtualList
     protected boolean showBalloon;
     
     protected VirtualElement title;
-    
-    protected InputBox inputbox; //alt
-    
+ //#if ALT_INPUT   
+//#     protected InputBox inputbox; //alt
+ //#endif   
     private boolean wrapping = true;
     
     public static int fullMode; 
@@ -206,9 +206,10 @@ public abstract class VirtualList
      */
     public ComplexString getTitleItem() {return (ComplexString)title;}
     public void setTitleItem(ComplexString title) { this.title=title; }
-    
-    public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
-    public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
+//#if ALT_INPUT    
+//#     public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
+//#     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
+//#endif
     /**
      * возвращает ссылку на объект в фокусе. 
      * в классе VirtualList возвращает VirtualElement, на который указывает курсор,
@@ -323,6 +324,8 @@ public abstract class VirtualList
     public void paint(Graphics graphics) {
         width=getWidth();	// patch for SE
         height=getHeight();
+        int th=0;
+        
 	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
         
         fullMode=Config.getInstance().isbottom;
@@ -338,36 +341,22 @@ public abstract class VirtualList
         
         int list_top=0; // верхняя граница списка
         updateLayout(); //fixme: только при изменении списка
-                
+        
+        winHeight=height;
+        
         if (paintTop) {
-            if (title!=null) {
-                list_top=title.getVHeight();
-                g.setClip(0,0, width, list_top);
-
-                g.setColor(getTitleBGndRGB());
-                g.fillRect(0, 0, width, list_top);
-                
-                if (getTitleRGB()!=0x010101) {
-                        g.setColor(getTitleRGB());
-                        title.drawItem(g,0,false);
-                }
-            }
+            list_top=drawTitle(g);
         }
-
+        
         drawHeapMonitor(g);
-        if (inputbox!=null) { 
-            itemBorder[0]=list_top-inputbox.height;
-        } else {
-            if (paintBottom) {
-                h=NetAccuFont.fontHeight+2;
-                winHeight=height-list_top-h; 
-            } else { winHeight=height-list_top; } //убрать жесткое задание высоты
+        
+        if (paintBottom) {
+            if (title!=null) th=title.getVHeight();
         }
+        winHeight=height-list_top-th;
         
-        if (paintTop) { 
-            itemBorder[0]=list_top-h; 
-        } else { itemBorder[0]=list_top; } //убрать жесткое задание высоты
-        
+        itemBorder[0]=list_top; //убрать жесткое задание высоты
+
         int count=getItemCount(); // размер списка
         
         boolean scroll=(listHeight>winHeight);
@@ -458,47 +447,23 @@ public abstract class VirtualList
             if (text!=null)
                 drawBalloon(g, baloon, text);
         }
-        if (inputbox!=null) {
-            setAbsOrg(g, 0, height-inputbox.height);  
-            g.setClip(0,0, width, height);
-            g.setColor(getTitleBGndRGB());
-            g.fillRect(0,0, width, height);
-            g.setColor(getTitleRGB());
-            inputbox.drawItem(g);
-        } else {
-            if (paintBottom) {
-                setAbsOrg(g, 0, height-h);
-
-                g.setColor(getTitleBGndRGB());
-                g.fillRect(0, 0, width, height);
-
-                String time=Time.timeString(Time.localTime());
-                
-                NetAccuFont.drawString(g, time, 1,  1);
-                int w=(time.length()+1)*NetAccuFont.fontWidth;
-
-                String traff = null;
-                int ngprs=-1;
-                int gprscount=0;
-                try {
-                    try {
-                        ngprs=NetworkAccu.getGPRS();
-                    } catch (Exception e) { }
-                    if (ngprs>-1) {
-                        gprscount=ngprs;
-                    } else {
-                        int in=sd.roster.theStream.getBytesIn();
-                        int out=sd.roster.theStream.getBytesOut();
-                        gprscount=in+out;
-                    }
-                    traff=gprscount/1000+"<=";
-                } catch (Exception e) {
-                    traff="0<=";
+//#if ALT_INPUT
+//#         if (inputbox!=null) {
+//#             setAbsOrg(g, 0, height-inputbox.height);  
+//#             g.setClip(0,0, width, height);
+//#             g.setColor(getTitleBGndRGB());
+//#             g.fillRect(0,0, width, height);
+//#             g.setColor(getTitleRGB());
+//#             inputbox.drawItem(g);
+//#         } else {
+//#endif
+                if (paintBottom) {
+                    setAbsOrg(g, 0, height-th);
+                    drawBottom(g);
                 }
-                NetworkAccu.draw(g, width);
-                NetAccuFont.drawString(g, traff, w, 1);
-            }
-        }
+//#if ALT_INPUT
+//#         }
+//#endif
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
     }
@@ -518,7 +483,53 @@ public abstract class VirtualList
         }
     }
     
+    private int drawTitle (final Graphics g) {
+        int h=NetAccuFont.fontHeight+2;
+        g.setClip(0,0, width, h);
+
+        g.setColor(getTitleBGndRGB());
+        g.fillRect(0, 0, width, h);
+
+        String time=Time.timeString(Time.localTime());
+
+        NetAccuFont.drawString(g, time, 1,  1);
+        int w=(time.length()+1)*NetAccuFont.fontWidth;
+
+        String traff = null;
+        int ngprs=-1;
+        int gprscount=0;
+        try {
+            try {
+                ngprs=NetworkAccu.getGPRS();
+            } catch (Exception e) { }
+            if (ngprs>-1) {
+                gprscount=ngprs;
+            } else {
+                int in=sd.roster.theStream.getBytesIn();
+                int out=sd.roster.theStream.getBytesOut();
+                gprscount=in+out;
+            }
+            traff=gprscount/1000+"<=";
+        } catch (Exception e) {
+            traff="0<=";
+        }
+        NetworkAccu.draw(g, width);
+        NetAccuFont.drawString(g, traff, w, 1);
+        
+        return h;
+    }
     
+    private void drawBottom (final Graphics g) {    
+        if (title!=null) {
+            g.setColor(getTitleBGndRGB());
+            g.fillRect(0, 0, width, height);
+
+            if (getTitleRGB()!=0x010101) {
+                    g.setColor(getTitleRGB());
+                    title.drawItem(g,0,false);
+            }
+        }
+    }
     /**
      * перенос координат (0.0) в абсолютные координаты (x,y)
      * @param g графический контекст отрисовки
@@ -693,7 +704,9 @@ public abstract class VirtualList
                 return;
             }         
         }
-        if (inputbox==null) {        
+//#if ALT_INPUT
+//#         if (inputbox==null) {
+//#endif
             switch (keyCode) {
                 case 0: break;
                 case NOKIA_PEN: { destroyView(); break; }
@@ -718,9 +731,11 @@ public abstract class VirtualList
                                 }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
             }
-        } else {
-            userKeyPressed(keyCode);
-        }
+//#if ALT_INPUT
+//#         } else {
+//#             userKeyPressed(keyCode);
+//#         }
+//#endif
         repaint();
     }
     
