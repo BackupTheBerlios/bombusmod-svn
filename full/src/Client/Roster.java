@@ -131,19 +131,17 @@ public class Roster
     public static int keyTimer=0;
     //public JabberBlockListener discoveryListener;
     
-    private int autoAwayTime;
+    public int autoAwayTime;
 
     private int pr;
 
     private String ms;
 
-    private boolean setAutoStatus;
+    public boolean setAutoStatus;
 
     private String myMessage;    
 
-    private TimerTaskAutoAway AutoAway;
-
-    private static boolean elfPlatform=false;
+    //private TimerTaskAutoAway AutoAway;
     
     public int lightState=0;
 	
@@ -971,7 +969,8 @@ public class Roster
         // иначе будем читать ростер
         theStream.enableRosterNotify(true);
         rpercent=60;
-        AutoAway=new TimerTaskAutoAway(5);
+        //AutoAway=new TimerTaskAutoAway(5);
+        TimerTaskAutoAway.startRotate(5, this);
         if (StaticData.getInstance().account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
             try {
@@ -2019,63 +2018,6 @@ public class Roster
         this.myJid = myJid;
     }
     
-    private class TimerTaskAutoAway extends TimerTask{
-        private Timer t;
-        
-        public TimerTaskAutoAway(int periodSeconds){
-           t=new Timer();
-           long period=periodSeconds*1000; // milliseconds
-           t.schedule(this, period, period);
-        }
-        public void run() {
-            try {
-                if (Version.getPlatformName().indexOf("SIE") > -1) {
-                    if (getKeyLockState() && lightState==1) {
-                        if (elfPlatform==true && lightState==1) {
-                            setLight(false);
-                            lightState=0;
-                        }
-                    }
-                    if (getKeyLockState()==false && lightState==0) {
-                        if (elfPlatform==true && lightState==0) {
-                            setLight(true);
-                            lightState=1;
-                        }
-                    }
-                }
-                if (setAutoStatus) {
-                    keyTimer=keyTimer+5;
-                    if (!isAway) {
-                        if (keyTimer>=autoAwayTime) {
-                            try {
-                                oldStatus=myStatus;
-                                if (myStatus==0 || myStatus==1) {
-                                    String away="Auto away since "+Time.timeString(Time.localTime());
-                                    isAway=true;
-                                    sendPresence(2, away);
-                                }
-                            } catch (Exception e) { e.printStackTrace(); }
-                        }
-                    }
-                }
-            } catch (Exception e) { e.printStackTrace(); }
-        }
-	
-        public void destroyTask(){
-            if (t!=null){
-                this.cancel();
-                t.cancel();
-                t=null;
-            }
-        }
-    }
-
-    public static boolean getKeyLockState() {
-        boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
-        if (lightState==true || elfPlatform==true) elfPlatform=true;
-        return lightState;
-    }
-    
     public void setLight(boolean state) {
             if (state==true) {
                 com.siemens.mp.game.Light.setLightOn();
@@ -2128,4 +2070,96 @@ public class Roster
         sendPresence(conference, null, x);
         reEnumRoster();
     }  
+
+    public void setAutoAway() {
+        if (!isAway) {
+            oldStatus=myStatus;
+            //System.out.println("test5");
+            if (myStatus==0 || myStatus==1) {
+
+                String away="Auto away since "+Time.timeString(Time.localTime());
+                isAway=true;
+                sendPresence(2, away);
+            }
+        }
+    }
 }
+
+class TimerTaskAutoAway extends Thread{
+   
+     private boolean stop;
+     private boolean exit;
+     
+     private static TimerTaskAutoAway instance;
+     
+     private Roster rRoster;
+
+     StaticData sd;
+
+    private boolean elfPlatform=false;
+    private boolean setAutoStatus=Config.getInstance().setAutoStatus;
+
+    private int keyTimer=0;
+
+    private int autoAwayTime=Config.getInstance().autoAwayTime*60;
+    
+    private TimerTaskAutoAway() {
+        exit=false;
+        start();
+     }
+    
+    public static void startRotate(int max, Roster roster){
+        if (instance==null) instance=new TimerTaskAutoAway();
+        synchronized (instance) {
+            instance.rRoster=roster;
+        }
+    }
+    
+     public void run() {
+        while (true) {
+            try {
+                sleep(5000);
+            } catch (Exception e) {}
+            
+            synchronized (this) {
+                if (stop) {
+                    break;
+                }
+                keyTimer=rRoster.keyTimer;
+                //here
+                //System.out.println("test "+keyTimer+" sec");
+                try {
+                    if (Version.getPlatformName().indexOf("SIE") > -1) {
+                        if (getKeyLockState() && rRoster.lightState==1) {
+                            if (elfPlatform==true && rRoster.lightState==1) {
+                                rRoster.setLight(false);
+                                rRoster.lightState=0;
+                            }
+                        }
+                        if (getKeyLockState()==false && rRoster.lightState==0) {
+                            if (elfPlatform==true && rRoster.lightState==0) {
+                                rRoster.setLight(true);
+                                rRoster.lightState=1;
+                            }
+                        }
+                    }
+                    
+                    rRoster.keyTimer=keyTimer+5;                        
+                    if (keyTimer>=autoAwayTime) {
+                        //System.out.println("test4");
+                        try {
+                            rRoster.setAutoAway();
+                            //System.out.println("test6");
+                        } catch (Exception e) { e.printStackTrace(); }
+                    }
+                } catch (Exception e) { e.printStackTrace(); }
+             }
+         }
+    }
+
+    private boolean getKeyLockState() {
+        boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
+        if (lightState==true || elfPlatform==true) elfPlatform=true;
+        return lightState;
+    }
+ } 
