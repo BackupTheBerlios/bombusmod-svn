@@ -36,14 +36,15 @@ public class Bookmarks
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
     private Command cmdAdvJoin=new Command ("Edit/join", Command.SCREEN, 10);
     private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 15);
-    
+
+    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 17);
+        
     private Command cmdRoomCfg=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 20);
     
     private Command cmdRoomOwners=new Command (SR.MS_OWNERS, Command.SCREEN, 21);
     private Command cmdRoomAdmins=new Command (SR.MS_ADMINS, Command.SCREEN, 22);
     private Command cmdRoomMembers=new Command (SR.MS_MEMBERS, Command.SCREEN, 23);
     private Command cmdRoomBanned=new Command (SR.MS_BANNED, Command.SCREEN, 24);
-    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 25);
     
     private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 30);
     
@@ -71,13 +72,13 @@ public class Bookmarks
         addCommand(cmdAdvJoin);
         //addCommand(cmdRfsh);
 	addCommand(cmdNew);
+        addCommand(cmdDisco);
         addCommand(cmdRoomCfg);
         addCommand(cmdRoomOwners);
         addCommand(cmdRoomAdmins);
         addCommand(cmdRoomMembers);
         addCommand(cmdRoomBanned);
         addCommand(cmdDel);
-        addCommand(cmdDisco);
         setCommandListener(this);
 		attachDisplay(display);
     }
