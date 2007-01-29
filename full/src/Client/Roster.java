@@ -969,8 +969,8 @@ public class Roster
         // иначе будем читать ростер
         theStream.enableRosterNotify(true);
         rpercent=60;
-        //AutoAway=new TimerTaskAutoAway(5);
-        TimerTaskAutoAway.startRotate(5, this);
+        //AutoAway=new TimerTaskAutoAway();
+        TimerTaskAutoAway.startRotate(5,this);
         if (StaticData.getInstance().account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
             try {
@@ -2074,10 +2074,9 @@ public class Roster
     public void setAutoAway() {
         if (!isAway) {
             oldStatus=myStatus;
-            //System.out.println("test5");
             if (myStatus==0 || myStatus==1) {
-
-                String away="Auto away since "+Time.timeString(Time.localTime());
+                String away="Auto away since "+Time.timeString(Time.localTime())+"(GMT+"+Time.GMTOffset+")";
+                System.out.println(away);
                 isAway=true;
                 sendPresence(2, away);
             }

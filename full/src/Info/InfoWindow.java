@@ -34,7 +34,7 @@ public class InfoWindow implements CommandListener{
 
         form.append("BombusMod v"+Version.version+"\nMobile Jabber client\n");
         form.append(Version.getOs());
-        form.append("\nCopyright (c) 2005-2006, Eugene Stahov (evgs), ad(modification)\n");
+        form.append("\nCopyright (c) 2005-2007, Eugene Stahov (evgs), ad(modification)\n");
         
         
         StringBuffer memInfo=new StringBuffer("\n\nMemory:\n");

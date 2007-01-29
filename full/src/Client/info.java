@@ -9,6 +9,7 @@
 
 package Client;
 
+import Conference.MucContact;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -35,6 +36,7 @@ public class info implements CommandListener, ItemCommandListener {
     private String jid;
 
     private Contact contact;
+    private MucContact mucContact;
 
     private String statusMess;
 
@@ -45,6 +47,8 @@ public class info implements CommandListener, ItemCommandListener {
     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 7);  
 
     private String type;
+
+    private String ar;
     
     /** Creates a new instance of info */
     public info(String type, String data, Display display, Object item) {
@@ -66,17 +70,27 @@ public class info implements CommandListener, ItemCommandListener {
             form.append(stringitem);
         } else {
             boolean isContact=( item instanceof Contact );
+            boolean isMucContact=( item instanceof MucContact );
 
             if (isContact) {
                 contact=(Contact)item;
-                jid=contact.bareJid;
+                                
+                String jid=contact.bareJid;
                 
                 Item stringitem=null;
-                stringitem=new StringItem ("jid", contact.bareJid);
-                stringitem.addCommand(cmdCopy);
-                stringitem.setItemCommandListener(this);
                 
-                form.append(stringitem);
+                if (isMucContact) {
+                    mucContact=(MucContact)item;
+                    jid=mucContact.realJid;
+                }
+                
+                if (jid!=null) {
+                    stringitem=new StringItem ("jid", jid);
+                    stringitem.addCommand(cmdCopy);
+                    stringitem.setItemCommandListener(this);
+
+                    form.append(stringitem);
+                }
                 
                 Item stringitem2=null;
                 stringitem2=new StringItem ("status", contact.presence);
@@ -84,6 +98,17 @@ public class info implements CommandListener, ItemCommandListener {
                 stringitem2.setItemCommandListener(this);
                 
                 form.append(stringitem2);
+                
+                if (isMucContact) {
+                    ar=mucContact.affiliation+"/"+mucContact.role;
+                    
+                    Item stringitem3=null;
+                    stringitem3=new StringItem ("affiliation/role", ar);
+                    stringitem3.addCommand(cmdCopy);
+                    stringitem3.setItemCommandListener(this);
+
+                    form.append(stringitem3);
+                }
             }
         }
         

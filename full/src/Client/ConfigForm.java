@@ -252,10 +252,12 @@ public class ConfigForm implements
 //#endif
         //autostatus
         autoaway=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
+        autoaway.append("KeyLock status", null);
         autoaway.append(SR.MS_AUTOSTATUS, null);
         
         boolean aa[]={
-            cf.setAutoStatus,
+            cf.setKeyBlockStatus,
+            cf.setAutoStatus
         };
         this.aa=aa;
         autoaway.setSelectedFlags(aa);
@@ -345,7 +347,8 @@ public class ConfigForm implements
             
             cf.msgPath=historyFolder.getString();
 //#endif             
-            cf.setAutoStatus=aa[0];
+            cf.setKeyBlockStatus=aa[0];
+            cf.setAutoStatus=aa[1];
             cf.autoAwayTime=autoAwayTime.getValue();
 
             

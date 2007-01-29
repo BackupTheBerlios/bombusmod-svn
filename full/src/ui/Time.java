@@ -20,6 +20,8 @@ public class Time {
     private static long offset=0; 
     private static long locToGmtoffset=0;
     
+    public static int GMTOffset=0;
+    
     private static globalCalendar now;
  
     /** Creates a new instance of Time */
@@ -28,6 +30,7 @@ public class Time {
     public static void setOffset(int gmtOffset, int locOffset){
         offset=60*60*1000*gmtOffset;
         locToGmtoffset=((long)locOffset)*60*60*1000;
+        GMTOffset=gmtOffset+locOffset;
     }
 
     public static String lz2(int i){

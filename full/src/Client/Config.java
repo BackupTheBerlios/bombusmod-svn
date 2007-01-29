@@ -125,8 +125,9 @@ public class Config {
     // Singleton
     private static Config instance;
 
-    int autoAwayTime=5;
-    boolean setAutoStatus=false;
+    public int autoAwayTime=5;
+    public boolean setAutoStatus=false;
+    public boolean setKeyBlockStatus=false;
 
     public int confMessageCount=20;
 
@@ -269,6 +270,8 @@ public class Config {
             
             lastMessages=inputStream.readBoolean();
             
+            setKeyBlockStatus=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -359,6 +362,8 @@ public class Config {
             outputStream.writeBoolean(autoSubscribe);
             
             outputStream.writeBoolean(lastMessages);
+            
+            outputStream.writeBoolean(setKeyBlockStatus);
             
 	} catch (Exception e) { e.printStackTrace(); }
 	
