@@ -58,7 +58,8 @@ public class Roster
         JabberListener,
         CommandListener,
         Runnable,
-        LoginListener
+        LoginListener,
+        YesNoAlert.YesNoListener
         //ContactEdit.StoreContact
         //Thread
 {
@@ -1616,7 +1617,7 @@ public class Roster
         if (keyCode==SE_CLEAR) {
             Contact c=(Contact)getFocusedObject();
             if (c.getGroupType()!=Groups.TYPE_TRANSP && c.getGroupType()!=Groups.TYPE_SELF && c.getGroupType()!=Groups.TYPE_SEARCH_RESULT && c.origin<Contact.ORIGIN_GROUPCHAT) {
-                deleteContact((Contact)getFocusedObject());
+                new YesNoAlert(display, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR, this);
             }
         }
 //#if (MOTOROLA_BACKLIGHT)
@@ -1879,6 +1880,10 @@ public class Roster
 		moveCursorTo(pos, true);
 	    } catch (Exception e) { }
 	}
+    }
+    
+    public void ActionConfirmed() {
+        deleteContact((Contact)getFocusedObject());
     }
 
     public void deleteContact(Contact c) {

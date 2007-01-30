@@ -291,7 +291,7 @@ public abstract class VirtualList
     protected void showNotify() {
 	if (!isDoubleBuffered()) 
 	    offscreen=Image.createImage(width, height);
-        TimerTaskRotate.startRotate(0, this);
+        TimerTaskRotate.startRotate(-1, this);
     }
     
     /** Вызывается при изменении размера отображаемой области. переопределяет наследуемый метод 
@@ -919,7 +919,7 @@ public abstract class VirtualList
     /** перезапуск ротации скроллера длинных строк */
     protected  void setRotator(){
 //#if (USE_ROTATOR)
-//#         TimerTaskRotate.startRotate(0, this);
+//#         //TimerTaskRotate.startRotate(-1, this);
 //#         try {
 //#         	if (getItemCount()<1) return;
 //#         	focusedItem(cursor);
@@ -992,8 +992,10 @@ public abstract class VirtualList
 //#if (USE_ROTATOR)    
 //# class TimerTaskRotate extends Thread{
 //#      //private Timer t;
-//#      private int Max;
+//#      private int scrollLen;
 //#      private int balloon;
+//#      private int scroll;
+//# 
 //#     
 //#      private boolean stop;
 //#      private boolean exit;
@@ -1003,6 +1005,7 @@ public abstract class VirtualList
 //#      private static TimerTaskRotate instance;
 //#     
 //#     private TimerTaskRotate() {
+//#         stop=true;
 //#         exit=false;
 //#          start();
 //#      }
@@ -1014,64 +1017,60 @@ public abstract class VirtualList
 //#             instance.destroyTask(); return;
 //#         }
 //#         
-//#         synchronized (instance) {
-//#             list.offset=0;
-//#             instance.Max=max;
-//#             instance.balloon=6;
-//#             //instance.balloon=0;
-//#             instance.attachedList=list;
-//#         }
-//#     }
+//#          synchronized (instance) {
+//#              list.offset=0;
+//#              instance.scrollLen=max;
+//#             //list.showBalloon=false; //<< uncomment this to disable keep balloon floating when traversing
+//#              instance.balloon=(list.showBalloon)? 6 : 13;
+//#              instance.scroll=7;
+//#              instance.attachedList=list;
+//#              instance.stop=false;
+//#          }
+//#      }
 //#     
 //#      public void run() {
 //#          // РїСЂРѕРєСЂСѓС‚РєР° С‚РѕР»СЊРєРѕ СЂР°Р·
 //#          //stickyWindow=false;
 //#          
 //#          while (true) {
-//#             if (exit) return;
-//#             try {  sleep(300);  } catch (Exception e) {}
-//#             if (attachedList==null) continue;
+//#              if (exit) return;
+//#              try {  sleep(300);  } catch (Exception e) {}
+//#             if (stop) continue;
 //#              
-//#             stop=false;
-//#             try {  sleep(2000);  } catch (Exception e) {}
-//#             while (true) {
-//#                 
-//#                 synchronized (this) {
-//#                     if (stop) {
-//#                         attachedList.offset=0;                        
-//#                         attachedList=null;
-//#                         break;
-//#                     }
-//#                     if (Max<0 && balloon<0) {
-//#                         attachedList.offset=0;
-//#                         //showBalloon=false;
-//#                         stop=true;
-//#                         attachedList=null;
-//#                         break;
-//#                     }
-//#                     if (attachedList.offset>=Max) {
-//#                         Max=-1;
-//#                         attachedList.offset=0;
-//#                     } else attachedList.offset+=20;
-//#                     
-//#                     if (balloon>=0) balloon--;
-//#                     attachedList.showBalloon=balloon>=0;
-//#                     //if (attachedList.showBalloon) System.out.println("Balloon!!!");
-//#                     attachedList.redraw();
+//#             synchronized (this) {
+//#                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
+//#                 if (scrollLen<0 && balloon<0) stop=true;
+//#                 if (stop) {
+//#                     if (attachedList!=null) attachedList.offset=0;
+//#                     attachedList.showBalloon=false;
+//#                     attachedList=null;
+//#                     continue;
+//#                 }
+//#                  
+//#                 //scroll state machine
+//#                 if (scroll>0) scroll--;
+//#                 if (scroll==0) {
+//#                     if (attachedList.offset>=scrollLen) {
+//#                         scrollLen=-1;
+//#                          attachedList.offset=0;
+//#                      } else attachedList.offset+=20;
 //#                  }
 //#                  
-//#                 try {
-//#                     sleep(300);
-//#                 } catch (Exception e) {}
+//#                 //balloon state machine
+//#                 if (balloon>=0) balloon--;
+//#                 attachedList.showBalloon=(balloon<7 && balloon>0);
+//#                 
+//#                 attachedList.redraw();
 //#              }
+//#             
 //#          }
-//#          //System.out.println("Offset "+offset);
 //#      }
 //#      public void destroyTask(){
-//#         synchronized (this) { 
-//#             if (attachedList!=null) attachedList.offset=0;
-//#             stop=true; 
-//#         }
+//#          synchronized (this) { 
+//#              if (attachedList!=null) attachedList.offset=0;
+//#              stop=true; 
+//#             //attachedList=null;
+//#          }
 //#      }
-//#  } 
+//#  }
 //#endif

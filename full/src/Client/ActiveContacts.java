@@ -84,7 +84,7 @@ public class ActiveContacts
 	else super.keyPressed(keyCode);
     }
     
-    public void keyGreen(){
+    protected void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;
         
 	Contact c=(Contact)getFocusedObject();
