@@ -1695,7 +1695,11 @@ public class Roster
                         case 0: cf.isbottom=1; VirtualList.isbottom=1; break;
                         case 1: cf.isbottom=2; VirtualList.isbottom=2; break;
                         case 2: cf.isbottom=3; VirtualList.isbottom=3; break;
-                        case 3: cf.isbottom=0; VirtualList.isbottom=0; break;
+                        case 3: cf.isbottom=4; VirtualList.isbottom=4; break;
+                        case 4: cf.isbottom=5; VirtualList.isbottom=5; break;
+                        case 5: cf.isbottom=6; VirtualList.isbottom=6; break;
+                        case 6: cf.isbottom=7; VirtualList.isbottom=7; break;
+                        case 7: cf.isbottom=0; VirtualList.isbottom=0; break;
                     }
                     cf.saveToStorage();
                 }
@@ -1710,7 +1714,11 @@ public class Roster
                         case 0: cf.isbottom=1; VirtualList.isbottom=1; break;
                         case 1: cf.isbottom=2; VirtualList.isbottom=2; break;
                         case 2: cf.isbottom=3; VirtualList.isbottom=3; break;
-                        case 3: cf.isbottom=0; VirtualList.isbottom=0; break;
+                        case 3: cf.isbottom=4; VirtualList.isbottom=4; break;
+                        case 4: cf.isbottom=5; VirtualList.isbottom=5; break;
+                        case 5: cf.isbottom=6; VirtualList.isbottom=6; break;
+                        case 6: cf.isbottom=7; VirtualList.isbottom=7; break;
+                        case 7: cf.isbottom=0; VirtualList.isbottom=0; break;
                     }
                     
                     cf.saveToStorage();

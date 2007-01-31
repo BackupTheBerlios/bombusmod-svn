@@ -329,22 +329,23 @@ public abstract class VirtualList
         width=getWidth();	// patch for SE
         height=getHeight();
         
-        reverse=true;
-        
 	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
 
         switch (isbottom) {
-            case 0: paintTop=false; paintBottom=false; break;
-            case 1: paintTop=true; paintBottom=false; break;
-            case 2: paintTop=false; paintBottom=true; break;
-            case 3: paintTop=true; paintBottom=true; break;
+            case 0: paintTop=false; paintBottom=false; reverse=false; break;
+            case 1: paintTop=true; paintBottom=false; reverse=false; break;
+            case 2: paintTop=false; paintBottom=true; reverse=false; break;
+            case 3: paintTop=true; paintBottom=true; reverse=false; break;
+            case 4: paintTop=false; paintBottom=false; reverse=true; break;
+            case 5: paintTop=true; paintBottom=false; reverse=true; break;
+            case 6: paintTop=false; paintBottom=true; reverse=true; break;
+            case 7: paintTop=true; paintBottom=true; reverse=true; break;
         }
         
         // заголовок окна
         beginPaint();
         
         int list_bottom=0;        
-        //int list_top=0; // верхняя граница списка
         itemBorder[0]=0;
         updateLayout(); //fixme: только при изменении списка
         
