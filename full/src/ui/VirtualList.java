@@ -329,7 +329,7 @@ public abstract class VirtualList
         width=getWidth();	// patch for SE
         height=getHeight();
         
-        reverse=false;
+        reverse=true;
         
 	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
 
@@ -343,39 +343,35 @@ public abstract class VirtualList
         // заголовок окна
         beginPaint();
         
-        int th=0;        
-        int list_top=0; // верхняя граница списка
+        int list_bottom=0;        
+        //int list_top=0; // верхняя граница списка
         itemBorder[0]=0;
         updateLayout(); //fixme: только при изменении списка
         
         setAbsOrg(g, 0,0);
         if (paintTop) {
             if (reverse) {
-                list_top=NetAccuFont.fontHeight+2;
+                itemBorder[0]=NetAccuFont.fontHeight+2;
                 drawStatusPanel(g);
             } else {
-                if (title!=null) list_top=title.getVHeight();
+                if (title!=null)
+                    itemBorder[0]=title.getVHeight();
                 drawInfoPanel(g);
             }
         }
         
         if (paintBottom) {
             if (reverse) {
-                th=NetAccuFont.fontHeight+2; 
+                if (title!=null)
+                    list_bottom=title.getVHeight();
             } else {
-                if (title!=null) th=title.getVHeight();
+                list_bottom=NetAccuFont.fontHeight+2; 
             }
         }
         
         drawHeapMonitor(g);
         
-        winHeight=height-list_top-th;
-        
-        if (!reverse) {
-            itemBorder[0]=th;
-        } else {
-            itemBorder[0]=list_top;
-        }
+        winHeight=height-itemBorder[0]-list_bottom;
 
         int count=getItemCount(); // размер списка
         
@@ -479,10 +475,10 @@ public abstract class VirtualList
 //#endif
                 if (paintBottom) {
                     if (reverse) {
-                        setAbsOrg(g, 0, height-th);
+                        setAbsOrg(g, 0, height-title.getVHeight());
                         drawInfoPanel(g);
                     } else {
-                        setAbsOrg(g, 0, height-list_top);
+                        setAbsOrg(g, 0, height-NetAccuFont.fontHeight);
                         drawStatusPanel(g);
                     }
                 }
