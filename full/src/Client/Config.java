@@ -281,6 +281,7 @@ public class Config {
         if (lastProfile==AlertProfile.VIBRA) lastProfile=0;
 	updateTime();
 	VirtualList.fullscreen=fullscreen;
+	VirtualList.isbottom=isbottom;
 	VirtualList.memMonitor=memMonitor;
         VirtualList.digitMemMonitor=digitMemMonitor;
     }

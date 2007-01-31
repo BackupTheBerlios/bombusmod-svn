@@ -971,7 +971,7 @@ public class Roster
         theStream.enableRosterNotify(true);
         rpercent=60;
         //AutoAway=new TimerTaskAutoAway();
-        TimerTaskAutoAway.startRotate(5,this);
+        if (cf.setAutoStatus) TimerTaskAutoAway.startRotate(5,this);
         if (StaticData.getInstance().account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
             try {
@@ -1692,10 +1692,10 @@ public class Roster
                 if (Version.getPlatformName().indexOf("SIE") == -1) {
                     fullMode=cf.isbottom;
                     switch (fullMode) {
-                        case 0: cf.isbottom=1; break;
-                        case 1: cf.isbottom=2; break;
-                        case 2: cf.isbottom=3; break;
-                        case 3: cf.isbottom=0; break;
+                        case 0: cf.isbottom=1; VirtualList.isbottom=1; break;
+                        case 1: cf.isbottom=2; VirtualList.isbottom=2; break;
+                        case 2: cf.isbottom=3; VirtualList.isbottom=3; break;
+                        case 3: cf.isbottom=0; VirtualList.isbottom=0; break;
                     }
                     cf.saveToStorage();
                 }
@@ -1707,11 +1707,12 @@ public class Roster
                 if (Version.getPlatformName().indexOf("SIE") > -1) {
                     fullMode=cf.isbottom;
                     switch (fullMode) {
-                        case 0: cf.isbottom=1; break;
-                        case 1: cf.isbottom=2; break;
-                        case 2: cf.isbottom=3; break;
-                        case 3: cf.isbottom=0; break;
+                        case 0: cf.isbottom=1; VirtualList.isbottom=1; break;
+                        case 1: cf.isbottom=2; VirtualList.isbottom=2; break;
+                        case 2: cf.isbottom=3; VirtualList.isbottom=3; break;
+                        case 3: cf.isbottom=0; VirtualList.isbottom=0; break;
                     }
+                    
                     cf.saveToStorage();
                 }
             }
@@ -2081,7 +2082,6 @@ public class Roster
             oldStatus=myStatus;
             if (myStatus==0 || myStatus==1) {
                 String away="Auto away since "+Time.timeString(Time.localTime())+"(GMT+"+Time.GMTOffset+")";
-                System.out.println(away);
                 isAway=true;
                 sendPresence(2, away);
             }
@@ -2101,7 +2101,6 @@ class TimerTaskAutoAway extends Thread{
      StaticData sd;
 
     private boolean elfPlatform=false;
-    private boolean setAutoStatus=Config.getInstance().setAutoStatus;
 
     private int keyTimer=0;
 

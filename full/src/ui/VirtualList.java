@@ -59,6 +59,10 @@ public abstract class VirtualList
     protected int getTitleBGndRGB() {return Colors.BAR_BGND;} 
     
     private StaticData sd=StaticData.getInstance();
+
+    private boolean reverse=false;
+
+    public static int isbottom=3;
     /**
      * цвет текста заголовка
      * @return RGB-цвет текста заголовка
@@ -324,12 +328,12 @@ public abstract class VirtualList
     public void paint(Graphics graphics) {
         width=getWidth();	// patch for SE
         height=getHeight();
-        int th=0;
+        
+        reverse=false;
         
 	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
-        
-        fullMode=Config.getInstance().isbottom;
-        switch (fullMode) {
+
+        switch (isbottom) {
             case 0: paintTop=false; paintBottom=false; break;
             case 1: paintTop=true; paintBottom=false; break;
             case 2: paintTop=false; paintBottom=true; break;
@@ -339,23 +343,39 @@ public abstract class VirtualList
         // заголовок окна
         beginPaint();
         
+        int th=0;        
         int list_top=0; // верхняя граница списка
+        itemBorder[0]=0;
         updateLayout(); //fixme: только при изменении списка
         
-        winHeight=height;
-        
+        setAbsOrg(g, 0,0);
         if (paintTop) {
-            list_top=drawTitle(g);
+            if (reverse) {
+                list_top=NetAccuFont.fontHeight+2;
+                drawStatusPanel(g);
+            } else {
+                if (title!=null) list_top=title.getVHeight();
+                drawInfoPanel(g);
+            }
+        }
+        
+        if (paintBottom) {
+            if (reverse) {
+                th=NetAccuFont.fontHeight+2; 
+            } else {
+                if (title!=null) th=title.getVHeight();
+            }
         }
         
         drawHeapMonitor(g);
         
-        if (paintBottom) {
-            if (title!=null) th=title.getVHeight();
-        }
         winHeight=height-list_top-th;
         
-        itemBorder[0]=list_top; //убрать жесткое задание высоты
+        if (!reverse) {
+            itemBorder[0]=th;
+        } else {
+            itemBorder[0]=list_top;
+        }
 
         int count=getItemCount(); // размер списка
         
@@ -375,7 +395,7 @@ public abstract class VirtualList
         // отрисовка
         int itemIndex=getElementIndexAt(win_top);
         int displayedIndex=0;
-        int displayedBottom=list_top;
+        int displayedBottom=itemBorder[0];
    
         int baloon=-1;
         atEnd=false;
@@ -391,7 +411,7 @@ public abstract class VirtualList
                 int lh=el.getVHeight();
                 
                 // окно списка
-                setAbsOrg(g, 0, list_top);
+                setAbsOrg(g, 0, itemBorder[0]);
                 g.setClip(0,0, itemMaxWidth, winHeight);    
                 
                 g.translate(0,itemYpos);
@@ -409,7 +429,7 @@ public abstract class VirtualList
                 el.drawItem(g, (sel)?offset:0, sel);
                 
                 itemIndex++;
-		displayedBottom=itemBorder[++displayedIndex]=list_top+itemYpos+lh;
+		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
             }
         } catch (Exception e) { atEnd=true; }
 
@@ -427,7 +447,7 @@ public abstract class VirtualList
         //g.setColor(VL_BGND);
         if (scroll) {
 	    
-            setAbsOrg(g, 0, list_top);
+            setAbsOrg(g, 0, itemBorder[0]);
             g.setClip(0, 0, width, winHeight);
 
 	    scrollbar.setPostion(win_top);
@@ -458,8 +478,13 @@ public abstract class VirtualList
 //#         } else {
 //#endif
                 if (paintBottom) {
-                    setAbsOrg(g, 0, height-th);
-                    drawBottom(g);
+                    if (reverse) {
+                        setAbsOrg(g, 0, height-th);
+                        drawInfoPanel(g);
+                    } else {
+                        setAbsOrg(g, 0, height-list_top);
+                        drawStatusPanel(g);
+                    }
                 }
 //#if ALT_INPUT
 //#         }
@@ -483,7 +508,7 @@ public abstract class VirtualList
         }
     }
     
-    private int drawTitle (final Graphics g) {
+    private void drawStatusPanel (final Graphics g) {
         int h=NetAccuFont.fontHeight+2;
         g.setClip(0,0, width, h);
 
@@ -515,21 +540,17 @@ public abstract class VirtualList
         }
         NetworkAccu.draw(g, width);
         NetAccuFont.drawString(g, traff, w, 1);
-        
-        return h;
     }
     
-    private void drawBottom (final Graphics g) {    
+    private void drawInfoPanel (final Graphics g) {    
         if (title!=null) {
             g.setColor(getTitleBGndRGB());
-            g.fillRect(0, 0, width, height);
-
-            if (getTitleRGB()!=0x010101) {
-                    g.setColor(getTitleRGB());
-                    title.drawItem(g,0,false);
-            }
+            g.fillRect(0, 0, width, title.getVHeight());
+            g.setColor(getTitleRGB());
+            title.drawItem(g,0,false);
         }
     }
+    
     /**
      * перенос координат (0.0) в абсолютные координаты (x,y)
      * @param g графический контекст отрисовки
