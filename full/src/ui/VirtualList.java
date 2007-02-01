@@ -12,7 +12,7 @@ import Info.Version;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
-import ui.Wobble;
+import ui.controls.PopUp;
 import ui.controls.Balloon;
 //#if ALT_INPUT
 //# import ui.controls.InputBox;
@@ -65,13 +65,10 @@ public abstract class VirtualList
 
     public static int isbottom=3;
 
-    public static boolean wobble=false;
+    public static String wobble="";
     
-    public static void setWobble(){
-        if (wobble)
-            wobble=false;
-        else
-            wobble=true;
+    public static void setWobble(String txt){
+        wobble=txt.trim();
     }
     
     /**
@@ -498,7 +495,8 @@ public abstract class VirtualList
 //#         }
 //#endif
         setAbsOrg(g, 0, 0);
-        if (wobble) new Wobble(g,"test");
+        g.setClip(0,0, width, height);
+        if (wobble.length()>0) new PopUp(g,wobble, 10, 10, width-20, height-20);
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
     }

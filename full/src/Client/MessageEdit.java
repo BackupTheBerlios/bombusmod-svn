@@ -80,57 +80,12 @@ public class MessageEdit
                     try {
                         t=new TextBox(to.toString(),null,1024, TextField.ANY);
                     } catch (Exception c) {
-                        try {
                             t=new TextBox(to.toString(),null,500, TextField.ANY);
-                            charsCount=1024;
-                        } catch (Exception d) {
-                            try {
-                                t=new TextBox(to.toString(),null,960, TextField.ANY);
-                                charsCount=960;
-                            } catch (Exception e) {
-                                try {
-                                    t=new TextBox(to.toString(),null,896, TextField.ANY);
-                                    charsCount=896;
-                                } catch (Exception f) {
-                                    try {
-                                        t=new TextBox(to.toString(),null,832, TextField.ANY);
-                                        charsCount=832;
-                                    } catch (Exception g) {
-                                        try {
-                                            t=new TextBox(to.toString(),null,768, TextField.ANY);
-                                            charsCount=768;
-                                        } catch (Exception h) {
-                                            try {
-                                                t=new TextBox(to.toString(),null,704, TextField.ANY);
-                                                charsCount=704;
-                                            } catch (Exception i) {
-                                                try {
-                                                    t=new TextBox(to.toString(),null,640, TextField.ANY);
-                                                    charsCount=640;
-                                                } catch (Exception j) {
-                                                    try {
-                                                        t=new TextBox(to.toString(),null,576, TextField.ANY);
-                                                        charsCount=576;
-                                                    } catch (Exception k) {
-                                                        try {
-                                                            t=new TextBox(to.toString(),null,512, TextField.ANY);
-                                                            charsCount=512;
-                                                        } catch (Exception l) {
-                                                            t=new TextBox(to.toString(),null,500, TextField.ANY);
-                                                            charsCount=500;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                         }
-                     }
-                 }
-             }
-         }
+                            charsCount=500;
+                    }
+                }
+            }
+        }
         
         try {
             if (body!=null) t.setString(body);

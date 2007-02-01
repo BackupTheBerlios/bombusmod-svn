@@ -11,7 +11,6 @@ package Client;
 import Conference.MucContact;
 import History.HistoryStorage;
 import Messages.MessageList;
-import Messages.MessageParser;
 import archive.MessageArchive;
 import images.RosterIcons;
 import images.SmilesIcons;
@@ -19,7 +18,6 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import locale.SR;
 import templates.TemplateContainer;
-//import History.HistoryList;
 //#if ALT_INPUT
 //# import ui.controls.InputBox;
 //#endif

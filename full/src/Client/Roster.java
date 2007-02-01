@@ -1703,7 +1703,8 @@ public class Roster
                     }
                     cf.saveToStorage();
                 } else {
-                    VirtualList.setWobble();
+                    Contact contact=(Contact)getFocusedObject();
+                    VirtualList.setWobble(contact.presence);
                 }
             }
             System.gc();
@@ -1725,7 +1726,12 @@ public class Roster
                     
                     cf.saveToStorage();
                 } else {
-                    VirtualList.setWobble();
+                    if (VirtualList.wobble!=null) {
+                        VirtualList.setWobble("");
+                    } else {
+                        Contact contact=(Contact)getFocusedObject();
+                        VirtualList.setWobble(contact.bareJid+"/n"+contact.presence+"/n"+contact.subscr);
+                    }
                 }
             }
             System.gc();
