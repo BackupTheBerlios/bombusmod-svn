@@ -12,6 +12,7 @@ import Info.Version;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
+import ui.Wobble;
 import ui.controls.Balloon;
 //#if ALT_INPUT
 //# import ui.controls.InputBox;
@@ -63,6 +64,16 @@ public abstract class VirtualList
     private boolean reverse=false;
 
     public static int isbottom=3;
+
+    public static boolean wobble=false;
+    
+    public static void setWobble(){
+        if (wobble)
+            wobble=false;
+        else
+            wobble=true;
+    }
+    
     /**
      * цвет текста заголовка
      * @return RGB-цвет текста заголовка
@@ -479,13 +490,15 @@ public abstract class VirtualList
                         setAbsOrg(g, 0, height-title.getVHeight());
                         drawInfoPanel(g);
                     } else {
-                        setAbsOrg(g, 0, height-NetAccuFont.fontHeight);
+                        setAbsOrg(g, 0, height-(NetAccuFont.fontHeight+2));
                         drawStatusPanel(g);
                     }
                 }
 //#if ALT_INPUT
 //#         }
 //#endif
+        setAbsOrg(g, 0, 0);
+        if (wobble) new Wobble(g,"test");
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
     }
@@ -493,6 +506,7 @@ public abstract class VirtualList
     protected void drawBalloon(final Graphics g, int balloon, final String text) {
         setAbsOrg(g,0,balloon);
         Balloon.draw(g, text);
+        
     }
 
     private void drawHeapMonitor(final Graphics g) {

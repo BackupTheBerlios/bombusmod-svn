@@ -1702,6 +1702,8 @@ public class Roster
                         case 7: cf.isbottom=0; VirtualList.isbottom=0; break;
                     }
                     cf.saveToStorage();
+                } else {
+                    VirtualList.setWobble();
                 }
             }
             System.gc();
@@ -1722,6 +1724,8 @@ public class Roster
                     }
                     
                     cf.saveToStorage();
+                } else {
+                    VirtualList.setWobble();
                 }
             }
             System.gc();
