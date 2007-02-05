@@ -19,40 +19,41 @@ import ui.FontCache;
  * @author adsky
  */
 public class PopUp {
-    private int x1,y1,x2;
-
-    private int height;
-
-    private int y2;
+    private int height, mHeight, width, mWidth, wBorder, hBorder;
     
-    protected Font font=FontCache.getMsgFont();
+    private Font font;;
     
-    //private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
+    private String str;
     
     /** Creates a new instance of PopUp */
-    public PopUp(Graphics g, String txt, int x1, int y1, int x2, int y2) {
-        String text=txt.trim();
-        this.x1=x1;
-        this.y1=y1;
-        this.x2=x2;
-        this.y2=y2;
-        draw(g, txt);
+    public PopUp(Graphics g, String txt, int width, int height) {
+        this.str=txt.trim();
+        this.mHeight=g.getClipHeight();
+        this.mWidth=g.getClipWidth();
+        this.height=height;
+        this.width=width;
+        this.wBorder=(mWidth-width)/2;
+        this.hBorder=(mHeight-height)/2;
+
+        g.translate(wBorder-g.getTranslateX(), hBorder-g.getTranslateY());
+        draw(g);
     }
     
-    public void draw(Graphics g, String txt) {
+    public void draw(Graphics g) {
         g.setColor(Colors.BALLOON_INK);
-        g.fillRoundRect(x1,y1,x2,y2,10,10);
+        g.fillRoundRect(0,0,width,height,10,10);
 
         g.setColor(Colors.BALLOON_BGND);
-        g.fillRoundRect(x1+1,y1+1,x2-2,y2-2,10,10);
+        g.fillRoundRect(1,1,width-2,height-2,10,10);
         
         g.setColor(Colors.BALLOON_INK);
-        drawStrings(g, x1+2,y1+2,x2-2, txt);
-        
+        drawStrings(g, 2,2,width-4);
     }
     
-    public void drawStrings(Graphics g, int x, int y, int w, String str)
+    public void drawStrings(Graphics g, int x, int y, int w)
     {
+        font=FontCache.getMsgFont();
+        g.setFont(font);
         int ii, pointS = 0, len = str.length();
         for ( ii = 0; ii >= 0; )
         {
@@ -67,7 +68,7 @@ public class PopUp {
                     y += getHeight();
                 }
                 g.drawString(str, x, y,  Graphics.TOP|Graphics.LEFT);
-                //return y + getHeight();
+                return;// y + getHeight();
             }
             else
             {
@@ -83,8 +84,8 @@ public class PopUp {
                     y += getHeight();
                 }
             }
-    }
-    //return y;
+        }
+    return;// y;
   }
 
     private int getLen(String str) {

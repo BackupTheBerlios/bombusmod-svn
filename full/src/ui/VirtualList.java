@@ -496,7 +496,7 @@ public abstract class VirtualList
 //#endif
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
-        if (wobble.length()>0) new PopUp(g,wobble, 10, 10, width-20, height-20);
+        if (wobble.length()>0) new PopUp(g,wobble, width-20, height-20);
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
     }
