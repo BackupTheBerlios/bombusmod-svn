@@ -10,6 +10,7 @@
 package Client;
 import Conference.MucContact;
 import History.HistoryStorage;
+import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
 import io.NvStorage;
 //#if FILE_IO
@@ -68,7 +69,7 @@ public class Contact extends IconTextElement{
     public int priority;
     private Group group;
     public int transport;
-    
+
     public String presence;
     
     public boolean acceptComposing;

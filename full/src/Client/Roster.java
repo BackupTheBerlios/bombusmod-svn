@@ -999,7 +999,7 @@ public class Roster
                 String id=(String) data.getAttribute("id");
                 
                 if (id!=null) {
-					if (id.startsWith("ping")) theStream.pingSent=false;
+                    if (id.startsWith("ping")) theStream.pingSent=false;
 				
                     if (id.startsWith("nickvc")) {
                         VCard vc=new VCard(data);//.getNickName();
@@ -1036,6 +1036,7 @@ public class Roster
                             JabberDataBlock vc=data.getChildBlock("query");
                             if (vc!=null) {
                                 body=IqVersionReply.dispatchVersion(vc);
+                                //гг
                             }
                             querysign=false;
                         }
@@ -1325,7 +1326,6 @@ public class Roster
                     if (cf.storeConfPresence) {
                         messageStore(getContact(from, false), chatPresence);
                     }
-                    
                     c.addMessage(m);
                     c.priority=pr.getPriority();
                     //if (ti>=0) c.setStatus(ti);
@@ -1345,8 +1345,7 @@ public class Roster
 					
                     c.priority=pr.getPriority();
                     if (ti>=0) c.setStatus(ti);
-                    /*if (ti==Presence.PRESENCE_OFFLINE) c.acceptComposing=false;
-					c.setComposing(false);*/
+
                     if (ti>=0) {
                         if (ti!=11) playNotify(ti);
                     }
@@ -1703,8 +1702,12 @@ public class Roster
                     }
                     cf.saveToStorage();
                 } else {
-                    Contact contact=(Contact)getFocusedObject();
-                    VirtualList.setWobble(contact.presence);
+                    if (VirtualList.wobble.length()>0) {
+                        VirtualList.setWobble("");
+                    } else {
+                        Contact contact=(Contact)getFocusedObject();
+                        VirtualList.setWobble("jid: "+contact.bareJid+" status: "+contact.presence+" subscription: "+contact.subscr);
+                    }
                 }
             }
             System.gc();
@@ -1726,11 +1729,11 @@ public class Roster
                     
                     cf.saveToStorage();
                 } else {
-                    if (VirtualList.wobble!=null) {
+                    if (VirtualList.wobble.length()>0) {
                         VirtualList.setWobble("");
                     } else {
                         Contact contact=(Contact)getFocusedObject();
-                        VirtualList.setWobble(contact.bareJid+"/n"+contact.presence+"/n"+contact.subscr);
+                        VirtualList.setWobble("jid: "+contact.bareJid+" status: "+contact.presence+" subscription: "+contact.subscr);
                     }
                 }
             }
