@@ -149,6 +149,8 @@ public class Roster
     private final static int maxReconnect=5;
     public int reconnectCount;
     
+    public static String startTime=Time.dispLocalTime();
+    
     /**
      * Creates a new instance of Roster
      * Sets up the stream to the server and adds this class as a listener
@@ -1612,7 +1614,6 @@ public class Roster
 
     protected void keyPressed(int keyCode) {
         super.keyPressed(keyCode);
-        
         if (keyCode==SE_CLEAR) {
             Contact c=(Contact)getFocusedObject();
             if (c.getGroupType()!=Groups.TYPE_TRANSP && c.getGroupType()!=Groups.TYPE_SELF && c.getGroupType()!=Groups.TYPE_SEARCH_RESULT && c.origin<Contact.ORIGIN_GROUPCHAT) {
@@ -1683,8 +1684,8 @@ public class Roster
              }         
         } 
 
-		if (keyCode=='3') { searchGroup(-1); setRotator(); }
-		if (keyCode=='9') { searchGroup(1); setRotator(); }
+        if (keyCode=='3') { searchGroup(-1); setRotator(); }
+        if (keyCode=='9') { searchGroup(1); setRotator(); }
         
         if (keyCode==KEY_POUND) {
             if (cf.poundKey) {
@@ -1702,12 +1703,7 @@ public class Roster
                     }
                     cf.saveToStorage();
                 } else {
-                    if (VirtualList.wobble.length()>0) {
-                        VirtualList.setWobble("");
-                    } else {
-                        Contact contact=(Contact)getFocusedObject();
-                        VirtualList.setWobble("jid: "+contact.bareJid+" status: "+contact.presence+" subscription: "+contact.subscr);
-                    }
+                    setWobble();
                 }
             }
             System.gc();
@@ -1729,16 +1725,28 @@ public class Roster
                     
                     cf.saveToStorage();
                 } else {
-                    if (VirtualList.wobble.length()>0) {
-                        VirtualList.setWobble("");
-                    } else {
-                        Contact contact=(Contact)getFocusedObject();
-                        VirtualList.setWobble("jid: "+contact.bareJid+" status: "+contact.presence+" subscription: "+contact.subscr);
-                    }
+                    setWobble();
                 }
             }
             System.gc();
         }        
+    }
+    
+    public void setWobble() {
+        Contact contact=(Contact)getFocusedObject();
+        StringBuffer mess=new StringBuffer();
+        
+        if (contact instanceof MucContact) {
+            MucContact mucContact=(MucContact)contact;
+            String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid;
+            mess.append(jid+"\n"+mucContact.affiliation+"/"+mucContact.role);
+        } else {
+            mess.append("jid: "+contact.bareJid);
+            mess.append("\nsubscription: "+contact.subscr);
+        }
+        mess.append((contact.presence!=null)?"\nstatus: "+contact.presence:"");
+
+        VirtualList.setWobble(mess.toString());
     }
     
     public void logoff(){

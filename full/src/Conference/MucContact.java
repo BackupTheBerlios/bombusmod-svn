@@ -16,6 +16,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import locale.SR;
 import Client.Msg;
+import ui.VirtualList;
 
 /**
  *
@@ -159,6 +160,7 @@ public class MucContact extends Contact{
                     b.append(reason);
                     b.append(")");
                     if (reason.indexOf("talks") > -1) toTalks();
+                    setWobble(reason);
                     testMeOffline();
                     break;
                 case 321:
@@ -245,6 +247,9 @@ public class MucContact extends Contact{
             StaticData.getInstance().roster.roomOffline(group);
     }
     
+    public void setWobble(String reason) {
+        VirtualList.setWobble("!!!KICKED!!!\n"+reason);
+    }
 
     public void addMessage(Msg m) {
         super.addMessage(m);

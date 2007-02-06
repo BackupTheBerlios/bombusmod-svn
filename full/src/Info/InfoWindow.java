@@ -8,6 +8,7 @@
  */
 
 package Info;
+import Client.Roster;
 import Client.StaticData;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -55,6 +56,7 @@ public class InfoWindow implements CommandListener{
         }
         form.append(conn_stats);
 //#endif
+        form.append("\nStart time: "+Roster.startTime);
         form.setCommandListener(this);
         display.setCurrent(form);
     }

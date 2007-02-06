@@ -9,6 +9,7 @@
 
 package ui.controls;
 
+import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.Colors;
@@ -21,9 +22,16 @@ import ui.FontCache;
 public class PopUp {
     private int height, mHeight, width, mWidth, wBorder, hBorder;
     
-    private Font font;;
+    private Font font;
     
     private String str;
+    
+    private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
+    private boolean wordsWrap;
+    
+    private boolean kikoban=false;
+    
+    private Vector strings;
     
     /** Creates a new instance of PopUp */
     public PopUp(Graphics g, String txt, int width, int height) {
@@ -36,63 +44,104 @@ public class PopUp {
         this.hBorder=(mHeight-height)/2;
 
         g.translate(wBorder-g.getTranslateX(), hBorder-g.getTranslateY());
+        
+        if (str.startsWith("!")==true) {
+            kikoban=true;
+        }
+        font=(kikoban)?FontCache.getClockFont():FontCache.getBalloonFont();
+        
+        strings=parseMessage(width-2);
         draw(g);
     }
     
     public void draw(Graphics g) {
-        g.setColor(Colors.BALLOON_INK);
+        g.setColor((kikoban)?0xff0000:Colors.BALLOON_INK);
         g.fillRoundRect(0,0,width,height,10,10);
-
-        g.setColor(Colors.BALLOON_BGND);
+        
+        g.setColor((kikoban)?0xff0000:Colors.BALLOON_BGND);
         g.fillRoundRect(1,1,width-2,height-2,10,10);
         
-        g.setColor(Colors.BALLOON_INK);
-        drawStrings(g, 2,2,width-4);
+        g.setColor((kikoban)?0xffff00:Colors.BALLOON_INK);
+        g.setFont(font);
+        drawAllStrings(g, 2,2);
+    }
+
+    private Vector parseMessage(int stringWidth) {
+        Vector lines=new Vector();
+        int state=0;
+        String txt=str;
+        
+        while (state<1) {
+            int w=0;
+            StringBuffer s=new StringBuffer();
+	    int wordWidth=0;
+	    int wordStartPos=0;
+
+            if (txt==null) {
+                state++;
+                continue;
+            }
+            
+            int pos=0;
+            while (pos<txt.length()) {
+                char c=txt.charAt(pos);
+
+                int cw=font.charWidth(c);
+                if (c!=0x20) {
+                    boolean newline= ( c==0x0d || c==0x0a /*|| c==0xa0*/ );
+                    if (wordWidth+cw>stringWidth || newline) {
+                        s.append(txt.substring(wordStartPos,pos));
+                        w+=wordWidth;
+                        wordWidth=0;
+                        wordStartPos=pos;
+                        if (newline) wordStartPos++;
+                    }
+                    if (w+wordWidth+cw>stringWidth || newline) {
+                        lines.addElement(s.toString()); //последняя подстрока в l
+                        s.setLength(0); w=0;
+                    }
+                }
+                if (c==0x09) c=0x20;
+
+                if (c>0x1f) wordWidth+=cw;
+
+                if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) {
+                    if (pos>wordStartPos) 
+                        s.append(txt.substring(wordStartPos,pos));
+                    if (c>0x1f) s.append(c);
+                    w+=wordWidth;
+                    wordStartPos=pos+1;
+                    wordWidth=0;
+                }
+                
+                pos++;
+            }
+	    if (wordStartPos!=pos)
+		s.append(txt.substring(wordStartPos,pos));
+            if (s.length()>0) {
+                lines.addElement(s.toString());
+            }
+            
+            if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);  //последняя строка
+            state++;
+        }
+        //drawAllStrings(g,lines, x, y);
+        return lines;
     }
     
-    public void drawStrings(Graphics g, int x, int y, int w)
-    {
-        font=FontCache.getMsgFont();
-        g.setFont(font);
-        int ii, pointS = 0, len = str.length();
-        for ( ii = 0; ii >= 0; )
-        {
-            //wrapSeparators.indexOf(c)>=0
-            ii = str.indexOf(" ", ii + 1);
-            if ( ii < 0 )
-            {//больше нет пробелов
-                if ( getLen(str) > w )
-                {
-                    g.drawString(str.substring(0, pointS), x, y, Graphics.TOP|Graphics.LEFT);
-                    str = str.substring(pointS + 1);
-                    y += getHeight();
-                }
-                g.drawString(str, x, y,  Graphics.TOP|Graphics.LEFT);
-                return;// y + getHeight();
-            }
-            else
-            {
-                if ( getLen(str.substring(0, ii)) < w )
-                {
-                    pointS = ii;
-                }
-                else
-                {
-                    g.drawString(str.substring(0, pointS), x, y, Graphics.TOP|Graphics.LEFT);
-                    str = str.substring(pointS + 1);
-                    pointS = ii = 0;
-                    y += getHeight();
-                }
-            }
-        }
-    return;// y;
-  }
+    private void drawAllStrings(Graphics g, int x, int y) {
+        Vector lines=strings;
+        if (lines.size()<1) return;
 
-    private int getLen(String str) {
-        int result=font.stringWidth(str);
-        return result;
+	for (int line=0; line<lines.size(); ) 
+	{
+            //System.out.println("line: "+line+", y: "+y);
+            g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
+            line=line+1;
+            y += getHeight();
+	}
     }
-
+    
     private int getHeight() {
         int result=font.getHeight();
         return result;

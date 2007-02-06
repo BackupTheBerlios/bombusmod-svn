@@ -74,7 +74,7 @@ public abstract class MessageList
             mi.getColor();
 	    messages.setElementAt(mi, index);
 	}
-	return mi;
+        return mi;
     }
     
     public abstract Msg getMessage(int index);

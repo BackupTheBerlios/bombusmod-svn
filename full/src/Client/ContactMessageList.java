@@ -113,7 +113,6 @@ public class ContactMessageList extends MessageList
                 removeCommand(cmdUnsubscribed);
             }
         } catch (Exception e) {}
-        
     }
     
     protected void beginPaint(){

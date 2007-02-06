@@ -598,6 +598,23 @@ public abstract class VirtualList
         //win_top=(listHeight>winHeight)? listHeight-winHeight:0;
         setRotator();
     }
+    
+    /**
+     * автоперемещение курсора в конец списка
+     */
+    public void autoScrollList(){
+        int count=getItemCount();
+        System.out.println("count: "+count+", messages: "+cursor);
+        //if (index<0) index=0;
+        if (cursor<count-1) return; //если курсор не на последнем сообщении - выйдем
+        cursor=count; // если курсор на последнем - спустимся ниже...
+        //проверить условия!
+        stickyWindow=true;
+        
+        repaint();
+    }
+    
+    
 
     /**
      * перемещение курсора в индексированную позицию
@@ -713,6 +730,7 @@ public abstract class VirtualList
      * @param keyCode код нажатой кнопки
      */
     private void key(int keyCode) {
+        wobble="";
         boolean isSiemens=false;
         if (Version.getPlatformName().indexOf("SIE") > -1) isSiemens=true;
         if (keyCode==-22) {
