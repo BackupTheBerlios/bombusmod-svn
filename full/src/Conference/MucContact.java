@@ -248,7 +248,10 @@ public class MucContact extends Contact{
     }
     
     public void setWobble(String reason) {
-        VirtualList.setWobble("!!!KICKED!!!\n"+reason);
+        ConferenceGroup group=(ConferenceGroup)getGroup();
+        if ( group.getSelfContact() == this ) {
+            VirtualList.setWobble("!!!KICKED!!!\n"+reason);
+        }
     }
 
     public void addMessage(Msg m) {

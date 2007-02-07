@@ -4,16 +4,86 @@
   <channel>
     <generator>RSS Builder by B!Soft</generator>
     <title>Новости BombusMod</title>
-    <link>http://bombusmod.net.ru</link>
+    <link>http://www.apatin.net.ru</link>
     <description>Новости BombusMod</description>
-    <language>ru-ru</language>
+    <language>en-us</language>
     <managingEditor>daniel.apatin@gmail.com</managingEditor>
     <webMaster>daniel.apatin@gmail.com</webMaster>
     <copyright>ad</copyright>
     <item>
+      <title>0.4.6.990.219</title>
+      <pubDate>Tue, 6 Feb 2007 22:37:42 +0300</pubDate>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[* улучшены попапы <br>
+* время запуска Bombus в "О Программе" <br>
+* частично переписан код, экран меньше тормозит <br>]]></description>
+    </item>
+    <item>
+      <title>0.4.6.988.218</title>
+      <pubDate>Tue, 6 Feb 2007 00:36:24 +0300</pubDate>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[* исправлена ошибка с неотключаемым автостатусом<br>
+* управление панелями, можно менять местами<br>
+* Попапы... начало реализации(управление * или # в ростере), инфо контакте. будут активно дорабатываться...<br>]]></description>
+    </item>
+    <item>
+      <title>0.4.6.985.211</title>
+      <pubDate>Wed, 31 Jan 2007 00:07:28 +0300</pubDate>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[* Зеленая кнопка в активных контактах-Написание сообщения(дубль 2)<br>
+* Группа конференции выделяются отдельной иконкой<br>
+* Переписан автостатус(необходимо тестирование)<br>
+* В инфо окне: реалJid если виден, affiliation/role<br>
+* SetKeyBlock статус можно отключить<br>
+* В закладках "участники" перемещены выше управления комнатой<br>
+* Панели поменял местами<br>
+* Для SE удаление контакта(Сlear) с подтверждением<br><br>
+
+Значительно ускорена работа, уменьшено потребление памяти, рекомендуемое обновление!]]></description>
+    </item>
+    <item>
+      <title>Немного изменился внешний вид сайта</title>
+      <pubDate>Tue, 30 Jan 2007 00:32:18 +0300</pubDate>
+      <link>http://www.apatin.net.ru</link>
+      <description><![CDATA[не забываем оставлять свои пожелания по "мелкому", после выхода версии 0.5 "мелкий" будет обновлен!
+спешите поучаствовать в его создании!
+
+http://www.apatin.net.ru/wap/modules/small/]]></description>
+    </item>
+    <item>
+      <title>0.4.6.983.204</title>
+      <pubDate>Sun, 28 Jan 2007 03:01:27 +0300</pubDate>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[конфигурация комнаты без входа в нее, из закладок.
+seen, online, idle в удобочитаемом виде :) ]]></description>
+    </item>
+    <item>
+      <title>Обновлен конструктор: добавлены звуки, сплеш картинки, скин...</title>
+      <pubDate>Sat, 27 Jan 2007 15:27:26 +0300</pubDate>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[http://www.apatin.net.ru/c/]]></description>
+    </item>
+    <item>
+      <title>сайт переехал и заодно к нему приплюсовался wap сайт :) </title>
+      <pubDate>Thu, 25 Jan 2007 01:14:22 +0300</pubDate>
+      <link>http://www.apatin.net.ru/</link>
+      <description><![CDATA[http://www.apatin.net.ru/
+http://www.apatin.net.ru/wap/]]></description>
+    </item>
+    <item>
+      <title>0.4.6.979.193</title>
+      <pubDate>Thu, 18 Jan 2007 00:32:08 +0300</pubDate>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[~автовход в конференции при подключении, необходимо редактировать закладку и пересохранить её<br>
+~исправлена ошибка с отсутствием выделения цветом сообщений, адресованных тебе<br>
+~исправлена невозможность задать статус вручную при автостатусе<br>
+~исправлено отображение времени контакта по Time-запросу<br><br>
+а также обновлен конструктор :)]]></description>
+    </item>
+    <item>
       <title>0.4.6.976.188</title>
       <pubDate>Wed, 17 Jan 2007 00:28:11 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Исправлено залипание автостатуса(не реагировал на ручную смену статуса)<br>
 Autostatus time => Autostatus time (min)<br>
 Запрос Time у контактов<br>
@@ -24,14 +94,14 @@ Autostatus time => Autostatus time (min)<br>
     <item>
       <title>0.4.6.966.184</title>
       <pubDate>Sun, 14 Jan 2007 02:40:24 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[исправлено отображение о просмотре вашей версии, времени, времени бездействия в конференциях(давно надо было сделать :) )<br>
 Хистори при реконнекте к конференции не будет грузиться повторно]]></description>
     </item>
     <item>
       <title>0.4.6.964.180</title>
       <pubDate>Mon, 8 Jan 2007 00:29:40 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[расширен диапазон keepAlive (10...2096)  <br>
 перезаход в открытые конференции в случае реконнекта]]></description>
     </item>
@@ -47,7 +117,7 @@ native:]]></description>
     <item>
       <title>0.4.5.945.159</title>
       <pubDate>Sat, 23 Dec 2006 14:15:18 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Множество исправлений, рекомендуемое обновление!
 
 Версия только в конструкторе.]]></description>
@@ -55,7 +125,7 @@ native:]]></description>
     <item>
       <title>0.4.5.921.149 New Year Edition</title>
       <pubDate>Sat, 16 Dec 2006 01:59:02 +0300</pubDate>
-      <link>http://bombusmod.net.ru/download/</link>
+      <link>http://www.apatin.net.ru/download/</link>
       <description><![CDATA[Новогодний мод, сплеш, схема, скин, звуки, иконка!!!<br><br>
 звонок из bombus: tel://+...<br>
 Исправления в настройках цвета, графическом меню, подсветке(для siemens)<br>
@@ -64,33 +134,33 @@ native:]]></description>
 Множество мелких поправок<br><br>
 
 Размер экрана 128*96<br>
-http://bombusmod.net.ru/download/ny/zlib/128_96/16/Bombus.jar<br>
-http://bombusmod.net.ru/download/ny/non_zlib/128_96/16/Bombus.jar<br><br>
+http://www.apatin.net.ru/download/ny/zlib/128_96/16/Bombus.jar<br>
+http://www.apatin.net.ru/download/ny/non_zlib/128_96/16/Bombus.jar<br><br>
 
 Размер экрана 128*160<br>
-http://bombusmod.net.ru/download/ny/zlib/128_160/16/Bombus.jar<br>
-http://bombusmod.net.ru/download/ny/non_zlib/128_160/16/Bombus.jar<br><br>
+http://www.apatin.net.ru/download/ny/zlib/128_160/16/Bombus.jar<br>
+http://www.apatin.net.ru/download/ny/non_zlib/128_160/16/Bombus.jar<br><br>
 
 Размер экрана 132*176 иконка 16px<br>
-http://bombusmod.net.ru/download/ny/zlib/132_176/16/Bombus.jar<br>
-http://bombusmod.net.ru/download/ny/non_zlib/132_176/16/Bombus.jar<br><br>
+http://www.apatin.net.ru/download/ny/zlib/132_176/16/Bombus.jar<br>
+http://www.apatin.net.ru/download/ny/non_zlib/132_176/16/Bombus.jar<br><br>
 
 Размер экрана 132*176 иконка 32px<br>
-http://bombusmod.net.ru/download/ny/zlib/132_176/32/Bombus.jar<br>
-http://bombusmod.net.ru/download/ny/non_zlib/132_176/32/Bombus.jar<br><br>
+http://www.apatin.net.ru/download/ny/zlib/132_176/32/Bombus.jar<br>
+http://www.apatin.net.ru/download/ny/non_zlib/132_176/32/Bombus.jar<br><br>
 
 Размер экрана 176*220 иконка 16px<br>
-http://bombusmod.net.ru/download/ny/zlib/176_220/16/Bombus.jar<br>
-http://bombusmod.net.ru/download/ny/non_zlib/176_220/16/Bombus.jar<br><br>
+http://www.apatin.net.ru/download/ny/zlib/176_220/16/Bombus.jar<br>
+http://www.apatin.net.ru/download/ny/non_zlib/176_220/16/Bombus.jar<br><br>
 
 Размер экрана 176*220 иконка 32px<br>
-http://bombusmod.net.ru/download/ny/zlib/176_220/32/Bombus.jar<br>
-http://bombusmod.net.ru/download/ny/non_zlib/176_220/32/Bombus.jar]]></description>
+http://www.apatin.net.ru/download/ny/zlib/176_220/32/Bombus.jar<br>
+http://www.apatin.net.ru/download/ny/non_zlib/176_220/32/Bombus.jar]]></description>
     </item>
     <item>
       <title>0.4.4.889.122</title>
       <pubDate>Fri, 8 Dec 2006 01:37:29 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Группа Visible, контакты в ней всегда видны, независимо от состояния "показывать отключенных", удобно для ботов и тех кто всегда в инвизибле.
 Мелкие исправления.
 
@@ -99,60 +169,49 @@ http://bombusmod.net.ru/download/ny/non_zlib/176_220/32/Bombus.jar]]></descripti
     <item>
       <title>0.4.4.874.107</title>
       <pubDate>Thu, 30 Nov 2006 15:16:21 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Графическое меню. Чтобы включить его, в настройках включаем "Полноэкранный режим" и "New menu" <br>
-Изменения в нижней панели<br><br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad]]></description>
+Изменения в нижней панели]]></description>
     </item>
     <item>
       <title>0.4.4.874.105</title>
       <pubDate>Wed, 29 Nov 2006 17:25:31 +0300</pubDate>
-      <link>http://bombusmod.net.ru/</link>
+      <link>http://www.apatin.net.ru/</link>
       <description><![CDATA[Графическое меню! <br>
-Готовим иконки ;-) <br><br>
-
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad
+Готовим иконки ;-) 
 
 В конструкторе этой версии пока нет]]></description>
     </item>
     <item>
       <title>0.4.4.871.100</title>
       <pubDate>Tue, 28 Nov 2006 14:52:04 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Изменения в управлении подсветкой на Siemens(состояние запоминается) <br>
-Полная локализация <br><br>
-
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad]]></description>
+Полная локализация]]></description>
     </item>
     <item>
       <title>Обновления в конструкторе</title>
       <pubDate>Tue, 28 Nov 2006 14:37:37 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Добавлены звуки, скины, цветовые схемы, шрифт нижней панели, выбор иконки программы]]></description>
     </item>
     <item>
       <title>0.4.4.870.98</title>
       <pubDate>Mon, 27 Nov 2006 14:57:00 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
-      <description><![CDATA[Звуки на события <br>
-
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad]]></description>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[Звуки на события]]></description>
     </item>
     <item>
       <title>0.4.4.859.92</title>
       <pubDate>Fri, 24 Nov 2006 16:45:14 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Исправление ошибки с незакрывающимся окном об ошибке<br>
 Локализовано всё, кроме настроек цвета]]></description>
     </item>
     <item>
       <title>0.4.4.858.87</title>
       <pubDate>Thu, 23 Nov 2006 15:40:23 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Удаление сообщений одним нажатием (SE) <br>
 Реконнект сделан иначе <br>
 ! - в начале причины кика-бана, не указывать ник модератора]]></description>
@@ -160,7 +219,7 @@ http://bombusmod.net.ru/download/Bombus.jad]]></description>
     <item>
       <title>0.4.4.856.82</title>
       <pubDate>Wed, 22 Nov 2006 13:02:42 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Только большой мод:
 (Подправлено) Удаление контактов кнопкой "С" из ростера, для SE <br>
 Шаблоны <br>
@@ -169,7 +228,7 @@ http://bombusmod.net.ru/download/Bombus.jad]]></description>
     <item>
       <title>0.4.4.856.78</title>
       <pubDate>Tue, 21 Nov 2006 15:51:06 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Новые версии мелкого(тестового) и большого мода. <br>
  <br>
 *Исправлен фоновый цвет при загрузке <br>
@@ -184,7 +243,7 @@ http://bombusmod.net.ru/download/Bombus.jad]]></description>
     <item>
       <title>Обновления в конструкторе</title>
       <pubDate>Mon, 20 Nov 2006 22:48:05 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Теперь конструктор стал намного удобнее для тех, кто пользуется им с компьютера :) <br>
 Просмотр картинок ;-) <br>
 Установлена пауза в 5 секунд между сборками...]]></description>
@@ -192,7 +251,7 @@ http://bombusmod.net.ru/download/Bombus.jad]]></description>
     <item>
       <title>0.4.4.854.69</title>
       <pubDate>Sun, 19 Nov 2006 22:09:49 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[ТОЛЬКО ZLib ВЕРСИЯ!
 обновление до 854 <br>
 информация о idle/seen/online в виде число.месяц.год часы:минуты:секунды <br>
@@ -200,7 +259,7 @@ http://bombusmod.net.ru/download/Bombus.jad]]></description>
 возможность отключить ява в виде цифр(увеличит быстродействие и свободную память) <br>
 Clear Photo в вкард, для удаления фото из памяти в загруженной vcard <br>
  <br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib]]></description>
     </item>
     <item>
       <title>Обновление на сайте</title>
@@ -211,61 +270,61 @@ http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
     <item>
       <title>Обновление на сайте</title>
       <pubDate>Fri, 17 Nov 2006 14:59:38 +0300</pubDate>
-      <link>http://bombusmod.net.ru/screenshots/</link>
+      <link>http://www.apatin.net.ru/screenshots/</link>
       <description><![CDATA[Новые скриншоты :) и немного быстрее странички грузятся :)
 ]]></description>
     </item>
     <item>
       <title>Обновления в конструкторе</title>
       <pubDate>Fri, 17 Nov 2006 13:05:18 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Добавлены смайлы и сплеш от Yagiza <br>
 Добавлена цветовая схема "Лето"(summer)]]></description>
     </item>
     <item>
       <title>0.4.4.853.67</title>
       <pubDate>Fri, 17 Nov 2006 11:46:00 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Копирование данных из "info"(jid,status,seen,idle,online) <br>
 Управление подсветкой для всех сименс <br>
 Файл-трансфер  работает и в режиме "Только конференции" <br>
  <br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad]]></description>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib <br>
+http://www.apatin.net.ru/download/Bombus.jad]]></description>
     </item>
     <item>
       <title>0.4.4.853.63</title>
       <pubDate>Thu, 16 Nov 2006 15:10:09 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Настройки цвета ободка курсора (цвет 0x010101 - не рисовать ободок) <br>
 Пункт меню "инфо" перемещен ниже <br>
 Сохранение измененной Вами цветовой схемы <br>
 Исправление ошибки вызванной одинаковыми кейкодами на Моторола и Сименс(автостатус срабатывал при нажатии "вправо") <br>
 Исправлена ошибка с несохранением настроек в неzlib версии <br>
  <br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad]]></description>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib <br>
+http://www.apatin.net.ru/download/Bombus.jad]]></description>
     </item>
     <item>
       <title>0.4.4.853.62</title>
       <pubDate>Thu, 16 Nov 2006 11:50:09 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Просмотр картинок, прослушивание звуков, чтение текста в файл-браузере <br>
  <br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad]]></description>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib <br>
+http://www.apatin.net.ru/download/Bombus.jad]]></description>
     </item>
     <item>
       <title>обновления в конструкторе</title>
       <pubDate>Thu, 16 Nov 2006 11:25:07 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
-      <description><![CDATA[Добавлен новый сплеш ( http://bombusmod.net.ru/c/data/splash/bombus/images/splash.png ) <br>
-Добавлен новый шрифт нижней панели ( http://bombusmod.net.ru/c/data/fonts/bottom/salad/images/newfont.png ) <br>]]></description>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[Добавлен новый сплеш ( http://www.apatin.net.ru/c/data/splash/bombus/images/splash.png ) <br>
+Добавлен новый шрифт нижней панели ( http://www.apatin.net.ru/c/data/fonts/bottom/salad/images/newfont.png ) <br>]]></description>
     </item>
     <item>
       <title>0.4.4.853.61</title>
       <pubDate>Thu, 16 Nov 2006 11:15:56 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Настройка цветов <br>
 Автостатус и блок кнопок на сименс SL(слайдер) <br>
 Исправлен счетчик траффика <br>
@@ -273,27 +332,27 @@ http://bombusmod.net.ru/download/Bombus.jad]]></description>
 исправлена загрузка и сохранение цветов панелей <br>
 новый сплеш с шмелём :) <br>
  <br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad]]></description>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib <br>
+http://www.apatin.net.ru/download/Bombus.jad]]></description>
     </item>
     <item>
       <title>0.4.4.853.56</title>
       <pubDate>Wed, 15 Nov 2006 12:05:58 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Исправление ошибки в ServiceDiscovery(невозможность регистрации транспорта)
 
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib <br>
-http://bombusmod.net.ru/download/Bombus.jad]]></description>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib <br>
+http://www.apatin.net.ru/download/Bombus.jad]]></description>
     </item>
     <item>
       <title>0.4.4.852.55</title>
       <pubDate>Tue, 14 Nov 2006 13:51:12 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Окончательно исправлен файл-трансфер!<br>
 Конструктор снова работает!<br>
 
-http://bombusmod.net.ru/download/Bombus.jad <br> 
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
+http://www.apatin.net.ru/download/Bombus.jad <br> 
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib]]></description>
     </item>
     <item>
       <title>Какое-то время буду занят мелким, т.е. обновлений большого мода не будет.</title>
@@ -304,7 +363,7 @@ http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
     <item>
       <title>0.4.4.852.53</title>
       <pubDate>Tue, 14 Nov 2006 11:17:43 +0300</pubDate>
-      <link>http://bombusmod.net.ru/download/zlib/Bombus.jad</link>
+      <link>http://www.apatin.net.ru/download/zlib/Bombus.jad</link>
       <description><![CDATA[ft fixes for siemens<br>
 history refactoring<br>
 paste command only if it is necessary<br>
@@ -312,29 +371,29 @@ classic chat fixes<br>
 lightOn/Off for SIE-SL75<br>
 default color - sheme fixes<br>
 
-http://bombusmod.net.ru/download/Bombus.jad<br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
+http://www.apatin.net.ru/download/Bombus.jad<br>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib]]></description>
     </item>
     <item>
       <title>0.4.4.852.52</title>
       <pubDate>Mon, 13 Nov 2006 12:24:03 +0300</pubDate>
-      <link>http://bombusmod.net.ru/download/zlib/Bombus.jad</link>
+      <link>http://www.apatin.net.ru/download/zlib/Bombus.jad</link>
       <description><![CDATA[Classic chat доработан.<br>
 seen, idle, online для всех контактов.<br>
 
-http://bombusmod.net.ru/download/Bombus.jad<br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
+http://www.apatin.net.ru/download/Bombus.jad<br>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib]]></description>
     </item>
     <item>
       <title>0.4.4.834.48</title>
       <pubDate>Fri, 10 Nov 2006 13:56:13 +0300</pubDate>
-      <link>http://bombusmod.net.ru/download/zlib/Bombus.jad</link>
+      <link>http://www.apatin.net.ru/download/zlib/Bombus.jad</link>
       <description><![CDATA[Classic chat - Классический чат!<br>
 [*] в списке сообщений открывает окно воода, и отправляет сообщение<br>
 статус при блоке кнопок<br>
 
-http://bombusmod.net.ru/download/Bombus.jad<br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
+http://www.apatin.net.ru/download/Bombus.jad<br>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib]]></description>
     </item>
     <item>
       <title>0.4.3.822.43 &amp; 0.4.3.822.43 ZLib</title>
@@ -343,13 +402,13 @@ http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
       <description><![CDATA[исправлено несохранение количества сообщений при входе в конференцию<br>
 выбор текста статусного сообщения... больше статусов хороших и разных!<br>
 также, переведены на русский язык статусы!<br>
-http://bombusmod.net.ru/download/Bombus.jad<br>
-http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
+http://www.apatin.net.ru/download/Bombus.jad<br>
+http://www.apatin.net.ru/download/zlib/Bombus.jad Zlib]]></description>
     </item>
     <item>
       <title>0.4.3.822.40 ZLib</title>
       <pubDate>Thu, 9 Nov 2006 00:05:35 +0300</pubDate>
-      <link>http://bombusmod.net.ru/download/Bombus.jad</link>
+      <link>http://www.apatin.net.ru/download/Bombus.jad</link>
       <description><![CDATA[Что нового:<br>
 * Добавлена нижняя панель, а также управление панелями(*/#);<br>
 * T9 в редакторе аккаунта(username/server);<br>
@@ -357,37 +416,37 @@ http://bombusmod.net.ru/download/zlib/Bombus.jad Zlib]]></description>
 * Исправлена ошибка с отсутствием закладок конференций(автовход в * конференцию временно отключен);<br>
 <br>
 В конструктор эта версия будет выложена завтра после изменений в нём...<br>
-http://bombusmod.net.ru/download/Bombus.jad<br>
-http://bombusmod.net.ru/download/Bombus.jar
+http://www.apatin.net.ru/download/Bombus.jad<br>
+http://www.apatin.net.ru/download/Bombus.jar
 ]]></description>
     </item>
     <item>
       <title>В конструктор добавлены новые смайлы!</title>
       <pubDate>Tue, 7 Nov 2006 17:14:12 +0300</pubDate>
-      <link>http://bombusmod.net.ru/c/</link>
+      <link>http://www.apatin.net.ru/c/</link>
       <description><![CDATA[Tasha порадовала нас отличными смайлами!]]></description>
     </item>
     <item>
       <title>Открытие сайта BombusMod!</title>
       <pubDate>Tue, 7 Nov 2006 16:32:01 +0300</pubDate>
-      <link>http://bombusmod.net.ru</link>
+      <link>http://www.apatin.net.ru</link>
       <description><![CDATA[Собственно говоря... смотрите :)<br>
-http://bombusmod.net.ru<br>
+http://www.apatin.net.ru<br>
 <br>
 Развитие проекта будет зависеть от Вас ;-)]]></description>
     </item>
     <item>
       <title>сайт почти готов!</title>
       <pubDate>Sat, 4 Nov 2006 01:06:55 +0300</pubDate>
-      <link>http://bombusmod.net.ru</link>
+      <link>http://www.apatin.net.ru</link>
       <description><![CDATA[еще немного, еще чуть-чуть...<br>
 основные разделы созданы.]]></description>
     </item>
     <item>
       <title>сайт BombusMod</title>
       <pubDate>Fri, 3 Nov 2006 16:46:44 +0300</pubDate>
-      <link>http://bombusmod.net.ru</link>
-      <description><![CDATA[http://bombusmod.net.ru<br>
+      <link>http://www.apatin.net.ru</link>
+      <description><![CDATA[http://www.apatin.net.ru<br>
 открыт разде faq(часто задаваемые вопросы)]]></description>
     </item>
     <item>
