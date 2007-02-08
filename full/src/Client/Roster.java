@@ -1614,12 +1614,10 @@ public class Roster
 
     protected void keyPressed(int keyCode) {
         super.keyPressed(keyCode);
-        if (keyCode==SE_CLEAR) {
-            Contact c=(Contact)getFocusedObject();
-            if (c.getGroupType()!=Groups.TYPE_TRANSP && c.getGroupType()!=Groups.TYPE_SELF && c.getGroupType()!=Groups.TYPE_SEARCH_RESULT && c.origin<Contact.ORIGIN_GROUPCHAT) {
-                new YesNoAlert(display, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR, this);
-            }
-        }
+        if (keyCode==keyClear) try { 
+            new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
+        } catch (Exception e) { /* NullPointerException */ }
+
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {
             // backlight management
@@ -1812,7 +1810,7 @@ public class Roster
             new Bookmarks(display, null);
         }
         if (c==cmdActions) try { 
-            new RosterItemActions(display, getFocusedObject()); 
+            new RosterItemActions(display, getFocusedObject(), -1);
         } catch (Exception e) { /* NullPointerException */ }
         
         if (c==cmdAdd) {

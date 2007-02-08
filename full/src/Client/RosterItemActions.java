@@ -42,12 +42,14 @@ import Conference.affiliation.ConferenceQuickPrivelegeModify;
  */
 public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
     
+    public final static int DELETE_CONTACT=4;
+    
     Object item;
 	
     Roster roster;
     
     /** Creates a new instance of RosterItemActions */
-    public RosterItemActions(Display display, Object item) {
+    public RosterItemActions(Display display, Object item, int action) {
 	super(item.toString());
 	this.item=item;
 	
@@ -86,7 +88,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
 		    addItem(SR.MS_EDIT,2, 0x0f13);
 		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
-		addItem(SR.MS_DELETE,4, 0x12);
+		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
                 addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
             
@@ -197,25 +199,36 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 		}
 	    }
 	}
-	if (getItemCount()>0) attachDisplay(display);
-    }
-    
-    public void eventOk(){
-        try {
-            //final Roster roster=StaticData.getInstance().roster;
-            boolean isContact=( item instanceof Contact );
-            Contact c = null;
-            Group g = null;
-            if (isContact) c=(Contact)item; else g=(Group) item;
-            
-            MenuItem me=(MenuItem) getFocusedObject();
-            if (me==null) {
-                destroyView(); return;
-            }
-            int index=me.index;
-            String to=null;
-            if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
+	if (getItemCount()>0) {
+            if (action<0) attachDisplay(display);
+            else try {
+                this.display=display; // to invoke dialog Y/N
+                doAction(action);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+     }
+     
+     public void eventOk(){
+         try {
+             //final Roster roster=StaticData.getInstance().roster;
+             MenuItem me=(MenuItem) getFocusedObject();
             destroyView();
+            if (me==null) return;
+             int index=me.index;
+            doAction(index);
+            //destroyView();
+        } catch (Exception e) { e.printStackTrace();  }
+    }
+
+    private void doAction(final int index) {
+        boolean isContact=( item instanceof Contact );
+        Contact c = null;
+        Group g = null;
+        if (isContact) c=(Contact)item; else g=(Group) item;
+        
+        String to=null;
+        if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
+
             switch (index) {
                 case 0: // info
                     roster.setQuerySign(true);
@@ -236,7 +249,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 case 3: //subscription
                     new SubscriptionEdit(display, c);
                     return; //break;
-                case 4:
+                case DELETE_CONTACT:
                     new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
                     return;
                     //new DeleteContact(display,c);
@@ -415,34 +428,32 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
              
             }*/
                     
-                     case 35: //grant membership and revoke admin
-                     {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,null);
-                        return;
-                     }
-                     
-                     case 36: //revoke membership
-                     {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,null);
-                        return;
-                     }
-                     
-                     case 37: //grant admin and revoke owner
-                     {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,null);
-                        return;
-                     }
-                     
-                     case 38: //grant owner
-                     {
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
-                        return;
-                     }
+                case 35: //grant membership and revoke admin
+                 {
+                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,null);
+                     return;
+                 }
+                 
+                case 36: //revoke membership
+                 {
+                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,null);
+                     return;
+                 }
+                 
+                case 37: //grant admin and revoke owner
+                 {
+                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,null);
+                     return;
+                 }
+                 
+                case 38: //grant owner
+                 {
+                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
+                     return;
                  }
              }
-            destroyView();
-        } catch (Exception e) { e.printStackTrace();  }
-    }
+        }
+     }
 
     public void ActionConfirmed() {
         roster.deleteContact((Contact)item);

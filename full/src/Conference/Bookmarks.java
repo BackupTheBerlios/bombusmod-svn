@@ -36,10 +36,9 @@ public class Bookmarks
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
     private Command cmdAdvJoin=new Command ("Edit/join", Command.SCREEN, 10);
     private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 15);
-
+    private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 16);
     private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 17);
-        
-    private Command cmdRoomCfg=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 20);
+
     
     private Command cmdRoomOwners=new Command (SR.MS_OWNERS, Command.SCREEN, 21);
     private Command cmdRoomAdmins=new Command (SR.MS_ADMINS, Command.SCREEN, 22);
@@ -73,7 +72,7 @@ public class Bookmarks
         //addCommand(cmdRfsh);
 	addCommand(cmdNew);
         addCommand(cmdDisco);
-        addCommand(cmdRoomCfg);
+        addCommand(cmdConfigure);
         addCommand(cmdRoomOwners);
         addCommand(cmdRoomAdmins);
         addCommand(cmdRoomMembers);
@@ -123,10 +122,6 @@ public class Bookmarks
     }
     
     public void commandAction(Command c, Displayable d){
-        String roomJid="";
-        try {
-            roomJid=((BookmarkItem)getFocusedObject()).getJid();
-        } catch (Exception e) {}
         if (c==cmdCancel) exitBookmarks();
         if (c==cmdJoin) eventOk();
         if (c==cmdAdvJoin) {
@@ -138,10 +133,13 @@ public class Bookmarks
 	if (c==cmdNew) new ConferenceForm(display);
         //if (c==cmdRfsh) loadBookmarks();
         if (c==cmdDel) deleteBookmark();
-        if (c==cmdDisco) new ServiceDiscovery(display, ((BookmarkItem)getFocusedObject()).getJid(), null);
-        if (c==cmdRoomCfg) {
-            new QueryConfigForm(display, roomJid);   
-        }
+
+        String roomJid=((BookmarkItem)getFocusedObject()).getJid();
+ 
+        if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
+        
+        if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
+
         if (c==cmdRoomOwners) {
             new Affiliations(display, roomJid, 1);  
         }

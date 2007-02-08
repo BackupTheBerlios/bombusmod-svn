@@ -92,7 +92,7 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
         }
         f.append(new StringItem(SR.MS_USER,user.toString()));
         
-        reason=new TextFieldCombo("Reason", "", 64, TextField.ANY, "reason", display);
+        reason=new TextFieldCombo("Reason", "", 256, TextField.ANY, "reason", display);
         f.append(reason);
         
         cmdOk=new Command( (action==KICK)? SR.MS_KICK : SR.MS_BAN, Command.SCREEN, 1);

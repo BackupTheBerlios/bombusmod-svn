@@ -70,7 +70,7 @@ public class RosterMenu extends Menu
 	int index=me.index;
 	switch (index) {
 	    case 0: //actions
-                if (connected) new RosterItemActions(display, o).setParentView(StaticData.getInstance().roster); 
+                if (connected) new RosterItemActions(display, o, -1).setParentView(StaticData.getInstance().roster); 
                 break;
 	    case 1: //status
                 StaticData.getInstance().roster.reconnectCount=0; 

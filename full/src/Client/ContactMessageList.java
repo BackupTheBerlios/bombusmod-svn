@@ -165,11 +165,15 @@ public class ContactMessageList extends MessageList
         if (c==cmdResume) { keyGreen(); }
         if (c==cmdQuote) {
             try {
-                new MessageEdit(display,contact,">> "+getMessage(cursor).toString()+"\n");
+                String msg=new StringBuffer("В»")
+                    .append(getMessage(cursor).toString())
+                    .append("\n")
+                    .toString();
+                new MessageEdit(display,contact,msg);
             } catch (Exception e) {/*no messages*/}
         }
         if (c==cmdContact) {
-            new RosterItemActions(display, contact);
+            new RosterItemActions(display, contact, -1);
         }
 	
 	if (c==cmdActive) {
