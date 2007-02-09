@@ -14,6 +14,7 @@ import Client.ExtendedStatus;
 import Client.Roster;
 import Client.StaticData;
 import Client.StatusList;
+import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
@@ -60,6 +61,8 @@ public class KeyBlock extends Canvas implements Runnable{
         
         parentView=display.getCurrent();
         
+        Roster.keyLockState=true;
+        
             if (!Roster.isAway) {
                 String away="";
                 if (Config.getInstance().setKeyBlockStatus) away=(siemens_slider)?"Slider closed ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
@@ -67,7 +70,7 @@ public class KeyBlock extends Canvas implements Runnable{
                     try {
                         if (Roster.oldStatus==0 || Roster.oldStatus==1) {
                             Roster.isAway=true;
-                            sd.roster.sendPresence(3, away);
+                            sd.roster.sendPresence(Presence.PRESENCE_AWAY, away);
                         }
                     } catch (Exception e) { e.printStackTrace(); }
             }
@@ -155,22 +158,20 @@ public class KeyBlock extends Canvas implements Runnable{
 
     private void destroyView(){
         status.setElementAt(null,6);
-//#if !(MIDP1)
         if (motorola_backlight) display.flashBacklight(Integer.MAX_VALUE);
-//#endif
         if (display!=null)   display.setCurrent(parentView);
         img=null;
         tc.stop();
-            if (Roster.isAway) {
-                int newStatus=sd.roster.oldStatus;
-                ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
-                String ms=es.getMessage();
-                Roster.isAway=false;
-                sd.roster.sendPresence(newStatus, ms);
-            }
-//#if USE_SIEMENS_API
-//--	com.siemens.mp.game.Light.setLightOn();
-//#endif
+        
+        Roster.keyLockState=false;
+        
+        if (Roster.isAway) {
+            int newStatus=sd.roster.oldStatus;
+            ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
+            String ms=es.getMessage();
+            Roster.isAway=false;
+            sd.roster.sendPresence(newStatus, ms);
+        }
         System.gc();
     }
     
@@ -182,9 +183,6 @@ public class KeyBlock extends Canvas implements Runnable{
         }
         public void run() {
             repaint();
-//#if USE_SIEMENS_API
-//--	com.siemens.mp.game.Light.setLightOff();
-//#endif
         }
         public void stop(){
             cancel();

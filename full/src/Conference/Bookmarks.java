@@ -122,6 +122,7 @@ public class Bookmarks
     }
     
     public void commandAction(Command c, Displayable d){
+		if (getItemCount()==0) return;
         if (c==cmdCancel) exitBookmarks();
         if (c==cmdJoin) eventOk();
         if (c==cmdAdvJoin) {

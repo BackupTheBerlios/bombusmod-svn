@@ -150,6 +150,8 @@ public class Roster
     public int reconnectCount;
     
     public static String startTime=Time.dispLocalTime();
+
+    public boolean keyLockState=false;
     
     /**
      * Creates a new instance of Roster
@@ -2155,36 +2157,38 @@ class TimerTaskAutoAway extends Thread{
                 if (stop) {
                     break;
                 }
-                keyTimer=rRoster.keyTimer;
-                //here
-                //System.out.println("test "+keyTimer+" sec");
-                try {
-                    if (Version.getPlatformName().indexOf("SIE") > -1) {
-                        if (getKeyLockState() && rRoster.lightState==1) {
-                            if (elfPlatform==true && rRoster.lightState==1) {
-                                rRoster.setLight(false);
-                                rRoster.lightState=0;
+                if (!rRoster.keyLockState) {
+                    keyTimer=rRoster.keyTimer;
+                    //here
+                    //System.out.println("test "+keyTimer+" sec");
+                    try {
+                        if (Version.getPlatformName().indexOf("SIE") > -1) {
+                            if (getKeyLockState() && rRoster.lightState==1) {
+                                if (elfPlatform==true && rRoster.lightState==1) {
+                                    rRoster.setLight(false);
+                                    rRoster.lightState=0;
+                                }
+                            }
+                            if (getKeyLockState()==false && rRoster.lightState==0) {
+                                if (elfPlatform==true && rRoster.lightState==0) {
+                                    rRoster.setLight(true);
+                                    rRoster.lightState=1;
+                                }
                             }
                         }
-                        if (getKeyLockState()==false && rRoster.lightState==0) {
-                            if (elfPlatform==true && rRoster.lightState==0) {
-                                rRoster.setLight(true);
-                                rRoster.lightState=1;
-                            }
+
+                        rRoster.keyTimer=keyTimer+5;                        
+                        if (keyTimer>=autoAwayTime) {
+                            //System.out.println("test4");
+                            try {
+                                rRoster.setAutoAway();
+                                //System.out.println("test6");
+                            } catch (Exception e) { e.printStackTrace(); }
                         }
-                    }
-                    
-                    rRoster.keyTimer=keyTimer+5;                        
-                    if (keyTimer>=autoAwayTime) {
-                        //System.out.println("test4");
-                        try {
-                            rRoster.setAutoAway();
-                            //System.out.println("test6");
-                        } catch (Exception e) { e.printStackTrace(); }
-                    }
-                } catch (Exception e) { e.printStackTrace(); }
-             }
-         }
+                    } catch (Exception e) { e.printStackTrace(); }
+                }
+            }
+        }
     }
 
     private boolean getKeyLockState() {
