@@ -291,6 +291,6 @@ public class vCardForm
     }
 
     private void CopyText(String string) {
-        clipboard.s=string;
+        clipboard.setClipBoard(string);
     }
 }

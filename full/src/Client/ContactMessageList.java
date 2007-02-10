@@ -41,12 +41,13 @@ public class ContactMessageList extends MessageList
     Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
     Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
-    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 6);
-    Command cmdRecent=new Command("Last Messages",Command.SCREEN,7);
-    Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,8);
-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,8);
-    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 9);
-    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,10);
+    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
+    Command cmdRecent=new Command("Last Messages",Command.SCREEN,8);
+    Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,9);
+    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
+    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 11);
+    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 11);
+    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,13);
     
      
     private ClipBoard clipboard;
@@ -90,6 +91,11 @@ public class ContactMessageList extends MessageList
         addCommand(cmdQuote);
         addCommand(cmdArch);
         addCommand(cmdCopy);
+        if (clipboard.getClipBoard().length()>0) {
+            try {
+                addCommand(cmdCopyPlus);
+            } catch (Exception e) {/*no messages*/}
+        }
         addCommand(cmdTemplate);
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
@@ -199,7 +205,17 @@ public class ContactMessageList extends MessageList
         if (c == cmdCopy)
         {
             try {
-                clipboard.s=getMessage(cursor).getBody();
+                clipboard.setClipBoard(getMessage(cursor).getBody());
+            } catch (Exception e) {/*no messages*/}
+        }
+        
+        if (c==cmdCopyPlus) {
+            try {
+                StringBuffer clipstr=new StringBuffer();
+                clipstr.append(clipboard.getClipBoard());
+                clipstr.append(getMessage(cursor).getBody());
+                
+                clipboard.setClipBoard(clipstr.toString());
             } catch (Exception e) {/*no messages*/}
         }
         

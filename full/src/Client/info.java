@@ -132,7 +132,7 @@ public class info implements CommandListener, ItemCommandListener {
     }
     
     private void CopyText(String string) {
-        clipboard.s=string;
+        clipboard.setClipBoard(string);
     }
     
 }

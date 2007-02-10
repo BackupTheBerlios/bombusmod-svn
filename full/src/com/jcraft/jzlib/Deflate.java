@@ -41,8 +41,8 @@ final class Deflate{
 
   static final private int Z_DEFAULT_COMPRESSION=-1;
 
-  static final private int MAX_WBITS=15;            // 32K LZ77 window
-  static final private int DEF_MEM_LEVEL=8;
+  static final private int MAX_WBITS=9;   //15         // 32K LZ77 window
+  static final private int DEF_MEM_LEVEL=1;//8
 
   static class Config{
     int good_length; // reduce lazy search above this match length

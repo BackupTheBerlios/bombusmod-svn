@@ -100,7 +100,7 @@ public class MessageEdit
         t.addCommand(cmdPaste);
        
         t.addCommand(cmdSuspend);
-        if (clipboard.s!=null)
+        if (clipboard.getClipBoard().length()>0)
             t.addCommand(cmdPasteText);
         
         t.addCommand(cmdTemplate);
@@ -146,7 +146,7 @@ public class MessageEdit
     }
     
     public void commandAction(Command c, Displayable d){
-        body=t.getString().trim();
+        body=t.getString();
 		
         
         int caretPos=t.getCaretPosition();
@@ -166,7 +166,7 @@ public class MessageEdit
         if (c==cmdAbc) {setInitialCaps(false); return; }
         if (c==cmdABC) {setInitialCaps(true); return; }
 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
-        if (c==cmdPasteText) { t.insert(clipboard.s, charsCount); return; } 
+        if (c==cmdPasteText) { t.insert(clipboard.getClipBoard(), charsCount); return; } 
         if (c==cmdTemplate) { new AppendTemplate(display,  this, caretPos); return; }
         if (c==cmdCancel) { 
             composing=false;
