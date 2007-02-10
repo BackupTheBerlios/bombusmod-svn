@@ -80,7 +80,6 @@ public class Bombus extends MIDlet implements Runnable{
             NetworkAccu.getGPRS();
         } catch (Exception e) { }
         
-        
         try {
             s.img=Image.createImage("/images/splash.png");
             
@@ -88,12 +87,11 @@ public class Bombus extends MIDlet implements Runnable{
                 splash=s.img;
                 programIcon=Image.createImage("/_icon.png");
             }
-            
-            s.setProgress("BombusMod "+Version.version,7);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        s.setProgress("BombusMod "+Version.version,7);
+        
         s.setProgress(10);
 	Config cf=Config.getInstance();
         AlertCustomize ac=AlertCustomize.getInstance();

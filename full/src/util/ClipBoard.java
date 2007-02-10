@@ -7,12 +7,7 @@ package util;
 public class ClipBoard
 {
       private static char[] _clipBoard = new char[4096];
-      private static int _clipBoardCount = 0;
-      private int beginOffset = 0;
-      private boolean clipBoarded = false;
-      private static String s;
-
-      public ClipBoard() { }
+      private static String s="";
       
       public String getClipBoard() {
           return s;
@@ -20,5 +15,10 @@ public class ClipBoard
       
       public void  setClipBoard(String str) {
           s=str;
+      }
+      
+      public boolean isEmpty() {
+          boolean empty=(s.length()>0)?false:true;
+          return empty;
       }
 }

@@ -100,7 +100,7 @@ public class MessageEdit
         t.addCommand(cmdPaste);
        
         t.addCommand(cmdSuspend);
-        if (clipboard.getClipBoard().length()>0)
+        if (!clipboard.isEmpty())
             t.addCommand(cmdPasteText);
         
         t.addCommand(cmdTemplate);

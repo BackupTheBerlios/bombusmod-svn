@@ -91,7 +91,7 @@ public class ContactMessageList extends MessageList
         addCommand(cmdQuote);
         addCommand(cmdArch);
         addCommand(cmdCopy);
-        if (clipboard.getClipBoard().length()>0) {
+        if (!clipboard.isEmpty()) {
             try {
                 addCommand(cmdCopyPlus);
             } catch (Exception e) {/*no messages*/}
