@@ -11,6 +11,20 @@
     <webMaster>daniel.apatin@gmail.com</webMaster>
     <copyright>ad</copyright>
     <item>
+      <title>0.4.6.990.220</title>
+      <pubDate>Thu, 8 Feb 2007 02:54:45 +0300</pubDate>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[уведомление о кике ошибочно выводилось всем, исправлено :)]]></description>
+    </item>
+    <item>
+      <title>Полностью переписал двиг сайта</title>
+      <pubDate>Thu, 8 Feb 2007 01:35:11 +0300</pubDate>
+      <link>http://www.apatin.net.ru</link>
+      <description><![CDATA[(комповой версии), для соответствия с вап-версией... скоро они станут неразделимы, ибо утомляет менять текст дважды :)
+
++ zip-сжатие данных, для экономщиков :)]]></description>
+    </item>
+    <item>
       <title>0.4.6.990.219</title>
       <pubDate>Tue, 6 Feb 2007 22:37:42 +0300</pubDate>
       <link>http://www.apatin.net.ru/c/</link>

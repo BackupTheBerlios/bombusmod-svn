@@ -112,6 +112,7 @@ public class Roster
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
     private Command cmdTurnOnLight=new Command("TurnOn Light", Command.SCREEN, 16);
     private Command cmdTurnOffLight=new Command("TurnOff Light", Command.SCREEN, 16);
+    private Command cmdPatchLight=new Command("Patch Control", Command.SCREEN, 16);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
     private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
     
@@ -144,14 +145,14 @@ public class Roster
 
     //private TimerTaskAutoAway AutoAway;
     
-    public int lightState=0;
+    public int lightType=0;
 	
     private final static int maxReconnect=5;
     public int reconnectCount;
     
     public static String startTime=Time.dispLocalTime();
 
-    public boolean keyLockState=false;
+    public static boolean keyLockState=false;
     
     /**
      * Creates a new instance of Roster
@@ -186,11 +187,22 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
             if (Version.getPlatformName().startsWith("SIE-")) {
-               if (cf.lightState==true) {
-                    setLight(true);
-               } else {
-                    setLight(false);
-               }
+                switch (cf.lightType) {
+                    case 0: { //off
+                        lightType=0;
+                        setLight(false);
+                        break;
+                    }
+                    case 1: { //on 
+                        lightType=1;
+                        sd.roster.setLight(true);
+                        break;
+                    }
+                    case 2: { //auto
+                        lightType=2;
+                        break;
+                    }
+                }
             }
         
         if (!cf.digitMemMonitor) {
@@ -211,11 +223,20 @@ public class Roster
 
 
                 if (Version.getPlatformName().startsWith("SIE-")) {
-                   if (cf.lightState) {
-                        addCommand(cmdTurnOffLight);  lightState=1;
-                   } else {
-                        addCommand(cmdTurnOnLight); lightState=0;
-                   }
+                    switch (cf.lightType) {
+                        case 0: { //off
+                            addCommand(cmdTurnOnLight); 
+                            break;
+                        }
+                        case 1: { //on
+                            addCommand(cmdTurnOffLight);  
+                            break;
+                        }
+                        case 2: { //auto
+                            addCommand(cmdPatchLight);
+                            break;
+                        }
+                    }
                 }
 
                 addCommand(cmdTools);
@@ -1786,20 +1807,30 @@ public class Roster
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
         if (c==cmdTurnOnLight) {
+            lightType=1;
             setLight(true);
-            lightState=1;
-            removeCommand(cmdTurnOnLight);
-            addCommand(cmdTurnOffLight);
-            cf.lightState=true;
+            cf.lightType=1;
             cf.saveToStorage();
+            removeCommand(cmdTurnOffLight);
+            removeCommand(cmdTurnOnLight);
+            addCommand(cmdPatchLight);
         }
         if (c==cmdTurnOffLight) {
+            lightType=0;
             setLight(false);
-            lightState=0;
+            cf.lightType=0;
+            cf.saveToStorage();
+            removeCommand(cmdPatchLight);
             removeCommand(cmdTurnOffLight);
             addCommand(cmdTurnOnLight);
-            cf.lightState=false;
+        }
+        if (c==cmdPatchLight) {
+            lightType=2;
+            cf.lightType=2;
             cf.saveToStorage();
+            removeCommand(cmdPatchLight);
+            removeCommand(cmdTurnOnLight);
+            addCommand(cmdTurnOffLight);
         }
         
         if (c==cmdTools) { new RosterToolsMenu(display); }
@@ -2163,16 +2194,11 @@ class TimerTaskAutoAway extends Thread{
                     //System.out.println("test "+keyTimer+" sec");
                     try {
                         if (Version.getPlatformName().indexOf("SIE") > -1) {
-                            if (getKeyLockState() && rRoster.lightState==1) {
-                                if (elfPlatform==true && rRoster.lightState==1) {
-                                    rRoster.setLight(false);
-                                    rRoster.lightState=0;
-                                }
-                            }
-                            if (getKeyLockState()==false && rRoster.lightState==0) {
-                                if (elfPlatform==true && rRoster.lightState==0) {
-                                    rRoster.setLight(true);
-                                    rRoster.lightState=1;
+                            if (rRoster.lightType==2) {
+                                if (getKeyLockState()) {
+                                        rRoster.setLight(false);
+                                } else {
+                                        rRoster.setLight(true);
                                 }
                             }
                         }
@@ -2193,7 +2219,6 @@ class TimerTaskAutoAway extends Thread{
 
     private boolean getKeyLockState() {
         boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
-        if (lightState==true || elfPlatform==true) elfPlatform=true;
         return lightState;
     }
  } 

@@ -138,9 +138,11 @@ public class Config {
     public boolean poundKey=getBooleanProperty("poundKey",true);
     public boolean starKey=getBooleanProperty("starKey",true);
     
-    public boolean lightState=true;
+    public boolean lightState=false;
     
     public boolean lastMessages=false;
+
+    public int lightType=0;
 
     
     public static Config getInstance(){
@@ -264,13 +266,15 @@ public class Config {
             
             digitMemMonitor=inputStream.readBoolean();
             
-            lightState=inputStream.readBoolean();
+            inputStream.readBoolean(); //lightState=false;
 			
             autoSubscribe=inputStream.readBoolean();
             
             lastMessages=inputStream.readBoolean();
             
             setKeyBlockStatus=inputStream.readBoolean();
+            
+            lightType=inputStream.readInt();
             
 	    inputStream.close();
 	} catch (Exception e) {
@@ -358,13 +362,15 @@ public class Config {
             
             outputStream.writeBoolean(digitMemMonitor);
             
-            outputStream.writeBoolean(lightState);
+            outputStream.writeBoolean(false);
 			
             outputStream.writeBoolean(autoSubscribe);
             
             outputStream.writeBoolean(lastMessages);
             
             outputStream.writeBoolean(setKeyBlockStatus);
+            
+            outputStream.writeInt(lightType);
             
 	} catch (Exception e) { e.printStackTrace(); }
 	

@@ -45,14 +45,19 @@ public class RosterMenu extends Menu
         addItem(SR.MS_ACCOUNT_, 8,0x0f01);
         
         if (Version.getPlatformName().startsWith("SIE-")) {
-            if (cf.lightState) {
-                addItem("TurnOff Light", 12,0x0f31);
-                sd.roster.lightState=1;
-                sd.roster.setLight(true);
-            } else {
-                addItem("TurnOn Light", 12,0x0f31);
-                sd.roster.lightState=0;
-                sd.roster.setLight(false);
+            switch (cf.lightType) {
+                case 0: { //off
+                    addItem("TurnOn Light", 12,0x0f31);
+                    break;
+                }
+                case 1: { //on
+                    addItem("TurnOff Light", 12,0x0f31);
+                    break;
+                }
+                case 2: { //auto
+                    addItem("Patch Control", 12,0x0f31);
+                    break;
+                }
             }
         }
         addItem(SR.MS_ABOUT, 10,0x0f04);
@@ -118,16 +123,27 @@ public class RosterMenu extends Menu
                 return;
 	    }
 	    case 12: {//light
-                if (StaticData.getInstance().roster.lightState==1) {
-                    StaticData.getInstance().roster.setLight(false);
-                    StaticData.getInstance().roster.lightState=0;
-                    cf.lightState=false;
-                    cf.saveToStorage();
-                } else {
-                    StaticData.getInstance().roster.setLight(true);
-                    StaticData.getInstance().roster.lightState=1;
-                    cf.lightState=true;
-                    cf.saveToStorage();
+                switch (cf.lightType) {
+                    case 0: { //off
+                        sd.roster.lightType=1;
+                        sd.roster.setLight(false);
+                        cf.lightType=1;
+                        cf.saveToStorage();
+                        break;
+                    }
+                    case 1: { //on
+                        sd.roster.lightType=2;
+                        sd.roster.setLight(true);
+                        cf.lightType=2;
+                        cf.saveToStorage();
+                        break;
+                    }
+                    case 2: { //auto
+                        sd.roster.lightType=0;
+                        cf.lightType=0;
+                        cf.saveToStorage();
+                        break;
+                    }
                 }
                 break;
             }
