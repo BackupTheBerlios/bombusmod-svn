@@ -243,6 +243,12 @@ public abstract class VirtualList
     public VirtualList() {
         width=getWidth();
         height=getHeight();
+        
+        
+        if (Info.Version.getPlatformName().startsWith("Windows")) {
+            setTitle("Bombus CE");
+        }
+
         // rotator
 //#if (USE_ROTATOR)        
 //#        //rotator=new TimerTaskRotate(0, this);
@@ -1059,6 +1065,12 @@ public abstract class VirtualList
 //#      }
 //#     
 //#     public static void startRotate(int max, VirtualList list){
+//#         //Windows mobile J9 hanging test
+//#         if (Info.Version.getPlatformName().startsWith("Windows")) {
+//#             list.showBalloon=true;
+//#             list.offset=0;
+//#             return;
+//#         }
 //#         if (instance==null) instance=new TimerTaskRotate();
 //#         list.offset=0;
 //#         if (max<0) {
