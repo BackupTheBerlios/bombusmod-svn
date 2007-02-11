@@ -213,6 +213,7 @@ public class ContactMessageList extends MessageList
             try {
                 StringBuffer clipstr=new StringBuffer();
                 clipstr.append(clipboard.getClipBoard());
+                clipstr.append("\n\n");
                 clipstr.append(getMessage(cursor).getBody());
                 
                 clipboard.setClipBoard(clipstr.toString());

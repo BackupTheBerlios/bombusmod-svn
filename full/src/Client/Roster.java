@@ -1108,7 +1108,10 @@ public class Roster
                             if (from.indexOf("/")>-1) lastType="idle";
                             
                             String status=tm.getText();
-                            new info(lastType,from+"\n"+body+"\n"+status,display, null);
+                            
+                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, lastType, lastType, body+"\n"+status);
+                            messageStore( getContact(from, false), m);
+                            redraw();
                         }
                     }
                     if (id.equals("time")) {
@@ -1119,7 +1122,9 @@ public class Roster
                             String body=IqTimeReply.dispatchTime(tm);
                             
                             String status=tm.getText();
-                            new info(SR.MS_TIME,from+"\n"+body+"\n"+status,display, null);
+                            
+                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, SR.MS_TIME, SR.MS_TIME, body+"\n"+status);
+                            messageStore( getContact(from, false), m);
                         }
                     }
                 } else if (type.equals("get")){
@@ -1724,7 +1729,8 @@ public class Roster
                     }
                     cf.saveToStorage();
                 } else {
-                    setWobble();
+                    System.gc();
+                    setWobbler();
                 }
             }
             System.gc();
@@ -1746,17 +1752,17 @@ public class Roster
                     
                     cf.saveToStorage();
                 } else {
-                    setWobble();
+                    System.gc();
+                    setWobbler();
                 }
             }
             System.gc();
         }        
     }
     
-    public void setWobble() {
-        Contact contact=(Contact)getFocusedObject();
+    public void setWobbler() {
         StringBuffer mess=new StringBuffer();
-        
+        Contact contact=(Contact)getFocusedObject();
         if (contact instanceof MucContact) {
             MucContact mucContact=(MucContact)contact;
             String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid;

@@ -70,7 +70,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    //if (contact.group==Groups.SELF_INDEX) addItem("Commands",30);
 	    
 	    addItem(SR.MS_VCARD,1, 0x0f16);
-            addItem("Info",888, 0x0f11);
             addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
             
@@ -286,11 +285,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 {
                     new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
                     return;
-                }
-                case 888: //info form
-                {
-                        new info(null,null,display, c);
-                        return;
                 }
                 case 889: //idle
                 {

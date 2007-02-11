@@ -48,7 +48,7 @@ public class SplashScreen extends Canvas implements CommandListener{
         if (pos==-1) return;
         width=getWidth();
         height=getHeight();
-        Font f=FontCache.getRosterNormalFont();
+        Font f=FontCache.getBalloonFont();
         
         int xp=pos*width/100;
         int xt=width/2;
@@ -71,21 +71,15 @@ public class SplashScreen extends Canvas implements CommandListener{
         
         g.setFont(f);
         g.setColor(Colors.PGS_COMPLETE);
-//#if ALCATEL_FONT
-//#         g.drawString(capt,xt,y+2, Graphics.TOP|Graphics.HCENTER);
-//#else
+
         g.drawString(capt,xt,y+1, Graphics.TOP|Graphics.HCENTER);
-//#endif
-        
+
         g.setClip(1, y+1, xp, h-2);
         g.fillRect(1, y+1, width-2,h-2);
         
         g.setColor(Colors.PGS_REMAINED);
-//#if ALCATEL_FONT
-//#         g.drawString(capt,xt,y+2, Graphics.TOP|Graphics.HCENTER);
-//#else
+
         g.drawString(capt,xt,y+1, Graphics.TOP|Graphics.HCENTER);
-//#endif
     }
     
     public void setProgress(int progress) {

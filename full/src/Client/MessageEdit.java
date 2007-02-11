@@ -52,7 +52,7 @@ public class MessageEdit
     
     private Config cf=Config.getInstance();
  
-    private int charsCount=-1;
+    private int charsCount=1;
     //private Command cmdSubject=new Command("Subject",Command.SCREEN,10);
     
     /** Creates a new instance of MessageEdit */
@@ -60,6 +60,14 @@ public class MessageEdit
         this.to=to;
         this.display=display;
         parentView=display.getCurrent();
+        
+        //charsCount=t.getMaxSize();        
+        //System.out.println(charsCount);
+        t=new TextBox("",null,charsCount, TextField.ANY);
+        t.setMaxSize(10240);
+        charsCount=t.getMaxSize();
+        t.setTitle("("+charsCount+") "+to.toString());
+        /*
         
         if (charsCount>0) {
             try {
@@ -86,7 +94,7 @@ public class MessageEdit
                 }
             }
         }
-        
+        */
         try {
             if (body!=null) t.setString(body);
         } catch (Exception e) {

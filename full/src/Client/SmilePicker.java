@@ -27,14 +27,9 @@ import ui.controls.Balloon;
  */
 public class SmilePicker extends VirtualList implements CommandListener, VirtualElement{
 
-    private final static int CURSOR_HOFFSET=2;
-
-//#if MIDP1
-//#     private final static int CURSOR_VOFFSET=1;
-//#else
-    private final static int CURSOR_VOFFSET=2;
-//#endif
-    
+    private final static int CURSOR_HOFFSET=1;
+    private final static int CURSOR_VOFFSET=1;
+   
     private int imgCnt;
     private int xCnt;
     private int xLastCnt;
@@ -58,7 +53,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     public SmilePicker(Display display, MessageEdit me, int caretPos) {
          super(display);
          this.me=me;
-        this.caretPos=caretPos;
+         this.caretPos=caretPos;
          
          il = SmilesIcons.getInstance();
         
@@ -79,7 +74,6 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         addCommand(cmdOK);
         addCommand(cmdBack);
         setCommandListener(this);
-      
     }
     
     int lineIndex;

@@ -11,6 +11,16 @@
     <webMaster>daniel.apatin@gmail.com</webMaster>
     <copyright>ad</copyright>
     <item>
+      <title>0.4.6.1009.225</title>
+      <pubDate>Sun, 11 Feb 2007 02:12:42 +0300</pubDate>
+      <link>http://www.apatin.net.ru/c/</link>
+      <description><![CDATA[* исправлена ошибка с включением автостатуса после выхода из блока кнопок, теперь при блокировке кнопок idle(для автостатуса) не увеличивается
+* управление подсветкой для сименс NSG с установленным патчем инфо для ява, новое состояние Patch Control
+* мультикопирование, добавлена опция +Копировать, возможность добавить к скопированному еще текст
+* некоторые исправления
+* а также, наконец-то zlib версия ест не так много heap! Спасибо ONjA!]]></description>
+    </item>
+    <item>
       <title>0.4.6.990.220</title>
       <pubDate>Thu, 8 Feb 2007 02:54:45 +0300</pubDate>
       <link>http://www.apatin.net.ru/c/</link>

@@ -38,19 +38,28 @@ public class PopUp {
         this.str=txt.trim();
         this.mHeight=g.getClipHeight();
         this.mWidth=g.getClipWidth();
-        this.height=height;
         this.width=width;
         this.wBorder=(mWidth-width)/2;
-        this.hBorder=(mHeight-height)/2;
 
-        g.translate(wBorder-g.getTranslateX(), hBorder-g.getTranslateY());
-        
         if (str.startsWith("!")==true) {
             kikoban=true;
         }
         font=(kikoban)?FontCache.getClockFont():FontCache.getBalloonFont();
+
+        strings=parseMessage(width-4);
         
-        strings=parseMessage(width-2);
+        int stringsHeight=getHeight();
+
+        if (stringsHeight>mHeight) {
+            this.hBorder=(mHeight-height)/2;
+            this.height=height;
+        } else {
+            this.hBorder=(height-stringsHeight)/2;
+            this.height=stringsHeight+2;
+        }
+        
+        g.translate(wBorder-g.getTranslateX(), hBorder-g.getTranslateY());
+        
         draw(g);
     }
     
@@ -63,7 +72,7 @@ public class PopUp {
         
         g.setColor((kikoban)?0xffff00:Colors.BALLOON_INK);
         g.setFont(font);
-        drawAllStrings(g, 2,2);
+        drawAllStrings(g, 4,2);
     }
 
     private Vector parseMessage(int stringWidth) {
@@ -125,7 +134,6 @@ public class PopUp {
             if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);  //последняя строка
             state++;
         }
-        //drawAllStrings(g,lines, x, y);
         return lines;
     }
     
@@ -135,15 +143,19 @@ public class PopUp {
 
 	for (int line=0; line<lines.size(); ) 
 	{
-            //System.out.println("line: "+line+", y: "+y);
             g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
             line=line+1;
-            y += getHeight();
+            y += getFontHeight();
 	}
     }
     
-    private int getHeight() {
+    private int getFontHeight() {
         int result=font.getHeight();
+        return result;
+    }
+    
+    private int getHeight() {
+        int result=getFontHeight()*strings.size();
         return result;
     }
 }
