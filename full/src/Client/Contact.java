@@ -335,7 +335,7 @@ public class Contact extends IconTextElement{
     
     public final void smartPurge(int cursor) {
         //msgs=new Vector();
-        for (int i=0;i<cursor;i++)
+        for (int i=0;i<cursor+1;i++)
             msgs.removeElementAt(i);
         vcard=null;
         resetNewMsgCnt();
