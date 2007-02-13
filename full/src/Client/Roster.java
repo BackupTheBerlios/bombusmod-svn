@@ -1656,19 +1656,26 @@ public class Roster
             
             display.flashBacklight(blState);
         }
-/*        if (VirtualList.digitMemMonitor) {
+        if (VirtualList.digitMemMonitor) {
             if (keyCode==-4 || keyCode==-1)  {
                 if (Version.getPlatformName().indexOf("SIE") > -1) {
                     new RosterMenu(display, getFocusedObject());
+                    return;
                  }         
             }
+
+            if (keyCode==-21 || keyCode==-22 || keyCode==21 || keyCode==22) {
+                if (cf.ghostMotor) {
+                    new RosterMenu(display, getFocusedObject());
+                }
+            }
+
             if (keyCode==-7 || keyCode==-6)  {
                 if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
                     new RosterMenu(display, getFocusedObject());
                  }         
-            } 
+            }
         }
- */
 //#endif
     }
     
@@ -1696,6 +1703,7 @@ public class Roster
                 if (p==c) pass++; // полный круг пройден
             }
         }
+        /*
         if (VirtualList.digitMemMonitor) {
             if (keyCode==-4 || keyCode==-1)  {
                 if (Version.getPlatformName().indexOf("SIE") > -1) {
@@ -1716,7 +1724,7 @@ public class Roster
                  }         
             }
         }
-
+        */
         if (keyCode=='3') { searchGroup(-1); setRotator(); }
         if (keyCode=='9') { searchGroup(1); setRotator(); }
         
