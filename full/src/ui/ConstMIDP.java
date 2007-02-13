@@ -18,23 +18,9 @@ import javax.microedition.lcdui.TextField;
  */
 public class ConstMIDP {
     
-//#if !(MIDP1)
     public final static int TEXTFIELD_DECIMAL=	TextField.DECIMAL;
     public final static int CHOICE_POPUP=	ChoiceGroup.POPUP;
     public final static int TEXTFIELD_SENSITIVE=TextField.SENSITIVE;
-//#else
-//--    public final static int TEXTFIELD_DECIMAL=	TextField.ANY;
-//--    public final static int CHOICE_POPUP=	ChoiceGroup.EXCLUSIVE;
-//--    public final static int TEXTFIELD_SENSITIVE=0;
-//#endif
 
-//#if (!MIDP1)
     public final static String MIDP=		"MIDP2";
-//#elif (USE_SIEMENS_API) 
-//#     public final static String MIDP=		"MIDP1(Siemens)";
-//#elif (RIM)
-//#     public final static String MIDP=		"MIDP1(RIM)";
-//#else
-//#     public final static String MIDP=		"MIDP1";
-//#endif
 }

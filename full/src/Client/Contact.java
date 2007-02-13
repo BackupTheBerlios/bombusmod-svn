@@ -276,7 +276,7 @@ public class Contact extends IconTextElement{
             }
        }
 //#endif
-        // п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘ п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘ п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘ - presence, п©я≈п┘п©я≈п┘ п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘п©я≈п┘ п©я≈п┘п©я≈п┘п©я≈п┘
+        // п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�? п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�? п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�? - presence, п©я≈п�?п©я≈п�? п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�? п©я≈п�?п©я≈п�?п©я≈п�?
         if (first_replace) {
             msgs.setElementAt(m,0);
             return;
@@ -329,6 +329,14 @@ public class Contact extends IconTextElement{
     
     public final void purge() {
         msgs=new Vector();
+        vcard=null;
+        resetNewMsgCnt();
+    }
+    
+    public final void smartPurge(int cursor) {
+        //msgs=new Vector();
+        for (int i=0;i<cursor;i++)
+            msgs.removeElementAt(i);
         vcard=null;
         resetNewMsgCnt();
     }

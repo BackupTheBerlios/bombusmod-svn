@@ -741,7 +741,7 @@ public abstract class VirtualList
         if (Version.getPlatformName().indexOf("SIE") > -1) isSiemens=true;
         if (keyCode==-22) {
             if (isSiemens) {
-                if (cf.setKeyBlockStatus) new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
+                if (cf.setKeyBlockStatus) new SplashScreen(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
                 return;
             }
         } 

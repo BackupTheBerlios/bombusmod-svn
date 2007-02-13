@@ -1905,7 +1905,7 @@ public class Roster
         kHold=keyCode;
         
         if (keyCode==cf.keyLock) 
-            new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor, false); 
+            new SplashScreen(display, getTitleItem(), cf.keyLock, cf.ghostMotor, false); 
 
         if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles

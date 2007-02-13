@@ -9,16 +9,16 @@
 
 package Client;
 import Conference.MucContact;
-import History.HistoryStorage;
 import Messages.MessageList;
 import archive.MessageArchive;
 import images.RosterIcons;
 import images.SmilesIcons;
 import io.NvStorage;
-import java.io.DataInputStream;
 import locale.SR;
 import templates.TemplateContainer;
 //#if ALT_INPUT
+//# import History.HistoryStorage;
+//# import java.io.DataInputStream;
 //# import ui.controls.InputBox;
 //#endif
 import vcard.VCard;
@@ -42,7 +42,9 @@ public class ContactMessageList extends MessageList
     Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
-    Command cmdRecent=new Command("Last Messages",Command.SCREEN,8);
+//#if ALT_INPUT
+//#     Command cmdRecent=new Command("Last Messages",Command.SCREEN,8);
+//#endif
     Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,9);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
     Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 11);
@@ -53,16 +55,16 @@ public class ContactMessageList extends MessageList
     private ClipBoard clipboard;
     
     Vector activeContacts;
-
     StaticData sd;
     
-    private Config cf=Config.getInstance();
-    
-    private boolean hisStorage=(cf.lastMessages)?true:false;
-    
-    private boolean startMessage=false;
-    private String text="";
-
+//#if ALT_INPUT
+//#     private Config cf=Config.getInstance();
+//#     
+//#     private boolean hisStorage=(cf.lastMessages)?true:false;
+//#     
+//#     private boolean startMessage=false;
+//#     private String text="";
+//#endif
     private boolean composing=true;
   
     /** Creates a new instance of MessageList */
@@ -80,9 +82,9 @@ public class ContactMessageList extends MessageList
         //setTitleLine(title);
 
         cursor=0;//activate
-        
-        if (hisStorage && contact instanceof MucContact==false) addCommand(cmdRecent);
-        
+//#if ALT_INPUT        
+//#         if (hisStorage && contact instanceof MucContact==false) addCommand(cmdRecent);
+//#endif        
         addCommand(cmdMessage);
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
             addCommand(cmdReply);
@@ -236,12 +238,14 @@ public class ContactMessageList extends MessageList
         if (c==cmdUnsubscribed) {
             sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
         }
-        if (c==cmdRecent) {
-            //new HistoryList(contact.getBareJid(), display);
-            loadRecentList();
-        }
+//#if ALT_INPUT
+//#         if (c==cmdRecent) {
+//#             //new HistoryList(contact.getBareJid(), display);
+//#             loadRecentList();
+//#         }
+//#endif
     }
-
+/*
     private void clearMessageList() {
         //TODO: fix scrollbar size
         if (hisStorage) new HistoryStorage(contact, "", true);
@@ -251,14 +255,15 @@ public class ContactMessageList extends MessageList
         System.gc();
         redraw();
     }
-    
+ */   
     private void clearReadedMessageList() {
         //TODO: fix scrollbar size
-        if (hisStorage) new HistoryStorage(contact, "", true);
-        
-        for (int i=0;i<cursor;i++) 
-            messages.removeElementAt(i);
+//#if ALT_INPUT
+//#         if (hisStorage) new HistoryStorage(contact, "", true);
+//#endif
+        contact.smartPurge(cursor);
         moveCursorHome();
+        messages=new Vector();
 
         System.gc();
         redraw();
@@ -401,14 +406,15 @@ public class ContactMessageList extends MessageList
     }
     
     protected int getActiveCount() { return activeContacts.size(); }
-    
-    private void loadRecentList() {
-        try {
-            DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
-            while (is.available()>0) {
-                    contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
-            }
-            is.close();
-        } catch (Exception e) {}
-    }
+//#if ALT_INPUT    
+//#     private void loadRecentList() {
+//#         try {
+//#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
+//#             while (is.available()>0) {
+//#                     contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
+//#             }
+//#             is.close();
+//#         } catch (Exception e) {}
+//#     }
+//#endif
 }

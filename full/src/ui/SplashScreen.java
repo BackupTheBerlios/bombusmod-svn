@@ -10,13 +10,25 @@
 package ui;
 
 import Client.Config;
+import Client.ExtendedStatus;
+import Client.Roster;
+import Client.StaticData;
+import Client.StatusList;
+import com.alsutton.jabber.datablocks.Presence;
+import images.RosterIcons;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.microedition.lcdui.*;
+import midlet.Bombus;
 
 /**
  *
  * @author Eugene Stahov
  */
-public class SplashScreen extends Canvas implements CommandListener{
+public class SplashScreen extends Canvas implements Runnable, CommandListener {
+    
+    private Display display;
+    private Displayable parentView;
     
     private String capt;
     private int pos=-1;
@@ -28,12 +40,23 @@ public class SplashScreen extends Canvas implements CommandListener{
     
     public int keypressed=0;
     
-    /*protected void sizeChanged(int w, int h){
-        width=w;height=h;
-    }
-     */
+    
+    private ComplexString status;
+    
+    private char exitKey;
+    private int kHold;
+    
+    private TimerTaskClock tc;
+    
+    boolean motorola_backlight;
+    boolean siemens_slider;
+    boolean singleflash;
+    
+    private StaticData sd=StaticData.getInstance();
+    
     
     private static SplashScreen instance;
+    
     public static SplashScreen getInstance(){
         if (instance==null) instance=new SplashScreen();
         return instance;
@@ -44,42 +67,104 @@ public class SplashScreen extends Canvas implements CommandListener{
         setFullScreenMode(Config.getInstance().fullscreen);
     }
     
+    public SplashScreen(
+            Display display, 
+            ComplexString status, 
+            char exitKey, 
+            boolean motorola_backlight,
+            boolean siemens_slider) 
+    {
+        this.status=status;
+        this.display=display;
+        kHold=this.exitKey=exitKey;
+        this.motorola_backlight=motorola_backlight;
+        
+        parentView=display.getCurrent();
+        
+        Roster.keyLockState=true;
+        
+            if (!Roster.isAway) {
+                String away="";
+                if (Config.getInstance().setKeyBlockStatus) away=(siemens_slider)?"Slider closed ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
+                Roster.oldStatus=sd.roster.myStatus;
+                    try {
+                        if (Roster.oldStatus==0 || Roster.oldStatus==1) {
+                            Roster.isAway=true;
+                            sd.roster.sendPresence(Presence.PRESENCE_AWAY, away);
+                        }
+                    } catch (Exception e) { e.printStackTrace(); }
+            }
+        
+        status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
+        repaint();
+
+        new Thread(this).start();
+        
+        tc=new TimerTaskClock();
+        
+        setFullScreenMode(Config.getInstance().fullscreen);
+
+        System.gc();   // heap cleanup
+    }
+    
+    
     public void paint(Graphics g){
-        if (pos==-1) return;
         width=getWidth();
         height=getHeight();
-        Font f=FontCache.getBalloonFont();
-        
-        int xp=pos*width/100;
-        int xt=width/2;
-        int h=f.getHeight()+1;
-
-        int y=height-h-2;
         
         g.setColor(Colors.BLK_BGND);
         g.fillRect(0,0, width, height);
-        
+
         if (img!=null) g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
         
-        g.setColor(Colors.PGS_BORDER);
-        g.drawRect(0, y, width-1, h-1);
-        
-        g.setColor(Colors.PGS_REMAINED);
-        //g.setStrokeStyle(Graphics.DOTTED); <- РЅРµ СЂР°Р±РѕС‚Р°РµС‚
-        g.fillRect(1, y+1, width-2,h-2);
-        //g.setStrokeStyle(Graphics.SOLID);
-        
-        g.setFont(f);
-        g.setColor(Colors.PGS_COMPLETE);
+        if (pos==-1) {
+            Font f=FontCache.getClockFont();
 
-        g.drawString(capt,xt,y+1, Graphics.TOP|Graphics.HCENTER);
+            int h=f.getHeight()+1;
 
-        g.setClip(1, y+1, xp, h-2);
-        g.fillRect(1, y+1, width-2,h-2);
-        
-        g.setColor(Colors.PGS_REMAINED);
+            int y=0;
 
-        g.drawString(capt,xt,y+1, Graphics.TOP|Graphics.HCENTER);
+            g.setColor(Colors.BLK_INK);
+            g.translate(0, y);
+            status.drawItem(g, 0, false);
+
+            String time=Time.timeString(Time.localTime());
+            int tw=f.stringWidth(time);
+
+            g.translate(width/2, height);
+
+            if (Colors.BLK_INK!=0x010101) {
+                g.setColor(Colors.BLK_INK);
+                g.setFont(f);
+                g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
+            }
+
+            if (motorola_backlight) 
+                if (singleflash) display.flashBacklight(1);
+            singleflash=false;
+        } else {
+            Font f=FontCache.getBalloonFont();
+
+            int h=4; // высота statusbar
+
+            int xp=pos*width/100;   //ширина statusbar
+
+            int xt=(width/2);       // x позиция для текста
+
+            int y=height-h-2;         // y позиция statusbar
+
+            int yt=y-f.getHeight(); // y позиция для текста
+
+            g.setColor(Colors.PGS_REMAINED);
+            g.fillRect(1, y, width, h);
+
+            g.setFont(f);
+            g.drawString(capt, xt, yt, Graphics.TOP|Graphics.HCENTER);
+
+            g.setColor(Colors.PGS_COMPLETE);
+            g.setClip(1, y+1, xp, h-2);
+            g.fillRect(1, y+1, width-2,h-2);
+        }
     }
     
     public void setProgress(int progress) {
@@ -98,15 +183,8 @@ public class SplashScreen extends Canvas implements CommandListener{
     public int getProgress(){
         return pos;
     }
-
-    protected void keyPressed(int keyCode) {
-        keypressed=keyCode;
-        //notifyAll();
-    }
     
     // close splash
-    private Display display;
-    private Displayable parentView;
     private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
     
     public void setExit(Display display, Displayable nextDisplayable){
@@ -128,4 +206,66 @@ public class SplashScreen extends Canvas implements CommandListener{
         instance=null; // РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё
         System.gc();
     }
+
+    public void run() {
+        try {
+            img=Bombus.splash;
+            if (img==null) img=Image.createImage("/images/splash.png");
+        } catch (Exception e) {};
+        
+        display.setCurrent(this);
+    }
+    
+    
+    private class TimerTaskClock extends TimerTask {
+        private Timer t;
+        public TimerTaskClock(){
+            t=new Timer();
+            t.schedule(this, 10, 20000);
+        }
+        public void run() {
+            repaint();
+        }
+        public void stop(){
+            cancel();
+            t.cancel();
+        }
+    }
+    
+    
+    public void keyPressed(int keyCode) { 
+        if (keyCode==-24) {
+            destroyView();
+        } 
+        kHold=0;
+    }
+    
+    public void keyReleased(int keyCode) { 
+        //System.out.println("blocked released"+(char) keyCode); kHold=0; 
+    }
+    protected void keyRepeated(int keyCode) { 
+        //System.out.println("blocked repeat"+(char) keyCode);
+        if (kHold==0)
+        if (keyCode==exitKey) destroyView(); 
+    }
+
+    private void destroyView(){
+        status.setElementAt(null,6);
+        if (motorola_backlight) display.flashBacklight(Integer.MAX_VALUE);
+        if (display!=null)   display.setCurrent(parentView);
+        img=null;
+        tc.stop();
+        
+        Roster.keyLockState=false;
+        
+        if (Roster.isAway) {
+            int newStatus=sd.roster.oldStatus;
+            ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
+            String ms=es.getMessage();
+            Roster.isAway=false;
+            sd.roster.sendPresence(newStatus, ms);
+        }
+        System.gc();
+    }
+
 }

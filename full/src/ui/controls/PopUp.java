@@ -59,7 +59,7 @@ public class PopUp {
         }
         
         g.translate(wBorder-g.getTranslateX(), hBorder-g.getTranslateY());
-        
+        g.setClip(0,0,width,height);
         draw(g);
     }
     

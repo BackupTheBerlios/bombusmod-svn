@@ -33,20 +33,16 @@ abstract public class IconTextElement implements VirtualElement
     public int getBGndRGB(){ return 0xffffff;}
     public int getFontIndex() { return 0;}
     private Font getFont() { 
-        //return Font.getFont(Font.FACE_PROPORTIONAL, getFontIndex(), Font.SIZE_MEDIUM);
         return (getFontIndex()==0)?
             FontCache.getRosterNormalFont():
             FontCache.getRosterBoldFont();
     }
     public void drawItem(Graphics g,int ofs,boolean sel){
-        
-       //Image img=il.getImage(_callback.getImage(index));
-        String str=null;
-        str=toString();
+       String str=null;
+       str=toString();
        
        g.setFont(getFont());
        if (il!=null) il.drawImage(g, getImageIndex(), 2, imageYOfs);
-       //g.drawImage(img,2, imageYOfs, Graphics.TOP|Graphics.LEFT);
        g.clipRect(4+imgWidth, 0, g.getClipWidth(), itemHeight);
        g.drawString(str,4+imgWidth-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
     }
@@ -70,7 +66,6 @@ abstract public class IconTextElement implements VirtualElement
     public IconTextElement(ImageList il) {
         super();
         this.il=il;
-        //f=Font.getDefaultFont();
         int hf=FontCache.getRosterNormalFont().getHeight();
         int hi=0;
 	if (il!=null){
@@ -79,11 +74,7 @@ abstract public class IconTextElement implements VirtualElement
 	}
         itemHeight=(hi>hf)?hi:hf;
         imageYOfs=(itemHeight-hi)/2;
-//#if ALCATEL_FONT
-//#         fontYOfs=1+(itemHeight-hf)/2;
-//#else
         fontYOfs=(itemHeight-hf)/2;
-//#endif
     }
     
     public String getTipString() {

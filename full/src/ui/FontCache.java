@@ -64,15 +64,15 @@ public class FontCache {
         return balloonFont;
     }
 
-    public final static void resetCache() {
-        normal=bold=msgFont=msgFontBold=balloonFont=null;
-    }
-    
-
     public final static Font getClockFont() {
         if (clockFont==null) {
             clockFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, clockFontSize);
         }
         return clockFont;
+    }
+
+
+    public final static void resetCache() {
+        normal=bold=msgFont=msgFontBold=balloonFont=null;
     }
 }
