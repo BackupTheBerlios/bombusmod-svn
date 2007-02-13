@@ -186,26 +186,26 @@ public class Roster
         
         vContacts=new Vector(); // just for displaying
         
-            if (Version.getPlatformName().startsWith("SIE-")) {
-                switch (cf.lightType) {
-                    case 0: { //off
-                        lightType=0;
-                        setLight(false);
-                        break;
-                    }
-                    case 1: { //on 
-                        lightType=1;
-                        sd.roster.setLight(true);
-                        break;
-                    }
-                    case 2: { //auto
-                        lightType=2;
-                        break;
-                    }
+        if (Version.getPlatformName().startsWith("SIE-")) {
+            switch (cf.lightType) {
+                case 0: { //off
+                    lightType=0;
+                    setLight(false);
+                    break;
+                }
+                case 1: { //on 
+                    lightType=1;
+                    sd.roster.setLight(true);
+                    break;
+                }
+                case 2: { //auto
+                    lightType=2;
+                    break;
                 }
             }
+        }
         
-        if (!cf.digitMemMonitor) {
+        if (!VirtualList.digitMemMonitor) {
                 int activeType=Command.SCREEN;
                 String platform=Version.getPlatformName();
                 if (platform.startsWith("Nokia")) activeType=Command.BACK;
@@ -1656,16 +1656,19 @@ public class Roster
             
             display.flashBacklight(blState);
         }
-        if (keyCode==-4 || keyCode==-1)  {
-            if (Version.getPlatformName().indexOf("SIE") > -1) {
-                new RosterMenu(display, getFocusedObject());
-             }         
-        }     
-        if (keyCode==-7 || keyCode==-6)  {
-            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
-                new RosterMenu(display, getFocusedObject());
-             }         
-        } 
+/*        if (VirtualList.digitMemMonitor) {
+            if (keyCode==-4 || keyCode==-1)  {
+                if (Version.getPlatformName().indexOf("SIE") > -1) {
+                    new RosterMenu(display, getFocusedObject());
+                 }         
+            }
+            if (keyCode==-7 || keyCode==-6)  {
+                if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
+                    new RosterMenu(display, getFocusedObject());
+                 }         
+            } 
+        }
+ */
 //#endif
     }
     
@@ -1693,24 +1696,26 @@ public class Roster
                 if (p==c) pass++; // полный круг пройден
             }
         }
-        if (keyCode==-4 || keyCode==-1)  {
-            if (Version.getPlatformName().indexOf("SIE") > -1) {
-                new RosterMenu(display, getFocusedObject());
-                return;
-             }         
-        }
-        
-        if (keyCode==-21 || keyCode==-22 || keyCode==21 || keyCode==22) {
-            if (cf.ghostMotor) {
-                new RosterMenu(display, getFocusedObject());
+        if (VirtualList.digitMemMonitor) {
+            if (keyCode==-4 || keyCode==-1)  {
+                if (Version.getPlatformName().indexOf("SIE") > -1) {
+                    new RosterMenu(display, getFocusedObject());
+                    return;
+                 }         
+            }
+
+            if (keyCode==-21 || keyCode==-22 || keyCode==21 || keyCode==22) {
+                if (cf.ghostMotor) {
+                    new RosterMenu(display, getFocusedObject());
+                }
+            }
+
+            if (keyCode==-7 || keyCode==-6)  {
+                if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
+                    new RosterMenu(display, getFocusedObject());
+                 }         
             }
         }
-        
-        if (keyCode==-7 || keyCode==-6)  {
-            if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
-                new RosterMenu(display, getFocusedObject());
-             }         
-        } 
 
         if (keyCode=='3') { searchGroup(-1); setRotator(); }
         if (keyCode=='9') { searchGroup(1); setRotator(); }

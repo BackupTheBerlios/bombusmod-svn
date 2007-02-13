@@ -43,9 +43,6 @@ public class NetAccuFont {
 
                
                 switch (textByte) {
-                    case 36://$ java
-                        paintLetter(g, 1, 19, charnumber, textByte);
-                        break;
                     case 38://& gprs
                         paintLetter(g, 1, 18, charnumber, textByte);
                         break;

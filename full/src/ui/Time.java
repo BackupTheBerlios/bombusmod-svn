@@ -123,7 +123,7 @@ public class Time {
         //System.out.println(diff);
         return diff;
     }
-    
+/*    
     public static String secToDate(long seconds){
         Calendar c=calDate(System.currentTimeMillis()+locToGmtoffset-(seconds*1000));
         return lz2(c.get(Calendar.DAY_OF_MONTH))+"."+
@@ -137,5 +137,6 @@ public class Time {
                lz2(c.get(Calendar.MONTH)+1)+"."+
                lz2(c.get(Calendar.YEAR) % 100)+" "+lz2(c.get(Calendar.HOUR_OF_DAY))+":"+lz2(c.get(Calendar.MINUTE))+":"+lz2(c.get(Calendar.SECOND));
     }  
+ */
 }
 
