@@ -545,7 +545,7 @@ public class Roster
     }
     
     public final ConferenceGroup initMuc(String from, String joinPassword){
-        keyTimer=0;
+        setKeyTimer(0);
         // muc message
         int ri=from.indexOf('@');
         int rp=from.indexOf('/');
@@ -702,6 +702,7 @@ public class Roster
      */
     
     public void sendPresence(int status) {
+        setKeyTimer(0);
         myStatus=status;
         setQuerySign(false);
         if (myStatus==Presence.PRESENCE_OFFLINE) {
@@ -750,6 +751,7 @@ public class Roster
     }
 
     public void sendPresence(int status, String message) {
+        setKeyTimer(0);
         myStatus=status;
         myMessage=message;
         setQuerySign(false);
@@ -915,7 +917,7 @@ public class Roster
         //System.out.println(simpleMessage.toString());
         theStream.send( message );
         lastMessageTime=Time.localTime();
-        keyTimer=0;
+        setKeyTimer(0);
     }
     
     private Vector vCardQueue;
@@ -2153,6 +2155,10 @@ public class Roster
             }
         }
     }
+    
+    public void setKeyTimer(int value) {
+        keyTimer=value;        
+    }
 }
 
 class TimerTaskAutoAway extends Thread{
@@ -2209,7 +2215,7 @@ class TimerTaskAutoAway extends Thread{
                             }
                         }
 
-                        rRoster.keyTimer=keyTimer+5;                        
+                        rRoster.setKeyTimer(keyTimer+5);                        
                         if (keyTimer>=autoAwayTime) {
                             //System.out.println("test4");
                             try {

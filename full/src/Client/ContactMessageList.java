@@ -56,12 +56,14 @@ public class ContactMessageList extends MessageList
 
     StaticData sd;
     
+    private Config cf=Config.getInstance();
+    
+    private boolean hisStorage=(cf.lastMessages)?true:false;
+    
     private boolean startMessage=false;
     private String text="";
 
     private boolean composing=true;
-    
-    private Config cf=Config.getInstance();
   
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
@@ -79,7 +81,7 @@ public class ContactMessageList extends MessageList
 
         cursor=0;//activate
         
-        if (cf.lastMessages && contact instanceof MucContact==false) addCommand(cmdRecent);
+        if (hisStorage && contact instanceof MucContact==false) addCommand(cmdRecent);
         
         addCommand(cmdMessage);
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
@@ -158,7 +160,7 @@ public class ContactMessageList extends MessageList
         }
         if (c==cmdPurge) {
             if (messages.isEmpty()) return;
-            clearMessageList();
+            /*clearMessageList()*/clearReadedMessageList();
         }
         
         /** login-critical section */
@@ -242,10 +244,22 @@ public class ContactMessageList extends MessageList
 
     private void clearMessageList() {
         //TODO: fix scrollbar size
-        if (cf.lastMessages) new HistoryStorage(contact, "", true);
+        if (hisStorage) new HistoryStorage(contact, "", true);
         moveCursorHome();
         contact.purge();
         messages=new Vector();
+        System.gc();
+        redraw();
+    }
+    
+    private void clearReadedMessageList() {
+        //TODO: fix scrollbar size
+        if (hisStorage) new HistoryStorage(contact, "", true);
+        
+        for (int i=0;i<cursor;i++) 
+            messages.removeElementAt(i);
+        moveCursorHome();
+
         System.gc();
         redraw();
     }
@@ -257,7 +271,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyRepeated(int keyCode) {
-        if (keyCode==KEY_NUM0) clearMessageList();
+        if (keyCode==KEY_NUM0) /*clearMessageList()*/clearReadedMessageList();
 	else super.keyRepeated(keyCode);
     }       
 
@@ -302,7 +316,7 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_NUM9) nextContact();
             if (keyCode==keyClear) {
 				if (messages.isEmpty()) return;
-				clearMessageList();
+				/*clearMessageList()*/clearReadedMessageList();
 			}
 //#if ALT_INPUT  
 //#         }
