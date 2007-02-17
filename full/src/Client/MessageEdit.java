@@ -61,45 +61,25 @@ public class MessageEdit
         this.display=display;
         parentView=display.getCurrent();
         
-        //charsCount=t.getMaxSize();        
-        //System.out.println(charsCount);
-        t=new TextBox("",null,charsCount, TextField.ANY);
-        t.setMaxSize(10240);
-        charsCount=t.getMaxSize();
-        t.setTitle("("+charsCount+") "+to.toString());
-        /*
-        
-        if (charsCount>0) {
-            try {
-                t=new TextBox(to.toString(),null,charsCount, TextField.ANY);
-            } catch (Exception a) { 
-                charsCount=500;
-                t=new TextBox(to.toString(),null,charsCount, TextField.ANY);
-            }
-         } else {
-            try {
-                t=new TextBox(to.toString(),null,4096, TextField.ANY);
-                charsCount=4096;
-            } catch (Exception a) { 
-                try {
-                    t=new TextBox(to.toString(),null,2048, TextField.ANY);
-                    charsCount=2048;
-                } catch (Exception b) {  
-                    try {
-                        t=new TextBox(to.toString(),null,1024, TextField.ANY);
-                    } catch (Exception c) {
-                            t=new TextBox(to.toString(),null,500, TextField.ANY);
-                            charsCount=500;
-                    }
-                }
-            }
-        }
-        */
+        int maxSize=500;
+		t=new TextBox(to.toString(), null, maxSize, TextField.ANY);
+		
         try {
-            if (body!=null) t.setString(body);
-        } catch (Exception e) {
-            t.setString("<large text>");
-        }
+            //expanding buffer as much as possible
+            maxSize=t.setMaxSize(4096); //must not trow
+
+            if (body!=null) {
+                //trim body to maxSize
+                if (body.length()>maxSize)
+                    body=body.substring(0, maxSize-1);
+                t.setString(body);
+            }
+         } catch (Exception e) {
+            t.setString("<send bugreport>");
+         }
+        // debug code
+        t.setTicker(new Ticker(String.valueOf(maxSize)));
+
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
         t.addCommand(cmdSmile);

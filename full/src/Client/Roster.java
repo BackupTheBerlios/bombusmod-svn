@@ -170,6 +170,8 @@ public class Roster
         
         autoAwayTime=cf.autoAwayTime*60;
         setAutoStatus=cf.setAutoStatus;
+		
+		canback=false; // We can't go back using keyBack
         
         //msgNotify=new EventNotify(display, Profile.getProfile(0) );
         Title title=new Title(4, null, null);
@@ -1691,7 +1693,7 @@ public class Roster
     
 
     public void userKeyPressed(int keyCode){
-        if (keyCode==KEY_NUM0 /* || keyCode==MOTOE680_REALPLAYER  CONFLICT WITH ALCATEL. (platform=J2ME)*/) {
+        if (keyCode==KEY_NUM0 || keyCode==keyBack) {
             if (messageCount==0) return;
             Object atcursor=getFocusedObject();
             Contact c=null;
@@ -1948,8 +1950,7 @@ public class Roster
             redraw();
         }
         
-        if (keyCode==cf.keyOfflines /* || keyCode==MOTOE680_REALPLAYER CONFLICT WITH ALCATEL. (platform=J2ME) 
-         TODO: redifine keyOfflines*/) {
+        if (keyCode==cf.keyOfflines || keyCode==keyBack) {
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
         }

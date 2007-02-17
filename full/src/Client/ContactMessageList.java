@@ -162,7 +162,7 @@ public class ContactMessageList extends MessageList
         }
         if (c==cmdPurge) {
             if (messages.isEmpty()) return;
-            /*clearMessageList()*/clearReadedMessageList();
+            clearMessageList()/*clearReadedMessageList()*/;
         }
         
         /** login-critical section */
@@ -245,17 +245,19 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
     }
-/*
+
     private void clearMessageList() {
         //TODO: fix scrollbar size
-        if (hisStorage) new HistoryStorage(contact, "", true);
+//#if ALT_INPUT
+//#        if (hisStorage) new HistoryStorage(contact, "", true);
+//#endif
         moveCursorHome();
         contact.purge();
         messages=new Vector();
         System.gc();
         redraw();
     }
- */   
+   
     private void clearReadedMessageList() {
         //TODO: fix scrollbar size
 //#if ALT_INPUT
@@ -263,7 +265,11 @@ public class ContactMessageList extends MessageList
 //#endif
         contact.smartPurge(cursor);
         moveCursorHome();
-        messages=new Vector();
+        
+        for (int i=0;i<cursor+1;i++)
+            messages.removeElementAt(i);
+        
+        //messages=new Vector();
 
         System.gc();
         redraw();
@@ -276,7 +282,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyRepeated(int keyCode) {
-        if (keyCode==KEY_NUM0) /*clearMessageList()*/clearReadedMessageList();
+        if (keyCode==KEY_NUM0) clearMessageList()/*clearReadedMessageList()*/;
 	else super.keyRepeated(keyCode);
     }       
 
@@ -321,7 +327,7 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_NUM9) nextContact();
             if (keyCode==keyClear) {
 				if (messages.isEmpty()) return;
-				/*clearMessageList()*/clearReadedMessageList();
+				clearMessageList()/*clearReadedMessageList()*/;
 			}
 //#if ALT_INPUT  
 //#         }

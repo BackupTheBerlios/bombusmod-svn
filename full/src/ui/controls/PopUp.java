@@ -55,7 +55,7 @@ public class PopUp {
             this.height=height;
         } else {
             this.hBorder=(height-stringsHeight)/2;
-            this.height=stringsHeight+2;
+            this.height=stringsHeight+4;
         }
         
         g.translate(wBorder-g.getTranslateX(), hBorder-g.getTranslateY());
@@ -72,7 +72,7 @@ public class PopUp {
         
         g.setColor((kikoban)?0xffff00:Colors.BALLOON_INK);
         g.setFont(font);
-        drawAllStrings(g, 4,2);
+        drawAllStrings(g, 4,3);
     }
 
     private Vector parseMessage(int stringWidth) {

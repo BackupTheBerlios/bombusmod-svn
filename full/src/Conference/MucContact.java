@@ -159,6 +159,12 @@ public class MucContact extends Contact{
                     b.append("(");
                     b.append(reason);
                     b.append(")");
+					
+                    if (realJid!=null) {
+                        b.append(" - ");
+                        b.append(realJid);
+                    }
+
                     if (reason.indexOf("talks") > -1) toTalks();
                     setWobble(reason);
                     testMeOffline();
@@ -186,10 +192,10 @@ public class MucContact extends Contact{
             if (this.status==Presence.PRESENCE_OFFLINE) {
                 String realJid=item.getAttribute("jid");
                 if (realJid!=null) {
-                    b.append(" (");
+                    this.realJid=realJid;  //for moderating purposes
+					b.append(" (");
                     b.append(realJid);
                     b.append(')');
-                    this.realJid=realJid;  //for moderating purposes
                 }
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
                 b.append(role);

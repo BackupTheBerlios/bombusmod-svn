@@ -182,13 +182,18 @@ public class Config {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	}
-	if (platform.startsWith("Moto")) {
+
+	if (platform.startsWith("Motorola-EZX")) {
+	    VirtualList.keyClear=0x1000;
+	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
+	    VirtualList.keyBack=VirtualList.MOTOE680_REALPLAYER;
+	} else if (platform.startsWith("Moto")) {
 	    ghostMotor=true;
 	    blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    VirtualList.keyClear=0x1000;
-	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
+	    //VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	}
         
         if (platform.startsWith("SIE")) {
