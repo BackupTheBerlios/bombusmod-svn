@@ -202,10 +202,6 @@ public class Config {
         }
         
 	VirtualList.greenKeyCode=greenKeyCode;
-//#if USE_LED_PATTERN
-//#         if (platform.startsWith("M55"))
-//#         m55LedPattern=getIntProperty("led_pattern",5);
-//#endif
     }
     
     protected void loadFromStorage(){
@@ -377,7 +373,9 @@ public class Config {
             
             outputStream.writeInt(lightType);
             
-	} catch (Exception e) { e.printStackTrace(); }
+	} catch (Exception e) {
+            //e.printStackTrace();
+        }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
     }

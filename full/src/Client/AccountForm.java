@@ -96,7 +96,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, account.keepAlivePeriod, 10, 2096 ); f.append(keepAlive);
 	 
 	resourcebox = new TextField(SR.MS_RESOURCE, account.getResource(), 32, TextField.ANY); f.append(resourcebox);
-	nickbox = new TextField(SR.MS_NICKNAME, account.getNickName(), 32, TextField.ANY); f.append(nickbox);
+	nickbox = new TextField(SR.MS_NICKNAME, account.getNick(), 32, TextField.ANY); f.append(nickbox);
 	
 	f.addCommand(cmdOk);
         f.addCommand(cmdPwd);
@@ -155,7 +155,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	    account.setServer(servbox.getString().trim());
 	    account.setHostAddr(ipbox.getString());
 	    account.setResource(resourcebox.getString());
-	    account.setNickName(nickbox.getString());
+	    account.setNick(nickbox.getString());
 	    account.setUseSSL(b[0]);
 	    account.setPlainAuth(b[1]);
 //#if SASL

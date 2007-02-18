@@ -6,18 +6,18 @@ package util;
 
 public class ClipBoard
 {
-      private static StringBuffer _clipBoard=new StringBuffer();
+      private static String _clipBoard;
       
       public String getClipBoard() {
-          return _clipBoard.toString();
+          return _clipBoard;
       }
       
       public void  setClipBoard(String str) {
-          _clipBoard.append(str);
+          _clipBoard=str;
       }
       
       public boolean isEmpty() {
-          boolean empty=(_clipBoard.toString().length()>0)?false:true;
+          boolean empty=(_clipBoard.length()>0)?false:true;
           return empty;
       }
 }

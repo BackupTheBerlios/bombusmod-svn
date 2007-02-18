@@ -88,9 +88,9 @@ public class Bombus extends MIDlet implements Runnable{
                 programIcon=Image.createImage("/_icon.png");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
-        s.setProgress("BombusMod "+Version.version,7);
+        s.setProgress(Version.version,7);
         
         s.setProgress(10);
 	Config cf=Config.getInstance();
@@ -100,14 +100,16 @@ public class Bombus extends MIDlet implements Runnable{
             PNGCache.init();
             s.setProgress(12);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("PNGCache error");
+            //e.printStackTrace();
         }
         
         s.setProgress(14);
         try {
             Colors cl=Colors.getInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Colors error");
+            //e.printStackTrace();
         }
 
 	s.setProgress(17);

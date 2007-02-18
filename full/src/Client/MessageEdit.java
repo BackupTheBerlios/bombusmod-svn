@@ -78,7 +78,7 @@ public class MessageEdit
             t.setString("<send bugreport>");
          }
         // debug code
-        t.setTicker(new Ticker(String.valueOf(maxSize)));
+        //t.setTicker(new Ticker(String.valueOf(maxSize)));
 
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);

@@ -32,6 +32,7 @@ import ui.IconTextElement;
 import ui.Menu;
 import ui.MenuItem;
 import ui.YesNoAlert;
+import util.ClipBoard;
 import vcard.VCard;
 import vcard.vCardForm;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
@@ -47,6 +48,8 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
     Object item;
 	
     Roster roster;
+    
+    private ClipBoard clipboard;
     
     /** Creates a new instance of RosterItemActions */
     public RosterItemActions(Display display, Object item, int action) {
@@ -72,12 +75,14 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    addItem(SR.MS_VCARD,1, 0x0f16);
             addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
+	    addItem("Copy JID",892, 0x0f22);
             
             if (contact.getJid()==contact.getBareJid()) {
                 addItem(SR.MS_SEEN,890);    
             } else {
                 addItem(SR.MS_IDLE,889);
-                addItem(SR.MS_ONLINE,890); 
+                if (contact.status>4)
+                    addItem(SR.MS_ONLINE,890); 
             }
             
                             
@@ -306,6 +311,17 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     break;
                 }
                 
+                case 892: //Copy JID
+                {
+                    if (!(c instanceof MucContact)) {
+                        System.out.println("1 c "+c.bareJid);
+                        try {
+                            clipboard.setClipBoard(c.bareJid);
+                        } catch (Exception e) {/*no messages*/}
+                    }
+                    break;
+                }
+                
                 case 40: //invite
                 {
                     //new InviteForm(c, display);
@@ -445,6 +461,16 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
                      return;
                  }
+                
+                case 892: //Copy JID
+                {
+                    MucContact mcJ=(MucContact) c;
+                    System.out.println("2 muc "+mcJ.realJid);
+                    try {
+                        clipboard.setClipBoard(mcJ.realJid);
+                    } catch (Exception e) {/*no messages*/}
+                    break;
+                }
              }
         }
      }

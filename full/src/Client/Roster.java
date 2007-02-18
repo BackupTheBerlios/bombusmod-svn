@@ -329,7 +329,7 @@ public class Roster
             setProgress(SR.MS_FAILED, 0);
             reconnect=false;
             myStatus=Presence.PRESENCE_OFFLINE;
-            e.printStackTrace();
+            //e.printStackTrace();
             setQuerySign(false);
             redraw();
             askReconnect(e);
@@ -345,7 +345,7 @@ public class Roster
 	    bookmarks=null;
 	}
 	setMyJid(new Jid(sd.account.getJid()));
-	updateContact(sd.account.getNickName(), myJid.getBareJid(), Groups.SELF_GROUP, "self", false);
+	updateContact(sd.account.getNick(), myJid.getBareJid(), Groups.SELF_GROUP, "self", false);
 	
 	System.gc();
     }
@@ -483,7 +483,7 @@ public class Roster
     
     public Vector getHContacts() {return hContacts;}
     
-    public final void updateContact(final String nick, final String jid, final String grpName, String subscr, boolean ask) {
+    public void updateContact(String nick, String jid, String grpName, String subscr, boolean ask) {
         // called only on roster read
         int status=Presence.PRESENCE_OFFLINE;
         if (subscr.equals("none")) status=Presence.PRESENCE_UNKNOWN;
@@ -492,7 +492,7 @@ public class Roster
         if (subscr.equals("remove")) status=-1;
         
         Jid J=new Jid(jid);
-        Contact c=findContact(J,false); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ bare jid
+        Contact c=findContact(J,false); // search by bare jid
         if (c==null) {
             c=new Contact(nick, jid, Presence.PRESENCE_OFFLINE, null);
             addContact(c);
@@ -740,7 +740,9 @@ public class Roster
             if (status==Presence.PRESENCE_OFFLINE) {
                 try {
                     theStream.close();
-                } catch (Exception e) { e.printStackTrace(); }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 theStream=null;
                 System.gc();
             }
@@ -795,7 +797,9 @@ public class Roster
             if (status==Presence.PRESENCE_OFFLINE) {
                 try {
                     theStream.close();
-                } catch (Exception e) { e.printStackTrace(); }
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                }
                 theStream=null;
                 isAway=false;
                 System.gc();
@@ -961,7 +965,9 @@ public class Roster
 		
         try {
             theStream.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
         theStream=null;
         System.gc();
 		
@@ -1005,7 +1011,9 @@ public class Roster
             setProgress(SR.MS_CONNECTED,100);
             try {
                 reEnumRoster();
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
         } else {
@@ -1024,6 +1032,7 @@ public class Roster
         try {
             
             if( data instanceof Iq ) {
+				String from=data.getAttribute("from");
                 String type = (String) data.getTypeAttribute();
                 String id=(String) data.getAttribute("id");
                 
@@ -1032,7 +1041,7 @@ public class Roster
 				
                     if (id.startsWith("nickvc")) {
                         VCard vc=new VCard(data);//.getNickName();
-                        String from=vc.getJid();
+                        //String from=vc.getJid();
                         String nick=vc.getNickName();
                         
                         Contact c=findContact(new Jid(from), false);
@@ -1056,7 +1065,7 @@ public class Roster
                     }
                     
                     if (id.equals("getver")) {
-                        String from=data.getAttribute("from");
+                        //String from=data.getAttribute("from");
                         String body=null;
                         if (type.equals("error")) {
                             body=SR.MS_NO_VERSION_AVAILABLE;
@@ -1104,7 +1113,7 @@ public class Roster
                         JabberDataBlock tm=data.getChildBlock("query");
                         if (tm!=null) {
                             querysign=false;
-                            String from=data.getAttribute("from");
+                            from=data.getAttribute("from");
                             String body=IqLast.dispatchLast(tm);
                             
                             String lastType="seen/online";
@@ -1122,7 +1131,7 @@ public class Roster
                         JabberDataBlock tm=data.getChildBlock("query");
                         if (tm!=null) {
                             querysign=false;
-                            String from=data.getAttribute("from");
+                            from=data.getAttribute("from");
                             String body=IqTimeReply.dispatchTime(tm);
                             
                             String status=tm.getText();
@@ -1134,7 +1143,7 @@ public class Roster
                 } else if (type.equals("get")){
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
-                        String from=data.getAttribute("from");
+                        //String from=data.getAttribute("from");
                         //System.out.println(from);
                         //Contact c=findContact(new Jid(from), false);
                         Contact c=getContact(from, true);
@@ -1158,6 +1167,7 @@ public class Roster
                     }
                 } else if (type.equals("set")) {
                     processRoster(data);
+					theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
                     reEnumRoster();
                 }
             }
@@ -1388,7 +1398,7 @@ public class Roster
                 reEnumRoster();
             }
         } catch( Exception e ) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
     
@@ -1406,6 +1416,13 @@ public class Roster
         JabberDataBlock q=data.getChildBlock("query");
         if (!q.isJabberNameSpace("jabber:iq:roster")) return;
         int type=0;
+		
+        //verifying from attribute as in RFC3921/7.2
+        String from=data.getAttribute("from");
+        if (from!=null) {
+            String myJid=sd.account.getJid();
+            if (! from.toLowerCase().equals(myJid.toLowerCase())) return;
+        }
         
         Vector cont=(q!=null)?q.getChildBlocks():null;
         
@@ -1585,7 +1602,7 @@ public class Roster
             try {
                 sendPresence(Presence.PRESENCE_OFFLINE);
             } catch (Exception e2) {
-                e2.printStackTrace();
+                //e2.printStackTrace();
             }
          }
         redraw();
@@ -1819,7 +1836,7 @@ public class Roster
              sendPresence(Presence.PRESENCE_OFFLINE, es.getMessage());
              
         } catch (Exception e) { 
-            e.printStackTrace(); 
+            //e.printStackTrace(); 
         }
     };
 
@@ -2114,7 +2131,9 @@ public class Roster
                     focusedItem(cursor);
                     redraw();
                 }
-            } catch (Exception e) {e.printStackTrace();}
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
             thread=null;
         }
     }
@@ -2252,9 +2271,13 @@ class TimerTaskAutoAway extends Thread{
                             try {
                                 rRoster.setAutoAway();
                                 //System.out.println("test6");
-                            } catch (Exception e) { e.printStackTrace(); }
+                            } catch (Exception e) {
+                                //e.printStackTrace();
+                            }
                         }
-                    } catch (Exception e) { e.printStackTrace(); }
+                    } catch (Exception e) {
+                        //e.printStackTrace();
+                    }
                 }
             }
         }

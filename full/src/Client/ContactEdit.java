@@ -37,6 +37,8 @@ public final class ContactEdit
     
     int ngroups;
     
+    int grpFIndex;
+    
     Command cmdOk=new Command(SR.MS_ADD, Command.OK, 1);
     Command cmdSet=new Command(SR.MS_SET, Command.ITEM, 2);
     Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
@@ -66,7 +68,7 @@ public final class ContactEdit
         tGroup=new TextField(SR.MS_GROUP ,null, 32, TextField.ANY);
         
         
-        tGrpList=new ChoiceGroup(SR.MS_EXISTING_GROUPS , ConstMIDP.CHOICE_POPUP);
+        tGrpList=new ChoiceGroup(SR.MS_GROUP , ConstMIDP.CHOICE_POPUP);
         tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ConstMIDP.CHOICE_POPUP);
         
         tAskSubscrCheckBox=new ChoiceGroup(SR.MS_SUBSCRIPTION, ChoiceGroup.MULTIPLE);
@@ -134,7 +136,7 @@ public final class ContactEdit
             
         //if (sel==-1) sel=groups.size()-1;
         if (sel<0) sel=0;
-        tGroup.setString(group(sel));
+        //tGroup.setString(group(sel));
         
         
         if (c==null){
@@ -143,12 +145,13 @@ public final class ContactEdit
         }
         updateChoise(tJid.getString(),tTranspList);
         f.append(tNick);
-        f.append(tGroup);
+        //f.append(tGroup);
         
         tGrpList.append(SR.MS_NEWGROUP,null);
         tGrpList.setSelectedIndex(sel, true);
         
-        f.append(tGrpList);
+        //f.append(tGrpList);
+        
         
         if (newContact) {
             f.append(tAskSubscrCheckBox);
@@ -227,13 +230,14 @@ public final class ContactEdit
     }
     
     public void itemStateChanged(Item item){
-        if (item==tGrpList) {
+         if (item==tGrpList) {
             int index=tGrpList.getSelectedIndex();
-            tGroup.setString(group(index));
-        }
-        if (item==tGroup) {
-            updateChoise(tGroup.getString(), tGrpList);
-        }
+            if (index==tGrpList.size()-1) {
+                f.set(grpFIndex, tGroup);
+            }
+            //tGroup.setString(group(index));
+         }
+
         if (item==tTranspList) {
             int index=tTranspList.getSelectedIndex();
             if (index==tTranspList.size()-1) return;
