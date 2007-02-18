@@ -111,7 +111,7 @@ public abstract class VirtualList
     public static final int MOTOE680_VOL_DOWN=-8;
     public static final int MOTOE680_REALPLAYER=-6;
     public static final int MOTOE680_FMRADIO=-7;
-    public static final int SE_GREEN=0;
+    public static final int SE_GREEN=10;
     
     public static final int SE_CLEAR=-8;
     
@@ -119,7 +119,7 @@ public abstract class VirtualList
 
     public static int keyClear=-8;
     public static int keyVolDown=0x1000;
-	public static int keyBack=0x1000;
+    public static int keyBack=0x1000;
     public static int greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
@@ -134,7 +134,7 @@ public abstract class VirtualList
      */
     private Image offscreen;
 	
-	protected boolean canback=true; // Enable destroyView() on keyBack by default
+    protected boolean canback=true; // Enable destroyView() on keyBack by default
     
     /** признак положения курсора в конце списка */
     protected boolean atEnd; //FIXME: перенести поведение в функции keyRight();
@@ -784,11 +784,11 @@ public abstract class VirtualList
                                     if (keyCode==greenKeyCode) { keyGreen(); break; }
                                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
                                     if (keyCode=='5') {  eventOk(); break; }
-		                            if (canback && keyCode==keyBack) {
-		                                //TODO: Check, is destroyView() allowed
-		                                destroyView();
-		                                return;
-		                            }
+                                    if (keyCode==keyBack) {
+                                        //TODO: Check, is destroyView() allowed
+                                        destroyView();
+                                        return;
+                                    }
                                     userKeyPressed(keyCode);
                                 }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
@@ -1018,7 +1018,8 @@ public abstract class VirtualList
      * присоединение к менеджеру предыдущего Displayable
      */
     public void destroyView(){
-        if (display!=null)   display.setCurrent(parentView);
+        if (display!=null && parentView!=null /*prevents potential app hiding*/ )   
+            display.setCurrent(parentView);
     }
 
     public int getListWidth() {

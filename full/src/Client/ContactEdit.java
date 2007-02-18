@@ -1,7 +1,7 @@
 /*
  * ContactEdit.java
  *
- * Created on 7 Май 2005 г., 2:15
+ * Created on 7 РњР°Р№ 2005 Рі., 2:15
  *
  * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
  * All rights reserved.
@@ -145,13 +145,14 @@ public final class ContactEdit
         }
         updateChoise(tJid.getString(),tTranspList);
         f.append(tNick);
+        
+        
         //f.append(tGroup);
         
         tGrpList.append(SR.MS_NEWGROUP,null);
         tGrpList.setSelectedIndex(sel, true);
         
-        //f.append(tGrpList);
-        
+        grpFIndex=f.append(tGrpList);
         
         if (newContact) {
             f.append(tAskSubscrCheckBox);
@@ -176,7 +177,8 @@ public final class ContactEdit
             String jid=getString(tJid);
             if (jid!=null) {
                 String name=getString(tNick);
-                String group=getString(tGroup);
+                String group=group(tGrpList.getSelectedIndex());
+                if (group==null) group=getString(tGroup);
                 
                 try {
                     int gSel=tGrpList.getSelectedIndex();
@@ -185,7 +187,7 @@ public final class ContactEdit
                     }
                 } catch (Exception e) {} // nokia fix
                 
-                // сохранение контакта
+                // СЃРѕС…СЂР°РЅРµРЅРёРµ РєРѕРЅС‚Р°РєС‚Р°
                 boolean ask[]=new boolean[1];
                 tAskSubscrCheckBox.getSelectedFlags(ask);
                 roster.storeContact(jid,name,group, ask[0]);
@@ -230,14 +232,18 @@ public final class ContactEdit
     }
     
     public void itemStateChanged(Item item){
-         if (item==tGrpList) {
+        if (item==tGrpList) {
             int index=tGrpList.getSelectedIndex();
             if (index==tGrpList.size()-1) {
                 f.set(grpFIndex, tGroup);
             }
             //tGroup.setString(group(index));
-         }
-
+        }
+        
+        //if (item==tGroup) {
+        //    updateChoise(tGroup.getString(), tGrpList);
+        //}
+        
         if (item==tTranspList) {
             int index=tTranspList.getSelectedIndex();
             if (index==tTranspList.size()-1) return;

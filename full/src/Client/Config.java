@@ -174,10 +174,11 @@ public class Config {
             //prefetch images
             RosterIcons.getInstance();
             SmilesIcons.getInstance();
-            
+	    blFlash=false;
 	    allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
 	}
+        
 	if (platform.startsWith("Nokia")) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;

@@ -45,31 +45,30 @@ public class Version {
                 if (device!=null && firmware!=null)
                     platformName="Motorola"; // buggy v360
 
-			// Motorola EZX phones
-			String hostname=System.getProperty("microedition.hostname");
-			if (hostname!=null) {
-			    platformName="Motorola-EZX";
-			    if (device!=null) {
-			    	// Motorola EZX ROKR
-				hostname=device;
-				}
+
+		// Motorola EZX phones
+		String hostname=System.getProperty("microedition.hostname");
+		if (hostname!=null) {
+		    platformName="Motorola-EZX";
+		    if (device!=null) {
+		    	// Motorola EZX ROKR
+			hostname=device;
+             }
+             
+		    if (hostname.indexOf("(none)")<0)
+			platformName+="/"+hostname;
+		}
             }
-            
-			if (hostname.indexOf("(none)")<0)
-                platformName+="/"+hostname;
-            }
-			else if (platformName.startsWith("Moto")) {
+	    else if (platformName.startsWith("Moto")) {
                 if (device==null) device=System.getProperty("funlights.product");
                 if (device!=null) platformName="Motorola-"+device;
             }
-            
-//#if (!MIDP1)
+
             if (platformName.indexOf("SIE") > -1) {
                 platformName=System.getProperty("microedition.platform")+" (NSG)";
             } else if (System.getProperty("com.siemens.OSVersion")!=null) {
                 platformName="SIE-"+System.getProperty("microedition.platform")+"/"+System.getProperty("com.siemens.OSVersion");
             }
-//#endif
         }
         return platformName;
     }

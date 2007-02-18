@@ -171,7 +171,7 @@ public class Roster
         autoAwayTime=cf.autoAwayTime*60;
         setAutoStatus=cf.setAutoStatus;
 		
-		canback=false; // We can't go back using keyBack
+	//canback=false; // We can't go back using keyBack
         
         //msgNotify=new EventNotify(display, Profile.getProfile(0) );
         Title title=new Title(4, null, null);
@@ -261,6 +261,8 @@ public class Roster
 	updateTitle();
 
         SplashScreen.getInstance().setExit(display, this);
+        
+        //parentView=null; - already have
     }
     
     void addOptionCommands(){
