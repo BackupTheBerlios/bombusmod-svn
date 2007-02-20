@@ -214,6 +214,11 @@ public class Utf8IOStream implements Runnable{
     
     public String readLine() throws IOException {
 	StringBuffer buf=new StringBuffer();
+	/*if (afterEol>0) {
+	    buf.append(afterEol);
+	    afterEol=0;
+	}*/
+	
 	boolean eol=false;
 	while (true) {
 	    int c = getNextCharacter();
@@ -224,10 +229,13 @@ public class Utf8IOStream implements Runnable{
 	    }
 	    if (c==0x0d || c==0x0a) {
 		eol=true;
+		//inputstream.mark(2);
 		if (c==0x0a) break;
 	    }
 	    else {
 		if (eol) {
+		    //afterEol=c;
+		    //inputstream.reset();
 		    break;
 		}
 		buf.append((char) c);
@@ -258,28 +266,14 @@ public class Utf8IOStream implements Runnable{
         stats.append("\nout="); stats.append(sent);
         stats.append("\n\nIP=");
         try {
-            stats.append(((SocketConnection)connection).getAddress());
-            stats.append(":"); 
-            stats.append(((SocketConnection)connection).getPort());
-        } catch (Exception ex) {
-            stats.append("unknown");
-        } 
-        stats.append("\nLocal IP=");
-        try {
             stats.append(((SocketConnection)connection).getLocalAddress());
             stats.append(":"); 
             stats.append(((SocketConnection)connection).getLocalPort());
         } catch (Exception ex) {
             stats.append("unknown");
         } 
+        
         return stats.toString();
     }
 //#endif
-    public int getBytesR() {
-        return this.bytesRecv;
-    }
-    
-    public int getBytesS() {
-        return this.bytesSent;
-    }
 }

@@ -1,0 +1,231 @@
+// Český překlad Bombus by jenda.69
+// Upravený překlad "(c) 2006 Jindřich Skácel"; přidána diakritika, upřesněny některé názvy
+// Pokud by jste našli nějakou chybu, překlep, chybějící diakritiku, nepřeložené slovo, pište na: jenda.69@gmail.com
+xmlLang cz
+langfile	Česky
+Jid	Jid
+Loading	Načítám
+Privacy Lists	Soukromé seznamy
+Existing groups	Existující skupina
+Message font	Font zprávy
+Roster font	Font kontaktů
+Paste Body	Vložit tělo
+Configure Room	Nastavit místnost
+Paste Subject	Vložit téma
+Service Discovery	Zobrazit služby
+User JID	JID uživatele
+New list	Nový seznam
+Select (no login)	Označit (nepřihlásit)
+Privacy rule	Pravidlo soukromí
+use SSL	Použít SSL
+Modify	Změnit
+Update	Aktualizovat
+Account name	Jméno účtu
+GMT offset	GMT posunutí
+Time settings (hours)	Nastavení času
+Connected	Připojen
+Connect to 	Připojuji k 
+Alert Profile	Upozorňování
+Move Up	Posunout nahoru
+Move Down	Posunout dolů
+Owners	Vlastníci
+Ok	OK
+Minimize	Minimalizovat
+Room	Místnost
+Messages	Nastavení zpráv
+Refresh	Obnovit
+Resolve Nicknames	Zjistit přezdívky
+Action	Akce
+Ban	Ban
+Leave Room	Opustit místnost
+Password	Heslo
+Actions >	Akce >
+Activate	Aktivovat
+Affiliation	Přidružení
+Accounts	Účty
+Delete list	Smazat seznam
+Account >	Účet >
+Show Offlines	Ukazát odpojené
+Select	Vybrat
+Subject	Předmět
+Group menu	Menu skupiny
+Quit	Konec
+Add to roster	Přidat do seznamu
+Edit list	Upravit seznam
+Registering	Registruji
+Done	Hotovo
+Error: 	Chyby: 
+Browse	Prozkoumat
+Save list	Uložit seznam
+Keep-Alive period	Udržovat spojení po (s)
+<New Group>	<Nová skupina>
+Send	Odeslat
+Priority	Priorita
+Failed	Chyba
+Set Priority	Nastavit prioritu
+Delete rule	Smazat pravidlo
+Roster request	Zjišťuji seznam
+Type	Typ
+Name	Jméno
+Username	Uživ. jméno
+fullscreen	Celý displej
+All Priorities	Všechny priority
+Add bookmark	Přidat záložku
+conferences only	Pouze konference
+Client Version	Info o klientu
+Discard Search	Vyřadit hledání
+Search Results	Výsledek hledání
+Members	Členové
+Add Contact	Přidat kontakt
+Subscription	Povolit
+Status >	Stav >
+Join	Připojit
+Startup actions	Akce po spuštění
+Server	Server
+Admins	Administrátoři
+Make Ignore-List	Vytvořit Ignore-List
+Options	Možnosti
+Delete	Smazat
+Delete contact?	Smazat kontakt?
+Authorize	Autorizovat
+Nicknames	Přezdívky
+Entering setup	Vstupuji do nastavení
+to Archive	Do archivu
+Back	Zpět
+heap monitor	Monitor paměti
+Hide Splash	Nezobrazit logo
+Message	Zpráva
+<Other>	<Ostatní>
+Append	Přidat
+Active Contacts	Aktivní kontakty
+Select nickname	Zvolit přezdívku
+Group	Skupina
+Join conference	Připojit ke konferenci
+No	Ne
+Yes	Ano
+Re-Enter Room	Znovu vstoupit
+New Message	Nová zpráva
+Add	Přidat
+Logon	Připojit
+Logoff	Odpojit
+Login in progress	Připojování...
+at Host	Hostitel
+join conferences	Připojit ke konferenci
+Status	Stav
+Smiles	Smajlíci
+Contact >	Kontakt >
+Order	Order
+offline contacts	Odpojené kontakty
+Transport	Transport
+composing events	Události "Píše"
+Add Smile	Přidat smajlíka
+Nickname	Přezdívka
+Revoke Voice	Odvolat Voice
+Commands	Příkazy
+- (Sign)	- (Mínus)
+Set default	Výchozí
+Outcasts (Ban)	Outcasts (Ban)
+Set affiliation to	Nastavit přidružení k
+Hide Offlines	Schovat odpojené
+Register Account	Zaregistrovat účet
+autologin	Autopřipojení
+Publish	Uveřejnit
+Remove subscription	Odstranit povolení
+Set	Nastavit
+Application	Aplikace
+Bookmarks	Záložky
+Test sound	Zkusit zvuk
+Startup	Spouštění
+Edit rule	Upravit pravidlo
+Cancel	Zrušit
+Close	Zavřít
+Archive	Archiv
+free 	free
+Conference	Konference
+Sound	Zvuk
+Login failed	Chyba přihlášení
+New Jid	Nové JID
+plain-text password	Heslo jako text
+Paste Nickname	Vložit nick
+Kick	Kick
+Clear List	Smazat diskuzi
+Grant Voice	Dát Voice
+Quote	Citovat
+Roster elements	Seznam uživatelů
+popup from background	popup from background
+smiles	Smajlíci
+About	O autorech
+Resource	Zdroj
+Disconnected	Odpojen
+Edit	Upravit
+Host name/IP (optional)	Hostitel/IP (volitelně)
+Add rule	Přidat pravidlo
+for all status types	Pro všechny stavy
+Paste Jid	Vložit JID
+Goto URL	Přejít na adresu
+Clock -	Hodiny -
+Login	Připojit
+Clock offset	Vyrovnání hodin
+flash backlight	Blikat podsvětlením
+Suspend	Nechat rozepsané
+Resume Message	Dopsat zprávu
+Alert Profile >	Upozorňování >
+My vCard	Moje vCard
+transports	Transporty
+New Account	Nový účet
+self-contact	Můj kontakt
+vCard	vCard
+Set Subject	Nastavit předmět
+Tools	Nástroje
+Jabber Tools	Nástroje Jabberu
+Port	Port
+
+
+//473
+Proxy name/IP	Proxy name/IP
+Proxy port	Proxy port
+Autofocus	Autofocus
+
+Connect	Připojit
+history -	Historie -
+Are You sure want to discard 	Jste si jistý, že chcete vyřadit 
+ from OWNER to 	 od VLASTNÍKA do 
+Modify affiliation	Upravit přiřazení
+
+// DO NOT TRANSLATE THIS LINES!!!
+Ignore-List	Ignore-List
+General	General
+Stanzas	Stanzas
+Not-in-list	Not-in-list
+proxy CONNECT	proxy CONNECT
+
+// HERE IS NEW LINES
+//476
+Clear	Vyprázdnit
+
+//494
+Ask subscription	Dotaz na autorizaci
+Grant subscription	Odeslat autorizaci
+
+//502
+Invite to conference	Pozvat na konferenci
+Reason	Důvod
+You have been invited to 	Byl jsi pozván na 
+ is inviting You to 	 tě zve na 
+Visitors are not allowed to send messages to all occupants	Hosté nemohou posílat zprávy všem obyvatelům
+Unaffiliate	Odloučit
+Grant Moderator	Dát moderátora
+Revoke Moderator	Odebrat moderátora
+Grant Admin	Dát admina
+Grant Ownership	Dát vlastnictví
+
+room presences	chování místnosti
+
+ is now known as 	 je teď známý jako 
+ was banned 	 byl zabanován 
+ was kicked 	 byl vykopnut 
+ has been kicked because room became members-only	 byl vykopnut, protože místnost se stává "pouze pro členy"
+ has left the channel	 opustil kanál
+ has joined the channel as 	 se připojil ke kanálu jako 
+ and 	 a 
+ is now 	 je teď 

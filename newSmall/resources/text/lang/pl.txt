@@ -1,0 +1,234 @@
+// nothing0 Polish lang file made 20h08 15062006
+// nothing1 made by DeSnajpa_IV (jabber:tsieprawski@jabber.autocom.pl) <tsieprawski@gmail.com> modified by ObserwatoR (jabber:obserwator@jabber.ru) <obserwator@mail.ru>
+xmlLang	pl
+langfile	Polish
+Jid	Jid
+Loading	Wczytywanie
+Privacy Lists	Listy prywatności
+Existing groups	Istniejące grupy
+Message font	Czcionka wiadomości
+Roster font	Czcionka rostera
+Paste Body	Wklej treść
+Configure Room	Konfiguruj pokój
+Paste Subject	Wklej temat
+Service Discovery	Odkrywanie usług
+User JID	JID użytkownika
+New list	Nowa lista
+Select (no login)	Wybierz (nie loguj)
+Privacy rule	Zasada prywatnosci
+use SSL	Użyj SSL
+Modify	Modyfikuj
+Update	Uaktualnij
+Account name	Nazwa konta
+GMT offset	Roznica w stosunku do GMT
+Time settings (hours)\n	Ustawienia czasu\n
+Connected	Połączono
+Connect to 	Łącze z 
+Alert Profile	Profil Alarmu
+Move Up	Przenieś wyżej
+Move Down	Przenieś niżej
+Owners	Właściciele (owners)
+Ok	OK
+Minimize	Schowaj
+Room	Pokój	
+Messages	Wiadomosci
+Refresh	Odśwież
+Resolve Nicknames	Ustal pseudonimy
+Action	Akcja
+Ban	Zablokuj
+Leave Room	Opuść pokoj
+Password	Haslo
+Actions >	Opcje kontaktu >
+Activate	Aktywuj
+Affiliation	Przynależność (affiliation)
+Accounts	Konta
+Delete list	Usuń liste
+Account >	Konta >
+Show Offlines	Pokaż wylogowanych
+Select	Wybierz
+Subject	Temat
+Group menu	Menu grup
+Quit	Wyjdź
+Add to roster	Dodaj do rostera
+Edit list	Edytuj liste
+Registering	Rejestruje
+Done	Zrobione
+Error: 	Błąd: 
+Browse	Przeglądaj
+Save list	Zapisz liste
+Keep-Alive period	Odstęp utrzymania połączenia
+<New Group>	<Nowa grupa>
+Send	Wyślij
+Priority	Priorytet
+Failed	Nieudane
+Set Priority	Ustaw priorytet
+Delete rule	Usuń zasade
+Roster request	Pobieram roster
+Type	Typ
+Name	Nazwa
+Username	Nazwa uzytkownika
+fullscreen	Pełny ekran
+All Priorities	Wszystkie priorytety
+Add bookmark	Dodaj zakładkę
+conferences only	tylko konferencje
+Client Version	Wersja klienta
+Discard Search	Odrzuc wyszukiwanie
+Search Results	Wyniki wyszukiwania
+Members	Członkowie (members)
+// offline	wylogowany
+Add Contact	Dodaj kontakt
+Subscription	Subskrypcja
+Status >	Status >
+Join	Wejdź
+Startup actions	Akcje początkowe
+Server	Serwer
+Admins	Administratorzy (admins)
+Make Ignore-List	Utworz liste ignorowania
+Options	Ustawienia
+Delete	Usuń
+Delete contact?	Usunąć kontakt?
+Authorize	Autoryzuj
+Nicknames	Pseudonimy
+Entering setup	Logowanie trwa
+to Archive	do archiwum
+Back	Wróć
+heap monitor	monitor pamieci
+Hide Splash	Ukryj logo
+Message	Wiadomość
+<Other>	<Inny>
+// history -	historia -
+Append	Dopisz
+Active Contacts	Aktywne kontakty
+Select nickname	Wybierz pseudonim
+Group	Grupa
+Join conference	Wejdź do konferencji
+No	Nie
+Yes	Tak
+Re-Enter Room	Wejdź ponownie
+New Message	Nowa wiadomosc
+Add	Dodaj
+Logon	Zaloguj się
+Logoff	Wyloguj sie
+Login in progress	Logowanie trwa
+at Host	na serwerze
+join conferences	wejdź do konferencji
+Status	Status
+Smiles	Emotikony
+Contact >	Kontakt >
+Order	Zamów
+offline contacts	wylogowane kontakty 
+Transport	Transport
+composing events	wiadomość o komponowaniu
+Add Smile	Dodaj emotkę
+Nickname	Pseudonim
+Revoke Voice	Zabierz glos
+Commands	Komendy
+- (Sign)	- (Minus)
+Set default	Ustaw domyślnie
+Outcasts (Ban)	Zablokowani (Ban)
+Set affiliation to	Zmień przynależność na 
+Hide Offlines	Ukryj niedostępnych
+Register Account	Zarejestruj konto
+autologin	Autologowanie
+Publish	Publikuj
+Remove subscription	Odbierz subskrypcje
+Set	Ustaw
+Application	Aplikacja
+Bookmarks	Zakładki
+Test sound	Testuj dźwięk
+Startup	Uruchamianie
+Edit rule	Edytuj zasadę
+Cancel	Anuluj
+Close	Zamknij
+Archive	Archiwum
+free 	wolne
+Conference	Konferencja
+Sound	Dźwięk
+Login failed	Nieudane logowanie
+New Jid	Nowy JID
+plain-text password	Wyślij hasło nieszyfrowane (niezalecane)
+Paste Nickname	Wklej pseudonim
+Kick	Wyrzuć (kick)
+Clear List	Czyść liste
+Grant Voice	Nadaj głos
+Quote	Cytuj
+Roster elements	Elementy rostera
+popup from background	wyswietl z tla
+smiles	emotikony
+About	O programie
+Resource	Zasób
+Disconnected	Rozłączony
+Edit	Edytuj
+Host name/IP (optional)	Host/IP (opcjonalne)
+Add rule	Dodaj zasade
+for all status types	dla wszystkich rodzai statusów
+Paste Jid	Wklej JID
+Goto URL	Idź do URL'aL
+Clock -	Zegar -
+Login	Zaloguj się
+Clock offset	Różnica zegara
+flash backlight	Podświetlenie
+Suspend	Przerwij
+Resume Message	Dokończ wiadomość
+Alert Profile >	Profil Alarmu >
+My vCard	Moja Wizytówka
+transports	Transporty
+New Account	Nowe konto
+self-contact	Własny kontakt
+vCard	Wizytówka
+Set Subject	Ustaw temat
+Tools	Narzędzia
+Jabber Tools	Narzędzia Jabber'a
+Port	Port
+
+//473
+Proxy name/IP	Nazwa Proxy/IP
+Proxy port	Port Proxy
+Autofocus	Autofokus
+
+Connect	Połącz
+history -	historia -
+Are You sure want to discard 	Jesteś pewny że chcesz zmienić przynależność 
+ from OWNER to 	 z WŁAŚCICIELA na 
+Modify affiliation	Modyfikuj przynależność
+
+// DO NOT TRANSLATE THIS LINES!!!
+Ignore-List	Ignore-List
+// General	Generalne
+General	General
+// Stanzas	Stanzy
+Stanzas	Stanzas
+// Not-in-list	Poza-lista
+Not-in-list	Not-in-list
+proxy CONNECT	proxy CONNECT
+
+// HERE IS NEW LINES
+//476
+Clear	Clear
+
+//494
+Ask subscription	Ask subscription
+Grant subscription	Grant subscription
+
+//502
+Invite to conference	Invite to conference
+Reason	Reason
+You have been invited to 	You have been invited to 
+ is inviting You to 	 is inviting You to 
+Visitors are not allowed to send messages to all occupants	Visitors are not allowed to send messages to all occupants
+Unaffiliate	Unaffiliate
+Grant Moderator	Grant Moderator
+Revoke Moderator	Revoke Moderator
+Grant Admin	Grant Admin
+Grant Ownership	Grant Ownership
+
+room presences	room presences
+
+ is now known as 	 is now known as 
+ was banned 	 was banned 
+ was kicked 	 was kicked 
+ has been kicked because room became members-only	 has been kicked because room became members-only
+ has left the channel	 has left the channel
+ has joined the channel as 	 has joined the channel as 
+ and 	 and 
+ is now 	 is now 
