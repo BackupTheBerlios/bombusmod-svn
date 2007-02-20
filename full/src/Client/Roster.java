@@ -307,7 +307,7 @@ public class Roster
     
     // establishing connection process
     public void run(){
-        Iq.setXmlLang(SR.MS_XMLLANG);
+        //Iq.setXmlLang(SR.MS_XMLLANG);
         setQuerySign(true);
         setProgress(25);
 	if (!reconnect) {
@@ -1041,7 +1041,7 @@ public class Roster
         try {
             
             if( data instanceof Iq ) {
-				String from=data.getAttribute("from");
+		String from=data.getAttribute("from");
                 String type = (String) data.getTypeAttribute();
                 String id=(String) data.getAttribute("id");
                 
@@ -1074,7 +1074,7 @@ public class Roster
                     }
                     
                     if (id.equals("getver")) {
-                        //String from=data.getAttribute("from");
+                        from=data.getAttribute("from");
                         String body=null;
                         if (type.equals("error")) {
                             body=SR.MS_NO_VERSION_AVAILABLE;
@@ -1152,12 +1152,7 @@ public class Roster
                 } else if (type.equals("get")){
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
-                        //String from=data.getAttribute("from");
-                        //System.out.println(from);
-                        //Contact c=findContact(new Jid(from), false);
                         Contact c=getContact(from, true);
-                        //Contact c=findContact(from, false);
-                        // проверяем на запрос версии клиента
                         if (query.isJabberNameSpace("jabber:iq:version")) {
                             c.setViewing(true);
                             theStream.send(new IqVersionReply(data));
@@ -1295,8 +1290,10 @@ public class Roster
                 //if (body.length()==0) body=null; 
                 
                 if (x!=null) {
-                    compose=(x.getChildBlock("composing")!=null);
-                    if (compose) c.acceptComposing=true;
+                    compose=(  x.getChildBlock("composing")!=null 
+                            && c.status<Presence.PRESENCE_OFFLINE); // drop composing events from offlines
+                    
+                    if (compose) c.acceptComposing=true ; 
                     if (body!=null) compose=false;
                     c.setComposing(compose);
                 if (compose) playNotify(888);

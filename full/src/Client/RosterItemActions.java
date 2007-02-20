@@ -314,9 +314,10 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 case 892: //Copy JID
                 {
                     if (!(c instanceof MucContact)) {
-                        System.out.println("1 c "+c.bareJid);
+                        //System.out.println("1 c "+c.bareJid);
                         try {
-                            clipboard.setClipBoard(c.bareJid);
+                            if (c.bareJid!=null)
+                                clipboard.setClipBoard(c.bareJid);
                         } catch (Exception e) {/*no messages*/}
                     }
                     break;
@@ -465,10 +466,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 case 892: //Copy JID
                 {
                     MucContact mcJ=(MucContact) c;
-                    System.out.println("2 muc "+mcJ.realJid);
+                    //System.out.println("2 muc "+mcJ.realJid);
                     try {
-                        clipboard.setClipBoard(mcJ.realJid);
-                    } catch (Exception e) {/*no messages*/}
+                        if (mcJ.realJid!=null)
+                            clipboard.setClipBoard(mcJ.realJid);
+                    } catch (Exception e) {}
                     break;
                 }
              }

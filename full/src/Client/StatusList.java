@@ -35,7 +35,8 @@ public class StatusList {
     /** Creates a new instance of StatusList */
     private StatusList() {
         statusList=new Vector(7);
-	try {
+        
+        try {
 	    DataInputStream inputStream=NvStorage.ReadFileRecord("status", 0);
 	    
 	    createFromStream(Presence.PRESENCE_ONLINE, SR.MS_ONLINE, inputStream);
@@ -61,17 +62,16 @@ public class StatusList {
     }
     
     public void saveStatusToStorage(){
-        DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-
         try {
+            DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+            
             for (int i=0;i<statusList.size();i++) {
                 ExtendedStatus e=(ExtendedStatus)statusList.elementAt(i);
                 outputStream.writeInt(e.getPriority());
                 outputStream.writeUTF(e.getMessage());
             }
+            NvStorage.writeFileRecord(outputStream, "status", 0, true);            
         } catch (Exception e) { e.printStackTrace(); }
-
-        NvStorage.writeFileRecord(outputStream, "status", 0, true);
     }
     
     public ExtendedStatus getStatus(final int status) {
@@ -80,7 +80,6 @@ public class StatusList {
 	    es=(ExtendedStatus)e.nextElement();
 	    if (status==es.getImageIndex()) break;
 	}
-	
 	return es;
     }
 

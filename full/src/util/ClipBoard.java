@@ -6,7 +6,7 @@ package util;
 
 public class ClipBoard
 {
-      private static String _clipBoard;
+      private static String _clipBoard="";
       
       public String getClipBoard() {
           return _clipBoard;
