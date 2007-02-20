@@ -153,6 +153,9 @@ public class Roster
     public static String startTime=Time.dispLocalTime();
 
     public static boolean keyLockState=false;
+	
+    private static long playNotifyReadyTime=System.currentTimeMillis();
+    private static int lastPlayedNotifyEvent=-111;
     
     /**
      * Creates a new instance of Roster
@@ -1016,6 +1019,10 @@ public class Roster
             } catch (Exception e) {
                 //e.printStackTrace();
             }
+
+            lastPlayedNotifyEvent=-111;   // special event fake value ;)
+            playNotifyReadyTime=System.currentTimeMillis()+10000;  // 10 sec. of silence
+			
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
         } else {
@@ -1483,6 +1490,12 @@ public class Roster
     }
    
     public void playNotify(int event) {
+        if ((lastPlayedNotifyEvent==event ||
+            (lastPlayedNotifyEvent==-111 && event<=7)) &&
+             System.currentTimeMillis()<playNotifyReadyTime ) return;
+        
+//        System.out.println("event: "+event);
+	
         AlertCustomize ac=AlertCustomize.getInstance();
         
         int volume=ac.soundVol;
@@ -1495,7 +1508,12 @@ public class Roster
                 type=ac.soundOnlineType;
                 vibraLen=0;
                 break;
-            case 6: //offline
+            case 1: //chat
+                message=ac.soundOnline;
+                type=ac.soundOnlineType;
+                vibraLen=0;
+                break;
+            case 5: //offline
                 message=ac.soundOffline;
                 type=ac.soundOfflineType;
                 vibraLen=0;
@@ -1537,6 +1555,8 @@ public class Roster
             case AlertProfile.SOUND: notify=new EventNotify(display, type, message,  volume, 0,           blFlashEn); break;
         }
         if (notify!=null) notify.startNotify();
+        lastPlayedNotifyEvent=event;
+        playNotifyReadyTime=System.currentTimeMillis()+1000; //пауза перед следующим звуком
     }
     
 /*    
@@ -1770,7 +1790,7 @@ public class Roster
             if (cf.poundKey) {
                 if (Version.getPlatformName().indexOf("SIE") == -1) {
                     fullMode=cf.isbottom;
-                    switch (fullMode) {
+                    /*switch (fullMode) {
                         case 0: cf.isbottom=1; VirtualList.isbottom=1; break;
                         case 1: cf.isbottom=2; VirtualList.isbottom=2; break;
                         case 2: cf.isbottom=3; VirtualList.isbottom=3; break;
@@ -1779,7 +1799,8 @@ public class Roster
                         case 5: cf.isbottom=6; VirtualList.isbottom=6; break;
                         case 6: cf.isbottom=7; VirtualList.isbottom=7; break;
                         case 7: cf.isbottom=0; VirtualList.isbottom=0; break;
-                    }
+                    }*/
+					cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;
                     cf.saveToStorage();
                 } else {
                     System.gc();
@@ -1792,6 +1813,7 @@ public class Roster
             if (cf.starKey) {
                 if (Version.getPlatformName().indexOf("SIE") > -1) {
                     fullMode=cf.isbottom;
+					/*
                     switch (fullMode) {
                         case 0: cf.isbottom=1; VirtualList.isbottom=1; break;
                         case 1: cf.isbottom=2; VirtualList.isbottom=2; break;
@@ -1801,8 +1823,8 @@ public class Roster
                         case 5: cf.isbottom=6; VirtualList.isbottom=6; break;
                         case 6: cf.isbottom=7; VirtualList.isbottom=7; break;
                         case 7: cf.isbottom=0; VirtualList.isbottom=0; break;
-                    }
-                    
+                    }*/
+					cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;          
                     cf.saveToStorage();
                 } else {
                     System.gc();
