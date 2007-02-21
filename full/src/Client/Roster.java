@@ -1801,12 +1801,9 @@ public class Roster
         if (keyCode==KEY_POUND) {
             if (cf.poundKey) {
                 if (Version.getPlatformName().indexOf("SIE") == -1) {
-                    fullMode=cf.isbottom;
-                    cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;
-                    cf.saveToStorage();
-                } else {
                     System.gc();
                     cleanMarks();
+                } else {
                     setWobbler();
                 }
             }
@@ -1815,12 +1812,9 @@ public class Roster
         if (keyCode==KEY_STAR) {
             if (cf.starKey) {
                 if (Version.getPlatformName().indexOf("SIE") > -1) {
-                    fullMode=cf.isbottom;
-                    cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;          
-                    cf.saveToStorage();
-                } else {
                     System.gc();
                     cleanMarks();
+                } else {
                     setWobbler();
                 }
             }
@@ -1993,7 +1987,11 @@ public class Roster
        	if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	if (keyCode==KEY_NUM4) new ConfigForm(display);
        	if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
-
+       	if (keyCode==KEY_NUM9) {
+            fullMode=cf.isbottom;
+            cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;          
+            cf.saveToStorage();
+        }
         if (keyCode==cf.keyHide && cf.allowMinimize) {
             Bombus.getInstance().hideApp(true);
         }
