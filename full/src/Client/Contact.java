@@ -74,6 +74,7 @@ public class Contact extends IconTextElement{
     
     public boolean acceptComposing;
     public Integer incomingComposing;
+    private Integer incomingAppearing;
     
     public String msgSuspended;
     
@@ -152,6 +153,7 @@ public class Contact extends IconTextElement{
             }
         if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;
         if (incomingViewing!=null) return RosterIcons.ICON_VIEWING_INDEX;
+        if (incomingAppearing!=null) return RosterIcons.ICON_APPEARING_INDEX;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
         return st;
@@ -188,6 +190,10 @@ public class Contact extends IconTextElement{
     
     public void setViewing (boolean state) {
         incomingViewing=(state)? new Integer(RosterIcons.ICON_VIEWING_INDEX):null;
+    }
+    
+    public void setAppearing (boolean state) {
+        incomingAppearing=(state)? new Integer(RosterIcons.ICON_APPEARING_INDEX):null;
     }
     
     public int compare(IconTextElement right){

@@ -127,5 +127,7 @@ public class RosterIcons extends ImageList{
 
     public static final int ICON_VIEWING_INDEX = 0x57;
     
+    public static final int ICON_APPEARING_INDEX = 0x36;
+    
     public static Integer iconHasVcard=new Integer(ICON_SEARCH_INDEX);
 }

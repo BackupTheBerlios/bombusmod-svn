@@ -103,6 +103,9 @@ public class ContactMessageList extends MessageList
         addCommand(cmdTemplate);
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
+
+        contact.setViewing(false);
+        contact.setAppearing(false);
     }
     
     public void showNotify(){
@@ -132,7 +135,7 @@ public class ContactMessageList extends MessageList
     
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;
-        contact.setViewing(false);
+        //contact.setViewing(false);
         if (msgIndex<contact.lastUnread) return;
             sd.roster.countNewMsgs();
     }

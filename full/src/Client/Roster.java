@@ -154,8 +154,8 @@ public class Roster
 
     public static boolean keyLockState=false;
 	
-    private static long playNotifyReadyTime=System.currentTimeMillis();
-    private static int lastPlayedNotifyEvent=-111;
+    private static long notifyReadyTime=System.currentTimeMillis();
+    private static int blockNotifyEvent=-111;
     
     /**
      * Creates a new instance of Roster
@@ -732,6 +732,8 @@ public class Roster
             return;
         }
         
+        blockNotify(-111,10000);
+        
         // send presence
         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
         Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
@@ -783,6 +785,8 @@ public class Roster
             return;
         }
 
+        blockNotify(-111,10000);
+        
         ms=myMessage;
 
         ExtendedStatus es= StatusList.getInstance().getStatus(oldStatus);
@@ -1019,9 +1023,6 @@ public class Roster
             } catch (Exception e) {
                 //e.printStackTrace();
             }
-
-            lastPlayedNotifyEvent=-111;   // special event fake value ;)
-            playNotifyReadyTime=System.currentTimeMillis()+10000;  // 10 sec. of silence
 			
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
@@ -1395,6 +1396,11 @@ public class Roster
 					
                     c.priority=pr.getPriority();
                     if (ti>=0) c.setStatus(ti);
+                    
+                    if ( (ti==Presence.PRESENCE_ONLINE ||
+                          ti==Presence.PRESENCE_CHAT)  &&
+                          notifyReady(-111) ) c.setAppearing(true);
+                    if (ti==Presence.PRESENCE_OFFLINE) c.setAppearing(false);
 
                     if (ti>=0) {
                         if (ti!=11) playNotify(ti);
@@ -1485,11 +1491,21 @@ public class Roster
             playNotify(1000);
         }
     }
+    
+    public void blockNotify(int event, long ms) {
+        blockNotifyEvent=event;
+        notifyReadyTime=System.currentTimeMillis()+ms;
+    }
+
+    public boolean notifyReady(int event) {
+        if ((blockNotifyEvent==event ||
+            (blockNotifyEvent==-111 && event<=7)) &&
+           System.currentTimeMillis()<notifyReadyTime) return false;
+        else return true;
+    }
    
     public void playNotify(int event) {
-        if ((lastPlayedNotifyEvent==event ||
-            (lastPlayedNotifyEvent==-111 && event<=7)) &&
-             System.currentTimeMillis()<playNotifyReadyTime ) return;
+        if (!notifyReady(event)) return;
         
 //        System.out.println("event: "+event);
 	
@@ -1552,8 +1568,7 @@ public class Roster
             case AlertProfile.SOUND: notify=new EventNotify(display, type, message,  volume, 0,           blFlashEn); break;
         }
         if (notify!=null) notify.startNotify();
-        lastPlayedNotifyEvent=event;
-        playNotifyReadyTime=System.currentTimeMillis()+1000; //пауза перед следующим звуком
+        blockNotify(event, 1000);
     }
     
 /*    
@@ -1787,20 +1802,11 @@ public class Roster
             if (cf.poundKey) {
                 if (Version.getPlatformName().indexOf("SIE") == -1) {
                     fullMode=cf.isbottom;
-                    /*switch (fullMode) {
-                        case 0: cf.isbottom=1; VirtualList.isbottom=1; break;
-                        case 1: cf.isbottom=2; VirtualList.isbottom=2; break;
-                        case 2: cf.isbottom=3; VirtualList.isbottom=3; break;
-                        case 3: cf.isbottom=4; VirtualList.isbottom=4; break;
-                        case 4: cf.isbottom=5; VirtualList.isbottom=5; break;
-                        case 5: cf.isbottom=6; VirtualList.isbottom=6; break;
-                        case 6: cf.isbottom=7; VirtualList.isbottom=7; break;
-                        case 7: cf.isbottom=0; VirtualList.isbottom=0; break;
-                    }*/
-					cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;
+                    cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;
                     cf.saveToStorage();
                 } else {
                     System.gc();
+                    cleanMarks();
                     setWobbler();
                 }
             }
@@ -1810,21 +1816,11 @@ public class Roster
             if (cf.starKey) {
                 if (Version.getPlatformName().indexOf("SIE") > -1) {
                     fullMode=cf.isbottom;
-					/*
-                    switch (fullMode) {
-                        case 0: cf.isbottom=1; VirtualList.isbottom=1; break;
-                        case 1: cf.isbottom=2; VirtualList.isbottom=2; break;
-                        case 2: cf.isbottom=3; VirtualList.isbottom=3; break;
-                        case 3: cf.isbottom=4; VirtualList.isbottom=4; break;
-                        case 4: cf.isbottom=5; VirtualList.isbottom=5; break;
-                        case 5: cf.isbottom=6; VirtualList.isbottom=6; break;
-                        case 6: cf.isbottom=7; VirtualList.isbottom=7; break;
-                        case 7: cf.isbottom=0; VirtualList.isbottom=0; break;
-                    }*/
-					cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;          
+                    cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;          
                     cf.saveToStorage();
                 } else {
                     System.gc();
+                    cleanMarks();
                     setWobbler();
                 }
             }
@@ -2229,6 +2225,16 @@ public class Roster
     
     public void setKeyTimer(int value) {
         keyTimer=value;        
+    }
+    
+    public void cleanMarks() {
+      synchronized(hContacts) {
+        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+          Contact c=(Contact)e.nextElement();
+            c.setViewing(false);
+            c.setAppearing(false);
+        }
+      }
     }
 }
 
