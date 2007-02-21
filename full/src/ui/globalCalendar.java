@@ -1,18 +1,32 @@
 /*
  * globalCalendar.java
  *
- * Created on 24 Январь 2007 г., 11:03
+ * Created on 24.01.2007, 11:03
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package ui;
 
-/**
- *
- * @author User
- */
 import javax.microedition.lcdui.DateField;
 import java.util.Calendar;
 import java.util.Date;
@@ -141,13 +155,13 @@ class globalCalendar {
 
  public String goodWordForm (int d, int field) {
   String [][] suf =  {
-   {"секунда", "секунды", "секунд"},
-   {"минута", "минуты", "минут"},
-   {"час", "часа", "часов"},
-   {"неделя", "недели", "недель"},
-   {"день", "дня", "дней"},
-   {"месяц", "месяца", "месяцев"},
-   {"год", "года", "лет"}
+   {"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ"},
+   {"пїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ"},
+   {"пїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ"},
+   {"пїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ"},
+   {"пїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅ"},
+   {"пїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"},
+   {"пїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅ"}
   };
   int index;
   if ((d%100>10) && (d%100<20) || (d%10==0) || (d%10>4)) index=2;
@@ -188,27 +202,27 @@ class globalCalendar {
         do {
             if (out==true) {
                 if (y>0) {
-                    s+= y + " " + goodWordForm (y,6);  //год
+                    s+= y + " " + goodWordForm (y,6);  //пїЅпїЅпїЅ
                 }
                 if (m>0) {
                     if (y>0) s+=", ";
-                    s+= m + " " + goodWordForm (m,5); //месяц
+                    s+= m + " " + goodWordForm (m,5); //пїЅпїЅпїЅпїЅпїЅ
                 }
                 if (d0>0) {
                     if ((y>0) || (m>0)) s+=", ";
-                    s+= d0 + " " + goodWordForm (d0,4); //день
+                    s+= d0 + " " + goodWordForm (d0,4); //пїЅпїЅпїЅпїЅ
                 }
                 if (h>0) {
                     if ((y>0) || (m>0) || (d0>0)) s+=", ";
-                    s+= h + " " + goodWordForm (h, 2); //час
+                    s+= h + " " + goodWordForm (h, 2); //пїЅпїЅпїЅ
                 }
                 if (mi>0) {
                     if ((y>0) || (m>0) || (d0>0) || (h>0)) s+=", ";
-                    s+= mi + " " + goodWordForm (mi, 1); //минута
+                    s+= mi + " " + goodWordForm (mi, 1); //пїЅпїЅпїЅпїЅпїЅпїЅ
                 }
                 if (se>0) {
                     if ((y>0) || (m>0) || (d0>0) || (h>0) || (mi>0))  s+=", ";
-                    s+= se + " " + goodWordForm (se, 0); //секунд
+                    s+= se + " " + goodWordForm (se, 0); //пїЅпїЅпїЅпїЅпїЅпїЅ
                 }
                 if (s.length()<1) s=":-)";
                     return s;
@@ -249,7 +263,7 @@ class globalCalendar {
   leapYear (year);
   if ((month<0) || (month>11)) return false;
   if ((day<1) || (day>monthDays[month]) || (year<0)) return false;
-  //Если разрешать годы<0 то исправить oNum4 ()
+  //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ<0 пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ oNum4 ()
   return true;
  }
 }

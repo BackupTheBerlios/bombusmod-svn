@@ -1,10 +1,28 @@
 /*
  * Roster.java
  *
- * Created on 6 Январь 2005 г., 19:16a
+ * Created on 6.01.2005, 19:16
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 //TODO: упростить обработку исключений для theStream.send
@@ -1778,20 +1796,20 @@ public class Roster
             if (keyCode==-21 || keyCode==-22 || keyCode==21 || keyCode==22) {
                 if (cf.ghostMotor) {
                     new RosterMenu(display, getFocusedObject());
-					return;
+	            return;
                 }
             }
 
             if (keyCode==-7 || keyCode==-6)  {
                 if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
                     new RosterMenu(display, getFocusedObject());
-					return;
+		    return;
                  }         
             }
             if (keyCode==40 || keyCode==41)  {
                 if (Version.getPlatformName().indexOf("Windows CE") > -1) {
                     new RosterMenu(display, getFocusedObject());
-					return;
+                    return;
                  }         
             }
         }
@@ -1800,23 +1818,19 @@ public class Roster
         
         if (keyCode==KEY_POUND) {
             if (cf.poundKey) {
-                if (Version.getPlatformName().indexOf("SIE") == -1) {
-                    System.gc();
+                if (Version.getPlatformName().indexOf("SIE") == -1) 
                     cleanMarks();
-                } else {
+                else
                     setWobbler();
-                }
             }
             System.gc();
         }
         if (keyCode==KEY_STAR) {
             if (cf.starKey) {
-                if (Version.getPlatformName().indexOf("SIE") > -1) {
-                    System.gc();
+                if (Version.getPlatformName().indexOf("SIE") > -1)
                     cleanMarks();
-                } else {
+                else
                     setWobbler();
-                }
             }
             System.gc();
         }        
@@ -1991,6 +2005,7 @@ public class Roster
             fullMode=cf.isbottom;
             cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;          
             cf.saveToStorage();
+            System.gc();
         }
         if (keyCode==cf.keyHide && cf.allowMinimize) {
             Bombus.getInstance().hideApp(true);

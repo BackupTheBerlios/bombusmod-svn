@@ -1,10 +1,28 @@
 /*
  * SplashScreen.java
  *
- * Created on 9 Р¤РµРІСЂР°Р»СЊ 2005 Рі., 21:31
+ * Created on 16.02.2007, 14:23
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package ui;
@@ -145,15 +163,15 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         } else {
             Font f=FontCache.getBalloonFont();
 
-            int h=4; // высота statusbar
+            int h=4; // пїЅпїЅпїЅпїЅпїЅпїЅ statusbar
 
-            int xp=pos*width/100;   //ширина statusbar
+            int xp=pos*width/100;   //пїЅпїЅпїЅпїЅпїЅпїЅ statusbar
 
-            int xt=(width/2);       // x позиция для текста
+            int xt=(width/2);       // x пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
-            int y=height-h-2;         // y позиция statusbar
+            int y=height-h-2;         // y пїЅпїЅпїЅпїЅпїЅпїЅпїЅ statusbar
 
-            int yt=y-f.getHeight(); // y позиция для текста
+            int yt=y-f.getHeight(); // y пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
             g.setColor(Colors.PGS_REMAINED);
             g.fillRect(1, y, width, h);
