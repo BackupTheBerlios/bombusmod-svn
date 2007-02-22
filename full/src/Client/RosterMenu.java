@@ -28,6 +28,7 @@ package Client;
 import Conference.Bookmarks;
 import Conference.ConferenceForm;
 import Conference.MucContact;
+import Info.Phone;
 import Info.Version;
 import archive.ArchiveList;
 import images.RosterIcons;
@@ -60,7 +61,7 @@ public class RosterMenu extends Menu
         addItem(SR.MS_TOOLS, 7,0x0f24);    
         addItem(SR.MS_ACCOUNT_, 8,0x0f01);
         
-        if (Version.getPlatformName().startsWith("SIE-")) {
+        if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
             switch (cf.lightType) {
                 case 0: { //off
                     addItem("TurnOn Light", 12,0x0f31);

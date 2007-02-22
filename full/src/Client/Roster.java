@@ -35,6 +35,7 @@ import Conference.ConferenceGroup;
 import Conference.MucContact;
 import Conference.QueryConfigForm;
 import Conference.affiliation.Affiliations;
+import Info.Phone;
 import archive.ArchiveList;
 import images.RosterIcons;
 import locale.SR;
@@ -209,7 +210,7 @@ public class Roster
         
         vContacts=new Vector(); // just for displaying
         
-        if (Version.getPlatformName().startsWith("SIE-")) {
+        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
             switch (cf.lightType) {
                 case 0: { //off
                     lightType=0;
@@ -230,10 +231,9 @@ public class Roster
         
         if (!VirtualList.digitMemMonitor) {
                 int activeType=Command.SCREEN;
-                String platform=Version.getPlatformName();
-                if (platform.startsWith("Nokia")) activeType=Command.BACK;
-                if (platform.startsWith("Intent")) activeType=Command.BACK;
-                if (platform.startsWith("j2me")) activeType=Command.BACK;
+                if (ph.PhoneManufacturer()==ph.NOKIA) activeType=Command.BACK;
+                if (ph.PhoneManufacturer()==ph.INTENT) activeType=Command.BACK;
+                if (ph.PhoneManufacturer()==ph.J2ME) activeType=Command.BACK;
 
                 cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
 
@@ -245,7 +245,7 @@ public class Roster
                 addCommand(cmdConference);
 
 
-                if (Version.getPlatformName().startsWith("SIE-")) {
+                if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
                     switch (cf.lightType) {
                         case 0: { //off
                             addCommand(cmdTurnOnLight); 
@@ -267,9 +267,7 @@ public class Roster
                 addCommand(cmdInfo);
                 addCommand(cmdAccount);
 
-                if (Version.getPlatformName().startsWith("Nokia9500") || 
-                    Version.getPlatformName().startsWith("Nokia9300") || 
-                    Version.getPlatformName().startsWith("Nokia9300i")) {
+                if (ph.PhoneManufacturer()==ph.NOKIA_9XXX) {
                 } else {
                         addCommand(cmdQuit);
                 }
@@ -1729,7 +1727,7 @@ public class Roster
         }
         if (VirtualList.digitMemMonitor) {
             if (keyCode==-4 || keyCode==-1)  {
-                if (Version.getPlatformName().indexOf("SIE") > -1) {
+                if (ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SIEMENS) {
                     new RosterMenu(display, getFocusedObject());
                     return;
                  }         
@@ -1743,13 +1741,13 @@ public class Roster
             }
 
             if (keyCode==-7 || keyCode==-6)  {
-                if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
+                if (ph.PhoneManufacturer()==ph.NOKIA || ph.PhoneManufacturer()==ph.SONYE) {
                     new RosterMenu(display, getFocusedObject());
 					return;
                  }         
             }
             if (keyCode==40 || keyCode==41)  {
-                if (Version.getPlatformName().indexOf("Windows CE") > -1) {
+                if (ph.PhoneManufacturer()==ph.WINDOWS) {
                     new RosterMenu(display, getFocusedObject());
 					return;
                  }         
@@ -1762,6 +1760,7 @@ public class Roster
     
 
     public void userKeyPressed(int keyCode){
+        //System.out.println(ph.PhoneManufacturer());
         if (keyCode==KEY_NUM0 || keyCode==keyBack) {
             if (messageCount==0) return;
             Object atcursor=getFocusedObject();
@@ -1783,11 +1782,12 @@ public class Roster
                 }
                 if (p==c) pass++; // полный круг пройден
             }
+            return;
         }
 		
         if (VirtualList.digitMemMonitor) {
             if (keyCode==-4 || keyCode==-1)  {
-                if (Version.getPlatformName().indexOf("SIE") > -1) {
+                if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
                     new RosterMenu(display, getFocusedObject());
                     return;
                  }         
@@ -1801,38 +1801,44 @@ public class Roster
             }
 
             if (keyCode==-7 || keyCode==-6)  {
-                if ((Version.getPlatformName().indexOf("Nokia") > -1) || (Version.getPlatformName().indexOf("SonyE") > -1)) {
+                if (ph.PhoneManufacturer()==ph.NOKIA || ph.PhoneManufacturer()==ph.SONYE) {
                     new RosterMenu(display, getFocusedObject());
 		    return;
                  }         
             }
             if (keyCode==40 || keyCode==41)  {
-                if (Version.getPlatformName().indexOf("Windows CE") > -1) {
+                if (ph.PhoneManufacturer()==ph.WINDOWS) {
                     new RosterMenu(display, getFocusedObject());
                     return;
                  }         
             }
         }
-        if (keyCode=='3') { searchGroup(-1); setRotator(); }
-        if (keyCode=='9') { searchGroup(1); setRotator(); }
+        if (keyCode=='3') {
+            searchGroup(-1);
+            setRotator();
+            return;
+        }
+        if (keyCode=='9') {
+            searchGroup(1);
+            setRotator();
+            return;
+        }
         
         if (keyCode==KEY_POUND) {
-            if (cf.poundKey) {
-                if (Version.getPlatformName().indexOf("SIE") == -1) 
-                    cleanMarks();
-                else
-                    setWobbler();
-            }
+            if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) 
+                cleanMarks();
+            else
+                setWobbler();
             System.gc();
+            return;
         }
         if (keyCode==KEY_STAR) {
-            if (cf.starKey) {
-                if (Version.getPlatformName().indexOf("SIE") > -1)
-                    cleanMarks();
-                else
-                    setWobbler();
-            }
+            if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2)
+                setWobbler();
+            else
+                cleanMarks();
             System.gc();
+            return;
         }        
     }
     
@@ -2253,16 +2259,12 @@ public class Roster
 
 class TimerTaskAutoAway extends Thread{
    
-     private boolean stop;
-     private boolean exit;
+    private boolean stop;
+    private boolean exit;
      
-     private static TimerTaskAutoAway instance;
+    private static TimerTaskAutoAway instance;
      
-     private Roster rRoster;
-
-     StaticData sd;
-
-    private boolean elfPlatform=false;
+    private Roster rRoster;
 
     private int keyTimer=0;
 
@@ -2295,7 +2297,7 @@ class TimerTaskAutoAway extends Thread{
                     //here
                     //System.out.println("test "+keyTimer+" sec");
                     try {
-                        if (Version.getPlatformName().indexOf("SIE") > -1) {
+                        if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
                             if (rRoster.lightType==2) {
                                 if (getKeyLockState()) {
                                         rRoster.setLight(false);

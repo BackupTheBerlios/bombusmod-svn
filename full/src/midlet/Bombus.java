@@ -31,6 +31,7 @@
  */
 package midlet;
 
+import Info.Phone;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -92,50 +93,56 @@ public class Bombus extends MIDlet implements Runnable{
     public void run(){
         
         SplashScreen s= SplashScreen.getInstance();
-        s.setProgress(5);
+        s.setProgress(3);
         
         try {
             NetworkAccu.getGPRS();
         } catch (Exception e) { }
+        s.setProgress(5);
+
+        Phone ph=Phone.getInstance();
+        s.setProgress(8);
         
         try {
             s.img=Image.createImage("/images/splash.png");
             
-            if (Version.getPlatformName().startsWith("Nokia")) {
+            if (ph.PhoneManufacturer()==ph.NOKIA) {
                 splash=s.img;
                 programIcon=Image.createImage("/_icon.png");
             }
         } catch (Exception e) {
             //e.printStackTrace();
         }
-        s.setProgress(Version.version,7);
+        s.setProgress(Version.version,10);
         
-        s.setProgress(10);
 	Config cf=Config.getInstance();
+        s.setProgress(12);
+        
         AlertCustomize ac=AlertCustomize.getInstance();
+        s.setProgress(15);
         
         try {
             PNGCache.init();
-            s.setProgress(12);
+            s.setProgress(17);
         } catch (Exception e) {
             System.out.println("PNGCache error");
             //e.printStackTrace();
         }
         
-        s.setProgress(14);
         try {
             Colors cl=Colors.getInstance();
         } catch (Exception e) {
             System.out.println("Colors error");
             //e.printStackTrace();
         }
-
-	s.setProgress(17);
+        s.setProgress(20);
+        
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
         if (selAccount) s.setProgress("Entering setup",20);
-
-        s.setProgress(23);
+	s.setProgress(23);
+        
         sd.roster=new Roster(display);
+        s.setProgress(25);
         
         if (!selAccount) {
             // connect whithout account select

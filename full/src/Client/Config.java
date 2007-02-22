@@ -27,6 +27,7 @@
 
 package Client;
 
+import Info.Phone;
 import Info.Version;
 import images.RosterIcons;
 import images.SmilesIcons;
@@ -89,9 +90,11 @@ public class Config {
     
     public String defGcRoom="bombusmod@conference.jabber.ru";
     
+    Phone ph=Phone.getInstance();
+    
     public String m_client=getStringProperty("m_client","BombusMod");    
     public String m_ver=getStringProperty("m_ver",Version.getVersionLang());
-    public String m_os=getStringProperty("m_os",Version.getOs()); 
+    public String m_os=getStringProperty("m_os",ph.getOs()); 
     
     //public String xmlLang=getStringProperty("xml_lang",null);
     
@@ -152,10 +155,7 @@ public class Config {
     public boolean altInput;
 
     public int isbottom=3;
-
-    public boolean poundKey=getBooleanProperty("poundKey",true);
-    public boolean starKey=getBooleanProperty("starKey",true);
-    
+   
     public boolean lightState=false;
     
     public boolean lastMessages=false;
@@ -186,9 +186,7 @@ public class Config {
 	
 	int greenKeyCode=VirtualList.SIEMENS_GREEN;
 	
-	String platform=Version.getPlatformName();
-	
-	if (platform.startsWith("SonyE")) {
+	if (ph.PhoneManufacturer()==ph.SONYE) {
             //prefetch images
             RosterIcons.getInstance();
             SmilesIcons.getInstance();
@@ -196,24 +194,24 @@ public class Config {
 	    allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
 	}
-	if (platform.startsWith("Nokia")) {
+	if (ph.PhoneManufacturer()==ph.NOKIA) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	}
 
-	if (platform.startsWith("Motorola-EZX")) {
+	if (ph.PhoneManufacturer()==ph.MOTOEZX) {
 	    VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	    VirtualList.keyBack=VirtualList.MOTOE680_REALPLAYER;
 	} else
-	if (platform.startsWith("Moto")) {
+	if (ph.PhoneManufacturer()==ph.MOTO) {
 	    ghostMotor=true;
 	    blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    VirtualList.keyClear=0x1000;
 	}        
-        if (platform.startsWith("SIE")) {
+        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
             keyLock='#';
             keyVibra='*';
         }

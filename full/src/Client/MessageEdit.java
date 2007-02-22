@@ -27,6 +27,7 @@
 
 package Client;
 import Conference.AppendNick;
+import Info.Phone;
 import Info.Version;
 import archive.ArchiveList;
 import javax.microedition.lcdui.*;
@@ -157,9 +158,8 @@ public class MessageEdit
         
         int caretPos=t.getCaretPosition();
         // +MOTOROLA STUB
-        String platform=Info.Version.getPlatformName();
-        if (platform.startsWith("Moto"))
-            if (!platform.startsWith("Motorola-EZX")) caretPos=-1;
+        if (Phone.PhoneManufacturer()==Phone.MOTO)
+            caretPos=-1;
         // -MOTOROLA STUB
         
         if (caretPos<0) caretPos=body.length();

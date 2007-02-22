@@ -27,6 +27,7 @@
  */
 
 package ui;
+import Info.Phone;
 import Info.Version;
 import javax.microedition.lcdui.*;
 import java.util.*;
@@ -85,6 +86,8 @@ public abstract class VirtualList
     public static int isbottom=3;
 
     public static String wobble="";
+    
+    public Phone ph=Phone.getInstance();
     
     public static void setWobble(String txt){
         wobble=txt.trim();
@@ -266,8 +269,7 @@ public abstract class VirtualList
         width=getWidth();
         height=getHeight();
         
-        
-        if (Info.Version.getPlatformName().startsWith("Windows")) {
+        if (ph.PhoneManufacturer()==ph.WINDOWS) {
             setTitle("Bombus CE");
         }
 
@@ -760,7 +762,7 @@ public abstract class VirtualList
     private void key(int keyCode) {
         wobble="";
         boolean isSiemens=false;
-        if (Version.getPlatformName().indexOf("SIE") > -1) isSiemens=true;
+        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) isSiemens=true;
         if (keyCode==-22) {
             if (isSiemens) {
                 if (cf.setKeyBlockStatus) new SplashScreen(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
@@ -1094,7 +1096,7 @@ public abstract class VirtualList
 //#     
 //#     public static void startRotate(int max, VirtualList list){
 //#         //Windows mobile J9 hanging test
-//#         if (Info.Version.getPlatformName().startsWith("Windows")) {
+//#         if (Phone.PhoneManufacturer()==Phone.WINDOWS) {
 //#             list.showBalloon=true;
 //#             list.offset=0;
 //#             return;
