@@ -1330,19 +1330,29 @@ public class Roster
                     } else {
                         if (m.dateGmt<= ((ConferenceGroup)c.getGroup()).conferenceJoinTime) m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
-                        String myNick=mucGrp.getSelfContact().getName();
-                        //highlite |= body.indexOf(myNick)>-1;
-                        if (body.indexOf("> "+myNick+": ")>-1) highlite=true;
-                        if (body.indexOf(" "+myNick+">")>-1) highlite=true;
-                        if (body.indexOf(" "+myNick+",")>-1) highlite=true;
-                        if (body.indexOf(": "+myNick+": ")>-1) highlite=true;
-                        if (body.indexOf(" "+myNick+" ")>-1) highlite=true;
-                        if (body.indexOf(", "+myNick)>-1) highlite=true;
-                        if (body.endsWith(" "+myNick)) highlite=true;
-                        if (body.indexOf(" "+myNick+"?")>-1) highlite=true;
-                        if (body.indexOf(" "+myNick+"!")>-1) highlite=true;
-                        if (body.indexOf(" "+myNick+".")>-1) highlite=true;
-
+						if (body.indexOf(myNick)>-1) {
+	                        String myNick=mucGrp.getSelfContact().getName();
+	                        //highlite |= body.indexOf(myNick)>-1;
+	                        if (body.indexOf("> "+myNick+": ")>-1) {
+	                            highlite=true;
+	                        } else if (body.indexOf(" "+myNick+">")>-1) {
+	                            highlite=true;
+	                        } else if (body.indexOf(" "+myNick+",")>-1) {
+	                            highlite=true;
+	                        } else if (body.indexOf(": "+myNick+": ")>-1) {
+	                            highlite=true;
+	                        } else if (body.indexOf(" "+myNick+" ")>-1) {
+	                            highlite=true;
+	                        } else if (body.indexOf(", "+myNick)>-1) {
+	                            highlite=true;
+	                        } else if (body.endsWith(" "+myNick)) {
+	                            highlite=true;
+	                        } else if (body.indexOf(" "+myNick+"?")>-1) {
+	                            highlite=true;
+	                        } else if (body.indexOf(" "+myNick+"!")>-1) {
+	                            highlite=true;
+	                        } else if (body.indexOf(" "+myNick+".")>-1) highlite=true;
+						}
                         //TODO: custom highliting dictionary
                     }
 		m.from=name;
