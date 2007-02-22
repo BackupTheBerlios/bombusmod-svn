@@ -172,7 +172,7 @@ public class MessageEdit
         if (c==cmdAbc) {setInitialCaps(false); return; }
         if (c==cmdABC) {setInitialCaps(true); return; }
 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
-        if (c==cmdPasteText) { t.insert(clipboard.getClipBoard(), charsCount); return; } 
+        if (c==cmdPasteText) { t.insert(clipboard.getClipBoard(), caretPos); return; } 
         if (c==cmdTemplate) { new AppendTemplate(display,  this, caretPos); return; }
         if (c==cmdCancel) { 
             composing=false;
