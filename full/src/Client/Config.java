@@ -154,7 +154,7 @@ public class Config {
 
     public boolean altInput;
 
-    public int isbottom=3;
+    public int isbottom=2; //default state both panels show, reverse disabled
    
     public boolean lightState=false;
     

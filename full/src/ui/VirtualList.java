@@ -83,7 +83,7 @@ public abstract class VirtualList
 
     private boolean reverse=false;
 
-    public static int isbottom=3;
+    public static int isbottom=2; //default state both panels show, reverse disabled
 
     public static String wobble="";
     
@@ -371,13 +371,12 @@ public abstract class VirtualList
 
         switch (isbottom) {
             case 0: paintTop=false; paintBottom=false; reverse=false; break;
-            case 1: paintTop=true; paintBottom=false; reverse=false; break;
-            case 2: paintTop=false; paintBottom=true; reverse=false; break;
-            case 3: paintTop=true; paintBottom=true; reverse=false; break;
-            case 4: paintTop=false; paintBottom=false; reverse=true; break;
-            case 5: paintTop=true; paintBottom=false; reverse=true; break;
-            case 6: paintTop=false; paintBottom=true; reverse=true; break;
-            case 7: paintTop=true; paintBottom=true; reverse=true; break;
+            case 1: paintTop=true;  paintBottom=false; reverse=false; break;
+            case 2: paintTop=true;  paintBottom=true;  reverse=false; break;
+            case 3: paintTop=false; paintBottom=true;  reverse=false; break;
+            case 4: paintTop=true;  paintBottom=false; reverse=true;  break;
+            case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
+            case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
         }
         
         // заголовок окна

@@ -176,6 +176,8 @@ public class Roster
     private static long notifyReadyTime=System.currentTimeMillis();
     private static int blockNotifyEvent=-111;
     
+    public Contact lastAppearedContact=null;
+    
     /**
      * Creates a new instance of Roster
      * Sets up the stream to the server and adds this class as a listener
@@ -1330,9 +1332,9 @@ public class Roster
                     } else {
                         if (m.dateGmt<= ((ConferenceGroup)c.getGroup()).conferenceJoinTime) m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
-						if (body.indexOf(myNick)>-1) {
-	                        String myNick=mucGrp.getSelfContact().getName();
-	                        //highlite |= body.indexOf(myNick)>-1;
+	                String myNick=mucGrp.getSelfContact().getName();
+			if (body.indexOf(myNick)>-1) {
+                                //highlite |= body.indexOf(myNick)>-1;
 	                        if (body.indexOf("> "+myNick+": ")>-1) {
 	                            highlite=true;
 	                        } else if (body.indexOf(" "+myNick+">")>-1) {
@@ -1352,7 +1354,7 @@ public class Roster
 	                        } else if (body.indexOf(" "+myNick+"!")>-1) {
 	                            highlite=true;
 	                        } else if (body.indexOf(" "+myNick+".")>-1) highlite=true;
-						}
+			}
                         //TODO: custom highliting dictionary
                     }
 		m.from=name;
@@ -1423,9 +1425,12 @@ public class Roster
                     c.priority=pr.getPriority();
                     if (ti>=0) c.setStatus(ti);
                     
-                    if ( (ti==Presence.PRESENCE_ONLINE ||
-                          ti==Presence.PRESENCE_CHAT)  &&
-                          notifyReady(-111) ) c.setAppearing(true);
+                    if (ti==Presence.PRESENCE_ONLINE ||
+                        ti==Presence.PRESENCE_CHAT) {
+                            if (lastAppearedContact!=null) lastAppearedContact.setAppearing(false);
+                            c.setAppearing(true);
+                            lastAppearedContact=c;
+                          }
                     if (ti==Presence.PRESENCE_OFFLINE) c.setAppearing(false);
 
                     if (ti>=0) {
@@ -1834,22 +1839,26 @@ public class Roster
             return;
         }
         
-        if (keyCode==KEY_POUND) {
-            if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) 
-                cleanMarks();
-            else
-                setWobbler();
-            System.gc();
-            return;
-        }
-        if (keyCode==KEY_STAR) {
+         if (keyCode==KEY_POUND) {
             if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2)
+            {
+                System.gc();
                 setWobbler();
+            }
             else
+                 cleanMarks();
+             return;
+         }
+         if (keyCode==KEY_STAR) {
+             if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2)
                 cleanMarks();
-            System.gc();
-            return;
-        }        
+            else
+            {
+                System.gc();
+                 setWobbler();
+            }
+             return;
+         }       
     }
     
     public void setWobbler() {
@@ -2017,12 +2026,7 @@ public class Roster
        	if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	if (keyCode==KEY_NUM4) new ConfigForm(display);
        	if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
-       	if (keyCode==KEY_NUM9) {
-            fullMode=cf.isbottom;
-            cf.isbottom=VirtualList.isbottom=(fullMode+1)%8;          
-            cf.saveToStorage();
-            System.gc();
-        }
+        
         if (keyCode==cf.keyHide && cf.allowMinimize) {
             Bombus.getInstance().hideApp(true);
         }

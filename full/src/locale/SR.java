@@ -426,10 +426,15 @@ public class SR {
 	
     public final static String MS_KEEPALIVE="Keep-alive";
     
-
     public static String MS_TIME=loadString("Time");
         
     public final static String MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM=" has been unaffiliated and kicked from members-only room";
+    
+    
+    public   static String MS_PANELS = loadString( "Panels" );
+    public   static String MS_PANELS_MAIN = loadString( "Main" );
+    public   static String MS_PANELS_INFO = loadString( "Info" );
+    public   static String MS_PANELS_REVERSE = loadString( "Reverse" );
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

@@ -44,28 +44,6 @@ import ui.*;
  * @author Evg_S
  */
 
-/*
- * roster elements:
- *  [] self-contact
- *  [] offline contacts
- *  [] transports
- *  [] hidden group
- *  [] not-in-list
- *  [] clock
- *
- * message
- *  [] show smiles
- *  [] history
- *  [] composing
- *
- * startup actions
- *  [] login
- *  [] Join conferences
- *
- * application
- *  [] fullscreen
- */
-
 public class ConfigForm implements
 	CommandListener 
 	,ItemCommandListener
@@ -86,6 +64,8 @@ public class ConfigForm implements
     
     ChoiceGroup font1;
     ChoiceGroup font2;
+    
+    ChoiceGroup panels;
     
     ChoiceGroup textWrap;
     
@@ -212,7 +192,20 @@ public class ConfigForm implements
 
         f.append(message);
         f.append(font2);
-	
+        
+        String panelsLook[]={
+            "----/----",                             // 0
+            SR.MS_PANELS_MAIN+"/----",               // 1
+            SR.MS_PANELS_MAIN+"/"+SR.MS_PANELS_INFO, // 2
+            "----/"+SR.MS_PANELS_INFO,               // 3
+            SR.MS_PANELS_INFO+"/----",               // 4
+            SR.MS_PANELS_INFO+"/"+SR.MS_PANELS_MAIN, // 5
+            "----/"+SR.MS_PANELS_MAIN                // 6
+        };
+        panels=new ChoiceGroup(SR.MS_PANELS, ConstMIDP.CHOICE_POPUP, panelsLook, null);
+        panels.setSelectedIndex(cf.isbottom, true);
+        f.append(panels);
+
 	String textWraps[]={SR.MS_TEXTWRAP_CHARACTER, SR.MS_TEXTWRAP_WORD};
 	textWrap=new ChoiceGroup(SR.MS_TEXTWRAP, ConstMIDP.CHOICE_POPUP, textWraps,null);
 	textWrap.setSelectedIndex(cf.textWrap, true);
@@ -309,6 +302,8 @@ public class ConfigForm implements
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdOk) {
+            VirtualList.isbottom=cf.isbottom=panels.getSelectedIndex();
+            
             roster.getSelectedFlags(ra);
             message.getSelectedFlags(mv);
             application.getSelectedFlags(ap);
