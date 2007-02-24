@@ -28,7 +28,6 @@
 package Info;
 
 import locale.SR;
-import ui.ConstMIDP;
 
 /**
  *

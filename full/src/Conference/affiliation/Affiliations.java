@@ -38,6 +38,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.ImageList;
+import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;
 
@@ -82,8 +83,8 @@ public class Affiliations
 	
         this.id=AffiliationItem.getAffiliationName(affiliationIndex);
         
-        setTitleItem(new Title(2, null, " "));
-        getTitleItem().addElement(id);
+        setMainBarItem(new MainBar(2, null, " "));
+        getMainBarItem().addElement(id);
         items=new Vector();
         
         addCommand(cmdCancel);
@@ -121,7 +122,7 @@ public class Affiliations
     
     private void processIcon(boolean processing){
         String count=(items==null)? null: String.valueOf(items.size());
-        getTitleItem().setElementAt((processing)?
+        getMainBarItem().setElementAt((processing)?
             (Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX): 
             (Object)count, 0);
         redraw();

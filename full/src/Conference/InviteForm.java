@@ -41,7 +41,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.ConstMIDP;
 
 /**
  *
@@ -69,7 +68,7 @@ public class InviteForm implements CommandListener{
         form=new Form(SR.MS_INVITE);
         reason=new TextField(SR.MS_INVITE_REASON, null, 200, TextField.ANY);
         
-        conferenceList=new ChoiceGroup (SR.MS_CONFERENCE, ConstMIDP.CHOICE_POPUP);
+        conferenceList=new ChoiceGroup (SR.MS_CONFERENCE, ChoiceGroup.POPUP);
         for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();

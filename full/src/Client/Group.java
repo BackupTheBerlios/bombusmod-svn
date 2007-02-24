@@ -66,10 +66,10 @@ public class Group extends IconTextElement {
     }
     
     public String getName() { return name; }
-    protected String title(String titleStart) {
-	return titleStart+" ("+getOnlines()+'/'+getNContacts()+')';
+    protected String mainbar(String mainbarStart) {
+	return mainbarStart+" ("+getOnlines()+'/'+getNContacts()+')';
     }
-    public String toString(){ return title(name);  }
+    public String toString(){ return mainbar(name);  }
 
     public void onSelect(){
         collapsed=!collapsed;

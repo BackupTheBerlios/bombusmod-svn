@@ -29,7 +29,7 @@ package PrivacyLists;
 
 import Client.Roster;
 import Client.StaticData;
-import Client.Title;
+import ui.MainBar;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -61,7 +61,7 @@ public class PrivacyModifyList
     /** Creates a new instance of PrivacySelect */
     public PrivacyModifyList(Display display, PrivacyList privacyList) {
         super(display);
-        setTitleItem(new Title(2, null, SR.MS_PRIVACY_LISTS));
+        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS));
         addCommand(cmdCancel);
         addCommand(cmdEdit);
         addCommand(cmdAdd);
@@ -77,7 +77,7 @@ public class PrivacyModifyList
     }
     
     private void processIcon(boolean processing){
-        getTitleItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
+        getMainBarItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
         redraw();
     }
 

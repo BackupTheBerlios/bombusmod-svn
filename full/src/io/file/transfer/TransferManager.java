@@ -27,7 +27,7 @@
 
 package io.file.transfer;
 
-import Client.Title;
+import ui.MainBar;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -55,7 +55,7 @@ public class TransferManager extends VirtualList implements CommandListener{
         addCommand(cmdBack);
         addCommand(cmdClrF);
         setCommandListener(this);
-        setTitleItem(new Title(2, null, SR.MS_TRANSFERS));
+        setMainBarItem(new MainBar(2, null, SR.MS_TRANSFERS));
         
         taskList=TransferDispatcher.getInstance().getTaskList();
     }

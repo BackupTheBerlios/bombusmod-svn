@@ -31,6 +31,7 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
+import ui.MainBar;
 import ui.controls.NumberField;
 import util.strconv;
 //import ui.controls.TextFieldCombo;
@@ -59,9 +60,9 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         statusList=StatusList.getInstance().statusList;
         this.to=to;
         if (to==null) { 
-            setTitleItem(new Title(SR.MS_STATUS));
+            setMainBarItem(new MainBar(SR.MS_STATUS));
         } else {
-            setTitleItem(new Title(to));
+            setMainBarItem(new MainBar(to));
         }
         addCommand(cmdOk);
         addCommand(cmdEdit);
@@ -152,7 +153,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             f.append(tfMessage);
             
             
-            selStatus=new ChoiceGroup(SR.MS_CHOOSE_STATUS, ConstMIDP.CHOICE_POPUP);
+            selStatus=new ChoiceGroup(SR.MS_CHOOSE_STATUS, ChoiceGroup.POPUP);
             selStatus.append(status.getMessage(), null );
             for (int i=0;i<statuslist.size();i++) {
                 selStatus.append((String)statuslist.msg(i), null );

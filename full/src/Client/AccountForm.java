@@ -38,7 +38,6 @@ import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.ConstMIDP;
 import ui.controls.NumberField;
 
 class AccountForm implements CommandListener, ItemStateListener {
@@ -80,8 +79,8 @@ class AccountForm implements CommandListener, ItemStateListener {
 	if (newaccount) account=new Account();
 	this.account=account;
 	
-	String title = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
-	f = new Form(title);
+	String mainbar = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
+	f = new Form(mainbar);
 	userbox = new TextField(SR.MS_USERNAME, account.getUserName(), 32, TextField.ANY); f.append(userbox);
 	passbox = new TextField(SR.MS_PASSWORD, account.getPassword(), 32, TextField.PASSWORD);	f.append(passbox);
         passStars(false);
@@ -103,7 +102,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   32, TextField.URL); f.append(proxyHost);
 	proxyPort = new NumberField(SR.PROXY_PORT, account.getProxyPort(), 0, 65535);	f.append(proxyPort);
      
-        keepAliveType=new ChoiceGroup(SR.MS_KEEPALIVE, ConstMIDP.CHOICE_POPUP);
+        keepAliveType=new ChoiceGroup(SR.MS_KEEPALIVE, ChoiceGroup.POPUP);
         keepAliveType.append("by socket", null);
         keepAliveType.append("1 byte", null);
         keepAliveType.append("<iq/>", null);
@@ -128,7 +127,7 @@ class AccountForm implements CommandListener, ItemStateListener {
     
     private void passStars(boolean force) {
 	if (passbox.size()==0 || force)
-	    passbox.setConstraints(TextField.ANY | ConstMIDP.TEXTFIELD_SENSITIVE);
+	    passbox.setConstraints(TextField.ANY | TextField.SENSITIVE);
         fixPassBugWEME();
     }
     

@@ -26,7 +26,7 @@
  */
 
 package ui;
-import Client.Title;
+import ui.MainBar;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -42,9 +42,9 @@ public class Menu extends VirtualList implements CommandListener
     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     
-    public Menu(String title) {
+    public Menu(String mainbar) {
         super();
-        setTitleItem(new Title(title));
+        setMainBarItem(new MainBar(mainbar));
         menuitems=new Vector();
         addCommand(cmdBack);
         addCommand(cmdOk);

@@ -31,6 +31,7 @@ import images.RosterIcons;
 import locale.SR;
 import ui.*;
 import javax.microedition.lcdui.*;
+import ui.MainBar;
 
 /**
  *
@@ -61,7 +62,7 @@ public class AlertProfile extends VirtualList implements CommandListener {
         
         cf=Config.getInstance();
         
-        setTitleItem(new Title(SR.MS_ALERT_PROFILE));
+        setMainBarItem(new MainBar(SR.MS_ALERT_PROFILE));
         
         addCommand(cmdOk);
         addCommand(cmdDef);

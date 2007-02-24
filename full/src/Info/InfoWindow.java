@@ -55,8 +55,9 @@ public class InfoWindow implements CommandListener{
         form.append(Phone.getOs());
         form.append("\nCopyright (c) 2005-2007, Eugene Stahov (evgs), ad(modification)\n");
         
+        form.append("\nStart time: "+Roster.startTime);
         
-        StringBuffer memInfo=new StringBuffer("\n\nMemory:\n");
+        StringBuffer memInfo=new StringBuffer("\nMemory:\n");
         memInfo.append("Free=");
 
         System.gc();
@@ -74,7 +75,6 @@ public class InfoWindow implements CommandListener{
         }
         form.append(conn_stats);
 //#endif
-        form.append("\nStart time: "+Roster.startTime);
         form.setCommandListener(this);
         display.setCurrent(form);
     }

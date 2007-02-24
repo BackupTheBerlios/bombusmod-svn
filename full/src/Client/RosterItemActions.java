@@ -277,6 +277,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     //break;
                 case 6: // logoff
                 {
+                    roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
                     Presence presence = new Presence(
                             Presence.PRESENCE_OFFLINE, -1, "");
@@ -286,6 +287,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 }
                 case 5: // logon
                 {
+                    roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
                     Presence presence = new Presence(roster.myStatus, 0, "");
                     presence.setTo(c.getJid());

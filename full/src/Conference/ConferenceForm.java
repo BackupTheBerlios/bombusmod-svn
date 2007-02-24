@@ -116,7 +116,7 @@ public class ConferenceForm implements CommandListener{
         nickField=new TextFieldCombo(SR.MS_NICKNAME, nick, 32, TextField.ANY, "roomnick", display);
         formJoin.append(nickField);
         
-        passField=new TextField(SR.MS_PASSWORD, password, 32, TextField.ANY | ConstMIDP.TEXTFIELD_SENSITIVE );
+        passField=new TextField(SR.MS_PASSWORD, password, 32, TextField.ANY | TextField.SENSITIVE );
         formJoin.append(passField);
         
         msgLimitField=new NumberField(SR.MS_MSG_LIMIT, cf.confMessageCount, 0, 20);

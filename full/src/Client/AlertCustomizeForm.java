@@ -26,7 +26,6 @@
 package Client;
 
 import locale.SR;
-import ui.ConstMIDP;
 import ui.EventNotify;
 import java.util.Vector;
 import util.StringLoader;
@@ -73,7 +72,7 @@ public class AlertCustomizeForm implements
        
         f=new Form(SR.MS_OPTIONS);
         
-        MessageFile=new ChoiceGroup("Message sound", ConstMIDP.CHOICE_POPUP);
+        MessageFile=new ChoiceGroup("Message sound", ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    MessageFile.append( (String)f.nextElement(), null );
 	}
@@ -86,7 +85,7 @@ public class AlertCustomizeForm implements
 	MessageFile.setItemCommandListener(this);
         
         
-        OnlineFile=new ChoiceGroup(SR.MS_ONLINE+" "+SR.MS_SOUND, ConstMIDP.CHOICE_POPUP);
+        OnlineFile=new ChoiceGroup(SR.MS_ONLINE+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    OnlineFile.append( (String)f.nextElement(), null );
 	}
@@ -98,7 +97,7 @@ public class AlertCustomizeForm implements
 	OnlineFile.setItemCommandListener(this);
         
                  
-        OfflineFile=new ChoiceGroup(SR.MS_OFFLINE+" "+SR.MS_SOUND, ConstMIDP.CHOICE_POPUP);
+        OfflineFile=new ChoiceGroup(SR.MS_OFFLINE+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    OfflineFile.append( (String)f.nextElement(), null );
 	}
@@ -110,7 +109,7 @@ public class AlertCustomizeForm implements
 	OfflineFile.setItemCommandListener(this);
         
     
-        ForYouFile=new ChoiceGroup(SR.MS_MESSAGE_FOR_ME+" "+SR.MS_SOUND, ConstMIDP.CHOICE_POPUP);
+        ForYouFile=new ChoiceGroup(SR.MS_MESSAGE_FOR_ME+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    ForYouFile.append( (String)f.nextElement(), null );
 	}
@@ -122,7 +121,7 @@ public class AlertCustomizeForm implements
 	ForYouFile.setItemCommandListener(this);
         
             
-        ComposingFile=new ChoiceGroup(SR.MS_COMPOSING_EVENTS+" "+SR.MS_SOUND, ConstMIDP.CHOICE_POPUP);
+        ComposingFile=new ChoiceGroup(SR.MS_COMPOSING_EVENTS+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    ComposingFile.append( (String)f.nextElement(), null );
 	}
@@ -133,7 +132,7 @@ public class AlertCustomizeForm implements
         ComposingFile.addCommand(cmdComposingSound);
 	ComposingFile.setItemCommandListener(this);   
         
-        ConferenceFile=new ChoiceGroup(SR.MS_SOUND+" for conference", ConstMIDP.CHOICE_POPUP);
+        ConferenceFile=new ChoiceGroup(SR.MS_SOUND+" for conference", ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    ConferenceFile.append( (String)f.nextElement(), null );
 	}

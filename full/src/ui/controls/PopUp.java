@@ -90,7 +90,7 @@ public class PopUp {
         
         g.setColor((kikoban)?0xffff00:Colors.BALLOON_INK);
         g.setFont(font);
-        drawAllStrings(g, 4,3);
+        drawAllStrings(g, 3,3);
     }
 
     private Vector parseMessage(int stringWidth) {

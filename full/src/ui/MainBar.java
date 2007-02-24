@@ -1,9 +1,5 @@
 /*
- * ConstMIDP.java
- *
- * Created on 22.10.2005, 19:14
- *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * MainBar.java
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,22 +19,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 package ui;
 
-import javax.microedition.lcdui.ChoiceGroup;
-import javax.microedition.lcdui.TextField;
+import images.RosterIcons;
 
-/**
- *
- * @author EvgS
- */
-public class ConstMIDP {
+public class MainBar extends ComplexString{
+
+    public MainBar(int size, Object first, Object second) {
+        this (size);
+        font=FontCache.getBalloonFont();
+        if (first!=null) setElementAt(first,0);
+        if (second!=null) setElementAt(second,1);
+    }
     
-    public final static int TEXTFIELD_DECIMAL=	TextField.DECIMAL;
-    public final static int CHOICE_POPUP=	ChoiceGroup.POPUP;
-    public final static int TEXTFIELD_SENSITIVE=TextField.SENSITIVE;
-
-    public final static String MIDP=		"MIDP2";
+    public MainBar(Object obj) {
+        this(1, obj, null);
+    }
+    
+    public MainBar(int size) {
+        super (RosterIcons.getInstance());
+        setSize(size);
+    }
 }

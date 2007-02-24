@@ -77,7 +77,7 @@ public abstract class VirtualList
      * цвет фона заголовка
      * @return RGB-цвет фона заголовка
      */
-    protected int getTitleBGndRGB() {return Colors.BAR_BGND;} 
+    protected int getMainBarBGndRGB() {return Colors.BAR_BGND;} 
     
     private StaticData sd=StaticData.getInstance();
 
@@ -97,7 +97,7 @@ public abstract class VirtualList
      * цвет текста заголовка
      * @return RGB-цвет текста заголовка
      */
-    protected int getTitleRGB() {return Colors.BAR_INK;} 
+    protected int getMainBarRGB() {return Colors.BAR_INK;} 
     
     private Config cf=Config.getInstance();
     
@@ -210,9 +210,11 @@ public abstract class VirtualList
     
     protected boolean showBalloon;
     
-    protected VirtualElement title;
+    protected VirtualElement mainbar;
  //#if ALT_INPUT   
 //#     protected InputBox inputbox; //alt
+//#     public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
+//#     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
  //#endif   
     private boolean wrapping = true;
     
@@ -241,12 +243,15 @@ public abstract class VirtualList
      * ссылка на заголовок списка
      * @return объект типа ComplexString
      */
-    public ComplexString getTitleItem() {return (ComplexString)title;}
-    public void setTitleItem(ComplexString title) { this.title=title; }
-//#if ALT_INPUT    
-//#     public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
-//#     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
-//#endif
+    
+    /**
+     * СЃСЃС‹Р»РєР° РЅР° Р·Р°РіРѕР»РѕРІРѕРє СЃРїРёСЃРєР°
+     * @return РѕР±СЉРµРєС‚ С‚РёРїР° ComplexString
+     */
+    
+    public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
+    public void setMainBarItem(ComplexString mainbar) { this.mainbar=mainbar; }
+
     /**
      * возвращает ссылку на объект в фокусе. 
      * в классе VirtualList возвращает VirtualElement, на который указывает курсор,
@@ -367,6 +372,8 @@ public abstract class VirtualList
         width=getWidth();	// patch for SE
         height=getHeight();
         
+        int mHeight=0, iHeight=0; // nokia fix
+        
 	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
 
         switch (isbottom) {
@@ -387,28 +394,32 @@ public abstract class VirtualList
         updateLayout(); //fixme: только при изменении списка
         
         setAbsOrg(g, 0,0);
+        
+        if (mainbar!=null)
+            mHeight=mainbar.getVHeight(); // nokia fix
+
+            iHeight=NetAccuFont.fontHeight+2; // nokia fix
+        
         if (paintTop) {
             if (reverse) {
-                itemBorder[0]=NetAccuFont.fontHeight+2;
-                drawStatusPanel(g);
+                itemBorder[0]=iHeight;
+                drawMainPanel(g);
             } else {
-                if (title!=null)
-                    itemBorder[0]=title.getVHeight();
+                if (mainbar!=null)
+                    itemBorder[0]=mHeight; 
                 drawInfoPanel(g);
             }
         }
         
         if (paintBottom) {
             if (reverse) {
-                if (title!=null)
-                    list_bottom=title.getVHeight();
+                if (mainbar!=null)
+                    list_bottom=mHeight;
             } else {
-                list_bottom=NetAccuFont.fontHeight+2; 
+                list_bottom=iHeight; 
             }
         }
-        
-        drawHeapMonitor(g);
-        
+       
         winHeight=height-itemBorder[0]-list_bottom;
 
         int count=getItemCount(); // размер списка
@@ -513,11 +524,11 @@ public abstract class VirtualList
 //#endif
                 if (paintBottom) {
                     if (reverse) {
-                        setAbsOrg(g, 0, height-title.getVHeight());
+                        setAbsOrg(g, 0, height-mHeight);
                         drawInfoPanel(g);
                     } else {
-                        setAbsOrg(g, 0, height-(NetAccuFont.fontHeight+2));
-                        drawStatusPanel(g);
+                        setAbsOrg(g, 0, height-iHeight);
+                        drawMainPanel(g);
                     }
                 }
 //#if ALT_INPUT
@@ -526,6 +537,9 @@ public abstract class VirtualList
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
         if (wobble.length()>0) new PopUp(g,wobble, width-20, height-20);
+        
+        drawHeapMonitor(g); //heap monitor
+        
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
     }
@@ -546,11 +560,11 @@ public abstract class VirtualList
         }
     }
     
-    private void drawStatusPanel (final Graphics g) {
+    private void drawMainPanel (final Graphics g) {
         int h=NetAccuFont.fontHeight+2;
         g.setClip(0,0, width, h);
 
-        g.setColor(getTitleBGndRGB());
+        g.setColor(getMainBarBGndRGB());
         g.fillRect(0, 0, width, h);
 
         String time=Time.timeString(Time.localTime());
@@ -581,11 +595,15 @@ public abstract class VirtualList
     }
     
     private void drawInfoPanel (final Graphics g) {    
-        if (title!=null) {
-            g.setColor(getTitleBGndRGB());
-            g.fillRect(0, 0, width, title.getVHeight());
-            g.setColor(getTitleRGB());
-            title.drawItem(g,0,false);
+        if (mainbar!=null) {
+            int h=mainbar.getVHeight();
+            g.setClip(0,0, width, h);
+            
+            g.setColor(getMainBarBGndRGB());
+            g.fillRect(0, 0, width, h);
+            
+            g.setColor(getMainBarRGB());
+            mainbar.drawItem(g,0,false);
         }
     }
     
@@ -764,7 +782,7 @@ public abstract class VirtualList
         if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) isSiemens=true;
         if (keyCode==-22) {
             if (isSiemens) {
-                if (cf.setKeyBlockStatus) new SplashScreen(display, getTitleItem(), cf.keyLock, cf.ghostMotor, true);
+                if (cf.setKeyBlockStatus) new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor, true);
                 return;
             }
         } 

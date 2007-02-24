@@ -34,6 +34,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
+import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;
 
@@ -65,9 +66,9 @@ public class ActiveContacts
 	// РЅРµ СЃРѕР·РґР°С‘Рј РІРёРґ, РµСЃР»Рё РЅРµС‚ Р°РєС‚РёРІРЅС‹С… РєРѕРЅС‚Р°РєС‚РѕРІ
 	if (getItemCount()==0) return;
 	
-        Title title=new Title(2, String.valueOf(getItemCount()), " ");
-        title.addElement(SR.MS_ACTIVE_CONTACTS);
-        setTitleItem(title);
+        MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ");
+        mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
+        setMainBarItem(mainbar);
 
 	addCommand(cmdSelect);
 	addCommand(cmdCancel);

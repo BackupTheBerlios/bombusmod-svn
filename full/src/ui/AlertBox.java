@@ -43,8 +43,8 @@ public class AlertBox implements CommandListener{
     protected Alert alert;
     protected Command cmdOk=new Command("OK", Command.OK, 1);
     /** Creates a new instance of AlertBox */
-    public AlertBox(String title, String text, Image image, Display display, Displayable nextDisplayable) {
-        alert=new Alert(title, text, image, null);
+    public AlertBox(String mainbar, String text, Image image, Display display, Displayable nextDisplayable) {
+        alert=new Alert(mainbar, text, image, null);
         this.display=display;
         next=(nextDisplayable==null)? display.getCurrent() : nextDisplayable;
         

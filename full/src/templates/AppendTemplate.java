@@ -32,6 +32,7 @@ import ui.*;
 import Client.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
+import ui.MainBar;
 
 /**
  *
@@ -70,14 +71,14 @@ public class AppendTemplate
 	
 	setCommandListener(this);
 	
-	Title title=new Title(SR.MS_SELECT);
-	title.addRAlign();
-	title.addElement(null);
-	title.addElement(SR.MS_FREE);
-        setTitleItem(title);
+	MainBar mainbar=new MainBar(SR.MS_SELECT);
+	mainbar.addRAlign();
+	mainbar.addElement(null);
+	mainbar.addElement(SR.MS_FREE);
+        setMainBarItem(mainbar);
     }
      protected void beginPaint() {
-	getTitleItem().setElementAt(String.valueOf(template.freeSpace()),2);
+	getMainBarItem().setElementAt(String.valueOf(template.freeSpace()),2);
     }
     
     public int getItemCount() {

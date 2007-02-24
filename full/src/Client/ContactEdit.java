@@ -30,7 +30,6 @@ import Conference.MucContact;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
-import ui.ConstMIDP;
 
 /**
  *
@@ -86,8 +85,8 @@ public final class ContactEdit
         tGroup=new TextField(SR.MS_GROUP ,null, 32, TextField.ANY);
         
         
-        tGrpList=new ChoiceGroup(SR.MS_GROUP , ConstMIDP.CHOICE_POPUP);
-        tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ConstMIDP.CHOICE_POPUP);
+        tGrpList=new ChoiceGroup(SR.MS_GROUP , ChoiceGroup.POPUP);
+        tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ChoiceGroup.POPUP);
         
         tAskSubscrCheckBox=new ChoiceGroup(SR.MS_SUBSCRIPTION, ChoiceGroup.MULTIPLE);
         tAskSubscrCheckBox.append(SR.MS_ASK_SUBSCRIPTION, null);

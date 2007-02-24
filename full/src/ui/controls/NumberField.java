@@ -34,7 +34,6 @@ import javax.microedition.lcdui.ItemCommandListener;
 //#endif
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.ConstMIDP;
 
 /**
  *
@@ -53,7 +52,7 @@ public class NumberField extends TextField
     /** Creates a new instance of SignNumberField */
     public NumberField(String label, int initValue, int minValue, int maxValue) {
 	super(label, String.valueOf(initValue), 6, 
-	    (minValue<0)?ConstMIDP.TEXTFIELD_DECIMAL:NUMERIC );
+	    (minValue<0)?TextField.DECIMAL:NUMERIC );
 	this.initValue=initValue;
 	this.minValue=minValue;
 	this.maxValue=maxValue;

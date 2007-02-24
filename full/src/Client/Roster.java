@@ -44,6 +44,7 @@ import login.NonSASLAuth;
 import login.SASLAuth;
 import midlet.Bombus;
 import ui.AlertBox;
+import ui.MainBar;
 import vcard.VCard;
 import vcard.vCardForm;
 import com.alsutton.jabber.*;
@@ -186,7 +187,6 @@ public class Roster
         super();
 
 	setProgress(24);
-        //setTitleImages(StaticData.getInstance().rosterIcons);
                 
         this.display=display;
         
@@ -198,15 +198,14 @@ public class Roster
 	//canback=false; // We can't go back using keyBack
         
         //msgNotify=new EventNotify(display, Profile.getProfile(0) );
-        Title title=new Title(4, null, null);
-        setTitleItem(title);
-        title.addRAlign();
-        title.addElement(null);
-        title.addElement(null);
-        title.addElement(null); //ft
+        MainBar mainbar=new MainBar(4, null, null);
+        setMainBarItem(mainbar);
+        mainbar.addRAlign();
+        mainbar.addElement(null);
+        mainbar.addElement(null);
+        mainbar.addElement(null); //ft
         //displayStatus();
-        
-        //l.setTitleImgL(6); //connect
+
         hContacts=new Vector();
         groups=new Groups();
         
@@ -279,7 +278,7 @@ public class Roster
                 setCommandListener(this);
         }
 
-	updateTitle();
+	updateMainBar();
 
         SplashScreen.getInstance().setExit(display, this);
         
@@ -299,7 +298,7 @@ public class Roster
     }
     public void setProgress(String pgs,int percent){
         SplashScreen.getInstance().setProgress(pgs, percent);
-        setRosterTitle(pgs);
+        setRosterMainBar(pgs);
         redraw();
     }
     public void setProgress(int percent){
@@ -307,8 +306,8 @@ public class Roster
         //redraw();
     }
     
-    private void setRosterTitle(String s){
-        getTitleItem().setElementAt(s, 3);
+    private void setRosterMainBar(String s){
+        getMainBarItem().setElementAt(s, 3);
     }
     
     private int rscaler;
@@ -403,7 +402,7 @@ public class Roster
     
     public void setEventIcon(Object icon){
         transferIcon=icon;
-        getTitleItem().setElementAt(icon, 7);
+        getMainBarItem().setElementAt(icon, 7);
         redraw();
     }
     
@@ -412,21 +411,21 @@ public class Roster
         return messageIcon;
     }
   
-    private void updateTitle(){
+    private void updateMainBar(){
         int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus;
         int profile=cf.profile;//StaticData.getInstance().config.profile;
         Object en=(profile>1)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX):null;
-        Title title=(Title) getTitleItem();
-        title.setElementAt(new Integer(s), 2);
-        title.setElementAt(en, 5);
+        MainBar mainbar=(MainBar) getMainBarItem();
+        mainbar.setElementAt(new Integer(s), 2);
+        mainbar.setElementAt(en, 5);
         if (messageCount==0) {
             messageIcon=null;
-            title.setElementAt(null,1);
+            mainbar.setElementAt(null,1);
         } else {
             messageIcon=new Integer(RosterIcons.ICON_MESSAGE_INDEX);
-            title.setElementAt(" "+messageCount+" ",1);
+            mainbar.setElementAt(" "+messageCount+" ",1);
         }
-        title.setElementAt(messageIcon, 0);
+        mainbar.setElementAt(messageIcon, 0);
     }
     
     boolean countNewMsgs() {
@@ -442,7 +441,7 @@ public class Roster
 //--                int pattern=cf.m55LedPattern;
 //--                if (pattern>0) EventNotify.leds(pattern-1, m>0);
 //#endif
-        updateTitle();
+        updateMainBar();
         return (m>0);
     }
     
@@ -750,7 +749,7 @@ public class Roster
             return;
         }
         
-        blockNotify(-111,10000);
+        blockNotify(-111,13000);
         
         // send presence
         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
@@ -803,7 +802,7 @@ public class Roster
             return;
         }
 
-        blockNotify(-111,10000);
+        blockNotify(-111,13000);
         
         ms=myMessage;
 
@@ -844,6 +843,7 @@ public class Roster
             sendPresence(status);
             return;
         }
+        if (to.jid.isTransport()) blockNotify(-111,10000);
         ExtendedStatus es= StatusList.getInstance().getStatus(status);
         Presence presence = new Presence(status, es.getPriority(), es.getMessage());
         presence.setTo(to.getJid());
@@ -976,7 +976,7 @@ public class Roster
             theStream.send(req);
             querysign=true;
         }
-        updateTitle();
+        updateMainBar();
     }
     /**
      * Method to handle an incomming datablock.
@@ -1425,8 +1425,9 @@ public class Roster
                     c.priority=pr.getPriority();
                     if (ti>=0) c.setStatus(ti);
                     
-                    if (ti==Presence.PRESENCE_ONLINE ||
-                        ti==Presence.PRESENCE_CHAT) {
+                    if (notifyReady(-111) &&
+                        (ti==Presence.PRESENCE_ONLINE ||
+                         ti==Presence.PRESENCE_CHAT)) {
                             if (lastAppearedContact!=null) lastAppearedContact.setAppearing(false);
                             c.setAppearing(true);
                             lastAppearedContact=c;
@@ -1524,6 +1525,7 @@ public class Roster
     }
     
     public void blockNotify(int event, long ms) {
+        if (!notifyReady(-111)) return;
         blockNotifyEvent=event;
         notifyReadyTime=System.currentTimeMillis()+ms;
     }
@@ -1599,7 +1601,7 @@ public class Roster
             case AlertProfile.SOUND: notify=new EventNotify(display, type, message,  volume, 0,           blFlashEn); break;
         }
         if (notify!=null) notify.startNotify();
-        blockNotify(event, 1000);
+        blockNotify(event, 2000);
     }
     
 /*    
@@ -1687,10 +1689,10 @@ public class Roster
             errorLog(error);
         } else {
             reconnectCount++;
-            String title="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
-            Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", title, error);
+            String mainbar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
+            Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", mainbar, error);
             messageStore(selfContact(), m);
-            new Reconnect(title, error, display);
+            new Reconnect(mainbar, error, display);
          }
      }
     
@@ -1772,11 +1774,12 @@ public class Roster
 		
 //#endif
     }
-    
 
     public void userKeyPressed(int keyCode){
         //System.out.println(ph.PhoneManufacturer());
         if (keyCode==KEY_NUM0 || keyCode==keyBack) {
+            cleanMarks();
+            
             if (messageCount==0) return;
             Object atcursor=getFocusedObject();
             Contact c=null;
@@ -1844,23 +1847,61 @@ public class Roster
             {
                 System.gc();
                 setWobbler();
+            } else {
+                fullMode=VirtualList.isbottom;
+                VirtualList.isbottom=(fullMode+1)%7;
+                System.gc();
             }
-            else
-                 cleanMarks();
-             return;
+            return;
          }
          if (keyCode==KEY_STAR) {
-             if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2)
-                cleanMarks();
-            else
-            {
+             if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
+                fullMode=VirtualList.isbottom;
+                VirtualList.isbottom=(fullMode+1)%7;
                 System.gc();
-                 setWobbler();
+             } else {
+                System.gc();
+                setWobbler();
             }
              return;
          }       
     }
-    
+   
+    protected void keyRepeated(int keyCode) {
+        super.keyRepeated(keyCode);
+        if (kHold==keyCode) return;
+        //kHold=keyCode;
+        kHold=keyCode;
+        
+        if (keyCode==cf.keyLock) 
+            new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor, false); 
+
+        if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
+            // swap profiles
+            int profile=cf.profile;
+            cf.profile=(profile==AlertProfile.VIBRA)? 
+                cf.lastProfile : AlertProfile.VIBRA;
+            cf.lastProfile=profile;
+            
+            updateMainBar();
+            redraw();
+        }
+        
+        if (keyCode==cf.keyOfflines || keyCode==keyBack) {
+            cf.showOfflineContacts=!cf.showOfflineContacts;
+            reEnumRoster();
+        }
+
+       	if (keyCode==KEY_NUM1) new Bookmarks(display, null);
+       	if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
+       	if (keyCode==KEY_NUM4) new ConfigForm(display);
+       	if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
+        
+        if (keyCode==cf.keyHide && cf.allowMinimize) {
+            Bombus.getInstance().hideApp(true);
+        }
+    }
+
     public void setWobbler() {
         StringBuffer mess=new StringBuffer();
         Contact contact=(Contact)getFocusedObject();
@@ -1893,6 +1934,10 @@ public class Roster
    
     public void commandAction(Command c, Displayable d){
         if (c==cmdQuit) {
+            fullMode=VirtualList.isbottom; //save panels state on exit
+            cf.isbottom=(fullMode)%7;          
+            cf.saveToStorage();
+            
             destroyView();
             logoff();
             //StaticData sd=StaticData.getInstance();
@@ -1910,7 +1955,8 @@ public class Roster
         if (c==cmdStatus) { reconnectCount=0; new StatusSelect(display, null); }
         if (c==cmdAlert) { new AlertProfile(display); }
         
-		if (c==cmdArchive) { new ArchiveList(display, null, -1); }
+	if (c==cmdArchive) { new ArchiveList(display, null, -1); }
+        
         if (c==cmdInfo) { new Info.InfoWindow(display); }
         
         if (c==cmdTurnOnLight) {
@@ -1954,7 +2000,6 @@ public class Roster
         } catch (Exception e) { /* NullPointerException */ }
         
         if (c==cmdAdd) {
-            //new MIDPTextBox(display,"Add to roster", null, new AddContact());
             Object o=getFocusedObject();
             Contact cn=null;
             if (o instanceof Contact) {
@@ -1996,42 +2041,6 @@ public class Roster
     
     protected void showNotify() { super.showNotify(); countNewMsgs(); }
     
-    
-    protected void keyRepeated(int keyCode) {
-        super.keyRepeated(keyCode);
-        if (kHold==keyCode) return;
-        //kHold=keyCode;
-        kHold=keyCode;
-        
-        if (keyCode==cf.keyLock) 
-            new SplashScreen(display, getTitleItem(), cf.keyLock, cf.ghostMotor, false); 
-
-        if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
-            // swap profiles
-            int profile=cf.profile;
-            cf.profile=(profile==AlertProfile.VIBRA)? 
-                cf.lastProfile : AlertProfile.VIBRA;
-            cf.lastProfile=profile;
-            
-            updateTitle();
-            redraw();
-        }
-        
-        if (keyCode==cf.keyOfflines || keyCode==keyBack) {
-            cf.showOfflineContacts=!cf.showOfflineContacts;
-            reEnumRoster();
-        }
-
-       	if (keyCode==KEY_NUM1) new Bookmarks(display, null);
-       	if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
-       	if (keyCode==KEY_NUM4) new ConfigForm(display);
-       	if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
-        
-        if (keyCode==cf.keyHide && cf.allowMinimize) {
-            Bombus.getInstance().hideApp(true);
-        }
-    }
-
     private void searchGroup(int direction){
 	synchronized (vContacts) {
 	    int size=vContacts.size();
@@ -2073,7 +2082,7 @@ public class Roster
     
     public void setQuerySign(boolean requestState) {
         querysign=requestState;
-        updateTitle();
+        updateMainBar();
     }
     
     /**
@@ -2161,10 +2170,8 @@ public class Roster
                     groups.addToVector(tContacts, Groups.TYPE_SEARCH_RESULT);
                     
                     vContacts=tContacts;
-                    
-                    //setRosterTitle("("+groups.getRosterOnline()+"/"+groups.getRosterContacts()+")");
                      
-                    setRosterTitle("("+groups.getRosterOnline()+"/"+groups.getRosterContacts()+")");
+                    setRosterMainBar("("+groups.getRosterOnline()+"/"+groups.getRosterContacts()+")");
 
                     
                     //resetStrCache();

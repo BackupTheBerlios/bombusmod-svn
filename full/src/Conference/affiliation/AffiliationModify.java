@@ -67,7 +67,7 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
 		this.reason=new TextFieldCombo("Reason", reason, 256, TextField.ANY, "reason", display);
         f.append(this.jid);
         
-        this.affiliation=new ChoiceGroup(SR.MS_SET_AFFILIATION /*"Set affiliation to"*/, ui.ConstMIDP.CHOICE_POPUP);
+        this.affiliation=new ChoiceGroup(SR.MS_SET_AFFILIATION /*"Set affiliation to"*/, ChoiceGroup.POPUP);
         for (int index=0; index<=AffiliationItem.AFFILIATION_OUTCAST; index++) {
             String name=AffiliationItem.getAffiliationName(index);
             this.affiliation.append(name, null);

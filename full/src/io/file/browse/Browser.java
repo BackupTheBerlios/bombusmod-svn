@@ -27,7 +27,7 @@
 
 package io.file.browse;
 
-import Client.Title;
+import ui.MainBar;
 import images.RosterIcons;
 import io.file.FileIO;
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class Browser extends VirtualList implements CommandListener{
 		
         this.path="";
 		
-        setTitleItem(new Title(2, null, null));
+        setMainBarItem(new MainBar(2, null, null));
         
         addCommand(cmdOk);
         addCommand(cmdView);
@@ -217,7 +217,7 @@ public class Browser extends VirtualList implements CommandListener{
      }
     
     private void readDirectory(String name) {
-        getTitleItem().setElementAt(path, 0);
+        getMainBarItem().setElementAt(path, 0);
         
         dir=new Vector();
         

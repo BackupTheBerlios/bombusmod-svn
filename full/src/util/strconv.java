@@ -180,24 +180,6 @@ public class strconv {
         return baos.toByteArray();
     }
     
-    /* test
-        byte b1[]={1,2,3,4};
-        String b64=util.strconv.toBase64(b1, -1);
-        byte bo[]=util.strconv.fromBase64(b64);
-        
-        byte b2[]={1,2,3};
-        b64=util.strconv.toBase64(b2, -1);
-        bo=util.strconv.fromBase64(b64);
-        
-        byte b3[]={1,2};
-        b64=util.strconv.toBase64(b3, -1);
-        bo=util.strconv.fromBase64(b64);
-
-        byte b4[]={1};
-        b64=util.strconv.toBase64(b4, -1);
-        bo=util.strconv.fromBase64(b64);
-    */
-    
     public static String unicodeToUTF(String src) {
         return toUTFSb(new StringBuffer(src)).toString();
     }

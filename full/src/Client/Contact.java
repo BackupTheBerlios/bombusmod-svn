@@ -27,7 +27,9 @@
 
 package Client;
 import Conference.MucContact;
-import History.HistoryStorage;
+//#if LAST_MESSAGES
+//# import History.HistoryStorage;
+//#endif
 import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
 import io.NvStorage;
@@ -232,16 +234,16 @@ public class Contact extends IconTextElement{
                 if ( ((Msg)msgs.firstElement()).isPresence())
                    if (origin!=ORIGIN_GROUPCHAT) first_replace=true;
         }
-
-        if (cf.lastMessages
-            && (origin!=ORIGIN_GROUPCHAT)
-            && (getGroupType()!=Groups.TYPE_TRANSP)
-            && (getGroupType()!=Groups.TYPE_IGNORE)
-            && (this instanceof MucContact==false)
-            && (m.messageType==Msg.MESSAGE_TYPE_IN)) {
-                new HistoryStorage(this, m.getBody(), false);
-        }
-        
+//#if LAST_MESSAGES
+//#         if (cf.lastMessages
+//#             && (origin!=ORIGIN_GROUPCHAT)
+//#             && (getGroupType()!=Groups.TYPE_TRANSP)
+//#             && (getGroupType()!=Groups.TYPE_IGNORE)
+//#             && (this instanceof MucContact==false)
+//#             && (m.messageType==Msg.MESSAGE_TYPE_IN)) {
+//#                 new HistoryStorage(this, m.getBody(), false);
+//#             }
+//#endif        
 //#if FILE_IO
         if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
         {

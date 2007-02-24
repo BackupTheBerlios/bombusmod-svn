@@ -26,8 +26,6 @@
 
 package Info;
 
-import ui.ConstMIDP;
-
 public class Phone {
     public final static int NOT_DETECTED=0;
     public final static int NONE=-1;

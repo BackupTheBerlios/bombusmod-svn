@@ -32,6 +32,7 @@ import ui.*;
 import Client.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
+import ui.MainBar;
 
 /**
  *
@@ -54,7 +55,7 @@ public class AppendNick
         this.caretPos=caretPos;
          //this.display=display;
         
-        setTitleItem(new Title(SR.MS_SELECT_NICKNAME));
+        setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
         nicknames=new Vector();
         for (Enumeration e=StaticData.getInstance().roster.getHContacts().elements(); e.hasMoreElements(); ) {

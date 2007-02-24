@@ -34,6 +34,7 @@ import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
+import ui.MainBar;
 
 /**
  *
@@ -56,7 +57,7 @@ public class SearchResult
         
         String service=result.getAttribute("from");
         
-        setTitleItem(new Title(2, null, service));
+        setMainBarItem(new MainBar(2, null, service));
         
         setCommandListener(this);
         addCommand(cmdBack);

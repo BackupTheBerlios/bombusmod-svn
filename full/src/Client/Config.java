@@ -276,7 +276,7 @@ public class Config {
             
             altInput=inputStream.readBoolean();
             
-            isbottom=inputStream.readInt();
+            isbottom=inputStream.readInt()%7;
             
             confMessageCount=inputStream.readInt();
             

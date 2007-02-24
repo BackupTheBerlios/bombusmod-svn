@@ -35,6 +35,7 @@ import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
+import ui.MainBar;
 
 /**
  *
@@ -88,9 +89,9 @@ public class ServiceDiscovery
     public ServiceDiscovery(Display display, String service, String node) {
         super(display);
 
-        setTitleItem(new Title(3, null, null));
-        getTitleItem().addRAlign();
-        getTitleItem().addElement(null);
+        setMainBarItem(new MainBar(3, null, null));
+        getMainBarItem().addRAlign();
+        getMainBarItem().addElement(null);
         
         stream=sd.roster.theStream;
         stream.cancelBlockListenerByClass(this.getClass());
@@ -123,14 +124,14 @@ public class ServiceDiscovery
     public int getItemCount(){ return items.size();}
     public VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index);}
     
-    protected void beginPaint(){ getTitleItem().setElementAt(sd.roster.getEventIcon(), 4); }
+    protected void beginPaint(){ getMainBarItem().setElementAt(sd.roster.getEventIcon(), 4); }
     
     
-    private void titleUpdate(){
+    private void mainbarUpdate(){
         
-        getTitleItem().setElementAt(new Integer(discoIcon), 0);
-        getTitleItem().setElementAt(service, 2);
-        getTitleItem().setElementAt(sd.roster.getEventIcon(), 4);
+        getMainBarItem().setElementAt(new Integer(discoIcon), 0);
+        getMainBarItem().setElementAt(service, 2);
+        getMainBarItem().setElementAt(sd.roster.getEventIcon(), 4);
 	
 	int size=0;
 	try { size=items.size(); } catch (Exception e) {}
@@ -141,11 +142,11 @@ public class ServiceDiscovery
 	} else {
 	    removeCommand(cmdOk);
 	}
-        getTitleItem().setElementAt(count,1);	    
+        getMainBarItem().setElementAt(count,1);	    
     }
     
     private void requestQuery(String namespace, String id){
-        discoIcon=RosterIcons.ICON_PROGRESS_INDEX; titleUpdate(); redraw();
+        discoIcon=RosterIcons.ICON_PROGRESS_INDEX; mainbarUpdate(); redraw();
         JabberDataBlock req=new Iq(service, Iq.TYPE_GET, discoId(id));
         JabberDataBlock qry=req.addChild("query",null);
         qry.setNameSpace(namespace);
@@ -157,7 +158,7 @@ public class ServiceDiscovery
     }
     
     private void requestCommand(String namespace, String id){
-        discoIcon=RosterIcons.ICON_PROGRESS_INDEX; titleUpdate(); redraw();
+        discoIcon=RosterIcons.ICON_PROGRESS_INDEX; mainbarUpdate(); redraw();
         JabberDataBlock req=new Iq(service, Iq.TYPE_SET, id);
         JabberDataBlock qry=req.addChild("command",null);
         qry.setNameSpace(namespace);
@@ -179,7 +180,7 @@ public class ServiceDiscovery
         if (data.getTypeAttribute().equals("error")) {
             System.out.println(data.toString());
             discoIcon=RosterIcons.ICON_ERROR_INDEX;
-            titleUpdate();
+            mainbarUpdate();
             //redraw();
             
             String err=((JabberDataBlock)(data.getChildBlock("error").getChildBlocks().firstElement())).getTagName();
@@ -222,7 +223,7 @@ public class ServiceDiscovery
                     items.insertElementAt(e.nextElement(),0);
                 this.items=items;
                 moveCursorHome();
-                discoIcon=0; titleUpdate(); 
+                discoIcon=0; mainbarUpdate(); 
             }
         } else if (id.equals(discoId("disco"))) {
             Vector cmds=new Vector();
@@ -260,13 +261,13 @@ public class ServiceDiscovery
             new DiscoForm(display, data, stream, "discoRSearch", "query");
         } else if (id.startsWith("discoR")) {
             String text="Successful";
-            String title=data.getAttribute("type");
-            if (title.equals("error")) {
+            String mainbar=data.getAttribute("type");
+            if (mainbar.equals("error")) {
                 text=data.getChildBlockText("error");
             }
             if (text=="Successful" && id.endsWith("Search") ) {
                 new SearchResult(display, data);
-            } else new AlertBox(title, text, null, display, null);
+            } else new AlertBox(mainbar, text, null, display, null);
         }
         redraw();
         return JabberBlockListener.BLOCK_PROCESSED;
@@ -317,7 +318,7 @@ public class ServiceDiscovery
             features=st.features;
             discoIcon=0;
             
-            titleUpdate();
+            mainbarUpdate();
             moveCursorTo(st.cursor, true);
             redraw();
             

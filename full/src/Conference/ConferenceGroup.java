@@ -52,7 +52,7 @@ public class ConferenceGroup extends Group{
     private MucContact selfContact;
     public String password;
     private MucContact conference;
-    public String toString(){ return title(label); }
+    public String toString(){ return mainbar(label); }
 
     public MucContact getSelfContact() { return selfContact; }
     public void setSelfContact(MucContact selfContact) { this.selfContact=selfContact; }

@@ -81,8 +81,6 @@ public class AccountRegister
     public void rosterItemNotify(){}
     
     public void connectionTerminated( Exception e ) {
-        //l.setTitleImgL(0);
-        //System.out.println( "Connection terminated" );
         if( e != null ) {
             e.printStackTrace();
         }
@@ -101,15 +99,15 @@ public class AccountRegister
             theStream.close();
             int pgs=100;
             String type=data.getTypeAttribute();
-            String title=SR.MS_DONE; 
+            String mainbar=SR.MS_DONE; 
             if (!type.equals("result")) {
                 pgs=0;
-                title=SR.MS_ERROR_ +((JabberDataBlock)
+                mainbar=SR.MS_ERROR_ +((JabberDataBlock)
                     data.getChildBlock("error").
                         getChildBlocks().
                         firstElement()).getTagName();
             }
-            spl.setProgress(title,pgs);
+            spl.setProgress(mainbar,pgs);
         }
     }
     

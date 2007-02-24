@@ -48,8 +48,8 @@ public class YesNoAlert extends Form implements CommandListener{
     Command cmdNo=new Command(SR.MS_NO, Command.BACK, 99);
 	
     /** Creates a new instance of YesNoAlert */
-    public YesNoAlert(Display display, String title, String alertText, YesNoListener listener) {
-        super(title);
+    public YesNoAlert(Display display, String mainbar, String alertText, YesNoListener listener) {
+        super(mainbar);
         addCommand(cmdYes);
         addCommand(cmdNo);
         setCommandListener(this);

@@ -29,7 +29,6 @@ package ServiceDiscovery;
 import javax.microedition.lcdui.*;
 import com.alsutton.jabber.*;
 import java.util.*;
-import ui.ConstMIDP;
 /**
  *
  * @author Evg_S
@@ -73,7 +72,7 @@ public class FormField {
             else if (type.equals("list-single") || type.equals("list-multi")) {
                 
                 int choiceType=(type.equals("list-single"))? 
-                    ConstMIDP.CHOICE_POPUP : ChoiceGroup.MULTIPLE;
+                    ChoiceGroup.POPUP : ChoiceGroup.MULTIPLE;
                 ChoiceGroup ch=new ChoiceGroup(label, choiceType);
                 formItem=ch;
                 

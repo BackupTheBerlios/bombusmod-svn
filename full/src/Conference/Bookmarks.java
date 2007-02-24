@@ -36,6 +36,7 @@ import ui.*;
 import java.util.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.Iq;
+import ui.MainBar;
 
 /**
  *
@@ -75,7 +76,7 @@ public class Bookmarks
             new ConferenceForm(display);
             return;
         }
-        setTitleItem(new Title(2, null, SR.MS_BOOKMARKS));
+        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS));
         
         this.toAdd=toAdd;
         
@@ -101,7 +102,7 @@ public class Bookmarks
     }
     /*
     private void processIcon(boolean processing){
-        getTitleItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
+        getMainBarItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
         redraw();
     }
     */ 

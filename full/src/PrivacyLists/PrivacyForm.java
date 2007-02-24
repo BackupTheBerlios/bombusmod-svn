@@ -30,7 +30,6 @@ import Client.*;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
-import ui.ConstMIDP;
 
 /**
  *
@@ -48,12 +47,12 @@ public class PrivacyForm
     private PrivacyList targetList;
     
     Form form=new Form(SR.MS_PRIVACY_RULE);
-    ChoiceGroup choiceAction=new ChoiceGroup(SR.MS_PRIVACY_ACTION, ConstMIDP.CHOICE_POPUP, PrivacyItem.actions, null);
-    ChoiceGroup choiseType=new ChoiceGroup(SR.MS_PRIVACY_TYPE, ConstMIDP.CHOICE_POPUP, PrivacyItem.types, null);
+    ChoiceGroup choiceAction=new ChoiceGroup(SR.MS_PRIVACY_ACTION, ChoiceGroup.POPUP, PrivacyItem.actions, null);
+    ChoiceGroup choiseType=new ChoiceGroup(SR.MS_PRIVACY_TYPE, ChoiceGroup.POPUP, PrivacyItem.types, null);
     ChoiceGroup choiseStanzas=new ChoiceGroup(SR.MS_STANZAS, ChoiceGroup.MULTIPLE, PrivacyItem.stanzas, null);
     TextField textValue;
     //TextField textOrder;
-    ChoiceGroup choiceSubscr=new ChoiceGroup(SR.MS_SUBSCRIPTION, ConstMIDP.CHOICE_POPUP, PrivacyItem.subscrs, null);
+    ChoiceGroup choiceSubscr=new ChoiceGroup(SR.MS_SUBSCRIPTION, ChoiceGroup.POPUP, PrivacyItem.subscrs, null);
     
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);

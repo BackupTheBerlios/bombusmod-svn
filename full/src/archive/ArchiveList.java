@@ -31,7 +31,7 @@ import Client.MessageEdit;
 
 import Client.Config;
 import Client.Msg;
-import Client.Title;
+import ui.MainBar;
 import Messages.MessageList;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -108,18 +108,18 @@ public class ArchiveList
             focusedItem(0);
         } catch (Exception e) {}
 	
-	Title title=new Title(SR.MS_ARCHIVE /*"Archive"*/);
-	title.addElement(null);
-	title.addRAlign();
-	title.addElement(null);
-	title.addElement(SR.MS_FREE /*"free "*/);
-        setTitleItem(title);
+	MainBar mainbar=new MainBar(SR.MS_ARCHIVE /*"Archive"*/);
+	mainbar.addElement(null);
+	mainbar.addRAlign();
+	mainbar.addElement(null);
+	mainbar.addElement(SR.MS_FREE /*"free "*/);
+        setMainBarItem(mainbar);
         
     }
 
     protected void beginPaint() {
-        getTitleItem().setElementAt(" ("+String.valueOf(getItemCount())+")",1);
-	getTitleItem().setElementAt(String.valueOf(archive.freeSpace()),3);
+        getMainBarItem().setElementAt(" ("+String.valueOf(getItemCount())+")",1);
+	getMainBarItem().setElementAt(String.valueOf(archive.freeSpace()),3);
     }
     
     public int getItemCount() {

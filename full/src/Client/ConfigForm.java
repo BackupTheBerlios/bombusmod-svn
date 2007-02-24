@@ -133,7 +133,9 @@ public class ConfigForm implements
         message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
-        message.append("Last messages", null);
+//#if LAST_MESSAGES
+//#         message.append("Last messages", null);
+//#endif
 //#if ALT_INPUT
 //#         message.append(SR.CLASSIC_CHAT, null);
 //#endif        
@@ -142,8 +144,10 @@ public class ConfigForm implements
             cf.smiles,
             cf.storeConfPresence,
             cf.eventComposing,
-            cf.capsState,
-            cf.lastMessages
+            cf.capsState
+//#if LAST_MESSAGES
+//#             ,cf.lastMessages
+//#endif
 //#if ALT_INPUT
 //#             ,cf.altInput
 //#endif
@@ -182,8 +186,8 @@ public class ConfigForm implements
         fieldLoc=new NumberField(SR.MS_CLOCK_OFFSET, cf.locOffset, -12, 12 );
 
         String fnts[]={"Normal", "Small", "Large"};
-        font1=new ChoiceGroup(SR.MS_ROSTER_FONT, ConstMIDP.CHOICE_POPUP, fnts, null);
-        font2=new ChoiceGroup(SR.MS_MESSAGE_FONT, ConstMIDP.CHOICE_POPUP, fnts, null);
+        font1=new ChoiceGroup(SR.MS_ROSTER_FONT, ChoiceGroup.POPUP, fnts, null);
+        font2=new ChoiceGroup(SR.MS_MESSAGE_FONT, ChoiceGroup.POPUP, fnts, null);
         font1.setSelectedIndex(cf.font1/8, true);
         font2.setSelectedIndex(cf.font2/8, true);
 
@@ -193,26 +197,13 @@ public class ConfigForm implements
         f.append(message);
         f.append(font2);
         
-        String panelsLook[]={
-            "----/----",                             // 0
-            SR.MS_PANELS_MAIN+"/----",               // 1
-            SR.MS_PANELS_MAIN+"/"+SR.MS_PANELS_INFO, // 2
-            "----/"+SR.MS_PANELS_INFO,               // 3
-            SR.MS_PANELS_INFO+"/----",               // 4
-            SR.MS_PANELS_INFO+"/"+SR.MS_PANELS_MAIN, // 5
-            "----/"+SR.MS_PANELS_MAIN                // 6
-        };
-        panels=new ChoiceGroup(SR.MS_PANELS, ConstMIDP.CHOICE_POPUP, panelsLook, null);
-        panels.setSelectedIndex(cf.isbottom, true);
-        f.append(panels);
-
 	String textWraps[]={SR.MS_TEXTWRAP_CHARACTER, SR.MS_TEXTWRAP_WORD};
-	textWrap=new ChoiceGroup(SR.MS_TEXTWRAP, ConstMIDP.CHOICE_POPUP, textWraps,null);
+	textWrap=new ChoiceGroup(SR.MS_TEXTWRAP, ChoiceGroup.POPUP, textWraps,null);
 	textWrap.setSelectedIndex(cf.textWrap, true);
 	f.append(textWrap);
         
         
-        lang=new ChoiceGroup(SR.MS_LANGUAGE, ConstMIDP.CHOICE_POPUP);
+        lang=new ChoiceGroup(SR.MS_LANGUAGE, ChoiceGroup.POPUP);
 	Vector langs[]=new StringLoader().stringLoader("/lang/res.txt",2);
 	
 	for (Enumeration f=langs[1].elements(); f.hasMoreElements(); ) {
@@ -281,7 +272,7 @@ public class ConfigForm implements
         f.append(autoAwayTime);
         //autostatus
                 
-        SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ConstMIDP.CHOICE_POPUP);
+        SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ChoiceGroup.POPUP);
 	Skinfiles=new StringLoader().stringLoader("/skins/res.txt",2);
 	for (Enumeration f=Skinfiles[1].elements(); f.hasMoreElements(); ) {
 	    SkinFile.append( (String)f.nextElement(), null );
@@ -302,7 +293,7 @@ public class ConfigForm implements
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdOk) {
-            VirtualList.isbottom=cf.isbottom=panels.getSelectedIndex();
+            VirtualList.isbottom=cf.isbottom;
             
             roster.getSelectedFlags(ra);
             message.getSelectedFlags(mv);
@@ -321,13 +312,17 @@ public class ConfigForm implements
             cf.autoFocus=ra[5];
             cf.autoSubscribe=ra[6];
 
-            cf.smiles=mv[0];
-            cf.storeConfPresence=mv[1];
-            cf.eventComposing=mv[2];
-            cf.capsState=mv[3];
-            cf.lastMessages=mv[4];
+            
+            int mvctr=0;
+            cf.smiles=mv[mvctr++];
+            cf.storeConfPresence=mv[mvctr++];
+            cf.eventComposing=mv[mvctr++];
+            cf.capsState=mv[mvctr++];
+//#if LAST_MESSAGES
+//#             cf.lastMessages=mv[mvctr++];
+//#endif
 //#if ALT_INPUT
-//#             cf.altInput=mv[5];
+//#         cf.altInput=mv[mvctr++];
 //#endif
             
 	    cf.autoLogin=su[0];

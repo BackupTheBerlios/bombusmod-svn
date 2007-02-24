@@ -33,6 +33,7 @@ import ui.*;
 import java.io.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
+import ui.MainBar;
 import ui.controls.NumberField;
 import io.NvStorage;
 
@@ -63,7 +64,7 @@ public class AccountSelect
         super();
         //this.display=display;
 
-        setTitleItem(new Title(SR.MS_ACCOUNTS));
+        setMainBarItem(new MainBar(SR.MS_ACCOUNTS));
         
         accountList=new Vector();
         Account a;
