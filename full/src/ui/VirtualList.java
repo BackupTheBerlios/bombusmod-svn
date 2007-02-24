@@ -516,9 +516,9 @@ public abstract class VirtualList
 //#         if (inputbox!=null) {
 //#             setAbsOrg(g, 0, height-inputbox.height);  
 //#             g.setClip(0,0, width, height);
-//#             g.setColor(getTitleBGndRGB());
+//#             g.setColor(getMainBarBGndRGB());
 //#             g.fillRect(0,0, width, height);
-//#             g.setColor(getTitleRGB());
+//#             g.setColor(getMainBarRGB());
 //#             inputbox.drawItem(g);
 //#         } else {
 //#endif
@@ -780,24 +780,14 @@ public abstract class VirtualList
         wobble="";
         boolean isSiemens=false;
         if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) isSiemens=true;
-        if (keyCode==-22) {
-            if (isSiemens) {
-                if (cf.setKeyBlockStatus) new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor, true);
-                return;
-            }
-        } 
         
-        if (keyCode==-4)  {
-            if (isSiemens) {
+        if (keyCode==-4 && isSiemens) {
                 destroyView();
-                return;
-            }         
+                return;      
         }
-        if (keyCode==702)  {
-            if (isSiemens) {
+        if (keyCode==702 && isSiemens) {
                 destroyView();
-                return;
-            }         
+                return;        
         }
 //#if ALT_INPUT
 //#         if (inputbox==null) {

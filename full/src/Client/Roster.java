@@ -165,7 +165,7 @@ public class Roster
 
     //private TimerTaskAutoAway AutoAway;
     
-    public int lightType=0;
+    public static int lightType=0;
 	
     private final static int maxReconnect=5;
     public int reconnectCount;
@@ -1730,9 +1730,13 @@ public class Roster
 
     protected void keyPressed(int keyCode) {
         super.keyPressed(keyCode);
-        if (keyCode==keyClear) try { 
-            new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
-        } catch (Exception e) { /* NullPointerException */ }
+        
+        if (keyCode==keyClear) 
+            try { 
+                boolean isContact=( getFocusedObject() instanceof Contact );
+                if (isContact)
+                    new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
+            } catch (Exception e) { /* NullPointerException */ }
 
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {
@@ -1753,20 +1757,20 @@ public class Roster
             if (keyCode==-21 || keyCode==-22 || keyCode==21 || keyCode==22) {
                 if (cf.ghostMotor) {
                     new RosterMenu(display, getFocusedObject());
-					return;
+		    return;
                 }
             }
 
             if (keyCode==-7 || keyCode==-6)  {
                 if (ph.PhoneManufacturer()==ph.NOKIA || ph.PhoneManufacturer()==ph.SONYE) {
                     new RosterMenu(display, getFocusedObject());
-					return;
+	            return;
                  }         
             }
             if (keyCode==40 || keyCode==41)  {
                 if (ph.PhoneManufacturer()==ph.WINDOWS) {
                     new RosterMenu(display, getFocusedObject());
-					return;
+                    return;
                  }         
             }
         }
@@ -2199,7 +2203,7 @@ public class Roster
         this.myJid = myJid;
     }
     
-    public void setLight(boolean state) {
+    public static void setLight(boolean state) {
             if (state==true) {
                 com.siemens.mp.game.Light.setLightOn();
             } else {
@@ -2276,6 +2280,11 @@ public class Roster
         }
       }
     }
+    
+    public void siemensKeyLock() {
+        if (Config.getInstance().setKeyBlockStatus)
+            new SplashScreen(display, getMainBarItem(), Config.getInstance().keyLock, false, true);
+    }
 }
 
 class TimerTaskAutoAway extends Thread{
@@ -2322,6 +2331,7 @@ class TimerTaskAutoAway extends Thread{
                             if (rRoster.lightType==2) {
                                 if (getKeyLockState()) {
                                         rRoster.setLight(false);
+                                        rRoster.siemensKeyLock();
                                 } else {
                                         rRoster.setLight(true);
                                 }

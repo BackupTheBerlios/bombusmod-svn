@@ -32,6 +32,7 @@ import Client.ExtendedStatus;
 import Client.Roster;
 import Client.StaticData;
 import Client.StatusList;
+import Info.Phone;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.util.Timer;
@@ -96,6 +97,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         this.display=display;
         kHold=this.exitKey=exitKey;
         this.motorola_backlight=motorola_backlight;
+        this.siemens_slider=siemens_slider;
         
         parentView=display.getCurrent();
         
@@ -103,7 +105,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         
             if (!Roster.isAway) {
                 String away="";
-                if (Config.getInstance().setKeyBlockStatus) away=(siemens_slider)?"Slider closed ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
+                if (Config.getInstance().setKeyBlockStatus) away=(siemens_slider)?"System keyLock ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
                 Roster.oldStatus=sd.roster.myStatus;
                     try {
                         if (Roster.oldStatus==0 || Roster.oldStatus==1) {
@@ -243,6 +245,24 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
         public void run() {
             repaint();
+            if (getKeyLockState()==false && siemens_slider==true) { //siemens unlock
+                try {
+                    if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
+                        Roster.keyLockState=false;
+
+                        if (Roster.isAway) {
+                            int newStatus=sd.roster.oldStatus;
+                            ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
+                            String ms=es.getMessage();
+                            Roster.isAway=false;
+                            sd.roster.sendPresence(newStatus, ms);
+                        }
+                        System.gc();
+                        Roster.setLight(true);
+                        destroyView();
+                    }
+                } catch (Exception e) {};
+            }
         }
         public void stop(){
             cancel();
@@ -285,5 +305,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
         System.gc();
     }
-
+    private boolean getKeyLockState() {
+        boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
+        return lightState;
+    }
 }

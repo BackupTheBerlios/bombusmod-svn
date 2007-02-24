@@ -65,8 +65,6 @@ public class ConfigForm implements
     ChoiceGroup font1;
     ChoiceGroup font2;
     
-    ChoiceGroup panels;
-    
     ChoiceGroup textWrap;
     
     //NumberField keepAlive;
