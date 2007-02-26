@@ -778,16 +778,12 @@ public abstract class VirtualList
      */
     private void key(int keyCode) {
         wobble="";
-        boolean isSiemens=false;
-        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) isSiemens=true;
-        
-        if (keyCode==-4 && isSiemens) {
+       
+        if (keyCode==-4 || keyCode==702) {
+            if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
                 destroyView();
-                return;      
-        }
-        if (keyCode==702 && isSiemens) {
-                destroyView();
-                return;        
+                return;  
+            }
         }
 //#if ALT_INPUT
 //#         if (inputbox==null) {
@@ -982,7 +978,10 @@ public abstract class VirtualList
                 cursor=getItemCount()-1;
             } else
                 if (!cursorInWindow()) {
-                    cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
+                    //cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
+                    // [cursor+1] - workaround for sticking cursor if message is larger than screen
+                    cursor=getElementIndexAt(itemLayoutY[cursor+1]+winHeight);
+                    
                     if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
                 }
             setRotator();

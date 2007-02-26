@@ -193,25 +193,20 @@ public class Config {
             
 	    allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
-	}
-	if (ph.PhoneManufacturer()==ph.NOKIA) {
+	} else if (ph.PhoneManufacturer()==ph.NOKIA) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
-	}
-
-	if (ph.PhoneManufacturer()==ph.MOTOEZX) {
+	} else if (ph.PhoneManufacturer()==ph.MOTOEZX) {
 	    VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	    VirtualList.keyBack=VirtualList.MOTOE680_REALPLAYER;
-	} else
-	if (ph.PhoneManufacturer()==ph.MOTO) {
+	} else if (ph.PhoneManufacturer()==ph.MOTO) {
 	    ghostMotor=true;
 	    blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    VirtualList.keyClear=0x1000;
-	}        
-        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
+	} else if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
             keyLock='#';
             keyVibra='*';
         }

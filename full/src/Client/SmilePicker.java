@@ -133,7 +133,14 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     public void keyLeft(){ 
         if (xCursor>0) xCursor--; 
         else {
-            if (cursor==0) return;
+            //if (cursor==0) return;
+            //
+            if (cursor==0) {
+                keyDwn();
+                keyLeft();
+                return;
+            }
+            //
             xCursor=xCnt-1;
             keyUp();
             setRotator();

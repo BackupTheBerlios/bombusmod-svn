@@ -1877,10 +1877,10 @@ public class Roster
         //kHold=keyCode;
         kHold=keyCode;
         
-        if (keyCode==cf.keyLock) 
-            new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor, false); 
-
-        if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
+        if (keyCode==cf.keyLock) {
+            new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor, false);
+            return;
+        } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles
             int profile=cf.profile;
             cf.profile=(profile==AlertProfile.VIBRA)? 
@@ -1889,21 +1889,24 @@ public class Roster
             
             updateMainBar();
             redraw();
-        }
-        
-        if (keyCode==cf.keyOfflines || keyCode==keyBack) {
+            return;
+        } else if (keyCode==cf.keyOfflines || keyCode==keyBack) {
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
-        }
-
-       	if (keyCode==KEY_NUM1) new Bookmarks(display, null);
-       	if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
-       	if (keyCode==KEY_NUM4) new ConfigForm(display);
-       	if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
+            return;
+        } else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
+       	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
+       	else if (keyCode==KEY_NUM4) new ConfigForm(display);
+       	else if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
         
-        if (keyCode==cf.keyHide && cf.allowMinimize) {
-            Bombus.getInstance().hideApp(true);
-        }
+        else if (keyCode==cf.keyHide) {
+                if      (cf.allowMinimize) Bombus.getInstance().hideApp(true);
+                //SIEMENS: MYMENU call. Possible Main Menu for capable phones
+                else if (ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SIEMENS) 
+                 try {
+                      Bombus.getInstance().platformRequest("native:ELSE_STR_MYMENU");
+                 } catch (Exception e) { }     
+       }
     }
 
     public void setWobbler() {
