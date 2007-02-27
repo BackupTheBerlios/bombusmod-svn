@@ -1784,6 +1784,8 @@ public class Roster
         if (keyCode==KEY_NUM0 || keyCode==keyBack) {
             cleanMarks();
             
+            System.gc();
+            
             if (messageCount==0) return;
             Object atcursor=getFocusedObject();
             Contact c=null;
@@ -1804,6 +1806,7 @@ public class Roster
                 }
                 if (p==c) pass++; // полный круг пройден
             }
+            System.gc();
             return;
         }
 		

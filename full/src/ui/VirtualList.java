@@ -552,6 +552,7 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g) {
         if (memMonitor) {
+            g.setClip(0,0, width, 1);
             int freemem=(int)Runtime.getRuntime().freeMemory();
             int totalmem=(int)Runtime.getRuntime().totalMemory();
             int ram=(int)((freemem*width)/totalmem);
@@ -978,9 +979,9 @@ public abstract class VirtualList
                 cursor=getItemCount()-1;
             } else
                 if (!cursorInWindow()) {
-                    //cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
+                    cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
                     // [cursor+1] - workaround for sticking cursor if message is larger than screen
-                    cursor=getElementIndexAt(itemLayoutY[cursor+1]+winHeight);
+                    //cursor=getElementIndexAt(itemLayoutY[cursor+1]+winHeight);
                     
                     if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
                 }
@@ -1050,7 +1051,7 @@ public abstract class VirtualList
     }
 
     public int getListWidth() {
-        return width-scrollbar.getScrollWidth();
+        return width-scrollbar.getScrollWidth()-2;
     }
 
     public final static void sort(Vector sortVector){

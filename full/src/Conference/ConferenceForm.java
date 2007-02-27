@@ -50,6 +50,7 @@ public class ConferenceForm implements CommandListener{
     Command cmdJoin=new Command(SR.MS_JOIN, Command.SCREEN, 1);
     //Command cmdBookmarks=new Command(SR.MS_BOOKMARKS, Command.SCREEN, 2);
     Command cmdAdd=new Command(SR.MS_ADD_BOOKMARK, Command.SCREEN, 5);
+    Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 6);
     Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     
     TextField roomField;
@@ -58,10 +59,14 @@ public class ConferenceForm implements CommandListener{
     TextField passField;
     NumberField msgLimitField;
     
+    BookmarkItem editConf;
+    
     ChoiceGroup AutoJoin;
     boolean aa[];   
     
     StaticData sd=StaticData.getInstance();
+
+    private int cursor;
     
     /** Creates a new instance of GroupChatForm */
     public ConferenceForm(Display display, String confJid, String password, boolean autojoin) {
@@ -78,6 +83,30 @@ public class ConferenceForm implements CommandListener{
             server=confJid.substring(roomEnd+1);
         }
         createForm(display, room, server, nick, password, autojoin);
+    }
+    
+    /** Creates a new instance of GroupChatForm */
+    public ConferenceForm(Display display, BookmarkItem join, int cursor) {
+        if (join==null) return;
+        if (join.isUrl) return;
+        
+        this.editConf=join;
+        this.cursor=cursor;
+
+        String confJid=join.toString();
+        int roomEnd=confJid.indexOf('@');
+        String room="";
+        if (roomEnd>0) room=confJid.substring(0, roomEnd);
+        String server;
+        String nick=null;
+        int serverEnd=confJid.indexOf('/');
+        if (serverEnd>0) {
+            server=confJid.substring(roomEnd+1,serverEnd);
+            nick=confJid.substring(serverEnd+1);
+        } else {
+            server=confJid.substring(roomEnd+1);
+        }
+        createForm(display, room, server, nick, join.password, join.autojoin);
     }
     
     /** Creates a new instance of GroupChatForm */
@@ -137,6 +166,8 @@ public class ConferenceForm implements CommandListener{
         //formJoin.addCommand(cmdBookmarks);
         formJoin.addCommand(cmdAdd);
         
+        formJoin.addCommand(cmdEdit);
+        
         formJoin.addCommand(cmdCancel);
         formJoin.setCommandListener(this);
         display.setCurrent(formJoin);
@@ -144,27 +175,34 @@ public class ConferenceForm implements CommandListener{
     public void commandAction(Command c, Displayable d){
         if (c==cmdCancel) { destroyView(); }
         //if (c==cmdBookmarks) { new Bookmarks(display, null); }
-        if (c==cmdJoin || c==cmdAdd) {
-            String nick=nickField.getString();
-            String host=hostField.getString();
-            String room=roomField.getString();
-            String pass=passField.getString();
-            int msgLimit=msgLimitField.getValue();
+        
+        String nick=nickField.getString();
+        String host=hostField.getString();
+        String room=roomField.getString();
+        String pass=passField.getString();
+        int msgLimit=msgLimitField.getValue();
+        
+        AutoJoin.getSelectedFlags(aa);
+        boolean autojoin=aa[0];
+        
+        if (nick.length()==0) return;
+        if (room.length()==0) return;
+        if (host.length()==0) return;
+        StringBuffer gchat=new StringBuffer(room.trim());
+        gchat.append('@');
+        gchat.append(host.trim());
             
-            if (nick.length()==0) return;
-            if (room.length()==0) return;
-            if (host.length()==0) return;
-            StringBuffer gchat=new StringBuffer(room.trim());
-            gchat.append('@');
-            gchat.append(host.trim());
-            
-            AutoJoin.getSelectedFlags(aa);
-            boolean autojoin=aa[0];
-            System.out.println(autojoin);
-            //sd.roster.mucContact(gchat.toString(), Contact.ORIGIN_GROUPCHAT);
+        if (c==cmdEdit) {
+            StaticData.getInstance().roster.bookmarks.removeElement(editConf);
+            StaticData.getInstance().roster.bookmarks.insertElementAt(new BookmarkItem(gchat.toString(), nick, pass, autojoin), cursor);
+            new BookmarkQuery(BookmarkQuery.SAVE);
+            display.setCurrent(sd.roster);
+        }
+        
+        //if (c==cmdJoin || c==cmdAdd) {
             if (c==cmdAdd) {
                 new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
-            } else {
+            } else if (c==cmdJoin) {
                 try {
                     cf.confMessageCount=msgLimit;
                     cf.defGcRoom=room+"@"+host;
@@ -179,7 +217,7 @@ public class ConferenceForm implements CommandListener{
                     display.setCurrent(new Alert("Exception", e.toString(), null, AlertType.ERROR), sd.roster);
                 }
             }
-        }
+        //}
     }
     public static void join(String name, String pass, int maxStanzas) {
         StaticData sd=StaticData.getInstance();

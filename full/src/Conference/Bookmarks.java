@@ -57,8 +57,11 @@ public class Bookmarks
     private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 15);
     private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 16);
     private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 17);
-
     
+    private Command cmdUp=new Command (SR.MS_MOVE_UP, Command.SCREEN, 18);
+    private Command cmdDwn=new Command (SR.MS_MOVE_DOWN, Command.SCREEN, 19);
+    private Command cmdSave=new Command (SR.MS_SAVE_LIST, Command.SCREEN, 20);
+
     private Command cmdRoomOwners=new Command (SR.MS_OWNERS, Command.SCREEN, 21);
     private Command cmdRoomAdmins=new Command (SR.MS_ADMINS, Command.SCREEN, 22);
     private Command cmdRoomMembers=new Command (SR.MS_MEMBERS, Command.SCREEN, 23);
@@ -90,6 +93,11 @@ public class Bookmarks
         addCommand(cmdAdvJoin);
         //addCommand(cmdRfsh);
 	addCommand(cmdNew);
+        
+        addCommand(cmdUp);
+        addCommand(cmdDwn);
+        addCommand(cmdSave);
+        
         addCommand(cmdDisco);
         addCommand(cmdConfigure);
         addCommand(cmdRoomOwners);
@@ -98,7 +106,7 @@ public class Bookmarks
         addCommand(cmdRoomBanned);
         addCommand(cmdDel);
         setCommandListener(this);
-		attachDisplay(display);
+	attachDisplay(display);
     }
     /*
     private void processIcon(boolean processing){
@@ -141,14 +149,13 @@ public class Bookmarks
     }
     
     public void commandAction(Command c, Displayable d){
-		if (getItemCount()==0) return;
+	if (getItemCount()==0) return;
+        
         if (c==cmdCancel) exitBookmarks();
         if (c==cmdJoin) eventOk();
         if (c==cmdAdvJoin) {
             BookmarkItem join=(BookmarkItem)getFocusedObject();
-            if (join==null) return;
-            if (join.isUrl) return;
-            new ConferenceForm(display, join.toString(), join.password, join.autojoin);
+            new ConferenceForm(display, join, cursor);
         }
 	if (c==cmdNew) new ConferenceForm(display);
         //if (c==cmdRfsh) loadBookmarks();
@@ -172,6 +179,15 @@ public class Bookmarks
         if (c==cmdRoomBanned) {
             new Affiliations(display, roomJid, 4);  
         }
+        
+        if (c==cmdSave) {
+            saveBookmarks();
+            exitBookmarks();
+        }
+        
+        if (c==cmdUp) { move(-1); keyUp(); }
+        if (c==cmdDwn) { move(+1); keyDwn(); }
+        redraw();
     }
     
     private void deleteBookmark(){
@@ -191,5 +207,16 @@ public class Bookmarks
 
     private void exitBookmarks(){
         display.setCurrent(roster);
+    }
+    
+    public void move(int offset){
+        try {
+            int index=cursor;
+            BookmarkItem p1=(BookmarkItem)getItemRef(index);
+            BookmarkItem p2=(BookmarkItem)getItemRef(index+offset);
+            
+            StaticData.getInstance().roster.bookmarks.setElementAt(p1, index+offset);
+            StaticData.getInstance().roster.bookmarks.setElementAt(p2, index);
+        } catch (Exception e) {/* IndexOutOfBounds */}
     }
 }
