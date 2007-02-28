@@ -1903,13 +1903,17 @@ public class Roster
        	else if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
         
         else if (keyCode==cf.keyHide) {
-                if      (cf.allowMinimize) Bombus.getInstance().hideApp(true);
-                //SIEMENS: MYMENU call. Possible Main Menu for capable phones
-                else if (ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SIEMENS) 
-                 try {
-                      Bombus.getInstance().platformRequest("native:ELSE_STR_MYMENU");
-                 } catch (Exception e) { }     
-       }
+            if (cf.allowMinimize)
+                Bombus.getInstance().hideApp(true);
+            else if (ph.PhoneManufacturer()==ph.SIEMENS)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
+             try {
+                  Bombus.getInstance().platformRequest("native:ELSE_STR_MYMENU");
+             } catch (Exception e) { }     
+            else if (ph.PhoneManufacturer()==ph.SIEMENS2)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
+             try {
+                Bombus.getInstance().platformRequest("native:NAT_MAIN_MENU");
+             } catch (Exception e) { }   
+        }
     }
 
     public void setWobbler() {

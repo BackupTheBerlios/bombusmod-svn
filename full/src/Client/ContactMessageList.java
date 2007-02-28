@@ -69,6 +69,7 @@ public class ContactMessageList extends MessageList
     Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 11);
     Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 11);
     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,13);
+    Command cmdSendBuffer=new Command("Send Buffer", Command.SCREEN, 14);
     
      
     private ClipBoard clipboard;
@@ -113,13 +114,12 @@ public class ContactMessageList extends MessageList
 	addCommand(cmdActive);
         addCommand(cmdQuote);
         addCommand(cmdArch);
+        addCommand(cmdTemplate);
         addCommand(cmdCopy);
         if (!clipboard.isEmpty()) {
-            try {
-                addCommand(cmdCopyPlus);
-            } catch (Exception e) {/*no messages*/}
+            addCommand(cmdCopyPlus);
+            addCommand(cmdSendBuffer);
         }
-        addCommand(cmdTemplate);
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
 
@@ -259,6 +259,22 @@ public class ContactMessageList extends MessageList
 		
         if (c==cmdUnsubscribed) {
             sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
+        }
+        
+        if (c==cmdSendBuffer) {
+            String from=StaticData.getInstance().account.toString();
+            String body=clipboard.getClipBoard();
+            String subj="";
+
+            Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+
+            try {
+                sd.roster.sendMessage(contact, body, subj, 0);
+                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+            } catch (Exception e) {
+                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
+                e.printStackTrace();
+            }
         }
 //#if LAST_MESSAGES
 //#         if (c==cmdRecent) {

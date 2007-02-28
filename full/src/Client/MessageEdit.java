@@ -121,7 +121,6 @@ public class MessageEdit
         new Thread(this).start() ; // composing
         
         setInitialCaps(cf.capsState);
-        
         display.setCurrent(t);
     }
     

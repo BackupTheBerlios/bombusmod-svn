@@ -188,7 +188,7 @@ public final class MessageParser implements Runnable{
             tasks.addElement(messageItem);
             if (thread==null) {
                 thread=new Thread(this);
-                //thread.setPriority(Thread.MAX_PRIORITY); // test (for midp1 needed)
+                thread.setPriority(Thread.MAX_PRIORITY); // test (for midp1 needed)
                 thread.start();
             }
         }

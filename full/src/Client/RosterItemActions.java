@@ -95,6 +95,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 	    addItem("Copy JID",892, 0x0f22);
 	    addItem("Send current color scheme",912, 0x0f22);
+	    addItem("Send buffer",914, 0x0f22);
             
             if (contact.getJid()==contact.getBareJid()) {
                 addItem(SR.MS_SEEN,890);    
@@ -348,7 +349,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 {
                     String from=StaticData.getInstance().account.toString();
                     String body=ColorScheme.getSkin();
-                    String subj="color scheme";
+                    String subj="";
 
                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
             
@@ -357,6 +358,24 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
                     } catch (Exception e) {
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                
+                case 914: //send message from buffer
+                {
+                    String from=StaticData.getInstance().account.toString();
+                    String body=clipboard.getClipBoard();
+                    String subj="";
+
+                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+            
+                    try {
+                        roster.sendMessage(c, body, subj, 0);
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+                    } catch (Exception e) {
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
                         e.printStackTrace();
                     }
                     break;
