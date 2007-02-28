@@ -45,6 +45,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.microedition.lcdui.Display;
 import locale.SR;
+import ui.ColorScheme;
 import ui.IconTextElement;
 import ui.Menu;
 import ui.MenuItem;
@@ -93,6 +94,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 	    addItem("Copy JID",892, 0x0f22);
+	    addItem("Send current color scheme",912, 0x0f22);
             
             if (contact.getJid()==contact.getBareJid()) {
                 addItem(SR.MS_SEEN,890);    
@@ -338,6 +340,24 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                             if (c.bareJid!=null)
                                 clipboard.setClipBoard(c.bareJid);
                         } catch (Exception e) {/*no messages*/}
+                    }
+                    break;
+                }
+                
+                case 912: //send color scheme
+                {
+                    String from=StaticData.getInstance().account.toString();
+                    String body=ColorScheme.getSkin();
+                    String subj="color scheme";
+
+                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+            
+                    try {
+                        roster.sendMessage(c, body, subj, 0);
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
+                    } catch (Exception e) {
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
+                        e.printStackTrace();
                     }
                     break;
                 }

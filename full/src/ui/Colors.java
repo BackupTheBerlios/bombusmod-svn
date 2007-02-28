@@ -140,9 +140,7 @@ public class Colors {
             CURSOR_OUTLINE=inputStream.readInt();
 
 	    inputStream.close();
-	} catch (Exception e) {
-	    //e.printStackTrace();
-	}
+	} catch (Exception e) { }
     }
 
     public void saveToStorage(){
@@ -195,9 +193,7 @@ public class Colors {
             
             outputStream.writeInt(CURSOR_OUTLINE);
 
-        } catch (IOException e) { 
-            //e.printStackTrace();
-        }
+        } catch (IOException e) { }
 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
     }
     

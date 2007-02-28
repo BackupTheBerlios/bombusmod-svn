@@ -534,11 +534,12 @@ public abstract class VirtualList
 //#if ALT_INPUT
 //#         }
 //#endif
+        
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
-        if (wobble.length()>0) new PopUp(g,wobble, width-20, height-20);
-        
         drawHeapMonitor(g); //heap monitor
+        
+        if (wobble.length()>0) new PopUp(g,wobble, width-20, height-20);
         
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
 	//full_items=fe;
@@ -552,7 +553,7 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g) {
         if (memMonitor) {
-            g.setClip(0,0, width, 1);
+            //g.setClip(0,0, width, 1);
             int freemem=(int)Runtime.getRuntime().freeMemory();
             int totalmem=(int)Runtime.getRuntime().totalMemory();
             int ram=(int)((freemem*width)/totalmem);
@@ -732,7 +733,8 @@ public abstract class VirtualList
     protected void keyReleased(int keyCode) { kHold=0; }
     protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  }
     
-    protected void pointerPressed(int x, int y) { 
+    protected void pointerPressed(int x, int y) {
+        wobble=""; // hide woobbler
 	if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
             return;
