@@ -119,6 +119,8 @@ public class SearchResult
                 items.addElement(serv);
                 sd.roster.addContact(serv);
             }
+            if (items.size()==0)
+                VirtualList.setWobble("Not found :(");
         }
         sd.roster.reEnumRoster();
     }
@@ -137,12 +139,6 @@ public class SearchResult
     }
     
     public void eventOk(){
-        /*Form f=(Form)vcards.elementAt(cursor);
-        
-        display.setCurrent(f);
-        f.setCommandListener(this);
-        f.addCommand(cmdBack);
-        f.addCommand(cmdAdd);*/
         try {
             Contact c=(Contact)getFocusedObject();
             if (c==null) return;

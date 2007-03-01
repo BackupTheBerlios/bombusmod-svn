@@ -62,20 +62,6 @@ public class MessageArchive {
 	} catch (Exception e) { e.printStackTrace();}
     }
 
-    /*public void importMessageArchive() {
-	try {
-	    rs=RecordStore.openRecordStore("archive", true);
-	    int size=rs.getNumRecords();
-	    indexes=new Vector(size);
-	    RecordEnumeration re=rs.enumerateRecords(null, null, false);
-	    
-	    while (re.hasNextElement() ){
-		indexes.addElement(new Integer(re.nextRecordId() ));
-	    }
-	    
-	} catch (Exception e) { e.printStackTrace();}
-    }*/
-
     public int size(){
 	return indexes.size();
     }
@@ -118,6 +104,13 @@ public class MessageArchive {
 	rs=null;
     }
     
+    public void add(Msg msg) {
+	try {
+            store(msg);
+	    indexes.insertElementAt(msg,0);
+	} catch (Exception e) {}
+    }
+    
     public static void store(Msg msg) {
 	try {
 	    ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -129,7 +122,7 @@ public class MessageArchive {
 	    RecordStore rs=RecordStore.openRecordStore("archive", true);
 	    rs.addRecord(b, 0, b.length);
 	    rs.closeRecordStore();
-	    //new MessageArchive()
+
 	} catch (Exception e) { e.printStackTrace(); }
     }
 }

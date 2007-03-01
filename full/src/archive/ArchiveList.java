@@ -31,6 +31,7 @@ import Client.MessageEdit;
 
 import Client.Config;
 import Client.Msg;
+import Client.StaticData;
 import ui.MainBar;
 import Messages.MessageList;
 import java.io.IOException;
@@ -64,14 +65,14 @@ public class ArchiveList
 //#endif
 {
 
-    Command cmdDelete=new Command(SR.MS_DELETE /*"Delete"*/, Command.SCREEN, 9);
-    Command cmdPaste=new Command(SR.MS_PASTE_BODY /*"Paste Body"*/, Command.SCREEN, 1);
-    Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT /*"Paste Subject"*/, Command.SCREEN, 3);
+    Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 9);
+    Command cmdPaste=new Command(SR.MS_PASTE_BODY, Command.SCREEN, 1);
+    Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);
+    Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
 //#if (FILE_IO)
     Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE /*"Paste Jid"*/, Command.SCREEN, 5);
 //#endif
     Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
-    //Command cmdNick=new Command("Paste Nickname", Command.SCREEN, 3);
     
     MessageArchive archive=new MessageArchive();
     MessageEdit target;
@@ -96,6 +97,7 @@ public class ArchiveList
 //#if (FILE_IO)	
         addCommand(cmdExport);
 //#endif
+	addCommand(cmdEdit);
 	if (target!=null) {
 	    addCommand(cmdPaste);
 	    addCommand(cmdJid);
@@ -114,7 +116,6 @@ public class ArchiveList
 	mainbar.addElement(null);
 	mainbar.addElement(SR.MS_FREE /*"free "*/);
         setMainBarItem(mainbar);
-        
     }
 
     protected void beginPaint() {
@@ -132,20 +133,23 @@ public class ArchiveList
 
     public void commandAction(Command c, Displayable d) {
         super.commandAction(c,d);
-	if (c==cmdDelete) { deleteMessage(); }
+	if (c==cmdDelete) { deleteMessage(); redraw(); }
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
 	if (c==cmdJid) { pasteData(2); }
 //#if FILE_IO
         if (c==cmdExport) { new Browser(null, display, this, true); }
 //#endif
+        if (c==cmdEdit) {
+            new archiveEdit(display,getMessage(cursor)).setParentView(StaticData.getInstance().roster);
+            deleteMessage();
+        }
     }
 	
 
     private void deleteMessage() {
         archive.delete(cursor);
         messages=new Vector();
-        redraw();
     }
     
     private void pasteData(int field) {

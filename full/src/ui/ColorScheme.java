@@ -1,15 +1,36 @@
 /*
  * ColorScheme.java
  *
- * Created on 28 Февраль 2007 г., 13:24
+ * Created on 20.02.2005, 21:20
+ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 package ui;
 
 import Client.StaticData;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Hashtable;
 import util.StringLoader;
 
@@ -23,11 +44,58 @@ public class ColorScheme {
     private static Hashtable skin;
     
     private static String skinFile;
+/*
+    private static int BALLOON_INK          =0x000000;
+    private static int BALLOON_BGND         =0xffffe0;
     
-    /** Creates a new instance of ColorScheme */
+    private static int LIST_BGND            =0xFFFFFF;
+    private static int LIST_BGND_EVEN       =0xffeeff;
+    private static int LIST_INK             =0x000000;
+    
+    private static int MSG_SUBJ             =0xa00000;
+    private static int MSG_HIGHLIGHT        =0x904090;
+    
+    private static int DISCO_CMD            =0x000080;
+    
+    private static int BAR_BGND             =0x0033ff;
+    private static int BAR_INK              =0x33ffff;
+    
+    private static int CONTACT_DEFAULT      =0x000000;
+    private static int CONTACT_CHAT         =0x39358b;
+    private static int CONTACT_AWAY         =0x008080;
+    private static int CONTACT_XA           =0x535353;
+    private static int CONTACT_DND          =0x800000;
+    
+    private static int GROUP_INK            =0x000080;
+    
+    private static int BLK_INK              =0xffffff;
+    private static int BLK_BGND             =0x000000;
+
+    private static int MESSAGE_IN           =0x0000b0;
+    private static int MESSAGE_OUT          =0xb00000;
+    private static int MESSAGE_PRESENCE     =0x006000;
+    private static int MESSAGE_AUTH         =0x400040;
+    private static int MESSAGE_HISTORY      =0x535353;
+
+    private static int PGS_REMAINED         =0xffffff;
+    private static int PGS_COMPLETE         =0x0000ff;
+    private static int PGS_BORDER           =0x808080;
+    private static int PGS_BGND             =0x000000;
+    
+    private static int HEAP_TOTAL           =0xffffff;
+    private static int HEAP_FREE            =0x00007f;
+
+    private static int CURSOR_BGND          =0xC8D7E6;
+    private static int CURSOR_OUTLINE       =0x000066;
+
+    private static int SCROLL_BRD           =0x000000;
+    private static int SCROLL_BAR           =0xBBBBBB;
+    private static int SCROLL_BGND          =0xDDDDDD;
+    
+
     public ColorScheme() {
     }
-    
+*/    
     
     public static void loadSkin(String skinFile){
         skinFile=skinFile;
@@ -83,9 +151,7 @@ public class ColorScheme {
             return 0xFF0000;
         }
     }
-
     
-//#if (FILE_IO)
     public static String getSkin(){
                 
                 cl=Colors.getInstance();
@@ -129,5 +195,79 @@ public class ColorScheme {
 
                 return body.toString();
     }
-//#endif 
+/*    
+    public void serialize(DataOutputStream os) throws IOException {
+        os.writeInt(BALLOON_INK);
+        os.writeInt(BALLOON_BGND);
+        os.writeInt(LIST_BGND);
+        os.writeInt(LIST_BGND_EVEN);
+        os.writeInt(LIST_INK);
+        os.writeInt(MSG_SUBJ);
+        os.writeInt(MSG_HIGHLIGHT);
+        os.writeInt(DISCO_CMD);
+        os.writeInt(BAR_BGND);
+        os.writeInt(BAR_INK);
+        os.writeInt(CONTACT_DEFAULT);
+        os.writeInt(CONTACT_CHAT);
+        os.writeInt(CONTACT_AWAY);
+        os.writeInt(CONTACT_XA);
+        os.writeInt(CONTACT_DND);
+        os.writeInt(GROUP_INK);
+        os.writeInt(BLK_INK);
+        os.writeInt(BLK_BGND);
+        os.writeInt(MESSAGE_IN);
+        os.writeInt(MESSAGE_OUT);
+        os.writeInt(MESSAGE_PRESENCE);
+        os.writeInt(MESSAGE_AUTH);
+        os.writeInt(MESSAGE_HISTORY);
+        os.writeInt(PGS_REMAINED);
+        os.writeInt(PGS_COMPLETE);
+        os.writeInt(PGS_BORDER);
+        os.writeInt(PGS_BGND);
+        os.writeInt(HEAP_TOTAL);
+        os.writeInt(HEAP_FREE);
+        os.writeInt(CURSOR_BGND);
+        os.writeInt(CURSOR_OUTLINE);
+        os.writeInt(SCROLL_BRD);
+        os.writeInt(SCROLL_BAR);
+        os.writeInt(SCROLL_BGND);
+    }
+    
+    public ColorScheme (DataInputStream is) throws IOException {
+        BALLOON_INK=is.readInt();
+        BALLOON_BGND=is.readInt();
+        LIST_BGND=is.readInt();
+        LIST_BGND_EVEN=is.readInt();
+        LIST_INK=is.readInt();
+        MSG_SUBJ=is.readInt();
+        MSG_HIGHLIGHT=is.readInt();
+        DISCO_CMD=is.readInt();
+        BAR_BGND=is.readInt();
+        BAR_INK=is.readInt();
+        CONTACT_DEFAULT=is.readInt();
+        CONTACT_CHAT=is.readInt();
+        CONTACT_AWAY=is.readInt();
+        CONTACT_XA=is.readInt();
+        CONTACT_DND=is.readInt();
+        GROUP_INK=is.readInt();
+        BLK_INK=is.readInt();
+        BLK_BGND=is.readInt();
+        MESSAGE_IN=is.readInt();
+        MESSAGE_OUT=is.readInt();
+        MESSAGE_PRESENCE=is.readInt();
+        MESSAGE_AUTH=is.readInt();
+        MESSAGE_HISTORY=is.readInt();
+        PGS_REMAINED=is.readInt();
+        PGS_COMPLETE=is.readInt();
+        PGS_BORDER=is.readInt();
+        PGS_BGND=is.readInt();
+        HEAP_TOTAL=is.readInt();
+        HEAP_FREE=is.readInt();
+        CURSOR_BGND=is.readInt();
+        CURSOR_OUTLINE=is.readInt();
+        SCROLL_BRD=is.readInt();
+        SCROLL_BAR=is.readInt();
+        SCROLL_BGND=is.readInt();
+    }
+ */
 }

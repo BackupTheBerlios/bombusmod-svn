@@ -33,7 +33,9 @@ import images.RosterIcons;
 import images.SmilesIcons;
 import io.NvStorage;
 import locale.SR;
-import templates.TemplateContainer;
+//#if TEMPLATES
+//# import templates.TemplateContainer;
+//#endif
 import ui.MainBar;
 //#if ALT_INPUT
 //# import History.HistoryStorage;
@@ -68,7 +70,9 @@ public class ContactMessageList extends MessageList
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
     Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 11);
     Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 11);
-    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,13);
+//#if TEMPLATES
+//#     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,13);
+//#endif
     Command cmdSendBuffer=new Command("Send Buffer", Command.SCREEN, 14);
     
      
@@ -114,7 +118,9 @@ public class ContactMessageList extends MessageList
 	addCommand(cmdActive);
         addCommand(cmdQuote);
         addCommand(cmdArch);
-        addCommand(cmdTemplate);
+//#if TEMPLATES
+//#         addCommand(cmdTemplate);
+//#endif
         addCommand(cmdCopy);
         if (!clipboard.isEmpty()) {
             addCommand(cmdCopyPlus);
@@ -245,14 +251,14 @@ public class ContactMessageList extends MessageList
                 clipboard.setClipBoard(clipstr.toString());
             } catch (Exception e) {/*no messages*/}
         }
-        
-        if (c==cmdTemplate) {
-            try {
-                //new TemplateContainer(getMessage(cursor).getBody(), -1);
-                TemplateContainer.store(getMessage(cursor));
-            } catch (Exception e) {/*no messages*/}
-        }
-        
+//#if TEMPLATES
+//#         if (c==cmdTemplate) {
+//#             try {
+//#                 //new TemplateContainer(getMessage(cursor).getBody(), -1);
+//#                 TemplateContainer.store(getMessage(cursor));
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#endif
         if (c==cmdSubscribe) {
             sd.roster.doSubscribe(contact);
         }
@@ -264,17 +270,19 @@ public class ContactMessageList extends MessageList
         if (c==cmdSendBuffer) {
             String from=StaticData.getInstance().account.toString();
             String body=clipboard.getClipBoard();
-            String subj="";
+            String subj=null;
 
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
 
             try {
-                sd.roster.sendMessage(contact, body, subj, 0);
+                if (body!=null)
+                    sd.roster.sendMessage(contact, body, subj, 1);
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
             } catch (Exception e) {
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
                 e.printStackTrace();
             }
+            redraw();
         }
 //#if LAST_MESSAGES
 //#         if (c==cmdRecent) {

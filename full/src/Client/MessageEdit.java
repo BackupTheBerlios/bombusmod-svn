@@ -32,7 +32,9 @@ import Info.Version;
 import archive.ArchiveList;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import templates.AppendTemplate;
+//#if TEMPLATES
+//# import templates.AppendTemplate;
+//#endif
 import ui.AlertBox;
 import ui.VirtualList;
 import util.ClipBoard;
@@ -64,7 +66,9 @@ public class MessageEdit
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 5);
     private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
     private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
-    private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 97); 
+//#if TEMPLATES
+//#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 97); 
+//#endif
     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);    
 
     private boolean composing=true;
@@ -109,8 +113,9 @@ public class MessageEdit
         t.addCommand(cmdSuspend);
         if (!clipboard.isEmpty())
             t.addCommand(cmdPasteText);
-        
-        t.addCommand(cmdTemplate);
+//#if TEMPLATES
+//#         t.addCommand(cmdTemplate);
+//#endif
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
         
@@ -171,8 +176,10 @@ public class MessageEdit
         if (c==cmdAbc) {setInitialCaps(false); return; }
         if (c==cmdABC) {setInitialCaps(true); return; }
 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
-        if (c==cmdPasteText) { t.insert(clipboard.getClipBoard(), caretPos); return; } 
-        if (c==cmdTemplate) { new AppendTemplate(display,  this, caretPos); return; }
+        if (c==cmdPasteText) { t.insert(clipboard.getClipBoard(), caretPos); return; }
+//#if TEMPLATES
+//#         if (c==cmdTemplate) { new AppendTemplate(display,  this, caretPos); return; }
+//#endif
         if (c==cmdCancel) { 
             composing=false;
             body=null;
