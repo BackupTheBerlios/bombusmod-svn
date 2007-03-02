@@ -30,7 +30,7 @@ package ui.controls;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import ui.Colors;
+import ui.ColorScheme;
 import ui.FontCache;
 
 /**
@@ -82,13 +82,13 @@ public class PopUp {
     }
     
     public void draw(Graphics g) {
-        g.setColor((kikoban)?0xff0000:Colors.BALLOON_INK);
+        g.setColor((kikoban)?0xff0000:ColorScheme.BALLOON_INK);
         g.fillRoundRect(0,0,width,height,10,10);
         
-        g.setColor((kikoban)?0xff0000:Colors.BALLOON_BGND);
+        g.setColor((kikoban)?0xff0000:ColorScheme.BALLOON_BGND);
         g.fillRoundRect(1,1,width-2,height-2,10,10);
         
-        g.setColor((kikoban)?0xffff00:Colors.BALLOON_INK);
+        g.setColor((kikoban)?0xffff00:ColorScheme.BALLOON_INK);
         g.setFont(font);
         drawAllStrings(g, 3,3);
     }

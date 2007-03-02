@@ -35,7 +35,7 @@ import java.util.TimerTask;
 
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
-import ui.Colors;
+import ui.ColorScheme;
 import ui.FontCache;
 import ui.VirtualList;
 

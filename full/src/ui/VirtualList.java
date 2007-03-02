@@ -77,7 +77,7 @@ public abstract class VirtualList
      * цвет фона заголовка
      * @return RGB-цвет фона заголовка
      */
-    protected int getMainBarBGndRGB() {return Colors.BAR_BGND;} 
+    protected int getMainBarBGndRGB() {return ColorScheme.BAR_BGND;} 
     
     private StaticData sd=StaticData.getInstance();
 
@@ -97,7 +97,7 @@ public abstract class VirtualList
      * цвет текста заголовка
      * @return RGB-цвет текста заголовка
      */
-    protected int getMainBarRGB() {return Colors.BAR_INK;} 
+    protected int getMainBarRGB() {return ColorScheme.BAR_INK;} 
     
     private Config cf=Config.getInstance();
     
@@ -483,7 +483,7 @@ public abstract class VirtualList
         if (clrH>0) {
             setAbsOrg(g, 0,displayedBottom);
             g.setClip(0, 0, itemMaxWidth, clrH);
-            g.setColor(Colors.LIST_BGND);
+            g.setColor(ColorScheme.LIST_BGND);
             //g.setColor(VL_CURSOR_OUTLINE);
             g.fillRect(0, 0, itemMaxWidth, clrH);
         }
@@ -557,8 +557,8 @@ public abstract class VirtualList
             int freemem=(int)Runtime.getRuntime().freeMemory();
             int totalmem=(int)Runtime.getRuntime().totalMemory();
             int ram=(int)((freemem*width)/totalmem);
-            g.setColor(Colors.HEAP_TOTAL);  g.fillRect(0,0,width,1);
-            g.setColor(Colors.HEAP_FREE);  g.fillRect(0,0,ram,1);
+            g.setColor(ColorScheme.HEAP_TOTAL);  g.fillRect(0,0,width,1);
+            g.setColor(ColorScheme.HEAP_FREE);  g.fillRect(0,0,ram,1);
         }
     }
     
@@ -1035,8 +1035,8 @@ public abstract class VirtualList
      * @param height высота курсора
      */
     protected void drawCursor (Graphics g, int width, int height){
-            g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
-            g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
+            g.setColor(ColorScheme.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
+            g.setColor(ColorScheme.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
     }
 
     public void setParentView(Displayable parentView){

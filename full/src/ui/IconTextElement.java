@@ -73,7 +73,7 @@ abstract public class IconTextElement implements VirtualElement
     }
     //public int getItemCount()
     public int getVHeight(){ return itemHeight;}
-    public int getColorBGnd(){ return Colors.LIST_BGND;}
+    public int getColorBGnd(){ return ColorScheme.LIST_BGND;}
     public void onSelect(){};
     
     /*public void eventOk(){

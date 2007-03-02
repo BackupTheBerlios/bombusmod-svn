@@ -130,7 +130,7 @@ public class Bombus extends MIDlet implements Runnable{
         }
         
         try {
-            Colors cl=Colors.getInstance();
+            ColorScheme cl=ColorScheme.getInstance();
         } catch (Exception e) {
             System.out.println("Colors error");
             //e.printStackTrace();

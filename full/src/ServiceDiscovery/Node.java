@@ -29,7 +29,7 @@ package ServiceDiscovery;
 
 import Client.StaticData;
 import images.RosterIcons;
-import ui.Colors;
+import ui.ColorScheme;
 import ui.IconTextElement;
 import ui.ImageList;
 
@@ -43,7 +43,7 @@ public class Node extends IconTextElement{
     private String name;
     
     public int getImageIndex() { return RosterIcons.ICON_COLLAPSED_INDEX; }
-    public int getColor() { return Colors.LIST_INK; }
+    public int getColor() { return ColorScheme.LIST_INK; }
     /** Creates a new instance of Item */
     public Node(String name, String node) {
         super(RosterIcons.getInstance());

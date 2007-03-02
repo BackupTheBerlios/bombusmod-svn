@@ -29,7 +29,7 @@ package ui.controls;
 
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import ui.Colors;
+import ui.ColorScheme;
 import ui.FontCache;
 
 /**
@@ -55,13 +55,13 @@ public class Balloon {
         y-=height-1;
         g.translate(0, y);
         
-        g.setColor(Colors.BALLOON_INK);
+        g.setColor(ColorScheme.BALLOON_INK);
         g.fillRect(2, 0, width, height);
 
-        g.setColor(Colors.BALLOON_BGND);
+        g.setColor(ColorScheme.BALLOON_BGND);
         g.fillRect(3, 1, width-2, height-2);
        
-        g.setColor(Colors.BALLOON_INK);
+        g.setColor(ColorScheme.BALLOON_INK);
         g.drawString(text, 5, 2, Graphics.TOP | Graphics.LEFT);
     }
 }

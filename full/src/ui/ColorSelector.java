@@ -38,7 +38,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         private Display display;
 	Displayable parentView;
 	Graphics G;
-        private Colors cl;
+        private ColorScheme cl;
 	int CW;
 	int cpos;
         String nowcolor;
@@ -59,18 +59,23 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         int ncolor;
         
         Command cmdOk = new Command(SR.MS_OK /*"OK"*/, Command.OK, 1);
+
+        private int color;
+        
         Command cmdCancel = new Command(SR.MS_BACK /*"Back"*/, Command.BACK, 99);
 
 	public ColorSelector(Display display, int paramName) {
 		super();
                 this.display=display;
                 parentView=display.getCurrent();
+                this.color=ColorForm.COLORS[paramName];
                 this.paramName=paramName;
+                
 		w = getWidth();
 		h = getHeight();
                
                 
-                String ncolor="0x"+Integer.toHexString(ColorForm.COLORS[paramName]);
+                String ncolor="0x"+Integer.toHexString(color);
                 if (ncolor.length()==3) {
                     ncolor=ncolor+"00000";
                 } else if (ncolor.length()==4) {
@@ -124,7 +129,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 		g.setColor(red,green,blue);
 		g.fillRect(4, 4, 12, 12);
 		g.setColor(0x800000);
-		g.drawString(s, 20, 5, g.TOP|g.LEFT);
+		g.drawString(s+" "+ColorForm.NAMES[paramName], 20, 5, g.TOP|g.LEFT);
                 
                 
                 //draw red
@@ -212,20 +217,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 			case -26:
 			case -4:
 			case '5':
-                                reds=Integer.toHexString(red);
-                                if (reds.length()==1) reds="0"+reds;
-
-                                greens=Integer.toHexString(green);
-                                if (greens.length()==1) greens="0"+greens;
-
-                                blues=Integer.toHexString(blue);
-                                if (blues.length()==1) blues="0"+blues;
-
-                                val = "0x"+reds+greens+blues;
-
-                                setValue(Integer.parseInt(val.substring(2),16));
-                                //ColorForm.reloadSkin();
-                                ColorForm.COLORS[paramName]=Integer.parseInt(val.substring(2),16);
+                                eventOk();
                                 exit = true;
                                 destroyView();
 				break;
@@ -257,20 +249,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                                         repaint();
                                         break;
                                     case FIRE:
-                                        reds=Integer.toHexString(red);
-                                        if (reds.length()==1) reds="0"+reds;
-
-                                        greens=Integer.toHexString(green);
-                                        if (greens.length()==1) greens="0"+greens;
-
-                                        blues=Integer.toHexString(blue);
-                                        if (blues.length()==1) blues="0"+blues;
-
-                                        val = "0x"+reds+greens+blues;
-
-                                        setValue(Integer.parseInt(val.substring(2),16));
-                                        //ColorForm.reloadSkin();
-                                        ColorForm.COLORS[paramName]=Integer.parseInt(val.substring(2),16);
+                                        eventOk();
                                         exit = true;
                                         destroyView();
                                         break;
@@ -295,7 +274,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         
 	public void setValue(int vall) {
             this.value=vall;
-            cl=Colors.getInstance();
+            cl=ColorScheme.getInstance();
             switch(paramName) {
                 case 0:
                     cl.BALLOON_INK=value;
@@ -432,28 +411,34 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 	    return;
 	}
 	if (c==cmdOk) {
-            String reds=Integer.toHexString(red);
-            if (reds.length()==1) reds="0"+reds;
-            
-            String greens=Integer.toHexString(green);
-            if (greens.length()==1) greens="0"+greens;
-
-            String blues=Integer.toHexString(blue);
-            if (blues.length()==1) blues="0"+blues;
-
-            String val = "0x"+reds+greens+blues;
-
-            setValue(Integer.parseInt(val.substring(2),16));
-            //ColorForm.reloadSkin();
-            ColorForm.COLORS[paramName]=Integer.parseInt(val.substring(2),16);
-            exit = true;
+            eventOk();
             destroyView();
             return;
 	}
     }
     
+    private void eventOk () {
+        String reds=Integer.toHexString(red);
+        if (reds.length()==1) reds="0"+reds;
+
+        String greens=Integer.toHexString(green);
+        if (greens.length()==1) greens="0"+greens;
+
+        String blues=Integer.toHexString(blue);
+        if (blues.length()==1) blues="0"+blues;
+
+        String val = "0x"+reds+greens+blues;
+
+        setValue(Integer.parseInt(val.substring(2),16));
+        ColorForm.COLORS[paramName]=Integer.parseInt(val.substring(2),16);
+        ColorForm.IMAGES[paramName]=ColorForm.imageData(Integer.parseInt(val.substring(2),16));
+        ColorForm.updateItem(paramName);
+        exit = true;
+    }
+    
     public void destroyView()	{
         if (display!=null)   display.setCurrent(parentView);
+        //new ColorForm(display);
     }
         
 }

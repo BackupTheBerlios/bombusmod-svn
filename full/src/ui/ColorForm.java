@@ -1,5 +1,5 @@
 /*
- *ColorForm.java
+ * ColorForm.java
  *
  * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -53,113 +53,171 @@ public class ColorForm implements CommandListener
         , BrowserListener
 //#endif
 {
-      private Displayable currentChoice = null;
-      private Display display;
-      private Displayable parentView;
+    private Displayable currentChoice = null;
+    private Display display;
+    private Displayable parentView;
       
-
-      private static Colors cl=Colors.getInstance();
-
-      public final static String[] NAMES = {
-                                    SR.MS_BALLOON_INK,
-                                    SR.MS_BALLOON_BGND,
-                                    SR.MS_LIST_BGND,
-                                    SR.MS_LIST_BGND_EVEN,
-                                    SR.MS_LIST_INK,
-                                    SR.MS_MSG_SUBJ,
-                                    SR.MS_MSG_HIGHLIGHT,
-                                    SR.MS_DISCO_CMD,
-                                    SR.MS_BAR_BGND,
-                                    SR.MS_BAR_INK,
-                                    SR.MS_CONTACT_DEFAULT,
-                                    SR.MS_CONTACT_CHAT,
-                                    SR.MS_CONTACT_AWAY,
-                                    SR.MS_CONTACT_XA,
-                                    SR.MS_CONTACT_DND,
-                                    SR.MS_GROUP_INK,
-                                    SR.MS_BLK_INK,
-                                    SR.MS_BLK_BGND,
-                                    SR.MS_MESSAGE_IN,
-                                    SR.MS_MESSAGE_OUT,
-                                    SR.MS_MESSAGE_PRESENCE,
-                                    SR.MS_MESSAGE_AUTH,
-                                    SR.MS_MESSAGE_HISTORY,
-                                    SR.MS_PGS_REMAINED,
-                                    SR.MS_PGS_COMPLETE,
-                                    SR.MS_PGS_BORDER,
-                                    SR.MS_PGS_BGND,
-                                    SR.MS_HEAP_TOTAL,
-                                    SR.MS_HEAP_FREE,
-                                    SR.MS_CURSOR_BGND,
-                                    SR.MS_CURSOR_OUTLINE,
-                                    SR.MS_SCROLL_BRD,
-                                    SR.MS_SCROLL_BAR,
-                                    SR.MS_SCROLL_BGND};
+    private static ColorScheme cl=ColorScheme.getInstance();
       
-      public final static int[] COLORS = {
-                                    cl.BALLOON_INK,
-                                    cl.BALLOON_BGND,
-                                    cl.LIST_BGND,
-                                    cl.LIST_BGND_EVEN,
-                                    cl.LIST_INK,
-                                    cl.MSG_SUBJ,
-                                    cl.MSG_HIGHLIGHT,
-                                    cl.DISCO_CMD,
-                                    cl.BAR_BGND,
-                                    cl.BAR_INK,
-                                    cl.CONTACT_DEFAULT,
-                                    cl.CONTACT_CHAT,
-                                    cl.CONTACT_AWAY,
-                                    cl.CONTACT_XA,
-                                    cl.CONTACT_DND,
-                                    cl.GROUP_INK,
-                                    cl.BLK_INK,
-                                    cl.BLK_BGND,
-                                    cl.MESSAGE_IN,
-                                    cl.MESSAGE_OUT,
-                                    cl.MESSAGE_PRESENCE,
-                                    cl.MESSAGE_AUTH,
-                                    cl.MESSAGE_HISTORY,
-                                    cl.PGS_REMAINED,
-                                    cl.PGS_COMPLETE,
-                                    cl.PGS_BORDER,
-                                    cl.PGS_BGND,
-                                    cl.HEAP_TOTAL,
-                                    cl.HEAP_FREE,
-                                    cl.CURSOR_BGND,
-                                    cl.CURSOR_OUTLINE,
-                                    cl.SCROLL_BRD,
-                                    cl.SCROLL_BAR,
-                                    cl.SCROLL_BGND};
+    private final static int w=16;
+    private final static int h=16;
 
-    List selectionList;
+    public static final String[] NAMES = {
+            SR.MS_BALLOON_INK,
+            SR.MS_BALLOON_BGND,
+            SR.MS_LIST_BGND,
+            SR.MS_LIST_BGND_EVEN,
+            SR.MS_LIST_INK,
+
+            SR.MS_MSG_SUBJ,
+            SR.MS_MSG_HIGHLIGHT,
+            SR.MS_DISCO_CMD,
+            SR.MS_BAR_BGND,
+            SR.MS_BAR_INK,
+
+            SR.MS_CONTACT_DEFAULT,
+            SR.MS_CONTACT_CHAT,
+            SR.MS_CONTACT_AWAY,
+            SR.MS_CONTACT_XA,
+            SR.MS_CONTACT_DND,
+
+            SR.MS_GROUP_INK,
+            SR.MS_BLK_INK,
+            SR.MS_BLK_BGND,
+            SR.MS_MESSAGE_IN,
+            SR.MS_MESSAGE_OUT,
+
+            SR.MS_MESSAGE_PRESENCE,
+            SR.MS_MESSAGE_AUTH,
+            SR.MS_MESSAGE_HISTORY,
+            SR.MS_PGS_REMAINED,
+            SR.MS_PGS_COMPLETE,
+
+            SR.MS_PGS_BORDER,
+            SR.MS_PGS_BGND,
+            SR.MS_HEAP_TOTAL,
+            SR.MS_HEAP_FREE,
+            SR.MS_CURSOR_BGND,
+
+            SR.MS_CURSOR_OUTLINE,
+            SR.MS_SCROLL_BRD,
+            SR.MS_SCROLL_BAR,
+            SR.MS_SCROLL_BGND
+        };
+        
+        public static int[] COLORS = {            
+            cl.BALLOON_INK,
+            cl.BALLOON_BGND,
+            cl.LIST_BGND,
+            cl.LIST_BGND_EVEN,
+            cl.LIST_INK,
+            cl.MSG_SUBJ,
+            cl.MSG_HIGHLIGHT,
+            cl.DISCO_CMD,
+            cl.BAR_BGND,
+            cl.BAR_INK,
+            cl.CONTACT_DEFAULT,
+            cl.CONTACT_CHAT,
+            cl.CONTACT_AWAY,
+            cl.CONTACT_XA,
+            cl.CONTACT_DND,
+            cl.GROUP_INK,
+            cl.BLK_INK,
+            cl.BLK_BGND,
+            cl.MESSAGE_IN,
+            cl.MESSAGE_OUT,
+            cl.MESSAGE_PRESENCE,
+            cl.MESSAGE_AUTH,
+            cl.MESSAGE_HISTORY,
+            cl.PGS_REMAINED,
+            cl.PGS_COMPLETE,
+            cl.PGS_BORDER,
+            cl.PGS_BGND,
+            cl.HEAP_TOTAL,
+            cl.HEAP_FREE,
+            cl.CURSOR_BGND,
+            cl.CURSOR_OUTLINE,
+            cl.SCROLL_BRD,
+            cl.SCROLL_BAR,
+            cl.SCROLL_BGND
+      };
+        
       
-    Command cmdOk=new Command(SR.MS_EDIT,Command.OK,1);
+    public static Image[] IMAGES= {
+            imageData(cl.BALLOON_INK),
+            imageData(cl.BALLOON_BGND),
+            imageData(cl.LIST_BGND),
+            imageData(cl.LIST_BGND_EVEN),
+            imageData(cl.LIST_INK),
+
+            imageData(cl.MSG_SUBJ),
+            imageData(cl.MSG_HIGHLIGHT),
+            imageData(cl.DISCO_CMD),
+            imageData(cl.BAR_BGND),
+            imageData(cl.BAR_INK),
+
+            imageData(cl.CONTACT_DEFAULT),
+            imageData(cl.CONTACT_CHAT),
+            imageData(cl.CONTACT_AWAY),
+            imageData(cl.CONTACT_XA),
+            imageData(cl.CONTACT_DND),
+                    
+            imageData(cl.GROUP_INK),
+            imageData(cl.BLK_INK),
+            imageData(cl.BLK_BGND),
+            imageData(cl.MESSAGE_IN),
+            imageData(cl.MESSAGE_OUT),
+
+            imageData(cl.MESSAGE_PRESENCE),
+            imageData(cl.MESSAGE_AUTH),
+            imageData(cl.MESSAGE_HISTORY),
+            imageData(cl.PGS_REMAINED),
+            imageData(cl.PGS_COMPLETE),
+
+            imageData(cl.PGS_BORDER),
+            imageData(cl.PGS_BGND),
+            imageData(cl.HEAP_TOTAL),
+            imageData(cl.HEAP_FREE),
+            imageData(cl.CURSOR_BGND),
+
+            imageData(cl.CURSOR_OUTLINE),
+            imageData(cl.SCROLL_BRD),
+            imageData(cl.SCROLL_BAR),
+            imageData(cl.SCROLL_BGND)
+      };
+
+
+    private static List selectionList;
+
 //#if (FILE_IO)
-    Command cmdSaveSkin=new Command("Save Skin", Command.ITEM,2); 
+    Command cmdSaveSkin=new Command("Save Skin", Command.ITEM,3); 
     int fileSize;
     private int filePos;
     String filePath;
     private FileIO file;
     private OutputStream os;
 //#endif
-    Command cmdCancel=new Command(SR.MS_DONE, Command.BACK,99);
     
-	public ColorForm(Display display) {
-		super();
-                this.display=display;
-                parentView=display.getCurrent();
+    private Command cmdCancel=new Command("Exit", Command.BACK, 99);
 
-                reloadSkin();
-                selectionList = new List("Colors", List.IMPLICIT, NAMES, null);
-                selectionList.addCommand(cmdOk);
+    private Command selectCommand = new Command("Edit...", Command.ITEM, 1);
+    
+    public ColorForm(Display display) {
+        super();
+        this.display=display;
+        parentView=display.getCurrent();
+
+        selectionList = new List("Colors", List.IMPLICIT, NAMES, IMAGES);
+
+        selectionList.setSelectCommand(selectCommand);
+
 //#if (FILE_IO)
-                selectionList.addCommand(cmdSaveSkin);
+        selectionList.addCommand(cmdSaveSkin);
 //#endif
-                selectionList.addCommand(cmdCancel);
-                display.setCurrent(selectionList);
-                selectionList.setCommandListener(this);
-	}
+        selectionList.addCommand(cmdCancel);
+        display.setCurrent(selectionList);
+        selectionList.setCommandListener(this);
+    }
       
     public void commandAction(Command c, Displayable d) {
         int pos = selectionList.getSelectedIndex();
@@ -173,7 +231,7 @@ public class ColorForm implements CommandListener
         if (c==cmdSaveSkin) new Browser(null,display, this, true);
 //#endif
         
-        if (c==cmdOk) {
+        if (c==selectCommand) {
             if (pos != NAMES.length - 1) {
               try {
                   if (!NAMES[pos].startsWith("(n/a)")) {
@@ -184,45 +242,6 @@ public class ColorForm implements CommandListener
         }
     }
 
-    public final static void reloadSkin() {
-        cl.loadFromStorage();
-        final int[] COLORS = {            
-                                    cl.BALLOON_INK,
-                                    cl.BALLOON_BGND,
-                                    cl.LIST_BGND,
-                                    cl.LIST_BGND_EVEN,
-                                    cl.LIST_INK,
-                                    cl.MSG_SUBJ,
-                                    cl.MSG_HIGHLIGHT,
-                                    cl.DISCO_CMD,
-                                    cl.BAR_BGND,
-                                    cl.BAR_INK,
-                                    cl.CONTACT_DEFAULT,
-                                    cl.CONTACT_CHAT,
-                                    cl.CONTACT_AWAY,
-                                    cl.CONTACT_XA,
-                                    cl.CONTACT_DND,
-                                    cl.GROUP_INK,
-                                    cl.BLK_INK,
-                                    cl.BLK_BGND,
-                                    cl.MESSAGE_IN,
-                                    cl.MESSAGE_OUT,
-                                    cl.MESSAGE_PRESENCE,
-                                    cl.MESSAGE_AUTH,
-                                    cl.MESSAGE_HISTORY,
-                                    cl.PGS_REMAINED,
-                                    cl.PGS_COMPLETE,
-                                    cl.PGS_BORDER,
-                                    cl.PGS_BGND,
-                                    cl.HEAP_TOTAL,
-                                    cl.HEAP_FREE,
-                                    cl.CURSOR_BGND,
-                                    cl.CURSOR_OUTLINE,
-                                    cl.SCROLL_BRD,
-                                    cl.SCROLL_BAR,
-                                    cl.SCROLL_BGND
-      };
-    }
 
 //#if (FILE_IO)
     void writeFile(byte b[]){
@@ -257,5 +276,23 @@ public class ColorForm implements CommandListener
 
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
+    }
+    
+    public static void updateItem(int item) {
+        selectionList.set(item,NAMES[item],IMAGES[item]);
+    }
+    
+    public static Image imageData(int color) {
+        try {
+            int len=w*h;
+            int[] arrayInt=new int[len];
+            
+            for (int i=0; i<len;i++) {
+                arrayInt[i]=color;
+            }
+            return Image.createRGBImage(arrayInt,w,h,false);
+        } catch (Exception ex) { ex.printStackTrace(); }
+        
+        return null;
     }
 }

@@ -46,8 +46,8 @@ public class ComplexString extends Vector implements VirtualElement{
     private int height;
     private int width;
     private ImageList imageList;
-    private int colorBGnd=Colors.LIST_BGND;
-    private int color=Colors.LIST_INK;
+    private int colorBGnd=ColorScheme.LIST_BGND;
+    private int color=ColorScheme.LIST_INK;
     
     /** Creates a new instance of ComplexString */
     public ComplexString() {

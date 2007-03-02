@@ -31,7 +31,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
 import javax.microedition.lcdui.Font;
-import ui.Colors;
+import ui.ColorScheme;
 import ui.Time;
 import Client.ContactMessageList;
 import javax.microedition.lcdui.Image;
@@ -82,15 +82,15 @@ public class Msg //implements MessageList.Element
     //private TimeZone tz(){ return StaticData.getInstance().config.tz;}
     
     public int getColor() {
-        if (highlite) return Colors.MSG_HIGHLIGHT;
+        if (highlite) return ColorScheme.MSG_HIGHLIGHT;
         switch (messageType) {
-            case MESSAGE_TYPE_IN: return Colors.MESSAGE_IN;
-            case MESSAGE_TYPE_OUT: return Colors.MESSAGE_OUT;
-            case MESSAGE_TYPE_PRESENCE: return Colors.MESSAGE_PRESENCE;
-            case MESSAGE_TYPE_AUTH: return Colors.MESSAGE_AUTH;
-            case MESSAGE_TYPE_HISTORY: return Colors.MESSAGE_HISTORY;
-            case MESSAGE_TYPE_SUBJ:return Colors.MSG_SUBJ;
-            default: return Colors.MESSAGE_HISTORY;
+            case MESSAGE_TYPE_IN: return ColorScheme.MESSAGE_IN;
+            case MESSAGE_TYPE_OUT: return ColorScheme.MESSAGE_OUT;
+            case MESSAGE_TYPE_PRESENCE: return ColorScheme.MESSAGE_PRESENCE;
+            case MESSAGE_TYPE_AUTH: return ColorScheme.MESSAGE_AUTH;
+            case MESSAGE_TYPE_HISTORY: return ColorScheme.MESSAGE_HISTORY;
+            case MESSAGE_TYPE_SUBJ:return ColorScheme.MSG_SUBJ;
+            default: return ColorScheme.MESSAGE_HISTORY;
         }
         //return 0;
     }

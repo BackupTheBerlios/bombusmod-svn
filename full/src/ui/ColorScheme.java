@@ -28,115 +28,227 @@
 package ui;
 
 import Client.StaticData;
+import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import util.StringLoader;
 
-/**
- *
- * @author User
- */
 public class ColorScheme {
 
-    private static Colors cl;
     private static Hashtable skin;
     
     private static String skinFile;
-/*
-    private static int BALLOON_INK          =0x000000;
-    private static int BALLOON_BGND         =0xffffe0;
     
-    private static int LIST_BGND            =0xFFFFFF;
-    private static int LIST_BGND_EVEN       =0xffeeff;
-    private static int LIST_INK             =0x000000;
+    private static ColorScheme instance;
     
-    private static int MSG_SUBJ             =0xa00000;
-    private static int MSG_HIGHLIGHT        =0x904090;
-    
-    private static int DISCO_CMD            =0x000080;
-    
-    private static int BAR_BGND             =0x0033ff;
-    private static int BAR_INK              =0x33ffff;
-    
-    private static int CONTACT_DEFAULT      =0x000000;
-    private static int CONTACT_CHAT         =0x39358b;
-    private static int CONTACT_AWAY         =0x008080;
-    private static int CONTACT_XA           =0x535353;
-    private static int CONTACT_DND          =0x800000;
-    
-    private static int GROUP_INK            =0x000080;
-    
-    private static int BLK_INK              =0xffffff;
-    private static int BLK_BGND             =0x000000;
-
-    private static int MESSAGE_IN           =0x0000b0;
-    private static int MESSAGE_OUT          =0xb00000;
-    private static int MESSAGE_PRESENCE     =0x006000;
-    private static int MESSAGE_AUTH         =0x400040;
-    private static int MESSAGE_HISTORY      =0x535353;
-
-    private static int PGS_REMAINED         =0xffffff;
-    private static int PGS_COMPLETE         =0x0000ff;
-    private static int PGS_BORDER           =0x808080;
-    private static int PGS_BGND             =0x000000;
-    
-    private static int HEAP_TOTAL           =0xffffff;
-    private static int HEAP_FREE            =0x00007f;
-
-    private static int CURSOR_BGND          =0xC8D7E6;
-    private static int CURSOR_OUTLINE       =0x000066;
-
-    private static int SCROLL_BRD           =0x000000;
-    private static int SCROLL_BAR           =0xBBBBBB;
-    private static int SCROLL_BGND          =0xDDDDDD;
-    
-
-    public ColorScheme() {
+    public static ColorScheme getInstance(){
+	if (instance==null) {
+	    instance=new ColorScheme();
+	    instance.loadFromStorage();
+	}
+	return instance;
     }
-*/    
+
+    public static int BALLOON_INK          =0x000000;
+    public static int BALLOON_BGND         =0xffffe0;
     
-    public static void loadSkin(String skinFile){
-        skinFile=skinFile;
-        
-            cl=Colors.getInstance();
-            cl.BALLOON_INK=loadInt("BALLOON_INK");
-            cl.BALLOON_BGND=loadInt("BALLOON_BGND");
-            cl.LIST_BGND=loadInt("LIST_BGND");
-            cl.LIST_BGND_EVEN=loadInt("LIST_BGND_EVEN");
-            cl.LIST_INK=loadInt("LIST_INK");
-            cl.MSG_SUBJ=loadInt("MSG_SUBJ");
-            cl.MSG_HIGHLIGHT=loadInt("MSG_HIGHLIGHT");
-            cl.DISCO_CMD=loadInt("DISCO_CMD");
-            cl.BAR_BGND=loadInt("BAR_BGND");
-            cl.BAR_INK=loadInt("BAR_INK");
-            cl.CONTACT_DEFAULT=loadInt("CONTACT_DEFAULT");
-            cl.CONTACT_CHAT=loadInt("CONTACT_CHAT");
-            cl.CONTACT_AWAY=loadInt("CONTACT_AWAY");
-            cl.CONTACT_XA=loadInt("CONTACT_XA");
-            cl.CONTACT_DND=loadInt("CONTACT_DND");
-            cl.GROUP_INK=loadInt("GROUP_INK");
-            cl.BLK_INK=loadInt("BLK_INK");
-            cl.BLK_BGND=loadInt("BLK_BGND");
-            cl.MESSAGE_IN=loadInt("MESSAGE_IN");
-            cl.MESSAGE_OUT=loadInt("MESSAGE_OUT");
-            cl.MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE");
-            cl.MESSAGE_AUTH=loadInt("MESSAGE_AUTH");
-            cl.MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY");
-            cl.PGS_REMAINED=loadInt("PGS_REMAINED");
-            cl.PGS_COMPLETE=loadInt("PGS_COMPLETE");
-            cl.PGS_BORDER=loadInt("PGS_BORDER");
-            cl.PGS_BGND=loadInt("PGS_BGND");
-            cl.HEAP_TOTAL=loadInt("HEAP_TOTAL");
-            cl.HEAP_FREE=loadInt("HEAP_FREE");
-            cl.CURSOR_BGND=loadInt("CURSOR_BGND");
-            cl.CURSOR_OUTLINE=loadInt("CURSOR_OUTLINE");
-            cl.SCROLL_BRD=loadInt("SCROLL_BRD");
-            cl.SCROLL_BAR=loadInt("SCROLL_BAR");
-            cl.SCROLL_BGND=loadInt("SCROLL_BGND");
-            cl.saveToStorage();
-            skin=null;
+    public static int LIST_BGND            =0xFFFFFF;
+    public static int LIST_BGND_EVEN       =0xffeeff;
+    public static int LIST_INK             =0x000000;
+    
+    public static int MSG_SUBJ             =0xa00000;
+    public static int MSG_HIGHLIGHT        =0x904090;
+    
+    public static int DISCO_CMD            =0x000080;
+    
+    public static int BAR_BGND             =0x0033ff;
+    public static int BAR_INK              =0x33ffff;
+    
+    public static int CONTACT_DEFAULT      =0x000000;
+    public static int CONTACT_CHAT         =0x39358b;
+    public static int CONTACT_AWAY         =0x008080;
+    public static int CONTACT_XA           =0x535353;
+    public static int CONTACT_DND          =0x800000;
+    
+    public static int GROUP_INK            =0x000080;
+    
+    public static int BLK_INK              =0xffffff;
+    public static int BLK_BGND             =0x000000;
+
+    public static int MESSAGE_IN           =0x0000b0;
+    public static int MESSAGE_OUT          =0xb00000;
+    public static int MESSAGE_PRESENCE     =0x006000;
+    public static int MESSAGE_AUTH         =0x400040;
+    public static int MESSAGE_HISTORY      =0x535353;
+
+    public static int PGS_REMAINED         =0xffffff;
+    public static int PGS_COMPLETE         =0x0000ff;
+    public static int PGS_BORDER           =0x808080;
+    public static int PGS_BGND             =0x000000;
+    
+    public static int HEAP_TOTAL           =0xffffff;
+    public static int HEAP_FREE            =0x00007f;
+
+    public static int CURSOR_BGND          =0xC8D7E6;
+    public static int CURSOR_OUTLINE       =0x000066;
+
+    public static int SCROLL_BRD           =0x000000;
+    public static int SCROLL_BAR           =0xBBBBBB;
+    public static int SCROLL_BGND          =0xDDDDDD;
+    
+
+    
+    protected void loadFromStorage(){
+	try {
+	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
+            
+            BALLOON_INK=inputStream.readInt();
+            BALLOON_BGND=inputStream.readInt();
+
+            LIST_BGND=inputStream.readInt();
+            LIST_BGND_EVEN=inputStream.readInt();
+            LIST_INK=inputStream.readInt();
+            MSG_SUBJ=inputStream.readInt();
+            MSG_HIGHLIGHT=inputStream.readInt();
+
+            DISCO_CMD=inputStream.readInt();
+            
+            BAR_BGND=inputStream.readInt();
+            BAR_INK=inputStream.readInt();
+
+            CONTACT_DEFAULT=inputStream.readInt();
+            CONTACT_CHAT=inputStream.readInt();
+            CONTACT_AWAY=inputStream.readInt();
+            CONTACT_XA=inputStream.readInt();
+            CONTACT_DND=inputStream.readInt();
+
+            GROUP_INK=inputStream.readInt();
+
+            BLK_INK=inputStream.readInt();
+            BLK_BGND=inputStream.readInt();
+
+            MESSAGE_IN=inputStream.readInt();
+            MESSAGE_OUT=inputStream.readInt();
+            MESSAGE_PRESENCE=inputStream.readInt();
+            MESSAGE_AUTH=inputStream.readInt();
+            MESSAGE_HISTORY=inputStream.readInt();
+
+            PGS_REMAINED=inputStream.readInt();
+            PGS_COMPLETE=inputStream.readInt();
+            PGS_BORDER=inputStream.readInt();
+            PGS_BGND=inputStream.readInt();
+
+            HEAP_TOTAL=inputStream.readInt();
+            HEAP_FREE=inputStream.readInt();
+
+            CURSOR_BGND=inputStream.readInt();
+
+            SCROLL_BRD=inputStream.readInt();
+            SCROLL_BAR=inputStream.readInt();
+            SCROLL_BGND=inputStream.readInt();
+            
+            CURSOR_OUTLINE=inputStream.readInt();
+
+	    inputStream.close();
+	} catch (Exception e) { }
+    }
+
+    protected void saveToStorage(){
+	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+	try {
+	    outputStream.writeInt(BALLOON_INK);
+	    outputStream.writeInt(BALLOON_BGND);
+            
+	    outputStream.writeInt(LIST_BGND);
+	    outputStream.writeInt(LIST_BGND_EVEN);
+	    outputStream.writeInt(LIST_INK);
+	    outputStream.writeInt(MSG_SUBJ);
+	    outputStream.writeInt(MSG_HIGHLIGHT);
+            
+	    outputStream.writeInt(DISCO_CMD);
+            
+            outputStream.writeInt(BAR_BGND);
+            outputStream.writeInt(BAR_INK);
+            
+	    outputStream.writeInt(CONTACT_DEFAULT);
+	    outputStream.writeInt(CONTACT_CHAT);
+	    outputStream.writeInt(CONTACT_AWAY);
+	    outputStream.writeInt(CONTACT_XA);
+	    outputStream.writeInt(CONTACT_DND);
+            
+	    outputStream.writeInt(GROUP_INK);
+            
+	    outputStream.writeInt(BLK_INK);
+	    outputStream.writeInt(BLK_BGND);
+            
+	    outputStream.writeInt(MESSAGE_IN);
+	    outputStream.writeInt(MESSAGE_OUT);
+	    outputStream.writeInt(MESSAGE_PRESENCE);
+	    outputStream.writeInt(MESSAGE_AUTH);
+	    outputStream.writeInt(MESSAGE_HISTORY);
+            
+	    outputStream.writeInt(PGS_REMAINED);
+	    outputStream.writeInt(PGS_COMPLETE);
+	    outputStream.writeInt(PGS_BORDER);
+	    outputStream.writeInt(PGS_BGND);
+            
+	    outputStream.writeInt(HEAP_TOTAL);
+	    outputStream.writeInt(HEAP_FREE);
+            
+	    outputStream.writeInt(CURSOR_BGND);
+            
+	    outputStream.writeInt(SCROLL_BRD);
+	    outputStream.writeInt(SCROLL_BAR);
+	    outputStream.writeInt(SCROLL_BGND);
+            
+            outputStream.writeInt(CURSOR_OUTLINE);
+
+        } catch (IOException e) { }
+	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
+    }
+    
+    
+    public void loadSkin(String skinFile){
+        this.skinFile=skinFile;
+
+        BALLOON_INK=loadInt("BALLOON_INK");
+        BALLOON_BGND=loadInt("BALLOON_BGND");
+        LIST_BGND=loadInt("LIST_BGND");
+        LIST_BGND_EVEN=loadInt("LIST_BGND_EVEN");
+        LIST_INK=loadInt("LIST_INK");
+        MSG_SUBJ=loadInt("MSG_SUBJ");
+        MSG_HIGHLIGHT=loadInt("MSG_HIGHLIGHT");
+        DISCO_CMD=loadInt("DISCO_CMD");
+        BAR_BGND=loadInt("BAR_BGND");
+        BAR_INK=loadInt("BAR_INK");
+        CONTACT_DEFAULT=loadInt("CONTACT_DEFAULT");
+        CONTACT_CHAT=loadInt("CONTACT_CHAT");
+        CONTACT_AWAY=loadInt("CONTACT_AWAY");
+        CONTACT_XA=loadInt("CONTACT_XA");
+        CONTACT_DND=loadInt("CONTACT_DND");
+        GROUP_INK=loadInt("GROUP_INK");
+        BLK_INK=loadInt("BLK_INK");
+        BLK_BGND=loadInt("BLK_BGND");
+        MESSAGE_IN=loadInt("MESSAGE_IN");
+        MESSAGE_OUT=loadInt("MESSAGE_OUT");
+        MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE");
+        MESSAGE_AUTH=loadInt("MESSAGE_AUTH");
+        MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY");
+        PGS_REMAINED=loadInt("PGS_REMAINED");
+        PGS_COMPLETE=loadInt("PGS_COMPLETE");
+        PGS_BORDER=loadInt("PGS_BORDER");
+        PGS_BGND=loadInt("PGS_BGND");
+        HEAP_TOTAL=loadInt("HEAP_TOTAL");
+        HEAP_FREE=loadInt("HEAP_FREE");
+        CURSOR_BGND=loadInt("CURSOR_BGND");
+        CURSOR_OUTLINE=loadInt("CURSOR_OUTLINE");
+        SCROLL_BRD=loadInt("SCROLL_BRD");
+        SCROLL_BAR=loadInt("SCROLL_BAR");
+        SCROLL_BGND=loadInt("SCROLL_BGND");
+        saveToStorage();
+        this.skin=null;
     }
     
     private static int loadInt(String key) {
@@ -153,45 +265,43 @@ public class ColorScheme {
     }
     
     public static String getSkin(){
-                
-                cl=Colors.getInstance();
                 StringBuffer body=new StringBuffer();
                 body.append("xmlSkin\t"+StaticData.getInstance().account.getNickName());
                 body.append("\r\n");
-                body.append("BALLOON_INK\t0x"+Integer.toHexString(cl.BALLOON_INK)+"\r\n");
-                body.append("BALLOON_BGND\t0x"+Integer.toHexString(cl.BALLOON_BGND)+"\r\n");
-                body.append("LIST_BGND\t0x"+Integer.toHexString(cl.LIST_BGND)+"\r\n");
-                body.append("LIST_BGND_EVEN\t0x"+Integer.toHexString(cl.LIST_BGND_EVEN)+"\r\n");
-                body.append("LIST_INK\t0x"+Integer.toHexString(cl.LIST_INK)+"\r\n");
-                body.append("MSG_SUBJ\t0x"+Integer.toHexString(cl.MSG_SUBJ)+"\r\n");
-                body.append("MSG_HIGHLIGHT\t0x"+Integer.toHexString(cl.MSG_HIGHLIGHT)+"\r\n");
-                body.append("DISCO_CMD\t0x"+Integer.toHexString(cl.DISCO_CMD)+"\r\n");
-                body.append("BAR_BGND\t0x"+Integer.toHexString(cl.BAR_BGND)+"\r\n");
-                body.append("BAR_INK\t0x"+Integer.toHexString(cl.BAR_INK)+"\r\n");
-                body.append("CONTACT_DEFAULT\t0x"+Integer.toHexString(cl.CONTACT_DEFAULT)+"\r\n");
-                body.append("CONTACT_CHAT\t0x"+Integer.toHexString(cl.CONTACT_CHAT)+"\r\n");
-                body.append("CONTACT_AWAY\t0x"+Integer.toHexString(cl.CONTACT_AWAY)+"\r\n");
-                body.append("CONTACT_XA\t0x"+Integer.toHexString(cl.CONTACT_XA)+"\r\n");
-                body.append("CONTACT_DND\t0x"+Integer.toHexString(cl.CONTACT_DND)+"\r\n");
-                body.append("GROUP_INK\t0x"+Integer.toHexString(cl.GROUP_INK)+"\r\n");
-                body.append("BLK_INK\t0x"+Integer.toHexString(cl.BLK_INK)+"\r\n");
-                body.append("BLK_BGND\t0x"+Integer.toHexString(cl.BLK_BGND)+"\r\n");
-                body.append("MESSAGE_IN\t0x"+Integer.toHexString(cl.MESSAGE_IN)+"\r\n");
-                body.append("MESSAGE_OUT\t0x"+Integer.toHexString(cl.MESSAGE_OUT)+"\r\n");
-                body.append("MESSAGE_PRESENCE\t0x"+Integer.toHexString(cl.MESSAGE_PRESENCE)+"\r\n");
-                body.append("MESSAGE_AUTH\t0x"+Integer.toHexString(cl.MESSAGE_AUTH)+"\r\n");
-                body.append("MESSAGE_HISTORY\t0x"+Integer.toHexString(cl.MESSAGE_HISTORY)+"\r\n");
-                body.append("PGS_REMAINED\t0x"+Integer.toHexString(cl.PGS_REMAINED)+"\r\n");
-                body.append("PGS_COMPLETE\t0x"+Integer.toHexString(cl.PGS_COMPLETE)+"\r\n");
-                body.append("PGS_BORDER\t0x"+Integer.toHexString(cl.PGS_BORDER)+"\r\n");
-                body.append("PGS_BGND\t0x"+Integer.toHexString(cl.PGS_BGND)+"\r\n");
-                body.append("HEAP_TOTAL\t0x"+Integer.toHexString(cl.HEAP_TOTAL)+"\r\n");
-                body.append("HEAP_FREE\t0x"+Integer.toHexString(cl.HEAP_FREE)+"\r\n");
-                body.append("CURSOR_BGND\t0x"+Integer.toHexString(cl.CURSOR_BGND)+"\r\n");
-                body.append("CURSOR_OUTLINE\t0x"+Integer.toHexString(cl.CURSOR_OUTLINE)+"\r\n");
-                body.append("SCROLL_BRD\t0x"+Integer.toHexString(cl.SCROLL_BRD)+"\r\n");
-                body.append("SCROLL_BAR\t0x"+Integer.toHexString(cl.SCROLL_BAR)+"\r\n");
-                body.append("SCROLL_BGND\t0x"+Integer.toHexString(cl.SCROLL_BGND)+"\r\n");
+                body.append("BALLOON_INK\t0x"+Integer.toHexString(BALLOON_INK)+"\r\n");
+                body.append("BALLOON_BGND\t0x"+Integer.toHexString(BALLOON_BGND)+"\r\n");
+                body.append("LIST_BGND\t0x"+Integer.toHexString(LIST_BGND)+"\r\n");
+                body.append("LIST_BGND_EVEN\t0x"+Integer.toHexString(LIST_BGND_EVEN)+"\r\n");
+                body.append("LIST_INK\t0x"+Integer.toHexString(LIST_INK)+"\r\n");
+                body.append("MSG_SUBJ\t0x"+Integer.toHexString(MSG_SUBJ)+"\r\n");
+                body.append("MSG_HIGHLIGHT\t0x"+Integer.toHexString(MSG_HIGHLIGHT)+"\r\n");
+                body.append("DISCO_CMD\t0x"+Integer.toHexString(DISCO_CMD)+"\r\n");
+                body.append("BAR_BGND\t0x"+Integer.toHexString(BAR_BGND)+"\r\n");
+                body.append("BAR_INK\t0x"+Integer.toHexString(BAR_INK)+"\r\n");
+                body.append("CONTACT_DEFAULT\t0x"+Integer.toHexString(CONTACT_DEFAULT)+"\r\n");
+                body.append("CONTACT_CHAT\t0x"+Integer.toHexString(CONTACT_CHAT)+"\r\n");
+                body.append("CONTACT_AWAY\t0x"+Integer.toHexString(CONTACT_AWAY)+"\r\n");
+                body.append("CONTACT_XA\t0x"+Integer.toHexString(CONTACT_XA)+"\r\n");
+                body.append("CONTACT_DND\t0x"+Integer.toHexString(CONTACT_DND)+"\r\n");
+                body.append("GROUP_INK\t0x"+Integer.toHexString(GROUP_INK)+"\r\n");
+                body.append("BLK_INK\t0x"+Integer.toHexString(BLK_INK)+"\r\n");
+                body.append("BLK_BGND\t0x"+Integer.toHexString(BLK_BGND)+"\r\n");
+                body.append("MESSAGE_IN\t0x"+Integer.toHexString(MESSAGE_IN)+"\r\n");
+                body.append("MESSAGE_OUT\t0x"+Integer.toHexString(MESSAGE_OUT)+"\r\n");
+                body.append("MESSAGE_PRESENCE\t0x"+Integer.toHexString(MESSAGE_PRESENCE)+"\r\n");
+                body.append("MESSAGE_AUTH\t0x"+Integer.toHexString(MESSAGE_AUTH)+"\r\n");
+                body.append("MESSAGE_HISTORY\t0x"+Integer.toHexString(MESSAGE_HISTORY)+"\r\n");
+                body.append("PGS_REMAINED\t0x"+Integer.toHexString(PGS_REMAINED)+"\r\n");
+                body.append("PGS_COMPLETE\t0x"+Integer.toHexString(PGS_COMPLETE)+"\r\n");
+                body.append("PGS_BORDER\t0x"+Integer.toHexString(PGS_BORDER)+"\r\n");
+                body.append("PGS_BGND\t0x"+Integer.toHexString(PGS_BGND)+"\r\n");
+                body.append("HEAP_TOTAL\t0x"+Integer.toHexString(HEAP_TOTAL)+"\r\n");
+                body.append("HEAP_FREE\t0x"+Integer.toHexString(HEAP_FREE)+"\r\n");
+                body.append("CURSOR_BGND\t0x"+Integer.toHexString(CURSOR_BGND)+"\r\n");
+                body.append("CURSOR_OUTLINE\t0x"+Integer.toHexString(CURSOR_OUTLINE)+"\r\n");
+                body.append("SCROLL_BRD\t0x"+Integer.toHexString(SCROLL_BRD)+"\r\n");
+                body.append("SCROLL_BAR\t0x"+Integer.toHexString(SCROLL_BAR)+"\r\n");
+                body.append("SCROLL_BGND\t0x"+Integer.toHexString(SCROLL_BGND)+"\r\n");
 
                 return body.toString();
     }

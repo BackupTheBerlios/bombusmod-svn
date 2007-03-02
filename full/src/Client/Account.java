@@ -32,7 +32,7 @@ import java.util.*;
 import java.io.*;
 import javax.microedition.midlet.MIDlet;
 import midlet.Bombus;
-import ui.Colors;
+import ui.ColorScheme;
 import ui.IconTextElement;
 import ui.ImageList;
 import javax.microedition.rms.*;
@@ -221,7 +221,7 @@ public class Account extends IconTextElement{
     
     //public void onSelect(){ }
     //public String toString(){ return jid; }
-    public int getColor(){ return Colors.LIST_INK; }
+    public int getColor(){ return ColorScheme.LIST_INK; }
     
     protected int getImageIndex() {return active?0:5;}
     public void onSelect(){};

@@ -49,7 +49,7 @@ public class BookmarkItem extends IconTextElement{
     public String toString(){ return jid+'/'+nick; }
     public String getJid() { return jid; }
 
-    public int getColor(){ return Colors.LIST_INK;}
+    public int getColor(){ return ColorScheme.LIST_INK;}
     
     /** Creates a new instance of BookmarkItem */
     public BookmarkItem() {

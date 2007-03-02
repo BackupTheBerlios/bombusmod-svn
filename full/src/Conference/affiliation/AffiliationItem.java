@@ -30,7 +30,7 @@ package Conference.affiliation;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
-import ui.Colors;
+import ui.ColorScheme;
 import ui.IconTextElement;
 import ui.ImageList;
 
@@ -86,7 +86,7 @@ public class AffiliationItem extends IconTextElement{
     }
     
     
-    public int getColor() { return Colors.LIST_INK; }
+    public int getColor() { return ColorScheme.LIST_INK; }
     
     public String toString() { return (reason!=null)? jid+" *" : jid; }
     

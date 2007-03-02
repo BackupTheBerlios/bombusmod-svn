@@ -119,9 +119,10 @@ public class SearchResult
                 items.addElement(serv);
                 sd.roster.addContact(serv);
             }
-            if (items.size()==0)
-                VirtualList.setWobble("Not found :(");
         }
+        if (getItemCount()<1)
+            VirtualList.setWobble("Not found :(");
+        
         sd.roster.reEnumRoster();
     }
     

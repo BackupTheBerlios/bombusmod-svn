@@ -94,7 +94,7 @@ public class ConfigForm implements
     boolean aa[];
     Vector files[];
 
-    private Colors cl;
+    private ColorScheme cl;
     
     /** Creates a new instance of ConfigForm */
     public ConfigForm(Display display) {
@@ -378,7 +378,8 @@ public class ConfigForm implements
             int skinfl=SkinFile.getSelectedIndex();
             String skinFile=(String)Skinfiles[0].elementAt(skinfl);
             
-            ColorScheme.loadSkin(skinFile);
+            ColorScheme cs=ColorScheme.getInstance();
+            cs.loadSkin(skinFile);
 	}
 //#if (FILE_IO)
         if (command==cmdSetHistFolder) {

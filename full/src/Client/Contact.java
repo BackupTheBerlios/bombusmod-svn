@@ -39,7 +39,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 //#endif
-import ui.Colors;
+import ui.ColorScheme;
 import util.strconv;
 import vcard.VCard;
 import java.util.*;
@@ -54,14 +54,14 @@ import com.alsutton.jabber.datablocks.Presence;
 public class Contact extends IconTextElement{
     
     private static int COLORS[]={
-        Colors.CONTACT_DEFAULT,
-        Colors.CONTACT_CHAT,
-        Colors.CONTACT_AWAY,
-        Colors.CONTACT_XA,
-        Colors.CONTACT_DND,
-        Colors.CONTACT_DEFAULT,
-        Colors.CONTACT_DEFAULT,
-        Colors.CONTACT_DEFAULT
+        ColorScheme.CONTACT_DEFAULT,
+        ColorScheme.CONTACT_CHAT,
+        ColorScheme.CONTACT_AWAY,
+        ColorScheme.CONTACT_XA,
+        ColorScheme.CONTACT_DND,
+        ColorScheme.CONTACT_DEFAULT,
+        ColorScheme.CONTACT_DEFAULT,
+        ColorScheme.CONTACT_DEFAULT
     };
     
     public final static byte ORIGIN_ROSTER=0;

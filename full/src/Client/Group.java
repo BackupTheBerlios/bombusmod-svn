@@ -58,7 +58,7 @@ public class Group extends IconTextElement {
         /*this.label=label;*/
         
     }
-    public int getColor(){ return Colors.GROUP_INK; }
+    public int getColor(){ return ColorScheme.GROUP_INK; }
     public int getImageIndex() {
         return collapsed?
             imageCollapsedIndex
