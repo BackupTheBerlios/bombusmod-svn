@@ -1435,7 +1435,7 @@ public class Roster
                     if (ti==Presence.PRESENCE_OFFLINE) c.setAppearing(false);
 
                     if (ti>=0) {
-                        if (ti!=11) playNotify(ti);
+                        if (ti!=11 && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) playNotify(ti);
                     }
                 }
 		sort(hContacts);

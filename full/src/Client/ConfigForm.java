@@ -81,8 +81,13 @@ public class ConfigForm implements
     private Vector[] Skinfiles;
 
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
-    Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,11);
-    Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,12);
+//#if FILE_IO
+    Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,11);
+//#endif
+    Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,15);
+//#if FILE_IO
+    Command cmdLoadSkinFS=new Command(SR.MS_LOAD_SKIN+"FS", Command.ITEM,16);
+//#endif
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
     Config cf;
@@ -93,8 +98,14 @@ public class ConfigForm implements
     boolean his[];
     boolean aa[];
     Vector files[];
-
-    private ColorScheme cl;
+    
+//#if FILE_IO
+    private int HISTORY=0;
+    private int COLORSHEME=1;
+    
+    private int returnVal=0;
+//#endif
+    private ColorScheme cs=ColorScheme.getInstance();
     
     /** Creates a new instance of ConfigForm */
     public ConfigForm(Display display) {
@@ -278,6 +289,9 @@ public class ConfigForm implements
 	SkinFile.setSelectedIndex(0, true);
 	f.append(SkinFile);
 	SkinFile.addCommand(cmdLoadSkin);
+//#if FILE_IO
+	SkinFile.addCommand(cmdLoadSkinFS);
+//#endif
 	SkinFile.setItemCommandListener(this);
         
         f.addCommand(cmdOk);
@@ -377,13 +391,18 @@ public class ConfigForm implements
 	if (command==cmdLoadSkin) {
             int skinfl=SkinFile.getSelectedIndex();
             String skinFile=(String)Skinfiles[0].elementAt(skinfl);
-            
-            ColorScheme cs=ColorScheme.getInstance();
-            cs.loadSkin(skinFile);
+
+            cs.loadSkin(skinFile, false);
 	}
-//#if (FILE_IO)
+//#if FILE_IO
+        if (command==cmdLoadSkinFS) {
+            returnVal=COLORSHEME;
+            new Browser(null, display, this, false);
+        }
+        
         if (command==cmdSetHistFolder) {
-           new Browser(null, display, this, true);
+            returnVal=HISTORY;
+            new Browser(null, display, this, true);
         }
 //#endif
     }
@@ -393,9 +412,17 @@ public class ConfigForm implements
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
     }
 
-    
+//#if FILE_IO
     public void BrowserFilePathNotify(String pathSelected) {
-        historyFolder.setString(pathSelected);  
+        switch (returnVal) {
+            case 0:
+                historyFolder.setString(pathSelected);
+                break;
+            case 1:
+                cs.loadSkin(pathSelected, true);
+                break;
+        }
+        
     }
-
+//#endif
 }

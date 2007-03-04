@@ -246,7 +246,7 @@ public class Contact extends IconTextElement{
 //#             }
 //#endif        
 //#if FILE_IO
-        if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT && !(this instanceof MucContact))
+        if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
         {
             //String histRecord=(nick==null)?getBareJid():nick;
             String fromName=StaticData.getInstance().account.getUserName();
@@ -261,6 +261,8 @@ public class Contact extends IconTextElement{
                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
                     if (origin<ORIGIN_GROUPCHAT) allowLog=true;
             }
+            if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
+                 allowLog=false;
             if (allowLog)
                 //if (!first_replace || !m.)
             {

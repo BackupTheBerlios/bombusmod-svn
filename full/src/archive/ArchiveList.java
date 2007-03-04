@@ -250,9 +250,9 @@ public class ArchiveList
                     try {
                         file.close();
                     } catch (IOException ex2) {
-                        ex2.printStackTrace();
+                        //ex2.printStackTrace();
                     }
-                    ex.printStackTrace();
+                    //ex.printStackTrace();
                 }
                 
             arhPath=null;
@@ -265,7 +265,7 @@ public class ArchiveList
             os.write(b);
             filePos+=b.length;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
     
@@ -275,7 +275,7 @@ public class ArchiveList
 //#endif
     private String getDate() {
         long dateGmt=Time.localTime();
-        return Time.dayString(dateGmt); 
+        return Time.dayString(dateGmt).trim(); 
     }
   
     public void destroyView(){

@@ -42,6 +42,8 @@ public class ColorScheme {
     private static String skinFile;
     
     private static ColorScheme instance;
+
+    private static boolean fs=false;
     
     public static ColorScheme getInstance(){
 	if (instance==null) {
@@ -210,8 +212,9 @@ public class ColorScheme {
     }
     
     
-    public void loadSkin(String skinFile){
+    public void loadSkin(String skinFile, boolean fs){
         this.skinFile=skinFile;
+        this.fs=fs;
 
         BALLOON_INK=loadInt("BALLOON_INK");
         BALLOON_BGND=loadInt("BALLOON_BGND");
@@ -253,7 +256,12 @@ public class ColorScheme {
     
     private static int loadInt(String key) {
         if (skin==null) {
-            skin=new StringLoader().hashtableLoader(skinFile);
+            System.out.println(skinFile);
+            if (fs) {
+                skin=new StringLoader().hashtableLoaderFS(skinFile);
+            } else {
+                skin=new StringLoader().hashtableLoader(skinFile);    
+            }
         }
         try {
             String value=(String)skin.get(key);

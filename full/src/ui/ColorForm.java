@@ -204,7 +204,7 @@ public class ColorForm implements CommandListener
     private OutputStream os;
 //#endif
     
-    private Command cmdCancel=new Command("Exit", Command.BACK, 99);
+    private Command cmdCancel=new Command("Close", Command.BACK, 99);
 
     private Command selectCommand = new Command("Edit...", Command.ITEM, 1);
     
