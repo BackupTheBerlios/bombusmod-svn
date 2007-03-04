@@ -25,8 +25,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package util;
-
+//#if FILE_IO
 import io.file.FileIO;
+//#endif
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
@@ -73,7 +74,7 @@ public class StringLoader {
     }
     
 
-    
+//#if FILE_IO   
     public Hashtable hashtableLoaderFS(String resource) {
 	Hashtable hash = new Hashtable();
 
@@ -110,7 +111,7 @@ public class StringLoader {
 	} catch (Exception e)	{ /* Empty file or not found */}
 	return hash;
     }
-    
+//#endif    
     public Hashtable hashtableLoader(String resource) {
 	Hashtable hash = new Hashtable();
 	

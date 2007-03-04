@@ -258,7 +258,9 @@ public class ColorScheme {
         if (skin==null) {
             System.out.println(skinFile);
             if (fs) {
+//#if FILE_IO
                 skin=new StringLoader().hashtableLoaderFS(skinFile);
+//#endif
             } else {
                 skin=new StringLoader().hashtableLoader(skinFile);    
             }
