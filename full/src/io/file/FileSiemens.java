@@ -96,6 +96,10 @@ public class FileSiemens extends FileIO {
         openFile();
         return new FileSiemensOutputStream(f, fd, pos_eof);
     }
+    
+    public void delete() throws IOException{
+        f.delete(fileName);
+    }
 }
 
 class FileSiemensInputStream extends InputStream {

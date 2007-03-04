@@ -64,7 +64,8 @@ public class Browser extends VirtualList implements CommandListener{
     Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 2);
     Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 3);
     Command cmdView=new Command(SR.MS_VIEW, Command.SCREEN, 4);
-	Command cmdRoot=new Command(SR.MS_ROOT, Command.SCREEN, 5);
+    Command cmdRoot=new Command(SR.MS_ROOT, Command.SCREEN, 5);
+    Command cmdDelete=new Command("Delete", Command.SCREEN, 6);
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
     
@@ -83,12 +84,14 @@ public class Browser extends VirtualList implements CommandListener{
         
         addCommand(cmdOk);
         addCommand(cmdView);
+        
         if (getDirectory) {
             addCommand(cmdSelect);
         } else {
             addCommand(cmdInfo);
         }
-		addCommand(cmdRoot);
+	addCommand(cmdDelete);
+        addCommand(cmdRoot);
         addCommand(cmdBack);
         addCommand(cmdCancel);
         setCommandListener(this);
@@ -133,6 +136,19 @@ public class Browser extends VirtualList implements CommandListener{
             }
             //todo: choose directory here, drop ../
         }
+        
+        if (command==cmdDelete) {
+            String f=((FileItem)getFocusedObject()).name;
+            if (f.endsWith("/")) return;
+            try {
+                FileIO fio=FileIO.createConnection(path+f);
+                fio.delete();
+                fio.close();
+                dir.removeElement(getFocusedObject());
+                redraw();
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+        
         if (command==cmdInfo) {
             String f=((FileItem)getFocusedObject()).name;
             if (f.endsWith("/")) return;

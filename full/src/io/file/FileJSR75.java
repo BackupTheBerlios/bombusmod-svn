@@ -60,6 +60,11 @@ class FileJSR75 extends FileIO{
         }
         return fileConnection.openOutputStream();
     }
+    
+    public void delete() throws IOException{
+        if (fileConnection==null) openFile();
+        fileConnection.delete();
+    }
 
     public OutputStream openOutputStream(long pos_eof) throws IOException {
         if (fileConnection==null) openFile();

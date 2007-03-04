@@ -82,11 +82,11 @@ public class ComplexString extends Vector implements VirtualElement{
         
         int w=0;
         int dw;
-        int imageYOfs=( getVHeight()-imgHeight() )>>1;
+        int imageYOfs=(( getVHeight()-imgHeight() )>>1);
 //#if ALCATEL_FONT
 //#         int fontYOfs=(( getVHeight()-font.getHeight() )>>1) +1;
 //#else
-        int fontYOfs=(( getVHeight()-font.getHeight() )>>1);
+        int fontYOfs=(( getVHeight()-font.getHeight() )>>1)+1;
 //#endif
         int imgWidth=imgWidth();
         

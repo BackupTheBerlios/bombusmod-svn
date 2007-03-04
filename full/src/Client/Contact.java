@@ -53,7 +53,7 @@ import com.alsutton.jabber.datablocks.Presence;
  */
 public class Contact extends IconTextElement{
     
-    private static int COLORS[]={
+    private int COLORS[]={
         ColorScheme.CONTACT_DEFAULT,
         ColorScheme.CONTACT_CHAT,
         ColorScheme.CONTACT_AWAY,
@@ -234,18 +234,19 @@ public class Contact extends IconTextElement{
                 if ( ((Msg)msgs.firstElement()).isPresence())
                    if (origin!=ORIGIN_GROUPCHAT) first_replace=true;
         }
+        
 //#if LAST_MESSAGES
 //#         if (cf.lastMessages
 //#             && (origin!=ORIGIN_GROUPCHAT)
 //#             && (getGroupType()!=Groups.TYPE_TRANSP)
 //#             && (getGroupType()!=Groups.TYPE_IGNORE)
-//#             && (this instanceof MucContact==false)
+//#             && ((this instanceof MucContact)==false)
 //#             && (m.messageType==Msg.MESSAGE_TYPE_IN)) {
 //#                 new HistoryStorage(this, m.getBody(), false);
 //#             }
 //#endif        
 //#if FILE_IO
-        if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
+        if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT && !(this instanceof MucContact))
         {
             //String histRecord=(nick==null)?getBareJid():nick;
             String fromName=StaticData.getInstance().account.getUserName();

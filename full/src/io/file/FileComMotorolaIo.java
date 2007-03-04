@@ -102,4 +102,8 @@ class FileComMotorolaIo extends FileIO{
         }
         return rd;
     }
+
+    public void delete() throws IOException{
+        fileConnection.delete();
+    }
 }

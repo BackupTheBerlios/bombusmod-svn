@@ -111,31 +111,37 @@ public class ColorForm implements CommandListener
             cl.LIST_BGND,
             cl.LIST_BGND_EVEN,
             cl.LIST_INK,
+            
             cl.MSG_SUBJ,
             cl.MSG_HIGHLIGHT,
             cl.DISCO_CMD,
             cl.BAR_BGND,
             cl.BAR_INK,
+            
             cl.CONTACT_DEFAULT,
             cl.CONTACT_CHAT,
             cl.CONTACT_AWAY,
             cl.CONTACT_XA,
             cl.CONTACT_DND,
+            
             cl.GROUP_INK,
             cl.BLK_INK,
             cl.BLK_BGND,
             cl.MESSAGE_IN,
             cl.MESSAGE_OUT,
+            
             cl.MESSAGE_PRESENCE,
             cl.MESSAGE_AUTH,
             cl.MESSAGE_HISTORY,
             cl.PGS_REMAINED,
             cl.PGS_COMPLETE,
+            
             cl.PGS_BORDER,
             cl.PGS_BGND,
             cl.HEAP_TOTAL,
             cl.HEAP_FREE,
             cl.CURSOR_BGND,
+            
             cl.CURSOR_OUTLINE,
             cl.SCROLL_BRD,
             cl.SCROLL_BAR,
@@ -232,14 +238,12 @@ public class ColorForm implements CommandListener
 //#endif
         
         if (c==selectCommand) {
-            if (pos != NAMES.length - 1) {
-              try {
-                  if (!NAMES[pos].startsWith("(n/a)")) {
-                    new ColorSelector(display, pos);
-                  }
-              } catch(Exception err) {}
-           }
-        }
+          try {
+              if (!NAMES[pos].startsWith("(n/a)") && pos != NAMES.length) {
+                new ColorSelector(display, pos);
+              }
+          } catch(Exception err) {}
+       }
     }
 
 

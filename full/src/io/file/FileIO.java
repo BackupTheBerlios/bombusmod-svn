@@ -89,6 +89,8 @@ public abstract class FileIO {
     
     public abstract void close() throws IOException;
     
+    public abstract void delete() throws IOException;
+    
     public abstract long fileSize() throws IOException;
 
     protected abstract Vector rootDirs();

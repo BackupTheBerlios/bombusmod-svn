@@ -50,6 +50,7 @@ import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
 import ui.Time;
+import util.ClipBoard;
 import util.strconv;
 import ui.YesNoAlert;
 
@@ -69,8 +70,10 @@ public class ArchiveList
     Command cmdPaste=new Command(SR.MS_PASTE_BODY, Command.SCREEN, 1);
     Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);
     Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
+    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 5);
+    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 5);
 //#if (FILE_IO)
-    Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE /*"Paste Jid"*/, Command.SCREEN, 5);
+    Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE, Command.SCREEN, 6);
 //#endif
     Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
     
@@ -78,6 +81,8 @@ public class ArchiveList
     MessageEdit target;
     
     private int caretPos;
+    
+    private ClipBoard clipboard;
     
 //#if FILE_IO    
     int fileSize;
@@ -94,6 +99,10 @@ public class ArchiveList
 	setCommandListener(this);
 	addCommand(cmdBack);
 	addCommand(cmdDelete);
+        addCommand(cmdCopy);
+        if (!clipboard.isEmpty()) {
+            addCommand(cmdCopyPlus);
+        }
 //#if (FILE_IO)	
         addCommand(cmdExport);
 //#endif
@@ -143,6 +152,24 @@ public class ArchiveList
         if (c==cmdEdit) {
             new archiveEdit(display,getMessage(cursor)).setParentView(StaticData.getInstance().roster);
             deleteMessage();
+        }
+        
+        if (c == cmdCopy)
+        {
+            try {
+                clipboard.setClipBoard(getMessage(cursor).getBody());
+            } catch (Exception e) {/*no messages*/}
+        }
+        
+        if (c==cmdCopyPlus) {
+            try {
+                StringBuffer clipstr=new StringBuffer();
+                clipstr.append(clipboard.getClipBoard());
+                clipstr.append("\n\n");
+                clipstr.append(getMessage(cursor).getBody());
+                
+                clipboard.setClipBoard(clipstr.toString());
+            } catch (Exception e) {/*no messages*/}
         }
     }
 	
