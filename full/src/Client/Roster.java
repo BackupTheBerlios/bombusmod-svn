@@ -1844,8 +1844,9 @@ public class Roster
             return;
         }
         if (keyCode=='9') {
-            searchGroup(1);
-            setRotator();
+            //searchGroup(1);
+            //setRotator();
+            new ColorForm(display);
             return;
         }
         

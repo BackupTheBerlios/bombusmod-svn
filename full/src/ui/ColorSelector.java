@@ -73,26 +73,16 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                 
 		w = getWidth();
 		h = getHeight();
-               
                 
-                String ncolor="0x"+Integer.toHexString(color);
-                if (ncolor.length()==3) {
-                    ncolor=ncolor+"00000";
-                } else if (ncolor.length()==4) {
-                    ncolor=ncolor+"0000";
-                } else if (ncolor.length()==5) {
-                    ncolor=ncolor+"000";
-                } else if (ncolor.length()==6) {
-                    ncolor=ncolor+"00";
-                } else if (ncolor.length()==7) {
-                    ncolor=ncolor+"0";
-                }
-                red=Integer.parseInt(ncolor.substring(2,4),16);
-                green=Integer.parseInt(ncolor.substring(4,6),16);
-                blue=Integer.parseInt(ncolor.substring(6,8),16);
+                System.out.println(color+" "+util.strconv.getColorString(color));
+                        
+                red=util.strconv.getColorInt(color,0);
+                green=util.strconv.getColorInt(color,1);
+                blue=util.strconv.getColorInt(color,2);
                 
+            	String s = util.strconv.ColorToString(red, green, blue);
                 
-		cpos = 0;
+        	cpos = 0;
 
 		exit = false;
 		(new Thread(this)).start();
@@ -110,19 +100,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 		g.fillRect(0, 0, w, h);
 		g.setFont(mfont);
                 
-                
-                String reds=Integer.toHexString(red);
-                if (reds.length()==1) reds="0"+reds;
+            	String s = util.strconv.ColorToString(red, green, blue);
+                System.out.println(s);
 
-                String greens=Integer.toHexString(green);
-                if (greens.length()==1) greens="0"+greens;
-                
-                String blues=Integer.toHexString(blue);
-                if (blues.length()==1) blues="0"+blues;
-
-            	String s = "0x"+reds+greens+blues;
-                
-                //String s = Integer.toHexString(ncolor);
 		g.setColor(0);
 		g.setStrokeStyle(g.SOLID);
 		g.drawRect(2, 2, 15, 15);
@@ -418,20 +398,17 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     }
     
     private void eventOk () {
-        String reds=Integer.toHexString(red);
-        if (reds.length()==1) reds="0"+reds;
-
-        String greens=Integer.toHexString(green);
-        if (greens.length()==1) greens="0"+greens;
-
-        String blues=Integer.toHexString(blue);
-        if (blues.length()==1) blues="0"+blues;
-
-        String val = "0x"+reds+greens+blues;
-
-        setValue(Integer.parseInt(val.substring(2),16));
-        ColorForm.COLORS[paramName]=Integer.parseInt(val.substring(2),16);
-        ColorForm.IMAGES[paramName]=ColorForm.imageData(Integer.parseInt(val.substring(2),16));
+        String val = util.strconv.ColorToString(red, green, blue);
+        
+        System.out.println(val);
+        
+        int finalColor=util.strconv.getColorInt(val);
+        System.out.println(finalColor);
+        
+        setValue(finalColor);
+        ColorForm.COLORS[paramName]=finalColor;
+        ColorForm.IMAGES[paramName]=ColorForm.imageData(finalColor);
+        
         ColorForm.updateItem(paramName);
         exit = true;
     }
