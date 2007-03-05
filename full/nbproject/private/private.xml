@@ -1,23 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/C:/Bombus/bombusmod/full/src/Client/Config.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/Client/ConfigForm.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/Client/Contact.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/Client/ContactMessageList.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/Client/MessageEdit.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/Client/Roster.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/archive/ArchiveList.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/io/file/FileComMotorolaIo.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/io/file/FileIO.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/io/file/FileJSR75.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/io/file/FileSiemens.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/io/file/browse/Browser.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/ui/ColorForm.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/ui/ColorScheme.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/ui/ComplexString.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/ui/VirtualList.java</file>
-        <file>file:/C:/Bombus/bombusmod/full/src/util/StringLoader.java</file>
-    </open-files>
 </project-private>

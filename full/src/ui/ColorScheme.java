@@ -215,46 +215,46 @@ public class ColorScheme {
     public void loadSkin(String skinFile, boolean fs){
         this.skinFile=skinFile;
         this.fs=fs;
-
-        BALLOON_INK=loadInt("BALLOON_INK");
-        BALLOON_BGND=loadInt("BALLOON_BGND");
-        LIST_BGND=loadInt("LIST_BGND");
-        LIST_BGND_EVEN=loadInt("LIST_BGND_EVEN");
-        LIST_INK=loadInt("LIST_INK");
-        MSG_SUBJ=loadInt("MSG_SUBJ");
-        MSG_HIGHLIGHT=loadInt("MSG_HIGHLIGHT");
-        DISCO_CMD=loadInt("DISCO_CMD");
-        BAR_BGND=loadInt("BAR_BGND");
-        BAR_INK=loadInt("BAR_INK");
-        CONTACT_DEFAULT=loadInt("CONTACT_DEFAULT");
-        CONTACT_CHAT=loadInt("CONTACT_CHAT");
-        CONTACT_AWAY=loadInt("CONTACT_AWAY");
-        CONTACT_XA=loadInt("CONTACT_XA");
-        CONTACT_DND=loadInt("CONTACT_DND");
-        GROUP_INK=loadInt("GROUP_INK");
-        BLK_INK=loadInt("BLK_INK");
-        BLK_BGND=loadInt("BLK_BGND");
-        MESSAGE_IN=loadInt("MESSAGE_IN");
-        MESSAGE_OUT=loadInt("MESSAGE_OUT");
-        MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE");
-        MESSAGE_AUTH=loadInt("MESSAGE_AUTH");
-        MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY");
-        PGS_REMAINED=loadInt("PGS_REMAINED");
-        PGS_COMPLETE=loadInt("PGS_COMPLETE");
-        PGS_BORDER=loadInt("PGS_BORDER");
-        PGS_BGND=loadInt("PGS_BGND");
-        HEAP_TOTAL=loadInt("HEAP_TOTAL");
-        HEAP_FREE=loadInt("HEAP_FREE");
-        CURSOR_BGND=loadInt("CURSOR_BGND");
-        CURSOR_OUTLINE=loadInt("CURSOR_OUTLINE");
-        SCROLL_BRD=loadInt("SCROLL_BRD");
-        SCROLL_BAR=loadInt("SCROLL_BAR");
-        SCROLL_BGND=loadInt("SCROLL_BGND");
+       
+        BALLOON_INK=loadInt("BALLOON_INK", BALLOON_INK);
+        BALLOON_BGND=loadInt("BALLOON_BGND", BALLOON_BGND);
+        LIST_BGND=loadInt("LIST_BGND", LIST_BGND);
+        LIST_BGND_EVEN=loadInt("LIST_BGND_EVEN", LIST_BGND_EVEN);
+        LIST_INK=loadInt("LIST_INK", LIST_INK);
+        MSG_SUBJ=loadInt("MSG_SUBJ", MSG_SUBJ);
+        MSG_HIGHLIGHT=loadInt("MSG_HIGHLIGHT", MSG_HIGHLIGHT);
+        DISCO_CMD=loadInt("DISCO_CMD", DISCO_CMD);
+        BAR_BGND=loadInt("BAR_BGND", BAR_BGND);
+        BAR_INK=loadInt("BAR_INK", BAR_INK);
+        CONTACT_DEFAULT=loadInt("CONTACT_DEFAULT", CONTACT_DEFAULT);
+        CONTACT_CHAT=loadInt("CONTACT_CHAT", CONTACT_CHAT);
+        CONTACT_AWAY=loadInt("CONTACT_AWAY", CONTACT_AWAY);
+        CONTACT_XA=loadInt("CONTACT_XA", CONTACT_XA);
+        CONTACT_DND=loadInt("CONTACT_DND", CONTACT_DND);
+        GROUP_INK=loadInt("GROUP_INK", GROUP_INK);
+        BLK_INK=loadInt("BLK_INK", BLK_INK);
+        BLK_BGND=loadInt("BLK_BGND", BLK_BGND);
+        MESSAGE_IN=loadInt("MESSAGE_IN", MESSAGE_IN);
+        MESSAGE_OUT=loadInt("MESSAGE_OUT", MESSAGE_OUT);
+        MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE", MESSAGE_PRESENCE);
+        MESSAGE_AUTH=loadInt("MESSAGE_AUTH", MESSAGE_AUTH);
+        MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY", MESSAGE_HISTORY);
+        PGS_REMAINED=loadInt("PGS_REMAINED", PGS_REMAINED);
+        PGS_COMPLETE=loadInt("PGS_COMPLETE", PGS_COMPLETE);
+        PGS_BORDER=loadInt("PGS_BORDER", PGS_BORDER);
+        PGS_BGND=loadInt("PGS_BGND", PGS_BGND);
+        HEAP_TOTAL=loadInt("HEAP_TOTAL", HEAP_TOTAL);
+        HEAP_FREE=loadInt("HEAP_FREE", HEAP_FREE);
+        CURSOR_BGND=loadInt("CURSOR_BGND", CURSOR_BGND);
+        CURSOR_OUTLINE=loadInt("CURSOR_OUTLINE", CURSOR_OUTLINE);
+        SCROLL_BRD=loadInt("SCROLL_BRD", SCROLL_BRD);
+        SCROLL_BAR=loadInt("SCROLL_BAR", SCROLL_BAR);
+        SCROLL_BGND=loadInt("SCROLL_BGND", SCROLL_BGND);
         saveToStorage();
         this.skin=null;
     }
     
-    private static int loadInt(String key) {
+    private static int loadInt(String key, int defaultColor) {
         if (skin==null) {
             System.out.println(skinFile);
             if (fs) {
@@ -269,8 +269,7 @@ public class ColorScheme {
             String value=(String)skin.get(key);
             return Integer.parseInt(value.substring(2),16);
         } catch (Exception e) {
-            System.out.println(e);
-            return 0xFF0000;
+            return defaultColor;
         }
     }
     
@@ -278,42 +277,100 @@ public class ColorScheme {
                 StringBuffer body=new StringBuffer();
                 body.append("xmlSkin\t"+StaticData.getInstance().account.getNickName());
                 body.append("\r\n");
-                body.append("BALLOON_INK\t0x"+util.strconv.getColorString(BALLOON_INK)+"\r\n");
-                body.append("BALLOON_BGND\t0x"+util.strconv.getColorString(BALLOON_BGND)+"\r\n");
-                body.append("LIST_BGND\t0x"+util.strconv.getColorString(LIST_BGND)+"\r\n");
-                body.append("LIST_BGND_EVEN\t0x"+util.strconv.getColorString(LIST_BGND_EVEN)+"\r\n");
-                body.append("LIST_INK\t0x"+util.strconv.getColorString(LIST_INK)+"\r\n");
-                body.append("MSG_SUBJ\t0x"+util.strconv.getColorString(MSG_SUBJ)+"\r\n");
-                body.append("MSG_HIGHLIGHT\t0x"+util.strconv.getColorString(MSG_HIGHLIGHT)+"\r\n");
-                body.append("DISCO_CMD\t0x"+util.strconv.getColorString(DISCO_CMD)+"\r\n");
-                body.append("BAR_BGND\t0x"+util.strconv.getColorString(BAR_BGND)+"\r\n");
-                body.append("BAR_INK\t0x"+util.strconv.getColorString(BAR_INK)+"\r\n");
-                body.append("CONTACT_DEFAULT\t0x"+util.strconv.getColorString(CONTACT_DEFAULT)+"\r\n");
-                body.append("CONTACT_CHAT\t0x"+util.strconv.getColorString(CONTACT_CHAT)+"\r\n");
-                body.append("CONTACT_AWAY\t0x"+util.strconv.getColorString(CONTACT_AWAY)+"\r\n");
-                body.append("CONTACT_XA\t0x"+util.strconv.getColorString(CONTACT_XA)+"\r\n");
-                body.append("CONTACT_DND\t0x"+util.strconv.getColorString(CONTACT_DND)+"\r\n");
-                body.append("GROUP_INK\t0x"+util.strconv.getColorString(GROUP_INK)+"\r\n");
-                body.append("BLK_INK\t0x"+util.strconv.getColorString(BLK_INK)+"\r\n");
-                body.append("BLK_BGND\t0x"+util.strconv.getColorString(BLK_BGND)+"\r\n");
-                body.append("MESSAGE_IN\t0x"+util.strconv.getColorString(MESSAGE_IN)+"\r\n");
-                body.append("MESSAGE_OUT\t0x"+util.strconv.getColorString(MESSAGE_OUT)+"\r\n");
-                body.append("MESSAGE_PRESENCE\t0x"+util.strconv.getColorString(MESSAGE_PRESENCE)+"\r\n");
-                body.append("MESSAGE_AUTH\t0x"+util.strconv.getColorString(MESSAGE_AUTH)+"\r\n");
-                body.append("MESSAGE_HISTORY\t0x"+util.strconv.getColorString(MESSAGE_HISTORY)+"\r\n");
-                body.append("PGS_REMAINED\t0x"+util.strconv.getColorString(PGS_REMAINED)+"\r\n");
-                body.append("PGS_COMPLETE\t0x"+util.strconv.getColorString(PGS_COMPLETE)+"\r\n");
-                body.append("PGS_BORDER\t0x"+util.strconv.getColorString(PGS_BORDER)+"\r\n");
-                body.append("PGS_BGND\t0x"+util.strconv.getColorString(PGS_BGND)+"\r\n");
-                body.append("HEAP_TOTAL\t0x"+util.strconv.getColorString(HEAP_TOTAL)+"\r\n");
-                body.append("HEAP_FREE\t0x"+util.strconv.getColorString(HEAP_FREE)+"\r\n");
-                body.append("CURSOR_BGND\t0x"+util.strconv.getColorString(CURSOR_BGND)+"\r\n");
-                body.append("CURSOR_OUTLINE\t0x"+util.strconv.getColorString(CURSOR_OUTLINE)+"\r\n");
-                body.append("SCROLL_BRD\t0x"+util.strconv.getColorString(SCROLL_BRD)+"\r\n");
-                body.append("SCROLL_BAR\t0x"+util.strconv.getColorString(SCROLL_BAR)+"\r\n");
-                body.append("SCROLL_BGND\t0x"+util.strconv.getColorString(SCROLL_BGND)+"\r\n");
+                body.append("BALLOON_INK\t0x"+getColorString(BALLOON_INK)+"\r\n");
+                body.append("BALLOON_BGND\t0x"+getColorString(BALLOON_BGND)+"\r\n");
+                body.append("LIST_BGND\t0x"+getColorString(LIST_BGND)+"\r\n");
+                body.append("LIST_BGND_EVEN\t0x"+getColorString(LIST_BGND_EVEN)+"\r\n");
+                body.append("LIST_INK\t0x"+getColorString(LIST_INK)+"\r\n");
+                body.append("MSG_SUBJ\t0x"+getColorString(MSG_SUBJ)+"\r\n");
+                body.append("MSG_HIGHLIGHT\t0x"+getColorString(MSG_HIGHLIGHT)+"\r\n");
+                body.append("DISCO_CMD\t0x"+getColorString(DISCO_CMD)+"\r\n");
+                body.append("BAR_BGND\t0x"+getColorString(BAR_BGND)+"\r\n");
+                body.append("BAR_INK\t0x"+getColorString(BAR_INK)+"\r\n");
+                body.append("CONTACT_DEFAULT\t0x"+getColorString(CONTACT_DEFAULT)+"\r\n");
+                body.append("CONTACT_CHAT\t0x"+getColorString(CONTACT_CHAT)+"\r\n");
+                body.append("CONTACT_AWAY\t0x"+getColorString(CONTACT_AWAY)+"\r\n");
+                body.append("CONTACT_XA\t0x"+getColorString(CONTACT_XA)+"\r\n");
+                body.append("CONTACT_DND\t0x"+getColorString(CONTACT_DND)+"\r\n");
+                body.append("GROUP_INK\t0x"+getColorString(GROUP_INK)+"\r\n");
+                body.append("BLK_INK\t0x"+getColorString(BLK_INK)+"\r\n");
+                body.append("BLK_BGND\t0x"+getColorString(BLK_BGND)+"\r\n");
+                body.append("MESSAGE_IN\t0x"+getColorString(MESSAGE_IN)+"\r\n");
+                body.append("MESSAGE_OUT\t0x"+getColorString(MESSAGE_OUT)+"\r\n");
+                body.append("MESSAGE_PRESENCE\t0x"+getColorString(MESSAGE_PRESENCE)+"\r\n");
+                body.append("MESSAGE_AUTH\t0x"+getColorString(MESSAGE_AUTH)+"\r\n");
+                body.append("MESSAGE_HISTORY\t0x"+getColorString(MESSAGE_HISTORY)+"\r\n");
+                body.append("PGS_REMAINED\t0x"+getColorString(PGS_REMAINED)+"\r\n");
+                body.append("PGS_COMPLETE\t0x"+getColorString(PGS_COMPLETE)+"\r\n");
+                body.append("PGS_BORDER\t0x"+getColorString(PGS_BORDER)+"\r\n");
+                body.append("PGS_BGND\t0x"+getColorString(PGS_BGND)+"\r\n");
+                body.append("HEAP_TOTAL\t0x"+getColorString(HEAP_TOTAL)+"\r\n");
+                body.append("HEAP_FREE\t0x"+getColorString(HEAP_FREE)+"\r\n");
+                body.append("CURSOR_BGND\t0x"+getColorString(CURSOR_BGND)+"\r\n");
+                body.append("CURSOR_OUTLINE\t0x"+getColorString(CURSOR_OUTLINE)+"\r\n");
+                body.append("SCROLL_BRD\t0x"+getColorString(SCROLL_BRD)+"\r\n");
+                body.append("SCROLL_BAR\t0x"+getColorString(SCROLL_BAR)+"\r\n");
+                body.append("SCROLL_BGND\t0x"+getColorString(SCROLL_BGND)+"\r\n");
 
                 return body.toString();
+    }
+    
+    
+
+    
+    
+    public static String ColorToString(int cRed, int cGreen, int cBlue) {
+        StringBuffer color=new StringBuffer(8);
+        
+        color.append("0x");
+        
+        color.append(expandHex(cRed));
+
+        color.append(expandHex(cGreen));
+        
+        color.append(expandHex(cBlue));
+        
+        return color.toString();
+    }
+    
+    public static String expandHex(int eVal) {
+        String rVal=Integer.toHexString(eVal);
+        if (rVal.length()==1) rVal="0"+rVal;
+      
+        return rVal;
+    }
+    
+    public static int getColorInt(int color, int pos) {
+        String ncolor = getColorString(color);
+
+        switch (pos) {
+            case 0:
+                return Integer.parseInt(ncolor.substring(2,4),16);
+            case 1:
+                return Integer.parseInt(ncolor.substring(4,6),16);
+            case 2:
+                return Integer.parseInt(ncolor.substring(6,8),16);
+        }
+        return -1;
+    }
+    
+    public static String getColorString(int color) {
+        StringBuffer ncolor=new StringBuffer();
+        
+        ncolor.append("0x");
+        
+        String col=Integer.toHexString(color);
+        
+        for (int i=0; i<6-col.length(); i++)
+            ncolor.append("0");
+        
+        ncolor.append(col);
+
+        return ncolor.toString();
+    }
+    
+    public static int getColorInt(String color) { // 0x010000 -> 1
+        return Integer.parseInt(color.substring(2),16);
     }
 /*    
     public void serialize(DataOutputStream os) throws IOException {

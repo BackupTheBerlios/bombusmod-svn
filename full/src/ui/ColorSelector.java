@@ -39,15 +39,13 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 	Displayable parentView;
 	Graphics G;
         private ColorScheme cl;
-	int CW;
+
 	int cpos;
         String nowcolor;
         int red;
         int green;
         int blue;
-        String reds;
-        String greens;
-        String blues;
+
         String val;
 
 	int dy;
@@ -74,13 +72,13 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 		w = getWidth();
 		h = getHeight();
                 
-                System.out.println(color+" "+util.strconv.getColorString(color));
-                        
-                red=util.strconv.getColorInt(color,0);
-                green=util.strconv.getColorInt(color,1);
-                blue=util.strconv.getColorInt(color,2);
+                //System.out.println(color+" "+cl.getColorString(color));
                 
-            	String s = util.strconv.ColorToString(red, green, blue);
+                red=cl.getColorInt(color,0);
+                green=cl.getColorInt(color,1);
+                blue=cl.getColorInt(color,2);
+                
+            	String s = cl.ColorToString(red, green, blue);
                 
         	cpos = 0;
 
@@ -94,13 +92,14 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 		display.setCurrent(this);
 	}
 
+
 	protected void paint(Graphics g) {
 
 		g.setColor(0xffffff);
 		g.fillRect(0, 0, w, h);
 		g.setFont(mfont);
                 
-            	String s = util.strconv.ColorToString(red, green, blue);
+            	String s = cl.ColorToString(red, green, blue);
                 System.out.println(s);
 
 		g.setColor(0);
@@ -398,12 +397,10 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     }
     
     private void eventOk () {
-        String val = util.strconv.ColorToString(red, green, blue);
+        String val = cl.ColorToString(red, green, blue);
         
-        System.out.println(val);
-        
-        int finalColor=util.strconv.getColorInt(val);
-        System.out.println(finalColor);
+        int finalColor=cl.getColorInt(val);
+        //System.out.println(val);
         
         setValue(finalColor);
         ColorForm.COLORS[paramName]=finalColor;

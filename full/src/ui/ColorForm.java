@@ -279,7 +279,7 @@ public class ColorForm implements CommandListener
 
 
     public void destroyView(){
-        if (display!=null)   display.setCurrent(parentView);
+        if (display!=null) display.setCurrent(parentView);
     }
     
     public static void updateItem(int item) {
