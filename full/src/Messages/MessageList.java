@@ -36,6 +36,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
+import ui.ColorScheme;
 import ui.ComplexString;
 import ui.VirtualElement;
 import ui.VirtualList;
@@ -55,6 +56,7 @@ public abstract class MessageList
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
     protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
+    protected Command cmdxmlSkin = new Command("Apply Color Scheme", Command.SCREEN, 30);
     
     /** Creates a new instance of MessageList */
   
@@ -71,6 +73,7 @@ public abstract class MessageList
         addCommand(cmdSmiles);
         addCommand(cmdBack);
         addCommand(cmdUrl);
+        addCommand(cmdxmlSkin);
         stringHeight=FontCache.getMsgFont().getHeight();
     }
 
@@ -113,6 +116,15 @@ public abstract class MessageList
                 ((MessageItem)getFocusedObject()).toggleSmiles();
             } catch (Exception e){}
         }
+        if (c==cmdxmlSkin) {
+            try {
+                if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
+                    //System.out.println(((MessageItem)getFocusedObject()).msg.getBody());
+                   ColorScheme.getInstance().loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
+                }
+            } catch (Exception e){}
+        }
+        
     }
 
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat

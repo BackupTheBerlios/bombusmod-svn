@@ -94,6 +94,7 @@ public abstract class FileIO {
     public abstract long fileSize() throws IOException;
 
     protected abstract Vector rootDirs();
+    
     protected abstract Vector dirs(boolean directoriesOnly) throws IOException;
 
     public abstract OutputStream openOutputStream(long pos_eof) throws IOException;

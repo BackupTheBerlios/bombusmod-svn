@@ -27,8 +27,10 @@
 
 package Client;
 //#if FILE_IO
+import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
+import java.io.InputStream;
 //#endif
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -392,7 +394,7 @@ public class ConfigForm implements
             int skinfl=SkinFile.getSelectedIndex();
             String skinFile=(String)Skinfiles[0].elementAt(skinfl);
 
-            cs.loadSkin(skinFile, false);
+            cs.loadSkin(skinFile, 1);
 	}
 //#if FILE_IO
         if (command==cmdLoadSkinFS) {
@@ -419,10 +421,9 @@ public class ConfigForm implements
                 historyFolder.setString(pathSelected);
                 break;
             case 1:
-                cs.loadSkin(pathSelected, true);
+                cs.loadSkin(pathSelected, 0);
                 break;
         }
-        
     }
 //#endif
 }

@@ -26,6 +26,8 @@
  */
 package util;
 //#if FILE_IO
+import Client.Roster;
+import Client.StaticData;
 import io.file.FileIO;
 //#endif
 import java.io.IOException;
@@ -72,46 +74,7 @@ public class StringLoader {
 	} catch (Exception e)	{ e.printStackTrace();}
 	return table;
     }
-    
 
-//#if FILE_IO   
-    public Hashtable hashtableLoaderFS(String resource) {
-	Hashtable hash = new Hashtable();
-
-	afterEol=0;
-        
-        FileIO f=FileIO.createConnection(resource);
-        InputStream in = null;
-        try {
-            in = f.openInputStream();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        
-	try {
-	    while (true) {
-		String line=readLine(in);
-                String key, value;
-		if (line==null)  break;
-		
-		if (line.startsWith("//")) continue; // skip all remarks
-
-                String cell=null;
-                try {
-                    int indexTab=line.indexOf(0x09);
-                    
-                    if (indexTab<=0) continue; // process next line
-                    
-                    key=line.substring(0, indexTab);
-                    value=line.substring(indexTab+1, line.length() );
-                    hash.put(key, value);
-                } catch (Exception e) { e.printStackTrace(); }
-	    }
-	    in.close();
-	} catch (Exception e)	{ /* Empty file or not found */}
-	return hash;
-    }
-//#endif    
     public Hashtable hashtableLoader(String resource) {
 	Hashtable hash = new Hashtable();
 	
@@ -141,61 +104,151 @@ public class StringLoader {
 	return hash;
     }
     
-    String readLine(InputStream inputstream) throws IOException {
+    public Hashtable hashtableLoaderFromString(String sourc) {
+	Hashtable hash = new Hashtable();
+
+	afterEol=0;
+        
+        String source=sourc;
+	try {
+	    while (true) {
+		String line=readLine(source.substring(afterEol));
+                String key, value;
+		if (line==null)  break;
+		
+		if (line.startsWith("//")) continue; // skip all remarks
+
+                try {
+                    int indexTab=line.indexOf(0x09);
+                    
+                    if (indexTab<=0) continue; // process next line
+                    
+                    key=line.substring(0, indexTab);
+                    value=line.substring(indexTab+1, line.length() );
+                    hash.put(key, value);
+                    System.out.println(key+" "+value);
+                } catch (Exception e) { StaticData.getInstance().roster.errorLog(e.toString()); }
+	    }
+	} catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+	return hash;
+    }
+    
+    String readLine(String source) throws IOException {
 	StringBuffer buf=new StringBuffer();
-	if (afterEol>0) {
-	    buf.append(afterEol);
-	    afterEol=0;
-	}
-	
-	boolean eol=false;
-	while (true) {
-	    int c = getUtfChar(inputstream);
-	    if (c<0) { 
-		eol=true;
-		if (buf.length()==0) return null;
-		break;
-	    }
-	    if (c==0x0d || c==0x0a) {
-		eol=true;
-		//inputstream.mark(2);
-		if (c==0x0a) break;
-	    }
-	    else {
-		if (eol) {
-		    afterEol=c;
-		    //inputstream.reset();
-		    break;
-		}
-		buf.append((char) c);
-	    }
-	}
+        int pos=0;
+	try {
+            boolean eol=false;
+            while (true) {
+                int c = getUtfChar(source.substring(pos));
+                pos++;
+                if (c<0) { 
+                    eol=true;
+                    afterEol+=pos;
+                    if (buf.length()==0) return null;
+                    break;
+                }
+                if (c==0x0d || c==0x0a) {
+                    eol=true;
+                    afterEol+=pos;
+                    if (c==0x0a) break;
+                } else {
+                    if (eol) {
+                        afterEol+=pos;
+                        //inputstream.reset();
+                        break;
+                    }
+                    buf.append((char) c);
+                }
+            }
+        } catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
 	return buf.toString();
     }
+    
+    int getUtfChar(String source) throws IOException {
+	try {
+            int chr = source.charAt(0);
+            if( chr == 0xff ) return -1; // end of stream
 
+            if (chr<0x80) return chr;
+            if (chr<0xc0) throw new IOException("Bad UTF-8 Encoding encountered");
+            int chr2= source.charAt(1) &0xff;
+            if (chr2==0xff) return -1;
+            if (chr2<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
+
+            if (chr<0xe0) {
+                // cx, dx 
+                return ((chr & 0x1f)<<6) | (chr2 &0x3f);
+            }
+            if (chr<0xf0) {
+                // cx, dx 
+                int chr3= source.charAt(2) &0xff;
+                if (chr3==0xff) return -1;
+                if (chr3<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
+                else return ((chr & 0x0f)<<12) | ((chr2 &0x3f) <<6) | (chr3 &0x3f);
+            }
+	
+	} catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+	return -1;            
+    }
+    
+    String readLine(InputStream inputstream) throws IOException {
+	StringBuffer buf=new StringBuffer();
+
+	try {
+            if (afterEol>0) {
+                buf.append(afterEol);
+                afterEol=0;
+            }
+            boolean eol=false;
+            while (true) {
+                int c = getUtfChar(inputstream);
+                if (c<0) { 
+                    eol=true;
+                    if (buf.length()==0) return null;
+                    break;
+                }
+                if (c==0x0d || c==0x0a) {
+                    eol=true;
+                    //inputstream.mark(2);
+                    if (c==0x0a) break;
+                }
+                else {
+                    if (eol) {
+                        afterEol=c;
+                        //inputstream.reset();
+                        break;
+                    }
+                    buf.append((char) c);
+                }
+            }
+        } catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+	return buf.toString();
+    }
+    
     int getUtfChar(InputStream is) throws IOException {
-        int chr = is.read();
-        if( chr == 0xff ) return -1; // end of stream
+	try {
+            int chr = is.read();
+            if( chr == 0xff ) return -1; // end of stream
 
-	if (chr<0x80) return chr;
-	if (chr<0xc0) throw new IOException("Bad UTF-8 Encoding encountered");
-        int chr2= is.read() &0xff;
-        if (chr2==0xff) return -1;
-        if (chr2<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
+            if (chr<0x80) return chr;
+            if (chr<0xc0) throw new IOException("Bad UTF-8 Encoding encountered");
+            int chr2= is.read() &0xff;
+            if (chr2==0xff) return -1;
+            if (chr2<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
+
+            if (chr<0xe0) {
+                // cx, dx 
+                return ((chr & 0x1f)<<6) | (chr2 &0x3f);
+            }
+            if (chr<0xf0) {
+                // cx, dx 
+                int chr3= is.read() &0xff;
+                if (chr3==0xff) return -1;
+                if (chr3<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
+                else return ((chr & 0x0f)<<12) | ((chr2 &0x3f) <<6) | (chr3 &0x3f);
+            }
 	
-	if (chr<0xe0) {
-	    // cx, dx 
-	    return ((chr & 0x1f)<<6) | (chr2 &0x3f);
-	}
-	if (chr<0xf0) {
-	    // cx, dx 
-	    int chr3= is.read() &0xff;
-	    if (chr3==0xff) return -1;
-	    if (chr3<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
-	    else return ((chr & 0x0f)<<12) | ((chr2 &0x3f) <<6) | (chr3 &0x3f);
-	}
-	
-	//System.out.print((char)j);
+	} catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
 	return -1;            
     }
 }
