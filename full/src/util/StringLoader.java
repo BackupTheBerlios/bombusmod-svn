@@ -126,10 +126,11 @@ public class StringLoader {
                     key=line.substring(0, indexTab);
                     value=line.substring(indexTab+1, line.length() );
                     hash.put(key, value);
-                    System.out.println(key+" "+value);
+                    //System.out.println(key+" "+value);
                 } catch (Exception e) { StaticData.getInstance().roster.errorLog(e.toString()); }
 	    }
 	} catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+        
 	return hash;
     }
     
@@ -143,24 +144,21 @@ public class StringLoader {
                 pos++;
                 if (c<0) { 
                     eol=true;
-                    afterEol+=pos;
                     if (buf.length()==0) return null;
                     break;
                 }
                 if (c==0x0d || c==0x0a) {
                     eol=true;
-                    afterEol+=pos;
                     if (c==0x0a) break;
                 } else {
                     if (eol) {
-                        afterEol+=pos;
-                        //inputstream.reset();
                         break;
                     }
                     buf.append((char) c);
                 }
             }
         } catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+        afterEol+=pos;
 	return buf.toString();
     }
     

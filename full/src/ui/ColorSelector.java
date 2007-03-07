@@ -100,7 +100,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 		g.setFont(mfont);
                 
             	String s = cl.ColorToString(red, green, blue);
-                System.out.println(s);
+                //System.out.println(s);
 
 		g.setColor(0);
 		g.setStrokeStyle(g.SOLID);
