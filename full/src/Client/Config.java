@@ -172,6 +172,8 @@ public class Config {
 
     public boolean setAutoStatusMessage=false;
 
+    public boolean autoScroll=false;
+
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -299,6 +301,8 @@ public class Config {
             
             autoAwayType=inputStream.readInt();
             
+            autoScroll=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -396,6 +400,8 @@ public class Config {
             outputStream.writeInt(lightType);
             
             outputStream.writeInt(autoAwayType);
+            
+            outputStream.writeBoolean(autoScroll);
             
 	} catch (Exception e) {
             //e.printStackTrace();

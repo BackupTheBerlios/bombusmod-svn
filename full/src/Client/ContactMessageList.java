@@ -127,8 +127,9 @@ public class ContactMessageList extends MessageList
             addCommand(cmdSendBuffer);
         }
         setCommandListener(this);
-        moveCursorTo(contact.firstUnread(), true);
 
+        moveCursorTo(contact.firstUnread(), true);
+        
         contact.setViewing(false);
         contact.setAppearing(false);
     }
@@ -156,6 +157,11 @@ public class ContactMessageList extends MessageList
     protected void beginPaint(){
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
+        if (contact.moveToLatest && (cursor+2)==getItemCount()) {
+            //System.out.println("go to end");
+            contact.moveToLatest=false;
+            moveCursorTo(getItemCount()-1, true);
+        }
     }
     
     public void markRead(int msgIndex) {
@@ -280,7 +286,7 @@ public class ContactMessageList extends MessageList
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
             } catch (Exception e) {
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             redraw();
         }
@@ -303,7 +309,7 @@ public class ContactMessageList extends MessageList
         System.gc();
         redraw();
     }
-   
+/*   
     private void clearReadedMessageList() {
         //TODO: fix scrollbar size
 //#if LAST_MESSAGES
@@ -320,7 +326,7 @@ public class ContactMessageList extends MessageList
         System.gc();
         redraw();
     }
-    
+*/    
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;
         (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);

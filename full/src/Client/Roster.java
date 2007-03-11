@@ -1736,7 +1736,8 @@ public class Roster
         if (keyCode==keyClear) 
             try { 
                 boolean isContact=( getFocusedObject() instanceof Contact );
-                if (isContact)
+                boolean isMucContact=( getFocusedObject() instanceof MucContact );
+                if (isContact && !isMucContact)
                     new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
             } catch (Exception e) { /* NullPointerException */ }
         
@@ -1905,8 +1906,12 @@ public class Roster
         
         if (keyCode==cf.keyLock) {
             if (cf.autoAwayType==Config.AWAY_LOCK) 
-                if (!autoAway)
+                if (!autoAway) {
                     setTimeEvent(cf.autoAwayDelay* 60*1000);
+            
+                    if (cf.setKeyBlockStatus) 
+                        sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since "+Time.timeString(Time.localTime()));
+                }
             new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor, false);
             return;
         } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
@@ -2154,7 +2159,7 @@ public class Roster
     }
     
     public void onTime() {
-        System.out.println("Do autostatus change");
+        //System.out.println("Do autostatus change");
         setAutoStatus(Presence.PRESENCE_AWAY);
     }
 

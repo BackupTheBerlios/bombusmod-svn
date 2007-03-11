@@ -146,6 +146,7 @@ public class ConfigForm implements
         message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
+        message.append("AutoScroll", null);
 //#if LAST_MESSAGES
 //#         message.append("Last messages", null);
 //#endif
@@ -157,7 +158,8 @@ public class ConfigForm implements
             cf.smiles,
             cf.storeConfPresence,
             cf.eventComposing,
-            cf.capsState
+            cf.capsState,
+            cf.autoScroll
 //#if LAST_MESSAGES
 //#             ,cf.lastMessages
 //#endif
@@ -342,6 +344,7 @@ public class ConfigForm implements
             cf.storeConfPresence=mv[mvctr++];
             cf.eventComposing=mv[mvctr++];
             cf.capsState=mv[mvctr++];
+            cf.autoScroll=mv[mvctr++];
 //#if LAST_MESSAGES
 //#             cf.lastMessages=mv[mvctr++];
 //#endif

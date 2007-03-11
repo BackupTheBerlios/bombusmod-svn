@@ -73,7 +73,7 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GC_MYSELF=6;
 
     private Integer incomingViewing;
-   
+
     /** Creates a new instance of Contact */
     protected Contact (){
         //lastReaded=0;
@@ -89,6 +89,8 @@ public class Contact extends IconTextElement{
     public int priority;
     private Group group;
     public int transport;
+    
+    public boolean moveToLatest=false;
 
     public String presence;
     
@@ -284,11 +286,8 @@ public class Contact extends IconTextElement{
                } else {
                     bodyMessage=body.toString().getBytes();
                }
-               //FileIO f=FileIO.createConnection(cf.msgPath+histRecord+".txt");
-               //f.Write(bodyMessage);
-               file=FileIO.createConnection(cf.msgPath+histRecord+".txt");
+                file=FileIO.createConnection(cf.msgPath+histRecord+".txt");
                 try {
-                    //os=file.openOutputStream();
                     os = file.openOutputStream(0);
                     writeFile(bodyMessage);
                     os.close();
@@ -298,9 +297,9 @@ public class Contact extends IconTextElement{
                     try {
                         file.close();
                     } catch (IOException ex2) {
-                        ex2.printStackTrace();
+                        //ex2.printStackTrace();
                     }
-                    ex.printStackTrace();
+                    //ex.printStackTrace();
                 }
             }
        }
@@ -315,10 +314,12 @@ public class Contact extends IconTextElement{
             lastUnread=msgs.size()-1;
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
+            if (cf.autoScroll)
+                moveToLatest=true;
         }
     }
 //#if (FILE_IO)    
-    void writeFile(byte b[]){
+    private void writeFile(byte b[]){
         try {
             os.write(b);
             filePos+=b.length;
