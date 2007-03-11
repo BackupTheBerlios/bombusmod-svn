@@ -29,7 +29,9 @@ package ui;
 
 import Client.StaticData;
 import io.NvStorage;
+//#if FILE_IO
 import io.file.FileIO;
+//#endif
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -44,12 +46,6 @@ public class ColorScheme {
     private static String skinFile;
     
     private static ColorScheme instance;
-
-    private static boolean fs=false;
-    
-    private int FS_FILE=0;
-    private int JAR_FILE=1;
-    private int STRING=2;
 
     private static int resourceType=1;
     
@@ -283,10 +279,10 @@ public class ColorScheme {
                         is.close();
                         f.close();
                     } catch (Exception e) {}
-                    if (b!=null) {
-                        String str=new String(b, 0, len).toString().trim();
-                        skin=new StringLoader().hashtableLoaderFromString(str);
-                    } else
+                        if (b!=null) {
+                            String str=new String(b, 0, len).toString().trim();
+                            skin=new StringLoader().hashtableLoaderFromString(str);
+                        } else
                         return defaultColor;
                     break;
 //#endif

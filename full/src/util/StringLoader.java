@@ -127,9 +127,9 @@ public class StringLoader {
                     value=line.substring(indexTab+1, line.length() );
                     hash.put(key, value);
                     //System.out.println(key+" "+value);
-                } catch (Exception e) { StaticData.getInstance().roster.errorLog(e.toString()); }
+                } catch (Exception e) {  }
 	    }
-	} catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+	} catch (Exception e)	{  }
         
 	return hash;
     }
@@ -157,7 +157,7 @@ public class StringLoader {
                     buf.append((char) c);
                 }
             }
-        } catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+        } catch (Exception e)	{  }
         afterEol+=pos;
 	return buf.toString();
     }
@@ -185,7 +185,7 @@ public class StringLoader {
                 else return ((chr & 0x0f)<<12) | ((chr2 &0x3f) <<6) | (chr3 &0x3f);
             }
 	
-	} catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+	} catch (Exception e)	{  }
 	return -1;            
     }
     
@@ -219,7 +219,7 @@ public class StringLoader {
                     buf.append((char) c);
                 }
             }
-        } catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+        } catch (Exception e)	{  }
 	return buf.toString();
     }
     
@@ -246,7 +246,7 @@ public class StringLoader {
                 else return ((chr & 0x0f)<<12) | ((chr2 &0x3f) <<6) | (chr3 &0x3f);
             }
 	
-	} catch (Exception e)	{ StaticData.getInstance().roster.errorLog(e.toString()); }
+	} catch (Exception e)	{  }
 	return -1;            
     }
 }
