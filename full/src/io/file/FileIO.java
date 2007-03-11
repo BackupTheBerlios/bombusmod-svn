@@ -45,6 +45,8 @@ public abstract class FileIO {
     protected final static int COM_SIEMENS=3;
     protected final static int JSR75_SIEMENS=4;
     
+    public final static int MAX_NAME_LEN=48;
+    
     protected static int fileSystemType;
     
     protected String fileName;

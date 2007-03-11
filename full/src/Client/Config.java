@@ -54,6 +54,10 @@ public class Config {
     /*public int socketLINGER=getIntProperty("LINGER",-1);
     public int socketRCVBUF=getIntProperty("RCVBUF",-1);
     public int socketSNDBUF=getIntProperty("SNDBUF",-1);*/
+    
+    public final static int AWAY_OFF=0;
+    public final static int AWAY_LOCK=1;
+    public final static int AWAY_IDLE=2;
 
     public boolean ghostMotor=getBooleanProperty("moto_e398",false);
     public boolean blFlash=!ghostMotor; //true;
@@ -146,8 +150,12 @@ public class Config {
     // Singleton
     private static Config instance;
 
-    public int autoAwayTime=5;
-    public boolean setAutoStatus=false;
+    public int autoAwayType=0;
+    public int autoAwayDelay=5; //5 minutes
+
+    //public int autoAwayTime=5;
+    //public boolean setAutoStatus=false;
+    
     public boolean setKeyBlockStatus=false;
 
     public int confMessageCount=20;
@@ -161,6 +169,8 @@ public class Config {
     public boolean lastMessages=false;
 
     public int lightType=0;
+
+    public boolean setAutoStatusMessage=false;
 
     
     public static Config getInstance(){
@@ -192,7 +202,7 @@ public class Config {
             SmilesIcons.getInstance();
             
 	    allowMinimize=true;
-            greenKeyCode=VirtualList.SE_GREEN;
+            greenKeyCode=0;
 	} else if (ph.PhoneManufacturer()==ph.NOKIA) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
@@ -264,8 +274,8 @@ public class Config {
             msgLogConf=inputStream.readBoolean();
             cp1251=inputStream.readBoolean();
 //#endif
-            autoAwayTime=inputStream.readInt();
-            setAutoStatus=inputStream.readBoolean();
+            autoAwayDelay=inputStream.readInt();
+            inputStream.readBoolean();
             
             defGcRoom=inputStream.readUTF();
             
@@ -286,6 +296,8 @@ public class Config {
             setKeyBlockStatus=inputStream.readBoolean();
             
             lightType=inputStream.readInt();
+            
+            autoAwayType=inputStream.readInt();
             
 	    inputStream.close();
 	} catch (Exception e) {
@@ -360,8 +372,8 @@ public class Config {
             outputStream.writeBoolean(cp1251);
 //#endif
             
-            outputStream.writeInt(autoAwayTime);
-            outputStream.writeBoolean(setAutoStatus);
+            outputStream.writeInt(autoAwayDelay);
+            outputStream.writeBoolean(false);
             
             outputStream.writeUTF(defGcRoom);
             
@@ -382,6 +394,8 @@ public class Config {
             outputStream.writeBoolean(setKeyBlockStatus);
             
             outputStream.writeInt(lightType);
+            
+            outputStream.writeInt(autoAwayType);
             
 	} catch (Exception e) {
             //e.printStackTrace();

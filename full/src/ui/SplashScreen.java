@@ -102,7 +102,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         parentView=display.getCurrent();
         
         Roster.keyLockState=true;
-        
+        /*
             if (!Roster.isAway) {
                 String away="";
                 if (Config.getInstance().setKeyBlockStatus) away=(siemens_slider)?"System keyLock ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
@@ -114,7 +114,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
                         }
                     } catch (Exception e) { e.printStackTrace(); }
             }
-        
+        */
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
 
@@ -245,6 +245,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
         public void run() {
             repaint();
+            /*
             if (getKeyLockState()==false && siemens_slider==true) { //siemens unlock
                 try {
                     if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
@@ -263,6 +264,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
                     }
                 } catch (Exception e) {};
             }
+            */
         }
         public void stop(){
             cancel();
@@ -293,7 +295,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (display!=null)   display.setCurrent(parentView);
         img=null;
         tc.stop();
-        
+        /*
         Roster.keyLockState=false;
         
         if (Roster.isAway) {
@@ -304,9 +306,12 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             sd.roster.sendPresence(newStatus, ms);
         }
         System.gc();
+         */
     }
+    /*
     private boolean getKeyLockState() {
         boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
         return lightState;
     }
+     */
 }

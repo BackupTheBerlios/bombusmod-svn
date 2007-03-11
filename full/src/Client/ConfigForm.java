@@ -76,8 +76,10 @@ public class ConfigForm implements
     ChoiceGroup history;
     TextField historyFolder;
     
-    ChoiceGroup autoaway;
-    NumberField autoAwayTime;
+    ChoiceGroup awayStatus;
+    
+    NumberField fieldAwatDelay;
+    ChoiceGroup autoAwayType;
     
     ChoiceGroup SkinFile;
     private Vector[] Skinfiles;
@@ -267,20 +269,28 @@ public class ConfigForm implements
         historyFolder.setItemCommandListener(this);
 //#endif
         //autostatus
-        autoaway=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
-        autoaway.append("KeyLock status", null);
-        autoaway.append(SR.MS_AUTOSTATUS, null);
+        autoAwayType=new ChoiceGroup(SR.MS_AWAY_TYPE, Choice.POPUP);
+        autoAwayType.append(SR.MS_AWAY_OFF, null);
+        autoAwayType.append(SR.MS_AWAY_LOCK, null);
+        autoAwayType.append(SR.MS_AWAY_IDLE, null);
+        autoAwayType.setSelectedIndex(cf.autoAwayType, true);
+        
+        fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 30);
+
+        awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
+        awayStatus.append("KeyLock status", null);
+        awayStatus.append("AutoStatus Message", null);
         
         boolean aa[]={
             cf.setKeyBlockStatus,
-            cf.setAutoStatus
+            cf.setAutoStatusMessage
         };
         this.aa=aa;
-        autoaway.setSelectedFlags(aa);
-        f.append(autoaway);
+        awayStatus.setSelectedFlags(aa);
+        f.append(awayStatus);
         
-        autoAwayTime=new NumberField(SR.MS_AUTOSTATUS_TIME, cf.autoAwayTime, -12, 12);
-        f.append(autoAwayTime);
+        f.append(autoAwayType);
+        f.append(fieldAwatDelay);
         //autostatus
                 
         SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ChoiceGroup.POPUP);
@@ -316,7 +326,7 @@ public class ConfigForm implements
 //#if FILE_IO
             history.getSelectedFlags(his);
 //#endif
-            autoaway.getSelectedFlags(aa);
+            awayStatus.getSelectedFlags(aa);
 	    
             cf.showOfflineContacts=ra[0];
             cf.selfContact=ra[1];
@@ -375,9 +385,11 @@ public class ConfigForm implements
             cf.msgPath=historyFolder.getString();
 //#endif             
             cf.setKeyBlockStatus=aa[0];
-            cf.setAutoStatus=aa[1];
-            cf.autoAwayTime=autoAwayTime.getValue();
+            cf.setAutoStatusMessage=aa[1];
 
+            
+            cf.autoAwayDelay=fieldAwatDelay.getValue();
+            cf.autoAwayType=autoAwayType.getSelectedIndex();
             
             cf.updateTime();
             

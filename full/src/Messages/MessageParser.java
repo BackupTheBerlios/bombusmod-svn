@@ -53,7 +53,7 @@ public final class MessageParser implements Runnable{
     private int width; // window width
     
     private ImageList il;
-    boolean enableSmiles;
+//    boolean enableSmiles;
     
     private Vector tasks=new Vector();
     
@@ -176,15 +176,16 @@ public final class MessageParser implements Runnable{
         addSmile("native:",URL);
     }
 
-    public void parseMsg(MessageItem messageItem,  int width, boolean smiles)
+    public void parseMsg(MessageItem messageItem,  int width)
     {
-	wordsWrap=Config.getInstance().textWrap==1;
-        messageItem.msgLines=new Vector();
-        this.il=(smiles)? SmilesIcons.getInstance() : null;
-        this.width=width;
-        this.enableSmiles=smiles;
-        
         synchronized (tasks) {
+            wordsWrap=Config.getInstance().textWrap==1;
+            messageItem.msgLines=new Vector();
+            this.il=(messageItem.smilesEnabled())? SmilesIcons.getInstance() : null;
+            this.width=width;
+
+            if (tasks.indexOf(messageItem)>=0) return;
+
             tasks.addElement(messageItem);
             if (thread==null) {
                 thread=new Thread(this);
@@ -205,9 +206,13 @@ public final class MessageParser implements Runnable{
                     return;
                 }
                 task=(MessageItem) tasks.lastElement();
+            }
+            
+            parseMessage(task);
+            
+            synchronized (tasks) {
                 tasks.removeElement(task);
             }
-            parseMessage(task);
         }
     }
 
@@ -298,7 +303,7 @@ public final class MessageParser implements Runnable{
                     underline=true;
                 }
                 
-                if (smileIndex>=0 && enableSmiles) {
+                if (smileIndex>=0 && task.smilesEnabled()) {
                     // есть смайлик
                     
                     // слово перед смайлом в буфер

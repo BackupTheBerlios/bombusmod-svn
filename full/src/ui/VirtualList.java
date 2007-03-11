@@ -128,14 +128,21 @@ public abstract class VirtualList
     public static final int NOKIA_GREEN=-10;
     public final static int NOKIA_PEN=-50;
     public static final int MOTOROLA_GREEN=-10;
-    public final static int MOTOROLA_FLIP=-200;
+
     public static final int MOTOE680_VOL_UP=-9;
     public static final int MOTOE680_VOL_DOWN=-8;
     public static final int MOTOE680_REALPLAYER=-6;
     public static final int MOTOE680_FMRADIO=-7;
-    public static final int SE_GREEN=10;
-    
+
     public static final int SE_CLEAR=-8;
+    
+    public final static int MOTOROLA_FLIP=-200;
+    
+    public static final int SE_FLIPOPEN_JP6=-30;
+    public static final int SE_FLIPCLOSE_JP6=-31;
+    
+    public static final int SIEMENS_FLIPOPEN=-24;
+    public static final int SIEMENS_FLIPCLOSE=-22;
     
     public int stringHeight=15;
 
@@ -795,7 +802,7 @@ public abstract class VirtualList
                 case 0: break;
                 case NOKIA_PEN: { destroyView(); break; }
                 case MOTOE680_VOL_UP:
-                case MOTOROLA_FLIP: break;
+                case MOTOROLA_FLIP: { userKeyPressed(keyCode); break; }
                 case KEY_NUM1:  { moveCursorHome();    break; }
                 case KEY_NUM7:  { moveCursorEnd();     break; }
 
@@ -1080,7 +1087,33 @@ public abstract class VirtualList
             e.printStackTrace(); /* ClassCastException */
         }
     }
-}
+    
+    public void setTimeEvent(long time){
+        synchronized (this) {
+            timeEvent=(time==0)? 0:time+System.currentTimeMillis();
+            if (time!=0) setRotator();
+        }
+    };
+    protected long timeEvent;
+
+    public int getCursor() {
+        return cursor;
+    }
+
+    boolean probeTime(){
+        synchronized (this) {
+            if (timeEvent==0) return true;
+            long timeRemained=System.currentTimeMillis()-timeEvent;
+            //System.out.println(timeRemained);
+            if (timeRemained>=0) {
+                timeEvent=0;
+                onTime();
+            }
+        }
+        return false;
+    }
+    public void onTime() {};
+ }
 
 //#if (USE_ROTATOR)    
 //# class TimerTaskRotate extends Thread{
@@ -1134,18 +1167,25 @@ public abstract class VirtualList
 //#          while (true) {
 //#              if (exit) return;
 //#              try {  sleep(300);  } catch (Exception e) {}
-//#             if (stop) continue;
+//#              if (stop) continue;
 //#              
+//#             boolean redraw = false; 
 //#             synchronized (this) {
 //#                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
-//#                 if (scrollLen<0 && balloon<0) stop=true;
+//# 
+//#                 if (attachedList!=null) stop=attachedList.probeTime(); else stop=true;
+//# 
+//#                 if (scrollLen>=0 || balloon>=0) { 
+//#                     stop=false;
+//#                     redraw=true;
+//#                 }
 //#                 if (stop) {
 //#                     if (attachedList!=null) attachedList.offset=0;
 //#                     attachedList.showBalloon=false;
 //#                     attachedList=null;
 //#                     continue;
 //#                 }
-//#                  
+//# 
 //#                 //scroll state machine
 //#                 if (scroll>0) scroll--;
 //#                 if (scroll==0) {
@@ -1154,14 +1194,14 @@ public abstract class VirtualList
 //#                          attachedList.offset=0;
 //#                      } else attachedList.offset+=20;
 //#                  }
-//#                  
+//# 
 //#                 //balloon state machine
 //#                 if (balloon>=0) balloon--;
 //#                 attachedList.showBalloon=(balloon<7 && balloon>0);
-//#                 
-//#                 attachedList.redraw();
+//# 
+//#                 //if (redraw) attachedList.redraw();
 //#              }
-//#             
+//#              if (redraw) attachedList.redraw();
 //#          }
 //#      }
 //#      public void destroyTask(){
