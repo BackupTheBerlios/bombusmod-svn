@@ -36,8 +36,6 @@ import javax.microedition.lcdui.Graphics;
 
 public class ImageList {
 
-    //public final static int ICON_ASK_INDEX=0x06;
-    
     public Image skin_png;
     
     protected Image resImage;

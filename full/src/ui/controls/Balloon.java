@@ -37,6 +37,8 @@ import ui.FontCache;
  * @author Evg_S
  */
 public class Balloon {
+
+    private static int[] pixelArray;
     
     public static int getHeight(){
         Font f=FontCache.getBalloonFont();
@@ -57,6 +59,13 @@ public class Balloon {
         
         g.setColor(ColorScheme.BALLOON_INK);
         g.fillRect(2, 0, width, height);
+
+       
+        //if(pixelArray == null) pixelArray = new int[(width-2) * (height-2)];
+        //for(int i = 0; i < pixelArray.length; i++)
+        //  pixelArray[i] = 0x7fff0000;
+        
+        //g.drawRGB(pixelArray, 0, width, 3, 1, width-2, height-2, true);
 
         g.setColor(ColorScheme.BALLOON_BGND);
         g.fillRect(3, 1, width-2, height-2);

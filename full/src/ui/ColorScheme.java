@@ -48,6 +48,8 @@ public class ColorScheme {
     private static ColorScheme instance;
 
     private static int resourceType=1;
+
+    public static int getColor;
     
     public static ColorScheme getInstance(){
 	if (instance==null) {
@@ -56,6 +58,54 @@ public class ColorScheme {
 	}
 	return instance;
     }
+/*    
+    private static int BALLOON_INK          =0;
+    private static int BALLOON_BGND         =1;
+    
+    private static int LIST_BGND            =2;
+    private static int LIST_BGND_EVEN       =3;
+    private static int LIST_INK             =4;
+    
+    private static int MSG_SUBJ             =5;
+    private static int msg_highlight        =6;
+    
+    private static int disco_cmd            =7;
+    
+    private static int bar_bgnd             =8;
+    private static int bar_ink              =9;
+    
+    private static int contact_default      =10;
+    private static int contact_chat         =11;
+    private static int contact_away         =12;
+    private static int contact_xa           =13;
+    private static int contact_dnd          =14;
+    
+    private static int group_ink            =15;
+    
+    private static int blk_ink              =16;
+    private static int blk_bgnd             =17;
+
+    private static int message_in           =18;
+    private static int message_out          =19;
+    private static int message_presence     =20;
+    private static int message_auth         =21;
+    private static int message_history      =22;
+
+    private static int pgs_remained         =23;
+    private static int pgs_complete         =24;
+    private static int pgs_border           =25;
+    private static int pgs_bgnd             =26;
+    
+    private static int heap_total           =27;
+    private static int heap_free            =28;
+
+    private static int cursor_bgnd          =29;
+    private static int cursor_outline       =30;
+
+    private static int scroll_brd           =31;
+    private static int scroll_bar           =32;
+    private static int scroll_bgnd          =33;
+*/    
 
     public static int BALLOON_INK          =0x000000;
     public static int BALLOON_BGND         =0xffffe0;
@@ -104,58 +154,112 @@ public class ColorScheme {
     public static int SCROLL_BAR           =0xBBBBBB;
     public static int SCROLL_BGND          =0xDDDDDD;
     
+/*
+    public static int BALLOON_INK          =0x000000;
+    public static int BALLOON_BGND         =0xffffe0;
+    
+    public static int LIST_BGND            =0xFFFFFF;
+    public static int LIST_BGND_EVEN       =0xffeeff;
+    public static int LIST_INK             =0x000000;
+    
+    public static int MSG_SUBJ             =0xa00000;
+    public static int MSG_HIGHLIGHT        =0x904090;
+    
+    public static int DISCO_CMD            =0x000080;
+    
+    public static int BAR_BGND             =0x0033ff;
+    public static int BAR_INK              =0x33ffff;
+    
+    public static int CONTACT_DEFAULT      =0x000000;
+    public static int CONTACT_CHAT         =0x39358b;
+    public static int CONTACT_AWAY         =0x008080;
+    public static int CONTACT_XA           =0x535353;
+    public static int CONTACT_DND          =0x800000;
+    
+    public static int GROUP_INK            =0x000080;
+    
+    public static int BLK_INK              =0xffffff;
+    public static int BLK_BGND             =0x000000;
+
+    public static int MESSAGE_IN           =0x0000b0;
+    public static int MESSAGE_OUT          =0xb00000;
+    public static int MESSAGE_PRESENCE     =0x006000;
+    public static int MESSAGE_AUTH         =0x400040;
+    public static int MESSAGE_HISTORY      =0x535353;
+
+    public static int PGS_REMAINED         =0xffffff;
+    public static int PGS_COMPLETE         =0x0000ff;
+    public static int PGS_BORDER           =0x808080;
+    public static int PGS_BGND             =0x000000;
+    
+    public static int HEAP_TOTAL           =0xffffff;
+    public static int HEAP_FREE            =0x00007f;
+
+    public static int CURSOR_BGND          =0xC8D7E6;
+    public static int CURSOR_OUTLINE       =0x000066;
+
+    public static int SCROLL_BRD           =0x000000;
+    public static int SCROLL_BAR           =0xBBBBBB;
+    public static int SCROLL_BGND          =0xDDDDDD;
+*/    
+    public static int[] COLORS = {            
+        BALLOON_INK,
+        BALLOON_BGND,
+        
+        LIST_BGND,
+        LIST_BGND_EVEN,
+        LIST_INK,
+
+        MSG_SUBJ,
+        MSG_HIGHLIGHT,
+        
+        DISCO_CMD,
+        BAR_BGND,
+        BAR_INK,
+
+        CONTACT_DEFAULT,
+        CONTACT_CHAT,
+        CONTACT_AWAY,
+        CONTACT_XA,
+        CONTACT_DND,
+
+        GROUP_INK,
+        BLK_INK,
+        BLK_BGND,
+        MESSAGE_IN,
+        MESSAGE_OUT,
+
+        MESSAGE_PRESENCE,
+        MESSAGE_AUTH,
+        MESSAGE_HISTORY,
+        PGS_REMAINED,
+        PGS_COMPLETE,
+
+        PGS_BORDER,
+        PGS_BGND,
+        HEAP_TOTAL,
+        HEAP_FREE,
+        CURSOR_BGND,
+
+        CURSOR_OUTLINE,
+        SCROLL_BRD,
+        SCROLL_BAR,
+        SCROLL_BGND
+  };
+    
+  public static int getColor(int color) {
+      return COLORS[color];
+  }
+    
 
     
     protected void loadFromStorage(){
 	try {
 	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
             
-            BALLOON_INK=inputStream.readInt();
-            BALLOON_BGND=inputStream.readInt();
-
-            LIST_BGND=inputStream.readInt();
-            LIST_BGND_EVEN=inputStream.readInt();
-            LIST_INK=inputStream.readInt();
-            MSG_SUBJ=inputStream.readInt();
-            MSG_HIGHLIGHT=inputStream.readInt();
-
-            DISCO_CMD=inputStream.readInt();
-            
-            BAR_BGND=inputStream.readInt();
-            BAR_INK=inputStream.readInt();
-
-            CONTACT_DEFAULT=inputStream.readInt();
-            CONTACT_CHAT=inputStream.readInt();
-            CONTACT_AWAY=inputStream.readInt();
-            CONTACT_XA=inputStream.readInt();
-            CONTACT_DND=inputStream.readInt();
-
-            GROUP_INK=inputStream.readInt();
-
-            BLK_INK=inputStream.readInt();
-            BLK_BGND=inputStream.readInt();
-
-            MESSAGE_IN=inputStream.readInt();
-            MESSAGE_OUT=inputStream.readInt();
-            MESSAGE_PRESENCE=inputStream.readInt();
-            MESSAGE_AUTH=inputStream.readInt();
-            MESSAGE_HISTORY=inputStream.readInt();
-
-            PGS_REMAINED=inputStream.readInt();
-            PGS_COMPLETE=inputStream.readInt();
-            PGS_BORDER=inputStream.readInt();
-            PGS_BGND=inputStream.readInt();
-
-            HEAP_TOTAL=inputStream.readInt();
-            HEAP_FREE=inputStream.readInt();
-
-            CURSOR_BGND=inputStream.readInt();
-
-            SCROLL_BRD=inputStream.readInt();
-            SCROLL_BAR=inputStream.readInt();
-            SCROLL_BGND=inputStream.readInt();
-            
-            CURSOR_OUTLINE=inputStream.readInt();
+            for (int i=0; i<COLORS.length; i++) {
+                COLORS[i]=inputStream.readInt();
+            }
 
 	    inputStream.close();
 	} catch (Exception e) { }
@@ -164,53 +268,10 @@ public class ColorScheme {
     protected void saveToStorage(){
 	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
 	try {
-	    outputStream.writeInt(BALLOON_INK);
-	    outputStream.writeInt(BALLOON_BGND);
             
-	    outputStream.writeInt(LIST_BGND);
-	    outputStream.writeInt(LIST_BGND_EVEN);
-	    outputStream.writeInt(LIST_INK);
-	    outputStream.writeInt(MSG_SUBJ);
-	    outputStream.writeInt(MSG_HIGHLIGHT);
-            
-	    outputStream.writeInt(DISCO_CMD);
-            
-            outputStream.writeInt(BAR_BGND);
-            outputStream.writeInt(BAR_INK);
-            
-	    outputStream.writeInt(CONTACT_DEFAULT);
-	    outputStream.writeInt(CONTACT_CHAT);
-	    outputStream.writeInt(CONTACT_AWAY);
-	    outputStream.writeInt(CONTACT_XA);
-	    outputStream.writeInt(CONTACT_DND);
-            
-	    outputStream.writeInt(GROUP_INK);
-            
-	    outputStream.writeInt(BLK_INK);
-	    outputStream.writeInt(BLK_BGND);
-            
-	    outputStream.writeInt(MESSAGE_IN);
-	    outputStream.writeInt(MESSAGE_OUT);
-	    outputStream.writeInt(MESSAGE_PRESENCE);
-	    outputStream.writeInt(MESSAGE_AUTH);
-	    outputStream.writeInt(MESSAGE_HISTORY);
-            
-	    outputStream.writeInt(PGS_REMAINED);
-	    outputStream.writeInt(PGS_COMPLETE);
-	    outputStream.writeInt(PGS_BORDER);
-	    outputStream.writeInt(PGS_BGND);
-            
-	    outputStream.writeInt(HEAP_TOTAL);
-	    outputStream.writeInt(HEAP_FREE);
-            
-	    outputStream.writeInt(CURSOR_BGND);
-            
-	    outputStream.writeInt(SCROLL_BRD);
-	    outputStream.writeInt(SCROLL_BAR);
-	    outputStream.writeInt(SCROLL_BGND);
-            
-            outputStream.writeInt(CURSOR_OUTLINE);
-
+            for (int i=0; i<COLORS.length; i++) {
+                outputStream.writeInt(COLORS[i]);
+            }
         } catch (IOException e) { }
 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
     }

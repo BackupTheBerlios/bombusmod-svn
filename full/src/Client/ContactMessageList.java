@@ -158,7 +158,6 @@ public class ContactMessageList extends MessageList
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
         if (contact.moveToLatest && (cursor+2)==getItemCount()) {
-            //System.out.println("go to end");
             contact.moveToLatest=false;
             moveCursorTo(getItemCount()-1, true);
         }

@@ -310,12 +310,14 @@ public class Contact extends IconTextElement{
             return;
         } 
         msgs.addElement(m);
+        
+        if (cf.autoScroll)
+            moveToLatest=true;
+        
         if (m.unread) {
             lastUnread=msgs.size()-1;
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
-            if (cf.autoScroll)
-                moveToLatest=true;
         }
     }
 //#if (FILE_IO)    
