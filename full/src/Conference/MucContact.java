@@ -177,8 +177,8 @@ public class MucContact extends Contact{
                         b.append(realJid);
                         b.append(')');
                     }
-                    b.append(
-                            (statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
+                    b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
+                    setWobble(((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+"\n"+reason);
                     b.append("(");
                     b.append(reason);
                     b.append(")");
@@ -189,7 +189,7 @@ public class MucContact extends Contact{
                     }
 
                     if (reason.indexOf("talks") > -1) toTalks();
-                    setWobble(reason);
+                    
                     testMeOffline();
                     break;
                 case 321:
@@ -216,7 +216,7 @@ public class MucContact extends Contact{
                 String realJid=item.getAttribute("jid");
                 if (realJid!=null) {
                     this.realJid=realJid;  //for moderating purposes
-					b.append(" (");
+                    b.append(" (");
                     b.append(realJid);
                     b.append(')');
                 }
@@ -279,7 +279,7 @@ public class MucContact extends Contact{
     public void setWobble(String reason) {
         ConferenceGroup group=(ConferenceGroup)getGroup();
         if ( group.getSelfContact() == this ) {
-            VirtualList.setWobble("!!!KICKED!!!\n"+reason);
+            VirtualList.setWobble(reason);
         }
     }
 

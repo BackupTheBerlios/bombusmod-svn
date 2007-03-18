@@ -100,7 +100,7 @@ public class Roster
     boolean reconnect=false;
     boolean querysign=false;
     
-    boolean storepresence=true;
+    //boolean storepresence=true;
     
     public int myStatus=Presence.PRESENCE_OFFLINE;
     
@@ -1404,7 +1404,7 @@ public class Roster
 			   "prs",
                            null,
                            c.processPresence(xmuc, pr) );
-                    if (cf.storeConfPresence) {
+                    if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1) {
                         messageStore(getContact(from, false), chatPresence);
                     }
                     c.addMessage(m);
