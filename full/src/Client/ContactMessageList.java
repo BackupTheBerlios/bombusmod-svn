@@ -66,7 +66,7 @@ public class ContactMessageList extends MessageList
 //#if LAST_MESSAGES
 //#     Command cmdRecent=new Command("Last Messages",Command.SCREEN,8);
 //#endif
-    Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,9);
+    //Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,9);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
     Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 11);
     Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 11);
@@ -114,7 +114,7 @@ public class ContactMessageList extends MessageList
             addCommand(cmdReply);
         }
         addCommand(cmdPurge);
-        addCommand(cmdContact);
+        //addCommand(cmdContact);
 	addCommand(cmdActive);
         addCommand(cmdQuote);
         addCommand(cmdArch);
@@ -122,10 +122,7 @@ public class ContactMessageList extends MessageList
 //#         addCommand(cmdTemplate);
 //#endif
         addCommand(cmdCopy);
-        if (!clipboard.isEmpty()) {
-            addCommand(cmdCopyPlus);
-            addCommand(cmdSendBuffer);
-        }
+
         setCommandListener(this);
 
         moveCursorTo(contact.firstUnread(), true);
@@ -152,6 +149,10 @@ public class ContactMessageList extends MessageList
                 removeCommand(cmdUnsubscribed);
             }
         } catch (Exception e) {}
+        if (!clipboard.isEmpty()) {
+            addCommand(cmdCopyPlus);
+            addCommand(cmdSendBuffer);
+        }
     }
     
     protected void beginPaint(){
@@ -215,10 +216,10 @@ public class ContactMessageList extends MessageList
                     .toString();
                 new MessageEdit(display,contact,msg);
             } catch (Exception e) {/*no messages*/}
-        }
+        }/*
         if (c==cmdContact) {
             new RosterItemActions(display, contact, -1);
-        }
+        }*/
 	
 	if (c==cmdActive) {
 	    new ActiveContacts(display, contact);
