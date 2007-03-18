@@ -149,6 +149,7 @@ public class ContactMessageList extends MessageList
                 removeCommand(cmdUnsubscribed);
             }
         } catch (Exception e) {}
+        
         if (!clipboard.isEmpty()) {
             addCommand(cmdCopyPlus);
             addCommand(cmdSendBuffer);
@@ -156,19 +157,22 @@ public class ContactMessageList extends MessageList
     }
     
     protected void beginPaint(){
-        getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
-        if (contact.moveToLatest && (cursor+2)==getItemCount()) {
-            contact.moveToLatest=false;
-            moveCursorTo(getItemCount()-1, true);
+        getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
+        if ((cursor+2)==getItemCount()) {
+            getMainBarItem().setElementAt(null, 2);
+            if (contact.moveToLatest) {
+                contact.moveToLatest=false;
+                moveCursorEnd();
+            }
         }
     }
     
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;
-        //contact.setViewing(false);
         if (msgIndex<contact.lastUnread) return;
-            sd.roster.countNewMsgs();
+        
+        sd.roster.countNewMsgs();
     }
     
     

@@ -216,7 +216,6 @@ public class MessageEdit
                 to.addMessage(msg);
                 comp=1; // composing event in message
             }
-            
         } else if (to.acceptComposing) comp=(composing)? 1:2;
         
         if (!cf.eventComposing) comp=0;
@@ -225,9 +224,10 @@ public class MessageEdit
             if (body!=null || subj!=null || comp>0)
             r.sendMessage(to, body, subj, comp);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         ((VirtualList)parentView).redraw();
+        ((VirtualList)parentView).repaint();
     }
     
     public void destroyView(){

@@ -100,9 +100,9 @@ public int compareDates (int sec1, int min1, int hour1, int day1,int month1,int 
   return s;
  }
  
- public int kolDays (int hour1, int day1,int month1,int year1, int hour2, int day2,int month2,int year2) {
+ public int kolDays (int sec1, int min1, int hour1, int day1,int month1,int year1, int sec2, int min2, int hour2, int day2,int month2,int year2) {
   int i,k=0,z=1;
-  if (compareDates (10,11,hour1,day1,month1,year1,10,11,hour2,day2,month2,year2)>0) {
+  if (compareDates (sec1,min1,hour1,day1,month1,year1, sec2, min2,hour2,day2,month2,year2)>0) {
    i=hour1; hour1=hour2; hour2=i;
    i=day1; day1=day2; day2=i;
    i=month1; month1=month2; month2=i;
@@ -112,7 +112,7 @@ public int compareDates (int sec1, int min1, int hour1, int day1,int month1,int 
   if (year1==year2) {
       k=kolDays0 (hour1,day1,month1,hour2,day2,month2,year1);
   } else {
-   k=kolDays0 (hour1,day1,month1,hour2,31,11,year1)+1;
+   k=kolDays0 (hour1,day1,month1,hour2,day2,month2,year1)+1;
    for (i=year1+1; i<year2; i++) {
     k+=365;
     if (leapYear (i)==true) k++;
@@ -125,13 +125,13 @@ public int compareDates (int sec1, int min1, int hour1, int day1,int month1,int 
 
  public String goodWordForm (int d, int field) {
   String [][] suf =  {
-   {"секунда", "секунды", "секунд"},
-   {"минута", "минуты", "минут"},
-   {"час", "часа", "часов"},
-   {"неделя", "недели", "недель"},
-   {"день", "дня", "дней"},
-   {"месяц", "месяца", "месяцев"},
-   {"год", "года", "лет"}
+   {"СЃРµРєСѓРЅРґР°", "СЃРµРєСѓРЅРґС‹", "СЃРµРєСѓРЅРґ"},
+   {"РјРёРЅСѓС‚Р°", "РјРёРЅСѓС‚С‹", "РјРёРЅСѓС‚"},
+   {"С‡Р°СЃ", "С‡Р°СЃР°", "С‡Р°СЃРѕРІ"},
+   {"РЅРµРґРµР»СЏ", "РЅРµРґРµР»Рё", "РЅРµРґРµР»СЊ"},
+   {"РґРµРЅСЊ", "РґРЅСЏ", "РґРЅРµР№"},
+   {"РјРµСЃСЏС†", "РјРµСЃСЏС†Р°", "РјРµСЃСЏС†РµРІ"},
+   {"РіРѕРґ", "РіРѕРґР°", "Р»РµС‚"}
   };
   int index;
   if ((d%100>10) && (d%100<20) || (d%10==0) || (d%10>4)) index=2;
@@ -168,31 +168,31 @@ public String kolTimes (int sec1, int min1, int hour1, int day1, int month1, int
         se=sec2-sec1;
     }
 
-    int d=kolDays (hour1, day1,month1,year1,hour2,day2,month2,year2);
+    int d=kolDays (sec1,min1,hour1,day1,month1,year1, sec2,min2,hour2,day2,month2,year2);
     do {
         if (out==true) {
             if (y>0) {
-                s+= y + " " + goodWordForm (y,6);  //год
+                s+= y + " " + goodWordForm (y,6);  //пїЅпїЅпїЅ
             }
             if (m>0) {
                 if (y>0) s+=", ";
-                s+= m + " " + goodWordForm (m,5); //месяц
+                s+= m + " " + goodWordForm (m,5); //пїЅпїЅпїЅпїЅпїЅ
             }
             if (d0>0) {
                 if ((y>0) || (m>0)) s+=", ";
-                s+= d0 + " " + goodWordForm (d0,4); //день
+                s+= d0 + " " + goodWordForm (d0,4); //пїЅпїЅпїЅпїЅ
             }
             if (h>0) {
                 if ((y>0) || (m>0) || (d0>0)) s+=", ";
-                s+= h + " " + goodWordForm (h, 2); //час
+                s+= h + " " + goodWordForm (h, 2); //пїЅпїЅпїЅ
             }
             if (mi>0) {
                 if ((y>0) || (m>0) || (d0>0) || (h>0)) s+=", ";
-                s+= mi + " " + goodWordForm (mi, 1); //минута
+                s+= mi + " " + goodWordForm (mi, 1); //пїЅпїЅпїЅпїЅпїЅпїЅ
             }
             if (se>0) {
                 if ((y>0) || (m>0) || (d0>0) || (h>0) || (mi>0))  s+=", ";
-                s+= se + " " + goodWordForm (se, 0); //секунд
+                s+= se + " " + goodWordForm (se, 0); //пїЅпїЅпїЅпїЅпїЅпїЅ
             }
             if (s.length()<1) s=":-)";
                 return s;
@@ -206,7 +206,7 @@ public String kolTimes (int sec1, int min1, int hour1, int day1, int month1, int
                     month1=month2-1;
                     if (month1<0) { month1=11; year1=year2-1; }
                     else year1=year2;
-                    d0=kolDays (hour1,day1,month1,year1,hour2,day2,month2,year2);
+                    d0=kolDays (sec1,min1,hour1,day1,month1,year1, sec2,min2,hour2,day2,month2,year2);
                 }
                 else d0=day2-day1;
                 if (m>11) {

@@ -632,10 +632,8 @@ public abstract class VirtualList
      */
     public void moveCursorHome(){
         stickyWindow=true;
-        //win_top=0;
         if (cursor>0) {
             cursor=0;
-            //focusedItem(0);
         }
         setRotator();
     }
@@ -646,31 +644,11 @@ public abstract class VirtualList
     public void moveCursorEnd(){
         stickyWindow=true;
         int count=getItemCount();
-        //win_top=count-visibleItemsCnt(count-1, -1);
         if (cursor>=0) {
             cursor=(count==0)?0:count-1;
-            //focusedItem(cursor);
         }
-        //win_top=(listHeight>winHeight)? listHeight-winHeight:0;
         setRotator();
     }
-    
-    /**
-     * автоперемещение курсора в конец списка
-     */
-    public void autoScrollList(){
-        int count=getItemCount();
-        System.out.println("count: "+count+", messages: "+cursor);
-        //if (index<0) index=0;
-        if (cursor<count-1) return; //если курсор не на последнем сообщении - выйдем
-        cursor=count; // если курсор на последнем - спустимся ниже...
-        //проверить условия!
-        stickyWindow=true;
-        
-        repaint();
-    }
-    
-    
 
     /**
      * перемещение курсора в индексированную позицию
@@ -680,13 +658,11 @@ public abstract class VirtualList
         int count=getItemCount();
         if (index<0) index=0;
         if (index>=count) index=count-1;    // если за последним элементом, то переместить на него
-        //else if ((!force) && stickyWindow) return;
         
         cursor=index;
         stickyWindow=true;
         
         repaint();
-        //moveCursor(index-cursor, force); 
     }
     
     protected void fitCursorByTop(){
@@ -723,16 +699,6 @@ public abstract class VirtualList
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    /*public void moveCursorTo(Object focused){
-        int count=getItemCount();
-        for (int index=0;index<count;index++){
-            if (focused==getItemRef(index)) {
-                moveCursorTo(index);
-                break;
-            }
-        }
-    }
-     */
     /** код удерживаемой кнопки */
     protected int kHold;
     
@@ -1018,11 +984,11 @@ public abstract class VirtualList
     /** перезапуск ротации скроллера длинных строк */
     protected  void setRotator(){
 //#if (USE_ROTATOR)
-//#         //TimerTaskRotate.startRotate(-1, this);
 //#         try {
-//#         	if (getItemCount()<1) return;
-//#         	focusedItem(cursor);
+//#             if (getItemCount()<1) return;
+//#             focusedItem(cursor);
 //#         } catch (Exception e) { return; }
+//#         
 //#         if (cursor>=0) {
 //#             int itemWidth=getItemRef(cursor).getVWidth();
 //#             if (itemWidth>=width-scrollbar.getScrollWidth() ) itemWidth-=width/2; else itemWidth=0;
