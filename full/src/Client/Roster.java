@@ -1869,16 +1869,12 @@ public class Roster
                 System.gc();
                 setWobbler();
             } else {
-                fullMode=VirtualList.isbottom;
-                VirtualList.isbottom=(fullMode+1)%7;
                 System.gc();
             }
             return;
          }
          if (keyCode==KEY_STAR) {
              if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
-                fullMode=VirtualList.isbottom;
-                VirtualList.isbottom=(fullMode+1)%7;
                 System.gc();
              } else {
                 System.gc();
@@ -1931,7 +1927,10 @@ public class Roster
         } else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
-       	else if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
+        else if (keyCode==KEY_NUM6) {
+            fullMode=VirtualList.isbottom;
+            cf.isbottom=VirtualList.isbottom=(fullMode+1)%7;
+        } else if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
         
         else if (keyCode==cf.keyHide) {
             if (cf.allowMinimize)
@@ -1953,7 +1952,17 @@ public class Roster
         if (contact instanceof MucContact) {
             MucContact mucContact=(MucContact)contact;
             String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid;
-            mess.append(jid+"\n"+mucContact.affiliation+"/"+mucContact.role);
+            String aff=mucContact.affiliation;
+            String role=mucContact.role;
+            mess.append(jid);
+            if (aff!=null)
+                mess.append("\n"+aff);
+            
+            if (role!=null)
+                if (aff!=null)
+                    mess.append("/"+role);
+                else 
+                    mess.append(role);
         } else {
             mess.append("jid: "+contact.bareJid);
             mess.append("\nsubscription: "+contact.subscr);
