@@ -1,10 +1,28 @@
 /*
  * MucContact.java
  *
- * Created on 2 Май 2006 г., 14:05
+ * Created on 2.05.2006, 14:05
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Conference;
@@ -68,6 +86,11 @@ public class MucContact extends Contact{
             if (status>=Presence.PRESENCE_OFFLINE) testMeOffline();
             if (errCode!=409 || status>=Presence.PRESENCE_OFFLINE)
                 setStatus(presenceType);
+            
+            String errText=error.getChildBlockText("text");
+            if (errText.length()>0) return errText; // if error description is provided by server
+            
+            // legacy codes
             switch (errCode) {
                 case 401: return "Password required";
                 case 403: return "You are banned in this room";
@@ -137,7 +160,7 @@ public class MucContact extends Contact{
                     String newJid=from.substring(0,rp+1)+chNick;
                     //System.out.println(newJid);
                     jid.setJid(newJid);
-                    bareJid=newJid; // непонятно, зачем я так сделал...
+                    bareJid=newJid; // для запросов vCard используется bareJid
                     from=newJid;
                     nick=chNick;
                     break;
@@ -149,6 +172,11 @@ public class MucContact extends Contact{
                     b.append("(");
                     b.append(reason);
                     b.append(")");
+                    
+                    if (realJid!=null) {
+                        b.append(" - ");
+                        b.append(realJid);
+                    }
                     testMeOffline();
                     break;
             
@@ -170,10 +198,10 @@ public class MucContact extends Contact{
             if (this.status==Presence.PRESENCE_OFFLINE) {
                 String realJid=item.getAttribute("jid");
                 if (realJid!=null) {
+                    this.realJid=realJid;  //for moderating purposes
                     b.append(" (");
                     b.append(realJid);
                     b.append(')');
-                    this.realJid=realJid;  //for moderating purposes
                 }
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
                 b.append(role);

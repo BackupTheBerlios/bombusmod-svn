@@ -1,10 +1,29 @@
 /*
  * Config.java
  *
- * Created on 19 Март 2005 г., 18:37
+ * Created on 19.03.2005, 18:37
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 package Client;
@@ -28,6 +47,11 @@ import ui.VirtualList;
  * @author Eugene Stahov
  */
 public class Config {
+    
+    public final static int AWAY_OFF=0;
+    public final static int AWAY_LOCK=1;
+    public final static int AWAY_IDLE=2;
+
     
     public final int vibraLen=getIntProperty("vibra_len",500);
     
@@ -112,6 +136,9 @@ public class Config {
     
     public boolean autoSubscribe=false;
     
+    public int autoAwayType=0;
+    public int autoAwayDelay=5; //5 minutes
+    
     // runtime values
     public boolean allowMinimize=false;
     public int profile=0;
@@ -123,7 +150,6 @@ public class Config {
     // Singleton
     private static Config instance;
 
-    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -157,19 +183,24 @@ public class Config {
             RosterIcons.getInstance();
             
 	    allowMinimize=true;
-            greenKeyCode=VirtualList.SE_GREEN;
+            greenKeyCode=0;
 	}
 	if (platform.startsWith("Nokia")) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	}
+
+	if (platform.startsWith("Motorola-EZX")) {
+	    VirtualList.keyClear=0x1000;
+	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
+	    VirtualList.keyBack=VirtualList.MOTOE680_REALPLAYER;
+	} else
 	if (platform.startsWith("Moto")) {
 	    ghostMotor=true;
 	    blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    VirtualList.keyClear=0x1000;
-	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	}
        
         if (platform.startsWith("SIE")) {
@@ -228,6 +259,9 @@ public class Config {
 	    textWrap=inputStream.readInt();
             
             autoSubscribe=inputStream.readBoolean();
+            
+            autoAwayType=inputStream.readInt();
+            autoAwayDelay=inputStream.readInt();
 	    
 	    inputStream.close();
 	} catch (Exception e) {
@@ -287,6 +321,9 @@ public class Config {
 	    outputStream.writeInt(textWrap);
             
             outputStream.writeBoolean(autoSubscribe);
+
+            outputStream.writeInt(autoAwayType);
+            outputStream.writeInt(autoAwayDelay);
 	    
 	} catch (Exception e) { e.printStackTrace(); }
 	

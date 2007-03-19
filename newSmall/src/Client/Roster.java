@@ -1,10 +1,28 @@
 /*
  * Roster.java
  *
- * Created on 6 Январь 2005 г., 19:16
+ * Created on 6.01.2005, 19:16
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 
@@ -90,6 +108,7 @@ public class Roster
     
     public Vector bookmarks;
 
+    boolean autoAway;
     
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
@@ -136,6 +155,8 @@ public class Roster
         this.display=display;
         
         cf=Config.getInstance();
+        
+	//canback=false; // We can't go back using keyBack
         
         //msgNotify=new EventNotify(display, Profile.getProfile(0) );
         Title title=new Title(4, null, null);
@@ -191,6 +212,8 @@ public class Roster
 	updateTitle();
 	
         SplashScreen.getInstance().setExit(display, this);
+        
+        //parentView=null; - already have
     }
     
     void addOptionCommands(){
@@ -232,7 +255,7 @@ public class Roster
     
     // establishing connection process
     public void run(){
-        Iq.setXmlLang(SR.MS_XMLLANG);
+        //Iq.setXmlLang(SR.MS_XMLLANG);
         setQuerySign(true);
         setProgress(25);
 	if (!reconnect) {
@@ -276,7 +299,7 @@ public class Roster
 	    bookmarks=null;
 	}
 	setMyJid(new Jid(sd.account.getJid()));
-	updateContact(sd.account.getNickName(), myJid.getBareJid(), Groups.SELF_GROUP, "self", false);
+	updateContact(sd.account.getNick(), myJid.getBareJid(), Groups.SELF_GROUP, "self", false);
 	
 	System.gc();
     }
@@ -407,7 +430,7 @@ public class Roster
     
     public Vector getHContacts() {return hContacts;}
     
-    public final void updateContact(final String nick, final String jid, final String grpName, String subscr, boolean ask) {
+    public void updateContact(String nick, String jid, String grpName, String subscr, boolean ask) {
         // called only on roster read
         int status=Presence.PRESENCE_OFFLINE;
         if (subscr.equals("none")) status=Presence.PRESENCE_UNKNOWN;
@@ -416,7 +439,7 @@ public class Roster
         if (subscr.equals("remove")) status=-1;
         
         Jid J=new Jid(jid);
-        Contact c=findContact(J,false); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ bare jid
+        Contact c=findContact(J,false); // search by bare jid
         if (c==null) {
             c=new Contact(nick, jid, Presence.PRESENCE_OFFLINE, null);
             addContact(c);
@@ -855,6 +878,7 @@ public class Roster
         try {
             
             if( data instanceof Iq ) {
+                String from=data.getAttribute("from");
                 String type = (String) data.getTypeAttribute();
                 String id=(String) data.getAttribute("id");
                 
@@ -863,7 +887,6 @@ public class Roster
                     
                     if (id.startsWith("nickvc")) {
                         VCard vc=new VCard(data);//.getNickName();
-                        String from=vc.getJid();
                         String nick=vc.getNickName();
                         
                         Contact c=findContact(new Jid(from), false);
@@ -887,7 +910,6 @@ public class Roster
                     }
                     
                     if (id.equals("getver")) {
-                        String from=data.getAttribute("from");
                         String body=null;
                         if (type.equals("error")) {
                             body=SR.MS_NO_VERSION_AVAILABLE;
@@ -945,6 +967,8 @@ public class Roster
                     }
                 } else if (type.equals("set")) {
                     processRoster(data);
+                    
+                    theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
                     reEnumRoster();
                 }
             } //if( data instanceof Iq )
@@ -1042,8 +1066,10 @@ public class Roster
                 //if (body.length()==0) body=null; 
                 
                 if (x!=null) {
-                    compose=(x.getChildBlock("composing")!=null);
-                    if (compose) c.acceptComposing=true;
+                    compose=(  x.getChildBlock("composing")!=null 
+                            && c.status<Presence.PRESENCE_OFFLINE); // drop composing events from offlines
+                    
+                    if (compose) c.acceptComposing=true ; 
                     if (body!=null) compose=false;
                     c.setComposing(compose);
                 }
@@ -1150,6 +1176,13 @@ public class Roster
         JabberDataBlock q=data.getChildBlock("query");
         if (!q.isJabberNameSpace("jabber:iq:roster")) return;
         int type=0;
+        
+        //verifying from attribute as in RFC3921/7.2
+        String from=data.getAttribute("from");
+        if (from!=null) {
+            String myJid=sd.account.getJid();
+            if (! from.toLowerCase().equals(myJid.toLowerCase())) return;
+        }
         
         Vector cont=(q!=null)?q.getChildBlocks():null;
         
@@ -1340,6 +1373,7 @@ public class Roster
     }
 
     protected void keyPressed(int keyCode) {
+        //System.out.println(keyCode);
         super.keyPressed(keyCode);
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {
@@ -1350,16 +1384,39 @@ public class Roster
             display.flashBacklight(blState);
         }
 //#endif
-    }
+        if (keyCode==SE_FLIPCLOSE_JP6 
+            || keyCode== SIEMENS_FLIPCLOSE 
+            || keyCode==MOTOROLA_FLIP 
+            /*|| keyCode=='#'*/ ) {
+            //System.out.println("Flip closed");
+            if (cf.autoAwayType==Config.AWAY_LOCK) 
+                if (!autoAway) setTimeEvent(cf.autoAwayDelay* 60*1000);
+        } else {
+            if (keyCode!=cf.keyLock) userActivity();
+        }
     
+    }
+
+    private void userActivity() {
+        if (cf.autoAwayType==Config.AWAY_IDLE) {
+            setTimeEvent(cf.autoAwayDelay* 60*1000);
+        } else {
+            setTimeEvent(0);
+        }  
+        setAutoStatus(Presence.PRESENCE_ONLINE);
+    }
+
     protected void keyRepeated(int keyCode) {
         super.keyRepeated(keyCode);
         if (kHold==keyCode) return;
         //kHold=keyCode;
         kHold=keyCode;
         
-        if (keyCode==cf.keyLock) 
+        if (keyCode==cf.keyLock) {
+            if (cf.autoAwayType==Config.AWAY_LOCK) 
+                if (!autoAway) setTimeEvent(cf.autoAwayDelay* 60*1000);
             new KeyBlock(display, getTitleItem(), cf.keyLock, cf.ghostMotor); 
+        }
 
         if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles
@@ -1372,8 +1429,7 @@ public class Roster
             redraw();
         }
         
-        if (keyCode==cf.keyOfflines /* || keyCode==MOTOE680_REALPLAYER CONFLICT WITH ALCATEL. (platform=J2ME) 
-         TODO: redifine keyOfflines*/) {
+        if (keyCode==cf.keyOfflines || keyCode==keyBack) {
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
         }
@@ -1387,9 +1443,8 @@ public class Roster
         if (keyCode==KEY_NUM9) toggleLight();
     }
 
-
     public void userKeyPressed(int keyCode){
-        if (keyCode==KEY_NUM0 /* || keyCode==MOTOE680_REALPLAYER  CONFLICT WITH ALCATEL. (platform=J2ME)*/) {
+        if (keyCode==KEY_NUM0 || keyCode==keyBack) {
             if (messageCount==0) return;
             Object atcursor=getFocusedObject();
             Contact c=null;
@@ -1418,6 +1473,7 @@ public class Roster
         if (keyCode==keyClear) try { 
             new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
         } catch (Exception e) { /* NullPointerException */ }
+    
     }
     
     private void toggleLight() {
@@ -1441,8 +1497,9 @@ public class Roster
         }
     };
 
-   
+    
     public void commandAction(Command c, Displayable d){
+        userActivity();
         if (c==cmdQuit) {
             destroyView();
             logoff();
@@ -1512,7 +1569,21 @@ public class Roster
         }
     }
     
-    protected void showNotify() { super.showNotify(); countNewMsgs(); }
+    protected void showNotify() { 
+        super.showNotify(); 
+        countNewMsgs(); 
+        //System.out.println("Show notify");
+        
+        if (cf.autoAwayType==Config.AWAY_IDLE) {
+            if (timeEvent==0) {
+                if (!autoAway) setTimeEvent(cf.autoAwayDelay* 60*1000);
+            }
+        }
+    }
+    protected void hideNotify() {
+        super.hideNotify();
+        if (cf.autoAwayType==Config.AWAY_IDLE) if (kHold==0) setTimeEvent(0);
+    }
     
     private void searchGroup(int direction){
 	synchronized (vContacts) {
@@ -1566,6 +1637,11 @@ public class Roster
         setProgress(msg, 42);
     }
 
+    public void onTime() {
+        //System.out.println("Do autostatus change");
+        setAutoStatus(Presence.PRESENCE_AWAY);
+    }
+    
     private class ReEnumerator implements Runnable{
 
         Thread thread;
@@ -1657,6 +1733,19 @@ public class Roster
 
     public void setMyJid(Jid myJid) {
         this.myJid = myJid;
+    }
+
+    private void setAutoStatus(int status) {
+        if (!isLoggedIn()) return;
+        if (status==Presence.PRESENCE_ONLINE && autoAway) {
+            autoAway=false;
+            sendPresence(Presence.PRESENCE_ONLINE);
+            return;
+        } 
+        if (status!=Presence.PRESENCE_ONLINE && myStatus==Presence.PRESENCE_ONLINE && !autoAway) {
+            autoAway=true;
+            sendPresence(Presence.PRESENCE_AWAY);
+        }
     }
 }
 

@@ -1,10 +1,28 @@
 /*
  * ConfigForm.java
  *
- * Created on 2 Май 2005 г., 18:19
+ * Created on 2.05.2005, 18:19
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Client;
@@ -60,9 +78,13 @@ public class ConfigForm implements
     
     ChoiceGroup textWrap;
     
+    ChoiceGroup autoAwayType;
+    
     //NumberField keepAlive;
     NumberField fieldLoc;
     NumberField fieldGmt;
+    
+    NumberField fieldAwatDelay;
     
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     //Command cmdSign=new Command("- (Sign)",Command.ITEM,2);
@@ -156,6 +178,14 @@ public class ConfigForm implements
 	
         application.setSelectedFlags(ap);
         
+        autoAwayType=new ChoiceGroup(SR.MS_AWAY_TYPE, ConstMIDP.CHOICE_POPUP);
+        autoAwayType.append(SR.MS_AWAY_OFF, null);
+        autoAwayType.append(SR.MS_AWAY_LOCK, null);
+        autoAwayType.append(SR.MS_AWAY_IDLE, null);
+        autoAwayType.setSelectedIndex(cf.autoAwayType, true);
+        fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 30);
+        
+        
 	// keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 20, 600 );
 	fieldGmt=new NumberField(SR.MS_GMT_OFFSET, cf.gmtOffset, -12, 12); 
         fieldLoc=new NumberField(SR.MS_CLOCK_OFFSET, cf.locOffset, -12, 12 );
@@ -181,6 +211,8 @@ public class ConfigForm implements
 
 	f.append(application);
 
+        f.append(autoAwayType);
+        f.append(fieldAwatDelay);
 	//f.append(keepAlive);
 	
         f.append(SR.MS_TIME_SETTINGS);
@@ -248,6 +280,7 @@ public class ConfigForm implements
 	    
 	    cf.textWrap=textWrap.getSelectedIndex();
 	    
+
             cf.updateTime();
             
             cf.saveToStorage();

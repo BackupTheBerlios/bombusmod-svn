@@ -1,14 +1,33 @@
 /*
  * SmileTree.java
  *
- * Created on 6 Р¤РµРІСЂР°Р»СЊ 2005 Рі., 19:38
+ * Created on 6.02.2005, 19:38
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Messages;
 
+import images.SmilesIcons;
 import java.io.*;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
@@ -32,6 +51,8 @@ public final class MessageParser implements Runnable{
     private static MessageParser instance=null;
     
     private int width; // window width
+    
+    private ImageList il;
     
     private Vector tasks=new Vector();
     
@@ -152,13 +173,16 @@ public final class MessageParser implements Runnable{
 	addSmile("http://",URL);
     }
 
-    public void parseMsg(MessageItem messageItem,  int width, boolean smiles)
+    public void parseMsg(MessageItem messageItem,  int width)
     {
-	wordsWrap=Config.getInstance().textWrap==1;
-        messageItem.msgLines=new Vector();
-        this.width=width;
-        
         synchronized (tasks) {
+            wordsWrap=Config.getInstance().textWrap==1;
+            messageItem.msgLines=new Vector();
+            this.il=(messageItem.smilesEnabled())? SmilesIcons.getInstance() : null;
+            this.width=width;
+
+            if (tasks.indexOf(messageItem)>=0) return;
+
             tasks.addElement(messageItem);
             if (thread==null) {
                 thread=new Thread(this);
@@ -179,9 +203,13 @@ public final class MessageParser implements Runnable{
                     return;
                 }
                 task=(MessageItem) tasks.lastElement();
+            }
+            
+            parseMessage(task);
+            
+            synchronized (tasks) {
                 tasks.removeElement(task);
             }
-            parseMessage(task);
         }
     }
 
@@ -272,54 +300,62 @@ public final class MessageParser implements Runnable{
                     underline=true;
                 }
                 
-                pos=smileStartPos;
-                char c=txt.charAt(pos);
-
-                int cw=f.charWidth(c);
-                if (c!=0x20) {
-                    boolean newline= ( c==0x0d || c==0x0a /*|| c==0xa0*/ );
-                    if (wordWidth+cw>width || newline) {
-                        // Add current oneWord buffer to s because:
-                        // word is too long to fit in line or character is newline
-
-                        s.append(txt.substring(wordStartPos,pos));
+               if (smileIndex>=0 && task.smilesEnabled()) {
+                    // есть смайлик
+                    
+                    // слово перед смайлом в буфер
+ 		    if (wordStartPos!=smileStartPos) {
+ 			s.append(txt.substring(wordStartPos, smileStartPos));
                         w+=wordWidth;
                         wordWidth=0;
-                        wordStartPos=pos;
-                        if (newline) wordStartPos++;
-                    }
-                    if (w+wordWidth+cw>width || newline) {
+ 		    }
+                    // добавим строку
+                    if (s.length()>0) {
                         if (underline) l.addUnderline();
-                        l.addElement(s.toString());    // РїРѕСЃР»РµРґРЅСЏСЏ РїРѕРґСЃС‚СЂРѕРєР° РІ l
-                        s.setLength(0); w=0;
-
-                        if (c==0xa0) l.setColor(Colors.MSG_HIGHLIGHT);
-
-                        l=new ComplexString();     // РЅРѕРІР°СЏ СЃС‚СЂРѕРєР°
-                        lines.addElement(l);    // РґРѕР±Р°РІРёРј l РІ v
+                        l.addElement(s.toString());
+                    }
+                    // очистим
+                    s.setLength(0);
+                    // добавим смайлик
+                    int iw=il.getWidth();
+                    if (w+iw>width) {
                         task.notifyRepaint(lines, task.msg, false);
-
+                        l=new ComplexString(il);     // новая строка
+                        lines.addElement(l);    // добавим l в v
+                        
                         if (singleLine) {
                             return;
                         }
-
+                        
                         l.setColor(color);
                         l.setFont(f);
+                        w=0;
                     }
-                }
-                if (c==0x09)
-                    c=0x20;
-
-                if (c>0x1f) {
-                    wordWidth+=cw;
-                }
-                if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) {
-                    if (pos>wordStartPos) 
-                        s.append(txt.substring(wordStartPos,pos));
-                    if (c>0x1f) s.append(c);
-                    w+=wordWidth;
-                    wordStartPos=pos+1;
-                    wordWidth=0;
+                    l.addImage(smileIndex); w+=iw;
+                    // передвинем указатель
+                    pos=smileEndPos;
+		    // next word will start after smile
+		    wordStartPos=pos+1;
+                } else {
+                    pos=smileStartPos;
+                    char c=txt.charAt(pos);
+                    
+                    int cw=f.charWidth(c);
+                    
+		    if (c==0x09)
+			c=0x20;
+		    	    
+                    if (c>0x1f) {
+			wordWidth+=cw;
+		    }
+		    if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) {
+			if (pos>wordStartPos) 
+                            s.append(txt.substring(wordStartPos,pos));
+			if (c>0x1f) s.append(c);
+			w+=wordWidth;
+			wordStartPos=pos+1;
+			wordWidth=0;
+		    }
                 }
             pos++;
             }

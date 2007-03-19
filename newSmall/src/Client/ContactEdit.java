@@ -1,10 +1,28 @@
 /*
  * ContactEdit.java
  *
- * Created on 7 Май 2005 г., 2:15
+ * Created on 7.05.2005, 2:15
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Client;
@@ -37,6 +55,8 @@ public final class ContactEdit
     
     int ngroups;
     
+    int grpFIndex;
+    
     Command cmdOk=new Command(SR.MS_ADD, Command.OK, 1);
     Command cmdSet=new Command(SR.MS_SET, Command.ITEM, 2);
     Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
@@ -66,7 +86,7 @@ public final class ContactEdit
         tGroup=new TextField(SR.MS_GROUP ,null, 32, TextField.ANY);
         
         
-        tGrpList=new ChoiceGroup(SR.MS_EXISTING_GROUPS , ConstMIDP.CHOICE_POPUP);
+        tGrpList=new ChoiceGroup(SR.MS_GROUP , ConstMIDP.CHOICE_POPUP);
         tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ConstMIDP.CHOICE_POPUP);
         
         tAskSubscrCheckBox=new ChoiceGroup(SR.MS_SUBSCRIPTION, ChoiceGroup.MULTIPLE);
@@ -134,7 +154,7 @@ public final class ContactEdit
             
         //if (sel==-1) sel=groups.size()-1;
         if (sel<0) sel=0;
-        tGroup.setString(group(sel));
+        //tGroup.setString(group(sel));
         
         
         if (c==null){
@@ -143,12 +163,14 @@ public final class ContactEdit
         }
         updateChoise(tJid.getString(),tTranspList);
         f.append(tNick);
-        f.append(tGroup);
+        
+        
+        //f.append(tGroup);
         
         tGrpList.append(SR.MS_NEWGROUP,null);
         tGrpList.setSelectedIndex(sel, true);
         
-        f.append(tGrpList);
+        grpFIndex=f.append(tGrpList);
         
         if (newContact) {
             f.append(tAskSubscrCheckBox);
@@ -173,7 +195,8 @@ public final class ContactEdit
             String jid=getString(tJid);
             if (jid!=null) {
                 String name=getString(tNick);
-                String group=getString(tGroup);
+                String group=group(tGrpList.getSelectedIndex());
+                if (group==null) group=getString(tGroup);
                 
                 try {
                     int gSel=tGrpList.getSelectedIndex();
@@ -229,11 +252,16 @@ public final class ContactEdit
     public void itemStateChanged(Item item){
         if (item==tGrpList) {
             int index=tGrpList.getSelectedIndex();
-            tGroup.setString(group(index));
+            if (index==tGrpList.size()-1) {
+                f.set(grpFIndex, tGroup);
+            }
+            //tGroup.setString(group(index));
         }
-        if (item==tGroup) {
-            updateChoise(tGroup.getString(), tGrpList);
-        }
+        
+        //if (item==tGroup) {
+        //    updateChoise(tGroup.getString(), tGrpList);
+        //}
+        
         if (item==tTranspList) {
             int index=tTranspList.getSelectedIndex();
             if (index==tTranspList.size()-1) return;

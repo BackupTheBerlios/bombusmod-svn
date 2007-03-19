@@ -1,10 +1,28 @@
 /*
  * VirtualList.java
  *
- * Created on 30 Январь 2005 г., 14:46
+ * Created on 30.01.2005, 14:46
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package ui;
@@ -87,17 +105,26 @@ public abstract class VirtualList
     public static final int NOKIA_GREEN=-10;
     public final static int NOKIA_PEN=-50;
     public static final int MOTOROLA_GREEN=-10;
-    public final static int MOTOROLA_FLIP=-200;
+
     public static final int MOTOE680_VOL_UP=-9;
     public static final int MOTOE680_VOL_DOWN=-8;
     public static final int MOTOE680_REALPLAYER=-6;
     public static final int MOTOE680_FMRADIO=-7;
-    public static final int SE_GREEN=10;
+    
+    public final static int MOTOROLA_FLIP=-200;
+    
+    public static final int SE_FLIPOPEN_JP6=-30;
+    public static final int SE_FLIPCLOSE_JP6=-31;
+    
+    public static final int SIEMENS_FLIPOPEN=-24;
+    public static final int SIEMENS_FLIPCLOSE=-22;
+    
     
     public int stringHeight=15;
 
     public static int keyClear=-8;
     public static int keyVolDown=0x1000;
+    public static int keyBack=0x1000;
     public static int greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
@@ -110,6 +137,7 @@ public abstract class VirtualList
      * не поддерживает двойную буферизацию экрана
      */
     private Image offscreen;
+    //protected boolean canback=true; // Enable destroyView() on keyBack by default
     
     /** признак положения курсора в конце списка */
     protected boolean atEnd; //FIXME: перенести поведение в функции keyRight();
@@ -598,7 +626,7 @@ public abstract class VirtualList
             case KEY_NUM1:  { moveCursorHome();    break; }
             case KEY_NUM7:  { moveCursorEnd();     break; }
             case '5':{ eventOk(); break; }
-            case MOTOROLA_FLIP: break;
+            case MOTOROLA_FLIP: { userKeyPressed(keyCode); break; }
             default:
                 try {
                     switch (getGameAction(keyCode)){
@@ -610,6 +638,11 @@ public abstract class VirtualList
                         default:
                             if (keyCode==greenKeyCode) { keyGreen(); break; }
 			     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
+                            if (keyCode==keyBack) {
+                                //TODO: Check, is destroyView() allowed
+                                destroyView();
+                                return;
+                            }
                             userKeyPressed(keyCode);
                     }
                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
@@ -842,7 +875,8 @@ public abstract class VirtualList
      * присоединение к менеджеру предыдущего Displayable
      */
     public void destroyView(){
-        if (display!=null)   display.setCurrent(parentView);
+        if (display!=null && parentView!=null /*prevents potential app hiding*/ )   
+            display.setCurrent(parentView);
     }
 
     public int getListWidth() {
@@ -873,7 +907,32 @@ public abstract class VirtualList
             e.printStackTrace(); /* ClassCastException */
         }
     }
+    
+    public void setTimeEvent(long time){
+        synchronized (this) {
+            timeEvent=(time==0)? 0:time+System.currentTimeMillis();
+            if (time!=0) setRotator();
+        }
+    };
+    protected long timeEvent;
 
+    public int getCursor() {
+        return cursor;
+    }
+
+    boolean probeTime(){
+        synchronized (this) {
+            if (timeEvent==0) return true;
+            long timeRemained=System.currentTimeMillis()-timeEvent;
+            //System.out.println(timeRemained);
+            if (timeRemained>=0) {
+                timeEvent=0;
+                onTime();
+            }
+        }
+        return false;
+    }
+    public void onTime() {};
 }
 
 class TimerTaskRotate extends Thread{
@@ -927,9 +986,17 @@ class TimerTaskRotate extends Thread{
             try {  sleep(300);  } catch (Exception e) {}
             if (stop) continue;
             
+            boolean redraw = false;
             synchronized (this) {
                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
-                if (scrollLen<0 && balloon<0) stop=true;
+                
+                if (attachedList!=null) stop=attachedList.probeTime(); else stop=true;
+                
+                if (scrollLen>=0 || balloon>=0) { 
+                    stop=false;
+                    redraw=true;
+                }
+                
                 if (stop) {
                     if (attachedList!=null) attachedList.offset=0;
                     attachedList.showBalloon=false;
@@ -950,8 +1017,8 @@ class TimerTaskRotate extends Thread{
                 if (balloon>=0) balloon--;
                 attachedList.showBalloon=(balloon<7 && balloon>0);
                 
-                attachedList.redraw();
             }
+            if (redraw) attachedList.redraw();
             
         }
     }
