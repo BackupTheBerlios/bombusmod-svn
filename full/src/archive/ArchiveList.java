@@ -142,6 +142,10 @@ public class ArchiveList
 
     public void commandAction(Command c, Displayable d) {
         super.commandAction(c,d);
+        
+	Msg m=getMessage(cursor);
+	if (m==null) return;
+        
 	if (c==cmdDelete) { deleteMessage(); redraw(); }
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
@@ -150,8 +154,10 @@ public class ArchiveList
         if (c==cmdExport) { new Browser(null, display, this, true); }
 //#endif
         if (c==cmdEdit) {
-            new archiveEdit(display,getMessage(cursor)).setParentView(StaticData.getInstance().roster);
-            deleteMessage();
+            try {
+                new archiveEdit(display,getMessage(cursor)).setParentView(StaticData.getInstance().roster);
+                deleteMessage();
+            } catch (Exception e) {/*no messages*/}
         }
         
         if (c == cmdCopy)
