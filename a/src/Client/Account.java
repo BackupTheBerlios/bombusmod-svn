@@ -34,7 +34,7 @@ import javax.microedition.midlet.MIDlet;
 import midlet.Bombus;
 import ui.ColorScheme;
 import ui.IconTextElement;
-import ui.ImageList;
+//import ui.ImageList;
 import javax.microedition.rms.*;
 import javax.microedition.lcdui.*;
 import Client.Roster;

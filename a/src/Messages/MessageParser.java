@@ -26,8 +26,11 @@
  */
 
 package Messages;
-
+//#ifdef ANIMATION
+//# import images.AnimatedSmilesIcons;
+//#else
 import images.SmilesIcons;
+//#endif
 import java.io.*;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
@@ -62,7 +65,11 @@ public final class MessageParser implements Runnable{
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     
     public static MessageParser getInstance() {
+//#ifdef ANIMATION
+//#         if (instance==null) instance=new MessageParser("/images/ani_smiles.txt");
+//#else
         if (instance==null) instance=new MessageParser("/images/smiles.txt");
+//#endif
         return instance;
     }
     /**
@@ -181,7 +188,11 @@ public final class MessageParser implements Runnable{
         synchronized (tasks) {
             wordsWrap=Config.getInstance().textWrap==1;
             messageItem.msgLines=new Vector();
+//#ifdef ANIMATION
+//#             this.il=(messageItem.smilesEnabled())? AnimatedSmilesIcons.getInstance() : null;
+//#else
             this.il=(messageItem.smilesEnabled())? SmilesIcons.getInstance() : null;
+//#endif
             this.width=width;
 
             if (tasks.indexOf(messageItem)>=0) return;

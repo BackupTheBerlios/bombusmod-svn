@@ -29,7 +29,11 @@ package Messages;
 
 import Client.Msg;
 import images.RosterIcons;
+//#ifdef ANIMATION
+//# import images.AnimatedSmilesIcons;
+//#else
 import images.SmilesIcons;
+//#endif
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;

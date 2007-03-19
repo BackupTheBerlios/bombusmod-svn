@@ -29,7 +29,11 @@ package Messages;
 
 import Client.Config;
 import Client.Msg;
+//#ifdef ANIMATION
+//# import images.AnimatedSmilesIcons;
+//#else
 import images.SmilesIcons;
+//#endif
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;

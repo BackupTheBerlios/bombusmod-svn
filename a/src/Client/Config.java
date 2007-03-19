@@ -30,7 +30,11 @@ package Client;
 import Info.Phone;
 import Info.Version;
 import images.RosterIcons;
+//#ifdef ANIMATION
+//# import images.AnimatedSmilesIcons;
+//#else
 import images.SmilesIcons;
+//#endif
 import java.io.*;
 import java.util.*;
 import javax.microedition.lcdui.Font;
@@ -201,7 +205,11 @@ public class Config {
 	if (ph.PhoneManufacturer()==ph.SONYE) {
             //prefetch images
             RosterIcons.getInstance();
-            SmilesIcons.getInstance();
+//#ifdef ANIMATION
+//#     AnimatedSmilesIcons.getInstance();
+//#else
+    SmilesIcons.getInstance();
+//#endif
             
 	    allowMinimize=true;
             greenKeyCode=0;

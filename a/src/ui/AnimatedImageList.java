@@ -1,9 +1,9 @@
 /*
- * ImageListC.java
+ * AnimatedImageList.java
  *
- * Created on 31.01.2005, 0:06
+ * Created on 19.03.2007, 10:28
  *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,16 +25,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/**
- *
- * @author Eugene Stahov
- */
-
 package ui;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Graphics;
 
-public class ImageList {
+public class AnimatedImageList {
 
     public Image skin_png;
     
@@ -44,14 +39,14 @@ public class ImageList {
     protected int width;
     //int count,total;
     /** Creates a new instance of ImageListC */
-    public ImageList(String resource, int rows, int columns) {
+    public AnimatedImageList(String resource, int rows, int columns) {
         try {
             resImage = Image.createImage(resource);
             width = resImage.getWidth()/columns;
             height = (rows==0)? width : resImage.getHeight()/rows;
         } catch (Exception e) { 
-            //System.out.print("Can't load ");
-            //System.out.println(resource);
+            System.out.print("Can't load ");
+            System.out.println(resource);
         }
     }
     

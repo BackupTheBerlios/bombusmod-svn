@@ -27,7 +27,11 @@
 
 package Client;
 import Messages.MessageParser;
+//#ifdef ANIMATION
+//# import images.AnimatedSmilesIcons;
+//#else
 import images.SmilesIcons;
+//#endif
 import locale.SR;
 import ui.*;
 import javax.microedition.lcdui.*;
@@ -73,18 +77,21 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
          this.me=me;
          this.caretPos=caretPos;
          
-         il = SmilesIcons.getInstance();
+//#ifdef ANIMATION
+//#         il = AnimatedSmilesIcons.getInstance();
+//#else
+        il = SmilesIcons.getInstance();
+//#endif
         
         smileTable=MessageParser.getInstance().getSmileTable();
         
         imgCnt=smileTable.size();
-        //il.getCount();
         
         imgWidth=il.getWidth()+2*CURSOR_HOFFSET;
         lineHeight = il.getHeight()+2*CURSOR_VOFFSET;
 
         xCnt= getWidth() / imgWidth;
-        
+
         lines=imgCnt/xCnt;
         xLastCnt=imgCnt-lines*xCnt;
         if (xLastCnt>0) lines++; else xLastCnt=xCnt;
@@ -100,7 +107,6 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     public int getItemCount(){ return lines; }
     public VirtualElement getItemRef(int index){ lineIndex=index; return this;}
     
-    //private class SmileItem implements VirtualElement {
     public int getVWidth(){ return 0; }
     public int getVHeight() { return lineHeight; }
     public int getColor(){ return ColorScheme.LIST_INK; }
@@ -112,15 +118,22 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         destroyView();
     };
     
-        
-    public void drawItem(Graphics g, int ofs, boolean selected){
-        int max=(lineIndex==lines-1)? xLastCnt:xCnt;
-        for (int i=0;i<max;i++) {
-            il.drawImage(g, lineIndex*xCnt + i, i*imgWidth+CURSOR_HOFFSET, CURSOR_VOFFSET);
-        }
-    };
+//#ifdef ANIMATION
+//#     public void drawItem(Graphics g, int ofs, boolean selected){
+//#         int max=(lineIndex==lines-1)? xLastCnt:xCnt;
+//#         for (int i=0;i<max;i++) {
+//#             il.drawImage(g, lineIndex + i, i*imgWidth+CURSOR_HOFFSET, CURSOR_VOFFSET);
+//#         }
+//#     };
+//#else
+   public void drawItem(Graphics g, int ofs, boolean selected){
+       int max=(lineIndex==lines-1)? xLastCnt:xCnt;
+       for (int i=0;i<max;i++) {
+           il.drawImage(g, lineIndex*xCnt + i, i*imgWidth+CURSOR_HOFFSET, CURSOR_VOFFSET);
+       }
+   };
+//#endif
     
-    //}
     public void drawCursor (Graphics g, int width, int height){
         int x=xCursor*imgWidth;
         g.setColor(ColorScheme.LIST_BGND);

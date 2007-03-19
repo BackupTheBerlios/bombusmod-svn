@@ -30,7 +30,11 @@ import Conference.MucContact;
 import Messages.MessageList;
 import archive.MessageArchive;
 import images.RosterIcons;
+//#ifdef ANIMATION
+//# import images.AnimatedSmilesIcons;
+//#else
 import images.SmilesIcons;
+//#endif
 import io.NvStorage;
 import locale.SR;
 //#if TEMPLATES
