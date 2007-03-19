@@ -27,7 +27,7 @@
 
 package Messages;
 
-import images.SmilesIcons;
+//import images.SmilesIcons;
 import java.io.*;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
@@ -178,7 +178,7 @@ public final class MessageParser implements Runnable{
         synchronized (tasks) {
             wordsWrap=Config.getInstance().textWrap==1;
             messageItem.msgLines=new Vector();
-            this.il=(messageItem.smilesEnabled())? SmilesIcons.getInstance() : null;
+            //this.il=(messageItem.smilesEnabled())? SmilesIcons.getInstance() : null;
             this.width=width;
 
             if (tasks.indexOf(messageItem)>=0) return;
