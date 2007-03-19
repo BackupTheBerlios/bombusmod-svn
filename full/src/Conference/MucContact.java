@@ -178,7 +178,7 @@ public class MucContact extends Contact{
                         b.append(')');
                     }
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
-                    setWobble(((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+"\n"+reason);
+                    setWobble(nick+((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+"\n"+reason);
                     b.append("(");
                     b.append(reason);
                     b.append(")");
@@ -279,7 +279,7 @@ public class MucContact extends Contact{
     public void setWobble(String reason) {
         ConferenceGroup group=(ConferenceGroup)getGroup();
         if ( group.getSelfContact() == this ) {
-            VirtualList.setWobble(reason);
+            VirtualList.setWobble("!"+reason);
         }
     }
 
