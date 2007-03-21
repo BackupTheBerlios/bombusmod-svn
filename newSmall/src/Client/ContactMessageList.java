@@ -82,6 +82,11 @@ public class ContactMessageList extends MessageList
         
         addCommand(cmdMessage);
         addCommand(cmdPurge);
+        addCommand(cmdCopy);
+        if (!clipboard.isEmpty()) {
+            addCommand(cmdCopyPlus);
+            addCommand(cmdSendBuffer);
+        }
         addCommand(cmdContact);
 	addCommand(cmdActive);
         //if (getItemCount()>0) {
@@ -114,11 +119,6 @@ public class ContactMessageList extends MessageList
                 removeCommand(cmdUnsubscribed);
             }
         } catch (Exception e) {}
-        
-        if (!clipboard.isEmpty()) {
-            addCommand(cmdCopyPlus);
-            addCommand(cmdSendBuffer);
-        }        
     }
     
     protected void beginPaint(){
