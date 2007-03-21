@@ -140,6 +140,9 @@ public class Roster
 
     private final static int maxReconnect=5;
     private int reconnectCount;
+
+    private static long notifyReadyTime=System.currentTimeMillis();
+    private static int blockNotifyEvent=-111;
     //public JabberBlockListener discoveryListener;
     
     /**
@@ -1235,7 +1238,22 @@ public class Roster
             playNotify(0);
     }
     
+    
+    public void blockNotify(int event, long ms) {
+        if (!notifyReady(-111)) return;
+        blockNotifyEvent=event;
+        notifyReadyTime=System.currentTimeMillis()+ms;
+    }
+
+    public boolean notifyReady(int event) {
+        if ((blockNotifyEvent==event ||
+            (blockNotifyEvent==-111 && event<=7)) &&
+           System.currentTimeMillis()<notifyReadyTime) return false;
+        else return true;
+    }
+    
     public void playNotify(int event) {
+        if (!notifyReady(event)) return;
         Config cf=Config.getInstance();
         int profile=cf.profile;
         if (profile==AlertProfile.AUTO) profile=AlertProfile.ALL;
@@ -1251,6 +1269,7 @@ public class Roster
             case AlertProfile.SOUND: notify=new EventNotify(display, true, 0,           blFlashEn); break;
         }
         if (notify!=null) notify.startNotify();
+        blockNotify(event, 2000);
     }
 
     private void focusToContact(final Contact c, boolean force) {

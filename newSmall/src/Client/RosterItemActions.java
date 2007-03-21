@@ -50,6 +50,7 @@ import ui.MenuItem;
 import ui.YesNoAlert;
 import vcard.VCard;
 import vcard.vCardForm;
+import util.ClipBoard;
 
 /**
  *
@@ -61,6 +62,8 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
     
     Object item;
     
+    private ClipBoard clipboard;
+        
     Roster roster;
     /** Creates a new instance of RosterItemActions */
     public RosterItemActions(Display display, Object item, int action) {
@@ -87,7 +90,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    addItem(SR.MS_VCARD,1);
 	    addItem(SR.MS_CLIENT_INFO,0);
 	    addItem(SR.MS_COMMANDS,30);
-	    
+	    addItem("Copy JID",892);
+	    addItem("Send text buffer",914);
+            
 	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
 		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
 		    addItem(SR.MS_EDIT,2);
@@ -291,6 +296,35 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 return;
             }
             
+            case 892: //Copy JID
+            {
+                if (!(c instanceof MucContact)) {
+                    try {
+                        if (c.bareJid!=null)
+                            clipboard.setClipBoard(c.bareJid);
+                    } catch (Exception e) {/*no messages*/}
+                }
+                break;
+            }
+            
+                case 914: //send message from buffer
+                {
+                    String from=StaticData.getInstance().account.toString();
+                    String body=clipboard.getClipBoard();
+                    String subj="";
+
+                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+            
+                    try {
+                        roster.sendMessage(c, body, subj, 0);
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+                    } catch (Exception e) {
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                
 //#if (FILE_IO && FILE_TRANSFER)
             case 50: //send file
             {
@@ -396,6 +430,15 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 {
                     new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER);
                     return;
+                }
+                case 892: //Copy JID
+                {
+                    MucContact mcJ=(MucContact) c;
+                    try {
+                        if (mcJ.realJid!=null)
+                            clipboard.setClipBoard(mcJ.realJid);
+                    } catch (Exception e) {}
+                    break;
                 }
             }
         }

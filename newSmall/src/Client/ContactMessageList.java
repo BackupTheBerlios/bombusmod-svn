@@ -36,6 +36,7 @@ import vcard.VCard;
 import ui.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
+import util.ClipBoard;
 /**
  *
  * @author Eugene Stahov
@@ -55,8 +56,13 @@ public class ContactMessageList extends MessageList
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
     Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,11);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
+    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 12);
+    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 13);
+    Command cmdSendBuffer=new Command("Send Buffer", Command.SCREEN, 14);
     
     StaticData sd;
+    
+    private ClipBoard clipboard;
     
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
@@ -109,6 +115,10 @@ public class ContactMessageList extends MessageList
             }
         } catch (Exception e) {}
         
+        if (!clipboard.isEmpty()) {
+            addCommand(cmdCopyPlus);
+            addCommand(cmdSendBuffer);
+        }        
     }
     
     protected void beginPaint(){
@@ -192,6 +202,43 @@ public class ContactMessageList extends MessageList
                 new MessageEdit(display,contact,msg.from+": ");
             } catch (Exception e) {/*no messages*/}
         }
+        
+        if (c == cmdCopy)
+        {
+            try {
+                clipboard.setClipBoard(getMessage(cursor).getBody());
+            } catch (Exception e) {/*no messages*/}
+        }
+        
+        if (c==cmdCopyPlus) {
+            try {
+                StringBuffer clipstr=new StringBuffer();
+                clipstr.append(clipboard.getClipBoard());
+                clipstr.append("\n\n");
+                clipstr.append(getMessage(cursor).getBody());
+                
+                clipboard.setClipBoard(clipstr.toString());
+            } catch (Exception e) {/*no messages*/}
+        }
+        
+        if (c==cmdSendBuffer) {
+            String from=StaticData.getInstance().account.toString();
+            String body=clipboard.getClipBoard();
+            String subj=null;
+
+            Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+
+            try {
+                if (body!=null)
+                    sd.roster.sendMessage(contact, body, subj, 1);
+                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+            } catch (Exception e) {
+                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
+                //e.printStackTrace();
+            }
+            redraw();
+        }
+        
         if (c==cmdContact) {
             new RosterItemActions(display, contact, -1);
         }

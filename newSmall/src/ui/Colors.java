@@ -36,11 +36,11 @@ public class Colors {
     public final static int BALLOON_BGND         =0xffffe0;
     
 //#if (!INVCOLORS)
-    public static final int LIST_BGND           =0xFFFFFF;
-    public static final int LIST_BGND_EVEN      =0xffeeff;
+    public static final int LIST_BGND           =0xeae3ef;
+    public static final int LIST_BGND_EVEN      =0xd4cae2;
     public final static int LIST_INK            =0x000000;
     public final static int MSG_SUBJ            =0xa00000;
-    public final static int MSG_HIGHLIGHT       =0x904090;
+    public final static int MSG_HIGHLIGHT       =0xff0000;
     
     public final static int DISCO_CMD           =0x000080;
     

@@ -41,6 +41,7 @@ import javax.microedition.lcdui.TextBox;
 import locale.SR;
 import ui.ComplexString;
 import ui.YesNoAlert;
+import util.ClipBoard;
 
 /**
  *
@@ -51,15 +52,16 @@ public class ArchiveList
     implements YesNoAlert.YesNoListener
 {
 
-    Command cmdDelete=new Command(SR.MS_DELETE /*"Delete"*/, Command.SCREEN, 9);
+    Command cmdDelete=new Command(SR.MS_DELETE /*"Delete"*/, Command.SCREEN, 6);
     Command cmdPaste=new Command(SR.MS_PASTE_BODY /*"Paste Body"*/, Command.SCREEN, 1);
     Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT /*"Paste Subject"*/, Command.SCREEN, 3);
     Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
-    //Command cmdNick=new Command("Paste Nickname", Command.SCREEN, 3);
+    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 4);
+    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 5);
     
     MessageArchive archive=new MessageArchive();
     MessageEdit target;
-    
+    private ClipBoard clipboard;
     private int caretPos;
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, MessageEdit target, int caretPos) {
@@ -68,6 +70,10 @@ public class ArchiveList
         this.caretPos=caretPos;
 	setCommandListener(this);
 	addCommand(cmdBack);
+        addCommand(cmdCopy);
+        if (!clipboard.isEmpty()) {
+            addCommand(cmdCopyPlus);
+        }
 	addCommand(cmdDelete);
 	
 	if (target!=null) {
@@ -108,10 +114,32 @@ public class ArchiveList
 
     public void commandAction(Command c, Displayable d) {
         super.commandAction(c,d);
+        
+	Msg m=getMessage(cursor);
+	if (m==null) return;
+        
 	if (c==cmdDelete) { deleteMessage(); }
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
 	if (c==cmdJid) { pasteData(2); }
+        
+        if (c == cmdCopy)
+        {
+            try {
+                clipboard.setClipBoard(getMessage(cursor).getBody());
+            } catch (Exception e) {/*no messages*/}
+        }
+        
+        if (c==cmdCopyPlus) {
+            try {
+                StringBuffer clipstr=new StringBuffer();
+                clipstr.append(clipboard.getClipBoard());
+                clipstr.append("\n\n");
+                clipstr.append(getMessage(cursor).getBody());
+                
+                clipboard.setClipBoard(clipstr.toString());
+            } catch (Exception e) {/*no messages*/}
+        }
     }
 
     private void deleteMessage() {

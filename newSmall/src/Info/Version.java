@@ -38,7 +38,7 @@ public class Version {
 //#if (!ZLIB)
 //#     public final static String version="$BOMBUSVERSION$";
 //#else
-    public final static String version="$BOMBUSVERSION$-Zlib";
+    public final static String version="0.4.6.1045Z";
 //#endif
     // this string will be patched by build.xml/post-preprocess
     

@@ -43,13 +43,14 @@ import images.camera.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import util.ClipBoard;
 
 /**
  *
  * @author EvgS
  */
 public class vCardForm 
-        implements CommandListener, Runnable
+        implements CommandListener, Runnable, ItemCommandListener
 //#if (FILE_IO)
         , BrowserListener
 //#endif
@@ -68,6 +69,7 @@ public class vCardForm
     protected Command cmdPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,4);
     protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,5);
+    protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 6);
     
     private Form f;
     private Vector items=new Vector();
@@ -75,6 +77,8 @@ public class vCardForm
     
     private byte[] photo;
     private int photoIndex;
+    
+    private ClipBoard clipboard;
     
     /** Creates a new instance of vCardForm */
     public vCardForm(Display display, VCard vcard, boolean editable) {
@@ -102,6 +106,8 @@ public class vCardForm
                 items.addElement(item);
             } else if (data!=null) {
                 item=new StringItem (name, data);
+                item.addCommand(cmdCopy);
+                item.setItemCommandListener(this);
             }
             if (item!=null) {
                 f.append(item);
@@ -225,6 +231,20 @@ public class vCardForm
 //#endif
         }
         f.set(photoIndex, photoItem);
+    }
+
+    public void commandAction(Command command, Item item) {
+        if (command == cmdCopy)
+        {
+          try {
+            String text=((StringItem) item).getText();
+            CopyText(text);
+          } catch (Exception e) {/*no messages*/}
+        }
+    }
+
+    private void CopyText(String string) {
+        clipboard.setClipBoard(string);
     }
 
 }

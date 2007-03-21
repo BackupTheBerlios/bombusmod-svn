@@ -31,6 +31,7 @@ import archive.ArchiveList;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;
+import util.ClipBoard;
 
 /**
  *
@@ -56,9 +57,11 @@ public class MessageEdit
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 5);
     private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
     private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
+    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 16);
     
     private boolean composing=true;
     
+    private ClipBoard clipboard;
     //private Command cmdSubject=new Command("Subject",Command.SCREEN,10);
     
     /** Creates a new instance of MessageEdit */
@@ -90,6 +93,8 @@ public class MessageEdit
             t.addCommand(cmdInsNick);
 	t.addCommand(cmdPaste);
         t.addCommand(cmdSuspend);
+        if (!clipboard.isEmpty())
+            t.addCommand(cmdPasteText);
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
         
@@ -153,6 +158,8 @@ public class MessageEdit
         if (c==cmdAbc) {setInitialCaps(false); return; }
         if (c==cmdABC) {setInitialCaps(true); return; }
 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
+        
+        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), caretPos); return; }
         
         if (c==cmdCancel) { 
             composing=false; 

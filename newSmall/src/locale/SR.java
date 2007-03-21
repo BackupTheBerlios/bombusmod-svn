@@ -318,6 +318,10 @@ public class SR {
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
 
+    public final static String MS_COPY="Copy text";
+
+    public final static String MS_PASTE="Paste text";
+
 
 
     private SR() { }
