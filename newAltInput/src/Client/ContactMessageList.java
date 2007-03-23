@@ -40,7 +40,8 @@ import ui.MainBar;
 //#if ALT_INPUT
 //# import History.HistoryStorage;
 //# import java.io.DataInputStream;
-//# import ui.controls.InputBox;
+//# //import ui.controls.InputBox;
+//# import ui.controls.NewInputBox;
 //#endif
 import vcard.VCard;
 import ui.*;
@@ -88,9 +89,12 @@ public class ContactMessageList extends MessageList
     
 //#if ALT_INPUT
 //#     private boolean startMessage=false;
-//#     private String text="";
+//#     private String text="1";
 //#endif
     private boolean composing=true;
+
+    private NewInputBox inputbox;
+
   
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
@@ -351,13 +355,14 @@ public class ContactMessageList extends MessageList
 //#             if (!startMessage) {
 //#                 if (keyCode==KEY_STAR) {
 //#                     startMessage=true;
+//#                     System.out.println(inputbox.getStringsHeight());
 //#                     updateBottom(keyCode);
 //#                 }
 //#                 
 //#                 if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
 //#                 if (keyCode==KEY_NUM9) nextContact();
 //#                 if (keyCode==keyClear) {
-//# 					if (messages.isEmpty()) return;
+//#                     if (messages.isEmpty()) return;
 //#                     clearMessageList();
 //#                 }
 //#             } else {
@@ -384,15 +389,15 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
             if (keyCode==KEY_NUM9) nextContact();
             if (keyCode==keyClear) {
-				if (messages.isEmpty()) return;
-				clearMessageList()/*clearReadedMessageList()*/;
-			}
+                if (messages.isEmpty()) return;
+		clearMessageList()/*clearReadedMessageList()*/;
+            }
 //#if ALT_INPUT  
 //#         }
 //#endif
     }
 //#if ALT_INPUT
-//#     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; }
+//#     public void setInputBoxItem(NewInputBox inputbox) { this.inputbox=inputbox; }
 //# 
 //#     private void sendMessage(){
 //#         try {
@@ -428,7 +433,7 @@ public class ContactMessageList extends MessageList
 //#                     if (inputbox!=null) {
 //#                         inputbox.sendKey(key);
 //#                     } else {
-//#                         InputBox inputbox=new InputBox("", key);
+//#                         NewInputBox inputbox=new NewInputBox("1", key);
 //#                         setInputBoxItem(inputbox);
 //#                     }
 //#             } else {

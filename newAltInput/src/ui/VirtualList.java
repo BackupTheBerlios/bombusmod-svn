@@ -32,10 +32,11 @@ import Info.Version;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
+
 import ui.controls.PopUp;
 import ui.controls.Balloon;
 //#if ALT_INPUT
-//# import ui.controls.InputBox;
+//# import ui.controls.NewInputBox;
 //#endif
 import ui.controls.ScrollBar;
 
@@ -219,9 +220,9 @@ public abstract class VirtualList
     
     protected VirtualElement mainbar;
  //#if ALT_INPUT   
-//#     protected InputBox inputbox; //alt
-//#     public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
-//#     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
+//#     protected NewInputBox inputbox;
+//#     public NewInputBox getBottomItem() { return (NewInputBox)inputbox; }
+//#     public void setInputBoxItem(NewInputBox inputbox) { this.inputbox=inputbox; }
  //#endif   
     private boolean wrapping = true;
     
@@ -521,7 +522,8 @@ public abstract class VirtualList
         }
 //#if ALT_INPUT
 //#         if (inputbox!=null) {
-//#             setAbsOrg(g, 0, height-inputbox.height);  
+//#             System.out.println(height-inputbox.getStringsHeight());
+//#             setAbsOrg(g, 0, height-inputbox.getStringsHeight());  
 //#             g.setClip(0,0, width, height);
 //#             g.setColor(getMainBarBGndRGB());
 //#             g.fillRect(0,0, width, height);
@@ -529,15 +531,15 @@ public abstract class VirtualList
 //#             inputbox.drawItem(g);
 //#         } else {
 //#endif
-                if (paintBottom) {
-                    if (reverse) {
-                        setAbsOrg(g, 0, height-mHeight);
-                        drawInfoPanel(g);
-                    } else {
-                        setAbsOrg(g, 0, height-iHeight);
-                        drawMainPanel(g);
-                    }
+            if (paintBottom) {
+                if (reverse) {
+                    setAbsOrg(g, 0, height-mHeight);
+                    drawInfoPanel(g);
+                } else {
+                    setAbsOrg(g, 0, height-iHeight);
+                    drawMainPanel(g);
                 }
+            }
 //#if ALT_INPUT
 //#         }
 //#endif
