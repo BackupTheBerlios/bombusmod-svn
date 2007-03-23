@@ -57,9 +57,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     public Image img;
     
-    public int keypressed=0;
-    
-    
     private ComplexString status;
     
     private char exitKey;
@@ -75,6 +72,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     
     private static SplashScreen instance;
+
+    public int keypressed=0;
     
     public static SplashScreen getInstance(){
         if (instance==null) instance=new SplashScreen();
@@ -276,7 +275,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public void keyPressed(int keyCode) { 
         if (keyCode==-24) {
             destroyView();
-        } 
+        }
+        if (pos!=0) close();
         kHold=0;
     }
     
