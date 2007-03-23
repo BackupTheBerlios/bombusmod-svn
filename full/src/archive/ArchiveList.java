@@ -224,7 +224,7 @@ public class ArchiveList
             int items=getItemCount();
             StringBuffer body=new StringBuffer();
             
-            for(int i=0; i<items-1; i++){
+            for(int i=0; i<items; i++){
                 Msg m=getMessage(i);
                 
                 body.append(m.getDayTime());

@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Info.Version;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
@@ -619,6 +620,12 @@ public abstract class VirtualList
      * @param keyCode код нажатой кнопки
      */
     private void key(int keyCode) {
+        if (keyCode==-4 || keyCode==702) {
+            if (Version.getPlatformName().endsWith("(NSG)")) {
+                destroyView();
+                return;  
+            }
+        }
         switch (keyCode) {
             case 0: break;
             case NOKIA_PEN: { destroyView(); break; }
