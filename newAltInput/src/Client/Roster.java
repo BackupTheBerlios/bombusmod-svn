@@ -45,6 +45,7 @@ import login.SASLAuth;
 import midlet.Bombus;
 import ui.AlertBox;
 import ui.MainBar;
+import ui.controls.NewInputBox;
 import vcard.VCard;
 import vcard.vCardForm;
 import com.alsutton.jabber.*;
@@ -1858,8 +1859,10 @@ public class Roster
             return;
         }
         if (keyCode=='9') {
-            searchGroup(1);
-            setRotator();
+            //searchGroup(1);
+            //setRotator();
+             NewInputBox newinputbox=new NewInputBox("1", 1);
+             setInputBoxItem(newinputbox);
             return;
         }
         

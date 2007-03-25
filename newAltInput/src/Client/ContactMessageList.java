@@ -81,19 +81,18 @@ public class ContactMessageList extends MessageList
     
     Vector activeContacts;
     StaticData sd;
+    private Config cf=Config.getInstance();
+
 //#if LAST_MESSAGES
-//#     private Config cf=Config.getInstance();
-//#     
 //#     private boolean hisStorage=(cf.lastMessages)?true:false;    
 //#endif
     
 //#if ALT_INPUT
 //#     private boolean startMessage=false;
 //#     private String text="1";
+//# //    private NewInputBox newinputbox;
 //#endif
     private boolean composing=true;
-
-    private NewInputBox inputbox;
 
   
     /** Creates a new instance of MessageList */
@@ -105,6 +104,11 @@ public class ContactMessageList extends MessageList
         MainBar mainbar=new MainBar(contact);
         setMainBarItem(mainbar);
         
+//#if ALT_INPUT
+//#         NewInputBox newinputbox=new NewInputBox("1", 1);
+//#         setInputBoxItem(newinputbox);
+//#endif
+        
         mainbar.addRAlign();
         mainbar.addElement(null);
         mainbar.addElement(null);
@@ -114,9 +118,9 @@ public class ContactMessageList extends MessageList
 //#         if (hisStorage && contact instanceof MucContact==false) addCommand(cmdRecent);
 //#endif        
         addCommand(cmdMessage);
-        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT)
             addCommand(cmdReply);
-        }
+
         addCommand(cmdPurge);
         //addCommand(cmdContact);
 	addCommand(cmdActive);
@@ -180,7 +184,6 @@ public class ContactMessageList extends MessageList
         
         sd.roster.countNewMsgs();
     }
-    
     
     public int getItemCount(){ return contact.msgs.size(); }
 
@@ -355,7 +358,6 @@ public class ContactMessageList extends MessageList
 //#             if (!startMessage) {
 //#                 if (keyCode==KEY_STAR) {
 //#                     startMessage=true;
-//#                     System.out.println(inputbox.getStringsHeight());
 //#                     updateBottom(keyCode);
 //#                 }
 //#                 
@@ -397,13 +399,13 @@ public class ContactMessageList extends MessageList
 //#endif
     }
 //#if ALT_INPUT
-//#     public void setInputBoxItem(NewInputBox inputbox) { this.inputbox=inputbox; }
+//# //    public void setInputBoxItem(NewInputBox newinputbox) { this.newinputbox=newinputbox; }
 //# 
 //#     private void sendMessage(){
 //#         try {
 //#                 int comp=0; // composing event off
 //#                 Roster r=StaticData.getInstance().roster;
-//#                 this.text=inputbox.getText();
+//#                 //this.text=newinputbox.getText();
 //#                 if (text!=null) {
 //#                     String from=StaticData.getInstance().account.toString();
 //#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
@@ -420,24 +422,30 @@ public class ContactMessageList extends MessageList
 //#                     if (text!=null || comp>0)
 //#                     r.sendMessage(contact, text, null, comp);
 //#                 } catch (Exception e) {
-//#                     e.printStackTrace();
+//#                     //e.printStackTrace();
 //#                 }
 //#         } catch (Exception e) {
-//#             e.printStackTrace();
+//#             //e.printStackTrace();
 //#         }
 //#     } 
 //#   
 //#     private void updateBottom(int key){
 //#         if (cf.altInput) {
 //#             if (startMessage) {
-//#                     if (inputbox!=null) {
-//#                         inputbox.sendKey(key);
+//#                     System.out.println("1");
+//#                     
+//#                     if (getInputBoxItem()!=null) {
+//#                         System.out.println("send keypress");
+//#                         getInputBoxItem().sendKey(key);
 //#                     } else {
-//#                         NewInputBox inputbox=new NewInputBox("1", key);
-//#                         setInputBoxItem(inputbox);
+//#                         getInputBoxItem().sendKey(key);
+//#                         System.out.println("3");
+//#                         //NewInputBox inputbox=new NewInputBox("1", key);
+//#                         //setInputBoxItem(inputbox);
 //#                     }
 //#             } else {
-//#                 this.inputbox=null;
+//#                 System.out.println("sended message");
+//#                 //this.newinputbox=null;
 //#             }
 //#         }
 //#     } 

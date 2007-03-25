@@ -2,7 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file xmlns="">file:/C:/bombus/bombusmod/full/src/ui/VirtualList.java</file>
-        <file xmlns="">file:/C:/bombus/bombusmod/full/src/ui/controls/InputBox.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/Client/Contact.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/Client/ContactMessageList.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/Client/MessageEdit.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/Client/Roster.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/Conference/MucContact.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/archive/ArchiveList.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/ui/ColorScheme.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/ui/VirtualList.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/ui/controls/PopUp.java</file>
+        <file>file:/C:/Bombus/bombusmod/full/src/ui/dateCalc.java</file>
     </open-files>
 </project-private>

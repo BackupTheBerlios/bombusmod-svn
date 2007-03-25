@@ -219,10 +219,13 @@ public abstract class VirtualList
     protected boolean showBalloon;
     
     protected VirtualElement mainbar;
+    public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
+    public void setMainBarItem(ComplexString mainbar) { this.mainbar=mainbar; }
+    
  //#if ALT_INPUT   
-//#     protected NewInputBox inputbox;
-//#     public NewInputBox getBottomItem() { return (NewInputBox)inputbox; }
-//#     public void setInputBoxItem(NewInputBox inputbox) { this.inputbox=inputbox; }
+//#     protected NewInputBox newinputbox;
+//#     public NewInputBox getInputBoxItem() { return (NewInputBox)newinputbox; }
+//#     public void setInputBoxItem(NewInputBox newinputbox) { this.newinputbox=newinputbox; }
  //#endif   
     private boolean wrapping = true;
     
@@ -246,19 +249,6 @@ public abstract class VirtualList
      * @param wrap будучи переданным true, разрешает перенос курсора через конец списка
      */
     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
-    
-    /**
-     * ссылка на заголовок списка
-     * @return объект типа ComplexString
-     */
-    
-    /**
-     * СЃСЃС‹Р»РєР° РЅР° Р·Р°РіРѕР»РѕРІРѕРє СЃРїРёСЃРєР°
-     * @return РѕР±СЉРµРєС‚ С‚РёРїР° ComplexString
-     */
-    
-    public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
-    public void setMainBarItem(ComplexString mainbar) { this.mainbar=mainbar; }
 
     /**
      * возвращает ссылку на объект в фокусе. 
@@ -419,15 +409,24 @@ public abstract class VirtualList
             }
         }
         
-        if (paintBottom) {
-            if (reverse) {
-                if (mainbar!=null)
-                    list_bottom=mHeight;
-            } else {
-                list_bottom=iHeight; 
+//#if ALT_INPUT
+//#         if (newinputbox!=null) {
+//#             System.out.println("if (newinputbox!=null)");
+//#             list_bottom=newinputbox.getStringsHeight(); 
+//#         } else {
+//#endif
+            if (paintBottom) {
+                if (reverse) {
+                    if (mainbar!=null)
+                        list_bottom=mHeight;
+                } else {
+                    list_bottom=iHeight; 
+                }
             }
-        }
-       
+//#if ALT_INPUT
+//#         }
+//#endif
+            
         winHeight=height-itemBorder[0]-list_bottom;
 
         int count=getItemCount(); // размер списка
@@ -521,14 +520,14 @@ public abstract class VirtualList
                 drawBalloon(g, baloon, text);
         }
 //#if ALT_INPUT
-//#         if (inputbox!=null) {
-//#             System.out.println(height-inputbox.getStringsHeight());
-//#             setAbsOrg(g, 0, height-inputbox.getStringsHeight());  
+//#         if (newinputbox!=null) {
+//#             System.out.println("newinputbox.drawItem(g)");
+//#             setAbsOrg(g, 0, height-newinputbox.getStringsHeight());  
 //#             g.setClip(0,0, width, height);
 //#             g.setColor(getMainBarBGndRGB());
 //#             g.fillRect(0,0, width, height);
 //#             g.setColor(getMainBarRGB());
-//#             inputbox.drawItem(g);
+//#             newinputbox.paint(g);
 //#         } else {
 //#endif
             if (paintBottom) {
@@ -764,7 +763,7 @@ public abstract class VirtualList
             }
         }
 //#if ALT_INPUT
-//#         if (inputbox==null) {
+//#         if (newinputbox==null) {
 //#endif
             switch (keyCode) {
                 case 0: break;

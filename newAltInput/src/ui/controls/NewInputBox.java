@@ -67,31 +67,25 @@ public class NewInputBox extends Canvas {
     private int charsnum=0;
     
     
-    private Font font;
-    private String str;
+    private Font font=FontCache.getBalloonFont();
+
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
-    private boolean wordsWrap;
     private Vector strings;
 
     public NewInputBox(String text, int key) {
+        System.out.println("NewInputBox");
         this.text=text;
         this.key=key;
-        this.font=FontCache.getBalloonFont();
+        g.setFont(font);
         this.height=font.getHeight();
+        
+        strings=parseMessage(100);
+        System.out.println(height);
         sendKey(key);
-    }
-
-    public void drawItem(Graphics g) {
         paint(g);
     }
-
-    protected void paint(Graphics g) {
-        g.setFont(font);
-        strings=parseMessage(width-4);
-        draw(g);
-    }
     
-    public void draw(Graphics g) {
+    public void paint(Graphics g) {
         g.setColor(0xa0a0a0); g.fillRect(1, 1,width-1, height-1);
         g.setColor(0xffffff); g.fillRect(2, 2, width-2, height-2);
         
@@ -186,10 +180,10 @@ public class NewInputBox extends Canvas {
             }
         }
 
-                this.text=text;
-                this.width=getWidth();
-                this.height=getStringsHeight()+4;
-                startTimer();
+        this.text=text;
+        this.width=100;
+        this.height=20;
+        startTimer();
     }
     
     public void startTimer() {
@@ -211,7 +205,7 @@ public class NewInputBox extends Canvas {
     private Vector parseMessage(int stringWidth) {
         Vector lines=new Vector();
         int state=0;
-        String txt=str;
+        String txt=text;
         
         while (state<1) {
             int w=0;
@@ -247,7 +241,7 @@ public class NewInputBox extends Canvas {
 
                 if (c>0x1f) wordWidth+=cw;
 
-                if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) {
+                if (wrapSeparators.indexOf(c)>=0) {
                     if (pos>wordStartPos) 
                         s.append(txt.substring(wordStartPos,pos));
                     if (c>0x1f) s.append(c);
@@ -271,12 +265,11 @@ public class NewInputBox extends Canvas {
     }
     
     private void drawAllStrings(Graphics g, int x, int y) {
-        Vector lines=strings;
-        if (lines.size()<1) return;
+        if (strings.size()<1) return;
 
-	for (int line=0; line<lines.size(); ) 
+	for (int line=0; line<strings.size(); ) 
 	{
-            g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
+            g.drawString((String) strings.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
             line=line+1;
             y += getFontHeight();
 	}
@@ -291,6 +284,7 @@ public class NewInputBox extends Canvas {
         int result=getFontHeight()*strings.size();
         return result;
     }
+
     class RemindTask extends TimerTask {
         public void run() {
             stopTimer();
