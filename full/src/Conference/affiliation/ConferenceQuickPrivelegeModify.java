@@ -82,17 +82,24 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
         this.victim=victim;
         this.action=action;
         this.myNick=myNick;
+		
+		String okName = SR.MS_OK;
         
         switch (action) {
             case KICK: 
                 f=new Form(SR.MS_KICK);
+				okName=SR.MS_KICK;
                 break;
 
             case OUTCAST:
                 f=new Form(SR.MS_BAN);
+				okName=SR.MS_BAN;
                 f.append(SR.MS_CONFIRM_BAN);
                 break;
-                
+            case VISITOR:
+                //f=new Form (SR.MS_REVOKE_VOICE); //temporary commented until ejabberd fixes its bug
+                okName=SR.MS_REVOKE_VOICE;
+                break;
         } // switch
         
         if (f==null) {
@@ -113,7 +120,7 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
         reason=new TextFieldCombo("Reason", "", 256, TextField.ANY, "reason", display);
         f.append(reason);
         
-        cmdOk=new Command( (action==KICK)? SR.MS_KICK : SR.MS_BAN, Command.SCREEN, 1);
+        cmdOk=new Command( okName, Command.SCREEN, 1);
         f.addCommand(cmdOk);
         f.addCommand(cmdNoReason);
         f.addCommand(cmdCancel);

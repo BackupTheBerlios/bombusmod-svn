@@ -148,7 +148,10 @@ public class DiscoForm implements CommandListener{
             if (ch!=null) {
                 if (ch.getTagName().equals("remove")) {
                     cform=qry;
-                    cform.getChildBlocks().removeAllElements();
+                    Vector cb=cform.getChildBlocks();
+                    if (cb!=null) cb.removeAllElements();
+                    cform.addChild(ch);
+                    break;
                 }
                 cform.addChild(ch);
             }

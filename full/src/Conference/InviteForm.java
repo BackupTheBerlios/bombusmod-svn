@@ -101,13 +101,10 @@ public class InviteForm implements CommandListener{
             JabberDataBlock invite=x.addChild("invite",null);
             //invite.setAttribute("to", contact.getBareJid());
             //invite.addChild("reason",rs);
-            String whoInvite;
-            try {
-                MucContact mcAD=(MucContact) contact; 
-                whoInvite=mcAD.realJid;
-            } catch (Exception e) { whoInvite=contact.jid.getJid(); }
+            String invited=(contact instanceof MucContact)? ((MucContact)contact).realJid : contact.getBareJid();
+            
+            invite.setAttribute("to", invited);
 
-            invite.setAttribute("to", whoInvite);
              invite.addChild("reason",rs);
             //System.out.println(inviteMsg.toString());
             StaticData.getInstance().roster.theStream.send(inviteMsg);
