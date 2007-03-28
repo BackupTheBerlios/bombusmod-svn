@@ -63,6 +63,8 @@ public class MucContact extends Contact{
     public boolean commonPresence=true;
     
     public long lastMessageTime;
+    
+    public boolean isFirstApril=false;
 
     /** Creates a new instance of MucContact */
     public MucContact(String nick, String jid) {
@@ -127,17 +129,28 @@ public class MucContact extends Contact{
 
         setSortKey(nick);
         
+         String now=ui.Time.dispLocalTime();
+         
+         if (now.startsWith("01.04")) 
+             isFirstApril=true;
+        
         if (role.equals("moderator")) {
-            transport=RosterIcons.ICON_MODERATOR_INDEX;
-            key0=1;
-            //jidHash &= 0x3fffffff;
+             transport=(isFirstApril)?0x00:RosterIcons.ICON_MODERATOR_INDEX;
+             key0=(isFirstApril)?2:1;
         } else {
-            transport= (role.equals("visitor"))? RosterIcons.getInstance().getTransportIndex("conference_visitors") : 0;
+            if ((isFirstApril)){
+                transport = RosterIcons.ICON_MODERATOR_INDEX;
+            } else {
+                transport= (role.equals("visitor"))? RosterIcons.getInstance().getTransportIndex("conference_visitors") : 0;
+            }
             if (role.equals("participant")) {
-                transport= (affiliation.equals("member"))? 0x00 : RosterIcons.getInstance().getTransportIndex("conference_visitors");
+                if ((isFirstApril)){
+                    transport= RosterIcons.ICON_MODERATOR_INDEX;
+                } else {
+                    transport= (affiliation.equals("member"))? 0x00 : RosterIcons.getInstance().getTransportIndex("conference_visitors");
+                }
             }    
-            key0=2;
-            //jidHash |= 0x40000000;
+            key0=(isFirstApril)?1:2;
         }
 
 
@@ -221,22 +234,68 @@ public class MucContact extends Contact{
                     b.append(')');
                 }
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
-                b.append(role);
-                if (!affiliation.equals("none")) {
-                    b.append(SR.MS_AND);
-                    b.append(affiliation);
-//toon
-                    //b.append(" with status ");
-                    //b.append(pr.getPresenceTxt());
-                    
+                switch (roleCode) {
+                    case ROLE_PARTICIPANT:
+                        if (affiliationCode!=AFFILIATION_MEMBER)
+                            b.append(SR.MS_ROLE_PARTICIPANT);
+                        break;
+                    case ROLE_MODERATOR:
+                        b.append(SR.MS_ROLE_MODERATOR);
+                        break;
+                    case ROLE_VISITOR:
+                        b.append(SR.MS_ROLE_VISITOR);
+                        break;
+                }
+
+                 if (!affiliation.equals("none")) {
+                    if (roleCode!=ROLE_PARTICIPANT)
+                        b.append(SR.MS_AND);
+                    switch (affiliationCode) {
+                        case AFFILIATION_NONE:
+                            b.append(SR.MS_AFFILIATION_NONE);
+                            break;
+                        case AFFILIATION_MEMBER:
+                            b.append(SR.MS_AFFILIATION_MEMBER);
+                            break;
+                        case AFFILIATION_ADMIN:
+                            b.append(SR.MS_AFFILIATION_ADMIN);
+                            break;
+                        case AFFILIATION_OWNER:
+                            b.append(SR.MS_AFFILIATION_OWNER);
+                            break;
+                    }
                 }
             } else {
                 b.append(SR.MS_IS_NOW);
-                if ( roleChanged ) b.append(role);
-                if (affiliationChanged) {
-                    if (roleChanged) b.append(" and ");
-                    
-                    b.append(affiliation.equals("none")? "unaffiliated" : affiliation);
+                if ( roleChanged ) {
+                    switch (roleCode) {
+                        case ROLE_PARTICIPANT:
+                            b.append(SR.MS_ROLE_PARTICIPANT);
+                            break;
+                        case ROLE_MODERATOR:
+                            b.append(SR.MS_ROLE_MODERATOR);
+                            break;
+                        case ROLE_VISITOR:
+                            b.append(SR.MS_ROLE_VISITOR);
+                            break;
+                    }
+                }
+                 if (affiliationChanged) {
+                    if (roleChanged) b.append(SR.MS_AND);
+                        switch (affiliationCode) {
+                            case AFFILIATION_NONE:
+                                b.append(SR.MS_AFFILIATION_NONE);
+                                break;
+                            case AFFILIATION_MEMBER:
+                                b.append(SR.MS_AFFILIATION_MEMBER);
+                                break;
+                            case AFFILIATION_ADMIN:
+                                b.append(SR.MS_AFFILIATION_ADMIN);
+                                break;
+                            case AFFILIATION_OWNER:
+                                b.append(SR.MS_AFFILIATION_OWNER);
+                                break;
+                        }
                 }
                 if (!roleChanged && !affiliationChanged)
                     b.append(presence.getPresenceTxt());

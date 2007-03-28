@@ -167,16 +167,15 @@ public class ContactMessageList extends MessageList
     protected void beginPaint(){
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
         
-        if ((cursor+2)==getItemCount()) {
-            markRead(cursor+1);
+        if (cursor==(messages.size()-1)) {
+            markRead(cursor);
             if (contact.moveToLatest) {
                 contact.moveToLatest=false;
                 moveCursorEnd();
             }
-        } else {
-            getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
         }
-    }
+        getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
+    }  
     
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;

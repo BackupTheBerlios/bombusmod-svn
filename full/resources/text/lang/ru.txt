@@ -359,3 +359,18 @@ Scroll back	Цвет фона скролла
 
 Send status	Отправить статус
 Sounds options	Настройки звуков
+
+participant	участник
+moderator	модератор
+visitor	гость
+    
+none	никто
+member	постоянный участник
+admin	админ
+owner	хозяин
+
+Opening stream	Подключение
+Using compression	Компрессия
+Authenticating	Авторизация
+Resource binding	Подключение ресурса
+Initiating session	Открытие сессии

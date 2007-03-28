@@ -1218,7 +1218,7 @@ public class Roster
                 boolean groupchat=false;
                 conference=false;
 				
-				int mType=Msg.MESSAGE_TYPE_IN;
+		int mType=Msg.MESSAGE_TYPE_IN;
                 
                 try { // type=null
 		    String type=message.getTypeAttribute();
@@ -1268,7 +1268,7 @@ public class Roster
                             //default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
                         }
                     }
-					if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
+                    if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
                 } catch (Exception e) {}
                 
                 try {

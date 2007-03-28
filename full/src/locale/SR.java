@@ -266,12 +266,11 @@ public class SR {
     public final static String MS_NO_VERSION_AVAILABLE="No client version available";
     public final static String MS_MSG_LIMIT="Message limit";
     
-    public final static String MS_OPENING_STREAM="Opening stream";
-    //public final static String MS_SASL_STREAM="SASL handshake";
-    public final static String MS_ZLIB="Using compression";
-    public final static String MS_AUTH="Authenticating";
-    public final static String MS_RESOURCE_BINDING="Resource binding";
-    public final static String MS_SESSION="Initiating session";
+    public static String MS_OPENING_STREAM=loadString("Opening stream");
+    public static String MS_ZLIB=loadString("Using compression");
+    public static String MS_AUTH=loadString("Authenticating");
+    public static String MS_RESOURCE_BINDING=loadString("Resource binding");
+    public static String MS_SESSION=loadString("Initiating session");
     
     public final static String MS_TEXTWRAP="Text wrapping";
     public final static String MS_TEXTWRAP_CHARACTER="by chars";
@@ -435,6 +434,15 @@ public class SR {
     public final static String MS_AWAY_OFF="disabled";
     public final static String MS_AWAY_LOCK="keyblock / flip";
     public final static String MS_AWAY_IDLE="idle";
+    
+    public  static String MS_ROLE_PARTICIPANT=loadString("participant");
+    public  static String MS_ROLE_MODERATOR=loadString("moderator");
+    public  static String MS_ROLE_VISITOR=loadString("visitor");
+    
+    public  static String MS_AFFILIATION_NONE=loadString("none");
+    public  static String MS_AFFILIATION_MEMBER=loadString("member");
+    public  static String MS_AFFILIATION_ADMIN=loadString("admin");
+    public  static String MS_AFFILIATION_OWNER=loadString("owner");
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
