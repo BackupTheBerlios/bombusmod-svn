@@ -374,3 +374,31 @@ Using compression	Компрессия
 Authenticating	Авторизация
 Resource binding	Подключение ресурса
 Initiating session	Открытие сессии
+
+second	секунда
+seconds	секунды
+seconds_	секунд
+
+minute	минута
+minutes	минуты
+minutes_	минут
+
+hour	час
+hours	часа
+hours_	часов
+
+week	неделя
+weeks	недели
+weeks_	недель
+
+day	день
+days	дня
+days_	дней
+
+month	месяц
+months	месяца
+months_	месяцев
+
+year	год
+years	года
+years_	лет

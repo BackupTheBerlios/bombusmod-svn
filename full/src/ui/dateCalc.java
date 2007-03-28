@@ -33,6 +33,7 @@ package ui;
 import javax.microedition.lcdui.DateField;
 import java.util.Calendar;
 import java.util.Date;
+import locale.SR;
 
 class dateCalc {
  private Calendar now;
@@ -125,13 +126,13 @@ public int compareDates (int sec1, int min1, int hour1, int day1,int month1,int 
 
  public String goodWordForm (int d, int field) {
   String [][] suf =  {
-   {"секунда", "секунды", "секунд"},
-   {"минута", "минуты", "минут"},
-   {"час", "часа", "часов"},
-   {"неделя", "недели", "недель"},
-   {"день", "дня", "дней"},
-   {"месяц", "месяца", "месяцев"},
-   {"год", "года", "лет"}
+   {SR.MS_SEC1, SR.MS_SEC2, SR.MS_SEC3},
+   {SR.MS_MIN1, SR.MS_MIN2, SR.MS_MIN3},
+   {SR.MS_HOUR1, SR.MS_HOUR2, SR.MS_HOUR3},
+   {SR.MS_WEEK1, SR.MS_WEEK2, SR.MS_WEEK3},
+   {SR.MS_DAY1, SR.MS_DAY2, SR.MS_DAY3},
+   {SR.MS_MONTH1, SR.MS_MONTH2, SR.MS_MONTH3},
+   {SR.MS_YEAR1, SR.MS_YEAR2, SR.MS_YEAR3}
   };
   int index;
   if ((d%100>10) && (d%100<20) || (d%10==0) || (d%10>4)) index=2;

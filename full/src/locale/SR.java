@@ -444,6 +444,34 @@ public class SR {
     public  static String MS_AFFILIATION_ADMIN=loadString("admin");
     public  static String MS_AFFILIATION_OWNER=loadString("owner");
     
+    public  static String MS_SEC1=loadString("second");
+    public  static String MS_SEC2=loadString("seconds");
+    public  static String MS_SEC3=loadString("seconds_");
+    
+    public  static String MS_MIN1=loadString("minute");
+    public  static String MS_MIN2=loadString("minutes");
+    public  static String MS_MIN3=loadString("minutes_");
+    
+    public  static String MS_HOUR1=loadString("hour");
+    public  static String MS_HOUR2=loadString("hours");
+    public  static String MS_HOUR3=loadString("hours_");
+    
+    public  static String MS_WEEK1=loadString("week");
+    public  static String MS_WEEK2=loadString("weeks");
+    public  static String MS_WEEK3=loadString("weeks_");
+    
+    public  static String MS_DAY1=loadString("day");
+    public  static String MS_DAY2=loadString("days");
+    public  static String MS_DAY3=loadString("days_");
+    
+    public  static String MS_MONTH1=loadString("month");
+    public  static String MS_MONTH2=loadString("months");
+    public  static String MS_MONTH3=loadString("months_");
+    
+    public  static String MS_YEAR1=loadString("year");
+    public  static String MS_YEAR2=loadString("years");
+    public  static String MS_YEAR3=loadString("years_");
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
 
