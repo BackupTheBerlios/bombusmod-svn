@@ -1053,7 +1053,7 @@ public abstract class VirtualList
             e.printStackTrace(); /* ClassCastException */
         }
     }
-    
+/*    
     public void setTimeEvent(long time){
         synchronized (this) {
             timeEvent=(time==0)? 0:time+System.currentTimeMillis();
@@ -1079,8 +1079,8 @@ public abstract class VirtualList
         return false;
     }
     public void onTime() {};
- }
-
+*/
+}
 //#if (USE_ROTATOR)    
 //# class TimerTaskRotate extends Thread{
 //#      //private Timer t;
@@ -1139,7 +1139,7 @@ public abstract class VirtualList
 //#             synchronized (this) {
 //#                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
 //# 
-//#                 if (attachedList!=null) stop=attachedList.probeTime(); else stop=true;
+//#                 //if (attachedList!=null) stop=attachedList.probeTime(); else stop=true;
 //# 
 //#                 if (scrollLen>=0 || balloon>=0) { 
 //#                     stop=false;

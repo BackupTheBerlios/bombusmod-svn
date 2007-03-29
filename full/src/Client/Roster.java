@@ -113,7 +113,7 @@ public class Roster
     
     public Vector bookmarks;
     
-    boolean autoAway;
+    public static boolean autoAway=false;
     
     //public static boolean isAway=false;
     public static int oldStatus=0;
@@ -155,17 +155,17 @@ public class Roster
     public static int keyTimer=0;
     //public JabberBlockListener discoveryListener;
     
-    public int autoAwayTime;
+    public int autoAwayDelay;
 
     private int pr;
 
     private String ms;
 
-    public boolean setAutoStatus;
+    //public boolean setAutoStatus;
 
     private String myMessage;    
 
-    //private TimerTaskAutoAway AutoAway;
+    private TimerTaskAutoAway AutoAway;
     
     public static int lightType=0;
 	
@@ -194,7 +194,7 @@ public class Roster
         
         cf=Config.getInstance();
         
-        //autoAwayTime=cf.autoAwayTime*60;
+        autoAwayDelay=cf.autoAwayDelay*60;
         //setAutoStatus=cf.setAutoStatus;
 		
 	//canback=false; // We can't go back using keyBack
@@ -571,7 +571,14 @@ public class Roster
     }
     
     public final ConferenceGroup initMuc(String from, String joinPassword){
-//        setKeyTimer(0);
+        setKeyTimer(0);
+        if (autoAway) {
+                ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
+                String ms=es.getMessage();
+                sendPresence(oldStatus, ms);
+                autoAway=false;
+                myStatus=oldStatus;
+        }
         // muc message
         int ri=from.indexOf('@');
         int rp=from.indexOf('/');
@@ -728,7 +735,7 @@ public class Roster
      */
     
     public void sendPresence(int status) {
-//        setKeyTimer(0);
+        setKeyTimer(0);
         myStatus=status;
         setQuerySign(false);
         if (myStatus==Presence.PRESENCE_OFFLINE) {
@@ -781,7 +788,7 @@ public class Roster
     }
 
     public void sendPresence(int status, String message) {
-//        setKeyTimer(0);
+        setKeyTimer(0);
         myStatus=status;
         myMessage=message;
         setQuerySign(false);
@@ -790,7 +797,7 @@ public class Roster
                 for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                     Contact c=(Contact)e.nextElement();
                         c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
-                        //isAway=false;
+                        autoAway=false;
                 }
             }
         }
@@ -829,7 +836,7 @@ public class Roster
                     //e.printStackTrace();
                 }
                 theStream=null;
-                //isAway=false;
+                autoAway=false;
                 System.gc();
             }
         }
@@ -923,15 +930,13 @@ public class Roster
     public void sendMessage(Contact to, final String body, final String subject , int composingState) {
         boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
         
-        /*if (setAutoStatus) {
-            if (isAway) {
-                    ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
-                    String ms=es.getMessage();
-                    sendPresence(oldStatus, ms);
-                    isAway=false;
-                    myStatus=oldStatus;
-            }
-        }*/
+        if (autoAway) {
+                ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
+                String ms=es.getMessage();
+                sendPresence(oldStatus, ms);
+                autoAway=false;
+                myStatus=oldStatus;
+        }
 
         Message message = new Message( 
                 to.getJid(), 
@@ -952,7 +957,7 @@ public class Roster
         //System.out.println(simpleMessage.toString());
         theStream.send( message );
         lastMessageTime=Time.localTime();
-//        setKeyTimer(0);
+        setKeyTimer(0);
     }
     
     private Vector vCardQueue;
@@ -1035,7 +1040,7 @@ public class Roster
         theStream.enableRosterNotify(true);
         rpercent=60;
         //AutoAway=new TimerTaskAutoAway();
-        //if (cf.setAutoStatus) TimerTaskAutoAway.startRotate(5,this);
+        if (cf.autoAwayType==cf.AWAY_IDLE) TimerTaskAutoAway.startRotate(5,this);
         if (StaticData.getInstance().account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
             try {
@@ -1741,11 +1746,11 @@ public class Roster
                     new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
             } catch (Exception e) { /* NullPointerException */ }
         
-       
+       /*
         if (keyCode==SE_FLIPCLOSE_JP6 
             || keyCode== SIEMENS_FLIPCLOSE 
             || keyCode==MOTOROLA_FLIP 
-            /*|| keyCode=='#'*/ ) {
+        ) {
             System.out.println("Flip closed");
             if (cf.autoAwayType==Config.AWAY_LOCK) 
                 if (!autoAway) setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -1753,7 +1758,7 @@ public class Roster
             if (keyCode!=cf.keyLock) userActivity();
             setAutoStatus(Presence.PRESENCE_ONLINE);
         }
-
+        */
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {
             // backlight management
@@ -1883,7 +1888,7 @@ public class Roster
              return;
          }
      }
-    
+/*    
     private void userActivity() {
         if (cf.autoAwayType==Config.AWAY_IDLE) {
             setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -1892,7 +1897,7 @@ public class Roster
         }  
         setAutoStatus(Presence.PRESENCE_ONLINE);
     }
-
+*/
  
     protected void keyRepeated(int keyCode) {
         super.keyRepeated(keyCode);
@@ -1903,7 +1908,7 @@ public class Roster
         if (keyCode==cf.keyLock) {
             if (cf.autoAwayType==Config.AWAY_LOCK) 
                 if (!autoAway) {
-                    setTimeEvent(cf.autoAwayDelay* 60*1000);
+                   // setTimeEvent(cf.autoAwayDelay* 60*1000);
             
                     if (cf.setKeyBlockStatus) 
                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since "+Time.timeString(Time.localTime()));
@@ -1987,7 +1992,7 @@ public class Roster
 
    
     public void commandAction(Command c, Displayable d){
-        userActivity();
+        //userActivity();
         if (c==cmdQuit) {
             fullMode=VirtualList.isbottom; //save panels state on exit
             cf.isbottom=(fullMode)%7;          
@@ -2081,7 +2086,7 @@ public class Roster
 	ConferenceGroup confGroup=(ConferenceGroup)group;
 	Contact myself=confGroup.getSelfContact();
         sendPresence(myself.getJid(), "unavailable", null);
-		//roomOffline(group);
+	//roomOffline(group);
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact contact=(Contact)e.nextElement();
             if (contact.inGroup(group)) contact.setStatus(Presence.PRESENCE_OFFLINE);
@@ -2097,17 +2102,18 @@ public class Roster
     protected void showNotify() { 
         super.showNotify(); 
         countNewMsgs(); 
-        
+        /*
         if (cf.autoAwayType==Config.AWAY_IDLE) {
             if (timeEvent==0) {
                 if (!autoAway) setTimeEvent(cf.autoAwayDelay* 60*1000);
             }
         }
+        */
     }
     
     protected void hideNotify() {
         super.hideNotify();
-        if (cf.autoAwayType==Config.AWAY_IDLE) if (kHold==0) setTimeEvent(0);
+        //if (cf.autoAwayType==Config.AWAY_IDLE) if (kHold==0) setTimeEvent(0);
     }
     
     private void searchGroup(int direction){
@@ -2166,12 +2172,12 @@ public class Roster
     public void loginMessage(String msg) {
         setProgress(msg, 42);
     }
-    
+/*    
     public void onTime() {
         //System.out.println("Do autostatus change");
         setAutoStatus(Presence.PRESENCE_AWAY);
     }
-
+*/
     private class ReEnumerator implements Runnable{
 
         Thread thread;
@@ -2273,7 +2279,7 @@ public class Roster
         this.myJid = myJid;
     }
     
-
+/*
     private void setAutoStatus(int status) {
         if (!isLoggedIn()) return;
         if ((status==Presence.PRESENCE_ONLINE || status==Presence.PRESENCE_CHAT) && autoAway) {
@@ -2287,6 +2293,17 @@ public class Roster
                 String away="Auto away since "+Time.timeString(Time.localTime())+"(GMT+"+Time.GMTOffset+")";
                 sendPresence(Presence.PRESENCE_AWAY, away);
             } else sendPresence(Presence.PRESENCE_AWAY);
+        }
+    }
+*/    
+    public void setAutoAway() {
+        if (!autoAway) {
+            oldStatus=myStatus;
+            if (myStatus==0 || myStatus==1) {
+                String away="Auto away since "+Time.timeString(Time.localTime())+"(GMT+"+Time.GMTOffset+")";
+                autoAway=true;
+                sendPresence(2, away);
+            }
         }
     }
     
@@ -2341,7 +2358,11 @@ public class Roster
 
         sendPresence(conference, null, x);
         reEnumRoster();
-    }  
+    } 
+    
+    public void setKeyTimer(int value) {
+        keyTimer=value;        
+    }
     
     public void cleanMarks() {
       synchronized(hContacts) {
@@ -2367,6 +2388,10 @@ class TimerTaskAutoAway extends Thread{
     private static TimerTaskAutoAway instance;
      
     private Roster rRoster;
+    
+    private int keyTimer=0;
+
+    private int autoAwayDelay=Config.getInstance().autoAwayDelay*60;
 
     private TimerTaskAutoAway() {
         exit=false;
@@ -2391,6 +2416,7 @@ class TimerTaskAutoAway extends Thread{
                     break;
                 }
                 if (!rRoster.keyLockState) {
+                    keyTimer=rRoster.keyTimer;
                     try {
                         if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
                             if (rRoster.lightType==2) {
@@ -2402,7 +2428,20 @@ class TimerTaskAutoAway extends Thread{
                                 }
                             }
                         }
-                    } catch (Exception e) {}
+
+                        rRoster.setKeyTimer(keyTimer+5);                        
+                        if (keyTimer>=autoAwayDelay) {
+                            //System.out.println("test4");
+                            try {
+                                rRoster.setAutoAway();
+                                //System.out.println("test6");
+                            } catch (Exception e) {
+                                //e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
+                        //e.printStackTrace();
+                    }
                 }
             }
         }

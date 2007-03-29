@@ -174,7 +174,6 @@ public class Config {
 
     public boolean autoScroll=false;
 
-    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();

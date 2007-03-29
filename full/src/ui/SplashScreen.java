@@ -101,19 +101,19 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         parentView=display.getCurrent();
         
         Roster.keyLockState=true;
-        /*
-            if (!Roster.isAway) {
-                String away="";
-                if (Config.getInstance().setKeyBlockStatus) away=(siemens_slider)?"System keyLock ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
-                Roster.oldStatus=sd.roster.myStatus;
-                    try {
-                        if (Roster.oldStatus==0 || Roster.oldStatus==1) {
-                            Roster.isAway=true;
-                            sd.roster.sendPresence(Presence.PRESENCE_AWAY, away);
-                        }
-                    } catch (Exception e) { e.printStackTrace(); }
-            }
-        */
+
+        if (!Roster.autoAway) {
+            String away="";
+            if (Config.getInstance().setKeyBlockStatus) away=(siemens_slider)?"System keyLock ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
+            Roster.oldStatus=sd.roster.myStatus;
+                try {
+                    if (Roster.oldStatus==0 || Roster.oldStatus==1) {
+                        Roster.autoAway=true;
+                        sd.roster.sendPresence(Presence.PRESENCE_AWAY, away);
+                    }
+                } catch (Exception e) { e.printStackTrace(); }
+        }
+
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
 
@@ -244,17 +244,16 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
         public void run() {
             repaint();
-            /*
             if (getKeyLockState()==false && siemens_slider==true) { //siemens unlock
                 try {
                     if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
                         Roster.keyLockState=false;
 
-                        if (Roster.isAway) {
+                        if (Roster.autoAway) {
                             int newStatus=sd.roster.oldStatus;
                             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
                             String ms=es.getMessage();
-                            Roster.isAway=false;
+                            Roster.autoAway=false;
                             sd.roster.sendPresence(newStatus, ms);
                         }
                         System.gc();
@@ -263,7 +262,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
                     }
                 } catch (Exception e) {};
             }
-            */
         }
         public void stop(){
             cancel();
@@ -295,23 +293,21 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (display!=null)   display.setCurrent(parentView);
         img=null;
         tc.stop();
-        /*
+        
         Roster.keyLockState=false;
         
-        if (Roster.isAway) {
+        if (Roster.autoAway) {
             int newStatus=sd.roster.oldStatus;
             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
             String ms=es.getMessage();
-            Roster.isAway=false;
+            Roster.autoAway=false;
             sd.roster.sendPresence(newStatus, ms);
         }
         System.gc();
-         */
     }
-    /*
+    
     private boolean getKeyLockState() {
         boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
         return lightState;
     }
-     */
 }
