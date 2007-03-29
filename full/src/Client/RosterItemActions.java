@@ -100,7 +100,8 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             if (contact.getJid()==contact.getBareJid()) {
                 addItem(SR.MS_SEEN,890);    
             } else {
-                addItem(SR.MS_IDLE,889);
+                if (contact.getStatus()<Presence.PRESENCE_OFFLINE)
+                    addItem(SR.MS_IDLE,889);
                 if (contact.status>4)
                     addItem(SR.MS_ONLINE,890); 
             }
@@ -110,7 +111,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    
 	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
 		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
-		    addItem(SR.MS_EDIT,2, 0x0f13);
+		addItem(SR.MS_EDIT,2, 0x0f13);
 		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
 		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
                 addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
@@ -118,20 +119,21 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             
 	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return; //TODO: п©п╬п╢п╨п╩я▌я┤п╦я┌я▄ я┌п╬я┌ п╤п╣ я│п©п╦я│п╬п╨, я┤я┌п╬ п╦ п╢п╩я▐ ConferenceGroup
             
+            boolean onlineConferences=false;
+            for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
+                try {
+                    MucContact mcI=(MucContact)cI.nextElement();
+                    if (mcI.origin==Contact.ORIGIN_GROUPCHAT && mcI.status==Presence.PRESENCE_ONLINE)
+                        onlineConferences=true;
+                } catch (Exception e) {}
+            }
+            
             if (contact instanceof MucContact) {
                 MucContact selfContact= ((ConferenceGroup) contact.getGroup()).getSelfContact();
                 MucContact mc=(MucContact) contact;
                 
                 //invite
                 if (mc.realJid!=null) {
-                    boolean onlineConferences=false;
-                    for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
-                        try {
-                            MucContact mcI=(MucContact)cI.nextElement();
-                            if (mcI.origin==Contact.ORIGIN_GROUPCHAT && mcI.status==Presence.PRESENCE_ONLINE)
-                                onlineConferences=true;
-                        } catch (Exception e) {}
-                    }
                     if (onlineConferences) addItem(SR.MS_INVITE,40, 0x0f20);
                 }
                 //invite
@@ -183,18 +185,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     //else addItem(SR.MS_REVOKE_OWNERSHIP,37);
                 }
                 if (mc.realJid!=null && mc.getStatus()<Presence.PRESENCE_OFFLINE) {
-                    addItem(SR.MS_INVITE,40, 0x0f20);
+                    
                 }
             } else if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
                 // usual contact - invite item check
-                boolean onlineConferences=false;
-                for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
-                    try {
-                        MucContact mc=(MucContact)c.nextElement();
-                        if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE)
-                            onlineConferences=true;
-                    } catch (Exception e) {}
-                }
+                 if (onlineConferences) addItem(SR.MS_INVITE,40);
             }
 //#if (FILE_IO && FILE_TRANSFER)
 //#             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
