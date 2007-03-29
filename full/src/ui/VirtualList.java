@@ -405,7 +405,7 @@ public abstract class VirtualList
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
 
-            iHeight=NetAccuFont.fontHeight+2; // nokia fix
+            iHeight=FontCache.getBalloonFont().getHeight(); // nokia fix
         
         if (paintTop) {
             if (reverse) {
@@ -570,37 +570,19 @@ public abstract class VirtualList
     }
     
     private void drawMainPanel (final Graphics g) {
-        int h=NetAccuFont.fontHeight+2;
+        Font bottomFont=FontCache.getBalloonFont();
+        int h=bottomFont.getHeight();
+        
         g.setClip(0,0, width, h);
 
         g.setColor(getMainBarBGndRGB());
         g.fillRect(0, 0, width, h);
 
-        String time=Time.timeString(Time.localTime());
-
-        NetAccuFont.drawString(g, time, 1,  1);
-        int w=(time.length()+1)*NetAccuFont.fontWidth;
-
-        String traff = null;
-        int ngprs=-1;
-        int gprscount=0;
-        try {
-            try {
-                ngprs=NetworkAccu.getGPRS();
-            } catch (Exception e) { }
-            if (ngprs>-1) {
-                gprscount=ngprs;
-            } else {
-                int in=sd.roster.theStream.getBytesIn();
-                int out=sd.roster.theStream.getBytesOut();
-                gprscount=in+out;
-            }
-            traff=gprscount/1000+"<=";
-        } catch (Exception e) {
-            traff="0<=";
-        }
-        NetworkAccu.draw(g, width);
-        NetAccuFont.drawString(g, traff, w, 1);
+        g.setColor(getMainBarRGB());
+        g.setFont(bottomFont);
+        
+        g.drawString(BottomInfo.get(), width/2, h-1, Graphics.BASELINE|Graphics.HCENTER);
+        //g.drawString(BottomInfo.get(), 3, 3, Graphics.TOP|Graphics.LEFT);
     }
     
     private void drawInfoPanel (final Graphics g) {    

@@ -96,7 +96,7 @@ public class Bombus extends MIDlet implements Runnable{
         s.setProgress(3);
         
         try {
-            NetworkAccu.getGPRS();
+            BottomInfo.getGPRS();
         } catch (Exception e) { }
         s.setProgress(5);
 
@@ -110,9 +110,7 @@ public class Bombus extends MIDlet implements Runnable{
                 splash=s.img;
                 programIcon=Image.createImage("/_icon.png");
             }
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
+        } catch (Exception e) { }
         s.setProgress(Version.version,10);
         
 	Config cf=Config.getInstance();
@@ -122,18 +120,9 @@ public class Bombus extends MIDlet implements Runnable{
         s.setProgress(15);
         
         try {
-            PNGCache.init();
-            s.setProgress(17);
-        } catch (Exception e) {
-            System.out.println("PNGCache error");
-            //e.printStackTrace();
-        }
-        
-        try {
             ColorScheme cl=ColorScheme.getInstance();
         } catch (Exception e) {
             System.out.println("Colors error");
-            //e.printStackTrace();
         }
         s.setProgress(20);
         

@@ -25,10 +25,10 @@
 
 package ui;
 
+import Client.StaticData;
 import javax.microedition.lcdui.Graphics;
-import ui.NetAccuFont;
 
-public class NetworkAccu {
+public class BottomInfo {
 
     private static int accu;
 
@@ -39,27 +39,42 @@ public class NetworkAccu {
     public static int startGPRS=-1;
     
     public static int offGPRS=0;
-
-    public NetworkAccu() {
-        super();
-    }
  
-    public static void draw(Graphics g, int width) {
+    public static String get() {
+        String s="";
         try {
             accu=getAccuLevel();
             net=getNetworkLevel();
         } catch (Exception e) {}
 
-        int y=1;
-                
+        String traff = null;
+        int ngprs=-1;
+        int gprscount=0;
+        try {
+            try {
+                ngprs=getGPRS();
+            } catch (Exception e) { }
+            if (ngprs>-1) {
+                gprscount=ngprs;
+            } else {
+                StaticData sd=StaticData.getInstance();
+                int in=sd.roster.theStream.getBytesIn();
+                int out=sd.roster.theStream.getBytesOut();
+                gprscount=in+out;
+            }
+            traff=(gprscount/1000)+"kB";
+        } catch (Exception e) {
+            traff="0kB";
+        }
+        
+        s=Time.timeString(Time.localTime())+" "+traff;
         int accuLevel=(accu>-1)?accu:-1;
         int netLevel=(net>-1)?net:-1;
         
         if (accuLevel>-1 && netLevel>-1) {
-            String wstring=accuLevel+"+-"+netLevel;
-            int x_a=width-(NetAccuFont.fontWidth*wstring.length());
-            NetAccuFont.drawString(g, wstring, x_a, y);
+            s+=" "+accuLevel+"% "+netLevel+"dB";
         }
+        return s;
      }
     
     public static int getAccuLevel() {

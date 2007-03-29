@@ -27,6 +27,7 @@
 
 package ui;
 import java.util.*;
+import locale.SR;
 
 /**
  *
@@ -39,8 +40,6 @@ public class Time {
     private static long locToGmtoffset=0;
     
     public static int GMTOffset=0;
-    
-    private static dateCalc now;
  
     /** Creates a new instance of Time */
     private Time() { }
@@ -96,9 +95,6 @@ public class Time {
      
     private final static int[] ofsFieldsA=
     { 0, 4, 6, 9, 12, 15 } ;
-
-    //private final static int[] ofsFieldsB=
-    //{ 0, 4, 6, 9, 12, 15 } ;
     
     public static long dateIso8601(String sdate){
         try {
@@ -114,29 +110,56 @@ public class Time {
         return c.getTime().getTime(); 
     }
     
-    public static String secDiffToDate(long seconds){ // может date передавать? а то гонять туда-сюда столько параметров имхо тупо
-        Calendar c=calDate(localTime()-(seconds*1000));
-        int s1=c.get(Calendar.SECOND);
-        int mi1=c.get(Calendar.MINUTE);
-        int h1=c.get(Calendar.HOUR_OF_DAY);
-        int d1=c.get(Calendar.DAY_OF_MONTH);
-        int m1=c.get(Calendar.MONTH)+1;
-        int y1=c.get(Calendar.YEAR);
+    public static String secDiffToDate(int seconds){
+        String result ="";
+        int d = 0,h = 0,m = 0,s = 0;
+        if (seconds>86400){
+            d=(seconds/86400);
+            seconds=seconds-(d*86400);
+        }
+        if (seconds>3600){
+            h=(seconds/3600);
+            seconds=seconds-(h*3600);
+        }
+        if (seconds>60){
+            m=(seconds/60);
+            seconds=seconds-(m*60);
+        }
+        s=seconds;
         
-        Calendar n=calDate(localTime());
-        int s2=n.get(Calendar.SECOND);
-        int mi2=n.get(Calendar.MINUTE);
-        int h2=n.get(Calendar.HOUR_OF_DAY);
-        int d2=n.get(Calendar.DAY_OF_MONTH);
-        int m2=n.get(Calendar.MONTH)+1;
-        int y2=n.get(Calendar.YEAR);
-        
-        now=new dateCalc ();
-        
-       
-        String diff=now.kolTimes (s1,mi1,h1,d1,m1,y1, s2,mi2,h2,d2,m2,y2);
-
-        return diff;
+        if (d>0) {
+            result+= d + " " + goodWordForm (d,3);
+        }
+        if (h>0) {
+            if (d>0) result+=", ";
+            result+= h + " " + goodWordForm (h, 2);
+        }
+        if (m>0) {
+            if ((d>0) || (h>0)) result+=", ";
+            result+= m + " " + goodWordForm (m, 1);
+        }
+        if (s>0) {
+            if ((d>0) || (h>0) || (m>0))  result+=", ";
+            result+= s + " " + goodWordForm (s, 0);
+        }
+        return result;
+    }
+    
+    public static String goodWordForm (int d, int field) {
+        String [][] suf =  {
+            {SR.MS_SEC1, SR.MS_SEC2, SR.MS_SEC3},
+            {SR.MS_MIN1, SR.MS_MIN2, SR.MS_MIN3},
+            {SR.MS_HOUR1, SR.MS_HOUR2, SR.MS_HOUR3},
+            {SR.MS_DAY1, SR.MS_DAY2, SR.MS_DAY3},
+        };
+        int index;
+        if ((d%100>10) && (d%100<20) || (d%10==0) || (d%10>4))
+            index=2;
+        else if ((d%10>1) && (d%10<5)) 
+            index=1;
+        else 
+            index=0;
+        return suf[field][index];
     }
 }
 

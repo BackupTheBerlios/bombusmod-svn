@@ -274,7 +274,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (keyCode==-24) {
             destroyView();
         }
-        if (pos!=0) close();
+        if (pos>-1) close();
         kHold=0;
     }
     

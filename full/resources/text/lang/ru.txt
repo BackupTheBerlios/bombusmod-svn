@@ -387,18 +387,6 @@ hour	час
 hours	часа
 hours_	часов
 
-week	неделя
-weeks	недели
-weeks_	недель
-
 day	день
 days	дня
 days_	дней
-
-month	месяц
-months	месяца
-months_	месяцев
-
-year	год
-years	года
-years_	лет
