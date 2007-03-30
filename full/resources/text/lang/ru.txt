@@ -153,7 +153,7 @@ New Jid	Новый Jid
 plain-text password	Пароль откр. текстом
 Paste Nickname	Вставить ник
 Kick	Выгнать (kick)
-Clear List	Очистить список
+Remove readed	Удалить сообщения
 Grant Voice	Дать право голоса
 Quote	Цитировать
 Roster elements	Элементы ростера

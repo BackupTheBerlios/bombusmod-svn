@@ -201,7 +201,7 @@ public class ContactMessageList extends MessageList
         }
         if (c==cmdPurge) {
             if (messages.isEmpty()) return;
-            clearMessageList()/*clearReadedMessageList()*/;
+            clearReadedMessageList();
         }
         
         /** login-critical section */
@@ -236,11 +236,7 @@ public class ContactMessageList extends MessageList
                 if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
 				
                 Msg msg=getMessage(cursor);
-                	/*String body=msg.toString();
-					int nickLen=body.indexOf(">");
-					if (nickLen<0) nickLen=body.indexOf(" ");
-					if (nickLen<0) return;*/
-                
+               
                 new MessageEdit(display,contact,msg.from+": ");
             } catch (Exception e) {/*no messages*/}
         }
@@ -291,7 +287,6 @@ public class ContactMessageList extends MessageList
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
             } catch (Exception e) {
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
-                //e.printStackTrace();
             }
             redraw();
         }
@@ -302,7 +297,7 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
     }
-
+/*  
     private void clearMessageList() {
         //TODO: fix scrollbar size
 //#if LAST_MESSAGES
@@ -314,24 +309,20 @@ public class ContactMessageList extends MessageList
         System.gc();
         redraw();
     }
-/*   
+*/ 
     private void clearReadedMessageList() {
-        //TODO: fix scrollbar size
 //#if LAST_MESSAGES
 //#         if (hisStorage) new HistoryStorage(contact, "", true);
 //#endif
-        contact.smartPurge(cursor);
-        moveCursorHome();
+        contact.smartPurge(cursor+1);
+        messages=new Vector();
         
-        for (int i=0;i<cursor+1;i++)
-            messages.removeElementAt(i);
+        moveCursorHome();  
         
-        //messages=new Vector();
-
         System.gc();
         redraw();
     }
-*/    
+    
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;
         (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
@@ -339,7 +330,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyRepeated(int keyCode) {
-        if (keyCode==KEY_NUM0) clearMessageList()/*clearReadedMessageList()*/;
+        if (keyCode==KEY_NUM0) clearReadedMessageList();
 	else super.keyRepeated(keyCode);
     }       
 
@@ -386,7 +377,7 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_NUM6) nextContact(1);
             if (keyCode==keyClear) {
                 if (messages.isEmpty()) return;
-		clearMessageList()/*clearReadedMessageList()*/;
+                clearReadedMessageList();
             }
 //#if ALT_INPUT  
 //#         }
@@ -454,8 +445,7 @@ public class ContactMessageList extends MessageList
         int size=activeContacts.size();
         
 	if (size==0) return;
-        //int count=size;
-        
+
         try {
             nowContact+=direction;
             if (nowContact<0) nowContact=size-1;

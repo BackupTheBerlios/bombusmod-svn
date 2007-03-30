@@ -183,7 +183,7 @@ public class SR {
     public   static String MS_PLAIN_PWD = loadString( "plain-text password" );
     public   static String MS_PASTE_NICKNAME = loadString( "Paste Nickname" );
     public   static String MS_KICK = loadString( "Kick" );
-    public   static String MS_CLEAR_LIST = loadString( "Clear List" );
+    public   static String MS_CLEAR_LIST = loadString( "Remove readed" );
     public   static String MS_GRANT_VOICE = loadString( "Grant Voice" );
     public   static String MS_MOVE_DOWN = loadString( "Move Down" );
     public   static String MS_QUOTE = loadString( "Quote" );
