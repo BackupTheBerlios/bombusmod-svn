@@ -348,8 +348,8 @@ public class ContactMessageList extends MessageList
 //#                 if (keyCode==KEY_NUM4) nextContact(-1);
 //#                 if (keyCode==KEY_NUM6) nextContact(1);
 //#                 if (keyCode==keyClear) {
-//# 			if (messages.isEmpty()) return;
-//#                     clearMessageList();
+//#                     if (messages.isEmpty()) return;
+//#                     clearReadedMessageList();
 //#                 }
 //#             } else {
 //#                 if (keyCode==KEY_NUM1) updateBottom(1);
@@ -459,9 +459,9 @@ public class ContactMessageList extends MessageList
 //#if LAST_MESSAGES 
 //#     private void loadRecentList() {
 //#         try {
-//#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '_at_'), 0);
+//#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
 //#             while (is.available()>0) {
-//#                     contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '_at_'), null, is.readUTF()));
+//#                     contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
 //#             }
 //#             is.close();
 //#         } catch (Exception e) {}
