@@ -52,6 +52,11 @@ public class MucContact extends Contact{
     public final static int ROLE_PARTICIPANT=0;
     public final static int ROLE_MODERATOR=1;
     
+    public final static int GROUP_VISITOR=4;
+    public final static int GROUP_MEMBER=3;
+    public final static int GROUP_PARTICIPANT=2;
+    public final static int GROUP_MODERATOR=1;
+    
     public String realJid;
     
     public String affiliation;
@@ -135,22 +140,25 @@ public class MucContact extends Contact{
              isFirstApril=true;
         
         if (role.equals("moderator")) {
-             transport=(isFirstApril)?0x00:RosterIcons.ICON_MODERATOR_INDEX;
-             key0=(isFirstApril)?2:1;
+             transport=(isFirstApril)?0:RosterIcons.ICON_MODERATOR_INDEX;
+             key0=(isFirstApril)?GROUP_VISITOR:GROUP_MODERATOR;
+        } else if (role.equals("visitor")) {
+            transport=(isFirstApril)?RosterIcons.ICON_MODERATOR_INDEX: RosterIcons.getInstance().getTransportIndex("conference_visitors");
+            key0=(isFirstApril)?GROUP_MODERATOR:GROUP_VISITOR;
         } else {
+            transport=(isFirstApril)?RosterIcons.ICON_MODERATOR_INDEX:0;
+            key0=(isFirstApril)?GROUP_MODERATOR:GROUP_PARTICIPANT;
+
             if ((isFirstApril)){
-                transport = RosterIcons.ICON_MODERATOR_INDEX;
+                transport=RosterIcons.ICON_MODERATOR_INDEX;
             } else {
-                transport= (role.equals("visitor"))? RosterIcons.getInstance().getTransportIndex("conference_visitors") : 0;
+                transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
             }
-            if (role.equals("participant")) {
-                if ((isFirstApril)){
-                    transport= RosterIcons.ICON_MODERATOR_INDEX;
-                } else {
-                    transport= (affiliation.equals("member"))? 0x00 : RosterIcons.getInstance().getTransportIndex("conference_visitors");
-                }
-            }    
-            key0=(isFirstApril)?1:2;
+            if ((isFirstApril)){
+                key0=GROUP_MODERATOR;
+            } else {
+                key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
+            }
         }
 
 

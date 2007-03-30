@@ -331,6 +331,8 @@ public class ContactMessageList extends MessageList
     
     public void keyRepeated(int keyCode) {
         if (keyCode==KEY_NUM0) clearReadedMessageList();
+        else if (keyCode==KEY_NUM4) nextContact(-1);
+        else if (keyCode==KEY_NUM6) nextContact(1);
 	else super.keyRepeated(keyCode);
     }       
 
@@ -373,8 +375,6 @@ public class ContactMessageList extends MessageList
 //#         } else {
 //#endif
             if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
-            if (keyCode==KEY_NUM4) nextContact(-1);
-            if (keyCode==KEY_NUM6) nextContact(1);
             if (keyCode==keyClear) {
                 if (messages.isEmpty()) return;
                 clearReadedMessageList();
