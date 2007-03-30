@@ -1509,7 +1509,9 @@ public class Roster
         c.addMessage(message);
         
         if (cf.ghostMotor) System.gc(); 
-
+        if (message.messageType==message.MESSAGE_TYPE_AUTH) {
+            setWobbler(message.from+"\n"+message.getBody());
+        }
         if (!message.unread) return;
         //TODO: clear unread flag if not-in-list IS HIDDEN
         
@@ -1524,10 +1526,16 @@ public class Roster
 
         if (forme) {
             playNotify(500);
+            setWobbler(message.getBody());
         } else if (conference) {
-            if (message.messageType==message.MESSAGE_TYPE_IN) playNotify(800);
+            if (message.messageType==message.MESSAGE_TYPE_IN) {
+                playNotify(800);
+            }
         } else {
             playNotify(1000);
+            if (message.messageType==message.MESSAGE_TYPE_IN) {
+                setWobbler(message.from+": "+message.getBody());
+            }
         }
     }
     
@@ -1872,7 +1880,7 @@ public class Roster
             if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2)
             {
                 System.gc();
-                setWobbler();
+                setWobbler(null);
             } else {
                 System.gc();
             }
@@ -1883,7 +1891,7 @@ public class Roster
                 System.gc();
              } else {
                 System.gc();
-                setWobbler();
+                setWobbler(null);
             }
              return;
          }
@@ -1951,28 +1959,32 @@ public class Roster
         }
     }
 
-    public void setWobbler() {
+    public void setWobbler(String info) {
         StringBuffer mess=new StringBuffer();
-        Contact contact=(Contact)getFocusedObject();
-        if (contact instanceof MucContact) {
-            MucContact mucContact=(MucContact)contact;
-            String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid;
-            String aff=mucContact.affiliation;
-            String role=mucContact.role;
-            mess.append(jid);
-            if (aff!=null)
-                mess.append("\n"+aff);
-            
-            if (role!=null)
+        if (info==null) {
+            Contact contact=(Contact)getFocusedObject();
+            if (contact instanceof MucContact) {
+                MucContact mucContact=(MucContact)contact;
+                String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid;
+                String aff=mucContact.affiliation;
+                String role=mucContact.role;
+                mess.append(jid);
                 if (aff!=null)
-                    mess.append("/"+role);
-                else 
-                    mess.append(role);
+                    mess.append("\n"+aff);
+
+                if (role!=null)
+                    if (aff!=null)
+                        mess.append("/"+role);
+                    else 
+                        mess.append(role);
+            } else {
+                mess.append("jid: "+contact.bareJid);
+                mess.append("\nsubscription: "+contact.subscr);
+            }
+            mess.append((contact.presence!=null)?"\nstatus: "+contact.presence:"");
         } else {
-            mess.append("jid: "+contact.bareJid);
-            mess.append("\nsubscription: "+contact.subscr);
+            mess.append(info);
         }
-        mess.append((contact.presence!=null)?"\nstatus: "+contact.presence:"");
 
         VirtualList.setWobble(mess.toString());
     }

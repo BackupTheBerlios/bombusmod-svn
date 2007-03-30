@@ -459,9 +459,9 @@ public class ContactMessageList extends MessageList
 //#if LAST_MESSAGES 
 //#     private void loadRecentList() {
 //#         try {
-//#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
+//#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '_at_'), 0);
 //#             while (is.available()>0) {
-//#                     contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
+//#                     contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '_at_'), null, is.readUTF()));
 //#             }
 //#             is.close();
 //#         } catch (Exception e) {}
