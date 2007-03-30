@@ -78,7 +78,7 @@ public class ContactMessageList extends MessageList
      
     private ClipBoard clipboard;
     
-    Vector activeContacts;
+    //Vector activeContacts;
     StaticData sd;
 //#if LAST_MESSAGES
 //#     private Config cf=Config.getInstance();
@@ -354,9 +354,10 @@ public class ContactMessageList extends MessageList
 //#                 }
 //#                 
 //#                 if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
-//#                 if (keyCode==KEY_NUM9) nextContact();
+//#                 if (keyCode==KEY_NUM4) nextContact(-1);
+//#                 if (keyCode==KEY_NUM6) nextContact(1);
 //#                 if (keyCode==keyClear) {
-//# 					if (messages.isEmpty()) return;
+//# 			if (messages.isEmpty()) return;
 //#                     clearMessageList();
 //#                 }
 //#             } else {
@@ -381,11 +382,12 @@ public class ContactMessageList extends MessageList
 //#         } else {
 //#endif
             if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
-            if (keyCode==KEY_NUM9) nextContact();
+            if (keyCode==KEY_NUM4) nextContact(-1);
+            if (keyCode==KEY_NUM6) nextContact(1);
             if (keyCode==keyClear) {
-				if (messages.isEmpty()) return;
-				clearMessageList()/*clearReadedMessageList()*/;
-			}
+                if (messages.isEmpty()) return;
+		clearMessageList()/*clearReadedMessageList()*/;
+            }
 //#if ALT_INPUT  
 //#         }
 //#endif
@@ -436,11 +438,11 @@ public class ContactMessageList extends MessageList
 //#         }
 //#     } 
 //#endif
-    private void nextContact() {
-	activeContacts=new Vector();
+
+    private void nextContact(int direction){
+	Vector activeContacts=new Vector();
         int nowContact = -1, contacts=-1;
-	for (Enumeration r=StaticData.getInstance().roster.getHContacts().elements(); 
-	    r.hasMoreElements(); ) 
+	for (Enumeration r=StaticData.getInstance().roster.getHContacts().elements(); r.hasMoreElements(); ) 
 	{
 	    Contact c=(Contact)r.nextElement();
 	    if (c.active()) {
@@ -449,26 +451,21 @@ public class ContactMessageList extends MessageList
                 activeContacts.addElement(c);
             }
 	}
+        int size=activeContacts.size();
         
-	if (getActiveCount()==0) return;
+	if (size==0) return;
+        //int count=size;
         
-        if(nowContact<0) {
-            nowContact=0;
-        } else {
-            if (nowContact+1>getActiveCount()) {
-                nowContact=0;
-            } else {
-                nowContact=nowContact+1;                
-            }
-        }
+        try {
+            nowContact+=direction;
+            if (nowContact<0) nowContact=size-1;
+            if (nowContact>=size) nowContact=0;
+            
+            Contact c=(Contact)activeContacts.elementAt(nowContact);
+            new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
+        } catch (Exception e) { }
         
-        if (nowContact+1>getActiveCount()) nowContact=0;
-        
-	Contact c=(Contact)activeContacts.elementAt(nowContact);
-	new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
     }
-    
-    protected int getActiveCount() { return activeContacts.size(); }
 //#if LAST_MESSAGES 
 //#     private void loadRecentList() {
 //#         try {

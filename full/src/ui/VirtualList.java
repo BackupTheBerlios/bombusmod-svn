@@ -405,7 +405,7 @@ public abstract class VirtualList
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
 
-            iHeight=FontCache.getBalloonFont().getHeight(); // nokia fix
+            iHeight=FontCache.getBalloonFont().getHeight()+1; // nokia fix
         
         if (paintTop) {
             if (reverse) {
@@ -571,7 +571,7 @@ public abstract class VirtualList
     
     private void drawMainPanel (final Graphics g) {
         Font bottomFont=FontCache.getBalloonFont();
-        int h=bottomFont.getHeight();
+        int h=bottomFont.getHeight()+1;
         
         g.setClip(0,0, width, h);
 
@@ -581,7 +581,7 @@ public abstract class VirtualList
         g.setColor(getMainBarRGB());
         g.setFont(bottomFont);
         
-        g.drawString(BottomInfo.get(), width/2, h-1, Graphics.BASELINE|Graphics.HCENTER);
+        g.drawString(BottomInfo.get(), width/2, h-2, Graphics.BASELINE|Graphics.HCENTER);
         //g.drawString(BottomInfo.get(), 3, 3, Graphics.TOP|Graphics.LEFT);
     }
     
