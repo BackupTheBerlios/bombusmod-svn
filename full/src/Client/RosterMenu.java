@@ -62,17 +62,13 @@ public class RosterMenu extends Menu
         addItem(SR.MS_ACCOUNT_, 8,0x0f01);
         
         if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
-            switch (cf.lightType) {
+            switch (cf.lightType%2) {
                 case 0: { //off
-                    addItem("TurnOn Light", 12,0x0f31);
+                    addItem("Включить свет", 12,0x0f31);
                     break;
                 }
                 case 1: { //on
-                    addItem("TurnOff Light", 12,0x0f31);
-                    break;
-                }
-                case 2: { //auto
-                    addItem("Patch Control", 12,0x0f31);
+                    addItem("Выключить свет", 12,0x0f31);
                     break;
                 }
             }
@@ -140,7 +136,7 @@ public class RosterMenu extends Menu
                 return;
 	    }
 	    case 12: {//light
-                switch (cf.lightType) {
+                switch (cf.lightType%2) {
                     case 0: { //off
                         sd.roster.lightType=1;
                         sd.roster.setLight(false);
@@ -152,12 +148,6 @@ public class RosterMenu extends Menu
                         sd.roster.lightType=2;
                         sd.roster.setLight(true);
                         cf.lightType=2;
-                        cf.saveToStorage();
-                        break;
-                    }
-                    case 2: { //auto
-                        sd.roster.lightType=0;
-                        cf.lightType=0;
                         cf.saveToStorage();
                         break;
                     }

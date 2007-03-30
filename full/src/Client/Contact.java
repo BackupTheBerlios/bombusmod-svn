@@ -326,7 +326,7 @@ public class Contact extends IconTextElement{
             os.write(b);
             filePos+=b.length;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 //#endif

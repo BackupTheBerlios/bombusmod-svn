@@ -132,10 +132,12 @@ public class Phone {
                      
                         if (hostname.indexOf("(none)")<0)
                          platformName+="/"+hostname;
+						 return platformName;
                     }
 		}
              }
- 	    else if (platformName.startsWith("Moto")) {
+ 	    //else 
+		if (platformName.startsWith("Moto")) {
                 if (device==null) device=System.getProperty("funlights.product");
                 if (device!=null) platformName="Motorola-"+device;
             }

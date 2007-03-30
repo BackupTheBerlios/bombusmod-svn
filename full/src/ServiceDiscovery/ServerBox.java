@@ -45,6 +45,8 @@ public class ServerBox implements CommandListener {
     
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     private Command cmdSend=new Command(SR.MS_DISCOVER, Command.OK /*Command.SCREEN*/,1);
+	
+	public final static String MRU_ID="disco";
     
     /** Creates a new instance of ServerBox */
     public ServerBox(Display display, String service, ServiceDiscovery sd) {
@@ -53,7 +55,7 @@ public class ServerBox implements CommandListener {
         
         f=new Form(SR.MS_DISCO);
         f.append("Enter Jabber server address here");
-        t=new TextFieldCombo(SR.MS_ADRESS,service,500,TextField.URL, "disco", display);
+        t=new TextFieldCombo("Address",service,500, TextField.URL, MRU_ID, display);
         TextFieldCombo.setLowerCaseLatin(t);
         f.append(t);
         f.addCommand(cmdSend);

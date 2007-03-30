@@ -152,15 +152,15 @@ public class Config {
 
     public int autoAwayType=0;
     public int autoAwayDelay=5; //5 minutes
-
-    //public int autoAwayTime=5;
     //public boolean setAutoStatus=false;
+    //public boolean setKeyBlockStatus=false;
+    public boolean setAutoStatusMessage=false;
     
-    public boolean setKeyBlockStatus=false;
+    //public int autoAwayTime=5;
 
     public int confMessageCount=20;
 
-    public boolean altInput;
+    public boolean altInput=false;
 
     public int isbottom=2; //default state both panels show, reverse disabled
    
@@ -170,9 +170,9 @@ public class Config {
 
     public int lightType=0;
 
-    public boolean setAutoStatusMessage=false;
-
     public boolean autoScroll=false;
+
+    public boolean popUps=true;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -293,8 +293,8 @@ public class Config {
             autoSubscribe=inputStream.readBoolean();
             
             lastMessages=inputStream.readBoolean();
-            
-            setKeyBlockStatus=inputStream.readBoolean();
+
+            inputStream.readBoolean(); //setKeyBlockStatus=inputStream.readBoolean();
             
             lightType=inputStream.readInt();
             
@@ -302,9 +302,11 @@ public class Config {
             
             autoScroll=inputStream.readBoolean();
             
+            popUps=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    //e.printStackTrace();
 	}
 	
 	lastProfile=profile=def_profile;
@@ -394,13 +396,15 @@ public class Config {
             
             outputStream.writeBoolean(lastMessages);
             
-            outputStream.writeBoolean(setKeyBlockStatus);
+            outputStream.writeBoolean(false); //outputStream.writeBoolean(setKeyBlockStatus);
             
             outputStream.writeInt(lightType);
             
             outputStream.writeInt(autoAwayType);
             
             outputStream.writeBoolean(autoScroll);
+            
+            outputStream.writeBoolean(popUps);
             
 	} catch (Exception e) {
             //e.printStackTrace();

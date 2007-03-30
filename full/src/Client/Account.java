@@ -140,7 +140,7 @@ public class Account extends IconTextElement{
                 a.keepAlivePeriod=inputStream.readInt();
             }
 
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) { /*e.printStackTrace();*/ }
             
         return (a.userName==null)?null:a;
     }
@@ -179,7 +179,7 @@ public class Account extends IconTextElement{
                 index--;
             } while (index>-1);
             is.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { /*e.printStackTrace();*/ }
         return a;
     }
     
@@ -214,7 +214,7 @@ public class Account extends IconTextElement{
             outputStream.writeInt(keepAlivePeriod);
 	    
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         
     }

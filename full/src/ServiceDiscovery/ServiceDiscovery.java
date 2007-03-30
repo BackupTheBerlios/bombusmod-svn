@@ -36,6 +36,8 @@ import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
 import ui.MainBar;
+import io.NvStorage;
+import java.io.DataInputStream;
 
 /**
  *
@@ -107,14 +109,34 @@ public class ServiceDiscovery
         
 
         addCommand(cmdBack);
-
-        this.node=node;
-        this.service=(service!=null)?service:sd.account.getServer();
         
         items=new Vector();
         features=new Vector();
         
-        requestQuery(NS_INFO, "disco");
+        this.node=node;
+         
+        if (service!=null) {
+            this.service=service;
+            requestQuery(NS_INFO, "disco");
+        } else {
+            this.service=null;
+
+            try {
+                DataInputStream is=NvStorage.ReadFileRecord("mru-"+ServerBox.MRU_ID, 0);
+           
+                while (is.available()>0)
+                    items.addElement(new DiscoContact(null, is.readUTF(), 0));
+                is.close();
+            } catch (Exception e) { 
+                items.addElement(new DiscoContact(null, sd.account.getServer(), 0));
+            }
+            
+            //sort(items);
+            discoIcon=0; 
+            mainbarUpdate(); 
+            moveCursorHome();
+            redraw();
+        }
     }
     
     private String discoId(String id) {
@@ -130,7 +152,7 @@ public class ServiceDiscovery
     private void mainbarUpdate(){
         
         getMainBarItem().setElementAt(new Integer(discoIcon), 0);
-        getMainBarItem().setElementAt(service, 2);
+        getMainBarItem().setElementAt((service==null)?"Recent services":service, 2);
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 4);
 	
 	int size=0;
@@ -329,7 +351,7 @@ public class ServiceDiscovery
             new ContactEdit(display, j);
             return;
         }*/
-        if (c==cmdRfsh) {requestQuery(NS_INFO, "disco"); }
+        if (c==cmdRfsh) { if (service!=null) requestQuery(NS_INFO, "disco"); }
         if (c==cmdSrv) { new ServerBox(display, service, this); }
         if (c==cmdFeatures) {new DiscoFeatures(display, service, features); }
         if (c==cmdCancel) exitDiscovery();

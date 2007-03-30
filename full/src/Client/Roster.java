@@ -1509,7 +1509,7 @@ public class Roster
         c.addMessage(message);
         
         if (cf.ghostMotor) System.gc(); 
-        if (message.messageType==message.MESSAGE_TYPE_AUTH) {
+        if (message.messageType==message.MESSAGE_TYPE_AUTH && cf.popUps) {
             setWobbler(message.from+"\n"+message.getBody());
         }
         if (!message.unread) return;
@@ -1526,16 +1526,15 @@ public class Roster
 
         if (forme) {
             playNotify(500);
-            setWobbler(message.getBody());
+            if (cf.popUps)
+                setWobbler(message.getBody());
         } else if (conference) {
-            if (message.messageType==message.MESSAGE_TYPE_IN) {
+            if (message.messageType==message.MESSAGE_TYPE_IN)
                 playNotify(800);
-            }
         } else {
             playNotify(1000);
-            if (message.messageType==message.MESSAGE_TYPE_IN) {
+            if (message.messageType==message.MESSAGE_TYPE_IN  && cf.popUps)
                 setWobbler(message.from+": "+message.getBody());
-            }
         }
     }
     
@@ -1914,13 +1913,15 @@ public class Roster
         kHold=keyCode;
         
         if (keyCode==cf.keyLock) {
-            if (cf.autoAwayType==Config.AWAY_LOCK) 
+            if (cf.autoAwayType==Config.AWAY_LOCK) {
                 if (!autoAway) {
-                   // setTimeEvent(cf.autoAwayDelay* 60*1000);
-            
-                    if (cf.setKeyBlockStatus) 
+                    if (cf.setAutoStatusMessage) {
                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since "+Time.timeString(Time.localTime()));
+                    } else {
+                        sendPresence(Presence.PRESENCE_AWAY);
+                    }
                 }
+            }
             new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor, false);
             return;
         } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
@@ -2309,12 +2310,15 @@ public class Roster
     }
 */    
     public void setAutoAway() {
-        if (!autoAway) {
+        if (!autoAway && cf.autoAwayType==cf.AWAY_IDLE) {
             oldStatus=myStatus;
             if (myStatus==0 || myStatus==1) {
-                String away="Auto away since "+Time.timeString(Time.localTime())+"(GMT+"+Time.GMTOffset+")";
                 autoAway=true;
-                sendPresence(2, away);
+                if (cf.setAutoStatusMessage) {
+                    sendPresence(Presence.PRESENCE_AWAY, "Auto away since "+Time.timeString(Time.localTime())+"(GMT+"+Time.GMTOffset+")");
+                } else {
+                    sendPresence(Presence.PRESENCE_AWAY);
+                }
             }
         }
     }
@@ -2385,11 +2389,12 @@ public class Roster
         }
       }
     }
-    
+/*    
     public void siemensKeyLock() {
         if (Config.getInstance().setKeyBlockStatus)
             new SplashScreen(display, getMainBarItem(), Config.getInstance().keyLock, false, true);
     }
+ */
 }
 
 class TimerTaskAutoAway extends Thread{
@@ -2433,27 +2438,20 @@ class TimerTaskAutoAway extends Thread{
                         if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
                             if (rRoster.lightType==2) {
                                 if (getKeyLockState()) {
-                                        rRoster.setLight(false);
-                                        rRoster.siemensKeyLock();
+                                    rRoster.setLight(false);
                                 } else {
-                                        rRoster.setLight(true);
+                                    rRoster.setLight(true);
                                 }
                             }
                         }
 
                         rRoster.setKeyTimer(keyTimer+5);                        
                         if (keyTimer>=autoAwayDelay) {
-                            //System.out.println("test4");
                             try {
                                 rRoster.setAutoAway();
-                                //System.out.println("test6");
-                            } catch (Exception e) {
-                                //e.printStackTrace();
-                            }
+                            } catch (Exception e) {}
                         }
-                    } catch (Exception e) {
-                        //e.printStackTrace();
-                    }
+                    } catch (Exception e) { }
                 }
             }
         }

@@ -147,6 +147,7 @@ public class ConfigForm implements
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
         message.append("AutoScroll", null);
+        message.append("PopUps", null);
 //#if LAST_MESSAGES
 //#         message.append("Last messages", null);
 //#endif
@@ -159,7 +160,8 @@ public class ConfigForm implements
             cf.storeConfPresence,
             cf.eventComposing,
             cf.capsState,
-            cf.autoScroll
+            cf.autoScroll,
+            cf.popUps
 //#if LAST_MESSAGES
 //#             ,cf.lastMessages
 //#endif
@@ -280,11 +282,11 @@ public class ConfigForm implements
         fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 30);
 
         awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
-        awayStatus.append("KeyLock status", null);
+        //awayStatus.append("KeyLock status", null);
         awayStatus.append("AutoStatus Message", null);
         
         boolean aa[]={
-            cf.setKeyBlockStatus,
+            //cf.setKeyBlockStatus,
             cf.setAutoStatusMessage
         };
         this.aa=aa;
@@ -345,6 +347,7 @@ public class ConfigForm implements
             cf.eventComposing=mv[mvctr++];
             cf.capsState=mv[mvctr++];
             cf.autoScroll=mv[mvctr++];
+            cf.popUps=mv[mvctr++];
 //#if LAST_MESSAGES
 //#             cf.lastMessages=mv[mvctr++];
 //#endif
@@ -387,8 +390,8 @@ public class ConfigForm implements
             
             cf.msgPath=historyFolder.getString();
 //#endif             
-            cf.setKeyBlockStatus=aa[0];
-            cf.setAutoStatusMessage=aa[1];
+            //cf.setKeyBlockStatus=aa[0];
+            cf.setAutoStatusMessage=aa[0];
 
             
             cf.autoAwayDelay=fieldAwatDelay.getValue();

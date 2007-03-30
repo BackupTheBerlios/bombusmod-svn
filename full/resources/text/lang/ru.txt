@@ -214,7 +214,7 @@ Grant subscription	Разрешить подписку
 Invite to conference	Пригласить в конференцию
 Reason	Причина
 You have been invited to 	Вы были приглашены в 
- is inviting You to 	 пригласил Вас в 
+ is inviting You to 	 приглашает Вас в 
 Visitors are not allowed to send messages to all occupants	Гости не могут посылать сообщения в общий чат
 Unaffiliate	Отнять членство
 Grant Moderator	Дать право модератора
@@ -224,12 +224,12 @@ Grant Ownership	Дать право владельца
 
 room presences	статусы в конференции
 
- is now known as 	 сменил ник на 
+ is now known as 	 меняет ник на 
  was banned 	 запретили входить в комнату 
  was kicked 	 выгнали из комнаты 
- has been kicked because room became members-only	 выгнан, т.к. комната теперь только для членов
- has left the channel	 вышел из конференции
- has joined the channel as 	 подключился как 
+ has been kicked because room became members-only	 выгнали, т.к. комната теперь только для членов
+ has left the channel	 выходит из комнаты
+ has joined the channel as 	 заходит как 
  and 	 и 
  is now 	 теперь 
 

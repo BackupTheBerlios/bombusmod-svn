@@ -103,15 +103,17 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         Roster.keyLockState=true;
 
         if (!Roster.autoAway) {
-            String away="";
-            if (Config.getInstance().setKeyBlockStatus) away=(siemens_slider)?"System keyLock ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime());
             Roster.oldStatus=sd.roster.myStatus;
-                try {
-                    if (Roster.oldStatus==0 || Roster.oldStatus==1) {
-                        Roster.autoAway=true;
-                        sd.roster.sendPresence(Presence.PRESENCE_AWAY, away);
+            try {
+                if (Roster.oldStatus==0 || Roster.oldStatus==1) {
+                    Roster.autoAway=true;
+                    if (Config.getInstance().setAutoStatusMessage){
+                        sd.roster.sendPresence(Presence.PRESENCE_AWAY, (siemens_slider)?"System keyLock ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime()));
+                    } else {
+                        sd.roster.sendPresence(Presence.PRESENCE_AWAY);
                     }
-                } catch (Exception e) { e.printStackTrace(); }
+                }
+            } catch (Exception e) { }
         }
 
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
@@ -274,7 +276,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (keyCode==-24) {
             destroyView();
         }
-        if (pos>-1) close();
+        if (pos>25) close();
         kHold=0;
     }
     
