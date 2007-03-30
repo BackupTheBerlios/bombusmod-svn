@@ -145,6 +145,7 @@ public class Groups{
             s.addElement(grp.name);
         }
         s.addElement(Groups.IGNORE_GROUP);
+        s.addElement(Groups.VISIBLE_GROUP);
         return s;
     }
     public int getCount() {return groups.size();}
