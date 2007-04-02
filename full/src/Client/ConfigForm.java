@@ -101,6 +101,7 @@ public class ConfigForm implements
     boolean su[];
     boolean his[];
     boolean aa[];
+    boolean lc[];
     Vector files[];
     
 //#if FILE_IO
@@ -181,7 +182,7 @@ public class ConfigForm implements
         su[1]=cf.autoJoinConferences;
         startup.setSelectedFlags(su);
         
-        ap=new boolean[5];
+        ap=new boolean[6];
 	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
         ap[apctr++]=cf.fullscreen;
@@ -191,10 +192,13 @@ public class ConfigForm implements
 	if (!cf.ghostMotor) application.append(SR.MS_FLASHBACKLIGHT,null);
 	if (cf.allowMinimize) application.append(SR.MS_ENABLE_POPUP,null);
         
+        application.append("Turn light",null);
+        
 	ap[apctr++]=cf.memMonitor;
         ap[apctr++]=cf.digitMemMonitor;
 	ap[apctr++]=cf.blFlash;
 	ap[apctr++]=cf.popupFromMinimized;
+	ap[apctr++]=(cf.lightType==0)?false:true;
 	
         application.setSelectedFlags(ap);
         
@@ -286,7 +290,6 @@ public class ConfigForm implements
         awayStatus.append("AutoStatus Message", null);
         
         boolean aa[]={
-            //cf.setKeyBlockStatus,
             cf.setAutoStatusMessage
         };
         this.aa=aa;
@@ -368,6 +371,7 @@ public class ConfigForm implements
             
 	    cf.blFlash=ap[apctr++];
 	    cf.popupFromMinimized=ap[apctr++];
+            cf.lightType=(ap[apctr++])?1:0;
             
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();

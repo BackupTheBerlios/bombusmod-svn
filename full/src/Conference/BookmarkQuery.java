@@ -33,6 +33,8 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
+import Client.Config;
+import Conference.ConferenceForm;
 
 /**
  *
@@ -68,9 +70,14 @@ public class BookmarkQuery implements JabberBlockListener{
                 JabberDataBlock storage=data.findNamespace("jabber:iq:private").
                         findNamespace("storage:bookmarks");
                 Vector bookmarks=new Vector();
+				boolean autojoin=Config.getInstance().autoJoinConferences;
                 try {
                     for (Enumeration e=storage.getChildBlocks().elements(); e.hasMoreElements(); ){
-                        bookmarks.addElement(new BookmarkItem((JabberDataBlock)e.nextElement()));
+                        BookmarkItem bm=new BookmarkItem((JabberDataBlock)e.nextElement());
+                        bookmarks.addElement(bm);
+                        if (bm.autojoin && autojoin) {
+                            ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, 20);
+                        }
                     }
                 } catch (Exception e) { /* no any bookmarks */}
 

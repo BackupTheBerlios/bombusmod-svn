@@ -152,12 +152,8 @@ public class Config {
 
     public int autoAwayType=0;
     public int autoAwayDelay=5; //5 minutes
-    //public boolean setAutoStatus=false;
-    //public boolean setKeyBlockStatus=false;
     public boolean setAutoStatusMessage=false;
     
-    //public int autoAwayTime=5;
-
     public int confMessageCount=20;
 
     public boolean altInput=false;
@@ -265,7 +261,6 @@ public class Config {
 	    
 	    textWrap=inputStream.readInt();
             
-            
             loginstatus=inputStream.readInt();
 //#if FILE_IO
             msgPath=inputStream.readUTF();
@@ -294,7 +289,7 @@ public class Config {
             
             lastMessages=inputStream.readBoolean();
 
-            inputStream.readBoolean(); //setKeyBlockStatus=inputStream.readBoolean();
+            setAutoStatusMessage=inputStream.readBoolean(); //setKeyBlockStatus=inputStream.readBoolean();
             
             lightType=inputStream.readInt();
             
@@ -396,7 +391,7 @@ public class Config {
             
             outputStream.writeBoolean(lastMessages);
             
-            outputStream.writeBoolean(false); //outputStream.writeBoolean(setKeyBlockStatus);
+            outputStream.writeBoolean(setAutoStatusMessage); //outputStream.writeBoolean(setKeyBlockStatus);
             
             outputStream.writeInt(lightType);
             

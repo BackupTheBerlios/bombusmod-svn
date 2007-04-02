@@ -60,19 +60,6 @@ public class RosterMenu extends Menu
         addItem(SR.MS_ADD_CONTACT, 6, 0x0f02);
         addItem(SR.MS_TOOLS, 7,0x0f24);    
         addItem(SR.MS_ACCOUNT_, 8,0x0f01);
-        
-        if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
-            switch (cf.lightType%2) {
-                case 0: { //off
-                    addItem("Включить свет", 12,0x0f31);
-                    break;
-                }
-                case 1: { //on
-                    addItem("Выключить свет", 12,0x0f31);
-                    break;
-                }
-            }
-        }
         addItem(SR.MS_ABOUT, 10,0x0f04);
         addItem(SR.MS_APP_QUIT, 11,0x0f22);
     
@@ -135,25 +122,6 @@ public class RosterMenu extends Menu
                 Bombus.getInstance().notifyDestroyed();
                 return;
 	    }
-	    case 12: {//light
-                switch (cf.lightType%2) {
-                    case 0: { //off
-                        sd.roster.lightType=1;
-                        sd.roster.setLight(false);
-                        cf.lightType=1;
-                        cf.saveToStorage();
-                        break;
-                    }
-                    case 1: { //on
-                        sd.roster.lightType=2;
-                        sd.roster.setLight(true);
-                        cf.lightType=2;
-                        cf.saveToStorage();
-                        break;
-                    }
-                }
-                break;
-            }
 	}
     }
 }

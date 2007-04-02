@@ -132,9 +132,6 @@ public class Roster
     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
     private Command cmdAccount=new Command(SR.MS_ACCOUNT_, Command.SCREEN, 15);
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
-    private Command cmdTurnOnLight=new Command("TurnOn Light", Command.SCREEN, 16);
-    private Command cmdTurnOffLight=new Command("TurnOff Light", Command.SCREEN, 16);
-    private Command cmdPatchLight=new Command("Patch Control", Command.SCREEN, 16);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
     private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
     
@@ -214,22 +211,7 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
         if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
-            switch (cf.lightType) {
-                case 0: { //off
-                    lightType=0;
-                    setLight(false);
-                    break;
-                }
-                case 1: { //on 
-                    lightType=1;
-                    sd.roster.setLight(true);
-                    break;
-                }
-                case 2: { //auto
-                    lightType=2;
-                    break;
-                }
-            }
+            setLight((cf.lightType==1)?true:false);
         }
         
         if (!VirtualList.digitMemMonitor) {
@@ -246,25 +228,6 @@ public class Roster
                 addCommand(cmdAlert);
                 addCommand(cmdAdd);
                 addCommand(cmdConference);
-
-
-                if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
-                    switch (cf.lightType) {
-                        case 0: { //off
-                            addCommand(cmdTurnOnLight); 
-                            break;
-                        }
-                        case 1: { //on
-                            addCommand(cmdTurnOffLight);  
-                            break;
-                        }
-                        case 2: { //auto
-                            addCommand(cmdPatchLight);
-                            break;
-                        }
-                    }
-                }
-
                 addCommand(cmdTools);
                 addCommand(cmdArchive);
                 addCommand(cmdInfo);
@@ -738,14 +701,7 @@ public class Roster
         setKeyTimer(0);
         myStatus=status;
         setQuerySign(false);
-        if (myStatus==Presence.PRESENCE_OFFLINE) {
-            synchronized(hContacts) {
-                for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                    Contact c=(Contact)e.nextElement();
-                        c.setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
-                }
-            }
-        } else {
+        if (myStatus!=Presence.PRESENCE_OFFLINE) {
             lastOnlineStatus=myStatus;
         }
         
@@ -767,7 +723,7 @@ public class Roster
             if (!StaticData.getInstance().account.isMucOnly() )
 				theStream.send( presence );
             
-            sendConferencePresence();
+            multicastConferencePresence();
 
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
@@ -776,6 +732,15 @@ public class Roster
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+				
+                synchronized(hContacts) {
+                    for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                        Contact c=(Contact)e.nextElement();
+                        //if (c.status<Presence.PRESENCE_UNKNOWN)
+                        c.setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
+                    }
+                }
+
                 theStream=null;
                 System.gc();
             }
@@ -825,8 +790,7 @@ public class Roster
             if (!StaticData.getInstance().account.isMucOnly() )
 		theStream.send( presence );
             
-            //sendConferencePresence();
-            sendConferencePresence(myMessage);
+			multicastConferencePresence(myMessage);
 
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
@@ -835,6 +799,14 @@ public class Roster
                 } catch (Exception e) {
                     //e.printStackTrace();
                 }
+                synchronized(hContacts) {
+                    for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                        Contact c=(Contact)e.nextElement();
+                        //if (c.status<Presence.PRESENCE_UNKNOWN)
+                        c.setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
+                    }
+                }
+				
                 theStream=null;
                 autoAway=false;
                 System.gc();
@@ -868,33 +840,44 @@ public class Roster
     }
 
     public Contact selfContact() {
-	return getContact(myJid.getJid(), true);
+	return getContact(myJid.getJid(), false);
     }
     
-    public void sendConferencePresence() {
-        ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
-        for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-            Contact c=(Contact) e.nextElement();
-            if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
-            if (c.status==Presence.PRESENCE_OFFLINE) continue;
-            if (!((MucContact)c).commonPresence) continue;
+    public void multicastConferencePresence() {
+         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
+         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
+             Contact c=(Contact) e.nextElement();
+             if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
+             if (!((MucContact)c).commonPresence) continue; // stop if room left manually
+
+             ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
+             Contact myself=confGroup.getSelfContact();
+
+            if (c.status==Presence.PRESENCE_OFFLINE) {
+               ConferenceForm.join(myself.getJid(), confGroup.password, 20);
+                continue;
+            }
              Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
-            presence.setTo(c.getJid());
-            theStream.send(presence);
-        }
-    }
+             presence.setTo(myself.getJid());
+             theStream.send(presence);
+         }
+     }
     
-    public void sendConferencePresence(String message) {
-        myMessage=message;
-        ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
-        for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-            Contact c=(Contact) e.nextElement();
-            if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
-            if (c.status==Presence.PRESENCE_OFFLINE) continue;
-            Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
-            presence.setAttribute("to", c.getJid());
-            theStream.send(presence);
-        }
+    public void multicastConferencePresence(String message) {
+         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
+         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
+             Contact c=(Contact) e.nextElement();
+             if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
+             if (!((MucContact)c).commonPresence) continue; // stop if room left manually
+
+             ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
+             Contact myself=confGroup.getSelfContact();
+
+             c.status=Presence.PRESENCE_ONLINE;
+             Presence presence = new Presence(myStatus, es.getPriority(), message);
+             presence.setTo(myself.getJid());
+             theStream.send(presence);
+         }
     }
     
     public void sendPresence(String to, String type, JabberDataBlock child) {
@@ -1092,7 +1075,7 @@ public class Roster
                         setQuerySign(false);
                         VCard vcard=new VCard(data);
                         String jid=id.substring(5);
-                        Contact c=getContact(jid, true);
+                        Contact c=getContact(jid, false); // drop unwanted vcards
                         if (c!=null) {
                             c.vcard=vcard;
                             new vCardForm(display, vcard, c.getGroupType()==Groups.TYPE_SELF);
@@ -1116,7 +1099,7 @@ public class Roster
                         
                         Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "ver", SR.MS_CLIENT_INFO, body);
                         if (body!=null) { 
-                            messageStore( getContact(from, false), m);
+                            messageStore( getContact(from, false), m); //drop unwanted requests
                             redraw();
                         }
                     }
@@ -1295,7 +1278,7 @@ public class Roster
                     
                 } catch (Exception e) {}
                 
-                Contact c=getContact(from, true);
+                Contact c=getContact(from, cf.notInList);
 
                 if (name==null) name=c.getName();
                 // /me
@@ -1418,8 +1401,8 @@ public class Roster
                     
                 } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
                 else {
-                    Contact c=getContact(from, false); 
-                    //if (c==null) return; // drop presence
+                    Contact c=getContact(from, cf.notInList && ti!=Presence.PRESENCE_OFFLINE); //<<<
+                    if (c==null) return; //drop presence
                     messageStore(c, m);
 					
                     if (ti==Presence.PRESENCE_AUTH_ASK) {
@@ -2031,34 +2014,7 @@ public class Roster
 	if (c==cmdArchive) { new ArchiveList(display, null, -1); }
         
         if (c==cmdInfo) { new Info.InfoWindow(display); }
-        
-        if (c==cmdTurnOnLight) {
-            lightType=1;
-            setLight(true);
-            cf.lightType=1;
-            cf.saveToStorage();
-            removeCommand(cmdTurnOffLight);
-            removeCommand(cmdTurnOnLight);
-            addCommand(cmdPatchLight);
-        }
-        if (c==cmdTurnOffLight) {
-            lightType=0;
-            setLight(false);
-            cf.lightType=0;
-            cf.saveToStorage();
-            removeCommand(cmdPatchLight);
-            removeCommand(cmdTurnOffLight);
-            addCommand(cmdTurnOnLight);
-        }
-        if (c==cmdPatchLight) {
-            lightType=2;
-            cf.lightType=2;
-            cf.saveToStorage();
-            removeCommand(cmdPatchLight);
-            removeCommand(cmdTurnOnLight);
-            addCommand(cmdTurnOffLight);
-        }
-        
+
         if (c==cmdTools) { new RosterToolsMenu(display); }
         // stream-sensitive commands
         // check for closed socket
@@ -2094,11 +2050,12 @@ public class Roster
 	//confGroup.getConference().status=Presence.PRESENCE_ONLINE;
     }
     
-    public void leaveRoom(int index, Group group){
+    public void leaveRoom(Group group){
 	//Group group=groups.getGroup(index);
 	ConferenceGroup confGroup=(ConferenceGroup)group;
 	Contact myself=confGroup.getSelfContact();
-        sendPresence(myself.getJid(), "unavailable", null);
+	confGroup.getConference().commonPresence=false; //disable reenter after reconnect
+    sendPresence(myself.getJid(), "unavailable", null);
 	//roomOffline(group);
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact contact=(Contact)e.nextElement();
