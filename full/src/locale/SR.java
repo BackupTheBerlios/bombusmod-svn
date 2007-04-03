@@ -432,7 +432,7 @@ public class SR {
     public final static String MS_AWAY_PERIOD="Minutes before away";
     public final static String MS_AWAY_TYPE="Automatic Away";
     public final static String MS_AWAY_OFF="disabled";
-    public final static String MS_AWAY_LOCK="keyblock / flip";
+    public final static String MS_AWAY_LOCK="keyblock";
     public final static String MS_AWAY_IDLE="idle";
     
     public  static String MS_ROLE_PARTICIPANT=loadString("participant");

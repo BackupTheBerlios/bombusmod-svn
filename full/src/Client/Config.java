@@ -142,6 +142,8 @@ public class Config {
 	
     // runtime values
     public boolean allowMinimize=false;
+    public boolean allowLightControl=false;
+    
     public int profile=0;
     public int lastProfile=0;
     
@@ -163,8 +165,6 @@ public class Config {
     public boolean lightState=false;
     
     public boolean lastMessages=false;
-
-    public int lightType=0;
 
     public boolean autoScroll=false;
 
@@ -216,6 +216,7 @@ public class Config {
 	} else if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
             keyLock='#';
             keyVibra='*';
+            allowLightControl=true;
         }
         
 	VirtualList.greenKeyCode=greenKeyCode;
@@ -271,7 +272,7 @@ public class Config {
             cp1251=inputStream.readBoolean();
 //#endif
             autoAwayDelay=inputStream.readInt();
-            inputStream.readBoolean();
+            lightState=inputStream.readBoolean();
             
             defGcRoom=inputStream.readUTF();
             
@@ -291,7 +292,7 @@ public class Config {
 
             setAutoStatusMessage=inputStream.readBoolean(); //setKeyBlockStatus=inputStream.readBoolean();
             
-            lightType=inputStream.readInt();
+            inputStream.readInt();
             
             autoAwayType=inputStream.readInt();
             
@@ -373,7 +374,7 @@ public class Config {
 //#endif
             
             outputStream.writeInt(autoAwayDelay);
-            outputStream.writeBoolean(false);
+            outputStream.writeBoolean(lightState);
             
             outputStream.writeUTF(defGcRoom);
             
@@ -393,7 +394,7 @@ public class Config {
             
             outputStream.writeBoolean(setAutoStatusMessage); //outputStream.writeBoolean(setKeyBlockStatus);
             
-            outputStream.writeInt(lightType);
+            outputStream.writeInt(0);
             
             outputStream.writeInt(autoAwayType);
             

@@ -191,14 +191,13 @@ public class ConfigForm implements
         application.append(SR.MS_NEW_MENU,null);
 	if (!cf.ghostMotor) application.append(SR.MS_FLASHBACKLIGHT,null);
 	if (cf.allowMinimize) application.append(SR.MS_ENABLE_POPUP,null);
-        
-        application.append("Turn light",null);
+        if (cf.allowLightControl) application.append("Turn on light",null);
         
 	ap[apctr++]=cf.memMonitor;
         ap[apctr++]=cf.digitMemMonitor;
 	ap[apctr++]=cf.blFlash;
 	ap[apctr++]=cf.popupFromMinimized;
-	ap[apctr++]=(cf.lightType==0)?false:true;
+	ap[apctr++]=cf.lightState;
 	
         application.setSelectedFlags(ap);
         
@@ -371,7 +370,7 @@ public class ConfigForm implements
             
 	    cf.blFlash=ap[apctr++];
 	    cf.popupFromMinimized=ap[apctr++];
-            cf.lightType=(ap[apctr++])?1:0;
+            cf.lightState=ap[apctr++];
             
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();
@@ -434,6 +433,16 @@ public class ConfigForm implements
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
+        
+        if (cf.allowLightControl) setLight(cf.lightState);
+    }
+    
+    public static void setLight(boolean state) {
+        if (state) {
+            com.siemens.mp.game.Light.setLightOn();
+        } else {
+            com.siemens.mp.game.Light.setLightOff();    
+        }
     }
 
 //#if FILE_IO

@@ -266,7 +266,6 @@ public class Contact extends IconTextElement{
             if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
                  allowLog=false;
             if (allowLog)
-                //if (!first_replace || !m.)
             {
                 StringBuffer body=new StringBuffer(m.getDayTime());
                 body.append(" <");

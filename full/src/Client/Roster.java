@@ -145,7 +145,6 @@ public class Roster
 
 //#if SASL
     private String token;
-
 //#endif
     
     public long lastMessageTime=Time.localTime();
@@ -210,9 +209,7 @@ public class Roster
         
         vContacts=new Vector(); // just for displaying
         
-        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
-            setLight((cf.lightType==1)?true:false);
-        }
+        if (cf.allowLightControl) setLight(cf.lightState);
         
         if (!VirtualList.digitMemMonitor) {
                 int activeType=Command.SCREEN;
@@ -1509,15 +1506,15 @@ public class Roster
 
         if (forme) {
             playNotify(500);
-            if (cf.popUps)
+            if (message.messageType==message.MESSAGE_TYPE_IN && cf.popUps)
                 setWobbler(message.getBody());
         } else if (conference) {
             if (message.messageType==message.MESSAGE_TYPE_IN)
                 playNotify(800);
         } else {
             playNotify(1000);
-            if (message.messageType==message.MESSAGE_TYPE_IN  && cf.popUps)
-                setWobbler(message.from+": "+message.getBody());
+            if (message.messageType==message.MESSAGE_TYPE_IN && (c instanceof MucContact)==false && cf.popUps)
+                setWobbler(c.toString()+": "+message.getBody());
         }
     }
     
@@ -1760,7 +1757,7 @@ public class Roster
 //#endif
         if (VirtualList.digitMemMonitor) {
             if (keyCode==-4 || keyCode==-1)  {
-                if (ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SIEMENS) {
+                if (cf.allowLightControl) {
                     new RosterMenu(display, getFocusedObject());
                     return;
                  }         
@@ -1821,7 +1818,7 @@ public class Roster
 		
         if (VirtualList.digitMemMonitor) {
             if (keyCode==-4 || keyCode==-1)  {
-                if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
+                if (cf.allowLightControl) {
                     new RosterMenu(display, getFocusedObject());
                     return;
                  }         
@@ -1859,7 +1856,7 @@ public class Roster
         }
         
          if (keyCode==KEY_POUND) {
-            if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2)
+            if (cf.allowLightControl)
             {
                 System.gc();
                 setWobbler(null);
@@ -1869,7 +1866,7 @@ public class Roster
             return;
          }
          if (keyCode==KEY_STAR) {
-             if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
+             if (cf.allowLightControl) {
                 System.gc();
              } else {
                 System.gc();
@@ -1898,6 +1895,7 @@ public class Roster
         if (keyCode==cf.keyLock) {
             if (cf.autoAwayType==Config.AWAY_LOCK) {
                 if (!autoAway) {
+                    keyLockState=true;
                     if (cf.setAutoStatusMessage) {
                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since "+Time.timeString(Time.localTime()));
                     } else {
@@ -1910,8 +1908,7 @@ public class Roster
         } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles
             int profile=cf.profile;
-            cf.profile=(profile==AlertProfile.VIBRA)? 
-                cf.lastProfile : AlertProfile.VIBRA;
+            cf.profile=(profile==AlertProfile.VIBRA)?cf.lastProfile : AlertProfile.VIBRA;
             cf.lastProfile=profile;
             
             updateMainBar();
@@ -1921,12 +1918,14 @@ public class Roster
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
             return;
-        } else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
+        } 
+        else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
         else if (keyCode==KEY_NUM6) {
             fullMode=VirtualList.isbottom;
             cf.isbottom=VirtualList.isbottom=(fullMode+1)%7;
+            cf.saveToStorage();
         } else if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
         
         else if (keyCode==cf.keyHide) {
@@ -2281,11 +2280,11 @@ public class Roster
     }
     
     public static void setLight(boolean state) {
-            if (state==true) {
-                com.siemens.mp.game.Light.setLightOn();
-            } else {
-                com.siemens.mp.game.Light.setLightOff();    
-            }
+        if (state) {
+            com.siemens.mp.game.Light.setLightOn();
+        } else {
+            com.siemens.mp.game.Light.setLightOff();    
+        }
     }
     
     public void mucReconnect() {
@@ -2364,8 +2363,10 @@ class TimerTaskAutoAway extends Thread{
     private Roster rRoster;
     
     private int keyTimer=0;
+    
+    private Config cf=Config.getInstance();
 
-    private int autoAwayDelay=Config.getInstance().autoAwayDelay*60;
+    private int autoAwayDelay=cf.autoAwayDelay*60;
 
     private TimerTaskAutoAway() {
         exit=false;
@@ -2392,7 +2393,7 @@ class TimerTaskAutoAway extends Thread{
                 if (!rRoster.keyLockState) {
                     keyTimer=rRoster.keyTimer;
                     try {
-                        if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
+                        if (cf.allowLightControl) {
                             if (rRoster.lightType==2) {
                                 if (getKeyLockState()) {
                                     rRoster.setLight(false);

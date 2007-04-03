@@ -99,22 +99,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         this.siemens_slider=siemens_slider;
         
         parentView=display.getCurrent();
-        
-        Roster.keyLockState=true;
-
-        if (!Roster.autoAway) {
-            Roster.oldStatus=sd.roster.myStatus;
-            try {
-                if (Roster.oldStatus==0 || Roster.oldStatus==1) {
-                    Roster.autoAway=true;
-                    if (Config.getInstance().setAutoStatusMessage){
-                        sd.roster.sendPresence(Presence.PRESENCE_AWAY, (siemens_slider)?"System keyLock ("+Time.timeString(Time.localTime())+")":"Auto Status on KeyLock since "+Time.timeString(Time.localTime()));
-                    } else {
-                        sd.roster.sendPresence(Presence.PRESENCE_AWAY);
-                    }
-                }
-            } catch (Exception e) { }
-        }
 
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
@@ -246,24 +230,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
         public void run() {
             repaint();
-            if (getKeyLockState()==false && siemens_slider==true) { //siemens unlock
-                try {
-                    if (Phone.PhoneManufacturer()==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
-                        Roster.keyLockState=false;
-
-                        if (Roster.autoAway) {
-                            int newStatus=sd.roster.oldStatus;
-                            ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
-                            String ms=es.getMessage();
-                            Roster.autoAway=false;
-                            sd.roster.sendPresence(newStatus, ms);
-                        }
-                        System.gc();
-                        Roster.setLight(true);
-                        destroyView();
-                    }
-                } catch (Exception e) {};
-            }
         }
         public void stop(){
             cancel();
@@ -292,13 +258,13 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     private void destroyView(){
         status.setElementAt(null,6);
         if (motorola_backlight) display.flashBacklight(Integer.MAX_VALUE);
-        if (display!=null)   display.setCurrent(parentView);
+        if (display!=null) display.setCurrent(parentView);
         img=null;
         tc.stop();
         
         Roster.keyLockState=false;
         
-        if (Roster.autoAway) {
+        if (Roster.autoAway && Config.getInstance().autoAwayType==Config.AWAY_LOCK) {
             int newStatus=sd.roster.oldStatus;
             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
             String ms=es.getMessage();

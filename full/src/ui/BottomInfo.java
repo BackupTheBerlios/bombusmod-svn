@@ -29,23 +29,10 @@ import Client.StaticData;
 import javax.microedition.lcdui.Graphics;
 
 public class BottomInfo {
-
-    private static int accu;
-
-    private static int net;
-    
-    public static int gprscount;
-    
     public static int startGPRS=-1;
-    
-    public static int offGPRS=0;
  
     public static String get() {
-        String s="";
-        try {
-            accu=getAccuLevel();
-            net=getNetworkLevel();
-        } catch (Exception e) {}
+        StringBuffer s=new StringBuffer();
 
         String traff = null;
         int ngprs=-1;
@@ -67,25 +54,28 @@ public class BottomInfo {
             traff="0kB";
         }
         
-        s=Time.timeString(Time.localTime())+" "+traff;
-        int accuLevel=(accu>-1)?accu:-1;
-        int netLevel=(net>-1)?net:-1;
+        s.append(Time.timeString(Time.localTime())+"  "+traff);
         
-        if (accuLevel>-1 && netLevel>-1) {
-            s+=" "+accuLevel+"% "+netLevel+"dB";
-        }
-        return s;
+        s.append(getAccuLevel()+getNetworkLevel());
+
+        return s.toString();
      }
     
-    public static int getAccuLevel() {
-        String cap=System.getProperty("MPJC_CAP");
-        return (cap==null)? -1: Integer.parseInt(cap);
+    public static String getAccuLevel() {
+        try {
+            String cap=System.getProperty("MPJC_CAP");
+            return (cap==null)? "": cap+"% ";
+        } catch (Exception e) {}
+        return "";
     }
     
-    public static int getNetworkLevel() {
-        String rx=System.getProperty("MPJCRXLS");
-        int rp=rx.indexOf(',');
-        return (rp<0)? -1: Integer.parseInt(rx.substring(0,rp));
+    public static String getNetworkLevel() {
+        try {
+            String rx=System.getProperty("MPJCRXLS");
+            int rp=rx.indexOf(',');
+            return (rp<0)? "": rx.substring(0,rp)+"dB";
+        } catch (Exception e) {}
+        return "";
     }
     
     public static int getGPRS() {

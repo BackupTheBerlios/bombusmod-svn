@@ -52,6 +52,7 @@ public class MucContact extends Contact{
     public final static int ROLE_PARTICIPANT=0;
     public final static int ROLE_MODERATOR=1;
     
+    public final static int GROUP_OFFLINE=5;
     public final static int GROUP_VISITOR=4;
     public final static int GROUP_MEMBER=3;
     public final static int GROUP_PARTICIPANT=2;
@@ -68,8 +69,6 @@ public class MucContact extends Contact{
     public boolean commonPresence=true;
     
     public long lastMessageTime;
-    
-    public boolean isFirstApril=false;
 
     /** Creates a new instance of MucContact */
     public MucContact(String nick, String jid) {
@@ -134,33 +133,18 @@ public class MucContact extends Contact{
 
         setSortKey(nick);
         
-         String now=ui.Time.dispLocalTime();
-         
-         if (now.startsWith("01.04")) 
-             isFirstApril=true;
-        
         if (role.equals("moderator")) {
-             transport=(isFirstApril)?0:RosterIcons.ICON_MODERATOR_INDEX;
-             key0=(isFirstApril)?GROUP_VISITOR:GROUP_MODERATOR;
+             transport=RosterIcons.ICON_MODERATOR_INDEX;
+             key0=GROUP_MODERATOR;
         } else if (role.equals("visitor")) {
-            transport=(isFirstApril)?RosterIcons.ICON_MODERATOR_INDEX: RosterIcons.getInstance().getTransportIndex("conference_visitors");
-            key0=(isFirstApril)?GROUP_MODERATOR:GROUP_VISITOR;
+            transport=RosterIcons.getInstance().getTransportIndex("conference_visitors");
+            key0=GROUP_VISITOR;
         } else {
-            transport=(isFirstApril)?RosterIcons.ICON_MODERATOR_INDEX:0;
-            key0=(isFirstApril)?GROUP_MODERATOR:GROUP_PARTICIPANT;
-
-            if ((isFirstApril)){
-                transport=RosterIcons.ICON_MODERATOR_INDEX;
-            } else {
-                transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
-            }
-            if ((isFirstApril)){
-                key0=GROUP_MODERATOR;
-            } else {
-                key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
-            }
+            transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
+            key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
-
+        if (status==Presence.PRESENCE_OFFLINE)
+            key0=GROUP_OFFLINE;
 
         int rp=from.indexOf('/');
         //String nick=from.substring(rp+1);
