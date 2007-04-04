@@ -52,7 +52,7 @@ public class MucContact extends Contact{
     public final static int ROLE_PARTICIPANT=0;
     public final static int ROLE_MODERATOR=1;
     
-    public final static int GROUP_OFFLINE=5;
+    //public final static int GROUP_OFFLINE=5;
     public final static int GROUP_VISITOR=4;
     public final static int GROUP_MEMBER=3;
     public final static int GROUP_PARTICIPANT=2;
@@ -143,8 +143,8 @@ public class MucContact extends Contact{
             transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
             key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
-        if (status==Presence.PRESENCE_OFFLINE)
-            key0=GROUP_OFFLINE;
+        //if (status<Presence.PRESENCE_OFFLINE)
+        //    key0=GROUP_OFFLINE;
 
         int rp=from.indexOf('/');
         //String nick=from.substring(rp+1);
