@@ -64,7 +64,6 @@ public abstract class MessageList
         super();
 	messages=new Vector();
         smiles=Config.getInstance().smiles;
-        //sd.config.updateTime();
     
 	enableListWrapping(false);
 	
@@ -119,7 +118,6 @@ public abstract class MessageList
         if (c==cmdxmlSkin) {
             try {
                 if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
-                    //System.out.println(((MessageItem)getFocusedObject()).msg.getBody());
                    ColorScheme.getInstance().loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
                 }
             } catch (Exception e){}

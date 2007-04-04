@@ -48,17 +48,14 @@ public class MessageUrl extends Menu{
 	for (int i=0; i<urlList.size(); i++) { // throws exception
 	    addItem((String)urlList.elementAt(i), i);
 	}
-	/*if (m.getItemCount()>0)*/
 	attachDisplay(display);
     }
     
     public void eventOk() {
 	String url=(String)urlList.elementAt(cursor);
-//#if !(MIDP1)
 	try {
 	    Bombus.getInstance().platformRequest(url);
 	} catch (Exception e) { e.printStackTrace(); }
-//#endif
 	destroyView();
     }
 }

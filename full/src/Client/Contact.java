@@ -243,9 +243,10 @@ public class Contact extends IconTextElement{
 //#             && (getGroupType()!=Groups.TYPE_TRANSP)
 //#             && (getGroupType()!=Groups.TYPE_IGNORE)
 //#             && ((this instanceof MucContact)==false)
-//#             && (m.messageType==Msg.MESSAGE_TYPE_IN)) {
-//#                 new HistoryStorage(this, m.getBody(), false);
-//#             }
+//#             && (m.messageType==Msg.MESSAGE_TYPE_IN))
+//#         {
+//#                 new HistoryStorage(getBareJid(), m.getBody(), false);
+//#         }
 //#endif        
 //#if FILE_IO
         if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)

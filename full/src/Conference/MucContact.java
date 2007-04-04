@@ -77,7 +77,6 @@ public class MucContact extends Contact{
     }
     
     public String processPresence(JabberDataBlock xmuc, Presence presence) {
-        //System.out.println(presence);
         String from=jid.getJid();
         
         int presenceType=presence.getTypeIndex();
@@ -143,11 +142,8 @@ public class MucContact extends Contact{
             transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
             key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
-        //if (status<Presence.PRESENCE_OFFLINE)
-        //    key0=GROUP_OFFLINE;
 
         int rp=from.indexOf('/');
-        //String nick=from.substring(rp+1);
         
         JabberDataBlock statusBlock=xmuc.getChildBlock("status");
         int statusCode;
@@ -168,7 +164,6 @@ public class MucContact extends Contact{
                     b.append(chNick);
                     // исправим jid
                     String newJid=from.substring(0,rp+1)+chNick;
-                    //System.out.println(newJid);
                     jid.setJid(newJid);
                     bareJid=newJid; // непонятно, зачем я так сделал...
                     from=newJid;

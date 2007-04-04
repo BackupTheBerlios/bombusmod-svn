@@ -64,7 +64,7 @@ public class BottomInfo {
     public static String getAccuLevel() {
         try {
             String cap=System.getProperty("MPJC_CAP");
-            return (cap==null)? "": "  "+cap+"%";
+            return (cap==null)? "": " "+cap+"%";
         } catch (Exception e) {}
         return "";
     }
@@ -73,7 +73,7 @@ public class BottomInfo {
         try {
             String rx=System.getProperty("MPJCRXLS");
             int rp=rx.indexOf(',');
-            return (rp<0)? "": "  "+rx.substring(0,rp)+"dB";
+            return (rp<0)? "": " "+rx.substring(0,rp)+"dB";
         } catch (Exception e) {}
         return "";
     }

@@ -45,10 +45,7 @@ import ui.MainBar;
 public class Bookmarks 
         extends VirtualList 
         implements CommandListener
-{
-    
-    //private Vector bookmarks;
-    
+{   
     private BookmarkItem toAdd;
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
@@ -82,16 +79,12 @@ public class Bookmarks
         setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS));
         
         this.toAdd=toAdd;
-        
-        //bookmarks=roster.bookmarks;
-        //if ( bookmarks==null ) loadBookmarks(); 
-        //else if (toAdd!=null) addBookmark();
+
         if (toAdd!=null) addBookmark();
         
         addCommand(cmdCancel);
         addCommand(cmdJoin);
         addCommand(cmdAdvJoin);
-        //addCommand(cmdRfsh);
 	addCommand(cmdNew);
         
         addCommand(cmdUp);
@@ -108,12 +101,7 @@ public class Bookmarks
         setCommandListener(this);
 	attachDisplay(display);
     }
-    /*
-    private void processIcon(boolean processing){
-        getMainBarItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
-        redraw();
-    }
-    */ 
+
     protected int getItemCount() { 
         Vector bookmarks=StaticData.getInstance().roster.bookmarks;
         return (bookmarks==null)?0: bookmarks.size(); 
@@ -128,7 +116,6 @@ public class Bookmarks
 
     private void addBookmark() {
         if (toAdd!=null) {
-            //this.bookmarks.addElement(toAdd);
             StaticData.getInstance().roster.bookmarks.addElement(toAdd);
             saveBookmarks();
         }
@@ -150,43 +137,37 @@ public class Bookmarks
     
     public void commandAction(Command c, Displayable d){
 	if (getItemCount()==0) return;
+        String roomJid=((BookmarkItem)getFocusedObject()).getJid();
         
         if (c==cmdCancel) exitBookmarks();
-        if (c==cmdJoin) eventOk();
-        if (c==cmdAdvJoin) {
+        else if (c==cmdJoin) eventOk();
+        else if (c==cmdAdvJoin) {
             BookmarkItem join=(BookmarkItem)getFocusedObject();
             new ConferenceForm(display, join, cursor);
         }
-	if (c==cmdNew) new ConferenceForm(display);
-        //if (c==cmdRfsh) loadBookmarks();
-        if (c==cmdDel) deleteBookmark();
+	else if (c==cmdNew) new ConferenceForm(display);
 
-        String roomJid=((BookmarkItem)getFocusedObject()).getJid();
- 
-        if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
-        
-        if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
+        else if (c==cmdDel) deleteBookmark();
 
-        if (c==cmdRoomOwners) {
-            new Affiliations(display, roomJid, 1);  
-        }
-        if (c==cmdRoomAdmins) {
-            new Affiliations(display, roomJid, 2);  
-        }
-        if (c==cmdRoomMembers) {
-            new Affiliations(display, roomJid, 3);  
-        }
-        if (c==cmdRoomBanned) {
-            new Affiliations(display, roomJid, 4);  
-        }
+        else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
         
-        if (c==cmdSave) {
+        else if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
+
+        else if (c==cmdRoomOwners) new Affiliations(display, roomJid, 1);  
+
+        else if (c==cmdRoomAdmins) new Affiliations(display, roomJid, 2);  
+
+        else if (c==cmdRoomMembers) new Affiliations(display, roomJid, 3);  
+
+        else if (c==cmdRoomBanned) new Affiliations(display, roomJid, 4);  
+        
+        else if (c==cmdSave) {
             saveBookmarks();
             exitBookmarks();
         }
         
-        if (c==cmdUp) { move(-1); keyUp(); }
-        if (c==cmdDwn) { move(+1); keyDwn(); }
+        else if (c==cmdUp) { move(-1); keyUp(); }
+        else if (c==cmdDwn) { move(+1); keyDwn(); }
         redraw();
     }
     
@@ -194,7 +175,7 @@ public class Bookmarks
         BookmarkItem del=(BookmarkItem)getFocusedObject();
         if (del==null) return;
         if (del.isUrl) return;
-        //bookmarks.removeElement(del);
+
         StaticData.getInstance().roster.bookmarks.removeElement(del);
         if (getItemCount()>=cursor) moveCursorEnd();
         saveBookmarks();

@@ -130,12 +130,7 @@ public class MessageItem implements
         }
         msg.itemHeight=height;
     }
-    
-    /*public void notifyUrl(String url) { 
-        //if (urlList==null) urlList=new Vector();
-        //urlList.addElement(url);
-    }*/
-    
+
     public Vector getUrlList() { 
         Vector urlList=new Vector();
         addUrls(msg.getBody(), "http://", urlList);

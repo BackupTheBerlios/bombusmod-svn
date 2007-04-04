@@ -72,8 +72,6 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
 
     private String myNick;
 
-    private String Nick;
-
     /**
      * Creates a new instance of ConferenceQuickPrivelegeModify
      */
@@ -149,8 +147,9 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
 
         try {
             String rzn=reason.getString();
+            String Nick="";
             if (rzn.startsWith("!")) {
-                Nick="";
+                rzn=rzn.substring(1);
             } else {
                 Nick=(myNick==null)?myNick:myNick+": ";                
             }

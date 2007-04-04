@@ -48,7 +48,6 @@ public class ConferenceForm implements CommandListener{
     private Config cf=Config.getInstance();
     
     Command cmdJoin=new Command(SR.MS_JOIN, Command.SCREEN, 1);
-    //Command cmdBookmarks=new Command(SR.MS_BOOKMARKS, Command.SCREEN, 2);
     Command cmdAdd=new Command(SR.MS_ADD_BOOKMARK, Command.SCREEN, 5);
     Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 6);
     Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
@@ -136,7 +135,6 @@ public class ConferenceForm implements CommandListener{
 
         roomField=new TextField(SR.MS_ROOM, room, 64, TextField.URL);
         TextFieldCombo.setLowerCaseLatin(roomField);
-        //roomField=new HistoryList(SR.MS_NICKNAME, nick, 32, TextField.ANY, "roomnick", display);
         formJoin.append(roomField);
         
         hostField=new TextField(SR.MS_AT_HOST, server, 64, TextField.URL);
@@ -165,18 +163,15 @@ public class ConferenceForm implements CommandListener{
         formJoin.append(AutoJoin);
         
         formJoin.addCommand(cmdJoin);
-        //formJoin.addCommand(cmdBookmarks);
         formJoin.addCommand(cmdAdd);
-        
         formJoin.addCommand(cmdEdit);
-        
         formJoin.addCommand(cmdCancel);
         formJoin.setCommandListener(this);
+        
         display.setCurrent(formJoin);
     }
     public void commandAction(Command c, Displayable d){
         if (c==cmdCancel) { destroyView(); }
-        //if (c==cmdBookmarks) { new Bookmarks(display, null); }
         
         String nick=nickField.getString();
         String host=hostField.getString();
@@ -201,34 +196,28 @@ public class ConferenceForm implements CommandListener{
             display.setCurrent(sd.roster);
         }
         
-        //if (c==cmdJoin || c==cmdAdd) {
-            if (c==cmdAdd) {
-                new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
-            } else if (c==cmdJoin) {
-                try {
-                    cf.confMessageCount=msgLimit;
-                    cf.defGcRoom=room+"@"+host;
-                    cf.saveToStorage();
-                    gchat.append('/');
-                    gchat.append(nick);
-                    join(gchat.toString(),pass, msgLimit);
-                    
-                    display.setCurrent(sd.roster);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    display.setCurrent(new Alert("Exception", e.toString(), null, AlertType.ERROR), sd.roster);
-                }
+        else if (c==cmdAdd) new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
+        else if (c==cmdJoin) {
+            try {
+                cf.confMessageCount=msgLimit;
+                cf.defGcRoom=room+"@"+host;
+                cf.saveToStorage();
+                gchat.append('/');
+                gchat.append(nick);
+                join(gchat.toString(),pass, msgLimit);
+
+                display.setCurrent(sd.roster);
+            } catch (Exception e) {
+                e.printStackTrace();
+                display.setCurrent(new Alert("Exception", e.toString(), null, AlertType.ERROR), sd.roster);
             }
-        //}
+        }
     }
     public static void join(String name, String pass, int maxStanzas) {
         StaticData sd=StaticData.getInstance();
         
         ConferenceGroup grp=sd.roster.initMuc(name, pass);
-        // требуется для возможности нормального выхода
-        //sd.roster.mucContact(name, Contact.ORIGIN_GC_MYSELF); 
-        //sd.roster.activeRooms.addElement(jid);
- 
+
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
         if (pass.length()!=0) {
@@ -245,7 +234,6 @@ public class ConferenceForm implements CommandListener{
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {};
 
-        //sd.roster.groups.getGroup(name.substring(0, name.indexOf('@'))).imageExpandedIndex=ImageList.ICON_GCJOIN_INDEX;
         sd.roster.sendPresence(name, null, x);
         sd.roster.reEnumRoster();
     }

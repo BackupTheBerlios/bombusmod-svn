@@ -98,9 +98,7 @@ public class BookmarkItem extends IconTextElement{
         data.setAttribute("autojoin", (autojoin)?"true":"false");
         if (nick.length()>0) data.addChild("nick",nick);
         if (password.length()>0) data.addChild("password",password);
-        
-        //System.out.println(jid+" autojoin "+autojoin);        
-        
+
         return data;
     }
     
@@ -112,7 +110,6 @@ public class BookmarkItem extends IconTextElement{
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
         if (pass.length()!=0) {
-            // adding password to presence
             x.addChild("password", pass);
         }
         

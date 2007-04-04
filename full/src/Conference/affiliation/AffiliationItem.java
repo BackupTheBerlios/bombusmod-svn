@@ -76,7 +76,7 @@ public class AffiliationItem extends IconTextElement{
         for (int index=1; index<5; index++) {
             if (affiliation.equals(getAffiliationName(index))) this.affiliation=index;
         }
-		reason="";
+	reason="";
     }
     
     public AffiliationItem(JabberDataBlock item) {

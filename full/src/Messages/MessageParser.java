@@ -53,7 +53,6 @@ public final class MessageParser implements Runnable{
     private int width; // window width
     
     private ImageList il;
-//    boolean enableSmiles;
     
     private Vector tasks=new Vector();
     
@@ -117,55 +116,44 @@ public final class MessageParser implements Runnable{
         root=new Leaf();
         // opening file;
         try { // generic errors
-            
-            // счёт номера строки, он же номер смайла
             int strnumber=0;
-            // вложение
-            // int level=0; 
             boolean strhaschars=false;
             boolean endline=false;
             
             InputStream in=this.getClass().getResourceAsStream(resource);
-            //DataInputStream f=new DataInputStream(in);
             
             StringBuffer s=new StringBuffer(10);
             boolean firstSmile=true;
             
-            //try { // eof
-                int c;
-                while (true) {
-                    c=in.read();
-                    //System.out.println(c);
-                    if (c<0) break;
-                    switch (c) {
-                        case 0x0d:
-                        case 0x0a:
-                            if (strhaschars) endline=true; else break;
-                        case 0x09:
-                        //case 0x20:
-                            // конец строки смайлика
-                            
-			    String smile=s.toString();
-                            if (firstSmile) smileTable.addElement(smile);
-			    
-			    addSmile(smile,strnumber);
-			    
-                            s.setLength(0);
-                            //s=new StringBuffer(6);
-                            firstSmile=false;
-                            
-                            break;
-                        default:
-                            s.append((char)c);
-                            strhaschars=true;
-                    }
-                    if (endline) {
-                        endline=strhaschars=false;
-                        strnumber++;
-                        firstSmile=true;
-                    }
+            int c;
+            while (true) {
+                c=in.read();
+                //System.out.println(c);
+                if (c<0) break;
+                switch (c) {
+                    case 0x0d:
+                    case 0x0a:
+                        if (strhaschars) endline=true; else break;
+                    case 0x09:
+                        String smile=s.toString();
+                        if (firstSmile) smileTable.addElement(smile);
+
+                        addSmile(smile,strnumber);
+
+                        s.setLength(0);
+                        firstSmile=false;
+
+                        break;
+                    default:
+                        s.append((char)c);
+                        strhaschars=true;
                 }
-            //} catch (Exception e) { /* неправильный файл смайлов */ }
+                if (endline) {
+                    endline=strhaschars=false;
+                    strnumber++;
+                    firstSmile=true;
+                }
+            }
             in.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,8 +208,7 @@ public final class MessageParser implements Runnable{
         
         Vector lines=task.msgLines;
         boolean singleLine=task.msg.itemCollapsed;
-        
-        //boolean noWrapSpace=false;
+
         boolean underline=false;
         
         int state=0;
@@ -281,21 +268,20 @@ public final class MessageParser implements Runnable{
                                 }
                                 s.setLength(0);
                         }
-                        break; // не смайл
+                        break;
                     }
                     
                     smileLeaf=smileLeaf.findChild(c);
                     if (smileLeaf==null) {
-                        break;    //этот символ c не попал в смайл
+                        break;
                     }
                     if (smileLeaf.smile!=-1) {
-                        // нашли смайл
                         smileIndex=smileLeaf.smile;
                         smileEndPos=pos;
                     }
-                    pos++; // продолжаем поиск смайла
+                    pos++; 
                     
-                } //while (i<txt.length())
+                }
                 
                 if (smileIndex==URL) {
                     if (s.length()>0) l.addElement(s.toString());
@@ -304,22 +290,16 @@ public final class MessageParser implements Runnable{
                 }
                 
                 if (smileIndex>=0 && task.smilesEnabled()) {
-                    // есть смайлик
-                    
-                    // слово перед смайлом в буфер
  		    if (wordStartPos!=smileStartPos) {
  			s.append(txt.substring(wordStartPos, smileStartPos));
                         w+=wordWidth;
                         wordWidth=0;
  		    }
-                    // добавим строку
                     if (s.length()>0) {
                         if (underline) l.addUnderline();
                         l.addElement(s.toString());
                     }
-                    // очистим
                     s.setLength(0);
-                    // добавим смайлик
                     int iw=il.getWidth();
                     if (w+iw>width) {
                         task.notifyRepaint(lines, task.msg, false);
@@ -335,7 +315,6 @@ public final class MessageParser implements Runnable{
                         w=0;
                     }
                     l.addImage(smileIndex); w+=iw;
-                    // передвинем указатель
                     pos=smileEndPos;
 		    // next word will start after smile
 		    wordStartPos=pos+1;
@@ -410,6 +389,5 @@ public final class MessageParser implements Runnable{
 
     public interface MessageParserNotify {
         void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized);
-	//void notifyUrl(String url);
     }
 }

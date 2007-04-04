@@ -244,7 +244,10 @@ public class ContactMessageList extends MessageList
         if (c == cmdCopy)
         {
             try {
-                clipboard.setClipBoard(getMessage(cursor).getBody());
+                StringBuffer clipstr=new StringBuffer();
+                clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
+                clipstr.append(getMessage(cursor).getBody());
+                clipboard.setClipBoard(clipstr.toString());
             } catch (Exception e) {/*no messages*/}
         }
         
@@ -253,6 +256,7 @@ public class ContactMessageList extends MessageList
                 StringBuffer clipstr=new StringBuffer();
                 clipstr.append(clipboard.getClipBoard());
                 clipstr.append("\n\n");
+                clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
                 clipstr.append(getMessage(cursor).getBody());
                 
                 clipboard.setClipBoard(clipstr.toString());
@@ -261,7 +265,6 @@ public class ContactMessageList extends MessageList
 //#if TEMPLATES
 //#         if (c==cmdTemplate) {
 //#             try {
-//#                 //new TemplateContainer(getMessage(cursor).getBody(), -1);
 //#                 TemplateContainer.store(getMessage(cursor));
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
@@ -297,22 +300,10 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
     }
-/*  
-    private void clearMessageList() {
-        //TODO: fix scrollbar size
-//#if LAST_MESSAGES
-//#        if (hisStorage) new HistoryStorage(contact, "", true);
-//#endif
-        moveCursorHome();
-        contact.purge();
-        messages=new Vector();
-        System.gc();
-        redraw();
-    }
-*/ 
+
     private void clearReadedMessageList() {
 //#if LAST_MESSAGES
-//#         if (hisStorage) new HistoryStorage(contact, "", true);
+//#         if (hisStorage) new HistoryStorage(contact.getBareJid(), "", true);
 //#endif
         contact.smartPurge(cursor+1);
         messages=new Vector();
@@ -461,7 +452,7 @@ public class ContactMessageList extends MessageList
 //#         try {
 //#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
 //#             while (is.available()>0) {
-//#                     contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
+//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
 //#             }
 //#             is.close();
 //#         } catch (Exception e) {}

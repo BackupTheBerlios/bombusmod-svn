@@ -191,25 +191,18 @@ public class Roster
         cf=Config.getInstance();
         
         autoAwayDelay=cf.autoAwayDelay*60;
-        //setAutoStatus=cf.setAutoStatus;
-		
-	//canback=false; // We can't go back using keyBack
-        
-        //msgNotify=new EventNotify(display, Profile.getProfile(0) );
+
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
         mainbar.addRAlign();
         mainbar.addElement(null);
         mainbar.addElement(null);
         mainbar.addElement(null); //ft
-        //displayStatus();
 
         hContacts=new Vector();
         groups=new Groups();
         
         vContacts=new Vector(); // just for displaying
-        
-        if (cf.allowLightControl) setLight(cf.lightState);
         
         if (!VirtualList.digitMemMonitor) {
                 int activeType=Command.SCREEN;
@@ -249,14 +242,6 @@ public class Roster
     
     void addOptionCommands(){
         if (cf.allowMinimize) addCommand(cmdMinimize);
-        //Config cf=StaticData.getInstance().config;
-        //        if (cf.showOfflineContacts) {
-        //            addCommand(cmdHideOfflines);
-        //            removeCommand(cmdShowOfflines);
-        //        } else {
-        //            addCommand(cmdShowOfflines);
-        //            removeCommand(cmdHideOfflines);
-        //        }
     }
     public void setProgress(String pgs,int percent){
         SplashScreen.getInstance().setProgress(pgs, percent);
@@ -293,6 +278,14 @@ public class Roster
 	    resetRoster();
 	};
         setProgress(26);
+                
+        if (cf.allowLightControl) {
+            if (cf.lightState){
+                com.siemens.mp.game.Light.setLightOn();
+            } else {
+                com.siemens.mp.game.Light.setLightOff();
+            }
+        }
         
         //logoff();
         try {
@@ -2279,14 +2272,6 @@ public class Roster
         }
     }
     
-    public static void setLight(boolean state) {
-        if (state) {
-            com.siemens.mp.game.Light.setLightOn();
-        } else {
-            com.siemens.mp.game.Light.setLightOff();    
-        }
-    }
-    
     public void mucReconnect() {
         Enumeration e;
         
@@ -2345,19 +2330,9 @@ public class Roster
         }
       }
     }
-/*    
-    public void siemensKeyLock() {
-        if (Config.getInstance().setKeyBlockStatus)
-            new SplashScreen(display, getMainBarItem(), Config.getInstance().keyLock, false, true);
-    }
- */
 }
 
 class TimerTaskAutoAway extends Thread{
-   
-    private boolean stop;
-    private boolean exit;
-     
     private static TimerTaskAutoAway instance;
      
     private Roster rRoster;
@@ -2369,7 +2344,6 @@ class TimerTaskAutoAway extends Thread{
     private int autoAwayDelay=cf.autoAwayDelay*60;
 
     private TimerTaskAutoAway() {
-        exit=false;
         start();
      }
     
@@ -2387,36 +2361,16 @@ class TimerTaskAutoAway extends Thread{
             } catch (Exception e) {}
             
             synchronized (this) {
-                if (stop) {
-                    break;
-                }
                 if (!rRoster.keyLockState) {
                     keyTimer=rRoster.keyTimer;
-                    try {
-                        if (cf.allowLightControl) {
-                            if (rRoster.lightType==2) {
-                                if (getKeyLockState()) {
-                                    rRoster.setLight(false);
-                                } else {
-                                    rRoster.setLight(true);
-                                }
-                            }
-                        }
-
-                        rRoster.setKeyTimer(keyTimer+5);                        
-                        if (keyTimer>=autoAwayDelay) {
-                            try {
-                                rRoster.setAutoAway();
-                            } catch (Exception e) {}
-                        }
-                    } catch (Exception e) { }
+                    rRoster.setKeyTimer(keyTimer+5);                        
+                    if (keyTimer>=autoAwayDelay) {
+                        try {
+                            rRoster.setAutoAway();
+                        } catch (Exception e) {}
+                    }
                 }
             }
         }
-    }
-
-    private boolean getKeyLockState() {
-        boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
-        return lightState;
     }
  }

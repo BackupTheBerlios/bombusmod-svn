@@ -273,9 +273,4 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
         System.gc();
     }
-    
-    private boolean getKeyLockState() {
-        boolean lightState=(System.getProperty("MPJCKEYL").startsWith("1"))?true:false;
-        return lightState;
-    }
 }

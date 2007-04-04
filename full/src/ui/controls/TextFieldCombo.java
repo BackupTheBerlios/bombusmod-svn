@@ -131,10 +131,9 @@ public class TextFieldCombo
                 String s=(String)e.nextElement();
                 os.writeUTF(s);
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { }
         
         NvStorage.writeFileRecord(os, id, 0, true);
-        
     }
     private void loadRecentList() {
         recentList=new Vector(10);

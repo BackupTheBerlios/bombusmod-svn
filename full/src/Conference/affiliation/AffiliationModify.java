@@ -100,9 +100,6 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
         String rs=reason.getString();
         if (rs.length()>0) child.addChild("reason", rs);        
 
-        //processIcon(true);
-        //System.out.println(request.toString());
-        //stream.addBlockListener(this);
         stream.send(request);
         try {
             Thread.sleep(300);

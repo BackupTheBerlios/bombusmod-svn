@@ -53,7 +53,6 @@ public class AppendNick
         super(display);
         me=messageEdit;
         this.caretPos=caretPos;
-         //this.display=display;
         
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
@@ -74,13 +73,8 @@ public class AppendNick
     protected int getItemCount() { return nicknames.size();  }
 
     public void commandAction(Command c, Displayable d){
-        if (c==cmdCancel) {
-            destroyView();
-            //Account.launchAccount();
-            //StaticData.getInstance().account_index=0;
-        }
-        if (c==cmdSelect) eventOk();
-        
+        if (c==cmdCancel) destroyView();
+        else if (c==cmdSelect) eventOk();
     }
      public void eventOk(){
          try {

@@ -84,7 +84,6 @@ public class RosterIcons extends ImageList{
         } else {
             return (o==null)?0:((Integer)o).intValue();
         }
-        //if (resource) if (index==6) index=0;
     }
    
 
@@ -127,6 +126,7 @@ public class RosterIcons extends ImageList{
     public static final int ICON_AUTHRQ_INDEX = 0x21;
 
     public static final int ICON_COMPOSING_INDEX = 0x22;
+    
     public static final int ICON_AD_HOC=ICON_COMPOSING_INDEX;
 
     public static final int ICON_EXPANDED_INDEX = 0x23;

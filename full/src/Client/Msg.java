@@ -138,6 +138,7 @@ public class Msg //implements MessageList.Element
     }
 
     public String getBody() { return body; }
+    public String getSubject() { return subject; }
 
     void setHighlite(boolean state) { highlite=state; }
 

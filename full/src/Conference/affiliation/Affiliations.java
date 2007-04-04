@@ -130,8 +130,6 @@ public class Affiliations
     
     public int blockArrived(JabberDataBlock data) {
         try {
-            ///System.out.println(data.toString());
-            
             if (data.getAttribute("id").equals(id)) {
                 JabberDataBlock query=data.findNamespace(namespace);
                 Vector items=new Vector();
@@ -140,7 +138,6 @@ public class Affiliations
                         items.addElement(new AffiliationItem((JabberDataBlock)e.nextElement()));
                     }
                 } catch (Exception e) { /* no any items */}
-                //StaticData.getInstance().roster.bookmarks=
                 sort(items);
                 this.items=items;
                 
@@ -161,7 +158,6 @@ public class Affiliations
         query.addChild(child);
         
         processIcon(true);
-        //System.out.println(request.toString());
         stream.addBlockListener(this);
         stream.send(request);
     }

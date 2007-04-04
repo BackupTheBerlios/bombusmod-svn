@@ -29,17 +29,12 @@ package Info;
 
 import locale.SR;
 
-/**
- *
- * @author Evg_S
- */
 public class Version {
 //#if (!ZLIB)
 //#     public final static String version="$BOMBUSVERSION$";
 //#else
     public final static String version="$BOMBUSVERSION$-Z";
 //#endif
-    // this string will be patched by build.xml/post-preprocess
     
     public final static String url="http://www.apatin.net.ru";
     

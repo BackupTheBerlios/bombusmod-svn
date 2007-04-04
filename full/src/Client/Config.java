@@ -386,7 +386,7 @@ public class Config {
             
             outputStream.writeBoolean(digitMemMonitor);
             
-            outputStream.writeBoolean(false);
+            outputStream.writeBoolean(true);
 			
             outputStream.writeBoolean(autoSubscribe);
             
