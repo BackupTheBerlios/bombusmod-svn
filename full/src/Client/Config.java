@@ -65,7 +65,6 @@ public class Config {
     
     public boolean muc119=getBooleanProperty("muc_119",true);	// before muc 1.19 use muc#owner instead of muc#admin
     
-//#if !(MIDP1)
     public char keyLock=getCharProperty("key_lock",'*');
     public char keyVibra=getCharProperty("key_vibra",'#');
     
@@ -75,22 +74,9 @@ public class Config {
      public boolean msgLogConf=false;
      public boolean msgLogConfPresence=false;
      public boolean cp1251=true;
-//#else
-//#     public boolean msgLogPresence=getBooleanProperty("msg_log_presence",false);
-//#     public boolean msgLogConfPresence=getBooleanProperty("msg_log_conf_presence",false);
-//#     public boolean msgLogConf=getBooleanProperty("msg_log_conf",false);
-//#     public final String msgPath=getStringProperty("msg_log_path","");
-//#     public final String siemensCfgPath=getStringProperty("cfg_path","");
-//#     public char keyLock=getCharProperty("key_lock",'#');
-//#     public char keyVibra=getCharProperty("key_vibra",'*');
-//#endif
     
     public char keyHide=getCharProperty("key_hide",'9');
     public char keyOfflines=getCharProperty("key_offlines",'0');
-    
-//#if USE_LED_PATTERN
-//#     public int m55LedPattern=0;
-//#endif
     
     public String defGcRoom="bombusmod@conference.jabber.ru";
     
@@ -100,10 +86,7 @@ public class Config {
     public String m_ver=getStringProperty("m_ver",Version.getVersionLang());
     public String m_os=getStringProperty("m_os",ph.getOs()); 
     
-    //public String xmlLang=getStringProperty("xml_lang",null);
-    
     // non-volatile values
-    //public TimeZone tz=new RuGmt(0);
     public int accountIndex=-1;
     public boolean fullscreen=false;
     public int def_profile=0;

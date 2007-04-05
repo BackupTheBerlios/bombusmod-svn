@@ -112,34 +112,36 @@ public class Bombus extends MIDlet implements Runnable{
             }
         } catch (Exception e) { }
         s.setProgress(Version.version,10);
-        
+
 	Config cf=Config.getInstance();
         s.setProgress(12);
-        
+
         AlertCustomize ac=AlertCustomize.getInstance();
         s.setProgress(15);
-        
+
         try {
             ColorScheme cl=ColorScheme.getInstance();
         } catch (Exception e) {
             System.out.println("Colors error");
         }
         s.setProgress(20);
-        
+
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
         if (selAccount) s.setProgress("Entering setup",20);
 	s.setProgress(23);
-        
+
         sd.roster=new Roster(display);
         s.setProgress(25);
+
+        boolean autologin=cf.autoLogin;
         
-        if (!selAccount) {
+        if (!selAccount && autologin) {
             // connect whithout account select
-	    boolean autologin=cf.autoLogin;
             selAccount=(Account.loadAccount(autologin)==null);
 	    if (!autologin) s.close();
+        } else {
+            new AccountSelect(display, true);
         }
-        if (selAccount) { new AccountSelect(display, true); }
     }
     
     /**

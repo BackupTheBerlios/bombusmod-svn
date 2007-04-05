@@ -30,6 +30,7 @@ import javax.microedition.lcdui.Graphics;
 
 public class BottomInfo {
     public static int startGPRS=-1;
+    private static boolean patched=true;
  
     public static String get() {
         StringBuffer s=new StringBuffer();
@@ -38,9 +39,7 @@ public class BottomInfo {
         int ngprs=-1;
         int gprscount=0;
         try {
-            try {
-                ngprs=getGPRS();
-            } catch (Exception e) { }
+            ngprs=getGPRS();
             if (ngprs>-1) {
                 gprscount=ngprs;
             } else {
@@ -62,37 +61,44 @@ public class BottomInfo {
      }
     
     public static String getAccuLevel() {
+        if (patched==false) return "";
         try {
             String cap=System.getProperty("MPJC_CAP");
             return (cap==null)? "": " "+cap+"%";
-        } catch (Exception e) {}
+        } catch (Exception e) { patched=false; }
         return "";
     }
     
     public static String getNetworkLevel() {
+        if (patched==false) return "";
         try {
             String rx=System.getProperty("MPJCRXLS");
             int rp=rx.indexOf(',');
             return (rp<0)? "": " "+rx.substring(0,rp)+"dB";
-        } catch (Exception e) {}
+        } catch (Exception e) { patched=false; }
         return "";
     }
     
     public static int getGPRS() {
-        String gprs=System.getProperty("MPJCGPRS");
-        int gprscnt=Integer.parseInt(gprs);
-        
-        int gprscount=0;
-        
-        if (gprscnt>-1) {
-            if (startGPRS==-1) {
-                startGPRS=gprscnt;
-                gprscount=0;
-            } else {
-                gprscount=gprscnt-startGPRS;
+        if (patched==false) return -1;
+        try {
+            String gprs=System.getProperty("MPJCGPRS");
+            int gprscnt=Integer.parseInt(gprs);
+
+            int gprscount=0;
+
+            if (gprscnt>-1) {
+                if (startGPRS==-1) {
+                    startGPRS=gprscnt;
+                    gprscount=0;
+                } else {
+                    gprscount=gprscnt-startGPRS;
+                }
+                return gprscount;
             }
-        } 
-        return gprscount;
+        } catch (Exception e) { patched=false; }
+        
+        return -1;
     }    
     
 }

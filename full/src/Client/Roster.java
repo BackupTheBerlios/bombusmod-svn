@@ -163,7 +163,7 @@ public class Roster
 
     private TimerTaskAutoAway AutoAway;
     
-    public static int lightType=0;
+    public static boolean lightState=false;
 	
     private final static int maxReconnect=5;
     public int reconnectCount;
@@ -176,6 +176,8 @@ public class Roster
     private static int blockNotifyEvent=-111;
     
     public Contact lastAppearedContact=null;
+
+    private boolean allowLightControl=false;
     
     /**
      * Creates a new instance of Roster
@@ -189,6 +191,13 @@ public class Roster
         this.display=display;
         
         cf=Config.getInstance();
+        
+        lightState=cf.lightState;
+        allowLightControl=cf.allowLightControl;
+        
+        if (allowLightControl && lightState){
+            com.siemens.mp.game.Light.setLightOn();
+        }
         
         autoAwayDelay=cf.autoAwayDelay*60;
 
@@ -223,11 +232,9 @@ public class Roster
                 addCommand(cmdInfo);
                 addCommand(cmdAccount);
 
-                if (ph.PhoneManufacturer()==ph.NOKIA_9XXX) {
-                } else {
-                        addCommand(cmdQuit);
+                if (ph.PhoneManufacturer()!=ph.NOKIA_9XXX) {
+                    addCommand(cmdQuit);
                 }
-
 
                 addOptionCommands();
                 setCommandListener(this);
@@ -278,15 +285,7 @@ public class Roster
 	    resetRoster();
 	};
         setProgress(26);
-                
-        if (cf.allowLightControl) {
-            if (cf.lightState){
-                com.siemens.mp.game.Light.setLightOn();
-            } else {
-                com.siemens.mp.game.Light.setLightOff();
-            }
-        }
-        
+
         //logoff();
         try {
             Account a=sd.account;
@@ -1750,7 +1749,7 @@ public class Roster
 //#endif
         if (VirtualList.digitMemMonitor) {
             if (keyCode==-4 || keyCode==-1)  {
-                if (cf.allowLightControl) {
+                if (allowLightControl) {
                     new RosterMenu(display, getFocusedObject());
                     return;
                  }         
@@ -1811,7 +1810,7 @@ public class Roster
 		
         if (VirtualList.digitMemMonitor) {
             if (keyCode==-4 || keyCode==-1)  {
-                if (cf.allowLightControl) {
+                if (allowLightControl) {
                     new RosterMenu(display, getFocusedObject());
                     return;
                  }         
@@ -1849,7 +1848,7 @@ public class Roster
         }
         
          if (keyCode==KEY_POUND) {
-            if (cf.allowLightControl)
+            if (allowLightControl)
             {
                 System.gc();
                 setWobbler(null);
@@ -1859,7 +1858,7 @@ public class Roster
             return;
          }
          if (keyCode==KEY_STAR) {
-             if (cf.allowLightControl) {
+             if (allowLightControl) {
                 System.gc();
              } else {
                 System.gc();
@@ -2342,6 +2341,9 @@ class TimerTaskAutoAway extends Thread{
     private Config cf=Config.getInstance();
 
     private int autoAwayDelay=cf.autoAwayDelay*60;
+    
+    private boolean lightState=cf.lightState;
+    private boolean allowLightControl=cf.allowLightControl;
 
     private TimerTaskAutoAway() {
         start();
@@ -2361,6 +2363,7 @@ class TimerTaskAutoAway extends Thread{
             } catch (Exception e) {}
             
             synchronized (this) {
+                com.siemens.mp.game.Light.setLightOn();
                 if (!rRoster.keyLockState) {
                     keyTimer=rRoster.keyTimer;
                     rRoster.setKeyTimer(keyTimer+5);                        
