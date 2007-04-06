@@ -188,16 +188,17 @@ public class ConfigForm implements
         ap[apctr++]=cf.fullscreen;
         application.append(SR.MS_FULLSCREEN,null);
         application.append(SR.MS_HEAP_MONITOR,null);
+        if (cf.allowLightControl) application.append("Turn on light",null);
         application.append(SR.MS_NEW_MENU,null);
 	if (!cf.ghostMotor) application.append(SR.MS_FLASHBACKLIGHT,null);
 	if (cf.allowMinimize) application.append(SR.MS_ENABLE_POPUP,null);
-        if (cf.allowLightControl) application.append("Turn on light",null);
-        
+
 	ap[apctr++]=cf.memMonitor;
-        ap[apctr++]=cf.digitMemMonitor;
+        ap[apctr++]=cf.lightState;
+        ap[apctr++]=cf.newMenu;
 	ap[apctr++]=cf.blFlash;
 	ap[apctr++]=cf.popupFromMinimized;
-	ap[apctr++]=cf.lightState;
+
 	
         application.setSelectedFlags(ap);
         
@@ -366,7 +367,7 @@ public class ConfigForm implements
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
 
 	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
-            VirtualList.digitMemMonitor=cf.digitMemMonitor=ap[apctr++];   
+            VirtualList.newMenu=cf.newMenu=ap[apctr++];   
             
 	    cf.blFlash=ap[apctr++];
 	    cf.popupFromMinimized=ap[apctr++];

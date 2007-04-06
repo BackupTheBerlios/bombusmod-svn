@@ -152,7 +152,7 @@ public abstract class VirtualList
     public static int greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
-    public static boolean digitMemMonitor;
+    public static boolean newMenu;
     
     /** метрика экрана */
     int width;

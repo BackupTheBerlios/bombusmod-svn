@@ -132,13 +132,11 @@ public class Bombus extends MIDlet implements Runnable{
 
         sd.roster=new Roster(display);
         s.setProgress(25);
-
-        boolean autologin=cf.autoLogin;
         
-        if (!selAccount && autologin) {
+        if (!selAccount && cf.autoLogin) {
             // connect whithout account select
-            selAccount=(Account.loadAccount(autologin)==null);
-	    if (!autologin) s.close();
+            selAccount=(Account.loadAccount(cf.autoLogin)==null);
+	    if (!cf.autoLogin) s.close();
         } else {
             new AccountSelect(display, true);
         }
@@ -156,8 +154,7 @@ public class Bombus extends MIDlet implements Runnable{
 	    display.setCurrent(null);
 	} else {
             if (isMinimized) {
-                //display.setCurrent(sd.roster);
-                 display.setCurrent(/*sd.roster*/ display.getCurrent());
+                 display.setCurrent(display.getCurrent());
             }
 	}
         isMinimized=hide;

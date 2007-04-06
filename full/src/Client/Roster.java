@@ -151,8 +151,6 @@ public class Roster
     public static int keyTimer=0;
     //public JabberBlockListener discoveryListener;
     
-    public int autoAwayDelay;
-
     private int pr;
 
     private String ms;
@@ -162,8 +160,6 @@ public class Roster
     private String myMessage;    
 
     private TimerTaskAutoAway AutoAway;
-    
-    public static boolean lightState=false;
 	
     private final static int maxReconnect=5;
     public int reconnectCount;
@@ -191,15 +187,6 @@ public class Roster
         this.display=display;
         
         cf=Config.getInstance();
-        
-        lightState=cf.lightState;
-        allowLightControl=cf.allowLightControl;
-        
-        if (allowLightControl && lightState){
-            com.siemens.mp.game.Light.setLightOn();
-        }
-        
-        autoAwayDelay=cf.autoAwayDelay*60;
 
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
@@ -213,7 +200,7 @@ public class Roster
         
         vContacts=new Vector(); // just for displaying
         
-        if (!VirtualList.digitMemMonitor) {
+        if (!VirtualList.newMenu) {
                 int activeType=Command.SCREEN;
                 if (ph.PhoneManufacturer()==ph.NOKIA) activeType=Command.BACK;
                 if (ph.PhoneManufacturer()==ph.INTENT) activeType=Command.BACK;
@@ -241,10 +228,8 @@ public class Roster
         }
 
 	updateMainBar();
-
-        SplashScreen.getInstance().setExit(display, this);
         
-        //parentView=null; - already have
+        SplashScreen.getInstance().setExit(display, this);
     }
     
     void addOptionCommands(){
@@ -279,6 +264,7 @@ public class Roster
     // establishing connection process
     public void run(){
         //Iq.setXmlLang(SR.MS_XMLLANG);
+
         setQuerySign(true);
         setProgress(25);
 	if (!reconnect) {
@@ -329,14 +315,6 @@ public class Roster
     public void errorLog(String s){
         if (s==null) return;
         if (s.length()==0) return;
-
-        //new AlertBox(SR.MS_ERROR_, s, null, display, null);
-        
-        /*Alert error=new Alert(SR.MS_ERROR_, s, null, null);
-        error.setTimeout(30000);
-         error.addCommand(new Command(SR.MS_OK, Command.BACK, 1));
-         display.setCurrent(error, display.getCurrent());
-         */
         
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Error", s);
         messageStore(selfContact(), m);
@@ -1747,7 +1725,7 @@ public class Roster
             display.flashBacklight(blState);
         }
 //#endif
-        if (VirtualList.digitMemMonitor) {
+        if (VirtualList.newMenu) {
             if (keyCode==-4 || keyCode==-1)  {
                 if (allowLightControl) {
                     new RosterMenu(display, getFocusedObject());
@@ -1808,7 +1786,7 @@ public class Roster
             return;
         }
 		
-        if (VirtualList.digitMemMonitor) {
+        if (VirtualList.newMenu) {
             if (keyCode==-4 || keyCode==-1)  {
                 if (allowLightControl) {
                     new RosterMenu(display, getFocusedObject());
@@ -1914,11 +1892,32 @@ public class Roster
         else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
+        
+       	else if (keyCode==KEY_NUM5) 
+        {
+            boolean lightState=cf.lightState;
+            allowLightControl=cf.allowLightControl;
+            String l=(lightState)?"true":"false";
+            String al=(allowLightControl)?"true":"false";
+
+            errorLog("lightState "+l+" and allowLightControl "+al);
+
+            if (allowLightControl && lightState){
+                try {
+                    com.siemens.mp.game.Light.setLightOn();
+                    errorLog("light is turned on");
+                } catch( Exception e ) {
+                    errorLog("can't turn light on :(\n"+e.toString());
+                }
+            }
+        }
         else if (keyCode==KEY_NUM6) {
             fullMode=VirtualList.isbottom;
             cf.isbottom=VirtualList.isbottom=(fullMode+1)%7;
             cf.saveToStorage();
-        } else if (keyCode==KEY_NUM7) new RosterToolsMenu(display);
+        } else if (keyCode==KEY_NUM7){
+            new RosterToolsMenu(display);
+        }
         
         else if (keyCode==cf.keyHide) {
             if (cf.allowMinimize)
@@ -2336,14 +2335,10 @@ class TimerTaskAutoAway extends Thread{
      
     private Roster rRoster;
     
-    private int keyTimer=0;
-    
     private Config cf=Config.getInstance();
 
     private int autoAwayDelay=cf.autoAwayDelay*60;
-    
-    private boolean lightState=cf.lightState;
-    private boolean allowLightControl=cf.allowLightControl;
+    private int autoAwayType=cf.autoAwayType;
 
     private TimerTaskAutoAway() {
         start();
@@ -2363,11 +2358,11 @@ class TimerTaskAutoAway extends Thread{
             } catch (Exception e) {}
             
             synchronized (this) {
-                com.siemens.mp.game.Light.setLightOn();
                 if (!rRoster.keyLockState) {
-                    keyTimer=rRoster.keyTimer;
+                    int keyTimer=rRoster.keyTimer;
+                    //System.out.println("autoAwayDelay "+autoAwayDelay+"  autoAwayType "+autoAwayType+"  keyTimer "+keyTimer);
                     rRoster.setKeyTimer(keyTimer+5);                        
-                    if (keyTimer>=autoAwayDelay) {
+                    if (keyTimer>=autoAwayDelay && autoAwayType==2) {
                         try {
                             rRoster.setAutoAway();
                         } catch (Exception e) {}

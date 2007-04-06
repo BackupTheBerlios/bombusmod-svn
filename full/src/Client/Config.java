@@ -68,13 +68,15 @@ public class Config {
     public char keyLock=getCharProperty("key_lock",'*');
     public char keyVibra=getCharProperty("key_vibra",'#');
     
+//#if FILE_IO
      public String msgPath="";
      public boolean msgLog=false;
      public boolean msgLogPresence=false;
      public boolean msgLogConf=false;
      public boolean msgLogConfPresence=false;
      public boolean cp1251=true;
-    
+//#endif
+     
     public char keyHide=getCharProperty("key_hide",'9');
     public char keyOfflines=getCharProperty("key_offlines",'0');
     
@@ -112,7 +114,7 @@ public class Config {
     
     public boolean popupFromMinimized=true;
     public boolean memMonitor;
-    public boolean digitMemMonitor=false;
+    public boolean newMenu=false;
     
     public int font1=0;
     public int font2=0;
@@ -145,7 +147,7 @@ public class Config {
 
     public int isbottom=2; //default state both panels show, reverse disabled
    
-    public boolean lightState=false;
+    public boolean lightState=true;
     
     public boolean lastMessages=false;
 
@@ -225,8 +227,6 @@ public class Config {
 	    autoLogin=inputStream.readBoolean();
 	    autoJoinConferences=inputStream.readBoolean();
 	    
-	    inputStream.readInt();
-	    
 	    popupFromMinimized=inputStream.readBoolean();
 	    
 	    blFlash=inputStream.readBoolean();
@@ -253,10 +253,17 @@ public class Config {
             msgLogConfPresence=inputStream.readBoolean();
             msgLogConf=inputStream.readBoolean();
             cp1251=inputStream.readBoolean();
+//#else
+//#             inputStream.readUTF();
+//#             inputStream.readBoolean();
+//#             inputStream.readBoolean();
+//#             inputStream.readBoolean();
+//#             inputStream.readBoolean();
+//#             inputStream.readBoolean();   
 //#endif
-            autoAwayDelay=inputStream.readInt();
-            lightState=inputStream.readBoolean();
             
+            autoAwayDelay=inputStream.readInt();
+        
             defGcRoom=inputStream.readUTF();
             
             altInput=inputStream.readBoolean();
@@ -265,17 +272,15 @@ public class Config {
             
             confMessageCount=inputStream.readInt();
             
-            digitMemMonitor=inputStream.readBoolean();
+            newMenu=inputStream.readBoolean();
             
-            inputStream.readBoolean(); //lightState=false;
+            lightState=inputStream.readBoolean(); //lightState=false;
 			
             autoSubscribe=inputStream.readBoolean();
             
             lastMessages=inputStream.readBoolean();
 
             setAutoStatusMessage=inputStream.readBoolean(); //setKeyBlockStatus=inputStream.readBoolean();
-            
-            inputStream.readInt();
             
             autoAwayType=inputStream.readInt();
             
@@ -285,7 +290,76 @@ public class Config {
             
 	    inputStream.close();
 	} catch (Exception e) {
-	    //e.printStackTrace();
+	    accountIndex = -1;
+	    showOfflineContacts=true;
+	    fullscreen=false;
+	    def_profile = 0;
+	    smiles=true;
+	    showTransports=true;
+	    selfContact=true;
+	    notInList=false;
+	    ignore=false;
+	    eventComposing=true;
+	    
+	    gmtOffset=3;
+	    locOffset=0;
+	    
+	    autoLogin=true;
+	    autoJoinConferences=true;
+	    
+	    popupFromMinimized=true;
+	    
+	    blFlash=!ghostMotor;
+	    memMonitor=true;
+            
+            font1=0;
+            font2=0;
+            
+            autoFocus=false;
+            
+            lang=0;
+            
+            storeConfPresence=true;
+            
+            capsState=false;
+	    
+	    textWrap=0;
+            
+            loginstatus=0;
+//#if FILE_IO
+             msgPath="";
+             msgLog=false;
+             msgLogPresence=false;
+             msgLogConf=false;
+             msgLogConfPresence=false;
+             cp1251=true;
+//#endif
+            
+            autoAwayDelay=5;
+        
+            defGcRoom="bombusmod@conference.jabber.ru";
+            
+            altInput=false;
+            
+            isbottom=2;
+            
+            confMessageCount=20;
+            
+            newMenu=false;
+            
+            lightState=true; //lightState=false;
+			
+            autoSubscribe=true;
+            
+            lastMessages=false;
+
+            setAutoStatusMessage=true; //setKeyBlockStatus=inputStream.readBoolean();
+            
+            autoAwayType=0;
+            
+            autoScroll=true;
+            
+            popUps=true;
 	}
 	
 	lastProfile=profile=def_profile;
@@ -294,7 +368,7 @@ public class Config {
 	VirtualList.fullscreen=fullscreen;
 	VirtualList.isbottom=isbottom;
 	VirtualList.memMonitor=memMonitor;
-        VirtualList.digitMemMonitor=digitMemMonitor;
+        VirtualList.newMenu=newMenu;
     }
     
     public String langFileName(){
@@ -325,10 +399,8 @@ public class Config {
 	    
 	    outputStream.writeBoolean(autoLogin);
 	    outputStream.writeBoolean(autoJoinConferences);
-	    
-	    outputStream.writeInt(0/*keepAlive*/);
 
-	    outputStream.writeBoolean(popupFromMinimized);
+            outputStream.writeBoolean(popupFromMinimized);
 	    
 	    outputStream.writeBoolean(blFlash);
 	    outputStream.writeBoolean(memMonitor);
@@ -354,10 +426,16 @@ public class Config {
             outputStream.writeBoolean(msgLogConfPresence);
             outputStream.writeBoolean(msgLogConf);
             outputStream.writeBoolean(cp1251);
+//#else
+//#             outputStream.writeUTF("");
+//#             outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false); 
 //#endif
             
             outputStream.writeInt(autoAwayDelay);
-            outputStream.writeBoolean(lightState);
             
             outputStream.writeUTF(defGcRoom);
             
@@ -367,17 +445,15 @@ public class Config {
             
             outputStream.writeInt(confMessageCount);
             
-            outputStream.writeBoolean(digitMemMonitor);
+            outputStream.writeBoolean(newMenu);
             
-            outputStream.writeBoolean(true);
+            outputStream.writeBoolean(lightState);
 			
             outputStream.writeBoolean(autoSubscribe);
             
             outputStream.writeBoolean(lastMessages);
             
             outputStream.writeBoolean(setAutoStatusMessage); //outputStream.writeBoolean(setKeyBlockStatus);
-            
-            outputStream.writeInt(0);
             
             outputStream.writeInt(autoAwayType);
             
