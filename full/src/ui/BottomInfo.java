@@ -30,8 +30,12 @@ import javax.microedition.lcdui.Graphics;
 
 public class BottomInfo {
     public static int startGPRS=-1;
-    private static boolean patched=true;
- 
+//#ifdef ELF
+//#     private static boolean sie_accu=true;
+//#     private static boolean sie_net=true;
+//#     private static boolean sie_gprs=true;
+//#endif
+    
     public static String get() {
         StringBuffer s=new StringBuffer();
 
@@ -61,43 +65,48 @@ public class BottomInfo {
      }
     
     public static String getAccuLevel() {
-        if (patched==false) return "";
-        try {
-            String cap=System.getProperty("MPJC_CAP");
-            return (cap==null)? "": " "+cap+"%";
-        } catch (Exception e) { patched=false; }
+//#ifdef ELF
+//#         if (sie_accu==false) return "";
+//#         try {
+//#             String cap=System.getProperty("MPJC_CAP");
+//#             return (cap==null)? "": " "+cap+"%";
+//#         } catch (Exception e) { sie_accu=false; }
+//#endif
         return "";
     }
     
     public static String getNetworkLevel() {
-        if (patched==false) return "";
-        try {
-            String rx=System.getProperty("MPJCRXLS");
-            int rp=rx.indexOf(',');
-            return (rp<0)? "": " "+rx.substring(0,rp)+"dB";
-        } catch (Exception e) { patched=false; }
+//#ifdef ELF
+//#         if (sie_net==false) return "";
+//#         try {
+//#             String rx=System.getProperty("MPJCRXLS");
+//#             int rp=rx.indexOf(',');
+//#             return (rp<0)? "": " "+rx.substring(0,rp)+"dB";
+//#         } catch (Exception e) { sie_net=false; }
+//#endif
         return "";
     }
     
     public static int getGPRS() {
-        if (patched==false) return -1;
-        try {
-            String gprs=System.getProperty("MPJCGPRS");
-            int gprscnt=Integer.parseInt(gprs);
-
-            int gprscount=0;
-
-            if (gprscnt>-1) {
-                if (startGPRS==-1) {
-                    startGPRS=gprscnt;
-                    gprscount=0;
-                } else {
-                    gprscount=gprscnt-startGPRS;
-                }
-                return gprscount;
-            }
-        } catch (Exception e) { patched=false; }
-        
+//#ifdef ELF
+//#         if (sie_gprs==false) return -1;
+//#         try {
+//#             String gprs=System.getProperty("MPJCGPRS");
+//#             int gprscnt=Integer.parseInt(gprs);
+//# 
+//#             int gprscount=0;
+//# 
+//#             if (gprscnt>-1) {
+//#                 if (startGPRS==-1) {
+//#                     startGPRS=gprscnt;
+//#                     gprscount=0;
+//#                 } else {
+//#                     gprscount=gprscnt-startGPRS;
+//#                 }
+//#                 return gprscount;
+//#             }
+//#         } catch (Exception e) { sie_gprs=false; }
+//#endif
         return -1;
     }    
     

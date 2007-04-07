@@ -274,7 +274,7 @@ public class Config {
             
             newMenu=inputStream.readBoolean();
             
-            lightState=inputStream.readBoolean(); //lightState=false;
+            lightState=inputStream.readBoolean();
 			
             autoSubscribe=inputStream.readBoolean();
             
@@ -347,7 +347,7 @@ public class Config {
             
             newMenu=false;
             
-            lightState=true; //lightState=false;
+            lightState=true;
 			
             autoSubscribe=true;
             

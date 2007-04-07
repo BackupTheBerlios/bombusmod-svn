@@ -174,6 +174,8 @@ public class Roster
     public Contact lastAppearedContact=null;
 
     private boolean allowLightControl=false;
+
+    public boolean lightState=false;
     
     /**
      * Creates a new instance of Roster
@@ -187,6 +189,18 @@ public class Roster
         this.display=display;
         
         cf=Config.getInstance();
+        
+        lightState=cf.lightState;
+        allowLightControl=cf.allowLightControl;
+        
+        if (allowLightControl && lightState){
+            try {
+                com.siemens.mp.game.Light.setLightOn();
+                //errorLog("light is turned on");
+            } catch( Exception e ) {
+                //errorLog("can't turn light on :(\n"+e.toString());
+            }
+        }
 
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
@@ -1892,25 +1906,6 @@ public class Roster
         else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
-        
-       	else if (keyCode==KEY_NUM5) 
-        {
-            boolean lightState=cf.lightState;
-            allowLightControl=cf.allowLightControl;
-            String l=(lightState)?"true":"false";
-            String al=(allowLightControl)?"true":"false";
-
-            errorLog("lightState "+l+" and allowLightControl "+al);
-
-            if (allowLightControl && lightState){
-                try {
-                    com.siemens.mp.game.Light.setLightOn();
-                    errorLog("light is turned on");
-                } catch( Exception e ) {
-                    errorLog("can't turn light on :(\n"+e.toString());
-                }
-            }
-        }
         else if (keyCode==KEY_NUM6) {
             fullMode=VirtualList.isbottom;
             cf.isbottom=VirtualList.isbottom=(fullMode+1)%7;
