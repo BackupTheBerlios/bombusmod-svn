@@ -177,7 +177,7 @@ public class Bookmarks
         if (del.isUrl) return;
 
         StaticData.getInstance().roster.bookmarks.removeElement(del);
-        if (getItemCount()>=cursor) moveCursorEnd();
+        if (getItemCount()<=cursor) moveCursorEnd();
         saveBookmarks();
         redraw();
     }
