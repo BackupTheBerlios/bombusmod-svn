@@ -39,44 +39,15 @@ import ui.controls.Balloon;
 //#endif
 import ui.controls.ScrollBar;
 
-/**
- * Вертикальный список виртуальных элементов.
- * класс реализует управление списком, скроллбар,
- * вызов отрисовки отображаемых на экране элементов.
- * @author Eugene Stahov
- */
 public abstract class VirtualList         
         extends Canvas 
 {
-    
-    /**
-     * событие "Курсор выделил элемент"
-     * в классе VirtualList вызываемая функция не выполняет действий, необходимо
-     * переопределить (override) функцию для реализации необходимых действий
-     * @param index индекс выделенного элемента
-     */
     public void focusedItem(int index) {}
 
-
-    /**
-     * число элементов виртуального списка
-     * эта функция абстрактная, должна быть переопределена при наследовании
-     * @return число элементов списка, исключая заголовок
-     */
     abstract protected int getItemCount();
 
-    /**
-     * элемент виртуального списка
-     * эта функция абстрактная, должна быть переопределена при наследовании
-     * @param index номер элемента списка. не превосходит значение, возвращённое getItemCount()
-     * @return ссылка на элемент с номером index.
-     */
     abstract protected VirtualElement getItemRef(int index);
-    
-    /**
-     * цвет фона заголовка
-     * @return RGB-цвет фона заголовка
-     */
+
     protected int getMainBarBGndRGB() {return ColorScheme.BAR_BGND;} 
     
     private StaticData sd=StaticData.getInstance();
@@ -90,22 +61,13 @@ public abstract class VirtualList
     public Phone ph=Phone.getInstance();
     
     public static void setWobble(String txt){
-        wobble=txt.trim();
+        wobble=txt;
     }
-    
-    /**
-     * цвет текста заголовка
-     * @return RGB-цвет текста заголовка
-     */
+
     protected int getMainBarRGB() {return ColorScheme.BAR_INK;} 
     
     private Config cf=Config.getInstance();
-    
-    /**
-     * событие "Нажатие кнопки ОК"
-     * базовая реализация VirtualList вызывает функцию onSelect для выбранного элемента; 
-     * необходимо переопределить (override) функцию для реализации желаемых действий
-     */
+
     public void eventOk(){
         try {
             ((VirtualElement)getFocusedObject()).onSelect();
@@ -113,71 +75,46 @@ public abstract class VirtualList
             fitCursorByTop();
         } catch (Exception e) { e.printStackTrace();} 
     }
-    
-    /**
-     * Обработчик дополнительных кнопок. Вызывается в случае, если код кнопки 
-     * не был обработан функцией key(keyCode)
-     * необходимо переопределить (override) функцию для реализации необходимых действий     
-     * @param keyCode код клавиши
-     */
+
     public void userKeyPressed(int keyCode){}
-    
-    //////////////////////////////////
 
-    public static final int SIEMENS_GREEN=-11;
-    public static final int NOKIA_GREEN=-10;
-    public final static int NOKIA_PEN=-50;
-    public static final int MOTOROLA_GREEN=-10;
+    public static final short SIEMENS_GREEN=-11;
+    public static final short NOKIA_GREEN=-10;
+    public static final short NOKIA_PEN=-50;
+    public static final short MOTOROLA_GREEN=-10;
 
-    public static final int MOTOE680_VOL_UP=-9;
-    public static final int MOTOE680_VOL_DOWN=-8;
-    public static final int MOTOE680_REALPLAYER=-6;
-    public static final int MOTOE680_FMRADIO=-7;
+    public static final short MOTOE680_VOL_UP=-9;
+    public static final short MOTOE680_VOL_DOWN=-8;
+    public static final short MOTOE680_REALPLAYER=-6;
+    public static final short MOTOE680_FMRADIO=-7;
 
-    public static final int SE_CLEAR=-8;
+    public static final short SE_CLEAR=-8;
     
-    public final static int MOTOROLA_FLIP=-200;
+    public static final short MOTOROLA_FLIP=-200;
     
-    public static final int SE_FLIPOPEN_JP6=-30;
-    public static final int SE_FLIPCLOSE_JP6=-31;
+    public static final short SE_FLIPOPEN_JP6=-30;
+    public static final short SE_FLIPCLOSE_JP6=-31;
     
-    public static final int SIEMENS_FLIPOPEN=-24;
-    public static final int SIEMENS_FLIPCLOSE=-22;
+    public static final short SIEMENS_FLIPOPEN=-24;
+    public static final short SIEMENS_FLIPCLOSE=-22;
     
     public int stringHeight=15;
 
-    public static int keyClear=-8;
-    public static int keyVolDown=0x1000;
-    public static int keyBack=0x1000;
-    public static int greenKeyCode=SIEMENS_GREEN;
+    public static short keyClear=-8;
+    public static short keyVolDown=0x1000;
+    public static short keyBack=0x1000;
+    public static short greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
     public static boolean newMenu;
-    
-    /** метрика экрана */
+
     int width;
     int height;
-    
-    /** экранный буфер для скрытой отрисовки. используется, если платформа 
-     * не поддерживает двойную буферизацию экрана
-     */
+
     private Image offscreen;
-	
-    protected boolean canback=true; // Enable destroyView() on keyBack by default
-    
-    /** признак положения курсора в конце списка */
-    protected boolean atEnd; //FIXME: перенести поведение в функции keyRight();
     
     protected int cursor;
-    
-    /** 
-     * окно приклеено к позиции курсора 
-     * ПР�?КЛЕ�?ВАЕТСЯ:
-     *   при нажатии кнопок перемещения курсора
-     *   при выборе стилусом элемента списка
-     * ОТКЛЕ�?ВАЕТСЯ:
-     *   при использовании скролбара
-     */
+
     protected boolean stickyWindow=true;
     
     private int itemLayoutY[]=new int[1];
@@ -199,7 +136,6 @@ public abstract class VirtualList
         itemLayoutY=layout;
     }
     protected int getElementIndexAt(int yPos){
-        // деление пополам
         int end=getItemCount()-1;
         if (end<0) return -1;
         int begin=0;
@@ -210,10 +146,10 @@ public abstract class VirtualList
         return (yPos<itemLayoutY[end])? begin:end;
     }
     
-    public int win_top;    // верхняя граница окна относительно списка
-    private int winHeight;  // отображаемый размер списка
-    //int full_items; // полностью изображено в окне
-    protected int offset;     // счётчик автоскроллинга
+    public int win_top;
+    private int winHeight;
+    
+    protected int offset;
     
     protected boolean showBalloon;
     
@@ -226,45 +162,21 @@ public abstract class VirtualList
     private boolean wrapping = true;
     
     public static int fullMode; 
-    public static boolean paintTop=true;
-    public static boolean paintBottom=true;
 
     public static int startGPRS=-1;
     public static int offGPRS=0;
-    
-    /** видимые границы элементов списка - зоны срабатывания touchscreen */
+
     private int itemBorder[];
-    /** обработка doubleclick */
+
     private int lastClickY;
     private int lastClickItem;
     private long lastClickTime;
-    
-    /**
-     * Разрешает заворачивание списка в кольцо (перенос курсора через конец списка)
-     * по умолчанию установлен true
-     * @param wrap будучи переданным true, разрешает перенос курсора через конец списка
-     */
+
     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
-    
-    /**
-     * ссылка на заголовок списка
-     * @return объект типа ComplexString
-     */
-    
-    /**
-     * СЃСЃС‹Р»РєР° РЅР° Р·Р°РіРѕР»РѕРІРѕРє СЃРїРёСЃРєР°
-     * @return РѕР±СЉРµРєС‚ С‚РёРїР° ComplexString
-     */
     
     public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
     public void setMainBarItem(ComplexString mainbar) { this.mainbar=mainbar; }
 
-    /**
-     * возвращает ссылку на объект в фокусе. 
-     * в классе VirtualList возвращает VirtualElement, на который указывает курсор,
-     * однако, возможно переопределить функцию при наследовании
-     * @return ссылка на объект в фокусе.
-     */
     public Object getFocusedObject() { 
         try {
             return getItemRef(cursor);
@@ -285,14 +197,8 @@ public abstract class VirtualList
             setTitle("Bombus CE");
         }
 
-        // rotator
-//#if (USE_ROTATOR)        
-//#        //rotator=new TimerTaskRotate(0, this);
-//#endif
-
         setFullScreenMode(fullscreen);
 
-	
 	itemBorder=new int[32];
 	
 	scrollbar=new ScrollBar();
@@ -305,12 +211,7 @@ public abstract class VirtualList
 
         attachDisplay(display);
     }
-    
-    /**
-     * Запоминание предыдущего отображаемого объекта, подключенного к менеджеру
-     * дисплея и подключение к дисплею виртуального списка (this) 
-     * @param display менеджер дисплея мобильного устройства {@link }
-     */
+
     public void attachDisplay (Display display) {
         if (this.display!=null) return;
         this.display=display;
@@ -319,8 +220,6 @@ public abstract class VirtualList
         redraw();
     }
 
-
-    /** запуск отложенной отрисовки активного Canvas */
     public void redraw(){
         //repaint(0,0,width,height);
         Displayable d=display.getCurrent();
@@ -330,54 +229,31 @@ public abstract class VirtualList
         }
     }
 
-    /** Вызывается после скрытия VirtualList. переопределяет наследуемый метод 
-     * Canvas.hideNotify(). действие по умолчанию - освобождение экранного 
-     * буфера offscreen, используемого при работе без автоматической двойной буферизации
-     */
     protected void hideNotify() {
 	offscreen=null;
     }
-    
-    /** Вызывается перед вызовом отрисовки VirtualList. переопределяет наследуемый метод 
-     * Canvas.showNotify(). действие по умолчанию - создание экранного 
-     * буфера offscreen, используемого при работе без автоматической двойной буферизации
-     */
+
     protected void showNotify() {
 	if (!isDoubleBuffered()) 
 	    offscreen=Image.createImage(width, height);
         TimerTaskRotate.startRotate(-1, this);
     }
-    
-    /** Вызывается при изменении размера отображаемой области. переопределяет наследуемый метод 
-     * Canvas.sizeChanged(int width, int heigth). сохраняет новые размеры области рисования.
-     * также создаёт новый экранный буфер offscreen, используемый при работе без автоматической 
-     * двойной буферизации
-     */
-//#if !(MIDP1)
+
     protected void sizeChanged(int w, int h) {
         width=w;
         height=h;
 	if (!isDoubleBuffered()) 
 	    offscreen=Image.createImage(width, height);
     }
-//#endif
-    
-    /**
-     * начало отрисовки списка.
-     * функция вызывается перед отрисовкой списка, 
-     * перед любыми обращениями к элементам списка.
-     *
-     * в классе VirtualList функция не выполняет никаких действий, необходимо
-     * переопределить (override) функцию для реализации необходимых действий
-     */
+
     protected void beginPaint(){};
-    
-    /**
-     * отрисовка
-     */
+
     public void paint(Graphics graphics) {
         width=getWidth();	// patch for SE
         height=getHeight();
+        
+        boolean paintTop=true;
+        boolean paintBottom=true;
         
         int mHeight=0, iHeight=0; // nokia fix
         
@@ -398,10 +274,10 @@ public abstract class VirtualList
         
         int list_bottom=0;        
         itemBorder[0]=0;
-        updateLayout(); //fixme: только при изменении списка
+        updateLayout(); //fixme: только при изменении �?пи�?ка
         
         setAbsOrg(g, 0,0);
-        
+       
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
 
@@ -429,7 +305,7 @@ public abstract class VirtualList
        
         winHeight=height-itemBorder[0]-list_bottom;
 
-        int count=getItemCount(); // размер списка
+        int count=getItemCount(); // размер �?пи�?ка
         
         boolean scroll=(listHeight>winHeight);
 
@@ -443,17 +319,14 @@ public abstract class VirtualList
         if (count>0 && stickyWindow) fitCursorByTop();
         
         int itemMaxWidth=(scroll) ?(width-scrollbar.getScrollWidth()) : (width);
-        // элементы окна
-        // отрисовка
+
         int itemIndex=getElementIndexAt(win_top);
         int displayedIndex=0;
         int displayedBottom=itemBorder[0];
    
         int baloon=-1;
-        atEnd=false;
         int itemYpos;
         try {
-            // try вместо проверки на конец списка
             while ((itemYpos=itemLayoutY[itemIndex]-win_top)<winHeight) {
                 
                 VirtualElement el=getItemRef(itemIndex);
@@ -462,7 +335,7 @@ public abstract class VirtualList
                 
                 int lh=el.getVHeight();
                 
-                // окно списка
+                // окно �?пи�?ка
                 setAbsOrg(g, 0, itemBorder[0]);
                 g.setClip(0,0, itemMaxWidth, winHeight);    
                 
@@ -483,20 +356,16 @@ public abstract class VirtualList
                 itemIndex++;
 		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
             }
-        } catch (Exception e) { atEnd=true; }
+        } catch (Exception e) { }
 
-        // очистка остатка окна
         int clrH=height-displayedBottom;
         if (clrH>0) {
             setAbsOrg(g, 0,displayedBottom);
             g.setClip(0, 0, itemMaxWidth, clrH);
             g.setColor(ColorScheme.LIST_BGND);
-            //g.setColor(VL_CURSOR_OUTLINE);
             g.fillRect(0, 0, itemMaxWidth, clrH);
         }
 
-        // рисование скроллбара
-        //g.setColor(VL_BGND);
         if (scroll) {
 	    
             setAbsOrg(g, 0, itemBorder[0]);
@@ -549,7 +418,6 @@ public abstract class VirtualList
         if (wobble.length()>0) new PopUp(g,wobble, width-20, height-20);
         
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
-	//full_items=fe;
     }
 
     protected void drawBalloon(final Graphics g, int balloon, final String text) {
@@ -560,7 +428,6 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g) {
         if (memMonitor) {
-            //g.setClip(0,0, width, 1);
             int freemem=(int)Runtime.getRuntime().freeMemory();
             int totalmem=(int)Runtime.getRuntime().totalMemory();
             int cpuload=(int)Runtime.getRuntime().totalMemory();
@@ -583,7 +450,6 @@ public abstract class VirtualList
         g.setFont(bottomFont);
         
         g.drawString(BottomInfo.get(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
-        //g.drawString(BottomInfo.get(), 3, 3, Graphics.TOP|Graphics.LEFT);
     }
     
     private void drawInfoPanel (final Graphics g) {    
@@ -598,21 +464,11 @@ public abstract class VirtualList
             mainbar.drawItem(g,0,false);
         }
     }
-    
-    /**
-     * перенос координат (0.0) в абсолютные координаты (x,y)
-     * @param g графический контекст отрисовки
-     * @param x абсолютная x-координата нового начала координат 
-     * @param y абсолютная y-координата нового начала координат
-     */
+
     private void setAbsOrg(Graphics g, int x, int y){
         g.translate(x-g.getTranslateX(), y-g.getTranslateY());
     }
-    
-   
-    /**
-     * перемещение курсора в начало списка
-     */
+
     public void moveCursorHome(){
         stickyWindow=true;
         if (cursor>0) {
@@ -621,9 +477,6 @@ public abstract class VirtualList
         setRotator();
     }
 
-    /**
-     * перемещение курсора в конец списка
-     */
     public void moveCursorEnd(){
         stickyWindow=true;
         int count=getItemCount();
@@ -633,14 +486,10 @@ public abstract class VirtualList
         setRotator();
     }
 
-    /**
-     * перемещение курсора в индексированную позицию
-     * @param index позиция курсора в списке
-     */
     public void moveCursorTo(int index, boolean force){
         int count=getItemCount();
         if (index<0) index=0;
-        if (index>=count) index=count-1;    // если за последним элементом, то переместить на него
+        if (index>=count) index=count-1; 
         
         cursor=index;
         stickyWindow=true;
@@ -652,15 +501,15 @@ public abstract class VirtualList
         try {
             //проверка по верхней границе
             int top=itemLayoutY[cursor];
-            // если верхний край выше окна, выровнять по верху
+            // е�?ли верхний край выше окна, выровн�?ть по верху
             if (top<win_top) win_top=top;   
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
-                // объект помещается на экране - проверим и нижнюю границу
+                // объект помещает�?�? на �?кране - проверим и нижнюю границу
                 int bottom=itemLayoutY[cursor+1]-winHeight;
-                // если нижний край ниже окна, выровнять по низу
+                // е�?ли нижний край ниже окна, выровн�?ть по низу
                 if (bottom>win_top) win_top=bottom;  
             }
-            // случай, когда курсор больше окна, и он Н�?ЖЕ окна
+            // �?лучай, когда кур�?ор больше окна, и он �?�?ЖЕ окна
             if (top>=win_top+winHeight) win_top=top; 
         } catch (Exception e) { e.printStackTrace(); }
     }
@@ -669,15 +518,15 @@ public abstract class VirtualList
         //проверка по верхней границе
         try {
             int bottom=itemLayoutY[cursor+1]-winHeight;
-            // если нижний край ниже окна, выровнять по низу
+            // е�?ли нижний край ниже окна, выровн�?ть по низу
             if (bottom>win_top) win_top=bottom;
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
-                // объект помещается на экране - проверим и нижнюю границу
+                // объект помещает�?�? на �?кране - проверим и нижнюю границу
                 int top=itemLayoutY[cursor];
-                // если верхний край выше окна, выровнять по верху
+                // е�?ли верхний край выше окна, выровн�?ть по верху
                 if (top<win_top) win_top=top;
             }
-            // случай, когда курсор больше окна, и он ВЫШЕ окна
+            // �?лучай, когда кур�?ор больше окна, и он ВЫШЕ окна
             if (itemLayoutY[cursor+1]<=win_top) win_top=bottom;
         } catch (Exception e) { e.printStackTrace(); }
     }
@@ -718,7 +567,7 @@ public abstract class VirtualList
 	lastClickY=y;
 	lastClickItem=cursor;
         
-        // сделаем элемент максимально видимым
+        // �?делаем �?лемент мак�?имально видимым
         int il=itemLayoutY[cursor+1]-winHeight;
         if (il>win_top) win_top=il;
         il=itemLayoutY[cursor];
@@ -730,11 +579,7 @@ public abstract class VirtualList
         if (scrollbar.pointerDragged(x, y, this)) stickyWindow=false; 
     }
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
-    
-    /**
-     * обработка кодов кнопок
-     * @param keyCode код нажатой кнопки
-     */
+
     private void key(int keyCode) {
         wobble="";
        
@@ -783,12 +628,7 @@ public abstract class VirtualList
 //#endif
         repaint();
     }
-    
-    /**
-     * событие "Нажатие кнопки UP"
-     * в классе VirtualList функция перемещает курсор на одну позицию вверх.
-     * возможно переопределить (override) функцию для реализации необходимых действий
-     */
+
     public void keyUp() {
 	 
         if (cursor==0) {
@@ -796,34 +636,14 @@ public abstract class VirtualList
             setRotator();
             return;
         }
-        /*
-        if (itemLayoutY[cursor]<win_top) {
-            //верхняя граница элемента ещё не на экране
-            win_top-=winHeight;
-            if (win_top<0) win_top=0;
-        } else {
-            cursor--;
-            if (getItemRef(cursor).getVHeight()>winHeight) {
-                // если элемент не может поместиться на экране, вырвниваем по bottom
-                win_top=itemLayoutY[cursor+1]-winHeight;
-            } else if (win_top>itemLayoutY[cursor]) {
-                win_top=itemLayoutY[cursor];
-            }
-        }
-         */
+
         if (itemPageUp()) return;
         //stickyWindow=true;
         cursor--;
         fitCursorByBottom();
         setRotator();
     }
-    
-    /**
-     * событие "Нажатие кнопки DOWN"
-     * в классе VirtualList функция перемещает курсор на одну позицию вверх.
-     * возможно переопределить (override) функцию для реализации необходимых действий
-     */
-    
+
     public void keyDwn() { 
 	if (cursor==getItemCount()-1) 
         { 
@@ -831,18 +651,7 @@ public abstract class VirtualList
             setRotator();
             return; 
         }
-        /*if (itemLayoutY[cursor+1]>win_top+winHeight) {
-            // нижняя граница текущего элемента ещё не на экране
-            win_top+=winHeight; // пока - pagedown
-        } else {
-            cursor++;
-            if (getItemRef(cursor).getVHeight()>winHeight) {
-                // если элемент не может поместиться на экране, вырвниваем по top
-                win_top=itemLayoutY[cursor];
-            } else if (win_top+winHeight<itemLayoutY[cursor+1]) {
-                win_top=itemLayoutY[cursor+1]-winHeight;
-            }
-        }*/
+        
         if (itemPageDown()) return;
         stickyWindow=true; 
         cursor++;
@@ -852,19 +661,19 @@ public abstract class VirtualList
     private boolean itemPageDown() {
         try {
             stickyWindow=false;
-            // объект помещается полностью на экране?
+            // объект помещает�?�? полно�?тью на �?кране?
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
                 stickyWindow=true;
                 return false;
             }
             
-            // объект на экране есть? (не смещён ли экран стилусом)
+            // объект на �?кране е�?ть? (не �?мещён ли �?кран �?тилу�?ом)
             if (!cursorInWindow()) return false;
             
             int remainder=itemLayoutY[cursor+1]-win_top;
-            // хвост сообщения уже на экране?
+            // хво�?т �?ообщени�? уже на �?кране?
             if (remainder<=winHeight) return false;
-            // хвост сообщения на следующем экране?
+            // хво�?т �?ообщени�? на �?ледующем �?кране?
             if (remainder<=2*winHeight) {
                 win_top=remainder-winHeight+win_top+8;
                 return true;
@@ -878,20 +687,20 @@ public abstract class VirtualList
     private boolean itemPageUp() {
         try {
             stickyWindow=false;
-            // объект помещается полностью на экране?
+            // объект помещает�?�? полно�?тью на �?кране?
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
                 //stickyWindow=true;
                 return false;
             }
             
-            // объект на экране есть? (не смещён ли экран стилусом)
+            // объект на �?кране е�?ть? (не �?мещён ли �?кран �?тилу�?ом)
             
             if (!cursorInWindow()) { return false; }
             
             int remainder=win_top-itemLayoutY[cursor];
-            // голова сообщения уже на экране?
+            // голова �?ообщени�? уже на �?кране?
             if (remainder<=0) return false;
-            // хвост сообщения на следующем экране?
+            // хво�?т �?ообщени�? на �?ледующем �?кране?
             if (remainder<=winHeight) {
                 win_top=itemLayoutY[cursor];
                 return true;
@@ -902,9 +711,9 @@ public abstract class VirtualList
         return false;
     }
     /**
-     * событие "Нажатие кнопки LEFT"
-     * в классе VirtualList функция перемещает курсор на одну страницу вверх.
-     * возможно переопределить (override) функцию для реализации необходимых действий
+     * �?обытие "�?ажатие кнопки LEFT"
+     * в кла�?�?е VirtualList функци�? перемещает кур�?ор на одну �?траницу вверх.
+     * возможно переопределить (override) функцию дл�? реализации необходимых дей�?твий
      */
     public void keyLeft() {
         try {
@@ -923,9 +732,9 @@ public abstract class VirtualList
     }
 
     /**
-     * событие "Нажатие кнопки RIGHT"
-     * в классе VirtualList функция перемещает курсор на одну страницу вниз.
-     * возможно переопределить (override) функцию для реализации необходимых действий
+     * �?обытие "�?ажатие кнопки RIGHT"
+     * в кла�?�?е VirtualList функци�? перемещает кур�?ор на одну �?траницу вниз.
+     * возможно переопределить (override) функцию дл�? реализации необходимых дей�?твий
      */
     public void keyRight() { 
         try {
@@ -938,9 +747,7 @@ public abstract class VirtualList
             } else
                 if (!cursorInWindow()) {
                     cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
-                    // [cursor+1] - workaround for sticking cursor if message is larger than screen
-                    //cursor=getElementIndexAt(itemLayoutY[cursor+1]+winHeight);
-                    
+                   
                     if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
                 }
             setRotator();
@@ -956,15 +763,10 @@ public abstract class VirtualList
         } catch (Exception e) { }
         return false;
     }
-    
-    /**
-     * событие "Нажатие ЗЕЛЁНОЙ КНОПК�?"
-     * в классе VirtualList функция выполняет вызов eventOk().
-     * возможно переопределить (override) функцию для реализации необходимых действий
-     */
+
     protected void keyGreen() { eventOk(); }
     
-    /** перезапуск ротации скроллера длинных строк */
+    /** перезапу�?к ротации �?кроллера длинных �?трок */
     protected  void setRotator(){
 //#if (USE_ROTATOR)
 //#         try {
@@ -984,12 +786,6 @@ public abstract class VirtualList
 //#     //private TimerTaskRotate rotator;
 //#endif
     
-    /**
-     * рисование прямоугольного курсора
-     * @param g графический контекст рисования
-     * @param width ширина курсора
-     * @param height высота курсора
-     */
     protected void drawCursor (Graphics g, int width, int height){
             g.setColor(ColorScheme.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
             g.setColor(ColorScheme.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
@@ -998,11 +794,7 @@ public abstract class VirtualList
     public void setParentView(Displayable parentView){
         this.parentView=parentView;
     }
-    
-    /**
-     * отсоединение от менеджера дисплея текущего виртуального списка, 
-     * присоединение к менеджеру предыдущего Displayable
-     */
+
     public void destroyView(){
         if (display!=null && parentView!=null /*prevents potential app hiding*/ )   
             display.setCurrent(parentView);

@@ -38,27 +38,21 @@ public class BottomInfo {
     
     public static String get() {
         StringBuffer s=new StringBuffer();
-
-        String traff = null;
-        int ngprs=-1;
-        int gprscount=0;
+        
+        s.append(Time.timeString(Time.localTime()));
+        
         try {
-            ngprs=getGPRS();
-            if (ngprs>-1) {
-                gprscount=ngprs;
-            } else {
+            int ngprs=getGPRS();
+            if (ngprs<0) {
                 StaticData sd=StaticData.getInstance();
                 int in=sd.roster.theStream.getBytesIn();
                 int out=sd.roster.theStream.getBytesOut();
-                gprscount=in+out;
+                ngprs=in+out;
             }
-            traff=(gprscount/1000)+"kB";
+            s.append(" "+(ngprs/1000)+"kB");
         } catch (Exception e) {
-            traff="0kB";
+            s.append(" 0kB");
         }
-        
-        s.append(Time.timeString(Time.localTime())+" "+traff);
-        
         s.append(getAccuLevel()+getNetworkLevel());
 
         return s.toString();
@@ -90,16 +84,15 @@ public class BottomInfo {
     public static int getGPRS() {
 //#ifdef ELF
 //#         if (sie_gprs==false) return -1;
+//#         
 //#         try {
-//#             String gprs=System.getProperty("MPJCGPRS");
-//#             int gprscnt=Integer.parseInt(gprs);
-//# 
-//#             int gprscount=0;
+//#             int gprscnt=Integer.parseInt(System.getProperty("MPJCGPRS"));
 //# 
 //#             if (gprscnt>-1) {
+//#                 int gprscount=0;
+//#                 
 //#                 if (startGPRS==-1) {
 //#                     startGPRS=gprscnt;
-//#                     gprscount=0;
 //#                 } else {
 //#                     gprscount=gprscnt-startGPRS;
 //#                 }

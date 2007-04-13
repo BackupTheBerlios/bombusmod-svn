@@ -176,7 +176,7 @@ public class Config {
 	locOffset=getIntProperty( "time_loc_offset", 0);
 	gmtOffset=getIntProperty("time_gmt_offset", gmtloc);
 	
-	int greenKeyCode=VirtualList.SIEMENS_GREEN;
+	short greenKeyCode=VirtualList.SIEMENS_GREEN;
 	
 	if (ph.PhoneManufacturer()==ph.SONYE) {
             //prefetch images
@@ -268,7 +268,7 @@ public class Config {
             
             altInput=inputStream.readBoolean();
             
-            isbottom=inputStream.readInt()%7;
+            isbottom=inputStream.readInt();
             
             confMessageCount=inputStream.readInt();
             
@@ -479,7 +479,7 @@ public class Config {
 	    String s=Bombus.getInstance().getAppProperty(key);
 	    return (s==null)?defvalue:s;
 	} catch (Exception e) {	}
-        // возвращает defvalue, если атрибут не существует или имеет неправильный формат
+        // возвращает defvalue, е�?ли атрибут не �?уще�?твует или имеет неправильный формат
         return defvalue;
     }
     
@@ -488,7 +488,7 @@ public class Config {
 	    String s=Bombus.getInstance().getAppProperty(key);
 	    return Integer.parseInt(s); //throws NullPointerException or NumberFormatException
 	} catch (Exception e) { }
-        // возвращает defvalue, если атрибут не существует или имеет неправильный формат
+        // возвращает defvalue, е�?ли атрибут не �?уще�?твует или имеет неправильный формат
 	return defvalue;
     }
     
@@ -497,7 +497,7 @@ public class Config {
 	    String s=Bombus.getInstance().getAppProperty(key);
 	    return s.charAt(0); //throws NullPointerException или IndexOutOfBoundsException
 	} catch (Exception e) {	}
-        // возвращает defvalue, если атрибут не существует или имеет неправильный формат
+        // возвращает defvalue, е�?ли атрибут не �?уще�?твует или имеет неправильный формат
         return defvalue;
     }
     
@@ -509,7 +509,7 @@ public class Config {
 	    if (s.equals("1")) return true;
             return false;
 	} catch (Exception e) { }
-        // возвращает defvalue, если атрибут не существует 
+        // возвращает defvalue, е�?ли атрибут не �?уще�?твует 
         return defvalue;
     }
     

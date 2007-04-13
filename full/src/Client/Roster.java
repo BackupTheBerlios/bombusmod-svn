@@ -25,7 +25,7 @@
  *
  */
 
-//TODO: упростить обработку исключений для theStream.send
+//TODO: упро�?тить обработку и�?ключений дл�? theStream.send
 
 package Client;
 
@@ -107,7 +107,7 @@ public class Roster
     private Vector hContacts;
     private Vector vContacts;
     
-    private Vector paintVContacts;  // для атомных операций.
+    private Vector paintVContacts;  // дл�? атомных операций.
     
     public Groups groups;
     
@@ -628,12 +628,12 @@ public class Roster
         
         Jid J=new Jid(jid);
 
-        // проверим наличие по полной строке
+        // проверим наличие по полной �?троке
         Contact c=findContact(J, true); 
         if (c!=null) 
             return c;
 
-        // проверим наличие без ресурсов
+        // проверим наличие без ре�?ур�?ов
         c=findContact(J, false);
         if (c==null) {
             if (!createInNIL) return null;
@@ -643,7 +643,7 @@ public class Roster
             c.setGroup(groups.getGroup(Groups.TYPE_NOT_IN_LIST));
             addContact(c);
         } else {
-            // здесь jid с новым ресурсом
+            // зде�?ь jid �? новым ре�?ур�?ом
             if (c.origin==Contact.ORIGIN_ROSTER) {
                 c.origin=Contact.ORIGIN_ROSTERRES;
                 c.setStatus(Presence.PRESENCE_OFFLINE);
@@ -988,7 +988,7 @@ public class Roster
 		theStream.loggedIn=true;
 		
 		reconnectCount=0;
-        // залогинились. теперь, если был реконнект, то просто пошлём статус
+        // залогинили�?ь. теперь, е�?ли был реконнект, то про�?то пошлём �?тату�?
         if (reconnect) {
             querysign=reconnect=false;
             sendPresence(myStatus);
@@ -1000,7 +1000,7 @@ public class Roster
             return;
         }
         
-        // иначе будем читать ростер
+        // иначе будем читать ро�?тер
         theStream.enableRosterNotify(true);
         rpercent=60;
         //AutoAway=new TimerTaskAutoAway();
@@ -1088,14 +1088,14 @@ public class Roster
                 } // id!=null
                 if ( type.equals( "result" ) ) {
                     if (id.equals("getros")) {
-                        // а вот и ростер подошёл :)
+                        // а вот и ро�?тер подошёл :)
                         theStream.enableRosterNotify(false);
 
                         processRoster(data);
                         
                         setProgress(SR.MS_CONNECTED,100);
                         reEnumRoster();
-                        // теперь пошлём присутствие
+                        // теперь пошлём при�?ут�?твие
                         querysign=reconnect=false;
                         
                         if (cf.autoLogin) {
@@ -1147,12 +1147,12 @@ public class Roster
                             c.setViewing(true);
                             theStream.send(new IqVersionReply(data));
                         }
-                        // проверяем на запрос локального времени клиента
+                        // провер�?ем на запро�? локального времени клиента
                         else if (query.isJabberNameSpace("jabber:iq:time")) {
                             theStream.send(new IqTimeReply(data));
                             c.setViewing(true);
                         }
-                        // проверяем на запрос idle
+                        // провер�?ем на запро�? idle
                         else if (query.isJabberNameSpace("jabber:iq:last")) {
                             theStream.send(new IqLast(data, lastMessageTime));
                             c.setViewing(true);
@@ -1182,7 +1182,7 @@ public class Roster
                 
                 String tStamp=message.getTimeStamp();
 		
-                int start_me=-1;    //  не добавлять ник
+                int start_me=-1;    //  не добавл�?ть ник
                 String name=null;
                 boolean groupchat=false;
                 conference=false;
@@ -1206,7 +1206,7 @@ public class Roster
                             if (body==null) 
                                 body=name+" "+SR.MS_HAS_SET_TOPIC_TO+" "+subj;
                             subj=null;
-                            start_me=-1; // не добавлять /me к subj
+                            start_me=-1; // не добавл�?ть /me к subj
                             highlite=true;
                             mType=Msg.MESSAGE_TYPE_SUBJ;
                             //sendConferencePresence();
@@ -1337,7 +1337,7 @@ public class Roster
                 if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST || cf.notInList)
                     messageStore(c, m);
             }
-            // присутствие
+            // при�?ут�?твие
 
             else if( data instanceof Presence ) {
                 if (myStatus==Presence.PRESENCE_OFFLINE) return;
@@ -1455,7 +1455,7 @@ public class Roster
                     if (group.length()==0) group=Groups.COMMON_GROUP;
 
                     // так можно проверить, когда пришёл jabber:iq:roster,
-                    // на запрос ростера или при обновлении
+                    // на запро�? ро�?тера или при обновлении
 
                     //String iqType=data.getTypeAttribute();
                     //if (iqType.equals("set")) type=1;
@@ -1780,12 +1780,12 @@ public class Roster
             Object atcursor=getFocusedObject();
             Contact c=null;
             if (atcursor instanceof Contact) c=(Contact)atcursor;
-            // а если курсор на группе, то искать с самого начала.
+            // а е�?ли кур�?ор на группе, то и�?кать �? �?амого начала.
             else c=(Contact)hContacts.firstElement();
             
             Enumeration i=hContacts.elements();
             
-            int pass=0; // 0=ищем курсор, 1=ищем
+            int pass=0; // 0=ищем кур�?ор, 1=ищем
             while (pass<2) {
                 if (!i.hasMoreElements()) i=hContacts.elements();
                 Contact p=(Contact)i.nextElement();
@@ -1975,8 +1975,7 @@ public class Roster
     public void commandAction(Command c, Displayable d){
         //userActivity();
         if (c==cmdQuit) {
-            fullMode=VirtualList.isbottom; //save panels state on exit
-            cf.isbottom=(fullMode)%7;          
+            cf.isbottom=VirtualList.isbottom; //save panels state on exit       
             cf.saveToStorage();
             
             destroyView();
@@ -2212,13 +2211,13 @@ public class Roster
                     //resetStrCache();
                     if (cursor<0) cursor=0;
                     
-                    // вернём курсор на прежний элемент
+                    // вернём кур�?ор на прежний �?лемент
                     if ( locCursor==cursor && focused!=null ) {
                         int c=vContacts.indexOf(focused);
                         if (c>=0) moveCursorTo(c, force);
 			force=false;
                     }
-                    //if (cursor>=vContacts.size()) cursor=vContacts.size()-1; //moveCursorEnd(); // вернём курсор из нирваны
+                    //if (cursor>=vContacts.size()) cursor=vContacts.size()-1; //moveCursorEnd(); // вернём кур�?ор из нирваны
                     
                     focusedItem(cursor);
                     redraw();

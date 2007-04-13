@@ -35,11 +35,10 @@ public class ClipBoard
       }
       
       public void setClipBoard(String str) {
-          _clipBoard=str;
+          _clipBoard=(str.length()>4096)?str.substring(0,4095):str;
       }
       
       public boolean isEmpty() {
-          boolean empty=(_clipBoard.length()>0)?false:true;
-          return empty;
+          return (_clipBoard.length()>0)?false:true;
       }
 }

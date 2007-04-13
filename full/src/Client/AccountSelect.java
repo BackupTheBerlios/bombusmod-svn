@@ -112,7 +112,7 @@ public class AccountSelect
             addCommand(cmdLogin);
             addCommand(cmdSelect);
             if (activeAccount>=0)
-                addCommand(cmdCancel);  // нельзя выйти без активного аккаунта
+                addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
         }
     }
 
