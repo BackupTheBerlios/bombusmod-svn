@@ -187,27 +187,29 @@ public class ConfigForm implements
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
         
             application.append(SR.MS_FULLSCREEN,null);
-            application.append(SR.MS_HEAP_MONITOR,null);
+            ap[apctr++]=cf.fullscreen;
             
-        if (cf.allowLightControl) 
-            application.append("Turn on light",null);
+            application.append(SR.MS_HEAP_MONITOR,null);
+            ap[apctr++]=cf.memMonitor;
             
             application.append(SR.MS_NEW_MENU,null);
+            ap[apctr++]=cf.newMenu;
             
-	if (!cf.ghostMotor) 
+        if (cf.allowLightControl) { 
+            application.append("Turn on light",null);
+            ap[apctr++]=cf.lightState;
+        }
+            
+	if (!cf.ghostMotor) {
             application.append(SR.MS_FLASHBACKLIGHT,null);
+            ap[apctr++]=cf.blFlash;
+        }
             
-	if (cf.allowMinimize) 
+	if (cf.allowMinimize) {
             application.append(SR.MS_ENABLE_POPUP,null);
-        
-        ap[apctr++]=cf.fullscreen;
-	ap[apctr++]=cf.memMonitor;
-        ap[apctr++]=cf.lightState;
-        ap[apctr++]=cf.newMenu;
-	ap[apctr++]=cf.blFlash;
-	ap[apctr++]=cf.popupFromMinimized;
-
-	
+            ap[apctr++]=cf.popupFromMinimized;
+        }
+            
         application.setSelectedFlags(ap);
         
 	//keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 10, 10000 );
@@ -376,13 +378,19 @@ public class ConfigForm implements
 
 	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
             
-            StaticData.getInstance().roster.lightState=cf.lightState=ap[apctr++];
+            VirtualList.newMenu=cf.newMenu=ap[apctr++];
             
-            VirtualList.newMenu=cf.newMenu=ap[apctr++];   
-            
-	    cf.blFlash=ap[apctr++];
-	    cf.popupFromMinimized=ap[apctr++];
+            if (cf.allowLightControl) { 
+                StaticData.getInstance().roster.lightState=cf.lightState=ap[apctr++];
+            }
 
+            if (!cf.ghostMotor) {
+                cf.blFlash=ap[apctr++];
+            }
+
+            if (cf.allowMinimize) {
+                cf.popupFromMinimized=ap[apctr++];
+            }
             
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();

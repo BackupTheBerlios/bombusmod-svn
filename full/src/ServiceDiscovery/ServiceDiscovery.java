@@ -312,7 +312,8 @@ public class ServiceDiscovery
                 items.insertElementAt(e.nextElement(),0);
             this.items=items;
             moveCursorHome();
-            discoIcon=0; titleUpdate(); 
+            discoIcon=0; 
+            mainbarUpdate(); 
         }
     }
     
