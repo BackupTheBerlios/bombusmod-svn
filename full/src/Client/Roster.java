@@ -114,8 +114,8 @@ public class Roster
     public Vector bookmarks;
     
     public static boolean autoAway=false;
-    
-    //public static boolean isAway=false;
+    public static boolean autoXa=false;
+
     public static int oldStatus=0;
     
     public static boolean forme=false;
@@ -166,7 +166,7 @@ public class Roster
     
     public static String startTime=Time.dispLocalTime();
 
-    public static boolean keyLockState=false;
+    //public static boolean keyLockState=false;
 	
     private static long notifyReadyTime=System.currentTimeMillis();
     private static int blockNotifyEvent=-111;
@@ -503,7 +503,7 @@ public class Roster
         }
     }
 
-    private MucContact findMucContact(Jid jid) {
+    public MucContact findMucContact(Jid jid) {
         Contact contact=findContact(jid, true);
         try {
             return (MucContact) contact;
@@ -521,6 +521,7 @@ public class Roster
                 String ms=es.getMessage();
                 sendPresence(oldStatus, ms);
                 autoAway=false;
+                autoXa=false;
                 myStatus=oldStatus;
         }
         // muc message
@@ -528,13 +529,10 @@ public class Roster
         int rp=from.indexOf('/');
         String room=from.substring(0,ri);
         String roomJid=from.substring(0,rp).toLowerCase();
-        
-        
+
         ConferenceGroup grp=(ConferenceGroup)groups.getGroup(roomJid);
-        
-        
+
         // creating room
-        
         if (grp==null) // we hasn't joined this room yet
             groups.addGroup(grp=new ConferenceGroup(roomJid, room) );
         grp.password=joinPassword;
@@ -554,15 +552,13 @@ public class Roster
         c.bareJid=from;
         c.origin=Contact.ORIGIN_GROUPCHAT;
         c.commonPresence=true;
-        //c.priority=99;
-        //c.key1=0;
+
         grp.conferenceJoinTime=Time.localTime();
         grp.setConference(c);
         c.setGroup(grp);
         
         String nick=from.substring(rp+1);
-		
-        
+
         // old self-contact
         c=grp.getSelfContact();
         
@@ -570,8 +566,7 @@ public class Roster
         // or another contact whose nick we pretend
         MucContact foundInRoom = findMucContact( new Jid(from) );
         if (foundInRoom!=null) {
-            //choose found contact instead of old self-contact
-            c=foundInRoom;
+            c=foundInRoom;            //choose found contact instead of old self-contact
         }
  
         // if exists (and online - rudimentary check due to line 500)
@@ -592,7 +587,7 @@ public class Roster
         grp.setSelfContact(c);
         c.setGroup(grp);
         c.origin=Contact.ORIGIN_GC_MYSELF;
-        
+               
         sort(hContacts);
         return grp;
     }
@@ -699,7 +694,17 @@ public class Roster
         
         // send presence
         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
-        Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
+        myMessage=es.getMessage();
+
+        if (myMessage.indexOf("%t")>-1) {
+            String time=Time.timeString(Time.localTime());
+            int roomE=myMessage.indexOf("%t");
+            String end=myMessage.substring(roomE+2);
+            String start=myMessage.substring(0, roomE);
+            myMessage=start+time+end;
+        }
+        
+        Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
         if (isLoggedIn()) {
             if (!StaticData.getInstance().account.isMucOnly() )
 				theStream.send( presence );
@@ -738,12 +743,22 @@ public class Roster
         myStatus=status;
         myMessage=message;
         setQuerySign(false);
+
+        if (myMessage.indexOf("%t")>-1) {
+            String time=Time.timeString(Time.localTime());
+            int roomE=myMessage.indexOf("%t");
+            String end=myMessage.substring(roomE+2);
+            String start=myMessage.substring(0, roomE);
+            myMessage=start+time+end;
+        }
+        
         if (myStatus==Presence.PRESENCE_OFFLINE) {
             synchronized(hContacts) {
                 for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                     Contact c=(Contact)e.nextElement();
                         c.status=Presence.PRESENCE_OFFLINE; // keep error & unknown
                         autoAway=false;
+                        autoXa=false;
                 }
             }
         }
@@ -790,6 +805,7 @@ public class Roster
 				
                 theStream=null;
                 autoAway=false;
+                autoXa=false;
                 System.gc();
             }
         }
@@ -807,7 +823,16 @@ public class Roster
         }
         if (to.jid.isTransport()) blockNotify(-111,10000);
         ExtendedStatus es= StatusList.getInstance().getStatus(status);
-        Presence presence = new Presence(status, es.getPriority(), es.getMessage());
+        myMessage=es.getMessage();
+
+        if (myMessage.indexOf("%t")>-1) {
+            String time=Time.timeString(Time.localTime());
+            int roomE=myMessage.indexOf("%t");
+            String end=myMessage.substring(roomE+2);
+            String start=myMessage.substring(0, roomE);
+            myMessage=start+time+end;
+        }
+        Presence presence = new Presence(status, es.getPriority(), myMessage);
         presence.setTo(to.getJid());
         if (theStream!=null) {
             theStream.send( presence );
@@ -838,7 +863,16 @@ public class Roster
                ConferenceForm.join(myself.getJid(), confGroup.password, 20);
                 continue;
             }
-             Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
+            myMessage=es.getMessage();
+
+            if (myMessage.indexOf("%t")>-1) {
+                String time=Time.timeString(Time.localTime());
+                int roomE=myMessage.indexOf("%t");
+                String end=myMessage.substring(roomE+2);
+                String start=myMessage.substring(0, roomE);
+                myMessage=start+time+end;
+            }
+             Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
              presence.setTo(myself.getJid());
              theStream.send(presence);
          }
@@ -847,17 +881,27 @@ public class Roster
     public void multicastConferencePresence(String message) {
          ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-             Contact c=(Contact) e.nextElement();
-             if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
-             if (!((MucContact)c).commonPresence) continue; // stop if room left manually
+            Contact c=(Contact) e.nextElement();
+            if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
+            if (!((MucContact)c).commonPresence) continue; // stop if room left manually
 
-             ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
-             Contact myself=confGroup.getSelfContact();
+            ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
+            Contact myself=confGroup.getSelfContact();
 
-             c.status=Presence.PRESENCE_ONLINE;
-             Presence presence = new Presence(myStatus, es.getPriority(), message);
-             presence.setTo(myself.getJid());
-             theStream.send(presence);
+            c.status=Presence.PRESENCE_ONLINE;
+             
+            myMessage=message;
+
+            if (myMessage.indexOf("%t")>-1) {
+                String time=Time.timeString(Time.localTime());
+                int roomE=myMessage.indexOf("%t");
+                String end=myMessage.substring(roomE+2);
+                String start=myMessage.substring(0, roomE);
+                myMessage=start+time+end;
+            }
+            Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
+            presence.setTo(myself.getJid());
+            theStream.send(presence);
          }
     }
     
@@ -899,6 +943,7 @@ public class Roster
                 String ms=es.getMessage();
                 sendPresence(oldStatus, ms);
                 autoAway=false;
+                autoXa=false;
                 myStatus=oldStatus;
         }
 
@@ -1879,9 +1924,10 @@ public class Roster
         if (keyCode==cf.keyLock) {
             if (cf.autoAwayType==Config.AWAY_LOCK) {
                 if (!autoAway) {
-                    keyLockState=true;
+                    //keyLockState=true;
+                    autoAway=true;
                     if (cf.setAutoStatusMessage) {
-                        sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since "+Time.timeString(Time.localTime()));
+                        sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
                     } else {
                         sendPresence(Presence.PRESENCE_AWAY);
                     }
@@ -2056,13 +2102,6 @@ public class Roster
     protected void showNotify() { 
         super.showNotify(); 
         countNewMsgs(); 
-        /*
-        if (cf.autoAwayType==Config.AWAY_IDLE) {
-            if (timeEvent==0) {
-                if (!autoAway) setTimeEvent(cf.autoAwayDelay* 60*1000);
-            }
-        }
-        */
     }
     
     protected void hideNotify() {
@@ -2126,12 +2165,7 @@ public class Roster
     public void loginMessage(String msg) {
         setProgress(msg, 42);
     }
-/*    
-    public void onTime() {
-        //System.out.println("Do autostatus change");
-        setAutoStatus(Presence.PRESENCE_AWAY);
-    }
-*/
+
     private class ReEnumerator implements Runnable{
 
         Thread thread;
@@ -2233,33 +2267,30 @@ public class Roster
         this.myJid = myJid;
     }
     
-/*
-    private void setAutoStatus(int status) {
-        if (!isLoggedIn()) return;
-        if ((status==Presence.PRESENCE_ONLINE || status==Presence.PRESENCE_CHAT) && autoAway) {
-            autoAway=false;
-            sendPresence(Presence.PRESENCE_ONLINE);
-            return;
-        } 
-        if ((status!=Presence.PRESENCE_ONLINE && status!=Presence.PRESENCE_CHAT) && (myStatus==Presence.PRESENCE_ONLINE || myStatus==Presence.PRESENCE_CHAT) && !autoAway) {
-            autoAway=true;
-            if (cf.setAutoStatusMessage) {
-                String away="Auto away since "+Time.timeString(Time.localTime())+"(GMT+"+Time.GMTOffset+")";
-                sendPresence(Presence.PRESENCE_AWAY, away);
-            } else sendPresence(Presence.PRESENCE_AWAY);
-        }
-    }
-*/    
+ 
     public void setAutoAway() {
         if (!autoAway && cf.autoAwayType==cf.AWAY_IDLE) {
             oldStatus=myStatus;
             if (myStatus==0 || myStatus==1) {
                 autoAway=true;
                 if (cf.setAutoStatusMessage) {
-                    sendPresence(Presence.PRESENCE_AWAY, "Auto away since "+Time.timeString(Time.localTime())+"(GMT+"+Time.GMTOffset+")");
+                    sendPresence(Presence.PRESENCE_AWAY, SR.MS_AUTO_AWAY);
                 } else {
                     sendPresence(Presence.PRESENCE_AWAY);
                 }
+            }
+        }
+    }
+    
+    
+ 
+    public void setAutoXa() {
+        if (autoAway && cf.autoAwayType==cf.AWAY_IDLE && !autoXa) {
+            autoXa=true;
+            if (cf.setAutoStatusMessage) {
+                sendPresence(Presence.PRESENCE_XA, SR.MS_AUTO_XA);
+            } else {
+                sendPresence(Presence.PRESENCE_XA);
             }
         }
     }
@@ -2332,6 +2363,7 @@ class TimerTaskAutoAway extends Thread{
     private Config cf=Config.getInstance();
 
     private int autoAwayDelay=cf.autoAwayDelay*60;
+    private int autoXaDelay=cf.autoAwayDelay*120;
     private int autoAwayType=cf.autoAwayType;
 
     private TimerTaskAutoAway() {
@@ -2352,15 +2384,16 @@ class TimerTaskAutoAway extends Thread{
             } catch (Exception e) {}
             
             synchronized (this) {
-                if (!rRoster.keyLockState) {
-                    int keyTimer=rRoster.keyTimer;
-                    //System.out.println("autoAwayDelay "+autoAwayDelay+"  autoAwayType "+autoAwayType+"  keyTimer "+keyTimer);
-                    rRoster.setKeyTimer(keyTimer+5);                        
-                    if (keyTimer>=autoAwayDelay && autoAwayType==2) {
-                        try {
-                            rRoster.setAutoAway();
-                        } catch (Exception e) {}
-                    }
+                int keyTimer=rRoster.keyTimer;
+                rRoster.setKeyTimer(keyTimer+5);                        
+                if (keyTimer>=autoAwayDelay && autoAwayType==2 && keyTimer<=autoXaDelay && !rRoster.autoAway && !rRoster.autoXa) {
+                    try {
+                        rRoster.setAutoAway();
+                    } catch (Exception e) {}
+                } else if (autoAwayType==2 && keyTimer>=autoXaDelay && rRoster.autoAway && !rRoster.autoXa) {
+                    try {
+                        rRoster.setAutoXa();
+                    } catch (Exception e) {}
                 }
             }
         }

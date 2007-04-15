@@ -208,7 +208,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         parentView=null;
         repaint();
         img=null;
-        instance=null; // освобождение памяти
+        instance=null; // о�?вобождение пам�?ти
         System.gc();
     }
 
@@ -262,13 +262,12 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         img=null;
         tc.stop();
         
-        Roster.keyLockState=false;
-        
         if (Roster.autoAway && Config.getInstance().autoAwayType==Config.AWAY_LOCK) {
             int newStatus=sd.roster.oldStatus;
             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
             String ms=es.getMessage();
             Roster.autoAway=false;
+            Roster.autoXa=false;
             sd.roster.sendPresence(newStatus, ms);
         }
         System.gc();

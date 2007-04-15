@@ -208,8 +208,8 @@ public class ConferenceForm implements CommandListener{
 
                 display.setCurrent(sd.roster);
             } catch (Exception e) {
-                e.printStackTrace();
-                display.setCurrent(new Alert("Exception", e.toString(), null, AlertType.ERROR), sd.roster);
+                //e.printStackTrace();
+                //display.setCurrent(new Alert("Exception", e.toString(), null, AlertType.ERROR), sd.roster);
             }
         }
     }
@@ -235,6 +235,7 @@ public class ConferenceForm implements CommandListener{
         } catch (Exception e) {};
 
         sd.roster.sendPresence(name, null, x);
+        
         sd.roster.reEnumRoster();
     }
     public void destroyView(){

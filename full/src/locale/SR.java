@@ -222,11 +222,11 @@ public class SR {
     public   static String MS_ARE_YOU_SURE_WANT_TO_DISCARD = loadString( "Are You sure want to discard " );
     public   static String MS_FROM_OWNER_TO = loadString( " from OWNER to " );
     public   static String MS_MODIFY_AFFILIATION = loadString( "Modify affiliation" );
-    public   static String MS_AUTOFOCUS = loadString( "Autofocus" );
+
     public   static String MS_ADD_TO_ROSTER = loadString( "Add to roster" );
     public   static String MS_CLEAR=loadString( "Clear" );
     public   static String MS_ALT_LANG="langfile";
-    public   static String MS_GRANT_MEMBERSHIP=loadString("Grant Membership");
+
     public   static String MS_SELLOGIN = loadString( "Connect" );
 //--toon
     public   static String MS_UNAFFILIATE = loadString("Unaffiliate");
@@ -243,7 +243,7 @@ public class SR {
     public   static String MS_INVITE=loadString("Invite to conference");
     public   static String MS_INVITE_REASON=loadString("Reason");
     public   static String MS_YOU_HAVE_BEEN_INVITED=loadString("You have been invited to ");
-    public final static String MS_SURE_CLEAR="Are You sure want to clear messagelist?";
+
     public   static String MS_DISCO_ROOM=loadString("Participants");
     public   static String MS_CAPS_STATE=loadString("Abc");
     
@@ -258,26 +258,6 @@ public class SR {
     public   static String MS_AND=loadString(" and ");
     public   static String MS_IS_NOW=loadString(" is now ");    
     
-    public   static String MS_TOKEN=loadString("Google token request");
-    
-    public final static String MS_SASL="SASL login";
-    public final static String MS_FEATURES="Features";
-    public final static String MS_SHOWPWD="Show password";
-    public final static String MS_NO_VERSION_AVAILABLE="No client version available";
-    public final static String MS_MSG_LIMIT="Message limit";
-    
-    public static String MS_OPENING_STREAM=loadString("Opening stream");
-    public static String MS_ZLIB=loadString("Using compression");
-    public static String MS_AUTH=loadString("Authenticating");
-    public static String MS_RESOURCE_BINDING=loadString("Resource binding");
-    public static String MS_SESSION=loadString("Initiating session");
-    
-    public final static String MS_TEXTWRAP="Text wrapping";
-    public final static String MS_TEXTWRAP_CHARACTER="by chars";
-    public final static String MS_TEXTWRAP_WORD="by words";
-
-    public final static String MS_INFO="Info";
-    
     public  static String MS_ONLINE=loadString("online");
     
     public  static String MS_ERROR=loadString("error");
@@ -287,26 +267,6 @@ public class SR {
     public  static String MS_DND=loadString("dnd");
     public  static String MS_INVISIBLE=loadString("invisible");
     public  static String MS_OFFLINE=loadString("offline");
-    
-    
-
-    public static String MS_REPLY=loadString("Reply");
-    public final static String MS_DIRECT_PRESENCE=loadString("Send status");
-    
-    public final static String MS_CONFIRM_BAN=loadString("Are you sure want to BAN this person?");
-    public final static String MS_NO_REASON=loadString("No reason");
-
-    public final static String MS_RECENT=loadString("Recent");
-    public final static String MS_CAMERASHOT=loadString("Shot");
-
-    public final static String MS_SELECT_FILE=loadString("Select file");
-    public final static String MS_LOAD_PHOTO=loadString("Load Photo");
-    public final static String MS_CLEAR_PHOTO=loadString("Clear Photo");
-    public final static String MS_CAMERA=loadString("Camera");
-    
-    public final static String MS_HIDE_FINISHED=loadString("Hide finished");
-    public final static String MS_TRANSFERS=loadString("Transfer tasks");
-
 
     public static String MS_COLOR_TUNE=loadString("Color tune");
     public static String MS_LOAD_SKIN=loadString("Load Scheme");
@@ -339,7 +299,6 @@ public class SR {
 
     public static String MS_MAIN_MENU=loadString("Main menu");
 
-    public static String MS_ROOT=loadString("Root");
     public static String MS_FILE_TRANSFERS=loadString("File transfers");
 
     public static String MS_CHOOSE_STATUS=loadString("Choose status");
@@ -375,8 +334,6 @@ public class SR {
     public static String MS_USER_REMOVED_AUTORIZATION=loadString("User has removed autorization");
     public static String MS_YOU_ARE_NOW_AUTHORIZED=loadString("You are now autorized");
     public static String MS_USER_REQUEST_AUTORIZATION=loadString("User request autorization");
-	
-    public final static String MS_SURE_DELETE="Are you sure want to delete this message?";
 
     public static String MS_MESSAGE_FOR_ME="Message for me";
     
@@ -416,24 +373,8 @@ public class SR {
     public static String MS_SCROLL_BGND=loadString("Scroll back");    
 
     public static String MS_SOUNDS_OPTIONS=loadString("Sounds options");
-	
-    public static String MS_NEW_BOOKMARK=loadString("New conference");
-	
-    public static String MS_DECLINE=loadString("Decline");
-    public static String MS_AUTH_NEW=loadString("Authorize new contacts");
-    public static String MS_AUTH_AUTO=loadString("[auto-subscribe]");
-	
-    public final static String MS_KEEPALIVE="Keep-alive";
     
     public static String MS_TIME=loadString("Time");
-        
-    public final static String MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM=" has been unaffiliated and kicked from members-only room";
-    
-    public final static String MS_AWAY_PERIOD="Minutes before away";
-    public final static String MS_AWAY_TYPE="Automatic Away";
-    public final static String MS_AWAY_OFF="disabled";
-    public final static String MS_AWAY_LOCK="keyblock";
-    public final static String MS_AWAY_IDLE="idle";
     
     public  static String MS_ROLE_PARTICIPANT=loadString("participant");
     public  static String MS_ROLE_MODERATOR=loadString("moderator");
@@ -460,9 +401,61 @@ public class SR {
     public  static String MS_DAY2=loadString("days");
     public  static String MS_DAY3=loadString("days_");
     
+    public static String MS_AUTO_XA=loadString("Auto xa since %t");
+    public static String MS_AUTO_AWAY=loadString("Auto away since %t");
+    
+    public   static String MS_AUTOFOCUS = loadString( "autofocus" );
+    public   static String MS_GRANT_MEMBERSHIP = loadString( "Grant Membership" );
+    public   static String MS_SURE_CLEAR = loadString( "Are You sure want to clear messagelist?" );
+
+
+    public   static String MS_TOKEN = loadString( "Google token request" );
+    public   static String MS_SASL = loadString( "SASL login" );
+    public   static String MS_FEATURES = loadString( "Features" );
+    public   static String MS_SHOWPWD = loadString( "Show password" );
+    public   static String MS_NO_VERSION_AVAILABLE = loadString( "No client version available" );
+    public   static String MS_MSG_LIMIT = loadString( "Message limit" );
+    public   static String MS_OPENING_STREAM = loadString( "Opening stream" );
+     //public final static String MS_SASL_STREAM="SASL handshake";
+
+
+    public   static String MS_ZLIB = loadString( "Using compression" );
+    public   static String MS_AUTH = loadString( "Authenticating" );
+    public   static String MS_RESOURCE_BINDING = loadString( "Resource binding" );
+    public   static String MS_SESSION = loadString( "Initiating session" );
+    public   static String MS_TEXTWRAP = loadString( "Text wrapping" );
+    public   static String MS_TEXTWRAP_CHARACTER = loadString( "by chars" );
+    public   static String MS_TEXTWRAP_WORD = loadString( "by words" );
+    public   static String MS_INFO = loadString( "Info" );
+    public   static String MS_REPLY = loadString( "Reply" );
+    public   static String MS_DIRECT_PRESENCE = loadString( "Send status" );
+
+    public   static String MS_CONFIRM_BAN = loadString( "Are you sure want to BAN this person?" );
+    public   static String MS_NO_REASON = loadString( "No reason" );
+    public   static String MS_RECENT = loadString( "Recent" );
+    public   static String MS_CAMERASHOT = loadString( "Shot" );
+    public   static String MS_SELECT_FILE = loadString( "Select file" );
+    public   static String MS_LOAD_PHOTO = loadString( "Load Photo" );
+    public   static String MS_CLEAR_PHOTO = loadString( "Clear Photo" );
+    public   static String MS_CAMERA = loadString( "Camera" );
+    public   static String MS_HIDE_FINISHED = loadString( "Hide finished" );
+    public   static String MS_TRANSFERS = loadString( "Transfer tasks" );
+    public   static String MS_SURE_DELETE = loadString( "Are you sure want to delete this message?" );
+    public   static String MS_NEW_BOOKMARK = loadString( "New conference" );
+    public   static String MS_ROOT = loadString( "Root" );
+    public   static String MS_DECLINE = loadString( "Decline" );
+    public   static String MS_AUTH_NEW = loadString( "authorize new contacts" );
+    public   static String MS_AUTH_AUTO = loadString( "[auto-subscribe]" );
+    public   static String MS_KEEPALIVE = loadString( "Keep-Alive" );
+    public   static String MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM = loadString( " has been unaffiliated and kicked from members-only room" );
+    public   static String MS_AWAY_PERIOD = loadString( "Minutes before away" );
+    public   static String MS_AWAY_TYPE = loadString( "Automatic Away" );
+    public   static String MS_AWAY_OFF = loadString( "disabled" );
+    public   static String MS_AWAY_LOCK = loadString( "keyblock / flip" );
+
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
-
+    
     
     private SR() { }
     
