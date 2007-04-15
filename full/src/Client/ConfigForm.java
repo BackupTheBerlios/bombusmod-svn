@@ -293,10 +293,9 @@ public class ConfigForm implements
         autoAwayType.append(SR.MS_IDLE, null);
         autoAwayType.setSelectedIndex(cf.autoAwayType, true);
         
-        fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 30);
+        fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 60);
 
         awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
-        //awayStatus.append("KeyLock status", null);
         awayStatus.append("AutoStatus Message", null);
         
         boolean aa[]={
