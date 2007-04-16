@@ -366,6 +366,16 @@ public class ContactMessageList extends MessageList
 //#         } else {
 //#endif
             if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
+            if (keyCode==KEY_POUND) {
+                try {
+                    if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_HISTORY) return;
+                    if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
+
+                    Msg msg=getMessage(cursor);
+
+                    new MessageEdit(display,contact,msg.from+": ");
+                } catch (Exception e) {/*no messages*/}
+            }
             if (keyCode==keyClear) {
                 if (messages.isEmpty()) return;
                 clearReadedMessageList();

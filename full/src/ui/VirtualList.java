@@ -582,13 +582,6 @@ public abstract class VirtualList
 
     private void key(int keyCode) {
         wobble="";
-       
-        if (keyCode==-4 || keyCode==702) {
-            if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
-                destroyView();
-                return;  
-            }
-        }
 //#if ALT_INPUT
 //#         if (inputbox==null) {
 //#endif
@@ -611,13 +604,13 @@ public abstract class VirtualList
                                 default:
                                     if (keyCode==greenKeyCode) { keyGreen(); break; }
                                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
+
                                     if (keyCode=='5') {  eventOk(); break; }
+                                    userKeyPressed(keyCode);
                                     if (keyCode==keyBack) {
-                                        //TODO: Check, is destroyView() allowed
                                         destroyView();
                                         return;
                                     }
-                                    userKeyPressed(keyCode);
                                 }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
             }

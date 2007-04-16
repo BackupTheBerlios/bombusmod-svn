@@ -205,6 +205,7 @@ public class Config {
             keyLock='#';
             keyVibra='*';
             allowLightControl=true;
+            VirtualList.keyBack=-4; //keyCode==702
         }
         
 	VirtualList.greenKeyCode=greenKeyCode;
