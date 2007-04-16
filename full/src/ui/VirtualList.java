@@ -828,6 +828,7 @@ public abstract class VirtualList
             e.printStackTrace(); /* ClassCastException */
         }
     }
+
 /*    
     public void setTimeEvent(long time){
         synchronized (this) {

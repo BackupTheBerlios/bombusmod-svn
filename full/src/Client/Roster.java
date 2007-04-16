@@ -214,6 +214,8 @@ public class Roster
         
         vContacts=new Vector(); // just for displaying
         
+        getKeys();
+        
         if (!VirtualList.newMenu) {
                 int activeType=Command.SCREEN;
                 if (ph.PhoneManufacturer()==ph.NOKIA) activeType=Command.BACK;
@@ -1816,6 +1818,17 @@ public class Roster
 
     public void userKeyPressed(int keyCode){
         //System.out.println(ph.PhoneManufacturer());
+        
+        if (keyCode==cf.SOFT_LEFT) {
+            new RosterMenu(display, getFocusedObject());
+            return;
+        }
+            
+        if (keyCode==cf.SOFT_RIGHT) {
+            if (!isLoggedIn()) return;
+            new RosterItemActions(display, getFocusedObject(), -1);
+            return;
+        }
         if (keyCode==KEY_NUM0 || keyCode==keyBack) {
             cleanMarks();
             
@@ -1844,7 +1857,7 @@ public class Roster
             System.gc();
             return;
         }
-		
+	/*	
         if (VirtualList.newMenu) {
             if (keyCode==-4 || keyCode==-1)  {
                 if (allowLightControl) {
@@ -1873,6 +1886,7 @@ public class Roster
                  }         
             }
         }
+        */
         if (keyCode=='3') {
             searchGroup(-1);
             setRotator();
@@ -2352,6 +2366,62 @@ public class Roster
             c.setAppearing(false);
         }
       }
+    }
+    
+    
+    private void getKeys()
+    {
+        try {
+             Class.forName("com.siemens.mp.lcdui.Image");                     // Set Siemens specific keycodes
+             cf.SOFT_LEFT=-1;
+             cf.SOFT_RIGHT=-4;
+        } catch (ClassNotFoundException ignore) {
+            try {
+                // Set Motorola specific keycodes
+                Class.forName("com.motorola.phonebook.PhoneBookRecord");
+                if (getKeyName(-21).toUpperCase().indexOf("SOFT")>=0) {
+                    cf.SOFT_LEFT=-21;
+                    cf.SOFT_RIGHT=-22;
+                } else {
+                    cf.SOFT_LEFT=21;
+                    cf.SOFT_RIGHT=22;
+                }
+            } catch (ClassNotFoundException ignore2) {
+                //boolean found;
+
+                // check for often used values
+                // This fixes bug with some Sharp phones and others
+                try {   
+                  // Check for "SOFT" in name description
+                    if (getKeyName(21).toUpperCase().indexOf("SOFT")>=0) {
+                        cf.SOFT_LEFT=21;     // check for the 1st softkey
+                        cf.SOFT_RIGHT=22;      // check for 2nd softkey
+                        //found=true;
+                    }
+                    // Check for "SOFT" in name description
+                    if (getKeyName(-6).toUpperCase().indexOf("SOFT")>=0) {
+                        cf.SOFT_LEFT=-6;     // check for the 1st softkey
+                        cf.SOFT_RIGHT=-7;      // check for 2nd softkey
+                        //found=true;
+                    }
+                }catch(Exception e) {}
+
+                for (int i=-127;i<127;i++) {
+                // run thru all the keys
+                    try {
+                       if (getKeyName(i).toUpperCase().indexOf("SOFT")>=0) {         // Check for "SOFT" in name description
+                          if (getKeyName(i).indexOf("1")>=0) cf.SOFT_LEFT=i;         // check for the 1st softkey
+                          if (getKeyName(i).indexOf("2")>=0) cf.SOFT_RIGHT=i;         // check for 2nd softkey
+                       }
+                    }catch(Exception e){                                     
+                        if (ph.PhoneManufacturer()==ph.NOKIA || ph.PhoneManufacturer()==ph.SONYE) {
+                            cf.SOFT_LEFT=-6;
+                            cf.SOFT_RIGHT=-7;
+                        } 
+                    }
+                }
+            }
+        }
     }
 }
 

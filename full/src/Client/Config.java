@@ -58,6 +58,9 @@ public class Config {
     public final static int AWAY_OFF=0;
     public final static int AWAY_LOCK=1;
     public final static int AWAY_IDLE=2;
+    
+    public static int SOFT_LEFT = -1000;
+    public static int SOFT_RIGHT = -1000;
 
     public boolean ghostMotor=getBooleanProperty("moto_e398",false);
     public boolean blFlash=!ghostMotor; //true;
