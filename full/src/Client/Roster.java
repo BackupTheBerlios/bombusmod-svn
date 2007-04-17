@@ -1804,8 +1804,6 @@ public class Roster
 
     public void userKeyPressed(int keyCode){
         if (keyCode==KEY_NUM0) {
-            cleanMarks();
-            
             System.gc();
             
             if (messageCount==0) return;
@@ -1848,14 +1846,20 @@ public class Roster
                 System.gc();
                 setWobbler(null);
             } else {
+                cleanMarks();
                 System.gc();
+                int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                setWobbler("Free "+freemem+"kB");
             }
             return;
          }
          if (keyCode==KEY_STAR) {
              if (allowLightControl) {
                 System.gc();
+                int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                setWobbler("Free "+freemem+"kB");
              } else {
+                cleanMarks();
                 System.gc();
                 setWobbler(null);
             }
@@ -1902,7 +1906,7 @@ public class Roster
             updateMainBar();
             redraw();
             return;
-        } else if (keyCode==cf.keyOfflines || keyCode==keyBack) {
+        } else if (keyCode==cf.keyOfflines) {
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
             return;

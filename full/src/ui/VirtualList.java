@@ -582,6 +582,10 @@ public abstract class VirtualList
 
     private void key(int keyCode) {
         wobble="";
+        if (keyCode==keyBack) {
+            destroyView();
+            return;
+        }
 //#if ALT_INPUT
 //#         if (inputbox==null) {
 //#endif
@@ -604,13 +608,9 @@ public abstract class VirtualList
                                 default:
                                     if (keyCode==greenKeyCode) { keyGreen(); break; }
                                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-
                                     if (keyCode=='5') {  eventOk(); break; }
+                                    
                                     userKeyPressed(keyCode);
-                                    if (keyCode==keyBack) {
-                                        destroyView();
-                                        return;
-                                    }
                                 }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
             }
