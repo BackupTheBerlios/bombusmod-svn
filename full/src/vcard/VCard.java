@@ -42,7 +42,7 @@ import util.strconv;
 public class VCard {
 
     public final static int NICK_INDEX=1;
-	public final static int FN_INDEX=0;
+    public final static int FN_INDEX=0;
     
     public static Vector vCardFields;
     public static Vector vCardFields2;
@@ -50,13 +50,15 @@ public class VCard {
     
     private Vector vCardData;
     private String jid;
-	private String id;
+    private String id;
     
     byte photo[];
 	
     private boolean empty=true;
-	
+
     private String photoType;
+	
+    //private String photoType;
     
     /** Creates a new instance of vCard */
     public VCard() {
@@ -137,7 +139,6 @@ public class VCard {
     
     public byte[] getPhoto() { return photo; }
     public void setPhoto(byte[] photo) { this.photo=photo; }
-    public String getPhotoType() { return photoType; }
     
     public String getNickName() { 
         String name=getVCardData(NICK_INDEX);

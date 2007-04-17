@@ -37,9 +37,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 //#endif
 
-//#if (!MIDP1)
 import images.camera.*;
-//#endif
 
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -85,8 +83,7 @@ public class vCardForm
     private String photoType;
 
     private int st=-1;
-    
-    private String phototype="jpg";
+
     
     private ClipBoard clipboard;  // The clipboard class
 //#if FILE_IO    
@@ -95,6 +92,8 @@ public class vCardForm
     String filePath;
     private FileIO file;
     private OutputStream os;
+
+    private String phototype="jpg";
 //#endif
     /** Creates a new instance of vCardForm */
     public vCardForm(Display display, VCard vcard, boolean editable) {
@@ -105,7 +104,7 @@ public class vCardForm
         
         f=new Form(SR.MS_VCARD);
         f.append(vcard.getJid());
-        photoType=vcard.getPhotoType();
+        photoType=vcard.getPhotoMIMEType();
         
         if (vcard.isEmpty() && !editable) 
             f.append("\n[no vCard available]"); 
