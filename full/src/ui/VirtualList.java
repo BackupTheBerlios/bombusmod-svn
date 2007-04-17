@@ -581,11 +581,29 @@ public abstract class VirtualList
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
     private void key(int keyCode) {
-        wobble="";
-        if (keyCode==keyBack) {
+        if (keyCode==cf.SOFT_RIGHT) {
             destroyView();
             return;
         }
+         if (keyCode==KEY_POUND) {
+            if (!cf.allowLightControl)
+            {
+                System.gc();
+                int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                wobble="Free "+freemem+"kB";
+            }
+            return;
+         }
+         if (keyCode==KEY_STAR) {
+             if (cf.allowLightControl) {
+                System.gc();
+                int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                wobble="Free "+freemem+"kB";
+             }
+             return;
+         }
+         wobble="";
+        
 //#if ALT_INPUT
 //#         if (inputbox==null) {
 //#endif

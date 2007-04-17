@@ -1843,22 +1843,14 @@ public class Roster
          if (keyCode==KEY_POUND) {
             if (allowLightControl)
             {
-                System.gc();
-                setWobbler(null);
-            } else {
                 cleanMarks();
                 System.gc();
-                int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-                setWobbler("Free "+freemem+"kB");
+                setWobbler(null);
             }
             return;
          }
          if (keyCode==KEY_STAR) {
-             if (allowLightControl) {
-                System.gc();
-                int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-                setWobbler("Free "+freemem+"kB");
-             } else {
+             if (!allowLightControl) {
                 cleanMarks();
                 System.gc();
                 setWobbler(null);
