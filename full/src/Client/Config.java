@@ -214,8 +214,9 @@ public class Config {
     }
     
     protected void loadFromStorage(){
+        DataInputStream inputStream=null;
 	try {
-	    DataInputStream inputStream=NvStorage.ReadFileRecord("config", 0);
+	    inputStream=NvStorage.ReadFileRecord("config", 0);
 	    accountIndex = inputStream.readInt();
 	    showOfflineContacts=inputStream.readBoolean();
 	    fullscreen=inputStream.readBoolean();
@@ -370,6 +371,11 @@ public class Config {
             popUps=true;
             
             showResources=true;
+            try {
+                inputStream.close();
+            } catch (IOException ex) {
+                //ex.printStackTrace();
+            }
 	}
 	
 	lastProfile=profile=def_profile;
@@ -475,7 +481,7 @@ public class Config {
             
 	} catch (Exception e) {
             //e.printStackTrace();
-        }
+    }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
     }
