@@ -1074,7 +1074,7 @@ public class Roster
         self.jid=this.myJid=new Jid(myJid);
     }
 
-    public void blockArrived( JabberDataBlock data ) {
+    public int blockArrived( JabberDataBlock data ) {
         try {
             
             if( data instanceof Iq ) {
@@ -1083,9 +1083,13 @@ public class Roster
                 String id=(String) data.getAttribute("id");
                 
                 if (id!=null) {
-                    if (id.startsWith("ping")) theStream.pingSent=false;
+                    if (id.startsWith("ping")) 
+                        theStream.pingSent=false; //incomplete, test on jabber:iq:version
 				
                     if (id.startsWith("nickvc")) {
+                        
+                        if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
+                        
                         VCard vc=new VCard(data);//.getNickName();
                         //String from=vc.getJid();
                         String nick=vc.getNickName();
@@ -1097,9 +1101,13 @@ public class Roster
                         if (nick!=null)  storeContact(from,nick,group, false);
                         //updateContact( nick, c.rosterJid, group, c.subscr, c.ask_subscribe);
                         sendVCardReq();
+                        return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     
                     if (id.startsWith("getvc")) {
+                        
+                        if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
+                        
                         setQuerySign(false);
                         VCard vcard=new VCard(data);
                         String jid=id.substring(5);
@@ -1108,6 +1116,7 @@ public class Roster
                             c.vcard=vcard;
                             new vCardForm(display, vcard, c.getGroupType()==Groups.TYPE_SELF);
                         }
+                        return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     
                     if (id.equals("getver")) {
@@ -1123,19 +1132,17 @@ public class Roster
                                 //гг
                             }
                             querysign=false;
-                        }
+                        } else return JabberBlockListener.BLOCK_REJECTED;
                         
                         Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "ver", SR.MS_CLIENT_INFO, body);
                         if (body!=null) { 
                             messageStore( getContact(from, false), m); //drop unwanted requests
                             redraw();
                         }
+                        return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     
-                } // id!=null
-                if ( type.equals( "result" ) ) {
-                    if (id.equals("getros")) {
-                        // а вот и ро�?тер подошёл :)
+                if (id.equals("getros")) if (type.equals("result")) {
                         theStream.enableRosterNotify(false);
 
                         processRoster(data);
@@ -1153,7 +1160,11 @@ public class Roster
                             }
                         } else sendPresence(myStatus);
                         
-                        SplashScreen.getInstance().close(); // display.setCurrent(this);                      
+                        SplashScreen.getInstance().close(); // display.setCurrent(this);
+                        //loading bookmarks
+                        //if (cf.autoJoinConferences)
+                        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+                        return JabberBlockListener.BLOCK_PROCESSED;
                     } 
                     if (id.equals("last")) {
                         JabberDataBlock tm=data.getChildBlock("query");
@@ -1186,30 +1197,40 @@ public class Roster
                             messageStore( getContact(from, false), m);
                         }
                     }
-                } else if (type.equals("get")){
+                } // id!=null
+                if ( type.equals( "result" ) ) {
+                    /*no handlers now*/
+                } else 
+                if (type.equals("get")){
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
                         Contact c=getContact(from, true);
                         if (query.isJabberNameSpace("jabber:iq:version")) {
                             c.setViewing(true);
                             theStream.send(new IqVersionReply(data));
+                            return JabberBlockListener.BLOCK_PROCESSED;                            
                         }
                         // провер�?ем на запро�? локального времени клиента
                         else if (query.isJabberNameSpace("jabber:iq:time")) {
-                            theStream.send(new IqTimeReply(data));
                             c.setViewing(true);
+                            theStream.send(new IqTimeReply(data));
+                            return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         // провер�?ем на запро�? idle
                         else if (query.isJabberNameSpace("jabber:iq:last")) {
-                            theStream.send(new IqLast(data, lastMessageTime));
                             c.setViewing(true);
+                            theStream.send(new IqLast(data, lastMessageTime));
+                            return JabberBlockListener.BLOCK_PROCESSED;
                         }
-                        else replyError(data);
+                        return JabberBlockListener.BLOCK_REJECTED;
                     }
                 } else if (type.equals("set")) {
+                    //todo: verify xmlns==jabber:iq:roster
                     processRoster(data);
-					theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
+                    
+                    theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
                     reEnumRoster();
+                    return JabberBlockListener.BLOCK_PROCESSED;
                 }
             }
             
@@ -1337,7 +1358,7 @@ public class Roster
                 }
                 redraw();
 
-                if (body==null) return;
+                if (body==null) return JabberBlockListener.BLOCK_REJECTED;
                 
                 Msg m=new Msg(mType, from, subj, body);
                 if (tStamp!=null) 
@@ -1383,11 +1404,13 @@ public class Roster
  
                 if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST || cf.notInList)
                     messageStore(c, m);
+                
+                return JabberBlockListener.BLOCK_PROCESSED;   
             }
             // при�?ут�?твие
 
             else if( data instanceof Presence ) {
-                if (myStatus==Presence.PRESENCE_OFFLINE) return;
+                if (myStatus==Presence.PRESENCE_OFFLINE) return JabberBlockListener.BLOCK_REJECTED;
                 Presence pr= (Presence) data;
                 
                 String from=pr.getFrom();
@@ -1430,7 +1453,7 @@ public class Roster
                 } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
                 else {
                     Contact c=getContact(from, cf.notInList && ti!=Presence.PRESENCE_OFFLINE); //<<<
-                    if (c==null) return; //drop presence
+                    if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop presence
                     messageStore(c, m);
 					
                     if (ti==Presence.PRESENCE_AUTH_ASK) {
@@ -1458,12 +1481,14 @@ public class Roster
                 }
 		sort(hContacts);
                 reEnumRoster();
-            }
+                return JabberBlockListener.BLOCK_PROCESSED;                
+            } // if presence
         } catch( Exception e ) {
             //e.printStackTrace();
         }
+        return JabberBlockListener.BLOCK_REJECTED;
     }
-    
+/*    
     void replyError (JabberDataBlock stanza) {
         stanza.setAttribute("to", stanza.getAttribute("from"));
         stanza.setAttribute("from", null);
@@ -1473,7 +1498,7 @@ public class Roster
         error.addChild("feature-not-implemented",null);
         theStream.send(stanza);
     }
-    
+*/    
     void processRoster(JabberDataBlock data){
         JabberDataBlock q=data.getChildBlock("query");
         if (!q.isJabberNameSpace("jabber:iq:roster")) return;

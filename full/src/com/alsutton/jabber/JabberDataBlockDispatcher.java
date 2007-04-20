@@ -41,6 +41,7 @@ public class JabberDataBlockDispatcher extends Thread
    */
 
   private JabberListener listener = null;
+  private JabberStream stream;
   
   private Vector blockListeners=new Vector();
 
@@ -60,9 +61,9 @@ public class JabberDataBlockDispatcher extends Thread
    * Constructor to start the dispatcher in a thread.
    */
 
-  public JabberDataBlockDispatcher()
-  {
-    start();
+  public JabberDataBlockDispatcher(JabberStream stream)  {
+      this.stream=stream;
+      start();
   }
 
   /**
@@ -147,7 +148,22 @@ public class JabberDataBlockDispatcher extends Thread
           }
           if (processResult==JabberBlockListener.BLOCK_REJECTED)
               if( listener != null )
-                  listener.blockArrived( dataBlock );
+                  processResult=listener.blockArrived( dataBlock );
+
+          if (processResult==JabberBlockListener.BLOCK_REJECTED) {
+              String type=dataBlock.getTypeAttribute();
+              if (type.equals("get") || type.equals("set")) {
+                  dataBlock.setAttribute("to", dataBlock.getAttribute("from"));
+                  dataBlock.setAttribute("from", null);
+                  dataBlock.setTypeAttribute("error");
+                  JabberDataBlock error=dataBlock.addChild("error", null);
+                  error.setTypeAttribute("cancel");
+                  error.addChild("feature-not-implemented",null);
+                  stream.send(dataBlock);
+              }
+              //TODO: reject iq stansas where type =="get" | "set"
+          }
+          
       } catch (Exception e) {e.printStackTrace();}
     }
   }

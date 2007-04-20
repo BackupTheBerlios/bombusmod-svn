@@ -585,24 +585,7 @@ public abstract class VirtualList
             destroyView();
             return;
         }
-         if (keyCode==KEY_POUND) {
-            if (!cf.allowLightControl)
-            {
-                System.gc();
-                int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-                wobble="Free "+freemem+"kB";
-            }
-            return;
-         }
-         if (keyCode==KEY_STAR) {
-             if (cf.allowLightControl) {
-                System.gc();
-                int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-                wobble="Free "+freemem+"kB";
-             }
-             return;
-         }
-         wobble="";
+        wobble="";
         
 //#if ALT_INPUT
 //#         if (inputbox==null) {
@@ -631,6 +614,24 @@ public abstract class VirtualList
                                     userKeyPressed(keyCode);
                                 }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+                    
+                     if (keyCode==KEY_POUND) {
+                         if (cf.allowLightControl) {
+                            System.gc();
+                            int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                            wobble="Free "+freemem+"kB";
+                         }
+                        //return;
+                     }
+                     if (keyCode==KEY_STAR) {
+                        if (!cf.allowLightControl)
+                        {
+                            System.gc();
+                            int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                            wobble="Free "+freemem+"kB";
+                        }
+                         //return;
+                     }
             }
 //#if ALT_INPUT
 //#         } else {
