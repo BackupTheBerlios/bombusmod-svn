@@ -158,6 +158,8 @@ public class Config {
 
     public boolean popUps=true;
 
+    public boolean showResources=true;
+
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -292,6 +294,8 @@ public class Config {
             
             popUps=inputStream.readBoolean();
             
+            showResources=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    accountIndex = -1;
@@ -364,6 +368,8 @@ public class Config {
             autoScroll=true;
             
             popUps=true;
+            
+            showResources=true;
 	}
 	
 	lastProfile=profile=def_profile;
@@ -464,6 +470,8 @@ public class Config {
             outputStream.writeBoolean(autoScroll);
             
             outputStream.writeBoolean(popUps);
+            
+            outputStream.writeBoolean(showResources);
             
 	} catch (Exception e) {
             //e.printStackTrace();

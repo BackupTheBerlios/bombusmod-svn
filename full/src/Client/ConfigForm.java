@@ -127,7 +127,8 @@ public class ConfigForm implements
         roster.append(SR.MS_IGNORE_LIST, null);
         roster.append(SR.MS_NOT_IN_LIST, null);
         roster.append(SR.MS_AUTOFOCUS,null);
-		roster.append(SR.MS_AUTH_NEW,null);
+	roster.append(SR.MS_AUTH_NEW,null);
+        roster.append("Show Resources",null);
         
         boolean ra[]={
             cf.showOfflineContacts,
@@ -136,10 +137,11 @@ public class ConfigForm implements
             cf.ignore, 
             cf.notInList,
             cf.autoFocus,
-            cf.autoSubscribe
+            cf.autoSubscribe,
+            cf.showResources
         };
         this.ra=ra;
-        //ra[5]=false;
+
         roster.setSelectedFlags(ra);
 
         message=new ChoiceGroup(SR.MS_MESSAGES, Choice.MULTIPLE);
@@ -351,7 +353,7 @@ public class ConfigForm implements
             cf.notInList=ra[4];
             cf.autoFocus=ra[5];
             cf.autoSubscribe=ra[6];
-
+            cf.showResources=ra[7];
             
             int mvctr=0;
             cf.smiles=mv[mvctr++];

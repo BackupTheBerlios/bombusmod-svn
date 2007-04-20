@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Client.Config;
 import ui.ImageList;
 import javax.microedition.lcdui.*;
 import java.util.*;
@@ -50,7 +51,10 @@ abstract public class IconTextElement implements VirtualElement
 
     public int getBGndRGB(){ return 0xffffff;}
     public int getFontIndex() { return 0;}
-    private Font getFont() { 
+    
+    private Font getFont() {
+        //if (!Config.getInstance().showResources)
+        //    return FontCache.getRosterNormalFont();
         return (getFontIndex()==0)?
             FontCache.getRosterNormalFont():
             FontCache.getRosterBoldFont();

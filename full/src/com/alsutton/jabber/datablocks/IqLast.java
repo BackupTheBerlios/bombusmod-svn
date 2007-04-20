@@ -57,9 +57,7 @@ public class IqLast extends Iq{
         StringBuffer tm=new StringBuffer();
         String field=data.getAttribute("seconds");
         
-        if (field==null || field=="0") {
-            tm.append("0 sec");    
-        } else {
+        if (field!=null) {
             tm.append(Time.secDiffToDate(Integer.parseInt(field)));
         }
         

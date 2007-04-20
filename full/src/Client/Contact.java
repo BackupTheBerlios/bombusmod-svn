@@ -307,8 +307,15 @@ public class Contact extends IconTextElement{
         // п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�? п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�? п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�? - presence, п©я≈п�?п©я≈п�? п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�?п©я≈п�? п©я≈п�?п©я≈п�?п©я≈п�?
         if (first_replace) {
             msgs.setElementAt(m,0);
+            
+            if (cf.autoScroll)
+                moveToLatest=true;
+            
             return;
         } 
+        if (cf.autoScroll)
+            moveToLatest=true;
+        
         msgs.addElement(m);
         
         if (cf.autoScroll)
@@ -334,10 +341,14 @@ public class Contact extends IconTextElement{
     public int getColor() { return (status>7)?0:COLORS[status]; }
 
     public int getFontIndex(){
+        if (!cf.showResources)
+            return active()?1:0;
         return (status<5)?1:0;
     }
     
-    public String toString() { 
+    public String toString() {
+        if (!cf.showResources)
+            return nick;
         if (origin>ORIGIN_GROUPCHAT) return nick;
         if (origin==ORIGIN_GROUPCHAT) return getJid();
         return (nick==null)?getJid():nick+jid.getResource(); 
@@ -390,6 +401,7 @@ public class Contact extends IconTextElement{
     }
 
     public Group getGroup() { return group; }
+    
     public int getGroupType() {  
         if (group==null) return 0; 
         return group.index;  
