@@ -105,7 +105,11 @@ public class Bombus extends MIDlet implements Runnable{
         
         try {
             s.img=Image.createImage("/images/splash.png");
-            
+        } catch (Exception e) {
+            s.img=null;
+        }
+        
+        try {
             if (ph.PhoneManufacturer()==ph.NOKIA) {
                 splash=s.img;
                 programIcon=Image.createImage("/_icon.png");

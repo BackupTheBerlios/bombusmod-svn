@@ -214,9 +214,8 @@ public class Config {
     }
     
     protected void loadFromStorage(){
-        DataInputStream inputStream=null;
+        DataInputStream inputStream=NvStorage.ReadFileRecord("config", 0);
 	try {
-	    inputStream=NvStorage.ReadFileRecord("config", 0);
 	    accountIndex = inputStream.readInt();
 	    showOfflineContacts=inputStream.readBoolean();
 	    fullscreen=inputStream.readBoolean();
@@ -372,7 +371,8 @@ public class Config {
             
             showResources=true;
             try {
-                inputStream.close();
+                if (inputStream!=null)
+                    inputStream.close();
             } catch (IOException ex) {
                 //ex.printStackTrace();
             }
