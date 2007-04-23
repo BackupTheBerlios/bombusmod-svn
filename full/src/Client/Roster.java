@@ -852,6 +852,7 @@ public class Roster
     }
     
     public void multicastConferencePresence() {
+		if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
              Contact c=(Contact) e.nextElement();
@@ -1118,7 +1119,6 @@ public class Roster
                         }
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
-
                 if (id.equals("getros")) {
                         if (type.equals("result")) {
                             theStream.enableRosterNotify(false);
@@ -1176,6 +1176,7 @@ public class Roster
                             
                             Msg m=new Msg(Msg.MESSAGE_TYPE_IN, SR.MS_TIME, SR.MS_TIME, body+"\n"+status);
                             messageStore( getContact(from, false), m);
+                            redraw();
                         }
                     }
                     if (id.equals("getver")) {
@@ -1190,14 +1191,14 @@ public class Roster
                                 body=IqVersionReply.dispatchVersion(vc);
                             }
                             querysign=false;
-                        } else return JabberBlockListener.BLOCK_REJECTED;
-                        
-                        Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "ver", SR.MS_CLIENT_INFO, body);
-                        if (body!=null) { 
-                            messageStore( getContact(from, false), m); //drop unwanted requests
-                            redraw();
                         }
-                        return JabberBlockListener.BLOCK_PROCESSED;
+                        
+                        if (body!=null) { 
+                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "ver", SR.MS_CLIENT_INFO, body);
+                            messageStore( getContact(from, false), m); 
+                            redraw();
+                            return JabberBlockListener.BLOCK_PROCESSED;
+                        }
                     }
                 } else  if (type.equals("get")){
                     JabberDataBlock query=data.getChildBlock("query");

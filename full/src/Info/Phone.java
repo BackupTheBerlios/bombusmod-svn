@@ -39,6 +39,7 @@ public class Phone {
     public final static int INTENT=8;
     public final static int J2ME=9;
     public final static int NOKIA_9XXX=10;
+    public final static int SONYE_M600=11;
     public final static int WTK=50;
     
     protected final static int OTHER=99;
@@ -75,6 +76,10 @@ public class Phone {
                     phoneManufacturer=MOTO;
                 return;
             } else if (platform.startsWith("SonyE")) {
+                if (platform.startsWith("SonyEricssonM600")) {
+                    phoneManufacturer=SONYE_M600;
+                    return;
+                }
                 phoneManufacturer=SONYE;
                 return;
             } else if (platform.startsWith("Windows")) {

@@ -188,8 +188,10 @@ public class Config {
             RosterIcons.getInstance();
             SmilesIcons.getInstance();
             
-	    allowMinimize=true;
+			allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
+            if (ph.PhoneManufacturer()==ph.SONYE_M600)
+                VirtualList.keyBack=-11;
 	} else if (ph.PhoneManufacturer()==ph.NOKIA) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
