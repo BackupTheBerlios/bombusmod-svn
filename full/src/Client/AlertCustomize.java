@@ -57,6 +57,14 @@ public class AlertCustomize {
     public int soundConferenceIndex=0;
     public String soundConference="";
     public String soundConferenceType="tone sequence";
+    
+    public int soundStartUpIndex=0;
+    public String soundStartUp="";
+    public String soundStartUpType="tone sequence";
+    
+    public int soundOutgoingIndex=0;
+    public String soundOutgoing="";
+    public String soundOutgoingType="tone sequence";
 
     public int soundVol=100;
     
@@ -78,6 +86,8 @@ public class AlertCustomize {
 	    instance.loadForYouSoundName();
 	    instance.loadComposingSoundName();
 	    instance.loadConferenceSoundName();
+	    instance.loadStartUpSoundName();
+	    instance.loadOutgoingSoundName();
 	}
 	return instance;
     }
@@ -95,10 +105,19 @@ public class AlertCustomize {
             soundForYouIndex=inputStream.readInt();
             soundComposingIndex=inputStream.readInt();
             soundConferenceIndex=inputStream.readInt();
-                        
+	    soundStartUpIndex=inputStream.readInt();
+	    soundOutgoingIndex=inputStream.readInt();
+            
             inputStream.close();
 	} catch (Exception e) {
-	    //e.printStackTrace();
+	    soundsMsgIndex=0;            
+            soundOnlineIndex=0;
+            soundOfflineIndex=0;
+            soundForYouIndex=0;
+            soundComposingIndex=0;
+            soundConferenceIndex=0;
+	    soundStartUpIndex=0;
+	    soundOutgoingIndex=0;
 	}
     }
     
@@ -113,6 +132,8 @@ public class AlertCustomize {
 	    outputStream.writeInt(soundForYouIndex);
             outputStream.writeInt(soundComposingIndex);
             outputStream.writeInt(soundConferenceIndex);
+	    outputStream.writeInt(soundStartUpIndex);
+	    outputStream.writeInt(soundOutgoingIndex);
 
             NvStorage.writeFileRecord(outputStream, "AlertCustomize", 0, true);
 	} catch (IOException e) {
@@ -158,5 +179,17 @@ public class AlertCustomize {
         if (soundConferenceIndex>=size) soundOnlineIndex=0;
 	soundConferenceType=(String) files[0].elementAt(soundConferenceIndex);
 	soundConference=(String) files[1].elementAt(soundConferenceIndex);
+    }
+    
+    public void loadStartUpSoundName(){
+        if (soundStartUpIndex>=size) soundStartUpIndex=0;
+	soundStartUpType=(String) files[0].elementAt(soundStartUpIndex);
+	soundStartUp=(String) files[1].elementAt(soundStartUpIndex);
+    }
+    
+    public void loadOutgoingSoundName(){
+        if (soundOutgoingIndex>=size) soundOnlineIndex=0;
+	soundOutgoingType=(String) files[0].elementAt(soundOutgoingIndex);
+	soundOutgoing=(String) files[1].elementAt(soundOutgoingIndex);
     }
 }

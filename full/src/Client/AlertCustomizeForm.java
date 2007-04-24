@@ -46,6 +46,8 @@ public class AlertCustomizeForm implements
     ChoiceGroup ForYouFile;
     ChoiceGroup ComposingFile;
     ChoiceGroup ConferenceFile;
+    ChoiceGroup StartUpFile;
+    ChoiceGroup OutgoingFile;
     
     Gauge sndVol;
     
@@ -56,6 +58,8 @@ public class AlertCustomizeForm implements
     Command cmdForYouSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
     Command cmdComposingSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
     Command cmdConferenceSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
+    Command cmdStartUpSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
+    Command cmdOutgoingSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
     AlertCustomize ac;
@@ -132,6 +136,7 @@ public class AlertCustomizeForm implements
         ComposingFile.addCommand(cmdComposingSound);
 	ComposingFile.setItemCommandListener(this);   
         
+        
         ConferenceFile=new ChoiceGroup(SR.MS_SOUND+" for conference", ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    ConferenceFile.append( (String)f.nextElement(), null );
@@ -142,6 +147,31 @@ public class AlertCustomizeForm implements
 	f.append(ConferenceFile);
         ConferenceFile.addCommand(cmdConferenceSound);
 	ConferenceFile.setItemCommandListener(this);
+        
+
+        StartUpFile=new ChoiceGroup(SR.MS_SOUND+" for StartUp", ChoiceGroup.POPUP);
+	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
+	    StartUpFile.append( (String)f.nextElement(), null );
+	}
+        try {
+            StartUpFile.setSelectedIndex(ac.soundStartUpIndex, true);
+        } catch (Exception e) {ac.soundStartUpIndex=0;}
+	f.append(StartUpFile);
+        StartUpFile.addCommand(cmdStartUpSound);
+	StartUpFile.setItemCommandListener(this);   
+        
+        
+        OutgoingFile=new ChoiceGroup(SR.MS_SOUND+" for Outgoing", ChoiceGroup.POPUP);
+	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
+	    OutgoingFile.append( (String)f.nextElement(), null );
+	}
+        try {
+            OutgoingFile.setSelectedIndex(ac.soundOutgoingIndex, true);
+        } catch (Exception e) {ac.soundOutgoingIndex=0;}
+	f.append(OutgoingFile);
+        OutgoingFile.addCommand(cmdOutgoingSound);
+	OutgoingFile.setItemCommandListener(this);
+        
 
         sndVol=new Gauge("Sound volume", true, 10,  ac.soundVol/10);
 	sndVol.addCommand(cmdMessageSound);
@@ -164,6 +194,9 @@ public class AlertCustomizeForm implements
             ac.soundForYouIndex=ForYouFile.getSelectedIndex();
             ac.soundComposingIndex=ComposingFile.getSelectedIndex();
             ac.soundConferenceIndex=ConferenceFile.getSelectedIndex(); 
+            ac.soundStartUpIndex=StartUpFile.getSelectedIndex();
+            ac.soundOutgoingIndex=OutgoingFile.getSelectedIndex(); 
+
 
  	    ac.loadSoundName();
  	    ac.loadOnlineSoundName();
@@ -171,6 +204,8 @@ public class AlertCustomizeForm implements
  	    ac.loadForYouSoundName();
             ac.loadComposingSoundName();
             ac.loadConferenceSoundName();
+            ac.loadStartUpSoundName();
+            ac.loadOutgoingSoundName();
             ac.saveToStorage();
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();
@@ -181,22 +216,28 @@ public class AlertCustomizeForm implements
 
     public void commandAction(Command command, Item item) {
  	if (command==cmdMessageSound) {
- 	    MessageSound();
+            PlaySound(MessageFile.getSelectedIndex());
  	}
  	if (command==cmdOnlineSound) {
- 	    OnlineSound();
+            PlaySound(OnlineFile.getSelectedIndex());
  	}
  	if (command==cmdOfflineSound) {
- 	    OfflineSound();
+            PlaySound(OfflineFile.getSelectedIndex());
  	}
  	if (command==cmdForYouSound) {
- 	    ForYouSound();
+            PlaySound(ForYouFile.getSelectedIndex());
  	}
  	if (command==cmdComposingSound) {
- 	    ComposingSound();
+            PlaySound(ComposingFile.getSelectedIndex());
  	}
  	if (command==cmdConferenceSound) {
- 	    ConferenceSound();
+            PlaySound(ConferenceFile.getSelectedIndex());
+ 	}
+ 	if (command==cmdStartUpSound) {
+            PlaySound(StartUpFile.getSelectedIndex());
+ 	}
+ 	if (command==cmdOutgoingSound) {
+            PlaySound(OutgoingFile.getSelectedIndex());
  	}
     }
 
@@ -205,51 +246,11 @@ public class AlertCustomizeForm implements
         ((Canvas)parentView).setFullScreenMode(Config.getInstance().fullscreen);
     }
 
-    private void MessageSound(){
-	int sound=MessageFile.getSelectedIndex();
+    private void PlaySound(int sound){
 	String soundFile=(String)files[1].elementAt(sound);
 	String soundType=(String)files[0].elementAt(sound);
         int soundVol=sndVol.getValue()*10;
 	new EventNotify(display, soundType, soundFile,soundVol, 0, false).startNotify();
-    }
-
-    private void OnlineSound(){
-	int sound=OnlineFile.getSelectedIndex();
-	String soundFile=(String)files[1].elementAt(sound);
-	String soundType=(String)files[0].elementAt(sound);
-        int soundVol=sndVol.getValue()*10;
-	new EventNotify(display, soundType, soundFile,soundVol, 0, false).startNotify();
-    }
-         
-    private void OfflineSound(){
-	int sound=OfflineFile.getSelectedIndex();
-	String soundFile=(String)files[1].elementAt(sound);
-	String soundType=(String)files[0].elementAt(sound);
-        int soundVol=sndVol.getValue()*10;
-	new EventNotify(display, soundType, soundFile,soundVol, 0, false).startNotify();
-    }
+    }   
     
-    private void ForYouSound(){
-	int sound=ForYouFile.getSelectedIndex();
-	String soundFile=(String)files[1].elementAt(sound);
-	String soundType=(String)files[0].elementAt(sound);
-        int soundVol=sndVol.getValue()*10;
-	new EventNotify(display, soundType, soundFile,soundVol, 0, false).startNotify();
-    }
-    
-    private void ComposingSound(){
-	int sound=ComposingFile.getSelectedIndex();
-	String soundFile=(String)files[1].elementAt(sound);
-	String soundType=(String)files[0].elementAt(sound);
-        int soundVol=sndVol.getValue()*10;
-	new EventNotify(display, soundType, soundFile,soundVol, 0, false).startNotify();
-    }
-    
-    private void ConferenceSound(){
-	int sound=ConferenceFile.getSelectedIndex();
-	String soundFile=(String)files[1].elementAt(sound);
-	String soundType=(String)files[0].elementAt(sound);
-        int soundVol=sndVol.getValue()*10;
-	new EventNotify(display, soundType, soundFile,soundVol, 0, false).startNotify();
-    }
 }

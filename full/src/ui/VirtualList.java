@@ -108,6 +108,8 @@ public abstract class VirtualList
     public static boolean fullscreen=false;
     public static boolean memMonitor;
     public static boolean newMenu;
+    
+    public static boolean canBack;
 
     int width;
     int height;
@@ -582,7 +584,7 @@ public abstract class VirtualList
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
     private void key(int keyCode) {
-        if (keyCode==cf.SOFT_RIGHT) {
+        if (keyCode==cf.SOFT_RIGHT && canBack==true) {
             destroyView();
             return;
         }
@@ -619,8 +621,8 @@ public abstract class VirtualList
                      if (keyCode==KEY_POUND) {
                          if (cf.allowLightControl) {
                             System.gc();
-                            int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-                            wobble="Free "+freemem+"kB";
+                            //int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                            //wobble="Free "+freemem+"kB";
                          }
                         //return;
                      }
@@ -628,8 +630,8 @@ public abstract class VirtualList
                         if (!cf.allowLightControl)
                         {
                             System.gc();
-                            int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-                            wobble="Free "+freemem+"kB";
+                            //int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                            //wobble="Free "+freemem+"kB";
                         }
                          //return;
                      }

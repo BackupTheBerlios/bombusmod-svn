@@ -66,6 +66,9 @@ public class AccountSelect
 
         setMainBarItem(new MainBar(SR.MS_ACCOUNTS));
         
+        if (enableQuit)
+            VirtualList.canBack=false;
+        
         accountList=new Vector();
         Account a;
         
@@ -123,7 +126,9 @@ public class AccountSelect
         if (c==cmdQuit) {
             destroyView();
             Bombus.getInstance().notifyDestroyed();
+            return;
         }
+        VirtualList.canBack=true;
         if (c==cmdCancel) {
             destroyView();
             //Account.launchAccount();

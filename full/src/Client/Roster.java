@@ -201,7 +201,9 @@ public class Roster
                 //errorLog("can't turn light on :(\n"+e.toString());
             }
         }
-
+        
+        playNotify(777);
+        
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
         mainbar.addRAlign();
@@ -970,6 +972,7 @@ public class Roster
         theStream.send( message );
         lastMessageTime=Time.localTime();
         setKeyTimer(0);
+        playNotify(999);
     }
     
     private Vector vCardQueue;
@@ -1623,9 +1626,19 @@ public class Roster
                 message=ac.soundForYou;
                 type=ac.soundForYouType;
                 break;
+            case 777: //startup
+                message=ac.soundStartUp;
+                type=ac.soundStartUpType;
+                vibraLen=0;
+                break;
             case 888: //composing
                 message=ac.soundComposing;
                 type=ac.soundComposingType;
+                vibraLen=0;
+                break;
+            case 999: //Outgoing
+                message=ac.soundOutgoing;
+                type=ac.soundOutgoingType;
                 vibraLen=0;
                 break;
             default :
