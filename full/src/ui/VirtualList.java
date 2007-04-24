@@ -109,7 +109,7 @@ public abstract class VirtualList
     public static boolean memMonitor;
     public static boolean newMenu;
     
-    public static boolean canBack;
+    public static boolean canBack=true;
 
     int width;
     int height;
@@ -584,8 +584,9 @@ public abstract class VirtualList
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
     private void key(int keyCode) {
-        if (keyCode==cf.SOFT_RIGHT && canBack==true) {
-            destroyView();
+        if (keyCode==cf.SOFT_RIGHT) {
+            if (canBack==true)
+                destroyView();
             return;
         }
         wobble="";
