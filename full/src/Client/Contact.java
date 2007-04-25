@@ -98,6 +98,8 @@ public class Contact extends IconTextElement{
     public Integer incomingComposing;
     private Integer incomingAppearing;
     
+    public boolean isSelected;
+    
     public String msgSuspended;
     
     //public int key1;

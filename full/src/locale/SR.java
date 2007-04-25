@@ -451,8 +451,10 @@ public class SR {
     public   static String MS_AWAY_PERIOD = loadString( "Minutes before away" );
     public   static String MS_AWAY_TYPE = loadString( "Automatic Away" );
     public   static String MS_AWAY_OFF = loadString( "disabled" );
-    public   static String MS_AWAY_LOCK = loadString( "keyblock / flip" );
+    public   static String MS_AWAY_LOCK = loadString( "keyblock" );
 
+    public   static String MS_RENAME = loadString( "Rename" );
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
     

@@ -2142,7 +2142,6 @@ public class Roster
      * store cotnact on server
      */
     public void storeContact(String jid, String name, String group, boolean askSubscribe){
-        
         theStream.send(new IqQueryRoster(jid, name, group, null));
         if (askSubscribe) theStream.send(new Presence(jid,"subscribe"));
     }
@@ -2181,7 +2180,6 @@ public class Roster
 		    desiredFocus=null;
                     
                     Vector tContacts=new Vector(vContacts.size());
-                    //boolean offlines=cf.showOfflineContacts;//StaticData.getInstance().config.showOfflineContacts;
                     
                     Enumeration e;
                     int i;
@@ -2390,6 +2388,17 @@ public class Roster
                    }
                 }catch(Exception e){ }
             }
+        }
+    }
+
+    void renameGroup(String group1, String group2) {
+        for (Enumeration e=StaticData.getInstance().roster.hContacts.elements();e.hasMoreElements();){
+            Contact cr=(Contact)e.nextElement();
+            if (cr.getGroup().getName()==group1) {
+                System.out.println(cr.getBareJid()+"  "+cr.nick+"  "+group2);
+                theStream.send(new IqQueryRoster(cr.getBareJid(), cr.nick, group2, null));
+            }
+                
         }
     }
 }

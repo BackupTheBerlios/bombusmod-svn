@@ -27,6 +27,7 @@
 
 package Client;
 
+import Client.RenameGroup;
 import Conference.ConferenceForm;
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
@@ -218,7 +219,23 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 			addItem(SR.MS_BANNED,14);
 		    }
 		}
-	    }
+	    } else {
+                if (       group.index!=Groups.TYPE_IGNORE 
+                        && group.index!=Groups.TYPE_NOT_IN_LIST
+                        && group.index!=Groups.TYPE_SEARCH_RESULT
+                        && group.index!=Groups.TYPE_SELF
+                        && group.index!=Groups.TYPE_TRANSP)
+                {
+                    addItem(SR.MS_RENAME,1001);
+                    addItem(SR.MS_DELETE,1002);                    
+                }
+                /*
+                for (Enumeration gg=group.contacts.elements(); gg.hasMoreElements();){
+                    Contact gc=(Contact) gg.nextElement();
+                    System.out.println(gc.nick);
+                }
+                */
+            }
 	}
 	if (getItemCount()>0) {
             if (action<0) attachDisplay(display);
@@ -273,8 +290,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 case DELETE_CONTACT:
                     new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
                     return;
-                    //new DeleteContact(display,c);
-                    //break;
                 case 6: // logoff
                 {
                     roster.blockNotify(-111,10000); //block sounds to 10 sec
@@ -415,6 +430,32 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                 }   
 //#endif
             }
+	    Group sg=(Group)item;
+            
+            if (       sg.index!=Groups.TYPE_IGNORE 
+                    && sg.index!=Groups.TYPE_NOT_IN_LIST
+                    && sg.index!=Groups.TYPE_SEARCH_RESULT
+                    && sg.index!=Groups.TYPE_SELF
+                    && sg.index!=Groups.TYPE_TRANSP)
+            {
+                switch (index) { // muc contact actions
+                    case 1001: //rename
+                    {
+                        new RenameGroup(display, sg);
+                        return;
+                    }
+                    case 1002: //delete
+                    {
+                        //new YesNoAlert(display, SR.MS_DELETE_ASK, sg.toString(), this);
+                        for (Enumeration gg=sg.contacts.elements(); gg.hasMoreElements();){
+                            Contact gc=(Contact) gg.nextElement();
+                            roster.deleteContact(gc);
+                        }
+                        display.setCurrent(roster);
+                        return;
+                    }    
+                }
+            }
             
             if (c instanceof MucContact || g instanceof ConferenceGroup) {
                 MucContact mc=(MucContact) c;
@@ -536,5 +577,4 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
         roster.deleteContact((Contact)item);
         display.setCurrent(roster);
     }
-        
 }
