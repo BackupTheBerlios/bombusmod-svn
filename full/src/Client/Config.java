@@ -194,7 +194,7 @@ public class Config {
                 VirtualList.keyBack=-11;
 	} else if (ph.PhoneManufacturer()==ph.NOKIA) {
 	    blFlash=false;
-	    greenKeyCode=VirtualList.NOKIA_GREEN;
+	    greenKeyCode=-10;
 	} else if (ph.PhoneManufacturer()==ph.MOTOEZX) {
 	    VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;

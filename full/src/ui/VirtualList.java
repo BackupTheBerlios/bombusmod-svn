@@ -601,22 +601,28 @@ public abstract class VirtualList
                 case MOTOROLA_FLIP: { userKeyPressed(keyCode); break; }
                 case KEY_NUM1:  { moveCursorHome();    break; }
                 case KEY_NUM7:  { moveCursorEnd();     break; }
+                case -10: {
+                    if (ph.PhoneManufacturer()==ph.NOKIA) {
+                        keyGreen();
+                        break; 
+                    }
+                }
 
                 default:
                     try {
-                                switch (getGameAction(keyCode)){
-                                    case UP:    { keyUp(); break; }
-                                    case DOWN:  { keyDwn(); break; }
-                                    case LEFT:  { keyLeft(); break; }
-                                    case RIGHT: { keyRight(); break; }
-                                    case FIRE:  { eventOk(); break; }
-                                default:
-                                    if (keyCode==greenKeyCode) { keyGreen(); break; }
-                                    if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-                                    if (keyCode=='5') {  eventOk(); break; }
-                                    
-                                    userKeyPressed(keyCode);
-                                }
+                        switch (getGameAction(keyCode)){
+                            case UP:    { keyUp(); break; }
+                            case DOWN:  { keyDwn(); break; }
+                            case LEFT:  { keyLeft(); break; }
+                            case RIGHT: { keyRight(); break; }
+                            case FIRE:  { eventOk(); break; }
+                        default:
+                            //if (keyCode==greenKeyCode) { keyGreen(); break; }
+                            if (keyCode==keyVolDown) { moveCursorEnd(); break; }
+                            if (keyCode=='5') {  eventOk(); break; }
+
+                            userKeyPressed(keyCode);
+                        }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
                     
                      if (keyCode==KEY_POUND) {
@@ -841,7 +847,7 @@ public abstract class VirtualList
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(); /* ClassCastException */
+            //e.printStackTrace(); /* ClassCastException */
         }
     }
 

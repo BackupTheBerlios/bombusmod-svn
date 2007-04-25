@@ -2182,7 +2182,7 @@ public class Roster
                     Vector tContacts=new Vector(vContacts.size());
                     
                     Enumeration e;
-                    int i;
+                    //int i;
                     groups.resetCounters();
                     
                     synchronized (hContacts) {
@@ -2200,7 +2200,7 @@ public class Roster
                     if (cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 )
                         groups.addToVector(tContacts, Groups.TYPE_SELF);
                     // adding groups
-                    for (i=Groups.TYPE_COMMON;i<groups.getCount();i++)
+                    for (int i=Groups.TYPE_COMMON;i<groups.getCount();i++)
                         groups.addToVector(tContacts,i);
                     // hiddens
                     if (cf.ignore) groups.addToVector(tContacts,Groups.TYPE_IGNORE);
@@ -2214,28 +2214,22 @@ public class Roster
                     
                     // always visible
                     Group visibleGroup=groups.getGroup(Groups.TYPE_VISIBLE);
-                    //if (visibleGroup.unreadMessages>0)
-                        groups.addToVector(tContacts,Groups.TYPE_VISIBLE);
-                    
-                    //if (groups.getGroup(Groups.SRC_RESULT_INDEX).tncontacts>0)
+                    groups.addToVector(tContacts,Groups.TYPE_VISIBLE);
+
                     groups.addToVector(tContacts, Groups.TYPE_SEARCH_RESULT);
                     
                     vContacts=tContacts;
                      
                     setRosterMainBar("("+groups.getRosterOnline()+"/"+groups.getRosterContacts()+")");
 
-                    
-                    //resetStrCache();
                     if (cursor<0) cursor=0;
-                    
-                    // вернём кур�?ор на прежний �?лемент
+
                     if ( locCursor==cursor && focused!=null ) {
                         int c=vContacts.indexOf(focused);
                         if (c>=0) moveCursorTo(c, force);
 			force=false;
                     }
-                    //if (cursor>=vContacts.size()) cursor=vContacts.size()-1; //moveCursorEnd(); // вернём кур�?ор из нирваны
-                    
+
                     focusedItem(cursor);
                     redraw();
                 }
@@ -2395,7 +2389,7 @@ public class Roster
         for (Enumeration e=StaticData.getInstance().roster.hContacts.elements();e.hasMoreElements();){
             Contact cr=(Contact)e.nextElement();
             if (cr.getGroup().getName()==group1) {
-                System.out.println(cr.getBareJid()+"  "+cr.nick+"  "+group2);
+                //System.out.println(cr.getBareJid()+"  "+cr.nick+"  "+group2);
                 theStream.send(new IqQueryRoster(cr.getBareJid(), cr.nick, group2, null));
             }
                 
