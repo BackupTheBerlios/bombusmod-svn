@@ -159,7 +159,10 @@ public class AccountSelect
         Account.loadAccount(login);
     }
     
-    public void eventOk(){ switchAccount(true); }
+    public void eventOk(){
+        VirtualList.canBack=true;
+        switchAccount(true);
+    }
     
     void rmsUpdate(){
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
