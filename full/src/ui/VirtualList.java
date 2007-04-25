@@ -617,7 +617,7 @@ public abstract class VirtualList
                             case RIGHT: { keyRight(); break; }
                             case FIRE:  { eventOk(); break; }
                         default:
-                            //if (keyCode==greenKeyCode) { keyGreen(); break; }
+                            if (keyCode==greenKeyCode) { keyGreen(); break; }
                             if (keyCode==keyVolDown) { moveCursorEnd(); break; }
                             if (keyCode=='5') {  eventOk(); break; }
 

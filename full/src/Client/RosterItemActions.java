@@ -63,17 +63,20 @@ import Conference.affiliation.ConferenceQuickPrivelegeModify;
 public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
     
     public final static int DELETE_CONTACT=4;
+    public final static int DELETE_GROUP=1004;
     
     Object item;
 	
     Roster roster;
     
     private ClipBoard clipboard;
+    private int action;
     
     /** Creates a new instance of RosterItemActions */
     public RosterItemActions(Display display, Object item, int action) {
 	super(item.toString());
 	this.item=item;
+        this.action=action;
 	
         roster=StaticData.getInstance().roster;
         
@@ -118,7 +121,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
             
-	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return; //TODO: п©п╬п╢п╨п╩я▌я┤п╦я┌я▄ я┌п╬я┌ п╤п╣ я│п©п╦я│п╬п╨, я┤я┌п╬ п╦ п╢п╩я▐ ConferenceGroup
+	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return; //TODO: п©п╬п╢п╨п╩�?▌�?┤п╦�?┌�?▄ �?┌п╬�?┌ п╤п╣ �?│п©п╦�?│п╬п╨, �?┤�?┌п╬ п╦ п╢п╩�?�? ConferenceGroup
             
             boolean onlineConferences=false;
             for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
@@ -217,28 +220,23 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 			addItem(SR.MS_ADMINS,12);
 			addItem(SR.MS_MEMBERS,13);
 			addItem(SR.MS_BANNED,14);
-		    }
-		}
+ 		    }
+ 		}
 	    } else {
-                if (       group.index!=Groups.TYPE_IGNORE 
+                if (    group.index!=Groups.TYPE_IGNORE
                         && group.index!=Groups.TYPE_NOT_IN_LIST
                         && group.index!=Groups.TYPE_SEARCH_RESULT
                         && group.index!=Groups.TYPE_SELF
                         && group.index!=Groups.TYPE_TRANSP)
                 {
                     addItem(SR.MS_RENAME,1001);
-                    addItem(SR.MS_DELETE,1002);                    
+                    addItem(SR.MS_DELETE, DELETE_GROUP);
                 }
-                /*
-                for (Enumeration gg=group.contacts.elements(); gg.hasMoreElements();){
-                    Contact gc=(Contact) gg.nextElement();
-                    System.out.println(gc.nick);
-                }
-                */
             }
-	}
+ 	}
 	if (getItemCount()>0) {
-            if (action<0) attachDisplay(display);
+            if (action<0) 
+                attachDisplay(display);
             else try {
                 this.display=display; // to invoke dialog Y/N
                 doAction(action);
@@ -252,7 +250,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
              MenuItem me=(MenuItem) getFocusedObject();
             destroyView();
             if (me==null) return;
-             int index=me.index;
+            int index=action=me.index;
             doAction(index);
             //destroyView();
         } catch (Exception e) { e.printStackTrace();  }
@@ -430,32 +428,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                 }   
 //#endif
             }
-	    Group sg=(Group)item;
-            
-            if (       sg.index!=Groups.TYPE_IGNORE 
-                    && sg.index!=Groups.TYPE_NOT_IN_LIST
-                    && sg.index!=Groups.TYPE_SEARCH_RESULT
-                    && sg.index!=Groups.TYPE_SELF
-                    && sg.index!=Groups.TYPE_TRANSP)
-            {
-                switch (index) { // muc contact actions
-                    case 1001: //rename
-                    {
-                        new RenameGroup(display, sg);
-                        return;
-                    }
-                    case 1002: //delete
-                    {
-                        //new YesNoAlert(display, SR.MS_DELETE_ASK, sg.toString(), this);
-                        for (Enumeration gg=sg.contacts.elements(); gg.hasMoreElements();){
-                            Contact gc=(Contact) gg.nextElement();
-                            roster.deleteContact(gc);
-                        }
-                        display.setCurrent(roster);
-                        return;
-                    }    
-                }
-            }
             
             if (c instanceof MucContact || g instanceof ConferenceGroup) {
                 MucContact mc=(MucContact) c;
@@ -568,13 +540,46 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                             clipboard.setClipBoard(mcJ.realJid);
                     } catch (Exception e) {}
                     break;
-                }
+                 }
              }
-        }
-     }
+        } else {
+            Group sg=(Group)item;
 
+            if (       sg.index!=Groups.TYPE_IGNORE 
+                    && sg.index!=Groups.TYPE_NOT_IN_LIST
+                    && sg.index!=Groups.TYPE_SEARCH_RESULT
+                    && sg.index!=Groups.TYPE_SELF
+                    && sg.index!=Groups.TYPE_TRANSP)
+            {
+                switch (index) {
+                    case 1001: //rename
+                    {
+                        new RenameGroup(display, sg);
+                        return;
+                    }
+                    case DELETE_GROUP: //delete
+                    {
+                        new YesNoAlert(display, SR.MS_DELETE_ASK, sg.getName(), this);
+                        return;
+                    }    
+                }
+            }
+         }
+     }
+    
     public void ActionConfirmed() {
-        roster.deleteContact((Contact)item);
+        switch (action) {
+            case DELETE_CONTACT:
+            {
+                roster.deleteContact((Contact)item);
+                break;
+            }
+            case DELETE_GROUP:
+            {
+                roster.deleteGroup((Group)item);
+                break;
+            }
+        }
         display.setCurrent(roster);
     }
 }

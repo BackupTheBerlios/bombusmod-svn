@@ -2385,16 +2385,24 @@ public class Roster
         }
     }
 
-    void renameGroup(String group1, String group2) {
-        for (Enumeration e=StaticData.getInstance().roster.hContacts.elements();e.hasMoreElements();){
+    public void changeGroup(String sourceGroup, String destGroup) {
+        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
             Contact cr=(Contact)e.nextElement();
-            if (cr.getGroup().getName()==group1) {
-                //System.out.println(cr.getBareJid()+"  "+cr.nick+"  "+group2);
-                theStream.send(new IqQueryRoster(cr.getBareJid(), cr.nick, group2, null));
+            if (cr.getGroup().getName()==sourceGroup) {
+                theStream.send(new IqQueryRoster(cr.getBareJid(), cr.nick, destGroup, null));
             }
                 
         }
     }
+     
+    public void deleteGroup(Group deleteGroup) {
+        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+            Contact cr=(Contact)e.nextElement();
+            if (cr.getGroup()==deleteGroup)
+                deleteContact(cr);                
+        }
+    }
+
 }
 
 class TimerTaskAutoAway extends Thread{

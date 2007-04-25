@@ -47,7 +47,7 @@ public class RenameGroup implements CommandListener{
         
         f=new Form(SR.MS_NEWGROUP);
         
-        groupName=new TextFieldCombo(SR.MS_NEWGROUP, "", 256, TextField.ANY, "group", display);
+        groupName=new TextFieldCombo(SR.MS_NEWGROUP, group.getName(), 256, TextField.ANY, "group", display);
         f.append(groupName);
         
         f.addCommand(cmdOk);
@@ -60,7 +60,7 @@ public class RenameGroup implements CommandListener{
 
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) 
-            StaticData.getInstance().roster.renameGroup(group.getName(), groupName.getString()); 
+            StaticData.getInstance().roster.changeGroup(group.getName(), groupName.getString()); 
         display.setCurrent(StaticData.getInstance().roster);
     }
 }
