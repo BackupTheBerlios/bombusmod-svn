@@ -194,7 +194,7 @@ public class Config {
                 VirtualList.keyBack=-11;
 	} else if (ph.PhoneManufacturer()==ph.NOKIA) {
 	    blFlash=false;
-	    greenKeyCode=-10;
+	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	} else if (ph.PhoneManufacturer()==ph.MOTOEZX) {
 	    VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
@@ -210,7 +210,9 @@ public class Config {
             keyVibra='*';
             allowLightControl=true;
             VirtualList.keyBack=-4; //keyCode==702
-        }
+        } else if (ph.PhoneManufacturer()==ph.WTK) {
+	    greenKeyCode=VirtualList.NOKIA_GREEN;
+	}
         
 	VirtualList.greenKeyCode=greenKeyCode;
     }

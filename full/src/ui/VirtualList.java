@@ -37,7 +37,7 @@ import ui.controls.Balloon;
 import ui.controls.ScrollBar;
 
 //#if ALT_INPUT
-//# import ui.inputbox.DrawInputBox;
+//# import ui.inputbox.Box;
 //#endif
 
 public abstract class VirtualList         
@@ -74,7 +74,7 @@ public abstract class VirtualList
             ((VirtualElement)getFocusedObject()).onSelect();
             updateLayout();
             fitCursorByTop();
-        } catch (Exception e) { e.printStackTrace();} 
+        } catch (Exception e) {} 
     }
 
     public void userKeyPressed(int keyCode){}
@@ -95,7 +95,7 @@ public abstract class VirtualList
     
     public static final short SE_FLIPOPEN_JP6=-30;
     public static final short SE_FLIPCLOSE_JP6=-31;
-    public static final short SE_GREEN=53;
+    public static final short SE_GREEN=-5;
     
     public static final short SIEMENS_FLIPOPEN=-24;
     public static final short SIEMENS_FLIPCLOSE=-22;
@@ -159,11 +159,11 @@ public abstract class VirtualList
     
     protected VirtualElement mainbar;
  //#if ALT_INPUT   
-//#     //protected InputBox inputbox; //alt
-//#     //public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
-//#     //public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
-//#     public static String inputBoxText=null;
- //#endif   
+//#     protected Box inputbox; //alt
+//#     public Box getInputBoxItem() { return (Box)inputbox; } //alt
+//#     public void setInputBoxItem(Box ib) { this.inputbox=ib; } //alt
+//#     //public static String inputBoxText=null;
+ //#endif
     private boolean wrapping = true;
     
     public static int fullMode; 
@@ -298,7 +298,11 @@ public abstract class VirtualList
                 drawInfoPanel(g);
             }
         }
-        if (inputBoxText==null) {
+        if (inputbox!=null) {
+                //inputbox.draw(g, width, height);
+                list_bottom=inputbox.getHeight();
+                //System.out.println(list_bottom);
+        } else {
             if (paintBottom) {
                 if (reverse) {
                     if (mainbar!=null)
@@ -307,9 +311,6 @@ public abstract class VirtualList
                     list_bottom=iHeight; 
                 }
             }
-        } else {
-                //inputBoxText
-                //list_bottom=20; 
         }
        
         winHeight=height-itemBorder[0]-list_bottom;
@@ -398,15 +399,9 @@ public abstract class VirtualList
                 drawBalloon(g, baloon, text);
         }
 //#if ALT_INPUT
-//#         if (inputBoxText!=null) {
-//#             //setAbsOrg(g, 0, height-inputbox.height);  
-//#             //g.setClip(0,0, width, height);
-//#             //g.setColor(getMainBarBGndRGB());
-//#             //g.fillRect(0,0, width, height);
-//#             //g.setColor(getMainBarRGB());
-//#             //inputbox.drawItem(g);
-//#             //System.out.println("newinputbox.drawItem(g)");
-//#             new DrawInputBox(g, inputBoxText);
+//#         if (inputbox!=null) {
+//#             if (list_bottom>0)
+//#                 inputbox.draw(g, width, height);
 //#         } else {
 //#endif
                 if (paintBottom) {
@@ -510,39 +505,28 @@ public abstract class VirtualList
     
     protected void fitCursorByTop(){
         try {
-            //проверка по верхней границе
             int top=itemLayoutY[cursor];
-            // е�?ли верхний край выше окна, выровн�?ть по верху
             if (top<win_top) win_top=top;   
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
-                // объект помещает�?�? на �?кране - проверим и нижнюю границу
                 int bottom=itemLayoutY[cursor+1]-winHeight;
-                // е�?ли нижний край ниже окна, выровн�?ть по низу
                 if (bottom>win_top) win_top=bottom;  
             }
-            // �?лучай, когда кур�?ор больше окна, и он �?�?ЖЕ окна
             if (top>=win_top+winHeight) win_top=top; 
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { }
     }
     
     protected void fitCursorByBottom(){
-        //проверка по верхней границе
         try {
             int bottom=itemLayoutY[cursor+1]-winHeight;
-            // е�?ли нижний край ниже окна, выровн�?ть по низу
             if (bottom>win_top) win_top=bottom;
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
-                // объект помещает�?�? на �?кране - проверим и нижнюю границу
                 int top=itemLayoutY[cursor];
-                // е�?ли верхний край выше окна, выровн�?ть по верху
                 if (top<win_top) win_top=top;
             }
-            // �?лучай, когда кур�?ор больше окна, и он ВЫШЕ окна
             if (itemLayoutY[cursor+1]<=win_top) win_top=bottom;
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {}
     }
 
-    /** код удерживаемой кнопки */
     protected int kHold;
     
     protected void keyRepeated(int keyCode){ key(keyCode); }
@@ -592,6 +576,7 @@ public abstract class VirtualList
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
     private void key(int keyCode) {
+        //System.out.println(keyCode);
         if (keyCode==cf.SOFT_RIGHT && ph.PhoneManufacturer()!=ph.SONYE) {
             if (canBack==true)
                 destroyView();
@@ -600,7 +585,7 @@ public abstract class VirtualList
         wobble="";
         
 //#if ALT_INPUT
-//#         if (inputBoxText==null) {
+//#         if (inputbox==null) {
 //#endif
             switch (keyCode) {
                 case 0: break;
@@ -609,7 +594,7 @@ public abstract class VirtualList
                 case MOTOROLA_FLIP: { userKeyPressed(keyCode); break; }
                 case KEY_NUM1:  { moveCursorHome();    break; }
                 case KEY_NUM7:  { moveCursorEnd();     break; }
-                case -10: {
+                case NOKIA_GREEN: {
                     if (ph.PhoneManufacturer()==ph.NOKIA) {
                         keyGreen();
                         break; 
@@ -653,6 +638,9 @@ public abstract class VirtualList
             }
 //#if ALT_INPUT
 //#         } else {
+//#             if (keyCode==greenKeyCode)
+//#                 keyGreen();
+//#             
 //#             userKeyPressed(keyCode);
 //#         }
 //#endif

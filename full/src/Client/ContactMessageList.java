@@ -35,15 +35,13 @@ import io.NvStorage;
 import locale.SR;
 //#if TEMPLATES
 //# import templates.TemplateContainer;
-//#endif
-import ui.MainBar;
-//#if ALT_INPUT
 //# import History.HistoryStorage;
 //# import java.io.DataInputStream;
 //#endif
+import ui.MainBar;
 
 //#ifdef ALT_INPUT
-//# import ui.inputbox.KeyHandler;
+//# import ui.inputbox.Box;
 //#endif
 
 import vcard.VCard;
@@ -81,19 +79,17 @@ public class ContactMessageList extends MessageList
     
      
     private ClipBoard clipboard;
-    
-    //Vector activeContacts;
+
     StaticData sd;
+    
+    private Config cf=Config.getInstance();
 //#if LAST_MESSAGES
-//#     private Config cf=Config.getInstance();
-//#     
 //#     private boolean hisStorage=(cf.lastMessages)?true:false;    
 //#endif
     
 //#ifdef ALT_INPUT
 //#     private boolean startMessage=false;
 //#     private String text="";
-//#     private KeyHandler inputbox;
 //#endif
     
     private boolean composing=true;
@@ -181,7 +177,6 @@ public class ContactMessageList extends MessageList
         
         sd.roster.countNewMsgs();
     }
-    
     
     public int getItemCount(){ return contact.msgs.size(); }
 
@@ -322,8 +317,22 @@ public class ContactMessageList extends MessageList
     
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;
-        (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
-        contact.msgSuspended=null;
+        if (cf.altInput) {
+            if (!startMessage) {
+                    startMessage=true;
+                    updateBottom(1);
+            } else {
+                text=inputbox.getText();
+                //System.out.println(text);
+                sendMessage();
+                startMessage=false;
+                updateBottom(-10000);
+                redraw();
+            }
+        } else {
+            (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
+            contact.msgSuspended=null;
+        }
     }
     
     public void keyRepeated(int keyCode) {
@@ -338,11 +347,6 @@ public class ContactMessageList extends MessageList
 //#if ALT_INPUT  
 //#         if (cf.altInput) {
 //#             if (!startMessage) {
-//#                 if (keyCode==KEY_STAR) {
-//#                     startMessage=true;
-//#                     updateBottom(keyCode);
-//#                 }
-//#                 
 //#                 if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
 //#                 if (keyCode==KEY_NUM4) nextContact(-1);
 //#                 if (keyCode==KEY_NUM6) nextContact(1);
@@ -362,13 +366,6 @@ public class ContactMessageList extends MessageList
 //#                 if (keyCode==KEY_NUM9) updateBottom(9);
 //#                 if (keyCode==KEY_NUM0) updateBottom(0);
 //#                 if (keyCode==KEY_POUND) updateBottom(-1);
-//#                 if (keyCode==KEY_STAR) { 
-//#                     text=inputbox.getText();
-//#                     sendMessage();
-//#                     startMessage=false;
-//#                     updateBottom(-10000);
-//#                     redraw();
-//#                 }
 //#             }
 //#         } else {
 //#endif
@@ -414,23 +411,18 @@ public class ContactMessageList extends MessageList
 //#                 } catch (Exception e) { }
 //#         } catch (Exception e) { }
 //#     } 
-//#   
-//#     public void setInputBoxItem(KeyHandler inputbox) { this.inputbox=inputbox; }
-//#     
+//# 
 //#     private void updateBottom(int key){
 //#         if (startMessage) {
 //#              if (inputbox!=null) {
 //#                  inputbox.sendKey(key);
 //#              } else {
-//#                  KeyHandler inputbox=new KeyHandler("", key);
+//#                  Box inputbox=new Box();
 //#                  setInputBoxItem(inputbox);
+//#                  getInputBoxItem().sendKey(key);
 //#              }
-//#              //System.out.println(inputbox.getText());
-//#              VirtualList.inputBoxText=inputbox.getText();
 //#         } else {
-//#             //System.out.println("sended message");
-//#             VirtualList.inputBoxText=null;
-//#             this.inputbox=null;
+//#             setInputBoxItem(null);
 //#         }
 //#     } 
 //#endif
