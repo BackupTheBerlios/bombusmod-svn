@@ -40,8 +40,12 @@ import ui.MainBar;
 //#if ALT_INPUT
 //# import History.HistoryStorage;
 //# import java.io.DataInputStream;
-//# import ui.controls.InputBox;
 //#endif
+
+//#ifdef ALT_INPUT
+//# import ui.inputbox.KeyHandler;
+//#endif
+
 import vcard.VCard;
 import ui.*;
 import java.util.*;
@@ -86,10 +90,12 @@ public class ContactMessageList extends MessageList
 //#     private boolean hisStorage=(cf.lastMessages)?true:false;    
 //#endif
     
-//#if ALT_INPUT
+//#ifdef ALT_INPUT
 //#     private boolean startMessage=false;
 //#     private String text="";
+//#     private KeyHandler inputbox;
 //#endif
+    
     private boolean composing=true;
   
     /** Creates a new instance of MessageList */
@@ -357,6 +363,7 @@ public class ContactMessageList extends MessageList
 //#                 if (keyCode==KEY_NUM0) updateBottom(0);
 //#                 if (keyCode==KEY_POUND) updateBottom(-1);
 //#                 if (keyCode==KEY_STAR) { 
+//#                     text=inputbox.getText();
 //#                     sendMessage();
 //#                     startMessage=false;
 //#                     updateBottom(-10000);
@@ -384,19 +391,16 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
     }
-//#if ALT_INPUT
-//#     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; }
-//# 
+//#ifdef ALT_INPUT
 //#     private void sendMessage(){
 //#         try {
 //#                 int comp=0; // composing event off
 //#                 Roster r=StaticData.getInstance().roster;
-//#                 this.text=inputbox.getText();
 //#                 if (text!=null) {
 //#                     String from=StaticData.getInstance().account.toString();
-//#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
+//#                     
 //#                     if (contact.origin!=Contact.ORIGIN_GROUPCHAT) {
-//#                         contact.addMessage(msg);
+//#                         contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text));
 //#                         comp=1; // composing event in message
 //#                     }
 //# 
@@ -407,26 +411,26 @@ public class ContactMessageList extends MessageList
 //#                 try {
 //#                     if (text!=null || comp>0)
 //#                     r.sendMessage(contact, text, null, comp);
-//#                 } catch (Exception e) {
-//#                     e.printStackTrace();
-//#                 }
-//#         } catch (Exception e) {
-//#             e.printStackTrace();
-//#         }
+//#                 } catch (Exception e) { }
+//#         } catch (Exception e) { }
 //#     } 
 //#   
+//#     public void setInputBoxItem(KeyHandler inputbox) { this.inputbox=inputbox; }
+//#     
 //#     private void updateBottom(int key){
-//#         if (cf.altInput) {
-//#             if (startMessage) {
-//#                     if (inputbox!=null) {
-//#                         inputbox.sendKey(key);
-//#                     } else {
-//#                         InputBox inputbox=new InputBox("", key);
-//#                         setInputBoxItem(inputbox);
-//#                     }
-//#             } else {
-//#                 this.inputbox=null;
-//#             }
+//#         if (startMessage) {
+//#              if (inputbox!=null) {
+//#                  inputbox.sendKey(key);
+//#              } else {
+//#                  KeyHandler inputbox=new KeyHandler("", key);
+//#                  setInputBoxItem(inputbox);
+//#              }
+//#              //System.out.println(inputbox.getText());
+//#              VirtualList.inputBoxText=inputbox.getText();
+//#         } else {
+//#             //System.out.println("sended message");
+//#             VirtualList.inputBoxText=null;
+//#             this.inputbox=null;
 //#         }
 //#     } 
 //#endif

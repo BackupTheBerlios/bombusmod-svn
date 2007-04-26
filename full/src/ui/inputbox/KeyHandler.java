@@ -1,7 +1,7 @@
 /*
- * InputBox.java
+ * KeyHandler.java
  *
- * Created on 2.12.2006, 0:49
+ * Created on 26.04.2007, 01:14
  *
  * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -25,39 +25,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package ui.controls;
-
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Graphics;
+package ui.inputbox;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Font;
-import ui.ColorScheme;
-import ui.FontCache;
-import ui.VirtualList;
 
-import ui.polish.*;
-
-/**
- *
- * @author [AD]
- */
-public class InputBox extends Canvas {
-
-    private BitMapFont bitMapFont;
-    private BitMapFontViewer messageViewer;
+public class KeyHandler {
     
-    public String text;
+    public String text="";
     public int key;
-    
-    private Graphics g;
-
-    public int width;
-
-    public int height;
 
     private Timer timer;
 
@@ -68,21 +45,15 @@ public class InputBox extends Canvas {
     private int keycount=0;
 
     private int charsnum=0;
-
-    public InputBox(String text, int key) {
+    
+    public KeyHandler(String text, int key) {
+        System.out.println("SendKey");
         this.text=text;
         this.key=key;
+        
+        System.out.println("InputBox(String "+text+", int "+key+")");
+        
         sendKey(key);
-    }
-
-    public void drawItem(Graphics g) {
-        paint(g);
-    }
-
-    protected void paint(Graphics g) {
-            g.setColor(0xa0a0a0); g.fillRect(1, 1,width-1, height-1);
-            g.setColor(0xffffff); g.fillRect(2, 2, width-2, height-2);
-            this.messageViewer.paint( 2, 2, g );
     }
 
     public String getText() {
@@ -171,17 +142,9 @@ public class InputBox extends Canvas {
                 String chars[]={};
             }
         }
-
-                this.text=text;
-		this.bitMapFont = BitMapFont.getInstance("/fonts/font.bmf");
-		this.messageViewer = this.bitMapFont.getViewer(text);
-                this.width=getWidth();
-                int availableWidth = width - 6;
-		int padding = 2;
-		int orientation = Graphics.LEFT;
-		this.messageViewer.layout( availableWidth, availableWidth, padding, orientation );
-                this.height=this.messageViewer.getHeight()+4;
-                startTimer();
+        System.out.println("this.text="+text+";");
+        this.text=text;
+        startTimer();
     }
     
     public void startTimer() {
@@ -198,7 +161,6 @@ public class InputBox extends Canvas {
         }
         openedChar=false;
     }
-
 
     class RemindTask extends TimerTask {
         public void run() {

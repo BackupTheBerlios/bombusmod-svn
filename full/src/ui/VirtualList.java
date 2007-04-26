@@ -34,10 +34,11 @@ import java.util.*;
 import Client.*;
 import ui.controls.PopUp;
 import ui.controls.Balloon;
-//#if ALT_INPUT
-//# import ui.controls.InputBox;
-//#endif
 import ui.controls.ScrollBar;
+
+//#if ALT_INPUT
+//# import ui.inputbox.DrawInputBox;
+//#endif
 
 public abstract class VirtualList         
         extends Canvas 
@@ -158,9 +159,10 @@ public abstract class VirtualList
     
     protected VirtualElement mainbar;
  //#if ALT_INPUT   
-//#     protected InputBox inputbox; //alt
-//#     public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
-//#     public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
+//#     //protected InputBox inputbox; //alt
+//#     //public InputBox getBottomItem() { return (InputBox)inputbox; } //alt
+//#     //public void setInputBoxItem(InputBox inputbox) { this.inputbox=inputbox; } //alt
+//#     public static String inputBoxText=null;
  //#endif   
     private boolean wrapping = true;
     
@@ -296,14 +298,18 @@ public abstract class VirtualList
                 drawInfoPanel(g);
             }
         }
-        
-        if (paintBottom) {
-            if (reverse) {
-                if (mainbar!=null)
-                    list_bottom=mHeight;
-            } else {
-                list_bottom=iHeight; 
+        if (inputBoxText==null) {
+            if (paintBottom) {
+                if (reverse) {
+                    if (mainbar!=null)
+                        list_bottom=mHeight;
+                } else {
+                    list_bottom=iHeight; 
+                }
             }
+        } else {
+                //inputBoxText
+                //list_bottom=20; 
         }
        
         winHeight=height-itemBorder[0]-list_bottom;
@@ -392,13 +398,15 @@ public abstract class VirtualList
                 drawBalloon(g, baloon, text);
         }
 //#if ALT_INPUT
-//#         if (inputbox!=null) {
-//#             setAbsOrg(g, 0, height-inputbox.height);  
-//#             g.setClip(0,0, width, height);
-//#             g.setColor(getMainBarBGndRGB());
-//#             g.fillRect(0,0, width, height);
-//#             g.setColor(getMainBarRGB());
-//#             inputbox.drawItem(g);
+//#         if (inputBoxText!=null) {
+//#             //setAbsOrg(g, 0, height-inputbox.height);  
+//#             //g.setClip(0,0, width, height);
+//#             //g.setColor(getMainBarBGndRGB());
+//#             //g.fillRect(0,0, width, height);
+//#             //g.setColor(getMainBarRGB());
+//#             //inputbox.drawItem(g);
+//#             //System.out.println("newinputbox.drawItem(g)");
+//#             new DrawInputBox(g, inputBoxText);
 //#         } else {
 //#endif
                 if (paintBottom) {
@@ -592,7 +600,7 @@ public abstract class VirtualList
         wobble="";
         
 //#if ALT_INPUT
-//#         if (inputbox==null) {
+//#         if (inputBoxText==null) {
 //#endif
             switch (keyCode) {
                 case 0: break;
