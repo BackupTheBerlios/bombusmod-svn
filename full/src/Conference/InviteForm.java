@@ -73,7 +73,7 @@ public class InviteForm implements CommandListener{
             try {
                 MucContact mc=(MucContact)c.nextElement();
                 if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.getStatus()==Presence.PRESENCE_ONLINE)
-                    conferenceList.append(mc.toString(), null);
+                    conferenceList.append(mc.getJid(), null);
             } catch (Exception e) {}
         }
         

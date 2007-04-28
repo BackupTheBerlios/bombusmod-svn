@@ -355,7 +355,13 @@ public class Contact extends IconTextElement{
         if (origin==ORIGIN_GROUPCHAT) return getJid();
         return (nick==null)?getJid():nick+jid.getResource(); 
     }
-    
+/*    
+    public String toString() {
+        if (origin>ORIGIN_GROUPCHAT) return nick;
+        if (origin==ORIGIN_GROUPCHAT) return getJid();
+        return (nick==null)?getJid():nick+jid.getResource(); 
+    }
+*/    
     public final String getName(){ return (nick==null)?getBareJid():nick; }
     //public void onSelect(){}
 

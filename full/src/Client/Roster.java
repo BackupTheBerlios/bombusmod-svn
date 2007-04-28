@@ -1526,18 +1526,12 @@ public class Roster
                     String group=i.getChildBlockText("group");
                     if (group.length()==0) group=Groups.COMMON_GROUP;
 
-                    // так можно проверить, когда пришёл jabber:iq:roster,
-                    // на запро�? ро�?тера или при обновлении
-
-                    //String iqType=data.getTypeAttribute();
-                    //if (iqType.equals("set")) type=1;
-
                     updateContact(name,jid,group, subscr, ask);
                     //sort(hContacts);
                 }
             
             }
-		sort(hContacts);
+	sort(hContacts);
     }
     
     
