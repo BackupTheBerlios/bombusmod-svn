@@ -1533,10 +1533,11 @@ public class Roster
                     //if (iqType.equals("set")) type=1;
 
                     updateContact(name,jid,group, subscr, ask);
-                    sort(hContacts);
+                    //sort(hContacts);
                 }
             
             }
+		sort(hContacts);
     }
     
     
