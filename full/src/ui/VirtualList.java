@@ -298,11 +298,14 @@ public abstract class VirtualList
                 drawInfoPanel(g);
             }
         }
-        if (inputbox!=null) {
-                //inputbox.draw(g, width, height);
-                list_bottom=inputbox.getHeight();
-                //System.out.println(list_bottom);
-        } else {
+            
+//#if ALT_INPUT 
+//#         if (inputbox!=null) {
+//#                 //inputbox.draw(g, width, height);
+//#                 list_bottom=inputbox.getHeight();
+//#                 //System.out.println(list_bottom);
+//#         } else {
+//#endif
             if (paintBottom) {
                 if (reverse) {
                     if (mainbar!=null)
@@ -311,7 +314,9 @@ public abstract class VirtualList
                     list_bottom=iHeight; 
                 }
             }
-        }
+//#if ALT_INPUT
+//#         }
+//#endif
        
         winHeight=height-itemBorder[0]-list_bottom;
 

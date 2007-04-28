@@ -317,22 +317,26 @@ public class ContactMessageList extends MessageList
     
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;
-        if (cf.altInput) {
-            if (!startMessage) {
-                    startMessage=true;
-                    updateBottom(1);
-            } else {
-                text=inputbox.getText();
-                //System.out.println(text);
-                sendMessage();
-                startMessage=false;
-                updateBottom(-10000);
-                redraw();
-            }
-        } else {
+//#if ALT_INPUT   
+//#         if (cf.altInput) {
+//#             if (!startMessage) {
+//#                     startMessage=true;
+//#                     updateBottom(1);
+//#             } else {
+//#                 text=inputbox.getText();
+//#                 //System.out.println(text);
+//#                 sendMessage();
+//#                 startMessage=false;
+//#                 updateBottom(-10000);
+//#                 redraw();
+//#             }
+//#         } else {
+//#endif
             (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
             contact.msgSuspended=null;
-        }
+//#if ALT_INPUT
+//#         }
+//#endif
     }
     
     public void keyRepeated(int keyCode) {
