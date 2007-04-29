@@ -62,10 +62,9 @@ public class Browser extends VirtualList implements CommandListener{
     
     Command cmdOk=new Command(SR.MS_BROWSE, Command.OK, 1);
     Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 2);
-    Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 3);
-    Command cmdView=new Command(SR.MS_VIEW, Command.SCREEN, 4);
-    Command cmdRoot=new Command(SR.MS_ROOT, Command.SCREEN, 5);
-    Command cmdDelete=new Command("Delete", Command.SCREEN, 6);
+    Command cmdView=new Command(SR.MS_VIEW, Command.SCREEN, 3);
+    Command cmdRoot=new Command(SR.MS_ROOT, Command.SCREEN, 4);
+    Command cmdDelete=new Command("Delete", Command.SCREEN, 5);
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
     
@@ -83,12 +82,11 @@ public class Browser extends VirtualList implements CommandListener{
         setMainBarItem(new MainBar(2, null, null));
         
         addCommand(cmdOk);
-        addCommand(cmdView);
         
         if (getDirectory) {
             addCommand(cmdSelect);
         } else {
-            addCommand(cmdInfo);
+            addCommand(cmdView);
         }
 	addCommand(cmdDelete);
         addCommand(cmdRoot);
@@ -148,54 +146,27 @@ public class Browser extends VirtualList implements CommandListener{
                 redraw();
             } catch (Exception e) { e.printStackTrace(); }
         }
-        
-        if (command==cmdInfo) {
-            String f=((FileItem)getFocusedObject()).name;
-            if (f.endsWith("/")) return;
-            String ext=f.substring(f.lastIndexOf('.')+1).toLowerCase();
-            Image img=null;
-            try {
-                FileIO fio=FileIO.createConnection(path+f);
-                InputStream is=fio.openInputStream();
-                String info="Size="+String.valueOf(fio.fileSize());
-                String imgs="png.jpg.jpeg.gif";
-                if (imgs.indexOf(ext)>=0) {
-                    if (fio.fileSize()<65536) 
-                        img=Image.createImage(is);
-                }
-                is.close();
-                fio.close();
-				
-                new AlertBox(f, info, img, display, this);
 
-                /*
-                 Alert finfo=new Alert(f, info, img, null);
-                 finfo.setTimeout(15*1000);
-                 finfo.addCommand(cmdBack);
-                 display.setCurrent(finfo, this);
-                 */
-				
-            } catch (Exception e) { e.printStackTrace(); }
-        }
         if (command==cmdView) {
             String f=((FileItem)getFocusedObject()).name;
             String fl=((FileItem)getFocusedObject()).name.toLowerCase();
-            if (!f.endsWith("/")) {
-                if (fl.endsWith(".wav") || fl.endsWith(".mid") || fl.endsWith(".amr") || fl.endsWith(".wav") || fl.endsWith(".mp3") || fl.endsWith(".aac")) {
-                        //System.out.println("play "+f);
-                        new ShowFile(display, path+f, 1);
-                        return;
-                }
-                if (fl.endsWith(".png") || fl.endsWith(".bmp") || fl.endsWith(".gif") || fl.endsWith(".jpg") || fl.endsWith(".jpeg")) {
-                        //System.out.println("view "+f);
-                        new ShowFile(display, path+f, 2);
-                        return;
-                }
-                if (fl.endsWith(".txt")) {
-                        //System.out.println("read "+f);
-                        new ShowFile(display, path+f, 3);
-                        return;
-                }
+            
+            String ext=f.substring(f.lastIndexOf('.')+1).toLowerCase();
+            String imgs="png.bmp.jpg.jpeg.gif";
+            String snds="wav.mid.amr.wav.mp3.aac";
+            String txts="txt.log";
+            
+            if (imgs.indexOf(ext)>=0) {
+                new ShowFile(display, path+f, 1);
+                return;
+            }
+            if (snds.indexOf(ext)>=0) {
+                new ShowFile(display, path+f, 2);
+                return;
+            }
+            if (txts.indexOf(ext)>=0) {
+                new ShowFile(display, path+f, 3);
+                return;
             }
         }
         if (command==cmdCancel) { destroyView(); }
@@ -247,7 +218,6 @@ public class Browser extends VirtualList implements CommandListener{
             
         } catch (Exception ex) {
             dir.addElement( new FileItem("../(Restricted Access)"));
-            //dir.addElement( new FileItem("../ Ex: "+ex.getClass().getName()+" "+ex.toString()));
             ex.printStackTrace();
         }
     }
@@ -276,12 +246,26 @@ public class Browser extends VirtualList implements CommandListener{
         public FileItem(String name) {
             super(RosterIcons.getInstance());
             this.name=name;
-            String namel=name.toLowerCase();
             //TODO: file icons
             iconIndex=name.endsWith("/")? RosterIcons.ICON_COLLAPSED_INDEX: RosterIcons.ICON_PRIVACY_ACTIVE;
-            if (namel.endsWith(".txt")) iconIndex=RosterIcons.ICON_PRIVACY_ACTIVE;
-            if (namel.endsWith(".png") || namel.endsWith(".bmp") || namel.endsWith(".gif") || namel.endsWith(".jpg") || namel.endsWith(".jpeg")) iconIndex=0x57;
-            if (namel.endsWith(".wav") || namel.endsWith(".mid") || namel.endsWith(".amr") || namel.endsWith(".wav") || namel.endsWith(".mp3") || namel.endsWith(".aac")) iconIndex=0x33;
+            
+            String ext=name.substring(name.lastIndexOf('.')+1).toLowerCase();
+            String imgs="png.bmp.jpg.jpeg.gif";
+            String snds="wav.mid.amr.wav.mp3.aac";
+            String txts="txt.log";
+            
+            if (txts.indexOf(ext)>=0) {
+                iconIndex=RosterIcons.ICON_PRIVACY_ACTIVE;
+                return;
+            }
+            if (imgs.indexOf(ext)>=0) {
+                iconIndex=0x57;
+                return;
+            }
+            if (snds.indexOf(ext)>=0) {
+                iconIndex=0x33;
+                return;
+            }
         }
         protected int getImageIndex() { return iconIndex; }
         

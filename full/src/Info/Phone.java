@@ -117,10 +117,10 @@ public class Phone {
             
             if (platformName==null) platformName="Motorola";
             
-            if (platformName.startsWith("j2me")) {
-                if (device.startsWith("wtk-emulator")) {
-                    platformName=device;
-                    return platformName;
+             if (platformName.startsWith("j2me")) {
+                if (device!=null) if (device.startsWith("wtk-emulator")) {
+                     platformName=device;
+                     return platformName;
                 }
                 if (device!=null && firmware!=null)
                     platformName="Motorola"; // buggy v360

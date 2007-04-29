@@ -27,6 +27,8 @@
 
 package ui.inputbox;
 
+import Client.Config;
+import Info.Phone;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -35,6 +37,7 @@ import ui.FontCache;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import ui.VirtualList;
 
 /**
  *
@@ -88,6 +91,8 @@ public class Box {
     private int keycount=0;
 
     private int charsnum=0;
+    
+    public Config cf=Config.getInstance();
 
     public Box() { }
     
@@ -193,7 +198,7 @@ public class Box {
     }
     
     public int getHeight() {
-        strings=parseMessage(width-4);
+        strings=parseMessage(width-14);
         if (strings.isEmpty())
             return 0;
         return getFontHeight()*strings.size();
@@ -219,54 +224,17 @@ public class Box {
             keycount=0;
         }
         switch (key) {
-            case 1: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
-            case 2: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
-            case 3: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
-            case 4: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
-            case 5: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
-            case 6: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
-            case 7: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
-            case 8: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
-            case 9: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
-                break;
-            }
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
             case 0: {
-                charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
-                text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
+                getString(key);
                 break;
             }
             case -1: {
@@ -278,9 +246,18 @@ public class Box {
             }
             this.text=text;
         }
-        //System.out.println("this.text="+text+";");
-
         startTimer();
+    }
+    
+    public String getString( int key ) {
+        if (cf.allowLightControl) {
+            charsnum=(keycount>siemensChars[key].length)? 0 : keycount;
+            text=(openedChar)? text.substring(0,text.length()-1)+siemensChars[key][charsnum] : text+siemensChars[key][charsnum];
+        } else {
+            charsnum=(keycount>genericChars[key].length)? 0 : keycount;
+            text=(openedChar)? text.substring(0,text.length()-1)+genericChars[key][charsnum] : text+genericChars[key][charsnum];
+        }
+        return text;
     }
     
     public void startTimer() {

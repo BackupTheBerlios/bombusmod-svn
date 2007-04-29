@@ -217,7 +217,7 @@ Visitors are not allowed to send messages to all occupants	Гости не мо�
 Unaffiliate	Отнять членство
 Grant Moderator	Дать право модератора
 Revoke Moderator	Отнять право модератора
-Grant Admin	Дать Дать право администратора
+Grant Admin	Дать право администратора
 Grant Ownership	Дать право владельца
 
 room presences	статусы в конференции
@@ -225,7 +225,7 @@ room presences	статусы в конференции
  is now known as 	 меняет ник на 
  was banned 	 запретили входить в комнату 
  was kicked 	 выгнали из комнаты 
- has been kicked because room became members-only	 выгнали, т.к. комната теперь только для членов
+ has been kicked because room became members-only	 выгнали, т.к. комната закрылась
  has left the channel	 выходит из комнаты
  has joined the channel as 	 заходит как 
  and 	 и 

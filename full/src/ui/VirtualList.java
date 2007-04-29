@@ -594,7 +594,11 @@ public abstract class VirtualList
 //#endif
             switch (keyCode) {
                 case 0: break;
-                case NOKIA_PEN: { destroyView(); break; }
+                case NOKIA_PEN: { 
+                    if (canBack==true)
+                        destroyView(); 
+                    break; 
+                }
                 case MOTOE680_VOL_UP:
                 case MOTOROLA_FLIP: { userKeyPressed(keyCode); break; }
                 case KEY_NUM1:  { moveCursorHome();    break; }
