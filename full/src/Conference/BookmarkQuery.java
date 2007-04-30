@@ -78,7 +78,7 @@ public class BookmarkQuery implements JabberBlockListener{
                         BookmarkItem bm=new BookmarkItem((JabberDataBlock)e.nextElement());
                         bookmarks.addElement(bm);
                         if (bm.autojoin && autojoin) {
-                            ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, 20);
+                            ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, Config.getInstance().confMessageCount);
                         }
                     }
                 } catch (Exception e) { /* no any bookmarks */}

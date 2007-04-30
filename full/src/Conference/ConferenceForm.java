@@ -208,10 +208,7 @@ public class ConferenceForm implements CommandListener{
                 join(gchat.toString(),pass, msgLimit);
                 gchat=null;
                 display.setCurrent(sd.roster);
-            } catch (Exception e) {
-                //e.printStackTrace();
-                //display.setCurrent(new Alert("Exception", e.toString(), null, AlertType.ERROR), sd.roster);
-            }
+            } catch (Exception e) { }
         }
     }
     public static void join(String name, String pass, int maxStanzas) {

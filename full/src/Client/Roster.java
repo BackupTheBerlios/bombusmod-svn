@@ -551,7 +551,7 @@ public class Roster
         // change nick if already in room
         if (c.getStatus()==Presence.PRESENCE_ONLINE) return grp;
 
-        c.setStatus(myStatus);
+        c.setStatus(Presence.PRESENCE_ONLINE);
         c.transport=RosterIcons.ICON_GROUPCHAT_INDEX; //FIXME: убрать хардкод
         c.bareJid=from;
         c.origin=Contact.ORIGIN_GROUPCHAT;
