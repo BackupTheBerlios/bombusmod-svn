@@ -176,6 +176,8 @@ public class Box {
             
             if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);
             state++;
+            
+            s=null;
         }
         return lines;
     }

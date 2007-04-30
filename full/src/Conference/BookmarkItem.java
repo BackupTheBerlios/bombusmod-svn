@@ -74,12 +74,13 @@ public class BookmarkItem extends IconTextElement{
         password=data.getChildBlockText("password");
         
         if ((autojoin==true) && (Config.getInstance().autoJoinConferences==true)) {
-            System.out.println(jid+" autojoin");
+            //System.out.println(jid+" autojoin");
             StringBuffer gchat=new StringBuffer();
             gchat.append(jid);
             gchat.append('/');
             gchat.append(nick);
             join(gchat.toString(),password,Config.getInstance().confMessageCount);
+            gchat=null; //for nokia
         }
     }
     
@@ -122,7 +123,7 @@ public class BookmarkItem extends IconTextElement{
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {};
 
-        sd.roster.sendPresence(name, null, x);
+        //sd.roster.sendPresence(name, null, x);
         sd.roster.reEnumRoster();
     }
 }

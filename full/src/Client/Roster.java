@@ -102,7 +102,7 @@ public class Roster
     
     //boolean storepresence=true;
     
-    public int myStatus=Presence.PRESENCE_OFFLINE;
+    public int myStatus=Config.getInstance().loginstatus;
     
     private Vector hContacts;
     private Vector vContacts;
@@ -551,7 +551,7 @@ public class Roster
         // change nick if already in room
         if (c.getStatus()==Presence.PRESENCE_ONLINE) return grp;
 
-        c.setStatus(Presence.PRESENCE_ONLINE);
+        c.setStatus(myStatus);
         c.transport=RosterIcons.ICON_GROUPCHAT_INDEX; //FIXME: убрать хардкод
         c.bareJid=from;
         c.origin=Contact.ORIGIN_GROUPCHAT;
@@ -713,7 +713,7 @@ public class Roster
             if (!StaticData.getInstance().account.isMucOnly() )
 				theStream.send( presence );
             
-            multicastConferencePresence();
+           multicastConferencePresence(); //current status
 
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
@@ -790,7 +790,7 @@ public class Roster
             if (!StaticData.getInstance().account.isMucOnly() )
 		theStream.send( presence );
             
-			multicastConferencePresence(myMessage);
+            multicastConferencePresence(myMessage);
 
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
@@ -854,7 +854,7 @@ public class Roster
     }
     
     public void multicastConferencePresence() {
-		if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
+	 if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
              Contact c=(Contact) e.nextElement();
@@ -868,6 +868,7 @@ public class Roster
                ConferenceForm.join(myself.getJid(), confGroup.password, 20);
                 continue;
             }
+            //c.status=myStatus;
             myMessage=es.getMessage();
 
             if (myMessage.indexOf("%t")>-1) {
@@ -893,8 +894,15 @@ public class Roster
             ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
             Contact myself=confGroup.getSelfContact();
 
-            c.status=Presence.PRESENCE_ONLINE;
-             
+            //c.status=Presence.PRESENCE_ONLINE;
+            
+            if (c.status==Presence.PRESENCE_OFFLINE) {
+               ConferenceForm.join(myself.getJid(), confGroup.password, 20);
+                continue;
+            }
+            
+            //c.status=myStatus;
+            
             myMessage=message;
 
             if (myMessage.indexOf("%t")>-1) {
@@ -1036,9 +1044,10 @@ public class Roster
         //enable keep-alive packets
         theStream.startKeepAliveTask();
 		
-		theStream.loggedIn=true;
+	theStream.loggedIn=true;
 		
-		reconnectCount=0;
+	reconnectCount=0;
+        
         // залогинили�?ь. теперь, е�?ли был реконнект, то про�?то пошлём �?тату�?
         if (reconnect) {
             querysign=reconnect=false;
@@ -1144,7 +1153,7 @@ public class Roster
                             SplashScreen.getInstance().close(); // display.setCurrent(this);
                             //loading bookmarks
                             //if (cf.autoJoinConferences)
-                            theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+                            //theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
@@ -1340,6 +1349,7 @@ public class Roster
                         if (start_me==0) b.append("> ");
                         b.append(body.substring(start_me));
                         body=b.toString();
+                        b=null;
                     }
                 }
                 
@@ -1982,6 +1992,7 @@ public class Roster
         }
 
         VirtualList.setWobble(mess.toString());
+        mess=null;
     }
     
     public void logoff(){

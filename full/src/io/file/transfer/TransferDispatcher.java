@@ -154,10 +154,11 @@ public class TransferDispatcher implements JabberBlockListener{
             StringBuffer sb=new StringBuffer();
             data.constructXML(sb);
             StaticData.getInstance().roster.theStream.sendBuf( sb );
-            
+            sb=null;
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
+        
     }
 
     private TransferTask getTransferBySid(String sid) {

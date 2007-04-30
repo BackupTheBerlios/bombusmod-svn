@@ -73,8 +73,8 @@ public final class MessageParser implements Runnable{
     public Vector getSmileTable() { return smileTable; }
     
     private class Leaf {
-        public int smile=NOSMILE;   // нет смайлика в узле
-        public String smileChars;     // символы смайликов
+        public int smile=NOSMILE;   // нет �?майлика в узле
+        public String smileChars;     // �?имволы �?майликов
         public Vector child;
 
         public Leaf() {
@@ -94,7 +94,7 @@ public final class MessageParser implements Runnable{
     }
     
     private void addSmile(String smile, int index) {
-	Leaf p=root;   // этой ссылкой будем ходить по дереву
+	Leaf p=root;   // �?той �?�?ылкой будем ходить по дереву
 	Leaf p1;
 	
 	int len=smile.length();
@@ -154,6 +154,7 @@ public final class MessageParser implements Runnable{
                     firstSmile=true;
                 }
             }
+            s=null;
             in.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -303,7 +304,7 @@ public final class MessageParser implements Runnable{
                     int iw=il.getWidth();
                     if (w+iw>width) {
                         task.notifyRepaint(lines, task.msg, false);
-                        l=new ComplexString(il);     // новая строка
+                        l=new ComplexString(il);     // нова�? �?трока
                         lines.addElement(l);    // добавим l в v
                         
                         if (singleLine) {
@@ -337,12 +338,12 @@ public final class MessageParser implements Runnable{
 			}
                         if (w+wordWidth+cw>width || newline) {
                             if (underline) l.addUnderline();
-                            l.addElement(s.toString());    // последняя подстрока в l
+                            l.addElement(s.toString());    // по�?ледн�?�? под�?трока в l
                             s.setLength(0); w=0;
                             
                             if (c==0xa0) l.setColor(ColorScheme.MSG_HIGHLIGHT);
                             
-                            l=new ComplexString(il);     // новая строка
+                            l=new ComplexString(il);     // нова�? �?трока
                             lines.addElement(l);    // добавим l в v
                             task.notifyRepaint(lines, task.msg, false);
 
@@ -380,10 +381,11 @@ public final class MessageParser implements Runnable{
                 l.addElement(s.toString());
             }
             
-            if (l.isEmpty()) lines.removeElementAt(lines.size()-1);  // последняя строка
+            if (l.isEmpty()) lines.removeElementAt(lines.size()-1);  // по�?ледн�?�? �?трока
             
             task.notifyRepaint(lines, task.msg, true);
             state++;
+            s=null;
         }
     }
 

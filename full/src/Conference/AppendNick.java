@@ -84,6 +84,7 @@ public class AppendNick
              
             if (caretPos==0) b.append(':');
             me.insertText(b.toString(), caretPos);
+            b=null;
          } catch (Exception e) {}
         destroyView();
     }

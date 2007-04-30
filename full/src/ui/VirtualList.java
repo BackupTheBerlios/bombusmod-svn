@@ -104,7 +104,7 @@ public abstract class VirtualList
 
     public static short keyClear=-8;
     public static short keyVolDown=0x1000;
-    public static short keyBack=0x1000;
+    public static short keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
@@ -582,12 +582,12 @@ public abstract class VirtualList
 
     private void key(int keyCode) {
         //System.out.println(keyCode);
-        if (keyCode==cf.SOFT_RIGHT && ph.PhoneManufacturer()!=ph.SONYE) {
+        wobble="";
+        if ((keyCode==cf.SOFT_RIGHT || keyCode==keyBack) && ph.PhoneManufacturer()!=ph.SONYE) {
             if (canBack==true)
                 destroyView();
             return;
         }
-        wobble="";
         
 //#if ALT_INPUT
 //#         if (inputbox==null) {
@@ -630,8 +630,8 @@ public abstract class VirtualList
                      if (keyCode==KEY_POUND) {
                          if (cf.allowLightControl) {
                             System.gc();
-                            //int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-                            //wobble="Free "+freemem+"kB";
+                            int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                            wobble="Free "+freemem+"kB";
                          }
                         //return;
                      }
@@ -639,8 +639,8 @@ public abstract class VirtualList
                         if (!cf.allowLightControl)
                         {
                             System.gc();
-                            //int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-                            //wobble="Free "+freemem+"kB";
+                            int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+                            wobble="Free "+freemem+"kB";
                         }
                          //return;
                      }

@@ -123,7 +123,7 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
         f.addCommand(cmdNoReason);
         f.addCommand(cmdCancel);
         f.setCommandListener(this);
-        
+        user=null;
         display.setCurrent(f);
     }
 

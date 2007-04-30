@@ -133,6 +133,7 @@ public class XMLParser
       streamData.append( (char) '\n' );
 
     String returnData = streamData.toString();
+    xmlChar=null;
     return returnData;
   }
 

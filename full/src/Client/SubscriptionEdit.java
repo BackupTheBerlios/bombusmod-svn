@@ -59,7 +59,7 @@ public class SubscriptionEdit extends Form implements CommandListener{
         append("\n");
 //#endif
         append(s.toString());
-        //setString(s.toString());
+        s=null;
 
         addCommand(cmdGrantSubscr);
         addCommand(cmdAskSubscr);

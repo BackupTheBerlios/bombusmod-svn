@@ -124,7 +124,7 @@ public class PopUp {
                         if (newline) wordStartPos++;
                     }
                     if (w+wordWidth+cw>stringWidth || newline) {
-                        lines.addElement(s.toString()); //последняя подстрока в l
+                        lines.addElement(s.toString()); //по�?ледн�?�? под�?трока в l
                         s.setLength(0); w=0;
                     }
                 }
@@ -149,8 +149,10 @@ public class PopUp {
                 lines.addElement(s.toString());
             }
             
-            if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);  //последняя строка
+            if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);  //по�?ледн�?�? �?трока
             state++;
+            
+            s=null;
         }
         return lines;
     }

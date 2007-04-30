@@ -121,6 +121,7 @@ public class JabberStream implements XMLEventListener, Runnable {
         }
         header.append( '>' );
         send(header.toString());
+        header=null;
     }
 	
     public void startKeepAliveTask(){
@@ -394,7 +395,10 @@ public class JabberStream implements XMLEventListener, Runnable {
                 StringBuffer buf=new StringBuffer();
                 data.constructXML(buf);
                 sendBuf( buf );
-            } catch (Exception e) {e.printStackTrace(); }
+                buf=null;
+            } catch (Exception e) {
+                //e.printStackTrace(); 
+            }
         }
     }
 }

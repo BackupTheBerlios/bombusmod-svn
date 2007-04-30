@@ -121,6 +121,7 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
                 warn.append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/);
                 warn.append(AffiliationItem.getAffiliationName(affiliation.getSelectedIndex()));
                 new YesNoAlert(display, SR.MS_MODIFY_AFFILIATION/*"Modify affiliation"*/, warn.toString(), this);
+                warn=null;
             } else modify();
         }
         if (c==cmdCancel) { destroyView(); }

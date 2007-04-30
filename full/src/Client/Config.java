@@ -59,6 +59,7 @@ public class Config {
     public final static int AWAY_LOCK=1;
     public final static int AWAY_IDLE=2;
     
+    public static int KEY_BACK = -11;
     public static int SOFT_LEFT = -1000;
     public static int SOFT_RIGHT = -1000;
 
@@ -181,7 +182,7 @@ public class Config {
 	locOffset=getIntProperty( "time_loc_offset", 0);
 	gmtOffset=getIntProperty("time_gmt_offset", gmtloc);
 	
-	short greenKeyCode=VirtualList.SIEMENS_GREEN;
+	short greenKeyCode=-1000;
 	
 	if (ph.PhoneManufacturer()==ph.SONYE) {
             //prefetch images
@@ -190,15 +191,17 @@ public class Config {
             
 			allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
-            if (ph.PhoneManufacturer()==ph.SONYE_M600)
-                VirtualList.keyBack=-11;
+            if (ph.PhoneManufacturer()==ph.SONYE_M600) {
+                System.out.println("bl");
+                KEY_BACK=-11;
+            }
 	} else if (ph.PhoneManufacturer()==ph.NOKIA) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	} else if (ph.PhoneManufacturer()==ph.MOTOEZX) {
 	    VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
-	    VirtualList.keyBack=VirtualList.MOTOE680_REALPLAYER;
+	    KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
 	} else if (ph.PhoneManufacturer()==ph.MOTO) {
 	    ghostMotor=true;
 	    blFlash=false;
@@ -209,7 +212,8 @@ public class Config {
             keyLock='#';
             keyVibra='*';
             allowLightControl=true;
-            VirtualList.keyBack=-4; //keyCode==702
+            KEY_BACK=-4; //keyCode==702
+            greenKeyCode=VirtualList.SIEMENS_GREEN;
         } else if (ph.PhoneManufacturer()==ph.WTK) {
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	}

@@ -221,6 +221,7 @@ public class ContactMessageList extends MessageList
                     .append("\n")
                     .toString();
                 new MessageEdit(display,contact,msg);
+                msg=null;
             } catch (Exception e) {/*no messages*/}
         }/*
         if (c==cmdContact) {
@@ -249,6 +250,7 @@ public class ContactMessageList extends MessageList
                 clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
                 clipstr.append(getMessage(cursor).getBody());
                 clipboard.setClipBoard(clipstr.toString());
+                clipstr=null;
             } catch (Exception e) {/*no messages*/}
         }
         
@@ -261,6 +263,7 @@ public class ContactMessageList extends MessageList
                 clipstr.append(getMessage(cursor).getBody());
                 
                 clipboard.setClipBoard(clipstr.toString());
+                clipstr=null;
             } catch (Exception e) {/*no messages*/}
         }
 //#if TEMPLATES

@@ -75,6 +75,7 @@ public class InfoWindow implements CommandListener{
         }
         form.append(conn_stats);
 //#endif
+        memInfo=null;
         form.setCommandListener(this);
         display.setCurrent(form);
     }

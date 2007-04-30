@@ -124,6 +124,7 @@ public class Utf8IOStream implements Runnable{
 	    
 //#if OUTSTREAM_FLUSH
 	    outStream.flush();
+            outbuf=null;
 //#endif
 	}
 //#if (XML_STREAM_DEBUG)        

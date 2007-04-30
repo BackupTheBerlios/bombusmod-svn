@@ -193,11 +193,12 @@ public class ConferenceForm implements CommandListener{
             StaticData.getInstance().roster.bookmarks.removeElement(editConf);
             StaticData.getInstance().roster.bookmarks.insertElementAt(new BookmarkItem(gchat.toString(), nick, pass, autojoin), cursor);
             new BookmarkQuery(BookmarkQuery.SAVE);
+            gchat=null;
             display.setCurrent(sd.roster);
-        }
-        
-        else if (c==cmdAdd) new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
-        else if (c==cmdJoin) {
+        } else if (c==cmdAdd) {
+            new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
+            gchat=null;
+        } else if (c==cmdJoin) {
             try {
                 cf.confMessageCount=msgLimit;
                 cf.defGcRoom=room+"@"+host;
@@ -205,7 +206,7 @@ public class ConferenceForm implements CommandListener{
                 gchat.append('/');
                 gchat.append(nick);
                 join(gchat.toString(),pass, msgLimit);
-
+                gchat=null;
                 display.setCurrent(sd.roster);
             } catch (Exception e) {
                 //e.printStackTrace();
@@ -234,7 +235,7 @@ public class ConferenceForm implements CommandListener{
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {};
 
-        sd.roster.sendPresence(name, null, x);
+        //sd.roster.sendPresence(name, null, x);
         
         sd.roster.reEnumRoster();
     }

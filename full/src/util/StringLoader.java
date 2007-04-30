@@ -65,13 +65,18 @@ public class StringLoader {
 			if (indexTo<0) indexTo=line.length();
 			if (indexFrom<indexTo) cell=line.substring(indexFrom, indexTo);
 			indexFrom=indexTo+1;
-		    } catch (Exception e) { e.printStackTrace(); }
+		    } catch (Exception e) {
+                        //e.printStackTrace();
+                    }
 		    
 		    table[i].addElement( cell );
 		}
 	    }
 	    in.close();
-	} catch (Exception e)	{ e.printStackTrace();}
+	} catch (Exception e)	{
+            //e.printStackTrace();
+        }
+        buf=null;
 	return table;
     }
 

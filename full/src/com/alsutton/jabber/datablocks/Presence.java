@@ -132,8 +132,6 @@ public class Presence extends JabberDataBlock
           text.append(getPriority());
           text.append(']');
       }
-          
-      
   }
 
   /**

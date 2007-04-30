@@ -86,6 +86,7 @@ public class NumberField extends TextField
                 body.insert(0,'-');
             }
 	setString(body.toString());
+        body=null;
     }
 //#endif
 }

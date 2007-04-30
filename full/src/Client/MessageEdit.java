@@ -150,6 +150,7 @@ public class MessageEdit
         } catch (Exception e) {e.printStackTrace();}
        
         t.insert(sb.toString(), caretPos);
+        sb=null;
     }
     
     public void setParentView(Displayable parentView){
@@ -210,7 +211,7 @@ public class MessageEdit
         if (body!=null || subj!=null ) {
             String from=StaticData.getInstance().account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-            // не добавляем в групчат свои сообщения
+            // не добавл�?ем в групчат �?вои �?ообщени�?
             // не шлём composing
             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
                 to.addMessage(msg);

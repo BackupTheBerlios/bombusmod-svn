@@ -175,6 +175,7 @@ public class ArchiveList
                 clipstr.append(getMessage(cursor).getBody());
                 
                 clipboard.setClipBoard(clipstr.toString());
+                clipstr=null;
             } catch (Exception e) {/*no messages*/}
         }
     }
@@ -260,7 +261,7 @@ public class ArchiveList
                     }
                     //ex.printStackTrace();
                 }
-                
+            body=null;
             arhPath=null;
 	destroyView();
     }

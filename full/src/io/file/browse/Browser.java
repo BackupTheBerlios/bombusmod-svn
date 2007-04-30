@@ -152,21 +152,16 @@ public class Browser extends VirtualList implements CommandListener{
             String fl=((FileItem)getFocusedObject()).name.toLowerCase();
             
             String ext=f.substring(f.lastIndexOf('.')+1).toLowerCase();
-            String imgs="png.bmp.jpg.jpeg.gif";
             String snds="wav.mid.amr.wav.mp3.aac";
+            String imgs="png.bmp.jpg.jpeg.gif";
             String txts="txt.log";
             
-            if (imgs.indexOf(ext)>=0) {
-                new ShowFile(display, path+f, 1);
-                return;
-            }
             if (snds.indexOf(ext)>=0) {
+                new ShowFile(display, path+f, 1);
+            } else if (imgs.indexOf(ext)>=0) {
                 new ShowFile(display, path+f, 2);
-                return;
-            }
-            if (txts.indexOf(ext)>=0) {
+            } else if (txts.indexOf(ext)>=0) {
                 new ShowFile(display, path+f, 3);
-                return;
             }
         }
         if (command==cmdCancel) { destroyView(); }

@@ -80,6 +80,7 @@ public class TransferAcceptFile
                 newName.append("~");
                 newName.append(name.substring(extPos));
                 name=newName.toString();
+                newName=null;
             }
         }
         

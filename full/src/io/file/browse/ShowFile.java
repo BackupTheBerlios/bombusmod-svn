@@ -111,9 +111,9 @@ public class ShowFile implements CommandListener{
                 pl.realize();
                 pl.start();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
             } catch (MediaException ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
             }
 
 		Alert a = new Alert("Play", "Playing" + " " + file, null, null);

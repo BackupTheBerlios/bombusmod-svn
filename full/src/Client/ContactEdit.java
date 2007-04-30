@@ -277,6 +277,7 @@ public final class ContactEdit
             jidBuf.append('@');
             jidBuf.append(transport);
             tJid.setString(jidBuf.toString());
+            jidBuf=null;
         }
         if (item==tJid) {
             String s1=tJid.getString();
