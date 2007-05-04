@@ -583,7 +583,7 @@ public abstract class VirtualList
     private void key(int keyCode) {
         //System.out.println(keyCode);
         wobble="";
-        if ((keyCode==cf.SOFT_RIGHT || keyCode==keyBack) && ph.PhoneManufacturer()!=ph.SONYE) {
+        if ((keyCode==cf.SOFT_RIGHT || keyCode==cf.KEY_BACK) && ph.PhoneManufacturer()!=ph.SONYE) {
             if (canBack==true)
                 destroyView();
             return;

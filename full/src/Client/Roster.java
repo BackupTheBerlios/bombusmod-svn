@@ -193,12 +193,11 @@ public class Roster
         lightState=cf.lightState;
         allowLightControl=cf.allowLightControl;
         
-        if (allowLightControl && lightState){
-            try {
-                com.siemens.mp.game.Light.setLightOn();
-                //errorLog("light is turned on");
-            } catch( Exception e ) {
-                //errorLog("can't turn light on :(\n"+e.toString());
+        if (allowLightControl) {
+            if (lightState==true) {
+                try {
+                    com.siemens.mp.game.Light.setLightOff();
+                } catch( Exception e ) { }
             }
         }
         
@@ -1602,6 +1601,8 @@ public class Roster
         int volume=ac.soundVol;
         int vibraLen=cf.vibraLen;
         String type, message;
+                
+        boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
         
         switch (event) {
             case 0: //online
@@ -1654,16 +1655,22 @@ public class Roster
         }
             int profile=cf.profile;
             if (profile==AlertProfile.AUTO) profile=AlertProfile.ALL;
-        
+            
+        /*
+        if (cf.allowLightControl && !lightState && profile==AlertProfile.FLASH) {
+            try {
+                com.siemens.mp.game.Light.setLightOn();
+                com.siemens.mp.game.Light.setLightOff(); 
+            } catch (Exception e) { } 
+        }
+        */
         EventNotify notify=null;
         
-        boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
-        
         switch (profile) {
-            case AlertProfile.ALL:   notify=new EventNotify(display, type, message,  volume, vibraLen, blFlashEn); break;
-            case AlertProfile.NONE:  notify=new EventNotify(display, null, null,  volume,    0,           false    ); break;
-            case AlertProfile.VIBRA: notify=new EventNotify(display, null, null,  volume,    vibraLen, blFlashEn); break;
-            case AlertProfile.SOUND: notify=new EventNotify(display, type, message,  volume, 0,           blFlashEn); break;
+            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen,       blFlashEn); break;
+            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0,              false    ); break;
+            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen,       blFlashEn); break;
+            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0,              blFlashEn); break;
         }
         if (notify!=null) notify.startNotify();
         blockNotify(event, 2000);

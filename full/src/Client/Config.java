@@ -151,7 +151,7 @@ public class Config {
 
     public int isbottom=2; //default state both panels show, reverse disabled
    
-    public boolean lightState=true;
+    public boolean lightState=false;
     
     public boolean lastMessages=false;
 
@@ -212,6 +212,7 @@ public class Config {
             keyLock='#';
             keyVibra='*';
             allowLightControl=true;
+            blFlash=true;
             KEY_BACK=-4; //keyCode==702
             greenKeyCode=VirtualList.SIEMENS_GREEN;
         } else if (ph.PhoneManufacturer()==ph.WTK) {
@@ -363,7 +364,7 @@ public class Config {
             
             newMenu=false;
             
-            lightState=true;
+            lightState=false;
 			
             autoSubscribe=true;
             

@@ -1,0 +1,9 @@
+Фишечки :)
+
+//#ifdef COLORS
+//#ifdef ARCHIVE
+//#ifdef POPUPS
+//#ifdef ELF
+//#ifdef NEW_MENU
+//#ifdef SERVICE_DISCOVERY
+//#ifdef PRIVACY

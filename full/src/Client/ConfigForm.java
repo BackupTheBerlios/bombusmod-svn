@@ -382,7 +382,9 @@ public class ConfigForm implements
             VirtualList.newMenu=cf.newMenu=ap[apctr++];
             
             if (cf.allowLightControl) { 
-                StaticData.getInstance().roster.lightState=cf.lightState=ap[apctr++];
+                StaticData.getInstance().roster.lightState=!ap[apctr++];
+                cf.lightState=ap[apctr++];
+                setLight(cf.lightState);                
             }
 
             if (!cf.ghostMotor) {
@@ -454,15 +456,13 @@ public class ConfigForm implements
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
-        
-        if (cf.allowLightControl) setLight(cf.lightState);
     }
     
     public static void setLight(boolean state) {
         if (state) {
             com.siemens.mp.game.Light.setLightOn();
         } else {
-            com.siemens.mp.game.Light.setLightOff();    
+            com.siemens.mp.game.Light.setLightOff();  
         }
     }
 
