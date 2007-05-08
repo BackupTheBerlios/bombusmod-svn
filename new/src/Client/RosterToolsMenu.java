@@ -61,8 +61,10 @@ public class RosterToolsMenu
         addItem(SR.MS_MY_VCARD, 2, 0x0f16);
         addItem(SR.MS_OPTIONS, 3, 0x0f03);
         
+//#if (FILE_IO)
+        addItem(SR.MS_ROOT,4, 0x0f10);
+//#endif
 //#if (FILE_IO && FILE_TRANSFER)
-//#         addItem(SR.MS_ROOT,4, 0x0f10);
 //#         addItem(SR.MS_FILE_TRANSFERS, 5, 0x0f34);
 //#endif
 //#ifdef COLORS
@@ -108,9 +110,11 @@ public class RosterToolsMenu
             case 4:
                 new io.file.browse.Browser(null, display, null, false);
                 return;
-            case 5:
-                new io.file.transfer.TransferManager(display);
-                return;
+//#endif
+//#if (FILE_IO && FILE_TRANSFER)
+//#             case 5:
+//#                 new io.file.transfer.TransferManager(display);
+//#                 return;
 //#endif
 //#ifdef COLORS
 //#             case 6:

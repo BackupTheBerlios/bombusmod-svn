@@ -61,7 +61,9 @@ public class MessageEdit
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdSend=new Command(SR.MS_SEND, Command.OK /*Command.SCREEN*/,1);
-    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+//#ifdef SMILES
+//#     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+//#endif
     private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
     private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
@@ -107,7 +109,9 @@ public class MessageEdit
 
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
-        t.addCommand(cmdSmile);
+//#ifdef SMILES
+//#         t.addCommand(cmdSmile);
+//#endif
         if (to.origin>=Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdInsNick);
 //#ifdef ARCHIVE
@@ -175,7 +179,9 @@ public class MessageEdit
         if (body.length()==0) body=null;
         
         if (c==cmdInsMe) { t.insert("/me ", 0); return; }
-        if (c==cmdSmile) { new SmilePicker(display, this, caretPos); return; }
+//#ifdef SMILES
+//#         if (c==cmdSmile) { new SmilePicker(display, this, caretPos); return; }
+//#endif
         if (c==cmdInsNick) { new AppendNick(display, to, this, caretPos); return; }
         if (c==cmdAbc) {setInitialCaps(false); return; }
         if (c==cmdABC) {setInitialCaps(true); return; }

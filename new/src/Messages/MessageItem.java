@@ -29,7 +29,9 @@ package Messages;
 
 import Client.Msg;
 import images.RosterIcons;
-import images.SmilesIcons;
+//#ifdef SMILES
+//# import images.SmilesIcons;
+//#endif
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
@@ -40,10 +42,6 @@ import ui.Time;
 import ui.VirtualElement;
 import ui.VirtualList;
 
-/**
- *
- * @author Evg_S
- */
 public class MessageItem implements 
 	VirtualElement,
 	MessageParser.MessageParserNotify
@@ -93,7 +91,7 @@ public class MessageItem implements
             if (y>=0 && y<g.getClipHeight()) {
                 if (msg.itemCollapsed) if (msgLines.size()>1) {
                     RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
-                    g.translate(8,0); //FIXME: хардкод
+                    g.translate(8,0);
                 }
                 line.drawItem(g, 0, selected);
             }
@@ -168,11 +166,12 @@ public class MessageItem implements
         if (Time.localTime() - msg.dateGmt> (24*60*60*1000)) return msg.getDayTime();
         return msg.getTime();
     }
-
-    void toggleSmiles() {
-        smiles=!smiles;
-        MessageParser.getInstance().parseMsg(this, view.getListWidth());  
-    }
-    
-    boolean smilesEnabled() {return smiles; }
+//#ifdef SMILES
+//#     void toggleSmiles() {
+//#         smiles=!smiles;
+//#         MessageParser.getInstance().parseMsg(this, view.getListWidth());  
+//#     }
+//#     
+//#     boolean smilesEnabled() {return smiles; }
+//#endif
 }

@@ -32,7 +32,9 @@ import Messages.MessageList;
 //# import archive.MessageArchive;
 //#endif
 import images.RosterIcons;
-import images.SmilesIcons;
+//#ifdef SMILES
+//# import images.SmilesIcons;
+//#endif
 import io.NvStorage;
 import locale.SR;
 //#if TEMPLATES

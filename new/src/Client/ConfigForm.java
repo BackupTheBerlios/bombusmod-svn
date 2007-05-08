@@ -149,7 +149,9 @@ public class ConfigForm implements
         roster.setSelectedFlags(ra);
 
         message=new ChoiceGroup(SR.MS_MESSAGES, Choice.MULTIPLE);
-        message.append(SR.MS_SMILES, null);
+//#ifdef SMILES
+//#         message.append(SR.MS_SMILES, null);
+//#endif
         message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
@@ -167,7 +169,9 @@ public class ConfigForm implements
 //#endif        
 
         boolean mv[]={
-            cf.smiles,
+//#ifdef SMILES
+//#             cf.smiles,
+//#endif
             cf.storeConfPresence,
             cf.eventComposing,
             cf.capsState,
@@ -374,7 +378,9 @@ public class ConfigForm implements
             cf.showResources=ra[7];
             
             int mvctr=0;
-            cf.smiles=mv[mvctr++];
+//#ifdef SMILES
+//#             cf.smiles=mv[mvctr++];
+//#endif
             cf.storeConfPresence=mv[mvctr++];
             cf.eventComposing=mv[mvctr++];
             cf.capsState=mv[mvctr++];

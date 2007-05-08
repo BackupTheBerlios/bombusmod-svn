@@ -29,7 +29,9 @@ package Messages;
 
 import Client.Config;
 import Client.Msg;
-import images.SmilesIcons;
+//#ifdef SMILES
+//# import images.SmilesIcons;
+//#endif
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -42,10 +44,6 @@ import ui.VirtualElement;
 import ui.VirtualList;
 import ui.FontCache;
 
-/**
- *
- * @author EvgS
- */
 public abstract class MessageList 
     extends VirtualList
     implements CommandListener
@@ -55,7 +53,9 @@ public abstract class MessageList
     
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
     protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
-    protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
+//#ifdef SMILES
+//#     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
+//#endif
 //#ifdef COLORS
 //#     protected Command cmdxmlSkin = new Command("Apply Color Scheme", Command.SCREEN, 30);
 //#endif
@@ -70,8 +70,9 @@ public abstract class MessageList
 	enableListWrapping(false);
 	
         cursor=0;//activate
-        
-        addCommand(cmdSmiles);
+//#ifdef SMILES
+//#         addCommand(cmdSmiles);
+//#endif
         addCommand(cmdBack);
         addCommand(cmdUrl);
 //#ifdef COLORS
@@ -114,11 +115,13 @@ public abstract class MessageList
                 new MessageUrl(display, urls); //throws NullPointerException if no urls
             } catch (Exception e) {/* no urls found */}
         }
-        if (c==cmdSmiles) {
-            try {
-                ((MessageItem)getFocusedObject()).toggleSmiles();
-            } catch (Exception e){}
-        }
+//#ifdef SMILES
+//#         if (c==cmdSmiles) {
+//#             try {
+//#                 ((MessageItem)getFocusedObject()).toggleSmiles();
+//#             } catch (Exception e){}
+//#         }
+//#endif
 //#ifdef COLORS
 //#         if (c==cmdxmlSkin) {
 //#             try {
@@ -129,15 +132,15 @@ public abstract class MessageList
 //#         }
 //#endif
     }
-
-    protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-        super.keyPressed(keyCode);
-        if (keyCode=='*') 
-            try {
-                ((MessageItem)getFocusedObject()).toggleSmiles();
-            } catch (Exception e){}
-    }
-
+//#ifdef SMILES
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         super.keyPressed(keyCode);
+//#         if (keyCode=='*') 
+//#             try {
+//#                 ((MessageItem)getFocusedObject()).toggleSmiles();
+//#             } catch (Exception e){}
+//#     }
+//#endif
     public void keyGreen() { eventOk(); }
    
 }
