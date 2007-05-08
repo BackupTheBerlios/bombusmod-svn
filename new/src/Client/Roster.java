@@ -86,8 +86,6 @@ public class Roster
         Runnable,
         LoginListener,
         YesNoAlert.YesNoListener
-        //ContactEdit.StoreContact
-        //Thread
 {
     
     
@@ -110,7 +108,9 @@ public class Roster
     
     public int myStatus=Config.getInstance().loginstatus;
     
-    private Vector hContacts;
+    //private Vector hContacts;
+    public Vector hContacts;
+    
     private Vector vContacts;
     
     private Vector paintVContacts;  // дл�? атомных операций.
@@ -398,10 +398,7 @@ public class Roster
             }
         }
         messageCount=m;
-//#if USE_LED_PATTERN
-//--                int pattern=cf.m55LedPattern;
-//--                if (pattern>0) EventNotify.leds(pattern-1, m>0);
-//#endif
+
         updateMainBar();
         return (m>0);
     }
@@ -471,7 +468,6 @@ public class Roster
         int status=Presence.PRESENCE_OFFLINE;
         if (subscr.equals("none")) status=Presence.PRESENCE_UNKNOWN;
         if (ask) status=Presence.PRESENCE_ASK;
-        //if (subscr.equals("remove")) status=Presence.PRESENCE_TRASH;
         if (subscr.equals("remove")) status=-1;
         
         Jid J=new Jid(jid);
@@ -495,10 +491,12 @@ public class Roster
                 c.offline_type=status;
                 c.ask_subscribe=ask;
                 
-                Group g=c.getGroup();
-                g.collapsed=true; 
-                //if (status==Presence.PRESENCE_TRASH) c.status=status;
-                //if (status!=Presence.PRESENCE_OFFLINE) c.status=status;
+                if (querysign==true)
+                {
+                    Group g=c.getGroup();
+                    g.collapsed=true; 
+                }
+
                 c.setSortKey((nick==null)? jid:nick);
             }
         }
@@ -532,12 +530,12 @@ public class Roster
     public final ConferenceGroup initMuc(String from, String joinPassword){
         setKeyTimer(0);
         if (autoAway) {
-                ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
-                String ms=es.getMessage();
-                sendPresence(oldStatus, ms);
-                autoAway=false;
-                autoXa=false;
-                myStatus=oldStatus;
+            ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
+            String ms=es.getMessage();
+            sendPresence(oldStatus, ms);
+            autoAway=false;
+            autoXa=false;
+            myStatus=oldStatus;
         }
         // muc message
         int ri=from.indexOf('@');
@@ -597,8 +595,7 @@ public class Roster
             c=new MucContact(nick, from);
             addContact(c);
         }
-        
-        
+
         grp.setSelfContact(c);
         c.setGroup(grp);
         c.origin=Contact.ORIGIN_GC_MYSELF;
@@ -613,12 +610,9 @@ public class Roster
         int rp=from.indexOf('/');
         String room=from.substring(0,ri);
         String roomJid=from.substring(0,rp).toLowerCase();
-        
 
         ConferenceGroup grp=(ConferenceGroup)groups.getGroup(roomJid);
-	
 
-        
         if (grp==null) return null; // we are not joined this room
         
         MucContact c=findMucContact( new Jid(from) );
@@ -635,15 +629,12 @@ public class Roster
     }
     
     public final Contact getContact(final String jid, boolean createInNIL) {
-        
         Jid J=new Jid(jid);
 
-        // проверим наличие по полной �?троке
         Contact c=findContact(J, true); 
         if (c!=null) 
             return c;
 
-        // проверим наличие без ре�?ур�?ов
         c=findContact(J, false);
         if (c==null) {
             if (!createInNIL) return null;
@@ -653,7 +644,6 @@ public class Roster
             c.setGroup(groups.getGroup(Groups.TYPE_NOT_IN_LIST));
             addContact(c);
         } else {
-            // зде�?ь jid �? новым ре�?ур�?ом
             if (c.origin==Contact.ORIGIN_ROSTER) {
                 c.origin=Contact.ORIGIN_ROSTERRES;
                 c.setStatus(Presence.PRESENCE_OFFLINE);
@@ -724,14 +714,14 @@ public class Roster
             if (!StaticData.getInstance().account.isMucOnly() )
 				theStream.send( presence );
             
-           multicastConferencePresence(); //current status
+           multicastConferencePresence(null); //current status
 
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
                 try {
                     theStream.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
 				
                 synchronized(hContacts) {
@@ -864,38 +854,8 @@ public class Roster
 	return getContact(myJid.getJid(), false);
     }
     
-    public void multicastConferencePresence() {
-	 if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
-         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
-         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-             Contact c=(Contact) e.nextElement();
-             if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
-             if (!((MucContact)c).commonPresence) continue; // stop if room left manually
-
-             ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
-             Contact myself=confGroup.getSelfContact();
-
-            if (c.status==Presence.PRESENCE_OFFLINE) {
-               ConferenceForm.join(myself.getJid(), confGroup.password, 20);
-                continue;
-            }
-            //c.status=myStatus;
-            myMessage=es.getMessage();
-
-            if (myMessage.indexOf("%t")>-1) {
-                String time=Time.timeString(Time.localTime());
-                int roomE=myMessage.indexOf("%t");
-                String end=myMessage.substring(roomE+2);
-                String start=myMessage.substring(0, roomE);
-                myMessage=start+time+end;
-            }
-             Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
-             presence.setTo(myself.getJid());
-             theStream.send(presence);
-         }
-     }
-    
     public void multicastConferencePresence(String message) {
+         if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact c=(Contact) e.nextElement();
@@ -913,8 +873,10 @@ public class Roster
             }
             
             //c.status=myStatus;
-            
-            myMessage=message;
+            if (message==null)
+                myMessage=es.getMessage();
+            else
+                myMessage=message;
 
             if (myMessage.indexOf("%t")>-1) {
                 String time=Time.timeString(Time.localTime());
@@ -1049,9 +1011,6 @@ public class Roster
 //#if (FILE_IO && FILE_TRANSFER)
 //#             theStream.addBlockListener(TransferDispatcher.getInstance());
 //#endif
-        //query bookmarks
-        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-        
         //enable keep-alive packets
         theStream.startKeepAliveTask();
 		
@@ -1067,7 +1026,6 @@ public class Roster
             //тут будем реконнектить конференции 
             if (cf.autoJoinConferences)
                     mucReconnect();
-            
             return;
         }
         
@@ -1080,9 +1038,7 @@ public class Roster
             setProgress(SR.MS_CONNECTED,100);
             try {
                 reEnumRoster();
-            } catch (Exception e) {
-                //e.printStackTrace();
-            }
+            } catch (Exception e) { }
 			
             querysign=reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
@@ -1091,6 +1047,8 @@ public class Roster
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
         }
+        //query bookmarks
+        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
     }
 
     public void bindResource(String myJid) {
@@ -1163,8 +1121,6 @@ public class Roster
 
                             SplashScreen.getInstance().close(); // display.setCurrent(this);
                             //loading bookmarks
-                            //if (cf.autoJoinConferences)
-                            //theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
@@ -1895,14 +1851,14 @@ public class Roster
             return;
         }
         
-         if (keyCode==KEY_POUND && !allowLightControl) {
+         if (keyCode==KEY_POUND && allowLightControl) {
             System.gc();
 //#ifdef POPUPS
 //#             setWobbler(null);
 //#endif
             return;
          }
-         if (keyCode==KEY_STAR && allowLightControl) {
+         if (keyCode==KEY_STAR && !allowLightControl) {
             System.gc();
 //#ifdef POPUPS
 //#             setWobbler(null);
@@ -2224,21 +2180,24 @@ public class Roster
                     Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
                     if (cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 )
                         groups.addToVector(tContacts, Groups.TYPE_SELF);
+                    
                     // adding groups
                     for (int i=Groups.TYPE_COMMON;i<groups.getCount();i++)
                         groups.addToVector(tContacts,i);
+                    
                     // hiddens
                     if (cf.ignore) groups.addToVector(tContacts,Groups.TYPE_IGNORE);
+                    
                     // not-in-list
                     if (cf.notInList) groups.addToVector(tContacts,Groups.TYPE_NOT_IN_LIST);
 
                     // transports
-                    Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
-                    if (cf.showTransports || transpGroup.unreadMessages>0)
+                    //Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
+                    if (cf.showTransports || groups.getGroup(Groups.TYPE_TRANSP).unreadMessages>0)
                         groups.addToVector(tContacts,Groups.TYPE_TRANSP);
                     
                     // always visible
-                    Group visibleGroup=groups.getGroup(Groups.TYPE_VISIBLE);
+                    //Group visibleGroup=groups.getGroup(Groups.TYPE_VISIBLE);
                     groups.addToVector(tContacts,Groups.TYPE_VISIBLE);
 
                     groups.addToVector(tContacts, Groups.TYPE_SEARCH_RESULT);
@@ -2407,16 +2366,6 @@ public class Roster
                    }
                 }catch(Exception e){ }
             }
-        }
-    }
-
-    public void changeGroup(String sourceGroup, String destGroup) {
-        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-            Contact cr=(Contact)e.nextElement();
-            if (cr.getGroup().getName()==sourceGroup) {
-                theStream.send(new IqQueryRoster(cr.getBareJid(), cr.nick, destGroup, null));
-            }
-                
         }
     }
      

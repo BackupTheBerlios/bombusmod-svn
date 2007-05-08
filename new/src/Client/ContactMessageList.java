@@ -241,14 +241,7 @@ public class ContactMessageList extends MessageList
 	}
         
         if (c==cmdReply) {
-            try {
-		if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_HISTORY) return;
-                if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
-				
-                Msg msg=getMessage(cursor);
-               
-                new MessageEdit(display,contact,msg.from+": ");
-            } catch (Exception e) {/*no messages*/}
+            Reply();
         }
         
         if (c == cmdCopy)
@@ -386,14 +379,11 @@ public class ContactMessageList extends MessageList
 //#endif
             if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
             if (keyCode==KEY_POUND) {
-                try {
-                    if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_HISTORY) return;
-                    if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
-
-                    Msg msg=getMessage(cursor);
-
-                    new MessageEdit(display,contact,msg.from+": ");
-                } catch (Exception e) {/*no messages*/}
+                if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+                    Reply();
+                } else {
+                    keyGreen();
+                }
             }
             if (keyCode==keyClear) {
                 if (messages.isEmpty()) return;
@@ -479,4 +469,15 @@ public class ContactMessageList extends MessageList
 //#         } catch (Exception e) {}
 //#     }
 //#endif
+
+    private void Reply() {
+        try {
+            if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_HISTORY) return;
+            if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
+
+            Msg msg=getMessage(cursor);
+
+            new MessageEdit(display,contact,msg.from+": ");
+        } catch (Exception e) {/*no messages*/}
+    }
 }

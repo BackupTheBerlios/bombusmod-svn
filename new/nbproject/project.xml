@@ -3,6 +3,7 @@
     <type>org.netbeans.modules.kjava.j2meproject</type>
     <configuration>
         <configurations xmlns="http://www.netbeans.org/ns/project-configurations/1">
+            <configuration>adsky</configuration>
             <configuration>full_ver</configuration>
             <configuration>small_ver</configuration>
         </configurations>

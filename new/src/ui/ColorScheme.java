@@ -288,62 +288,59 @@ public class ColorScheme {
 //#             String value=(String)skin.get(key);
 //#             return getColorInt(value);
 //#         } catch (Exception e) {
-//#             StaticData.getInstance().roster.errorLog(e.toString());
+//#             //StaticData.getInstance().roster.errorLog(e.toString());
 //#             return defaultColor;
 //#         }
 //#     }
 //#     
 //#     public static String getSkin(){
-//#                 StringBuffer body=new StringBuffer();
-//#                 body.append("xmlSkin\t"+StaticData.getInstance().account.getNickName());
-//#                 body.append("\r\n");
-//#                 body.append("BALLOON_INK\t"+getColorString(BALLOON_INK)+"\r\n");
-//#                 body.append("BALLOON_BGND\t"+getColorString(BALLOON_BGND)+"\r\n");
-//#                 body.append("LIST_BGND\t"+getColorString(LIST_BGND)+"\r\n");
-//#                 body.append("LIST_BGND_EVEN\t"+getColorString(LIST_BGND_EVEN)+"\r\n");
-//#                 body.append("LIST_INK\t"+getColorString(LIST_INK)+"\r\n");
-//#                 body.append("MSG_SUBJ\t"+getColorString(MSG_SUBJ)+"\r\n");
-//#                 body.append("MSG_HIGHLIGHT\t"+getColorString(MSG_HIGHLIGHT)+"\r\n");
-//#                 body.append("DISCO_CMD\t"+getColorString(DISCO_CMD)+"\r\n");
-//#                 body.append("BAR_BGND\t"+getColorString(BAR_BGND)+"\r\n");
-//#                 body.append("BAR_INK\t"+getColorString(BAR_INK)+"\r\n");
-//#                 body.append("CONTACT_DEFAULT\t"+getColorString(CONTACT_DEFAULT)+"\r\n");
-//#                 body.append("CONTACT_CHAT\t"+getColorString(CONTACT_CHAT)+"\r\n");
-//#                 body.append("CONTACT_AWAY\t"+getColorString(CONTACT_AWAY)+"\r\n");
-//#                 body.append("CONTACT_XA\t"+getColorString(CONTACT_XA)+"\r\n");
-//#                 body.append("CONTACT_DND\t"+getColorString(CONTACT_DND)+"\r\n");
-//#                 body.append("GROUP_INK\t"+getColorString(GROUP_INK)+"\r\n");
-//#                 body.append("BLK_INK\t"+getColorString(BLK_INK)+"\r\n");
-//#                 body.append("BLK_BGND\t"+getColorString(BLK_BGND)+"\r\n");
-//#                 body.append("MESSAGE_IN\t"+getColorString(MESSAGE_IN)+"\r\n");
-//#                 body.append("MESSAGE_OUT\t"+getColorString(MESSAGE_OUT)+"\r\n");
-//#                 body.append("MESSAGE_PRESENCE\t"+getColorString(MESSAGE_PRESENCE)+"\r\n");
-//#                 body.append("MESSAGE_AUTH\t"+getColorString(MESSAGE_AUTH)+"\r\n");
-//#                 body.append("MESSAGE_HISTORY\t"+getColorString(MESSAGE_HISTORY)+"\r\n");
-//#                 body.append("PGS_REMAINED\t"+getColorString(PGS_REMAINED)+"\r\n");
-//#                 body.append("PGS_COMPLETE\t"+getColorString(PGS_COMPLETE)+"\r\n");
-//#                 body.append("PGS_BORDER\t"+getColorString(PGS_BORDER)+"\r\n");
-//#                 body.append("PGS_BGND\t"+getColorString(PGS_BGND)+"\r\n");
-//#                 body.append("HEAP_TOTAL\t"+getColorString(HEAP_TOTAL)+"\r\n");
-//#                 body.append("HEAP_FREE\t"+getColorString(HEAP_FREE)+"\r\n");
-//#                 body.append("CURSOR_BGND\t"+getColorString(CURSOR_BGND)+"\r\n");
-//#                 body.append("CURSOR_OUTLINE\t"+getColorString(CURSOR_OUTLINE)+"\r\n");
-//#                 body.append("SCROLL_BRD\t"+getColorString(SCROLL_BRD)+"\r\n");
-//#                 body.append("SCROLL_BAR\t"+getColorString(SCROLL_BAR)+"\r\n");
-//#                 body.append("SCROLL_BGND\t"+getColorString(SCROLL_BGND)+"\r\n");
+//#         StringBuffer body=new StringBuffer();
+//#         body.append("xmlSkin\t"+StaticData.getInstance().account.getNickName());
+//#         body.append("\r\n");
+//#         body.append("BALLOON_INK\t"+getColorString(BALLOON_INK)+"\r\n");
+//#         body.append("BALLOON_BGND\t"+getColorString(BALLOON_BGND)+"\r\n");
+//#         body.append("LIST_BGND\t"+getColorString(LIST_BGND)+"\r\n");
+//#         body.append("LIST_BGND_EVEN\t"+getColorString(LIST_BGND_EVEN)+"\r\n");
+//#         body.append("LIST_INK\t"+getColorString(LIST_INK)+"\r\n");
+//#         body.append("MSG_SUBJ\t"+getColorString(MSG_SUBJ)+"\r\n");
+//#         body.append("MSG_HIGHLIGHT\t"+getColorString(MSG_HIGHLIGHT)+"\r\n");
+//#         body.append("DISCO_CMD\t"+getColorString(DISCO_CMD)+"\r\n");
+//#         body.append("BAR_BGND\t"+getColorString(BAR_BGND)+"\r\n");
+//#         body.append("BAR_INK\t"+getColorString(BAR_INK)+"\r\n");
+//#         body.append("CONTACT_DEFAULT\t"+getColorString(CONTACT_DEFAULT)+"\r\n");
+//#         body.append("CONTACT_CHAT\t"+getColorString(CONTACT_CHAT)+"\r\n");
+//#         body.append("CONTACT_AWAY\t"+getColorString(CONTACT_AWAY)+"\r\n");
+//#         body.append("CONTACT_XA\t"+getColorString(CONTACT_XA)+"\r\n");
+//#         body.append("CONTACT_DND\t"+getColorString(CONTACT_DND)+"\r\n");
+//#         body.append("GROUP_INK\t"+getColorString(GROUP_INK)+"\r\n");
+//#         body.append("BLK_INK\t"+getColorString(BLK_INK)+"\r\n");
+//#         body.append("BLK_BGND\t"+getColorString(BLK_BGND)+"\r\n");
+//#         body.append("MESSAGE_IN\t"+getColorString(MESSAGE_IN)+"\r\n");
+//#         body.append("MESSAGE_OUT\t"+getColorString(MESSAGE_OUT)+"\r\n");
+//#         body.append("MESSAGE_PRESENCE\t"+getColorString(MESSAGE_PRESENCE)+"\r\n");
+//#         body.append("MESSAGE_AUTH\t"+getColorString(MESSAGE_AUTH)+"\r\n");
+//#         body.append("MESSAGE_HISTORY\t"+getColorString(MESSAGE_HISTORY)+"\r\n");
+//#         body.append("PGS_REMAINED\t"+getColorString(PGS_REMAINED)+"\r\n");
+//#         body.append("PGS_COMPLETE\t"+getColorString(PGS_COMPLETE)+"\r\n");
+//#         body.append("PGS_BORDER\t"+getColorString(PGS_BORDER)+"\r\n");
+//#         body.append("PGS_BGND\t"+getColorString(PGS_BGND)+"\r\n");
+//#         body.append("HEAP_TOTAL\t"+getColorString(HEAP_TOTAL)+"\r\n");
+//#         body.append("HEAP_FREE\t"+getColorString(HEAP_FREE)+"\r\n");
+//#         body.append("CURSOR_BGND\t"+getColorString(CURSOR_BGND)+"\r\n");
+//#         body.append("CURSOR_OUTLINE\t"+getColorString(CURSOR_OUTLINE)+"\r\n");
+//#         body.append("SCROLL_BRD\t"+getColorString(SCROLL_BRD)+"\r\n");
+//#         body.append("SCROLL_BAR\t"+getColorString(SCROLL_BAR)+"\r\n");
+//#         body.append("SCROLL_BGND\t"+getColorString(SCROLL_BGND)+"\r\n");
 //# 
-//#                 return body.toString();
+//#         return body.toString();
 //#     }
 //# 
 //#     public static String ColorToString(int cRed, int cGreen, int cBlue) {
 //#         StringBuffer color=new StringBuffer(8);
 //#         
 //#         color.append("0x");
-//#         
 //#         color.append(expandHex(cRed));
-//# 
 //#         color.append(expandHex(cGreen));
-//#         
 //#         color.append(expandHex(cBlue));
 //#         
 //#         return color.toString();

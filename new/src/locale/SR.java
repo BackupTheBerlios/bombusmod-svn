@@ -454,6 +454,8 @@ public class SR {
     public   static String MS_AWAY_LOCK = loadString( "keyblock" );
 
     public   static String MS_RENAME = loadString( "Rename" );
+    public   static String MS_MOVE = loadString( "Move" );
+    public static String MS_SAVE = loadString( "Save" );
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

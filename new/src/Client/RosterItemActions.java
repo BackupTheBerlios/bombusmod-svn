@@ -122,6 +122,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
 		addItem(SR.MS_EDIT,2, 0x0f13);
 		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
+                addItem(SR.MS_MOVE,1003);
 		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
                 addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
@@ -330,6 +331,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                     return;
 //#                 }
 //#endif
+                case 1003: 
+                {
+                    new RenameGroup(display, null, c);
+                    return;
+                }
                 case 889: //idle
                 {
                     roster.setQuerySign(true);
@@ -449,19 +455,14 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     case 11: // owners
                     case 12: // admins
                     case 13: // members
-                        
+
                     case 14: // outcasts
                     {
                         String roomJid=((ConferenceGroup)g).getConference().getJid();
                         new Affiliations(display, roomJid, index-10);
                         return;
                     }
-                    /*case 15: // affiliation
-                    {
-                        String roomJid=conferenceRoomContact(g.index).getJid();
-                        new AffiliationModify(display, roomJid, c.realJid, affiliation)(display, roomJid, index-10);
-                    }
-                     */
+
                     case 22:
                     {
                         roster.leaveRoom( g );
@@ -508,11 +509,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                         new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR,null);
                         return;
                      }
-                     
-             /*case 34: //reserved
-            {
-             
-            }*/
                     
                 case 35: //grant membership and revoke admin
                  {
@@ -561,7 +557,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 switch (index) {
                     case 1001: //rename
                     {
-                        new RenameGroup(display, sg);
+                        new RenameGroup(display, sg, null);
                         return;
                     }
                     case DELETE_GROUP: //delete

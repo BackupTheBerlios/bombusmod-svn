@@ -32,22 +32,15 @@ import javax.microedition.lcdui.Graphics;
 import ui.ColorScheme;
 import ui.FontCache;
 
-/**
- *
- * @author Evg_S
- */
 public class Balloon {
-
-    private static int[] pixelArray;
+    private static Font f;
     
     public static int getHeight(){
-        Font f=FontCache.getBalloonFont();
+        f=FontCache.getBalloonFont();
         return f.getHeight()+3;
     }
     
-    public static void draw(Graphics g, String txt) {
-        String text=txt.trim();
-        Font f=FontCache.getBalloonFont();
+    public static void draw(Graphics g, String text) {
         g.setFont(f);
         int height=getHeight();
         int width=f.stringWidth(text)+6;
@@ -56,21 +49,12 @@ public class Balloon {
         if (y<0) y=0;
         y-=height-1;
         g.translate(0, y);
-        
-        g.setColor(ColorScheme.BALLOON_INK);
-        g.fillRect(2, 0, width, height);
-
-       
-        //if(pixelArray == null) pixelArray = new int[(width-2) * (height-2)];
-        //for(int i = 0; i < pixelArray.length; i++)
-        //  pixelArray[i] = 0x7fff0000;
-        
-        //g.drawRGB(pixelArray, 0, width, 3, 1, width-2, height-2, true);
 
         g.setColor(ColorScheme.BALLOON_BGND);
         g.fillRect(3, 1, width-2, height-2);
-       
+        
         g.setColor(ColorScheme.BALLOON_INK);
+        g.drawRect(2, 0, width-1, height);
         g.drawString(text, 5, 2, Graphics.TOP | Graphics.LEFT);
     }
 }

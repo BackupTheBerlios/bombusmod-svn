@@ -245,7 +245,9 @@ public abstract class VirtualList
     protected void showNotify() {
 	if (!isDoubleBuffered()) 
 	    offscreen=Image.createImage(width, height);
-        TimerTaskRotate.startRotate(-1, this);
+//#if (USE_ROTATOR)
+//#         TimerTaskRotate.startRotate(-1, this);
+//#endif
     }
 
     protected void sizeChanged(int w, int h) {
@@ -410,6 +412,7 @@ public abstract class VirtualList
 //#if ALT_INPUT
 //#         if (inputbox!=null) {
 //#             if (list_bottom>0)
+//#                 setAbsOrg(g, 0, 0);
 //#                 inputbox.draw(g, width, height);
 //#         } else {
 //#endif
@@ -636,22 +639,26 @@ public abstract class VirtualList
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
                     
                      if (keyCode==KEY_POUND) {
-                         if (cf.allowLightControl) {
+                         if (!cf.allowLightControl) {
                             System.gc();
 //#ifdef POPUPS
-//#                             int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-//#                             wobble="Free "+freemem+"kB";
+//#                             if (cf.popUps) {
+//#                                 int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+//#                                 wobble="Free "+freemem+"kB";
+//#                             }
 //#endif
                          }
                         //return;
                      }
                      if (keyCode==KEY_STAR) {
-                        if (!cf.allowLightControl)
+                        if (cf.allowLightControl)
                         {
                             System.gc();
 //#ifdef POPUPS
-//#                             int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-//#                             wobble="Free "+freemem+"kB";
+//#                             if (cf.popUps) {
+//#                                 int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
+//#                                 wobble="Free "+freemem+"kB";
+//#                             }
 //#endif
                         }
                          //return;

@@ -28,7 +28,6 @@
 package vcard;
 import Client.StaticData;
 //#if (FILE_IO)
-import com.siemens.mp.io.File;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
@@ -79,12 +78,9 @@ public class vCardForm
     
     private byte[] photo;
     private int photoIndex;
-    
-    private String photoType;
-
+    private String photoType=null;
     private int st=-1;
 
-    
     private ClipBoard clipboard;  // The clipboard class
 //#if FILE_IO    
     int fileSize;
@@ -92,8 +88,6 @@ public class vCardForm
     String filePath;
     private FileIO file;
     private OutputStream os;
-
-    private String phototype="jpg";
 //#endif
     /** Creates a new instance of vCardForm */
     public vCardForm(Display display, VCard vcard, boolean editable) {
@@ -104,16 +98,15 @@ public class vCardForm
         
         f=new Form(SR.MS_VCARD);
         f.append(vcard.getJid());
-        photoType=vcard.getPhotoMIMEType();
         
         if (vcard.isEmpty() && !editable) 
             f.append("\n[no vCard available]"); 
-         else { 
-             photoIndex=f.append("[]");
+        else { 
+            photoIndex=f.append("[]");
              
             photo=vcard.getPhoto();
             setPhoto();
-         }
+        }
         
         for (int index=0; index<vcard.getCount(); index++) {
             String data=vcard.getVCardData(index);
@@ -198,7 +191,7 @@ public class vCardForm
         if (c!=cmdPublish) return;
         
         vcard.setPhoto(photo);
-        
+        vcard.setPhotoType(getPhotoMIMEType());
         for (int index=0; index<vcard.getCount(); index++) {
             String field=((TextField)items.elementAt(index)).getString();
             if (field.length()==0) field=null;
@@ -231,23 +224,23 @@ public class vCardForm
                     is.close();
                     f.close();
                     photo=b;
+                    vcard.setPhotoType(getPhotoMIMEType());
                     setPhoto();
-                } catch (Exception e) {e.printStackTrace();}
+                } catch (Exception e) {
+                    System.out.println("error on load");
+                }
             }
             if (st==2 & photo!=null) {
+                photoType=getPhotoMIMEType();
                 if (photoType!=null) {
                         int slashPos=photoType.indexOf('/');
                         if (slashPos>-1) {
-                            phototype=photoType.substring(slashPos+1).toLowerCase();
-                            if (phototype=="jpeg") phototype="jpg";
+                            photoType=photoType.substring(slashPos+1).toLowerCase();
+                            if (photoType=="jpeg") photoType="jpg";
                         }
                 }
-                
-                //try {
-                //    FileIO f=FileIO.createConnection(pathSelected+"photo_"+vcard.getNickName()+"_"+getDate()+"."+phototype);
-                //    f.Write(photo);
-                //} catch (Exception e) {}
-                file=FileIO.createConnection(pathSelected+"photo_"+vcard.getNickName()+"_"+getDate()+"."+phototype);
+
+                file=FileIO.createConnection(pathSelected+"photo_"+vcard.getNickName()+"_"+getDate()+"."+photoType);
                 try {
                     os=file.openOutputStream();
                     writeFile(photo);
@@ -256,10 +249,7 @@ public class vCardForm
                 } catch (IOException ex) {
                     try {
                         file.close();
-                    } catch (IOException ex2) {
-                        ex2.printStackTrace();
-                    }
-                    ex.printStackTrace();
+                    } catch (IOException ex2) { }
                 }
             }
         }
@@ -269,9 +259,7 @@ public class vCardForm
         try {
             os.write(b);
             filePos+=b.length;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        } catch (IOException ex) { }
     }
 //#endif
 
@@ -287,14 +275,16 @@ public class vCardForm
             try {
                 Image photoImg=Image.createImage(photo, 0, photo.length);
                 photoItem=new ImageItem(size, photoImg, 0, null);
-            } catch (Exception e) { photoItem=new StringItem(size, "[Unsupported format]"); }
+            } catch (Exception e) { 
+                photoItem=new StringItem(size, "[Unsupported format]");
+            }
         }
          f.set(photoIndex, photoItem);
      }
 	 
     private String getDate() {
         long dateGmt=Time.localTime();
-        return Time.dayString(dateGmt); 
+        return Time.dayString(dateGmt).trim(); 
     }
 
     public void commandAction(Command command, Item item) {
@@ -309,5 +299,48 @@ public class vCardForm
 
     private void CopyText(String string) {
         clipboard.setClipBoard(string);
+    }
+    
+	
+    public String getPhotoMIMEType() {
+        try {
+            if (photo[0]==0x89 &&
+                photo[1]==0x50 &&
+                photo[2]==0x4E &&
+                photo[3]==0x47)
+            {
+                System.out.println("image/png");
+                return "image/png";
+            }
+            
+            if (photo[0]==(byte)0xff &&
+                photo[1]==(byte)0xd8 &&
+                photo[6]==(byte)'J' &&
+                photo[7]==(byte)'F' &&
+                photo[8]==(byte)'I' &&
+                photo[9]==(byte)'F')
+            {
+                System.out.println("image/jpeg");
+                return "image/jpeg";
+            }
+            
+            if (photo[1]==(byte)'G' &&
+                photo[2]==(byte)'I' &&
+                photo[3]==(byte)'F')
+            {
+                System.out.println("image/gif");
+                return "image/gif";
+            }
+            
+            if (photo[1]==(byte)'B' &&
+                photo[2]==(byte)'M')
+            {
+                System.out.println("image/x-ms-bmp");
+                return "image/x-ms-bmp";
+            }
+        } catch (Exception e) {
+            System.out.println("unknown mime");
+        }
+        return null;
     }
 }

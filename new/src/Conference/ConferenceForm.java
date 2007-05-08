@@ -49,7 +49,7 @@ public class ConferenceForm implements CommandListener{
     
     Command cmdJoin=new Command(SR.MS_JOIN, Command.SCREEN, 1);
     Command cmdAdd=new Command(SR.MS_ADD_BOOKMARK, Command.SCREEN, 5);
-    Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 6);
+    Command cmdEdit=new Command(SR.MS_SAVE, Command.SCREEN, 6);
     Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     
     TextField roomField;
@@ -175,6 +175,8 @@ public class ConferenceForm implements CommandListener{
     public void commandAction(Command c, Displayable d){
         if (c==cmdCancel) { destroyView(); }
         
+        sndprs=true;
+        
         String nick=nickField.getString();
         String host=hostField.getString();
         String room=roomField.getString();
@@ -208,7 +210,6 @@ public class ConferenceForm implements CommandListener{
                 gchat.append('/');
                 gchat.append(nick);
                 join(gchat.toString(),pass, msgLimit);
-                sndprs=true;
                 gchat=null;
                 display.setCurrent(sd.roster);
             } catch (Exception e) { }
@@ -222,8 +223,7 @@ public class ConferenceForm implements CommandListener{
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
         if (pass.length()!=0) {
-            // adding password to presence
-            x.addChild("password", pass);
+            x.addChild("password", pass); // adding password to presence
         }
         
         JabberDataBlock history=x.addChild("history", null);

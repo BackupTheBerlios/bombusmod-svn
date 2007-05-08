@@ -56,9 +56,8 @@ public class VCard {
 	
     private boolean empty=true;
 
-    private String photoType;
-	
-    //private String photoType;
+    private String photoType=null;
+
     
     /** Creates a new instance of vCard */
     public VCard() {
@@ -98,7 +97,10 @@ public class VCard {
            JabberDataBlock photoXML=vcard.getChildBlock("PHOTO");
            try {
                 photoType=photoXML.getChildBlock("TYPE").getText();
-           } catch (Exception e) {System.out.println("error");};
+           } catch (Exception e) {
+                photoType="image/jpeg";
+               //System.out.println("error");
+           }
            photo=(byte[])photoXML.getChildBlock("BINVAL").getChildBlocks().lastElement();
        } catch (Exception e) {};
     }
@@ -126,11 +128,11 @@ public class VCard {
             
         }
         if (photo!=null) {
-            String mime=getPhotoMIMEType();
-            if (mime!=null) {
+
                 JabberDataBlock ph=vcardTemp.addChild("PHOTO", null);
                 ph.addChild("BINVAL", strconv.toBase64(photo, -1));
-                ph.addChild("TYPE", mime);
+            if (photoType!=null) {
+                ph.addChild("TYPE", photoType);
             }
         }
         //System.out.println(vcard.toString());
@@ -175,6 +177,11 @@ public class VCard {
         vCardData.setElementAt(data, index);
     }
     
+    public void setPhotoType(String photoType) {
+        this.photoType=photoType;
+    }
+    
+    
     public int getCount(){ return vCardFields.size(); }
 
     public String getJid() { return jid; }
@@ -186,33 +193,4 @@ public class VCard {
     public boolean isEmpty() {
         return empty;
     }
-	
-    public String getPhotoMIMEType() {
-        try {
-            if (photo[0]==(byte)0xff &&
-                photo[1]==(byte)0xd8 &&
-                photo[6]==(byte)'J' &&
-                photo[7]==(byte)'F' &&
-                photo[8]==(byte)'I' &&
-                photo[9]==(byte)'F')
-                return "image/jpeg";
-            
-            if (photo[0]==0x89 &&
-                photo[1]==(byte)'P' &&
-                photo[2]==(byte)'N' &&
-                photo[3]==(byte)'G')
-                return "image/png";
-            
-            if (photo[1]==(byte)'G' &&
-                photo[2]==(byte)'I' &&
-                photo[3]==(byte)'F')
-                return "image/gif";
-            
-            if (photo[1]==(byte)'B' &&
-                photo[2]==(byte)'M')
-                return "image/x-ms-bmp";
-        } catch (Exception e) {}
-        return null;
-    }
- 
 }

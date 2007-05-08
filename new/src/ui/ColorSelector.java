@@ -166,43 +166,30 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
 	protected void keyPressed(int key) {
 		switch (key) {
-
-			case -59:
-			case '2':
+			case KEY_NUM2:
 				timer = 7;
 				dy = 1;
 				movePoint();
 				break;
-
-			case -60:
-			case '8':
+			case KEY_NUM8:
 				timer = 7;
 				dy = -1;
 				movePoint();
 				break;
-
-			case -61:
-			case '4':
+			case KEY_NUM4:
 				cpos -= 1; if (cpos < 0) cpos = 2;
 				repaint();
 				break;
-
-			case -62:
-			case '6':
+			case KEY_NUM6:
 				cpos += 1; if (cpos > 2) cpos = 0;
 				repaint();
 				break;
-
-			case -26:
-			case -4:
-			case '5':
+			case KEY_NUM5:
                                 eventOk();
                                 exit = true;
                                 destroyView();
 				break;
-
-			case -12:
-			case '0':
+			case KEY_NUM0:
 				exit = true;
 				display.setCurrent(parentView);
 				break;
@@ -232,6 +219,14 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                                         exit = true;
                                         destroyView();
                                         break;
+                                        
+                                    default:
+                                        if (key=='5') {
+                                            eventOk();
+                                            exit = true;
+                                            destroyView();
+                                            break;
+                                        }
                                 }
                             } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
 		}

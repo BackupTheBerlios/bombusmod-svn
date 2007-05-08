@@ -406,8 +406,8 @@ public class ConfigForm implements
 //#endif
             
             if (cf.allowLightControl) { 
-                StaticData.getInstance().roster.lightState=!ap[apctr++];
                 cf.lightState=ap[apctr++];
+                StaticData.getInstance().roster.lightState=!cf.lightState;
                 setLight(cf.lightState);                
             }
 

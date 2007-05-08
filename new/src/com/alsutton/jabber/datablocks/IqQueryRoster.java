@@ -36,18 +36,6 @@ import java.util.*;
 
 public class IqQueryRoster extends Iq
 {
-  /**
-   * Constructor including an Attribute list
-   *
-   * @param _parent The parent of this datablock
-   * @param _attributes The list of element attributes
-   */
-
-  /*public IqQueryRoster( JabberDataBlock _parent, Hashtable _attributes )
-  {
-    super( _parent, _attributes );
-  }
-   */
 
   public IqQueryRoster() {
     super(null, Iq.TYPE_GET, "getros" );
@@ -61,12 +49,12 @@ public class IqQueryRoster extends Iq
 
     JabberDataBlock qB = addChild("query", null );
     qB.setNameSpace( "jabber:iq:roster" );
-        JabberDataBlock item= qB.addChild("item",null);
-        item.setAttribute("jid", jid);
-        item.setAttribute("name", name);
-        item.setAttribute("subscription", subscription);
-        if (group!=null) {
-            item.addChild("group",group);
-        }
+    JabberDataBlock item= qB.addChild("item",null);
+    item.setAttribute("jid", jid);
+    item.setAttribute("name", name);
+    item.setAttribute("subscription", subscription);
+    if (group!=null) {
+        item.addChild("group",group);
+    }
   }
 }

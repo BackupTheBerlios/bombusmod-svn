@@ -151,7 +151,7 @@ public class Config {
 
     public int isbottom=2; //default state both panels show, reverse disabled
    
-    public boolean lightState=false;
+    public boolean lightState=true;
     
     public boolean lastMessages=false;
 

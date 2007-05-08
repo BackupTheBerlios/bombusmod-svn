@@ -129,8 +129,6 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         private ExtendedStatus status;
         
         private Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
-        private Command cmdSetMusic=new Command("1251",Command.SCREEN,2); //locale
-        private Command cmdSetMusicUnicode=new Command("Unicode",Command.SCREEN,3); //locale
         private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
 
         private ChoiceGroup selStatus;
@@ -171,22 +169,11 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             f.addCommand(cmdOk);
             f.addCommand(cmdCancel);
             
-            if (getMusic()!=null) {
-                f.addCommand(cmdSetMusic);
-                f.addCommand(cmdSetMusicUnicode);
-            }
-            
             f.setCommandListener(this);
             display.setCurrent(f);
         }
         
         public void commandAction(Command c, Displayable d){
-            if (c==cmdSetMusic) {
-                tfMessage.setString(strconv.convCp1251ToUnicode(getMusic()));
-            }
-            if (c==cmdSetMusicUnicode) {
-                tfMessage.setString(getMusic());
-            }
             if (c==cmdOk) {
                 boolean flags[]=new boolean[3];
                 
@@ -224,8 +211,5 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         public void destroyView(){
             if (display!=null)   display.setCurrent(parentView);
         }
-    }
-    public static String getMusic() {
-        return System.getProperty("MPJCPLYR");
     }
 }
