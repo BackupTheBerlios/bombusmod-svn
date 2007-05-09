@@ -73,7 +73,7 @@ public class Phone {
                 phoneManufacturer=MOTOEZX;
                 return;
             } else if (platform.startsWith("Moto")) {
-                    phoneManufacturer=MOTO;
+                phoneManufacturer=MOTO;
                 return;
             } else if (platform.startsWith("SonyE")) {
                 if (platform.startsWith("SonyEricssonM600")) {
@@ -86,8 +86,8 @@ public class Phone {
                 phoneManufacturer=WINDOWS;
                 return;
             } else if (platform.startsWith("Nokia9500") || 
-                    platform.startsWith("Nokia9300") || 
-                    platform.startsWith("Nokia9300i")) {
+                platform.startsWith("Nokia9300") || 
+                platform.startsWith("Nokia9300i")) {
                 phoneManufacturer=NOKIA_9XXX;
                 return;
             } else if (platform.startsWith("Nokia")) {

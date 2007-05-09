@@ -2335,6 +2335,12 @@ public class Roster
             return;
         } 
         
+        if (ph.PhoneManufacturer()==ph.MOTOEZX) {
+            cf.SOFT_LEFT=-21;
+            cf.SOFT_RIGHT=-22;
+            return;
+        } 
+        
         try {
             // Set Motorola specific keycodes
             Class.forName("com.motorola.phonebook.PhoneBookRecord");
@@ -2355,7 +2361,7 @@ public class Roster
                     cf.SOFT_LEFT=-6;
                     cf.SOFT_RIGHT=-7;
                 }
-            }catch(Exception e) {}
+            } catch(Exception e) {}
 
             for (int i=-127;i<127;i++) {
             // run thru all the keys
@@ -2364,7 +2370,7 @@ public class Roster
                       if (getKeyName(i).indexOf("1")>=0) cf.SOFT_LEFT=i;         // check for the 1st softkey
                       if (getKeyName(i).indexOf("2")>=0) cf.SOFT_RIGHT=i;         // check for 2nd softkey
                    }
-                }catch(Exception e){ }
+                } catch(Exception e){ }
             }
         }
     }
