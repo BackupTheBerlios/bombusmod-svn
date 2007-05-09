@@ -1,8 +1,0 @@
-MIDlet-1: GetKeys,,GetKeys
-MIDlet-Jar-Size: 2957
-MIDlet-Jar-URL: SoftKeys.jar
-MIDlet-Name: SoftKeys
-MIDlet-Vendor: adsky
-MIDlet-Version: 1.0
-MicroEdition-Configuration: CLDC-1.0
-MicroEdition-Profile: MIDP-2.0

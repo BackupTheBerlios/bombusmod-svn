@@ -1,4 +1,0 @@
-conference_visitors	/images/visitors.png
-icq	/images/icq.png
-gmail	/images/gmail.png
-rss	/images/rss.png
