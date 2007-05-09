@@ -7,3 +7,4 @@
 //#ifdef NEW_MENU
 //#ifdef SERVICE_DISCOVERY
 //#ifdef PRIVACY
+//#ifdef SMILES
