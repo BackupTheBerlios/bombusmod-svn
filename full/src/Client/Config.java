@@ -160,6 +160,8 @@ public class Config {
     public boolean popUps=true;
 
     public boolean showResources=true;
+    
+    public boolean antispam=false;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -305,6 +307,8 @@ public class Config {
             
             showResources=inputStream.readBoolean();
             
+            antispam=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    accountIndex = -1;
@@ -379,6 +383,8 @@ public class Config {
             popUps=true;
             
             showResources=true;
+            
+            antispam=false;
             try {
                 if (inputStream!=null)
                     inputStream.close();
@@ -489,6 +495,8 @@ public class Config {
             outputStream.writeBoolean(popUps);
             
             outputStream.writeBoolean(showResources);
+            
+            outputStream.writeBoolean(antispam);
             
 	} catch (Exception e) {
             //e.printStackTrace();

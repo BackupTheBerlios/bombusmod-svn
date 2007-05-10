@@ -32,6 +32,7 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
+import java.util.Vector;
 import locale.SR;
 import Client.Msg;
 import ui.VirtualList;
@@ -57,7 +58,12 @@ public class MucContact extends Contact{
     public final static int GROUP_MEMBER=3;
     public final static int GROUP_PARTICIPANT=2;
     public final static int GROUP_MODERATOR=1;
-    
+//#ifdef ANTISPAM
+//#     public final static int PRIVATE_NONE=0;
+//#     public final static int PRIVATE_REQUEST=1;
+//#     public final static int PRIVATE_DECLINE=2;
+//#     public final static int PRIVATE_ACCEPT=3;
+//#endif
     public String realJid;
     
     public String affiliation;
@@ -69,7 +75,10 @@ public class MucContact extends Contact{
     public boolean commonPresence=true;
     
     public long lastMessageTime;
-
+//#ifdef ANTISPAM
+//#     public static int privateState;
+//#endif
+    
     /** Creates a new instance of MucContact */
     public MucContact(String nick, String jid) {
         super(nick, jid, Presence.PRESENCE_OFFLINE, "muc");
@@ -89,12 +98,14 @@ public class MucContact extends Contact{
                 errCode=Integer.parseInt(mucErrCode);
             } catch (Exception e) { return "Unsupported MUC error"; }
             ConferenceGroup grp=(ConferenceGroup)getGroup();
-            if (status>=Presence.PRESENCE_OFFLINE) testMeOffline();
-			if (errCode!=409 || status>=Presence.PRESENCE_OFFLINE)
-				setStatus(presenceType);
+            if (status>=Presence.PRESENCE_OFFLINE) 
+                testMeOffline();
+            if (errCode!=409 || status>=Presence.PRESENCE_OFFLINE)
+                setStatus(presenceType);
 				
             String errText=error.getChildBlockText("text");
-            if (errText.length()>0) return errText; // if error description is provided by server
+            if (errText.length()>0) 
+                return errText; // if error description is provided by server
             
             // legacy codes
             switch (errCode) {
@@ -162,10 +173,9 @@ public class MucContact extends Contact{
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
                     b.append(chNick);
-                    // и�?правим jid
                     String newJid=from.substring(0,rp+1)+chNick;
                     jid.setJid(newJid);
-                    bareJid=newJid; // непон�?тно, зачем �? так �?делал...
+                    bareJid=newJid;
                     from=newJid;
                     nick=chNick;
                     break;

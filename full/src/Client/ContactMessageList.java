@@ -150,11 +150,14 @@ public class ContactMessageList extends MessageList
         if (cmdSubscribe==null) return;
         try {
             Msg msg=(Msg) contact.msgs.elementAt(cursor); 
-            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
+            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH
+//#ifdef ANTISPAM
+//#                     || msg.messageType==Msg.MESSAGE_TYPE_REQUEST_PRIVATE
+//#endif
+            ) {
                 addCommand(cmdSubscribe);
                 addCommand(cmdUnsubscribed);
-            }
-            else {
+            } else {
                 removeCommand(cmdSubscribe);
                 removeCommand(cmdUnsubscribed);
             }
@@ -277,11 +280,37 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
         if (c==cmdSubscribe) {
-            sd.roster.doSubscribe(contact);
+//#ifdef ANTISPAM
+//#             if (getMessage(cursor).messageType==Msg.MESSAGE_TYPE_REQUEST_PRIVATE) {
+//#                 MucContact mc = (MucContact) contact;
+//#                 mc.privateState=MucContact.PRIVATE_ACCEPT;
+//# 
+//#                 if (!contact.tempMsgs.isEmpty()) {
+//#                     for (Enumeration tempMsgs=contact.tempMsgs.elements(); tempMsgs.hasMoreElements(); ) 
+//#                     {
+//#                         Msg tmpmsg=(Msg) tempMsgs.nextElement();
+//#                         contact.addMessage(tmpmsg);
+//#                     }
+//#                     contact.purgeTemps();
+//#                 }
+//#                 redraw();
+//#             } else
+//#endif
+                sd.roster.doSubscribe(contact);
         }
 		
         if (c==cmdUnsubscribed) {
-            sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
+//#ifdef ANTISPAM
+//#             if (getMessage(cursor).messageType==Msg.MESSAGE_TYPE_REQUEST_PRIVATE) {
+//#                 MucContact mc = (MucContact) contact;
+//#                 mc.privateState=MucContact.PRIVATE_DECLINE;
+//#                 
+//#                 if (!contact.tempMsgs.isEmpty())
+//#                     contact.purgeTemps();
+//#                 redraw();
+//#             } else
+//#endif
+                sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
         }
         
         if (c==cmdSendBuffer) {

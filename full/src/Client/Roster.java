@@ -1322,7 +1322,6 @@ public class Roster
                 
                 boolean compose=false;
                 JabberDataBlock x=message.getChildBlock("x");
-                //if (body.length()==0) body=null; 
                 
                 if (x!=null) {
                     compose=(  x.getChildBlock("composing")!=null 
@@ -1331,7 +1330,7 @@ public class Roster
                     if (compose) c.acceptComposing=true ; 
                     if (body!=null) compose=false;
                     c.setComposing(compose);
-                if (compose) playNotify(888);
+                    if (compose) playNotify(888);
                 }
                 redraw();
 
@@ -1346,7 +1345,8 @@ public class Roster
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
                         m.unread=false;
                     } else {
-                        if (m.dateGmt<= ((ConferenceGroup)c.getGroup()).conferenceJoinTime) m.messageType=Msg.MESSAGE_TYPE_HISTORY;
+                        if (m.dateGmt<= ((ConferenceGroup)c.getGroup()).conferenceJoinTime)
+                            m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
 	                String myNick=mucGrp.getSelfContact().getName();
 			if (body.indexOf(myNick)>-1) {
@@ -1372,20 +1372,59 @@ public class Roster
 	                        } else if (body.indexOf(" "+myNick+".")>-1) highlite=true;
 			}
                         //TODO: custom highliting dictionary
+                        forme=highlite;
+                        m.setHighlite(highlite); 
                     }
 		m.from=name;
 
                 }
-                forme=highlite;
-                m.setHighlite(highlite); 
  
-                if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST || cf.notInList)
-                    messageStore(c, m);
-                
+                if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST || cf.notInList) {
+//#ifdef ANTISPAM
+//#                     if (cf.antispam) {
+//#                         if (!groupchat) {
+//#                             if (c instanceof MucContact) {
+//# 
+//#                                 MucContact mc=(MucContact) c;
+//# 
+//#                                 switch (mc.privateState) {
+//#                                     case MucContact.PRIVATE_NONE: {
+//#                                         System.out.println("Contact Request Chat, Authorize or Decline?");
+//#                                         mc.privateState=MucContact.PRIVATE_REQUEST;
+//#                                         Msg rm=new Msg(Msg.MESSAGE_TYPE_REQUEST_PRIVATE, m.from, null, "Contact Request Chat, Authorize or Decline?");
+//#                                         messageStore(c, rm);
+//#                                         tempMessageStore(c, m);
+//#                                         break;
+//#                                     }
+//# 
+//#                                     case MucContact.PRIVATE_REQUEST: {
+//#                                         //System.out.println("receive temp message");
+//#                                         tempMessageStore(c, m);
+//#                                         break;
+//#                                     }
+//# 
+//#                                     case MucContact.PRIVATE_DECLINE: {
+//#                                         //System.out.println("decline message");
+//#                                         return JabberBlockListener.BLOCK_REJECTED;
+//#                                     }
+//# 
+//#                                     case MucContact.PRIVATE_ACCEPT:
+//#                                         //System.out.println("accept message");
+//#                                         messageStore(c, m);
+//#                                 }
+//# 
+//#                             } else {
+//#                                 messageStore(c, m);
+//#                             }
+//#                     } else 
+//#                         messageStore(c, m);
+//#                 } else
+//#endif
+                        messageStore(c, m);
+
+                }
                 return JabberBlockListener.BLOCK_PROCESSED;   
             }
-            // при�?ут�?твие
-
             else if( data instanceof Presence ) {
                 if (myStatus==Presence.PRESENCE_OFFLINE) return JabberBlockListener.BLOCK_REJECTED;
                 Presence pr= (Presence) data;
@@ -1404,15 +1443,6 @@ public class Roster
                 JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc");
                 if (xmuc!=null) try {
                     MucContact c = mucContact(from);
-                    
-//toon
-//                   String statusText=status.getChildBlockText("status"); 
-//toon                    
-                    
-                    //System.out.println(b.toString());
-
-
-                    //c.nick=nick;
                     
                     from=from.substring(0, from.indexOf('/'));
                     Msg chatPresence=new Msg(
@@ -1446,14 +1476,17 @@ public class Roster
                     if (notifyReady(-111) &&
                         (ti==Presence.PRESENCE_ONLINE ||
                          ti==Presence.PRESENCE_CHAT)) {
-                            if (lastAppearedContact!=null) lastAppearedContact.setAppearing(false);
+                            if (lastAppearedContact!=null) 
+                                lastAppearedContact.setAppearing(false);
                             c.setAppearing(true);
                             lastAppearedContact=c;
                           }
-                    if (ti==Presence.PRESENCE_OFFLINE) c.setAppearing(false);
+                    if (ti==Presence.PRESENCE_OFFLINE) 
+                        c.setAppearing(false);
 
                     if (ti>=0) {
-                        if (ti!=11 && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) playNotify(ti);
+                        if (ti!=11 && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
+                            playNotify(ti);
                     }
                 }
 		sort(hContacts);
@@ -1550,6 +1583,13 @@ public class Roster
 //#                 setWobbler(c.toString()+": "+message.getBody());
 //#endif
         }
+    }
+    
+    void tempMessageStore(Contact c, Msg message) {
+        c.addTempMessage(message);
+        
+        if (cf.ghostMotor)
+            System.gc(); 
     }
     
     public void blockNotify(int event, long ms) {

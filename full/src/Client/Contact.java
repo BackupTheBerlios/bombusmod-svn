@@ -114,6 +114,11 @@ public class Contact extends IconTextElement{
     public boolean ask_subscribe;
     
     public Vector msgs;
+    
+//#ifdef ANTISPAM
+//#     public Vector tempMsgs=new Vector();
+//#endif
+    
     private int newMsgCnt=-1;
     public int unreadType;
     public int lastUnread;
@@ -173,6 +178,7 @@ public class Contact extends IconTextElement{
         if (getNewMsgsCount()>0) 
             switch (unreadType) {
                 case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
+                case Msg.MESSAGE_TYPE_REQUEST_PRIVATE: return RosterIcons.ICON_AUTHRQ_INDEX;
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;
@@ -192,13 +198,20 @@ public class Contact extends IconTextElement{
             Msg m=(Msg)e.nextElement();
             if (m.unread) { 
                 nm++;
-                if (m.messageType==Msg.MESSAGE_TYPE_AUTH) unreadType=m.messageType;
+                if (m.messageType==Msg.MESSAGE_TYPE_AUTH
+//#ifdef ANTISPAM
+//#                         || m.messageType==Msg.MESSAGE_TYPE_REQUEST_PRIVATE
+//#endif
+                ) 
+                    unreadType=m.messageType;
             }
         }
         return newMsgCnt=nm;
     }
     
-    public boolean needsCount(){ return (newMsgCnt<0);  }
+    public boolean needsCount(){ 
+        return (newMsgCnt<0);  
+    }
     
     public boolean active(){
 	if (msgs.size()>1) return true;
@@ -229,6 +242,12 @@ public class Contact extends IconTextElement{
         if ((cmp=c.priority-priority) !=0) return cmp;
         return c.transport-transport;
     };
+    
+//#ifdef ANTISPAM
+//#     public void addTempMessage(Msg m) {
+//#         tempMsgs.addElement(m);
+//#     }
+//#endif
     
     public void addMessage(Msg m) {
         boolean first_replace=false;
@@ -308,7 +327,7 @@ public class Contact extends IconTextElement{
             }
        }
 //#endif
-        // п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�? п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�? п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�? - presence, п©�?≈п�?п©�?≈п�? п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�?п©�?≈п�? п©�?≈п�?п©�?≈п�?п©�?≈п�?
+
         if (first_replace) {
             msgs.setElementAt(m,0);
             
@@ -336,9 +355,7 @@ public class Contact extends IconTextElement{
         try {
             os.write(b);
             filePos+=b.length;
-        } catch (IOException ex) {
-            //ex.printStackTrace();
-        }
+        } catch (IOException ex) { }
     }
 //#endif
   
@@ -357,15 +374,8 @@ public class Contact extends IconTextElement{
         if (origin==ORIGIN_GROUPCHAT) return getJid();
         return (nick==null)?getJid():nick+jid.getResource(); 
     }
-/*    
-    public String toString() {
-        if (origin>ORIGIN_GROUPCHAT) return nick;
-        if (origin==ORIGIN_GROUPCHAT) return getJid();
-        return (nick==null)?getJid():nick+jid.getResource(); 
-    }
-*/    
+   
     public final String getName(){ return (nick==null)?getBareJid():nick; }
-    //public void onSelect(){}
 
     public final String getJid() {
         return jid.getJid();
@@ -381,10 +391,19 @@ public class Contact extends IconTextElement{
     }
     
     public final void purge() {
+//#ifdef ANTISPAM
+//#         purgeTemps();
+//#endif
         msgs=new Vector();
         vcard=null;
         resetNewMsgCnt();
     }
+    
+//#ifdef ANTISPAM
+//#     public final void purgeTemps() {
+//#         tempMsgs=new Vector();
+//#     }
+//#endif
     
     public final void smartPurge(int cursor) {
         try {
@@ -416,11 +435,15 @@ public class Contact extends IconTextElement{
         if (group==null) return 0; 
         return group.index;  
     }
-    public boolean inGroup(Group ingroup) {  return group==ingroup;  }
+    
+    public boolean inGroup(Group ingroup) {  
+        return group==ingroup;  
+    }
 
-    public void setGroup(Group group) { this.group = group; }
+    public void setGroup(Group group) { 
+        this.group = group; 
+    }
 
-	
     public void setStatus(int status) {
         setComposing(false);
         this.status = status;
