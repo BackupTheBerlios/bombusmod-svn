@@ -178,7 +178,9 @@ public class Contact extends IconTextElement{
         if (getNewMsgsCount()>0) 
             switch (unreadType) {
                 case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
-                case Msg.MESSAGE_TYPE_REQUEST_PRIVATE: return RosterIcons.ICON_AUTHRQ_INDEX;
+//#ifdef ANTISPAM
+//#                 case Msg.MESSAGE_TYPE_REQUEST_PRIVATE: return RosterIcons.ICON_AUTHRQ_INDEX;
+//#endif
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;

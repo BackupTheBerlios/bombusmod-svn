@@ -637,7 +637,7 @@ public abstract class VirtualList
                             userKeyPressed(keyCode);
                         }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
-                    
+/*
                      if (keyCode==KEY_POUND) {
                          if (!cf.allowLightControl) {
                             System.gc();
@@ -650,9 +650,8 @@ public abstract class VirtualList
                          }
                         //return;
                      }
+ */
                      if (keyCode==KEY_STAR) {
-                        if (cf.allowLightControl)
-                        {
                             System.gc();
 //#ifdef POPUPS
 //#                             if (cf.popUps) {
@@ -660,7 +659,6 @@ public abstract class VirtualList
 //#                                 wobble="Free "+freemem+"kB";
 //#                             }
 //#endif
-                        }
                          //return;
                      }
             }

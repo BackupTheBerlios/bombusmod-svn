@@ -1584,14 +1584,14 @@ public class Roster
 //#endif
         }
     }
-    
-    void tempMessageStore(Contact c, Msg message) {
-        c.addTempMessage(message);
-        
-        if (cf.ghostMotor)
-            System.gc(); 
-    }
-    
+//#ifdef ANTISPAM
+//#     void tempMessageStore(Contact c, Msg message) {
+//#         c.addTempMessage(message);
+//#         
+//#         if (cf.ghostMotor)
+//#             System.gc(); 
+//#     }
+//#endif  
     public void blockNotify(int event, long ms) {
         if (!notifyReady(-111)) return;
         blockNotifyEvent=event;
@@ -1891,13 +1891,14 @@ public class Roster
             return;
         }
         
-         if (keyCode==KEY_POUND && allowLightControl) {
+         if (keyCode==KEY_POUND) {
             System.gc();
 //#ifdef POPUPS
 //#             setWobbler(null);
 //#endif
             return;
          }
+/*
          if (keyCode==KEY_STAR && !allowLightControl) {
             System.gc();
 //#ifdef POPUPS
@@ -1905,6 +1906,7 @@ public class Roster
 //#endif
             return;
          }
+ */
      }
 /*    
     private void userActivity() {
