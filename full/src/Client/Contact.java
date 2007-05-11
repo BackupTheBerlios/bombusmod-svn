@@ -72,15 +72,9 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GC_MEMBER=5;
     public final static byte ORIGIN_GC_MYSELF=6;
 
-    private Integer incomingViewing;
-
-    /** Creates a new instance of Contact */
-    protected Contact (){
-        //lastReaded=0;
-        super(RosterIcons.getInstance());
-        msgs=new Vector();
-        key1="";
-    }
+//#ifdef ANTISPAM
+//#     public Vector tempMsgs=new Vector();
+//#endif
 
     public String nick;
     public Jid jid;
@@ -97,6 +91,7 @@ public class Contact extends IconTextElement{
     public boolean acceptComposing;
     public Integer incomingComposing;
     private Integer incomingAppearing;
+    private Integer incomingViewing;
     
     public boolean isSelected;
     
@@ -115,10 +110,6 @@ public class Contact extends IconTextElement{
     
     public Vector msgs;
     
-//#ifdef ANTISPAM
-//#     public Vector tempMsgs=new Vector();
-//#endif
-    
     private int newMsgCnt=-1;
     public int unreadType;
     public int lastUnread;
@@ -135,7 +126,12 @@ public class Contact extends IconTextElement{
     private OutputStream os;
 //#endif
     
-    //public long conferenceJoinTime;
+
+    protected Contact (){
+        super(RosterIcons.getInstance());
+        msgs=new Vector();
+        key1="";
+    }
     
     public int firstUnread(){
         int unreadIndex=0;
@@ -175,14 +171,16 @@ public class Contact extends IconTextElement{
     }
     
     public int getImageIndex() {
-        if (getNewMsgsCount()>0) 
+//#ifdef ANTISPAM
+//#         if (!tempMsgs.isEmpty())
+//#             return RosterIcons.ICON_AUTHRQ_INDEX;
+//#endif
+        if (getNewMsgsCount()>0)  {
             switch (unreadType) {
                 case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
-//#ifdef ANTISPAM
-//#                 case Msg.MESSAGE_TYPE_REQUEST_PRIVATE: return RosterIcons.ICON_AUTHRQ_INDEX;
-//#endif
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
+        }
         if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;
         if (incomingViewing!=null) return RosterIcons.ICON_VIEWING_INDEX;
         if (incomingAppearing!=null) return RosterIcons.ICON_APPEARING_INDEX;
@@ -200,11 +198,7 @@ public class Contact extends IconTextElement{
             Msg m=(Msg)e.nextElement();
             if (m.unread) { 
                 nm++;
-                if (m.messageType==Msg.MESSAGE_TYPE_AUTH
-//#ifdef ANTISPAM
-//#                         || m.messageType==Msg.MESSAGE_TYPE_REQUEST_PRIVATE
-//#endif
-                ) 
+                if (m.messageType==Msg.MESSAGE_TYPE_AUTH) 
                     unreadType=m.messageType;
             }
         }
@@ -222,7 +216,15 @@ public class Contact extends IconTextElement{
     }
     
     public void resetNewMsgCnt() { newMsgCnt=-1;}
+/*    
+    public void setPrivateState (int state) {
+        privateState=state;
+    }
     
+    public int getPrivateState () {
+        return privateState;
+    }
+*/    
     public void setComposing (boolean state) {
         incomingComposing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
     }
@@ -248,6 +250,10 @@ public class Contact extends IconTextElement{
 //#ifdef ANTISPAM
 //#     public void addTempMessage(Msg m) {
 //#         tempMsgs.addElement(m);
+//#     }
+//#
+//#     public final void purgeTemps() {
+//#         tempMsgs=new Vector();
 //#     }
 //#endif
     
@@ -400,13 +406,7 @@ public class Contact extends IconTextElement{
         vcard=null;
         resetNewMsgCnt();
     }
-    
-//#ifdef ANTISPAM
-//#     public final void purgeTemps() {
-//#         tempMsgs=new Vector();
-//#     }
-//#endif
-    
+
     public final void smartPurge(int cursor) {
         try {
             if (cursor==msgs.size() && msgs.size()>0)

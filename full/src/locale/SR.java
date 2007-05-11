@@ -457,9 +457,15 @@ public class SR {
     public   static String MS_MOVE = loadString( "Move" );
     public static String MS_SAVE = loadString( "Save" );
     
+//#ifdef ANTISPAM
+//#     public static String MS_UNLOCK_PRIVATE = loadString( "Allow private" );
+//#     public static String MS_BLOCK_PRIVATE = loadString( "Block private" );
+//#     public static String MS_CONTACT_REQUEST_CHAT = loadString( "Contact request chat, Allow or Block?" );
+//#endif
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
-    
+   
     
     private SR() { }
     

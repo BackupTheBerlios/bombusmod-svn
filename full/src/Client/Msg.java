@@ -52,9 +52,7 @@ public class Msg //implements MessageList.Element
     public final static int MESSAGE_TYPE_ERROR=11;
     public final static int MESSAGE_TYPE_SUBJ=12;
     public final static int MESSAGE_TYPE_AUTH=15;
-//#ifdef ANTISPAM
-//#     public final static int MESSAGE_TYPE_REQUEST_PRIVATE=20;
-//#endif
+
     private boolean highlite;
     
     /** Creates a new instance of msg */

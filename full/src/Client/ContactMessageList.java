@@ -28,35 +28,34 @@
 package Client;
 import Conference.MucContact;
 import Messages.MessageList;
+import images.RosterIcons;
+import io.NvStorage;
+import locale.SR;
+import ui.MainBar;
+import vcard.VCard;
+//import ui.*;
+import java.util.*;
+import javax.microedition.lcdui.*;
+import util.ClipBoard;
+
 //#ifdef ARCHIVE
 //# import archive.MessageArchive;
 //#endif
-import images.RosterIcons;
+
 //#ifdef SMILES
 //# import images.SmilesIcons;
 //#endif
-import io.NvStorage;
-import locale.SR;
+
 //#if TEMPLATES
 //# import templates.TemplateContainer;
 //# import History.HistoryStorage;
 //# import java.io.DataInputStream;
 //#endif
-import ui.MainBar;
 
 //#ifdef ALT_INPUT
 //# import ui.inputbox.Box;
 //#endif
 
-import vcard.VCard;
-import ui.*;
-import java.util.*;
-import javax.microedition.lcdui.*;
-import util.ClipBoard;
-/**
- *
- * @author Eugene Stahov
- */
 public class ContactMessageList extends MessageList
 {
     
@@ -80,6 +79,10 @@ public class ContactMessageList extends MessageList
     Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 11);
 //#if TEMPLATES
 //#     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,13);
+//#endif
+//#ifdef ANTISPAM
+//#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.SCREEN, 22);
+//#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
 //#endif
     Command cmdSendBuffer=new Command("Send Buffer", Command.SCREEN, 14);
     
@@ -114,6 +117,28 @@ public class ContactMessageList extends MessageList
         mainbar.addElement(null);
 
         cursor=0;//activate
+        
+//#ifdef ANTISPAM
+//#         if (contact instanceof MucContact && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+//#             MucContact mc=(MucContact) contact;
+//#             if (mc.roleCode!=MucContact.GROUP_MODERATOR) {
+//#                 switch (mc.getPrivateState()) {
+//#                     case MucContact.PRIVATE_DECLINE:
+//#                         addCommand(cmdUnlock);
+//#                         break;
+//#                     case MucContact.PRIVATE_NONE:
+//#                     case MucContact.PRIVATE_REQUEST:
+//#                         addCommand(cmdBlock);
+//#                         addCommand(cmdUnlock);
+//#                         break;
+//#                     case MucContact.PRIVATE_ACCEPT:
+//#                         addCommand(cmdBlock);
+//#                         break;
+//#                 }
+//#                 
+//#             }
+//#         }
+//#endif
 //#if LAST_MESSAGES      
 //#         if (hisStorage && contact instanceof MucContact==false) addCommand(cmdRecent);
 //#endif        
@@ -123,6 +148,8 @@ public class ContactMessageList extends MessageList
         }
         addCommand(cmdPurge);
         //addCommand(cmdContact);
+
+    
 	addCommand(cmdActive);
         addCommand(cmdQuote);
 //#ifdef ARCHIVE
@@ -150,11 +177,7 @@ public class ContactMessageList extends MessageList
         if (cmdSubscribe==null) return;
         try {
             Msg msg=(Msg) contact.msgs.elementAt(cursor); 
-            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH
-//#ifdef ANTISPAM
-//#                     || msg.messageType==Msg.MESSAGE_TYPE_REQUEST_PRIVATE
-//#endif
-            ) {
+            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
                 addCommand(cmdSubscribe);
                 addCommand(cmdUnsubscribed);
             } else {
@@ -280,38 +303,38 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
         if (c==cmdSubscribe) {
-//#ifdef ANTISPAM
-//#             if (getMessage(cursor).messageType==Msg.MESSAGE_TYPE_REQUEST_PRIVATE) {
-//#                 MucContact mc = (MucContact) contact;
-//#                 mc.privateState=MucContact.PRIVATE_ACCEPT;
-//# 
-//#                 if (!contact.tempMsgs.isEmpty()) {
-//#                     for (Enumeration tempMsgs=contact.tempMsgs.elements(); tempMsgs.hasMoreElements(); ) 
-//#                     {
-//#                         Msg tmpmsg=(Msg) tempMsgs.nextElement();
-//#                         contact.addMessage(tmpmsg);
-//#                     }
-//#                     contact.purgeTemps();
-//#                 }
-//#                 redraw();
-//#             } else
-//#endif
-                sd.roster.doSubscribe(contact);
+            sd.roster.doSubscribe(contact);
         }
 		
         if (c==cmdUnsubscribed) {
-//#ifdef ANTISPAM
-//#             if (getMessage(cursor).messageType==Msg.MESSAGE_TYPE_REQUEST_PRIVATE) {
-//#                 MucContact mc = (MucContact) contact;
-//#                 mc.privateState=MucContact.PRIVATE_DECLINE;
-//#                 
-//#                 if (!contact.tempMsgs.isEmpty())
-//#                     contact.purgeTemps();
-//#                 redraw();
-//#             } else
-//#endif
-                sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
+            sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
         }
+        
+//#ifdef ANTISPAM
+//#         if (c==cmdUnlock) {
+//#             MucContact mc=(MucContact) contact;
+//#             mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
+//# 
+//#             if (!contact.tempMsgs.isEmpty()) {
+//#                 for (Enumeration tempMsgs=contact.tempMsgs.elements(); tempMsgs.hasMoreElements(); ) 
+//#                 {
+//#                     Msg tmpmsg=(Msg) tempMsgs.nextElement();
+//#                     contact.addMessage(tmpmsg);
+//#                 }
+//#                 contact.purgeTemps();
+//#             }
+//#             redraw();
+//#         }
+//# 
+//#         if (c==cmdBlock) {
+//#             MucContact mc=(MucContact) contact;
+//#             mc.setPrivateState(MucContact.PRIVATE_DECLINE);
+//# 
+//#             if (!contact.tempMsgs.isEmpty())
+//#                 contact.purgeTemps();
+//#             redraw();
+//#         }
+//#endif
         
         if (c==cmdSendBuffer) {
             String from=StaticData.getInstance().account.toString();

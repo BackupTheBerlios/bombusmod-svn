@@ -58,12 +58,16 @@ public class MucContact extends Contact{
     public final static int GROUP_MEMBER=3;
     public final static int GROUP_PARTICIPANT=2;
     public final static int GROUP_MODERATOR=1;
+    
 //#ifdef ANTISPAM
+//#     public final static int PRIVATE_DECLINE=-1;
 //#     public final static int PRIVATE_NONE=0;
-//#     public final static int PRIVATE_REQUEST=1;
-//#     public final static int PRIVATE_DECLINE=2;
+//#     public final static int PRIVATE_REQUEST=2;
 //#     public final static int PRIVATE_ACCEPT=3;
+//#     
+//#     private int privateState;
 //#endif
+
     public String realJid;
     
     public String affiliation;
@@ -75,9 +79,6 @@ public class MucContact extends Contact{
     public boolean commonPresence=true;
     
     public long lastMessageTime;
-//#ifdef ANTISPAM
-//#     public static int privateState;
-//#endif
     
     /** Creates a new instance of MucContact */
     public MucContact(String nick, String jid) {
@@ -351,4 +352,14 @@ public class MucContact extends Contact{
         }
         lastMessageTime=m.dateGmt;
     }
+    
+//#ifdef ANTISPAM
+//#     public void setPrivateState (int state) {
+//#         privateState=state;
+//#     }
+//#     
+//#     public int getPrivateState () {
+//#         return privateState;
+//#     }
+//#endif
 }

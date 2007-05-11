@@ -923,7 +923,13 @@ public class Roster
     
     public void sendMessage(Contact to, final String body, final String subject , int composingState) {
         boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
-        
+//#ifdef ANTISPAM
+//#         if (to instanceof MucContact && !groupchat) {
+//#             MucContact mc=(MucContact) to;
+//#             if (mc.getPrivateState()!=MucContact.PRIVATE_DECLINE)
+//#                 mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
+//#         }
+//#endif
         if (autoAway) {
                 ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
                 String ms=es.getMessage();
@@ -949,11 +955,11 @@ public class Roster
             }
             message.addChild(event);
         }
-        //System.out.println(simpleMessage.toString());
+        setKeyTimer(0);
         theStream.send( message );
         lastMessageTime=Time.localTime();
-        setKeyTimer(0);
         playNotify(999);
+        
     }
     
     private Vector vCardQueue;
@@ -1382,24 +1388,27 @@ public class Roster
                 if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST || cf.notInList) {
 //#ifdef ANTISPAM
 //#                     if (cf.antispam) {
-//#                         if (!groupchat) {
-//#                             if (c instanceof MucContact) {
+//#                         if (c instanceof MucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
+//#                             //Contact c=getContact(from, true);
+//#                             MucContact mc=(MucContact) c;
 //# 
-//#                                 MucContact mc=(MucContact) c;
-//# 
-//#                                 switch (mc.privateState) {
+//#                             if (mc.roleCode==MucContact.ROLE_MODERATOR) {
+//#                                 //System.out.println("MucContact.ROLE_MODERATOR "+mc.realJid);
+//#                                 messageStore(c, m);
+//#                             } else {
+//#                                 switch (mc.getPrivateState()) {
 //#                                     case MucContact.PRIVATE_NONE: {
-//#                                         System.out.println("Contact Request Chat, Authorize or Decline?");
-//#                                         mc.privateState=MucContact.PRIVATE_REQUEST;
-//#                                         Msg rm=new Msg(Msg.MESSAGE_TYPE_REQUEST_PRIVATE, m.from, null, "Contact Request Chat, Authorize or Decline?");
+//#                                         //System.out.println("Contact request chat, Allow or Block?");
+//#                                         mc.setPrivateState(MucContact.PRIVATE_REQUEST);
+//#                                         Msg rm=new Msg(Msg.MESSAGE_TYPE_IN, m.from, null, SR.MS_CONTACT_REQUEST_CHAT);
 //#                                         messageStore(c, rm);
 //#                                         tempMessageStore(c, m);
 //#                                         break;
 //#                                     }
 //# 
-//#                                     case MucContact.PRIVATE_REQUEST: {
-//#                                         //System.out.println("receive temp message");
-//#                                         tempMessageStore(c, m);
+//#                                     case MucContact.PRIVATE_ACCEPT: {
+//#                                         //System.out.println("accept message");
+//#                                         messageStore(c, m);
 //#                                         break;
 //#                                     }
 //# 
@@ -1408,17 +1417,16 @@ public class Roster
 //#                                         return JabberBlockListener.BLOCK_REJECTED;
 //#                                     }
 //# 
-//#                                     case MucContact.PRIVATE_ACCEPT:
-//#                                         //System.out.println("accept message");
-//#                                         messageStore(c, m);
+//#                                     case MucContact.PRIVATE_REQUEST: {
+//#                                         //System.out.println("receive temp message");
+//#                                         tempMessageStore(c, m);
+//#                                         break;
+//#                                     }
 //#                                 }
-//# 
-//#                             } else {
-//#                                 messageStore(c, m);
 //#                             }
-//#                     } else 
-//#                         messageStore(c, m);
-//#                 } else
+//#                         } else 
+//#                             messageStore(c, m);
+//#                     } else
 //#endif
                         messageStore(c, m);
 

@@ -53,8 +53,9 @@ public class Balloon {
         g.setColor(ColorScheme.BALLOON_BGND);
         g.fillRect(3, 1, width-2, height-2);
         
+        
         g.setColor(ColorScheme.BALLOON_INK);
-        g.drawRect(2, 0, width-1, height);
+        g.drawRect(2, 0, width-1, height-1);
         g.drawString(text, 5, 2, Graphics.TOP | Graphics.LEFT);
     }
 }

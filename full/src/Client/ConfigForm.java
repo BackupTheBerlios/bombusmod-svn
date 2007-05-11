@@ -156,7 +156,9 @@ public class ConfigForm implements
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
         message.append("AutoScroll", null);
-        message.append("Antispam Conference", null);
+//#ifdef ANTISPAM
+//#         message.append("Antispam Conference", null);
+//#endif
 //#ifdef POPUPS
 //#         message.append("PopUps", null);
 //#endif
@@ -176,8 +178,10 @@ public class ConfigForm implements
             cf.storeConfPresence,
             cf.eventComposing,
             cf.capsState,
-            cf.autoScroll,
-            cf.antispam
+            cf.autoScroll
+//#ifdef ANTISPAM
+//#             ,cf.antispam
+//#endif
 //#ifdef POPUPS
 //#             ,cf.popUps
 //#endif
@@ -387,7 +391,9 @@ public class ConfigForm implements
             cf.eventComposing=mv[mvctr++];
             cf.capsState=mv[mvctr++];
             cf.autoScroll=mv[mvctr++];
-            cf.antispam=mv[mvctr++];
+//#ifdef ANTISPAM
+//#             cf.antispam=mv[mvctr++];
+//#endif
 //#ifdef POPUPS
 //#             cf.popUps=mv[mvctr++];
 //#endif
