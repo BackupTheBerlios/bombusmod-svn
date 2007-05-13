@@ -166,6 +166,8 @@ public class MucContact extends Contact{
 
         StringBuffer b=new StringBuffer(nick);
         
+        String statusText=presence.getChildBlockText("status");
+        
         if (presence.getTypeIndex()==Presence.PRESENCE_OFFLINE) {
             String reason=item.getChildBlockText("reason");
             String realJid=item.getAttribute("jid");
@@ -221,7 +223,14 @@ public class MucContact extends Contact{
                         b.append(')');
                     }
                     b.append(SR.MS_HAS_LEFT_CHANNEL);
-					testMeOffline();
+                    
+                if (statusText.length()>0) {
+                    b.append(" (");
+                    b.append(statusText);
+                    b.append(")");
+                }
+
+                    testMeOffline();
             } 
                 
         } else {
@@ -264,6 +273,12 @@ public class MucContact extends Contact{
                             b.append(SR.MS_AFFILIATION_OWNER);
                             break;
                     }
+                }
+                
+                if (statusText.length()>0) {
+                    b.append(" (");
+                    b.append(statusText);
+                    b.append(")");
                 }
             } else {
                 b.append(SR.MS_IS_NOW);

@@ -266,13 +266,13 @@ public class Utf8IOStream implements Runnable{
         String ratio=Long.toString((10*unpacked)/packed);
         int dotpos=ratio.length()-1;
         
-        /*
+        
         s.append(" ratio=");
         s.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
         s.append('.');
         s.append(ratio.substring(dotpos));
         s.append('x');
-         */
+        
     }
 
     public String getStreamStats() {

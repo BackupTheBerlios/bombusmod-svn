@@ -446,10 +446,10 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g) {
         if (memMonitor) {
-            int freemem=(int)Runtime.getRuntime().freeMemory();
-            int totalmem=(int)Runtime.getRuntime().totalMemory();
-            int cpuload=(int)Runtime.getRuntime().totalMemory();
-            int ram=(int)((freemem*width)/totalmem);
+            //int freemem=(int)Runtime.getRuntime().freeMemory();
+            //int totalmem=(int)Runtime.getRuntime().totalMemory();
+            //int cpuload=(int)Runtime.getRuntime().totalMemory();
+            int ram=(int)(((int)Runtime.getRuntime().freeMemory()*width)/(int)Runtime.getRuntime().totalMemory());
             g.setColor(ColorScheme.HEAP_TOTAL);  g.fillRect(0,0,width,1);
             g.setColor(ColorScheme.HEAP_FREE);  g.fillRect(0,0,ram,1);
         }
