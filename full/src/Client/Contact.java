@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 //#endif
 import ui.ColorScheme;
+import ui.Time;
 import util.strconv;
 import vcard.VCard;
 import java.util.*;
@@ -83,6 +84,8 @@ public class Contact extends IconTextElement{
     public int priority;
     private Group group;
     public int transport;
+    
+    public long ping=-1;
     
     public boolean moveToLatest=false;
 
@@ -251,7 +254,7 @@ public class Contact extends IconTextElement{
 //#     public void addTempMessage(Msg m) {
 //#         tempMsgs.addElement(m);
 //#     }
-//#
+//# 
 //#     public final void purgeTemps() {
 //#         tempMsgs=new Vector();
 //#     }
@@ -454,5 +457,27 @@ public class Contact extends IconTextElement{
 
     public int getStatus() {
         return status;
+    }
+    
+    public void setPing() {
+        this.ping = Time.localTime();
+    }
+
+    public String getPing() {
+        if (ping==-1)
+            return "";
+        
+        String timePing=Long.toString((Time.localTime()-ping)/100);
+        int dotpos=timePing.length()-1;
+        
+        StringBuffer s=new StringBuffer();
+        
+        s.append( (dotpos==0)? "0":timePing.substring(0, dotpos));
+        s.append('.');
+        s.append(timePing.substring(dotpos));
+        s.append(" seconds");
+
+        this.ping=-1;
+        return String.valueOf(s);
     }
 }

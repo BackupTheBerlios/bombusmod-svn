@@ -90,8 +90,8 @@ class AccountForm implements CommandListener, ItemStateListener {
 	passbox = new TextField(SR.MS_PASSWORD, account.getPassword(), 32, TextField.PASSWORD);	f.append(passbox);
         passStars(false);
 
-        servbox = new TextField(SR.MS_SERVER,   account.getServer(),   32, TextField.URL); f.append(servbox);
-	ipbox = new TextField(SR.MS_HOST_IP, account.getHostAddr(), 32, TextField.URL);	f.append(ipbox);
+        servbox = new TextField(SR.MS_SERVER,   account.getServer(),   32, TextField.ANY); f.append(servbox);
+	ipbox = new TextField(SR.MS_HOST_IP, account.getHostAddr(), 32, TextField.ANY);	f.append(ipbox);
 
         portbox = new NumberField(SR.MS_PORT, account.getPort(), 0, 65535); f.append(portbox);
 	register = new ChoiceGroup(null, Choice.MULTIPLE);
@@ -106,7 +106,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	register.setSelectedFlags(b);
 	f.append(register);
         
-        proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   32, TextField.URL); f.append(proxyHost);
+        proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   32, TextField.ANY); f.append(proxyHost);
 
 	proxyPort = new NumberField(SR.PROXY_PORT, account.getProxyPort(), 0, 65535);	f.append(proxyPort);
      

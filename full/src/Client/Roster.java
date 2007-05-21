@@ -25,8 +25,6 @@
  *
  */
 
-//TODO: упро�?тить обработку и�?ключений дл�? theStream.send
-
 package Client;
 
 import Conference.BookmarkQuery;
@@ -1151,6 +1149,18 @@ public class Roster
                             redraw();
                         }
                     }
+                    if (id.startsWith("_ping")) {
+                        Contact c=getContact(from, true);
+                        querysign=false;
+                        c.setViewing(false);
+                        from=data.getAttribute("from");
+                        String pong=c.getPing();
+                        if (pong!="") {
+                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, "Pong", pong);
+                            messageStore(getContact(from, false), m);
+                            redraw();
+                        }
+                    }
                     if (id.equals("time")) {
                         JabberDataBlock tm=data.getChildBlock("query");
                         if (tm!=null) {
@@ -1187,6 +1197,17 @@ public class Roster
                         }
                     }
                 } else  if (type.equals("get")){
+                    JabberDataBlock ping=data.getChildBlock("ping");
+                    if (ping!=null){
+                        Contact c=getContact(from, true);
+                        if (ping.isJabberNameSpace("http://www.xmpp.org/extensions/xep-0199.html#ns")) { //ping
+                            c.setViewing(true);
+                            theStream.send(new IqPing(data));
+                            return JabberBlockListener.BLOCK_PROCESSED;
+                        }
+                        return JabberBlockListener.BLOCK_REJECTED;
+                    }
+                    
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
                         Contact c=getContact(from, true);
@@ -1205,7 +1226,6 @@ public class Roster
                             theStream.send(new IqLast(data, lastMessageTime));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
-                        return JabberBlockListener.BLOCK_REJECTED;
                     }
                 } else if (type.equals("set")) {
                     //todo: verify xmlns==jabber:iq:roster

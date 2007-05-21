@@ -1,5 +1,5 @@
 /*
- * RosterMenu.java
+ * RenameGroup.java
  * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or

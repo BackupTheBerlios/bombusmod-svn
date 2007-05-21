@@ -252,7 +252,8 @@ public class ContactMessageList extends MessageList
         if (c==cmdQuote) {
             try {
                 String msg=new StringBuffer()
-                    .append((char)0xbb) // Â»
+                    .append((char)0xbb) // »
+                    .append(" ")
                     .append(getMessage(cursor).toString())
                     .append("\n")
                     .toString();

@@ -38,6 +38,7 @@ import Conference.affiliation.Affiliations;
 //# import ServiceDiscovery.ServiceDiscovery;
 //#endif
 import com.alsutton.jabber.datablocks.IqLast;
+import com.alsutton.jabber.datablocks.IqPing;
 import com.alsutton.jabber.datablocks.IqTimeReply;
 import com.alsutton.jabber.datablocks.IqVersionReply;
 import com.alsutton.jabber.datablocks.Presence;
@@ -109,8 +110,10 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             if (contact.getJid()==contact.getBareJid()) {
                 addItem(SR.MS_SEEN,890);    
             } else {
-                if (contact.getStatus()<Presence.PRESENCE_OFFLINE)
+                if (contact.getStatus()<Presence.PRESENCE_OFFLINE) {
                     addItem(SR.MS_IDLE,889);
+                    addItem("Ping",893);
+                }
                 if (contact.status>4)
                     addItem(SR.MS_ONLINE,890); 
             }
@@ -365,6 +368,15 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                                 clipboard.setClipBoard(c.bareJid);
                         } catch (Exception e) {/*no messages*/}
                     }
+                    break;
+                }
+                case 893: //ping
+                {
+                    try {
+                        roster.setQuerySign(true);
+                        c.setPing();
+                        roster.theStream.send(new IqPing(c.getJid()));
+                    } catch (Exception e) {/*no messages*/}
                     break;
                 }
 //#ifdef COLORS

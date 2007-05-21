@@ -64,7 +64,7 @@ public class PrivacyForm
         this.item=item;
         targetList=plist;
         
-        textValue=new TextField(null, item.value, 64, TextField.URL);
+        textValue=new TextField(null, item.value, 64, TextField.ANY);
         TextFieldCombo.setLowerCaseLatin(textValue);
         
         form.append(choiceAction);
@@ -122,7 +122,7 @@ public class PrivacyForm
                 form.set(2, textValue);
             }
              */
-        } catch (Exception e) {/* При смене на самого себя */ }
+        } catch (Exception e) {/* При �?мене на �?амого �?еб�? */ }
     }
     
     public void commandAction(Command c, Displayable d) {

@@ -269,11 +269,11 @@ public class ColorScheme {
 //#                         is.close();
 //#                         f.close();
 //#                     } catch (Exception e) {}
-//#                         if (b!=null) {
-//#                             String str=new String(b, 0, len).toString().trim();
-//#                             skin=new StringLoader().hashtableLoaderFromString(str);
-//#                         } else
-//#                         return defaultColor;
+//#                     if (b!=null) {
+//#                         String str=new String(b, 0, len).toString().trim();
+//#                         skin=new StringLoader().hashtableLoaderFromString(str);
+//#                     } else
+//#                     return defaultColor;
 //#                     break;
 //#endif
 //#                 case 1:

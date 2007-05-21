@@ -89,6 +89,22 @@ public class MessageArchive {
 	    indexes.removeElementAt(index);
 	} catch (Exception e) {}
     }
+    
+    public void deleteAll() {
+	try {
+            int i=-1;
+            int num=rs.getNumRecords();
+            while (true) {
+                i=i+1;
+                rs.deleteRecord(getRecordId(i));
+                
+                if (num==i) break;
+            }
+	} catch (Exception e) {}
+	try {
+            indexes.removeAllElements();
+	} catch (Exception e) {}
+    }
 
     public int freeSpace(){
 	try {

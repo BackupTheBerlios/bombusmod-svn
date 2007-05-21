@@ -112,12 +112,12 @@ public class StringLoader {
     public Hashtable hashtableLoaderFromString(String sourc) {
 	Hashtable hash = new Hashtable();
 
-	afterEol=0;
+	//afterEol=0;
         
         String source=sourc;
 	try {
 	    while (true) {
-		String line=readLine(source.substring(afterEol));
+		String line=readLine(source.substring(0));
                 String key, value;
 		if (line==null)  break;
 		
@@ -131,7 +131,6 @@ public class StringLoader {
                     key=line.substring(0, indexTab);
                     value=line.substring(indexTab+1, line.length() );
                     hash.put(key, value);
-                    //System.out.println(key+" "+value);
                 } catch (Exception e) {  }
 	    }
 	} catch (Exception e)	{  }
@@ -194,7 +193,7 @@ public class StringLoader {
 	return -1;            
     }
     
-    String readLine(InputStream inputstream) throws IOException {
+    public String readLine(InputStream inputstream) throws IOException {
 	StringBuffer buf=new StringBuffer();
 
 	try {

@@ -309,7 +309,8 @@ public class SR {
     public static String MS_REASON=loadString("Reason");
 
     public static String MS_ADRESS=loadString("Address");
-    public static String MS_EXPORT_TO_FILE=loadString("Export to file");
+    public static String MS_EXPORT_TO_FILE=loadString("Make BackUp");
+    public static String MS_IMPORT_TO_FILE=loadString("Import from BackUp");
 
     public static String MS_VIEW=loadString("View");
     public static String MS_STOP=loadString("Stop");
