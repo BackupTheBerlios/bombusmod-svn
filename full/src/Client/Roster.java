@@ -336,7 +336,7 @@ public class Roster
 	setMyJid(new Jid(sd.account.getJid()));
 	updateContact(sd.account.getNick(), myJid.getBareJid(), Groups.SELF_GROUP, "self", false);
 	
-	System.gc();
+	//System.gc();
     }
     
     public void errorLog(String s){
@@ -1196,7 +1196,7 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
-                } else  if (type.equals("get")){
+                } else  if (type.equals("get")) {
                     JabberDataBlock ping=data.getChildBlock("ping");
                     if (ping!=null){
                         Contact c=getContact(from, true);
@@ -1234,6 +1234,20 @@ public class Roster
                     theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
                     reEnumRoster();
                     return JabberBlockListener.BLOCK_PROCESSED;
+                } else if (type.equals("error")) {
+                    JabberDataBlock ping=data.getChildBlock("ping");
+                    if (ping!=null){
+                        Contact c=getContact(from, true);
+                        if (ping.isJabberNameSpace("http://www.xmpp.org/extensions/xep-0199.html#ns")) { //ping
+                            from=data.getAttribute("from");
+                            String pong=c.getPing();
+                            if (pong!="") {
+                                Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, "Pong", pong);
+                                messageStore(getContact(from, false), m);
+                                redraw();
+                            }
+                        }
+                    }
                 }
             }
             
@@ -1618,8 +1632,8 @@ public class Roster
 //#     void tempMessageStore(Contact c, Msg message) {
 //#         c.addTempMessage(message);
 //#         
-//#         if (cf.ghostMotor)
-//#             System.gc(); 
+//#         //if (cf.ghostMotor)
+//#         //    System.gc(); 
 //#     }
 //#endif  
     public void blockNotify(int event, long ms) {
@@ -1907,7 +1921,6 @@ public class Roster
                 }
                 if (p==c) pass++; // полный круг пройден
             }
-            System.gc();
             return;
         }
         if (keyCode=='3') {
@@ -1928,15 +1941,6 @@ public class Roster
 //#endif
             return;
          }
-/*
-         if (keyCode==KEY_STAR && !allowLightControl) {
-            System.gc();
-//#ifdef POPUPS
-//#             setWobbler(null);
-//#endif
-            return;
-         }
- */
      }
 /*    
     private void userActivity() {

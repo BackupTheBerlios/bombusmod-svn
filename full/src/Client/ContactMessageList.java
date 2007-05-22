@@ -370,7 +370,7 @@ public class ContactMessageList extends MessageList
         
         moveCursorHome();  
         
-        System.gc();
+        //System.gc();
         redraw();
     }
     

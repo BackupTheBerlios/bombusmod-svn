@@ -637,9 +637,8 @@ public abstract class VirtualList
                             userKeyPressed(keyCode);
                         }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
-/*
-                     if (keyCode==KEY_POUND) {
-                         if (!cf.allowLightControl) {
+
+                    if (keyCode==KEY_STAR) {
                             System.gc();
 //#ifdef POPUPS
 //#                             if (cf.popUps) {
@@ -647,20 +646,7 @@ public abstract class VirtualList
 //#                                 wobble="Free "+freemem+"kB";
 //#                             }
 //#endif
-                         }
-                        //return;
-                     }
- */
-                     if (keyCode==KEY_STAR) {
-                            System.gc();
-//#ifdef POPUPS
-//#                             if (cf.popUps) {
-//#                                 int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-//#                                 wobble="Free "+freemem+"kB";
-//#                             }
-//#endif
-                         //return;
-                     }
+                    }
             }
 //#if ALT_INPUT
 //#         } else {
