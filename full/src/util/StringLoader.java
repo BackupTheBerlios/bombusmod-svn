@@ -112,12 +112,12 @@ public class StringLoader {
     public Hashtable hashtableLoaderFromString(String sourc) {
 	Hashtable hash = new Hashtable();
 
-	//afterEol=0;
+	afterEol=0;
         
         String source=sourc;
 	try {
 	    while (true) {
-		String line=readLine(source.substring(0));
+		String line=readLine(source.substring(afterEol));
                 String key, value;
 		if (line==null)  break;
 		
@@ -193,7 +193,7 @@ public class StringLoader {
 	return -1;            
     }
     
-    public String readLine(InputStream inputstream) throws IOException {
+    String readLine(InputStream inputstream) throws IOException {
 	StringBuffer buf=new StringBuffer();
 
 	try {
