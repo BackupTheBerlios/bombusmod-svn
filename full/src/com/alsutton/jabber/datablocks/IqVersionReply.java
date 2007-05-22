@@ -50,6 +50,9 @@ public class IqVersionReply extends Iq{
         query.addChild("name", cf.m_client);
         query.addChild("version", cf.m_ver);
         query.addChild("os", cf.m_os);
+        if (cf.enableVersionOs) {
+            query.addChild("os", cf.m_os);
+        }
     }
     
     // constructs version request

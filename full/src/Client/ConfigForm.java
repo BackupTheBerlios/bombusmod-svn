@@ -219,6 +219,10 @@ public class ConfigForm implements
             
             application.append(SR.MS_HEAP_MONITOR,null);
             ap[apctr++]=cf.memMonitor;
+            
+            application.append(SR.MS_SHOW_HARDWARE,null);
+            ap[apctr++]=cf.enableVersionOs;
+            
 //#ifdef NEW_MENU
 //#             application.append(SR.MS_NEW_MENU,null);
 //#             ap[apctr++]=cf.newMenu;
@@ -415,6 +419,8 @@ public class ConfigForm implements
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
 
 	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
+            
+            cf.enableVersionOs=ap[apctr++];
             
 //#ifdef NEW_MENU
 //#         VirtualList.newMenu=cf.newMenu=ap[apctr++];

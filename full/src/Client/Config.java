@@ -162,6 +162,8 @@ public class Config {
     public boolean showResources=true;
     
     public boolean antispam=false;
+    
+    public boolean enableVersionOs=true;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -309,6 +311,8 @@ public class Config {
             
             antispam=inputStream.readBoolean();
             
+            enableVersionOs=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
 	    accountIndex = -1;
@@ -385,6 +389,8 @@ public class Config {
             showResources=true;
             
             antispam=false;
+            
+            enableVersionOs=true;
             try {
                 if (inputStream!=null)
                     inputStream.close();
@@ -497,6 +503,8 @@ public class Config {
             outputStream.writeBoolean(showResources);
             
             outputStream.writeBoolean(antispam);
+            
+            outputStream.writeBoolean(enableVersionOs);
             
 	} catch (Exception e) {
             //e.printStackTrace();
