@@ -464,7 +464,7 @@ public class SR {
 //#     public static String MS_CONTACT_REQUEST_CHAT = loadString( "Contact request chat, Allow or Block?" );
 //#endif
     
-    public final static String MS_SHOW_HARDWARE = loadString( "Shared platform info" );
+    public final static String MS_SHOW_HARDWARE = loadString( "shared platform info" );
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

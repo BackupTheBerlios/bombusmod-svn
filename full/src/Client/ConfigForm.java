@@ -129,7 +129,7 @@ public class ConfigForm implements
         roster.append(SR.MS_SELF_CONTACT, null);
         roster.append(SR.MS_TRANSPORTS, null);
         roster.append(SR.MS_IGNORE_LIST, null);
-        roster.append(SR.MS_NOT_IN_LIST, null);
+        //roster.append(SR.MS_NOT_IN_LIST, null);
         roster.append(SR.MS_AUTOFOCUS,null);
 	roster.append(SR.MS_AUTH_NEW,null);
         roster.append("Show Resources",null);
@@ -139,7 +139,7 @@ public class ConfigForm implements
             cf.selfContact,
             cf.showTransports, 
             cf.ignore, 
-            cf.notInList,
+            //cf.notInList,
             cf.autoFocus,
             cf.autoSubscribe,
             cf.showResources
@@ -382,10 +382,10 @@ public class ConfigForm implements
             cf.selfContact=ra[1];
             cf.showTransports=ra[2];
             cf.ignore=ra[3];
-            cf.notInList=ra[4];
-            cf.autoFocus=ra[5];
-            cf.autoSubscribe=ra[6];
-            cf.showResources=ra[7];
+            //cf.notInList=ra[4];
+            cf.autoFocus=ra[4];
+            cf.autoSubscribe=ra[5];
+            cf.showResources=ra[6];
             
             int mvctr=0;
 //#ifdef SMILES

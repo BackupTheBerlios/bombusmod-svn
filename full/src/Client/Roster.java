@@ -636,7 +636,7 @@ public class Roster
         c=findContact(J, false);
         if (c==null) {
             if (!createInNIL) return null;
-            c=new Contact(null, jid, Presence.PRESENCE_OFFLINE, "not-in-list");
+            c=new Contact(null, jid, Presence.PRESENCE_OFFLINE, "none" ); /*"not-in-list"*/
 	    c.bareJid=J.getBareJid();
             c.origin=Contact.ORIGIN_PRESENCE;
             c.setGroup(groups.getGroup(Groups.TYPE_NOT_IN_LIST));
@@ -1503,7 +1503,9 @@ public class Roster
                     
                 } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
                 else {
-                    Contact c=getContact(from, cf.notInList && ti!=Presence.PRESENCE_OFFLINE); //<<<
+                    boolean enNIL=cf.notInList;
+                    if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
+                    Contact c=getContact(from, enNIL); 
                     if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop presence
                     messageStore(c, m);
 					
@@ -2264,8 +2266,8 @@ public class Roster
                     // hiddens
                     if (cf.ignore) groups.addToVector(tContacts,Groups.TYPE_IGNORE);
                     
-                    // not-in-list
-                    if (cf.notInList) groups.addToVector(tContacts,Groups.TYPE_NOT_IN_LIST);
+                    /*if (cf.notInList) */
+                    groups.addToVector(tContacts,Groups.TYPE_NOT_IN_LIST);
 
                     // transports
                     //Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);

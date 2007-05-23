@@ -236,7 +236,7 @@ public class Config {
 	    smiles=inputStream.readBoolean();
 	    showTransports=inputStream.readBoolean();
 	    selfContact=inputStream.readBoolean();
-	    notInList=inputStream.readBoolean();
+	    notInList=true;
 	    ignore=inputStream.readBoolean();
 	    eventComposing=inputStream.readBoolean();
 	    
