@@ -1344,7 +1344,7 @@ public class Roster
                     
                 } catch (Exception e) {}
                 
-                Contact c=getContact(from, cf.notInList);
+                Contact c=getContact(from, true);
 
                 if (name==null) name=c.getName();
                 // /me
@@ -1421,7 +1421,7 @@ public class Roster
 
                 }
  
-                if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST || cf.notInList) {
+                if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST) {
 //#ifdef ANTISPAM
 //#                     if (cf.antispam) {
 //#                         if (c instanceof MucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
@@ -1503,7 +1503,7 @@ public class Roster
                     
                 } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
                 else {
-                    boolean enNIL=cf.notInList;
+                    boolean enNIL=true;
                     if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
                     Contact c=getContact(from, enNIL); 
                     if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop presence

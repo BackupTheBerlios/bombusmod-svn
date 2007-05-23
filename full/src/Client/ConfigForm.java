@@ -111,8 +111,9 @@ public class ConfigForm implements
     
 //#if FILE_IO
     private int HISTORY=0;
-    private int COLORSHEME=1;
-    
+//#ifdef COLORS
+//#     private int COLORSHEME=1;
+//#endif
     private int returnVal=0;
 //#endif
     

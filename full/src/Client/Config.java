@@ -100,7 +100,7 @@ public class Config {
     public boolean showOfflineContacts=true;
     public boolean showTransports=true;
     public boolean selfContact=false;
-    public boolean notInList=true;
+    //public boolean notInList=true;
     public boolean ignore=false;
     public boolean eventComposing=false;
     
@@ -236,7 +236,8 @@ public class Config {
 	    smiles=inputStream.readBoolean();
 	    showTransports=inputStream.readBoolean();
 	    selfContact=inputStream.readBoolean();
-	    notInList=true;
+	    //notInList=true;
+            inputStream.readBoolean();
 	    ignore=inputStream.readBoolean();
 	    eventComposing=inputStream.readBoolean();
 	    
@@ -322,7 +323,7 @@ public class Config {
 	    smiles=true;
 	    showTransports=true;
 	    selfContact=true;
-	    notInList=false;
+	    //notInList=false;
 	    ignore=false;
 	    eventComposing=true;
 	    
@@ -429,7 +430,7 @@ public class Config {
 	    outputStream.writeBoolean(smiles);
 	    outputStream.writeBoolean(showTransports);
 	    outputStream.writeBoolean(selfContact);
-	    outputStream.writeBoolean(notInList);
+	    outputStream.writeBoolean(true); //notInList
 	    outputStream.writeBoolean(ignore);
 	    outputStream.writeBoolean(eventComposing);
 	    
