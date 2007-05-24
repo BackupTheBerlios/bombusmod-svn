@@ -42,11 +42,6 @@ import ui.controls.NumberField;
 import ui.ColorSelector;
 import ui.*;
 
-/**
- *
- * @author Evg_S
- */
-
 
 public class ColorForm implements CommandListener
 //#if (FILE_IO)

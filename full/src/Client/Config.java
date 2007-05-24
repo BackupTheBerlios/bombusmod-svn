@@ -316,7 +316,7 @@ public class Config {
             
 	    inputStream.close();
 	} catch (Exception e) {
-	    accountIndex = -1;
+/*          accountIndex = -1;
 	    showOfflineContacts=true;
 	    fullscreen=false;
 	    def_profile = 0;
@@ -392,12 +392,11 @@ public class Config {
             antispam=false;
             
             enableVersionOs=true;
+ */
             try {
                 if (inputStream!=null)
                     inputStream.close();
-            } catch (IOException ex) {
-                //ex.printStackTrace();
-            }
+            } catch (IOException ex) { }
 	}
 	
 	lastProfile=profile=def_profile;

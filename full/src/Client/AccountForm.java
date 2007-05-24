@@ -83,15 +83,15 @@ class AccountForm implements CommandListener, ItemStateListener {
 	String mainbar = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
 	f = new Form(mainbar);
 
-        userbox = new TextField(SR.MS_USERNAME, account.getUserName(), 32, TextField.ANY); 
+        userbox = new TextField(SR.MS_USERNAME, account.getUserName(), 64, TextField.ANY); 
         TextFieldCombo.setLowerCaseLatin(userbox); 
         f.append(userbox);
     
-	passbox = new TextField(SR.MS_PASSWORD, account.getPassword(), 32, TextField.PASSWORD);	f.append(passbox);
+	passbox = new TextField(SR.MS_PASSWORD, account.getPassword(), 64, TextField.PASSWORD);	f.append(passbox);
         passStars(false);
 
-        servbox = new TextField(SR.MS_SERVER,   account.getServer(),   32, TextField.ANY); f.append(servbox);
-	ipbox = new TextField(SR.MS_HOST_IP, account.getHostAddr(), 32, TextField.ANY);	f.append(ipbox);
+        servbox = new TextField(SR.MS_SERVER,   account.getServer(),   64, TextField.ANY); f.append(servbox);
+	ipbox = new TextField(SR.MS_HOST_IP, account.getHostAddr(), 64, TextField.ANY);	f.append(ipbox);
 
         portbox = new NumberField(SR.MS_PORT, account.getPort(), 0, 65535); f.append(portbox);
 	register = new ChoiceGroup(null, Choice.MULTIPLE);
@@ -106,7 +106,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	register.setSelectedFlags(b);
 	f.append(register);
         
-        proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   32, TextField.ANY); f.append(proxyHost);
+        proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   64, TextField.ANY); f.append(proxyHost);
 
 	proxyPort = new NumberField(SR.PROXY_PORT, account.getProxyPort(), 0, 65535);	f.append(proxyPort);
      
@@ -120,8 +120,8 @@ class AccountForm implements CommandListener, ItemStateListener {
 		
 	keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, account.keepAlivePeriod, 10, 2096 ); f.append(keepAlive);
 	 
-	resourcebox = new TextField(SR.MS_RESOURCE, account.getResource(), 32, TextField.ANY); f.append(resourcebox);
-	nickbox = new TextField(SR.MS_NICKNAME, account.getNick(), 32, TextField.ANY); f.append(nickbox);
+	resourcebox = new TextField(SR.MS_RESOURCE, account.getResource(), 64, TextField.ANY); f.append(resourcebox);
+	nickbox = new TextField(SR.MS_NICKNAME, account.getNick(), 64, TextField.ANY); f.append(nickbox);
 	
 	f.addCommand(cmdOk);
         f.addCommand(cmdPwd);

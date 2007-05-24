@@ -1417,11 +1417,10 @@ public class Roster
                         forme=highlite;
                         m.setHighlite(highlite); 
                     }
-		m.from=name;
-
+                    m.from=name;
                 }
  
-                if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST) {
+                //if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST) {
 //#ifdef ANTISPAM
 //#                     if (cf.antispam) {
 //#                         if (c instanceof MucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
@@ -1466,7 +1465,7 @@ public class Roster
 //#endif
                         messageStore(c, m);
 
-                }
+                //}
                 return JabberBlockListener.BLOCK_PROCESSED;   
             }
             else if( data instanceof Presence ) {
@@ -1503,11 +1502,13 @@ public class Roster
                     
                 } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
                 else {
-                    boolean enNIL=true;
+                    boolean enNIL=false;
                     if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
+                    
                     Contact c=getContact(from, enNIL); 
                     if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop presence
-                    messageStore(c, m);
+
+                     messageStore(c, m);
 					
                     if (ti==Presence.PRESENCE_AUTH_ASK) {
                         if (cf.autoSubscribe) {
