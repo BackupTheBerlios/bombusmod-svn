@@ -488,13 +488,6 @@ public class Roster
                 c.subscr=subscr;
                 c.offline_type=status;
                 c.ask_subscribe=ask;
-                
-                if (querysign==true)
-                {
-                    Group g=c.getGroup();
-                    g.collapsed=true; 
-                }
-
                 c.setSortKey((nick==null)? jid:nick);
             }
         }
@@ -709,6 +702,9 @@ public class Roster
         
         Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
         if (isLoggedIn()) {
+            if (status==Presence.PRESENCE_OFFLINE)
+                groups.requestGroupState(false);
+            
             if (!StaticData.getInstance().account.isMucOnly() )
 				theStream.send( presence );
             
@@ -786,6 +782,9 @@ public class Roster
         Presence presence = new Presence(myStatus, pr, ms);
 
         if (isLoggedIn()) {
+            if (status==Presence.PRESENCE_OFFLINE) 
+                groups.requestGroupState(false);
+            
             if (!StaticData.getInstance().account.isMucOnly() )
 		theStream.send( presence );
             
@@ -1110,6 +1109,8 @@ public class Roster
                             theStream.enableRosterNotify(false);
 
                             processRoster(data);
+                            
+                            groups.requestGroupState(true);
 
                             setProgress(SR.MS_CONNECTED,100);
                             reEnumRoster();
