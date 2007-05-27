@@ -434,3 +434,17 @@ Make BackUp	Сохранить копию на диск
 Import from Back	Загрузить с диска
 Delete All	Очистить архив
 Apply Color Scheme	Применить цветовую схему
+
+Send Buffer	Послать текст из буфера
+Send Current color scheme	Послать цветовую схему
+Copy JID	Копировать JID
+autofocus	Автофокус
+Show Resources	Показывать ресурсы
+AutoScroll	Автопрокрутка
+Antispam Conference	Антиспам в конференции
+PopUps	Всплывающие окна
+Last messages	Последние сообщения
+Shared platform info	Скрыть инфо о клиенте
+Show new menu Показывать новое меню
+Save conference history	Сохранять историю конференции
+AutoStatus Message	Сообщение Автостатуса
