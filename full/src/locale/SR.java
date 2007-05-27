@@ -464,6 +464,11 @@ public class SR {
 //#     public static String MS_CONTACT_REQUEST_CHAT = loadString( "Contact request chat, Allow or Block?" );
 //#endif
     
+//#if SERVER_SIDE_CONFIG
+//#     public static String MS_SAVE_OPTIONS_TO_SERVER = loadString( "Save options to server" );
+//#     public static String MS_RESTORE_OPTIONS_FROM_SERVER = loadString( "Restore options from server" );
+//#endif
+    
     public final static String MS_SHOW_HARDWARE = loadString( "shared platform info" );
     
     public static String MS_XMLLANG;

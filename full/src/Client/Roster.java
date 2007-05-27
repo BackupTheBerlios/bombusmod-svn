@@ -10,7 +10,7 @@
  * of the License, or (at your option) any later version.
  *
  * You can also redistribute and/or modify this program under the
- * terms of the Psi License, specified in the accompanied COPYING
+ * terms of the Psi Licens6e, specified in the accompanied COPYING
  * file, as published by the Psi Project; either dated January 1st,
  * 2005, or (at your option) any later version.
  *

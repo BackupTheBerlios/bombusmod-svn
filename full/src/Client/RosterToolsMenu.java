@@ -71,6 +71,11 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_COLOR_TUNE, 6, 0x0f25);
 //#endif
         addItem(SR.MS_SOUNDS_OPTIONS, 7, 0x0f17);
+        
+//#if SERVER_SIDE_CONFIG
+//#         addItem(SR.MS_SAVE_OPTIONS_TO_SERVER, 8, 0x0f10); 
+//#         addItem(SR.MS_RESTORE_OPTIONS_FROM_SERVER, 9, 0x0f10);
+//#endif
 /*		
         addItem("ArchiveDump", 10);
 */        
@@ -124,6 +129,14 @@ public class RosterToolsMenu
             case 7:
                 new AlertCustomizeForm(display);
                 return;
+//#if SERVER_SIDE_CONFIG
+//#             case 8://save
+//#                 new ConfigPrivateStorage(false);
+//#                 return;
+//#             case 9://load
+//#                 new ConfigPrivateStorage(true);
+//#                 return;
+//#endif
 /*
             case 10:
                 new archive.DebugDumpArchive(display);

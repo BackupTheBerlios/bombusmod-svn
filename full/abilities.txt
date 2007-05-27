@@ -9,3 +9,4 @@
 //#ifdef PRIVACY
 //#ifdef SMILES
 //#ifdef ANTISPAM
+//#ifdef SERVER_SIDE_CONFIG
