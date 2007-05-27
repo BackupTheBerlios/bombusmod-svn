@@ -70,6 +70,9 @@ public class Account extends IconTextElement{
     public int keepAlivePeriod=200;
     public int keepAliveType=1;
     
+    private boolean firstRun=true;
+    
+    
     //private String jid;
         
     /** Creates a new instance of Account */
@@ -116,8 +119,8 @@ public class Account extends IconTextElement{
             a.nick     = inputStream.readUTF();
             a.resource = inputStream.readUTF();
 	    
-            // version используется для корректной работы midp1 - аккаунты
-            // хранятся в файле без разделения на записи
+            // version и�?пользует�?�? дл�? корректной работы midp1 - аккаунты
+            // хран�?т�?�? в файле без разделени�? на запи�?и
             if (version>=2) a.useSSL=inputStream.readBoolean();
             if (version>=3) a.plainAuth=inputStream.readBoolean();
             
@@ -139,6 +142,8 @@ public class Account extends IconTextElement{
                 a.keepAliveType=inputStream.readInt();
                 a.keepAlivePeriod=inputStream.readInt();
             }
+            
+            a.firstRun=inputStream.readBoolean();
 
         } catch (IOException e) { /*e.printStackTrace();*/ }
             
@@ -212,6 +217,8 @@ public class Account extends IconTextElement{
 			
             outputStream.writeInt(keepAliveType);
             outputStream.writeInt(keepAlivePeriod);
+            
+            outputStream.writeBoolean(firstRun);
 	    
         } catch (IOException e) {
             //e.printStackTrace();
@@ -303,9 +310,17 @@ public class Account extends IconTextElement{
     public boolean isSASL() {
         return sasl;
     }
-
+    
     public void setSasl(boolean sasl) {
         this.sasl = sasl;
+    }
+
+    public boolean isFirstRun() {
+        return firstRun;
+    }
+    
+    public void setFirstRun(boolean firstRun) {
+        this.firstRun = firstRun;
     }
     
     public String getTipString() { return getJid(); }

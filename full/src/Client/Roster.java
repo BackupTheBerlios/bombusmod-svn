@@ -182,6 +182,8 @@ public class Roster
     private boolean allowLightControl=false;
 
     public boolean lightState=false;
+
+    private int actionState=-1;
     
     /**
      * Creates a new instance of Roster
@@ -1116,7 +1118,14 @@ public class Roster
                             reEnumRoster();
                             // теперь пошлём при�?ут�?твие
                             querysign=reconnect=false;
-
+//#if SERVER_SIDE_CONFIG
+//#                             if (sd.account.isFirstRun()) {
+//#                                 actionState=1;
+//#                                 new YesNoAlert(display, SR.MS_RESTORE_OPTIONS_FROM_SERVER, "", this);
+//#                                 //new ConfigPrivateStorage(true);
+//#                                 //sd.account.setFirstRun(false);
+//#                             }
+//#endif
                             if (cf.autoLogin) {
                                 if (cf.loginstatus>4) {
                                     sendPresence(Presence.PRESENCE_INVISIBLE);    
@@ -1872,8 +1881,10 @@ public class Roster
             try { 
                 boolean isContact=( getFocusedObject() instanceof Contact );
                 boolean isMucContact=( getFocusedObject() instanceof MucContact );
-                if (isContact && !isMucContact)
+                if (isContact && !isMucContact) {
+                    actionState=0;
                     new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
+                }
             } catch (Exception e) { /* NullPointerException */ }
         
        /*
@@ -2173,7 +2184,17 @@ public class Roster
     }
     
     public void ActionConfirmed() {
-        deleteContact((Contact)getFocusedObject());
+        switch (actionState) {
+            case 0:
+               deleteContact((Contact)getFocusedObject());
+               break;
+//#if SERVER_SIDE_CONFIG  
+//#             case 1:
+//#                new ConfigPrivateStorage(true);
+//#                sd.account.setFirstRun(false);
+//#                break;
+//#endif
+        }
     }
 
     public void deleteContact(Contact c) {

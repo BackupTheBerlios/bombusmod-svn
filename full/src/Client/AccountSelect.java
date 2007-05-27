@@ -1,5 +1,5 @@
 /*
- * AccountPicker.java
+ * AccountSelect.java
  *
  * Created on 19.03.2005, 23:26
  * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
