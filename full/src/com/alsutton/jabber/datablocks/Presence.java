@@ -94,13 +94,21 @@ public class Presence extends JabberDataBlock
               presenceCode=PRESENCE_AUTH_ASK;
               text.append(SUBSCRIBE);
           } 
-          if (type.equals("subscribed")) text.append(SR.MS_YOU_ARE_NOW_AUTHORIZED);
-          if (type.equals("unsubscribed")) text.append(UNSUBSCRIBED);
+          if (type.equals("subscribed")) 
+              text.append(SR.MS_YOU_ARE_NOW_AUTHORIZED);
+          
+          if (type.equals("unsubscribed")) 
+              text.append(UNSUBSCRIBED);
           
           if (type.equals(PRS_ERROR)) {
               presenceCode=PRESENCE_ERROR;
               text.append(PRS_ERROR);
               errText=getChildBlock("error").toString();
+          }
+          if (type.length()==0) {
+              //TODO: weather.13.net.ru workaround. remove warning when fixed
+              presenceCode=PRESENCE_UNKNOWN;
+              text.append("UNKNOWN presence stanza");
           }
       } else {
           // online-kinds

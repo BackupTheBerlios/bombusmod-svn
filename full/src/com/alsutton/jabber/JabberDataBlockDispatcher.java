@@ -43,6 +43,8 @@ public class JabberDataBlockDispatcher extends Thread
   private JabberListener listener = null;
   private JabberStream stream;
   
+  boolean isActive() { return dispatcherActive; }
+  
   private Vector blockListeners=new Vector();
 
   /**
