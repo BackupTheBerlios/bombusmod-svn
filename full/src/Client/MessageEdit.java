@@ -40,6 +40,8 @@ import locale.SR;
 import ui.AlertBox;
 import ui.VirtualList;
 import util.ClipBoard;
+import util.Translit;
+import util.strconv;
 
 /**
  *
@@ -66,8 +68,9 @@ public class MessageEdit
 //#endif
     private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
     private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
-    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 5);
+    private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 5);
+    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
+    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
     private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
     private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
 //#if TEMPLATES
@@ -80,6 +83,8 @@ public class MessageEdit
     private Config cf=Config.getInstance();
  
     private int charsCount=1;
+
+    private boolean sendInTranslit=false;
     //private Command cmdSubject=new Command("Subject",Command.SCREEN,10);
     
     /** Creates a new instance of MessageEdit */
@@ -114,6 +119,9 @@ public class MessageEdit
 //#endif
         if (to.origin>=Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdInsNick);
+        
+        t.addCommand(cmdSendInTranslit);
+        
 //#ifdef ARCHIVE
 //#         t.addCommand(cmdPaste);
 //#endif
@@ -202,12 +210,17 @@ public class MessageEdit
                 body=null;
         }
         if (c==cmdSend && body==null) return;
+        
+        if (c==cmdSendInTranslit) {
+            sendInTranslit=true;
+        }
         if (c==cmdSubj) {
             if (body==null) return;
             subj=body;
             body="/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
-			body=null; //"/me has set the topic to: "+subj;
+            body=null; //"/me has set the topic to: "+subj;
         }
+        
         // message/composing sending
         destroyView();
         new Thread(this).start();
@@ -219,25 +232,31 @@ public class MessageEdit
         Roster r=StaticData.getInstance().roster;
         int comp=0; // composing event off
         
+        if (sendInTranslit==true) {
+            if (body!=null)
+               body=Translit.translit(body);
+            if (subj!=null )
+               subj=Translit.translit(subj);
+        }
+        
         if (body!=null || subj!=null ) {
             String from=StaticData.getInstance().account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-            // не добавл�?ем в групчат �?вои �?ообщени�?
-            // не шлём composing
             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
                 to.addMessage(msg);
                 comp=1; // composing event in message
             }
-        } else if (to.acceptComposing) comp=(composing)? 1:2;
+        } else if (to.acceptComposing) {
+            comp=(composing)? 1:2;
+        }
         
         if (!cf.eventComposing) comp=0;
         
         try {
             if (body!=null || subj!=null || comp>0)
-            r.sendMessage(to, body, subj, comp);
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
+                r.sendMessage(to, body, subj, comp);
+        } catch (Exception e) { }
+        
         ((VirtualList)parentView).redraw();
         ((VirtualList)parentView).repaint();
     }

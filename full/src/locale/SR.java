@@ -470,10 +470,13 @@ public class SR {
 //#endif
     
     public final static String MS_SHOW_HARDWARE = loadString( "shared platform info" );
+
+    public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
-   
+
+  
     
     private SR() { }
     

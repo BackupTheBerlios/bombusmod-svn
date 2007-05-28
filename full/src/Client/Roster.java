@@ -2192,7 +2192,7 @@ public class Roster
 //#if SERVER_SIDE_CONFIG  
 //#             case 1:
 //#                new ConfigPrivateStorage(true);
-//#                sd.account.setFirstRun(false);
+//#                //sd.account.setFirstRun(false);
 //#                break;
 //#endif
         }

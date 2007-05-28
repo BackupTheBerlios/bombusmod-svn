@@ -28,7 +28,6 @@
 package util;
 
 public class Translit {
-    public Translit() { }
 
     static char Translit_chars[][] = new char[106][6];
     static int Translit_count[] = new int[106];
