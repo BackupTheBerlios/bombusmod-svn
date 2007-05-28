@@ -76,6 +76,9 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_SAVE_OPTIONS_TO_SERVER, 8, 0x0f10); 
 //#         addItem(SR.MS_RESTORE_OPTIONS_FROM_SERVER, 9, 0x0f10);
 //#endif
+       
+        addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
+        
 /*		
         addItem("ArchiveDump", 10);
 */        
@@ -137,6 +140,10 @@ public class RosterToolsMenu
 //#                 new ConfigPrivateStorage(true);
 //#                 return;
 //#endif
+                
+            case 10:
+                new util.LastVersion(display);
+                return;
 /*
             case 10:
                 new archive.DebugDumpArchive(display);

@@ -70,7 +70,7 @@ public class Account extends IconTextElement{
     public int keepAlivePeriod=200;
     public int keepAliveType=1;
     
-    private boolean firstRun=true;
+    private boolean firstRun;
     
     
     //private String jid;
