@@ -1121,6 +1121,7 @@ public class Roster
 //#if SERVER_SIDE_CONFIG
 //#                             if (sd.account.isFirstRun()) {
 //#                                 actionState=1;
+//#                                 sd.account.setFirstRun(false);
 //#                                 new YesNoAlert(display, SR.MS_RESTORE_OPTIONS_FROM_SERVER, "", this);
 //#                                 //new ConfigPrivateStorage(true);
 //#                                 //sd.account.setFirstRun(false);
