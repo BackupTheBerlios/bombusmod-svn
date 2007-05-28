@@ -80,7 +80,9 @@ public class ConfigForm implements
     
     NumberField fieldAwatDelay;
     ChoiceGroup autoAwayType;
-
+    
+    ChoiceGroup settings;
+   
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     
 //#if FILE_IO
@@ -107,6 +109,7 @@ public class ConfigForm implements
     boolean his[];
     boolean aa[];
     boolean lc[];
+    boolean se[];
     Vector files[];
     
 //#if FILE_IO
@@ -357,6 +360,17 @@ public class ConfigForm implements
 //# 
 //# 	SkinFile.setItemCommandListener(this);
 //#endif
+        
+        settings=new ChoiceGroup(SR.MS_OPTIONS, Choice.MULTIPLE);
+        settings.append(SR.MS_SAVE_OPTIONS_TO_SERVER, null);
+        
+        boolean se[]={
+            false
+        };
+        this.se=se;
+        settings.setSelectedFlags(se);
+        f.append(settings);
+        
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);
         
@@ -374,16 +388,18 @@ public class ConfigForm implements
             message.getSelectedFlags(mv);
             application.getSelectedFlags(ap);
 	    startup.getSelectedFlags(su);
+            
 //#if FILE_IO
             history.getSelectedFlags(his);
 //#endif
             awayStatus.getSelectedFlags(aa);
-	    
+
+            settings.getSelectedFlags(se);
+            
             cf.showOfflineContacts=ra[0];
             cf.selfContact=ra[1];
             cf.showTransports=ra[2];
             cf.ignore=ra[3];
-            //cf.notInList=ra[4];
             cf.autoFocus=ra[4];
             cf.autoSubscribe=ra[5];
             cf.showResources=ra[6];
@@ -443,7 +459,6 @@ public class ConfigForm implements
             
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();
-	    //cf.keepAlive=keepAlive.getValue();
             
             FontCache.rosterFontSize=cf.font1=font1.getSelectedIndex()*8;
             FontCache.msgFontSize=cf.font2=font2.getSelectedIndex()*8;
@@ -462,7 +477,6 @@ public class ConfigForm implements
             
             cf.msgPath=historyFolder.getString();
 //#endif             
-            //cf.setKeyBlockStatus=aa[0];
             cf.setAutoStatusMessage=aa[0];
 
             
@@ -472,6 +486,10 @@ public class ConfigForm implements
             cf.updateTime();
             
             cf.saveToStorage();
+
+            boolean savesettings=se[0];
+            if (savesettings)
+                new ConfigPrivateStorage(false);
             
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();

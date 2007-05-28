@@ -41,10 +41,6 @@ import Client.Roster;
 import com.alsutton.jabber.*;
 import io.NvStorage;
 
-/**
- *
- * @author Eugene Stahov
- */
 public class Account extends IconTextElement{
     
     public final static String storage="accnt_db";
@@ -69,13 +65,7 @@ public class Account extends IconTextElement{
 	
     public int keepAlivePeriod=200;
     public int keepAliveType=1;
-    
-    private boolean firstRun;
-    
-    
-    //private String jid;
-        
-    /** Creates a new instance of Account */
+
     public Account() {
         super(RosterIcons.getInstance());
     }
@@ -143,7 +133,7 @@ public class Account extends IconTextElement{
                 a.keepAlivePeriod=inputStream.readInt();
             }
             
-            a.firstRun=inputStream.readBoolean();
+            inputStream.readBoolean(); //firstrun
 
         } catch (IOException e) { /*e.printStackTrace();*/ }
             
@@ -218,7 +208,7 @@ public class Account extends IconTextElement{
             outputStream.writeInt(keepAliveType);
             outputStream.writeInt(keepAlivePeriod);
             
-            outputStream.writeBoolean(firstRun);
+            outputStream.writeBoolean(false);  //firstrun
 	    
         } catch (IOException e) {
             //e.printStackTrace();
@@ -313,14 +303,6 @@ public class Account extends IconTextElement{
     
     public void setSasl(boolean sasl) {
         this.sasl = sasl;
-    }
-
-    public boolean isFirstRun() {
-        return firstRun;
-    }
-    
-    public void setFirstRun(boolean firstRun) {
-        this.firstRun = firstRun;
     }
     
     public String getTipString() { return getJid(); }

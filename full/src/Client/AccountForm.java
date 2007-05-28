@@ -65,6 +65,9 @@ class AccountForm implements CommandListener, ItemStateListener {
     
     Command cmdOk = new Command(SR.MS_OK /*"OK"*/, Command.OK, 1);
     Command cmdPwd = new Command(SR.MS_SHOWPWD, Command.SCREEN, 2);
+//#if SERVER_SIDE_CONFIG  
+//#     Command cmdRequestOptions = new Command(SR.MS_RESTORE_OPTIONS_FROM_SERVER, Command.SCREEN, 3);
+//#endif
     Command cmdCancel = new Command(SR.MS_BACK /*"Back"*/, Command.BACK, 99);
     
     Account account;
@@ -101,6 +104,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	register.append(SR.MS_CONFERENCES_ONLY,null);
 	register.append(SR.MS_PROXY_ENABLE,null);
 	register.append(SR.MS_REGISTER_ACCOUNT,null);
+        
 	boolean b[] = {account.getUseSSL(), account.getPlainAuth(), account.isSASL(), account.isMucOnly(), account.isEnableProxy(), false};
 	
 	register.setSelectedFlags(b);
@@ -125,6 +129,9 @@ class AccountForm implements CommandListener, ItemStateListener {
 	
 	f.addCommand(cmdOk);
         f.addCommand(cmdPwd);
+//#if SERVER_SIDE_CONFIG        
+//#         f.addCommand(cmdRequestOptions);
+//#endif
 	f.addCommand(cmdCancel);
 	
 	f.setCommandListener(this);
@@ -207,6 +214,9 @@ class AccountForm implements CommandListener, ItemStateListener {
 	    else destroyView();
 	}
         if (c==cmdPwd) passStars(true);
+//#if SERVER_SIDE_CONFIG  
+//#         if (c==cmdRequestOptions) new ConfigPrivateStorage(true);
+//#endif
     }
     
     public void destroyView()	{

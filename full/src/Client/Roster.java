@@ -54,23 +54,24 @@ import java.io.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.MIDlet;
-//import javax.microedition.media.*;
-//import Client.Contact.*;
 import ui.*;
+
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
 //#endif
+
 import Conference.ConferenceForm;
+
 //#ifdef PRIVACY
 //# import PrivacyLists.PrivacySelect;
 //#endif
-import Client.Config;
 
+import Client.Config;
 import Info.Version;
+
 //#if FILE_TRANSFER
 //# import io.file.transfer.TransferDispatcher;
 //#endif
-//import Client.msg.*;
 
 /**
  *
@@ -183,8 +184,6 @@ public class Roster
     private boolean allowLightControl=false;
 
     public boolean lightState=false;
-
-    private int actionState=-1;
     
     /**
      * Creates a new instance of Roster
@@ -1119,15 +1118,7 @@ public class Roster
                             reEnumRoster();
                             // теперь пошлём при�?ут�?твие
                             querysign=reconnect=false;
-//#if SERVER_SIDE_CONFIG
-//#                             if (sd.account.isFirstRun()) {
-//#                                 actionState=1;
-//#                                 sd.account.setFirstRun(false);
-//#                                 new YesNoAlert(display, SR.MS_RESTORE_OPTIONS_FROM_SERVER, "", this);
-//#                                 //new ConfigPrivateStorage(true);
-//#                                 //sd.account.setFirstRun(false);
-//#                             }
-//#endif
+
                             if (cf.autoLogin) {
                                 if (cf.loginstatus>4) {
                                     sendPresence(Presence.PRESENCE_INVISIBLE);    
@@ -1884,7 +1875,6 @@ public class Roster
                 boolean isContact=( getFocusedObject() instanceof Contact );
                 boolean isMucContact=( getFocusedObject() instanceof MucContact );
                 if (isContact && !isMucContact) {
-                    actionState=0;
                     new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
                 }
             } catch (Exception e) { /* NullPointerException */ }
@@ -2186,17 +2176,7 @@ public class Roster
     }
     
     public void ActionConfirmed() {
-        switch (actionState) {
-            case 0:
-               deleteContact((Contact)getFocusedObject());
-               break;
-//#if SERVER_SIDE_CONFIG  
-//#             case 1:
-//#                new ConfigPrivateStorage(true);
-//#                //sd.account.setFirstRun(false);
-//#                break;
-//#endif
-        }
+       deleteContact((Contact)getFocusedObject());
     }
 
     public void deleteContact(Contact c) {
