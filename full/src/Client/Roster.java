@@ -183,7 +183,7 @@ public class Roster
 
     private boolean allowLightControl=false;
 
-    public boolean lightState=false;
+    boolean lightState=false;
     
     /**
      * Creates a new instance of Roster
@@ -198,13 +198,13 @@ public class Roster
         
         cf=Config.getInstance();
         
-        lightState=cf.lightState;
         allowLightControl=cf.allowLightControl;
+        lightState=cf.lightState;
         
         if (allowLightControl) {
-            if (lightState==true) {
+            if (lightState) {
                 try {
-                    com.siemens.mp.game.Light.setLightOff();
+                    com.siemens.mp.game.Light.setLightOn();
                 } catch( Exception e ) { }
             }
         }
