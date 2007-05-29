@@ -189,6 +189,7 @@ public class Presence extends JabberDataBlock
   public String getFrom() {
       return getAttribute("from");
   }
+  
   public final static int PRESENCE_ONLINE=0;
   public final static int PRESENCE_CHAT=1;
   public final static int PRESENCE_AWAY=2;

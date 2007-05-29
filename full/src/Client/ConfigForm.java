@@ -80,9 +80,9 @@ public class ConfigForm implements
     
     NumberField fieldAwatDelay;
     ChoiceGroup autoAwayType;
-    
-    ChoiceGroup settings;
-   
+//#if SERVER_SIDE_CONFIG  
+//#     ChoiceGroup settings;
+//#endif
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     
 //#if FILE_IO
@@ -361,16 +361,17 @@ public class ConfigForm implements
 //# 	SkinFile.setItemCommandListener(this);
 //#endif
         
-        settings=new ChoiceGroup(SR.MS_OPTIONS, Choice.MULTIPLE);
-        settings.append(SR.MS_SAVE_OPTIONS_TO_SERVER, null);
-        
-        boolean se[]={
-            false
-        };
-        this.se=se;
-        settings.setSelectedFlags(se);
-        f.append(settings);
-        
+//#if SERVER_SIDE_CONFIG  
+//#         settings=new ChoiceGroup(SR.MS_OPTIONS, Choice.MULTIPLE);
+//#         settings.append(SR.MS_SAVE_OPTIONS_TO_SERVER, null);
+//#         
+//#         boolean se[]={
+//#             false
+//#         };
+//#         this.se=se;
+//#         settings.setSelectedFlags(se);
+//#         f.append(settings);
+//#endif
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);
         
@@ -393,9 +394,9 @@ public class ConfigForm implements
             history.getSelectedFlags(his);
 //#endif
             awayStatus.getSelectedFlags(aa);
-
-            settings.getSelectedFlags(se);
-            
+//#if SERVER_SIDE_CONFIG  
+//#             settings.getSelectedFlags(se);
+//#endif 
             cf.showOfflineContacts=ra[0];
             cf.selfContact=ra[1];
             cf.showTransports=ra[2];
@@ -486,11 +487,11 @@ public class ConfigForm implements
             cf.updateTime();
             
             cf.saveToStorage();
-
-            boolean savesettings=se[0];
-            if (savesettings)
-                new ConfigPrivateStorage(false);
-            
+//#if SERVER_SIDE_CONFIG  
+//#             boolean savesettings=se[0];
+//#             if (savesettings)
+//#                 new ConfigPrivateStorage(false);
+//#endif
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();
         }

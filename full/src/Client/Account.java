@@ -76,7 +76,7 @@ public class Account extends IconTextElement{
 	if (a!=null) {
             sd.roster.logoff();
 	    sd.roster.resetRoster();
-            if (launch) sd.roster.sendPresence(Presence.PRESENCE_ONLINE);
+            if (launch) sd.roster.sendPresence(Presence.PRESENCE_ONLINE, null);
         }
         return a;
     }
