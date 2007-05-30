@@ -128,8 +128,8 @@ public class ContactMessageList extends MessageList
 //#                         break;
 //#                     case MucContact.PRIVATE_NONE:
 //#                     case MucContact.PRIVATE_REQUEST:
-//#                         addCommand(cmdBlock);
 //#                         addCommand(cmdUnlock);
+//#                         addCommand(cmdBlock);
 //#                         break;
 //#                     case MucContact.PRIVATE_ACCEPT:
 //#                         addCommand(cmdBlock);
@@ -190,11 +190,11 @@ public class ContactMessageList extends MessageList
             addCommand(cmdCopyPlus);
             addCommand(cmdSendBuffer);
         }
+        //getMainBarItem().setElementAt(sd.roster.getEventIcon(), 3);
+        //getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 4);
     }
     
     protected void beginPaint(){
-        getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
-        
         if (cursor==(messages.size()-1)) {
             markRead(cursor);
             if (contact.moveToLatest) {
@@ -203,6 +203,7 @@ public class ContactMessageList extends MessageList
             }
         }
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
+        getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
     }    
     
     public void markRead(int msgIndex) {
@@ -448,6 +449,7 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
     }
+    
 //#ifdef ALT_INPUT
 //#     private void sendMessage(){
 //#         try {
@@ -513,6 +515,7 @@ public class ContactMessageList extends MessageList
         } catch (Exception e) { }
         
     }
+    
 //#if LAST_MESSAGES 
 //#     private void loadRecentList() {
 //#         try {

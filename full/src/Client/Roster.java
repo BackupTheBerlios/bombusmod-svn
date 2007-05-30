@@ -46,6 +46,7 @@ import login.SASLAuth;
 import midlet.Bombus;
 import ui.AlertBox;
 import ui.MainBar;
+import util.strconv;
 import vcard.VCard;
 import vcard.vCardForm;
 import com.alsutton.jabber.*;
@@ -694,13 +695,7 @@ public class Roster
         if (message==null)
             myMessage=es.getMessage();
 
-        if (myMessage.indexOf("%t")>-1) {
-            String time=Time.timeString(Time.localTime());
-            int roomE=myMessage.indexOf("%t");
-            String end=myMessage.substring(roomE+2);
-            String start=myMessage.substring(0, roomE);
-            myMessage=start+time+end;
-        }
+        myMessage=strconv.toExtendedString(myMessage);
         
         Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
 		
@@ -750,13 +745,8 @@ public class Roster
         ExtendedStatus es= StatusList.getInstance().getStatus(status);
         myMessage=es.getMessage();
 
-        if (myMessage.indexOf("%t")>-1) {
-            String time=Time.timeString(Time.localTime());
-            int roomE=myMessage.indexOf("%t");
-            String end=myMessage.substring(roomE+2);
-            String start=myMessage.substring(0, roomE);
-            myMessage=start+time+end;
-        }
+        myMessage=strconv.toExtendedString(myMessage);
+
         Presence presence = new Presence(status, es.getPriority(), myMessage);
         presence.setTo(to.getJid());
         if (theStream!=null) {
@@ -798,13 +788,8 @@ public class Roster
             else
                 myMessage=message;
 
-            if (myMessage.indexOf("%t")>-1) {
-                String time=Time.timeString(Time.localTime());
-                int roomE=myMessage.indexOf("%t");
-                String end=myMessage.substring(roomE+2);
-                String start=myMessage.substring(0, roomE);
-                myMessage=start+time+end;
-            }
+            myMessage=strconv.toExtendedString(myMessage);
+
             Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
             presence.setTo(myself.getJid());
             theStream.send(presence);
@@ -824,7 +809,7 @@ public class Roster
                 case Presence.PRESENCE_DND: presence.addChild("show", Presence.PRS_DND);break;
             }
             if (es.getMessage()!=null) 
-                presence.addChild("status",es.getMessage());
+                presence.addChild("status", strconv.toExtendedString(es.getMessage()));
             if (es.getPriority()!=0) 
                 presence.addChild("priority",Integer.toString(es.getPriority()));
         }

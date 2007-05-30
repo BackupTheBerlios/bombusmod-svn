@@ -279,47 +279,42 @@ public abstract class VirtualList
             case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
             case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
         }
-        
-        // заголовок окна
+        //paintTop=true;  paintBottom=true;  reverse=true;
+
         beginPaint();
         
         int list_bottom=0;        
         itemBorder[0]=0;
-        updateLayout(); //fixme: только при изменении �?пи�?ка
+        updateLayout();
         
         setAbsOrg(g, 0,0);
        
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
 
-            iHeight=FontCache.getBalloonFont().getHeight(); // nokia fix
+        iHeight=FontCache.getBalloonFont().getHeight(); // nokia fix
         
         if (paintTop) {
             if (reverse) {
                 itemBorder[0]=iHeight;
-                drawMainPanel(g);
             } else {
                 if (mainbar!=null)
                     itemBorder[0]=mHeight; 
-                drawInfoPanel(g);
             }
         }
-            
+
 //#if ALT_INPUT 
 //#         if (inputbox!=null) {
-//#                 //inputbox.draw(g, width, height);
 //#                 list_bottom=inputbox.getHeight();
-//#                 //System.out.println(list_bottom);
 //#         } else {
 //#endif
-            if (paintBottom) {
-                if (reverse) {
-                    if (mainbar!=null)
-                        list_bottom=mHeight;
-                } else {
-                    list_bottom=iHeight; 
+                if (paintBottom) {
+                    if (reverse) {
+                        if (mainbar!=null) list_bottom=mHeight;
+                    } else {
+                        list_bottom=iHeight; 
+                    }
                 }
-            }
 //#if ALT_INPUT
 //#         }
 //#endif
@@ -416,22 +411,30 @@ public abstract class VirtualList
 //#                 inputbox.draw(g, width, height);
 //#         } else {
 //#endif
-                if (paintBottom) {
-                    if (reverse) {
-                        setAbsOrg(g, 0, height-mHeight);
-                        drawInfoPanel(g);
-                    } else {
-                        setAbsOrg(g, 0, height-iHeight);
-                        drawMainPanel(g);
-                    }
-                }
+        if (paintTop) {
+            if (reverse) {
+                drawInfoPanel(g);
+            } else {
+                drawMainPanel(g);
+            }
+        }
+        if (paintBottom) {
+            if (reverse) {
+                setAbsOrg(g, 0, height-mHeight);
+                drawMainPanel(g);
+            } else {
+                setAbsOrg(g, 0, height-iHeight);
+                drawInfoPanel(g);
+            }
+         }
+
 //#if ALT_INPUT
 //#         }
 //#endif
         
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
-        drawHeapMonitor(g); //heap monitor
+        drawHeapMonitor(g, itemBorder[0]); //heap monitor
 //#ifdef POPUPS
 //#         if (wobble.length()>0) new PopUp(g,wobble, width-20, height-20);
 //#endif
@@ -444,18 +447,15 @@ public abstract class VirtualList
         
     }
 
-    private void drawHeapMonitor(final Graphics g) {
+    private void drawHeapMonitor(final Graphics g, int y) {
         if (memMonitor) {
-            //int freemem=(int)Runtime.getRuntime().freeMemory();
-            //int totalmem=(int)Runtime.getRuntime().totalMemory();
-            //int cpuload=(int)Runtime.getRuntime().totalMemory();
             int ram=(int)(((int)Runtime.getRuntime().freeMemory()*width)/(int)Runtime.getRuntime().totalMemory());
-            g.setColor(ColorScheme.HEAP_TOTAL);  g.fillRect(0,0,width,1);
-            g.setColor(ColorScheme.HEAP_FREE);  g.fillRect(0,0,ram,1);
+            g.setColor(ColorScheme.HEAP_TOTAL);  g.fillRect(0,y,width,1);
+            g.setColor(ColorScheme.HEAP_FREE);  g.fillRect(0,y,ram,1);
         }
     }
     
-    private void drawMainPanel (final Graphics g) {
+    private void drawInfoPanel (final Graphics g) {
         Font bottomFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, Font.SIZE_SMALL);
         int h=bottomFont.getHeight();
         
@@ -470,7 +470,7 @@ public abstract class VirtualList
         g.drawString(BottomInfo.get(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
     }
     
-    private void drawInfoPanel (final Graphics g) {    
+    private void drawMainPanel (final Graphics g) {    
         if (mainbar!=null) {
             int h=mainbar.getVHeight();
             g.setClip(0,0, width, h);

@@ -32,6 +32,7 @@
 package util;
 import java.io.ByteArrayOutputStream;
 import java.lang.*;
+import ui.Time;
 
 public class strconv {
     
@@ -195,5 +196,31 @@ public class strconv {
             dst.setCharAt(i, c);
         }
         return dst.toString();
+    }
+
+    public static String toExtendedString(String src){
+        int pos = 0;
+        int start_pos;
+        String search="%t";
+        int lgn = search.length();
+        
+        if (src.indexOf(search)>-1) {
+            String time=Time.timeString(Time.localTime());
+            
+            while (true) {
+                start_pos=src.indexOf(search,pos);
+                pos=start_pos;
+
+                if (start_pos>-1) {
+                    String end=src.substring(pos+lgn);
+                    String start=src.substring(0, pos);
+                    src=start+time+end;
+                } else {
+                    break;
+                }
+                pos=start_pos+lgn;
+            }
+        }
+        return src;
     }
 }
