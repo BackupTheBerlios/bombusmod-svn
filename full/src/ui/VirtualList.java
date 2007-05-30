@@ -297,9 +297,11 @@ public abstract class VirtualList
         if (paintTop) {
             if (reverse) {
                 itemBorder[0]=iHeight;
+                drawInfoPanel(g);
             } else {
                 if (mainbar!=null)
                     itemBorder[0]=mHeight; 
+                drawMainPanel(g);
             }
         }
 
@@ -411,23 +413,15 @@ public abstract class VirtualList
 //#                 inputbox.draw(g, width, height);
 //#         } else {
 //#endif
-        if (paintTop) {
-            if (reverse) {
-                drawInfoPanel(g);
-            } else {
-                drawMainPanel(g);
-            }
-        }
-        if (paintBottom) {
-            if (reverse) {
-                setAbsOrg(g, 0, height-mHeight);
-                drawMainPanel(g);
-            } else {
-                setAbsOrg(g, 0, height-iHeight);
-                drawInfoPanel(g);
-            }
-         }
-
+                if (paintBottom) {
+                    if (reverse) {
+                        setAbsOrg(g, 0, height-mHeight);
+                        drawMainPanel(g);
+                    } else {
+                        setAbsOrg(g, 0, height-iHeight);
+                        drawInfoPanel(g);
+                    }
+                }
 //#if ALT_INPUT
 //#         }
 //#endif
