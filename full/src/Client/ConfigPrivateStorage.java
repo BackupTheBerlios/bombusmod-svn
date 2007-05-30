@@ -87,6 +87,7 @@ public class ConfigPrivateStorage
 //#             cs.addChild("showTransports", (cf.showTransports)?"1":"0");
 //#             cs.addChild("selfContact", (cf.selfContact)?"1":"0");
 //#             cs.addChild("ignore", (cf.ignore)?"1":"0");
+//#             cs.addChild("collapsedGroups", (cf.collapsedGroups)?"1":"0");
 //#             cs.addChild("eventComposing", (cf.eventComposing)?"1":"0");
 //#             
 //#             cs.addChild("gmtOffset", Integer.toString(cf.gmtOffset));
@@ -156,6 +157,7 @@ public class ConfigPrivateStorage
 //# 	    cf.selfContact=getBooleanProperty("selfContact",false);
 //# 
 //# 	    cf.ignore=getBooleanProperty("ignore",false);
+//#             cf.collapsedGroups=getBooleanProperty("collapsedGroups",false);
 //# 	    cf.eventComposing=getBooleanProperty("eventComposing",true);
 //# 	    
 //# 	    cf.gmtOffset=getIntProperty("gmtOffset",0);

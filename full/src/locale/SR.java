@@ -474,11 +474,15 @@ public class SR {
     public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
 
     public static String MS_CHECK_UPDATE = loadString( "Check Updates" );
+
+    public static String MS_SHOW_RESOURCES = loadString( "Show Resources" );
+
+    
+    public static String MS_COLLAPSED_GROUPS = loadString( "Collapsed groups" );
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
-
-  
+ 
     
     private SR() { }
     

@@ -491,6 +491,15 @@ public class Roster
                 c.subscr=subscr;
                 c.offline_type=status;
                 c.ask_subscribe=ask;
+                
+                if (querysign==true)
+                {
+                    if (cf.collapsedGroups) {
+                        Group g=c.getGroup();
+                        g.collapsed=true; 
+                    }
+                }
+                
                 c.setSortKey((nick==null)? jid:nick);
             }
         }
@@ -700,7 +709,7 @@ public class Roster
         Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
 		
         if (isLoggedIn()) {
-            if (status==Presence.PRESENCE_OFFLINE)
+            if (status==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
                 groups.requestGroupState(false);
             
             if (!StaticData.getInstance().account.isMucOnly() )
@@ -1032,7 +1041,8 @@ public class Roster
 
                             processRoster(data);
                             
-                            groups.requestGroupState(true);
+                            if(!cf.collapsedGroups)
+                                groups.requestGroupState(true);
 
                             setProgress(SR.MS_CONNECTED,100);
                             reEnumRoster();

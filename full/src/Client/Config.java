@@ -165,6 +165,8 @@ public class Config {
     
     public boolean enableVersionOs=true;
 
+    public boolean collapsedGroups=false;
+
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -236,8 +238,7 @@ public class Config {
 	    smiles=inputStream.readBoolean();
 	    showTransports=inputStream.readBoolean();
 	    selfContact=inputStream.readBoolean();
-	    //notInList=true;
-            inputStream.readBoolean();
+	    collapsedGroups=inputStream.readBoolean();
 	    ignore=inputStream.readBoolean();
 	    eventComposing=inputStream.readBoolean();
 	    
@@ -344,7 +345,7 @@ public class Config {
 	    outputStream.writeBoolean(smiles);
 	    outputStream.writeBoolean(showTransports);
 	    outputStream.writeBoolean(selfContact);
-	    outputStream.writeBoolean(true); //notInList
+	    outputStream.writeBoolean(collapsedGroups);
 	    outputStream.writeBoolean(ignore);
 	    outputStream.writeBoolean(eventComposing);
 	    
