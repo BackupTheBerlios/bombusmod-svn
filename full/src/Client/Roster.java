@@ -1089,7 +1089,7 @@ public class Roster
                         from=data.getAttribute("from");
                         String pong=c.getPing();
                         if (pong!="") {
-                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, "Pong", pong);
+                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, "Pong from client", pong);
                             messageStore(getContact(from, false), m);
                             redraw();
                         }
@@ -1175,7 +1175,7 @@ public class Roster
                             from=data.getAttribute("from");
                             String pong=c.getPing();
                             if (pong!="") {
-                                Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, "Pong", pong);
+                                Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, "Pong from server", pong);
                                 messageStore(getContact(from, false), m);
                                 redraw();
                             }
@@ -1420,10 +1420,14 @@ public class Roster
                 if (xmuc!=null) try {
                     MucContact c = mucContact(from);
                     
-                    from=from.substring(0, from.indexOf('/'));
+                    int rp=from.indexOf('/');
+                    String name=from.substring(rp+1);
+                    
+                    from=from.substring(0, rp);
+
                     Msg chatPresence=new Msg(
                            Msg.MESSAGE_TYPE_PRESENCE,
-			   "prs",
+			   name,
                            null,
                            c.processPresence(xmuc, pr) );
                     if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1) {

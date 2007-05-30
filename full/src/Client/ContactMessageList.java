@@ -84,7 +84,7 @@ public class ContactMessageList extends MessageList
 //#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.SCREEN, 22);
 //#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
 //#endif
-    Command cmdSendBuffer=new Command("Send Buffer", Command.SCREEN, 14);
+    Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
     
      
     private ClipBoard clipboard;
@@ -251,16 +251,7 @@ public class ContactMessageList extends MessageList
         }
         if (c==cmdResume) { keyGreen(); }
         if (c==cmdQuote) {
-            try {
-                String msg=new StringBuffer()
-                    .append((char)0xbb) // »
-                    .append(" ")
-                    .append(getMessage(cursor).toString())
-                    .append("\n")
-                    .toString();
-                new MessageEdit(display,contact,msg);
-                msg=null;
-            } catch (Exception e) {/*no messages*/}
+            Quote();
         }/*
         if (c==cmdContact) {
             new RosterItemActions(display, contact, -1);
@@ -433,7 +424,12 @@ public class ContactMessageList extends MessageList
 //#             }
 //#         } else {
 //#endif
-            if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
+            if (keyCode==KEY_NUM3) 
+                new ActiveContacts(display, contact);
+        
+            if (keyCode==KEY_NUM9) 
+                Quote();
+        
             if (keyCode==KEY_POUND) {
                 if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                     Reply();
@@ -530,12 +526,25 @@ public class ContactMessageList extends MessageList
 
     private void Reply() {
         try {
-            if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_HISTORY) return;
+            if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_PRESENCE/*.MESSAGE_TYPE_HISTORY*/) return;
             if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
 
             Msg msg=getMessage(cursor);
 
             new MessageEdit(display,contact,msg.from+": ");
+        } catch (Exception e) {/*no messages*/}
+    }
+    
+    private void Quote() {
+        try {
+            String msg=new StringBuffer()
+                .append((char)0xbb) // »
+                .append(" ")
+                .append(getMessage(cursor).toString())
+                .append("\n")
+                .toString();
+            new MessageEdit(display,contact,msg);
+            msg=null;
         } catch (Exception e) {/*no messages*/}
     }
 }

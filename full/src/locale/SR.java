@@ -479,9 +479,12 @@ public class SR {
 
     
     public static String MS_COLLAPSED_GROUPS = loadString( "Collapsed groups" );
+
+    public static String MS_SEND_BUFFER = loadString( "Send Buffer" );
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
+
  
     
     private SR() { }
