@@ -144,7 +144,7 @@ public class Bookmarks
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {};
         
-        sd.roster.sendPresence(join.toString(), null, x);
+        sd.roster.sendPresence(join.toString(), null, x, false);
         sd.roster.reEnumRoster();
         display.setCurrent(roster);
     }

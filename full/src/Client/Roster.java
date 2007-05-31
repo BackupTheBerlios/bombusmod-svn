@@ -804,9 +804,10 @@ public class Roster
             theStream.send(presence);
          }
     }
-    
-    public void sendPresence(String to, String type, JabberDataBlock child) {
+   
+    public void sendPresence(String to, String type, JabberDataBlock child, boolean conference) {
         JabberDataBlock presence=new Presence(to, type);
+       
         if (child!=null) {
             presence.addChild(child);
             
@@ -817,14 +818,18 @@ public class Roster
                 case Presence.PRESENCE_XA: presence.addChild("show", Presence.PRS_XA);break;
                 case Presence.PRESENCE_DND: presence.addChild("show", Presence.PRS_DND);break;
             }
-            if (es.getMessage()!=null) 
-                presence.addChild("status", strconv.toExtendedString(es.getMessage()));
             if (es.getPriority()!=0) 
                 presence.addChild("priority",Integer.toString(es.getPriority()));
+            if (es.getMessage()!=null) 
+                presence.addChild("status", strconv.toExtendedString(es.getMessage()));
+        } else if (conference) {
+            ExtendedStatus es= StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);            
+            if (es.getMessage()!=null) 
+                presence.addChild("status", strconv.toExtendedString(es.getMessage()));
         }
+        
         theStream.send(presence);
     }
-	
     
     public void doSubscribe(Contact c) {
         if (c.subscr==null) return;
@@ -840,8 +845,8 @@ public class Roster
         
         String to=c.getBareJid();
         
-        if (subscribed) sendPresence(to,"subscribed", null);
-        if (subscribe) sendPresence(to,"subscribe", null);
+        if (subscribed) sendPresence(to,"subscribed", null, false);
+        if (subscribe) sendPresence(to,"subscribe", null, false);
     }
     
   
@@ -2092,13 +2097,15 @@ public class Roster
 	ConferenceGroup confGroup=(ConferenceGroup)group;
 	Contact myself=confGroup.getSelfContact();
 	confGroup.getConference().commonPresence=false; //disable reenter after reconnect
-    sendPresence(myself.getJid(), "unavailable", null);
+        
+         sendPresence(myself.getJid(), "unavailable", null, true);
 	//roomOffline(group);
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact contact=(Contact)e.nextElement();
             if (contact.inGroup(group)) contact.setStatus(Presence.PRESENCE_OFFLINE);
         }
-	}
+    }
+    
     public void roomOffline(final Group group) {
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
              Contact contact=(Contact)e.nextElement();
@@ -2338,7 +2345,7 @@ public class Roster
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {};
 
-        sendPresence(conference, null, x);
+        sendPresence(conference, null, x, false);
         reEnumRoster();
     } 
     

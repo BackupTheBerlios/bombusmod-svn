@@ -300,7 +300,7 @@ public class ContactMessageList extends MessageList
         }
 		
         if (c==cmdUnsubscribed) {
-            sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
+            sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null, false);
         }
         
 //#ifdef ANTISPAM

@@ -236,7 +236,7 @@ public class ConferenceForm implements CommandListener{
         } catch (Exception e) {};
         
         if (sndprs) {
-            sd.roster.sendPresence(name, null, x);
+            sd.roster.sendPresence(name, null, x, false);
             sndprs=false;
         }
         
