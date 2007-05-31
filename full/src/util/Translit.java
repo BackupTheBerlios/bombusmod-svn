@@ -144,7 +144,7 @@ public class Translit {
         Translit_count[i] = 3;
         j++;
         i++;
-        Translit_chars[i] = "'".toCharArray();
+        Translit_chars[i] = "\"".toCharArray();
         Translit_count[i] = 1;
         j++;
         i++;
@@ -275,7 +275,7 @@ public class Translit {
         Translit_count[i] = 3;
         j++;
         i++;
-        Translit_chars[i] = "'".toCharArray();
+        Translit_chars[i] = "\"".toCharArray();
         Translit_count[i] = 1;
         j++;
         i++;

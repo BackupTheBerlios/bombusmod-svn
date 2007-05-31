@@ -1813,19 +1813,43 @@ public class Roster
                 }
             } catch (Exception e) { /* NullPointerException */ }
         
-       /*
-        if (keyCode==SE_FLIPCLOSE_JP6 
-            || keyCode== SIEMENS_FLIPCLOSE 
-            || keyCode==MOTOROLA_FLIP 
-        ) {
-            System.out.println("Flip closed");
-            if (cf.autoAwayType==Config.AWAY_LOCK) 
-                if (!autoAway) setTimeEvent(cf.autoAwayDelay* 60*1000);
-        } else {
+       
+        if (keyCode==SE_FLIPCLOSE_JP6  || keyCode== SIEMENS_FLIPCLOSE) {
+            //System.out.println("Flip closed");
+            
+            if (cf.autoAwayType==cf.AWAY_LOCK) {
+                if (!autoAway) {
+                    autoAway=true;
+                    if (cf.setAutoStatusMessage) {
+                        sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
+                    } else {
+                        sendPresence(Presence.PRESENCE_AWAY, null);
+                    }
+                }
+            }
+            if (cf.allowMinimize)
+                Bombus.getInstance().hideApp(true);
+        }
+        if (keyCode==SE_FLIPOPEN_JP6  || keyCode==SIEMENS_FLIPOPEN) {
+            //System.out.println("Flip closed");
+            
+            if (cf.autoAwayType==cf.AWAY_LOCK) {
+                if (autoAway) {
+                    ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
+                    String ms=es.getMessage();
+                    autoAway=false;
+                    autoXa=false;
+                    sendPresence(oldStatus, ms);
+                }
+            }
+            if (cf.allowMinimize)
+                Bombus.getInstance().hideApp(false);
+        }
+        /*else {
             if (keyCode!=cf.keyLock) userActivity();
             setAutoStatus(Presence.PRESENCE_ONLINE);
-        }
-        */
+        }*/
+        
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {
             // backlight management
@@ -2433,7 +2457,7 @@ class TimerTaskAutoAway extends Thread{
             synchronized (this) {
                 int keyTimer=rRoster.keyTimer;
                 rRoster.setKeyTimer(keyTimer+5);                        
-                if (keyTimer>=autoAwayDelay && autoAwayType==2 && keyTimer<=autoXaDelay && !rRoster.autoAway && !rRoster.autoXa) {
+                if (keyTimer>=autoAwayDelay && autoAwayType==cf.AWAY_IDLE && keyTimer<=autoXaDelay && !rRoster.autoAway && !rRoster.autoXa) {
                     try {
                         rRoster.setAutoAway();
                     } catch (Exception e) {}

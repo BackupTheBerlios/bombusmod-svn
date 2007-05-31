@@ -75,6 +75,9 @@ public class EventNotify
     
     public void startNotify (){
         release();
+        
+        
+        //display.flashBacklight(0x7fffffff);  //время в мс
 
         if (soundName!=null)
         try {
@@ -94,9 +97,14 @@ public class EventNotify
 
 	    player.start();
         } catch (Exception e) { }
-
+        
+        //if (enableLights) 
+            //display.flashBacklight(1000);
+        
         if (lenVibra>0)
          display.vibrate(lenVibra);
+        
+        //display.flashBacklight(0);
         
 	if (toneSequence || enableLights) new Thread(this).start();
     }
