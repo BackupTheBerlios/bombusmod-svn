@@ -37,6 +37,7 @@ import javax.microedition.lcdui.Font;
 import ui.*;
 import Client.Msg;
 import Client.Config;
+import util.strconv;
 
 public final class MessageParser implements Runnable{
     
@@ -166,7 +167,7 @@ public final class MessageParser implements Runnable{
 //#                     case 0x0a:
 //#                         if (strhaschars) endline=true; else break;
 //#                     case 0x09:
-//#                         String smile=s.toString();
+//#                         String smile=strconv.convCp1251ToUnicode(s.toString());
 //#                         if (firstSmile) smileTable.addElement(smile);
 //# 
 //#                         addSmile(smile,strnumber);

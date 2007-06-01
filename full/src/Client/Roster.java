@@ -1832,8 +1832,8 @@ public class Roster
                     }
                 }
             }
-            if (cf.allowMinimize)
-                Bombus.getInstance().hideApp(true);
+            //if (cf.allowMinimize)
+            //    Bombus.getInstance().hideApp(true);
         }
         if (keyCode==SE_FLIPOPEN_JP6  || keyCode==SIEMENS_FLIPOPEN) {
             //System.out.println("Flip closed");
