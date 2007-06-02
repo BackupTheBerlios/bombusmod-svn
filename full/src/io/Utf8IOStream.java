@@ -292,12 +292,28 @@ public class Utf8IOStream implements Runnable{
 
         return stats.toString();
     }
-//#endif
     public int getBytesR() {
+        if (inpStream instanceof ZInputStream) {
+            ZInputStream z = (ZInputStream) inpStream;
+            return (int)z.getTotalIn();
+        }
         return this.bytesRecv;
     }
     
     public int getBytesS() {
+        if (inpStream instanceof ZInputStream) {
+            ZOutputStream zo = (ZOutputStream) outStream;
+            return (int)zo.getTotalOut();
+        }
         return this.bytesSent;
     }
+//#else
+//#     public int getBytesR() {
+//#         return this.bytesRecv;
+//#     }
+//#     
+//#     public int getBytesS() {
+//#         return this.bytesSent;
+//#     }
+//#endif
 }
