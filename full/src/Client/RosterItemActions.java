@@ -401,8 +401,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#endif               
                 case 914: //send message from buffer
                 {
-                    String from=StaticData.getInstance().account.toString();
                     String body=clipboard.getClipBoard();
+                    if (body.length()==0)
+                        return;
+                    
+                    String from=StaticData.getInstance().account.toString();
                     String subj="";
 
                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);

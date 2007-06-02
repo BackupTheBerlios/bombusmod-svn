@@ -430,6 +430,24 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_NUM9) 
                 Quote();
         
+            if (keyCode==SIEMENS_VOLUP && cf.allowLightControl) { //copy&copy+
+                if (messages.isEmpty()) return;
+                try {
+                    StringBuffer clipstr=new StringBuffer();
+                    clipstr.append(clipboard.getClipBoard());
+                    if (clipstr!=null)
+                        clipstr.append("\n\n");
+                    
+                    clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
+                    clipstr.append(getMessage(cursor).getBody());
+
+                    clipboard.setClipBoard(clipstr.toString());
+                    clipstr=null;
+                } catch (Exception e) {/*no messages*/}
+            }
+            if (keyCode==SIEMENS_VOLDOWN && cf.allowLightControl) { //clear clipboard
+                clipboard.setClipBoard("");
+            }
             if (keyCode==KEY_POUND) {
                 if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                     Reply();
@@ -437,6 +455,7 @@ public class ContactMessageList extends MessageList
                     keyGreen();
                 }
             }
+        
             if (keyCode==keyClear) {
                 if (messages.isEmpty()) return;
                 clearReadedMessageList();

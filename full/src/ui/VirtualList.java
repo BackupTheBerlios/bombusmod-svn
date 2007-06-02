@@ -103,6 +103,9 @@ public abstract class VirtualList
     public static final short SIEMENS_FLIPOPEN=-24;
     public static final short SIEMENS_FLIPCLOSE=-22;
     
+    public static final short SIEMENS_VOLUP=-20;
+    public static final short SIEMENS_VOLDOWN=-21;
+    
     public int stringHeight=15;
 
     public static short keyClear=-8;
