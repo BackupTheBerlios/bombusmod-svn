@@ -360,7 +360,10 @@ public class ContactMessageList extends MessageList
         contact.smartPurge(cursor+1);
         messages=new Vector();
         
-        moveCursorHome();  
+        moveCursorHome();
+        
+        if (getItemCount()==0) //reset messages when clear list
+            sd.roster.countNewMsgs();
         
         //System.gc();
         redraw();
