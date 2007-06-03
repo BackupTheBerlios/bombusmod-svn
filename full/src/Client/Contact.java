@@ -267,6 +267,9 @@ public class Contact extends IconTextElement{
             if (msgs.size()==1) 
                 if ( ((Msg)msgs.firstElement()).isPresence())
                    if (origin!=ORIGIN_GROUPCHAT) first_replace=true;
+        } else {
+            if (m.getBody().length()>=cf.messageLimit)
+                m.itemCollapsed=true;
         }
         
 //#if LAST_MESSAGES

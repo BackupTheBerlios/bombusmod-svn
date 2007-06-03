@@ -59,6 +59,9 @@ public class ConfigForm implements
     Form f;
     ChoiceGroup roster;
     ChoiceGroup message;
+    
+    NumberField MessageLimit;
+    
     ChoiceGroup startup;
     ChoiceGroup application;
 
@@ -77,7 +80,7 @@ public class ConfigForm implements
     TextField historyFolder;
     
     ChoiceGroup awayStatus;
-    
+
     NumberField fieldAwatDelay;
     ChoiceGroup autoAwayType;
 //#if SERVER_SIDE_CONFIG  
@@ -201,6 +204,9 @@ public class ConfigForm implements
         this.mv=mv;
         
         message.setSelectedFlags(mv);
+        
+        MessageLimit=new NumberField(SR.MS_MESSAGE_COLLAPSE_LIMIT, cf.messageLimit, 200, 1000);
+        f.append(MessageLimit);
 
 	startup=new ChoiceGroup(SR.MS_STARTUP_ACTIONS, Choice.MULTIPLE);
         startup.append(SR.MS_AUTOLOGIN, null);
@@ -484,6 +490,8 @@ public class ConfigForm implements
             
             cf.autoAwayDelay=fieldAwatDelay.getValue();
             cf.autoAwayType=autoAwayType.getSelectedIndex();
+            
+            cf.messageLimit=MessageLimit.getValue();
             
             cf.updateTime();
             

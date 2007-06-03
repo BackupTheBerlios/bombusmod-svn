@@ -141,6 +141,8 @@ public class ConfigPrivateStorage
 //#             cs.addChild("showResources", (cf.showResources)?"1":"0");
 //#             cs.addChild("antispam", (cf.antispam)?"1":"0");
 //#             cs.addChild("enableVersionOs", (cf.enableVersionOs)?"1":"0");
+//#             
+//#             cs.addChild("messageLimit", Integer.toString(cf.messageLimit));
 //#         }
 //#         //System.out.println(iq.toString());
 //#         roster.theStream.send(iq);
@@ -224,6 +226,8 @@ public class ConfigPrivateStorage
 //#             cf.antispam=getBooleanProperty("antispam",true);
 //#             
 //#             cf.enableVersionOs=getBooleanProperty("enableVersionOs",true);
+//#             
+//#             cf.messageLimit=getIntProperty("messageLimit",300);
 //#             
 //#             cf.lastProfile=cf.profile=cf.def_profile;
 //#             if (cf.lastProfile==AlertProfile.VIBRA) cf.lastProfile=0;

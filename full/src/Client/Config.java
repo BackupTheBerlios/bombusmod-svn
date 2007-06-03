@@ -164,8 +164,10 @@ public class Config {
     public boolean antispam=true;
     
     public boolean enableVersionOs=true;
-
+    
     public boolean collapsedGroups=false;
+    
+    public int messageLimit=300;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -307,6 +309,8 @@ public class Config {
             
             enableVersionOs=inputStream.readBoolean();
             
+            messageLimit=inputStream.readInt();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -414,6 +418,8 @@ public class Config {
             outputStream.writeBoolean(antispam);
             
             outputStream.writeBoolean(enableVersionOs);
+            
+            outputStream.writeInt(messageLimit);
             
 	} catch (Exception e) {
             //e.printStackTrace();

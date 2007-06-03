@@ -484,9 +484,10 @@ public class SR {
 
     public static String MS_CHANGE_NICKNAME = loadString( "Change nickname" );
     
+    public static String MS_MESSAGE_COLLAPSE_LIMIT = loadString( "Message collapse limit" );
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
-
     
     private SR() { }
     
