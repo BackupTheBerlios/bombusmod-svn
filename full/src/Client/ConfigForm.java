@@ -206,7 +206,6 @@ public class ConfigForm implements
         message.setSelectedFlags(mv);
         
         MessageLimit=new NumberField(SR.MS_MESSAGE_COLLAPSE_LIMIT, cf.messageLimit, 200, 1000);
-        f.append(MessageLimit);
 
 	startup=new ChoiceGroup(SR.MS_STARTUP_ACTIONS, Choice.MULTIPLE);
         startup.append(SR.MS_AUTOLOGIN, null);
@@ -268,6 +267,7 @@ public class ConfigForm implements
         f.append(font1);
 
         f.append(message);
+        f.append(MessageLimit);
         f.append(font2);
         
 	String textWraps[]={SR.MS_TEXTWRAP_CHARACTER, SR.MS_TEXTWRAP_WORD};
