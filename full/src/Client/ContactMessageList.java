@@ -433,7 +433,7 @@ public class ContactMessageList extends MessageList
             if (keyCode==KEY_NUM9) 
                 Quote();
         
-            if (keyCode==SIEMENS_VOLUP && cf.allowLightControl) { //copy&copy+
+            if (cf.allowLightControl && (keyCode==SIEMENS_VOLUP || keyCode==SIEMENS_CAMERA)) { //copy&copy+
                 if (messages.isEmpty()) return;
                 try {
                     StringBuffer clipstr=new StringBuffer();
@@ -448,7 +448,7 @@ public class ContactMessageList extends MessageList
                     clipstr=null;
                 } catch (Exception e) {/*no messages*/}
             }
-            if (keyCode==SIEMENS_VOLDOWN && cf.allowLightControl) { //clear clipboard
+            if (cf.allowLightControl && (keyCode==SIEMENS_VOLDOWN || keyCode==SIEMENS_MPLAYER)) { //clear clipboard
                 clipboard.setClipBoard("");
             }
             if (keyCode==KEY_POUND) {
