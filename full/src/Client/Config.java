@@ -340,11 +340,13 @@ public class Config {
                 locale=locale.substring(0,locale.indexOf("-"));
 
             //System.out.println("locase is: "+locale);
-
+            int langNum=-1;
             for (Enumeration r=files[0].elements(); r.hasMoreElements(); ) 
             {
+                langNum++;
                 String loc=(String)r.nextElement();
                 if (loc.indexOf(locale)>-1) {
+                    lang=langNum;
                     return loc;
                 }
             }
