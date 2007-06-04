@@ -105,7 +105,7 @@ public class ConfigPrivateStorage
 //#             
 //#             cs.addChild("autoFocus", (cf.autoFocus)?"1":"0");
 //#             
-//#             cs.addChild("lang", Integer.toString(cf.lang));
+//#             cs.addChild("lang", cf.lang);
 //#             
 //#             cs.addChild("storeConfPresence", (cf.storeConfPresence)?"1":"0");
 //#             cs.addChild("capsState", (cf.capsState)?"1":"0");
@@ -178,7 +178,7 @@ public class ConfigPrivateStorage
 //#             
 //#             cf.autoFocus=getBooleanProperty("autoFocus",false);
 //#             
-//#             cf.lang=getIntProperty("lang",0);
+//#             cf.lang=getStringProperty("lang","en");
 //#             
 //#             cf.storeConfPresence=getBooleanProperty("storeConfPresence",true);
 //#             

@@ -124,7 +124,7 @@ public class Config {
     public int font2=0;
     public int font3=0;
 
-    public int lang=-1;  //not detected
+    public String lang="";  //not detected
     public boolean capsState=true;
     public int textWrap=0;
     public boolean autoSubscribe=true;
@@ -260,7 +260,7 @@ public class Config {
             
             autoFocus=inputStream.readBoolean();
             
-            lang=inputStream.readInt();
+            inputStream.readInt(); //lang
             
             storeConfPresence=inputStream.readBoolean();
             
@@ -311,6 +311,8 @@ public class Config {
             
             messageLimit=inputStream.readInt();
             
+            lang=inputStream.readUTF();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -334,26 +336,24 @@ public class Config {
         Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 2);
         
         String locale=System.getProperty("microedition.locale");   
-        
-        if (lang==-1 && locale!=null) {
+        //System.out.println(locale);
+        if (lang=="" && locale!=null) {
+
             if (locale.indexOf("-")>0)
                 locale=locale.substring(0,locale.indexOf("-"));
 
-            //System.out.println("locase is: "+locale);
-            int langNum=-1;
             for (Enumeration r=files[0].elements(); r.hasMoreElements(); ) 
             {
-                langNum++;
                 String loc=(String)r.nextElement();
                 if (loc.indexOf(locale)>-1) {
-                    lang=langNum;
+                    lang=loc;
                     return loc;
                 }
             }
-        } else if (lang==0) return null;   //english
-
-	if (lang>=files[0].size()) return null;   //english
-	return (String) files[0].elementAt(lang);
+        } else if (lang=="") {
+            return "en";   //english
+        }        
+        return lang;
     }
     
     public void saveToStorage(){
@@ -388,7 +388,7 @@ public class Config {
             
             outputStream.writeBoolean(autoFocus);
             
-            outputStream.writeInt(lang);
+            outputStream.writeInt(0); //lang
             
             outputStream.writeBoolean(storeConfPresence); 
 
@@ -440,6 +440,7 @@ public class Config {
             
             outputStream.writeInt(messageLimit);
             
+            outputStream.writeUTF(lang);            
 	} catch (Exception e) {
             //e.printStackTrace();
     }

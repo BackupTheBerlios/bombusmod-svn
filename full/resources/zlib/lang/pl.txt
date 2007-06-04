@@ -1,0 +1,363 @@
+﻿// Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
+// All rights reserved.
+// (c) Alexey V.Lubimov <avl@l14.ru>, 2006.
+// (c) Vladimir N. Shelukhin, 2006.
+
+// ask server to send us localized messages
+xmlLang	pl
+//463
+langfile	Polski
+Loading	Ładowanie
+Privacy Lists	Listy Prywatności
+Existing groups	Istniejące grupy
+Message font	Czcionka wiadomości
+Roster font	Czcionka kontaktów
+Paste Body	Wklej Tekst
+Configure Room	Konfiguruj Pokój
+Paste Subject	Wklej Temat
+Service Discovery	Odkrywanie Usług
+User JID	Jid użytkownika
+New list	Nowa lista
+Select (no login)	Wybierz (nie loguj)
+Privacy rule	Zasada prywatności
+use SSL	Szyfrowane połączenie
+Modify	Modyfikuj
+Update	Odśwież
+Account name	Nazwa konta
+GMT offset	Różnica w stosunku do (GMT+)
+Time settings (hours)	Ustawienia zegara (godziny)
+Connected	Połączony
+Connect to 	Łączę z 
+Alert Profile	Profil Dźwięku
+Move Up	Przenieś w Górę
+Move Down	Przenieś w Dół
+Owners	Właściciele
+Ok	Ok
+Minimize	Minimalizuj
+Room	Pokój
+Messages	Wiadomośći
+Refresh	Odśwież
+Resolve Nicknames	Ustal Pseudonimy
+Ban	Zablokuj (ban)
+Leave Room	Opuść Pokój
+Password	Hasło
+Actions >	Opcje Kontaktu >
+Activate	Aktywuj
+Affiliation	Przynależność
+Accounts	Konta
+Delete list	Usuń listę
+Account >	Konta >
+Show Offlines	Pokaż Wylogowanych
+Select	Wybierz
+Subject	Temat
+Group menu	Menu grup
+Quit	Wyjdź
+Edit list	Edytuj listę
+Registering	Rejestruję
+Done	Zakończono
+Error: 	Błąd: 
+Browse	Przeglądaj
+Save list	Zapisz listę
+Keep-Alive period	Keep-Alive
+<New Group>	<Nowa Grupa>
+Send	Wyślij
+Priority	Priorytet
+Failed	Nieudane
+Set Priority	Zmień Priorytet
+Delete rule	Usuń zasadę
+Ignore-List	Lista Ignorowanych
+Roster request	Pobieranie kontaktów
+Name	Nazwa
+Username	Nazwa Użytkownika
+fullscreen	pełny ekran
+All Priorities	Wszystkie Priorytety
+Add bookmark	Dodaj zakładkę
+conferences only	tylko konferencje
+Client Version	Wersja Klienta
+Discard Search	Odrzuć Wyszukiwanie
+Search Results	Rezultaty Wyszukiwania
+General	Generalna
+Members	Członkowie
+// offline	wylogowany
+Add Contact	Dodaj Kontakt
+Status >	Status >
+Join	Wejdź
+Startup actions	Akcje początkowe
+Server	Serwer
+Admins	Administratorzy
+Make Ignore-List	Stwórz Listę Ignorowania
+Options	Ustawienia
+Delete	Usuń
+Delete contact?	Usunąć kontakt?
+Authorize	Autoryzacja
+Nicknames	Uczestnicy
+Entering setup	Włączam ustawienia
+to Archive	do Archiwum
+Back	Wróć
+heap monitor	monitor pamięci
+Hide Splash	Ukryj Logo
+<Other>	<inna>
+Append	Dokończ
+history -	historia -
+Active Contacts	Aktywne Kontakty
+Select nickname	Wybierz nick
+Join conference	Dołącz do konferencji
+No	Nie
+Yes	Tak
+Re-Enter Room	Wejdź Ponownie
+New Message	Nowa Wiadomość
+Add	Dodaj
+Logon	Zaloguj się
+Logoff	Wyloguj się
+Login in progress	Logowanie w trakcie
+at Host	serwer
+join conferences	tylko konferencje
+Status	Status
+Smiles	Emotki
+Contact >	Kontakt >
+Order	Zamów
+offline contacts	wylogowane kontakty
+Transport	Transport
+composing events	wiadomość o komponowaniu
+Add Smile	Dodaj Emotkę
+Nickname	Nick
+Revoke Voice	Odbierz Głos
+Not-in-list	Nie z Listy
+Commands	Komendy
+- (Sign)	- (Znak)
+Set default	Ustaw domyślnie
+Outcasts (Ban)	Zablokowani
+Set affiliation to	Zmień przynależność na
+Hide Offlines	Ukryj Wylogowanych
+Register Account	Rejestruj Konto
+autologin	autologowanie
+Logoff	Wyloguj się
+Publish	Publikuj
+Remove subscription	Odbierz autoryzację
+Set	Zmień
+Application	Aplikacja
+Bookmarks	Zakładki
+Test sound	Testuj dźwięk
+Startup	Początek
+Edit rule	Edytuj zasadę
+Cancel	Anuluj
+Close	Zamknij
+Archive	Archiwum
+free 	wolne 
+Conference	Konferencja
+Sound	Dźwięk
+Login failed	Logowanie nieudane
+New Jid	Nowy Jid
+plain-text password	nieszyfrowane hasło
+Paste Nickname	Wklej Nick
+Kick	Wyrzuć (kick)
+Clear List	Wyczyść Listę
+Grant Voice	Daj Głos
+Move Down	Przenieś w Dół
+Quote	Edytuj
+Roster elements	Elementy rostera
+popup from background	pobierz z tła
+smiles	emotki
+About	O programie
+Resource	Zasób
+Disconnected	Rozłączono
+Edit	Edytuj
+Host name/IP (optional)	Nazwa hostu/IP
+Add rule	Dodaj zasadę
+for all status types	dla wszystkich typów statusów
+Paste Jid	Wklej Jid
+Goto URL	Idź do URL
+Clock -	Zegar -
+Login	Zaloguj się
+Clock offset	Różnica zegara
+Yes	Tak
+flash backlight	efekty podświetlenia
+Suspend	Przerwij
+Alert Profile >	Profil Dźwięku >
+My vCard	Moja Wizytówka
+transports	transporty
+New Account	Nowe Konto
+self-contact	własny kontakt
+vCard	Wizytówka
+Set Subject	Ustaw Temat
+Tools	Narzędzia
+Jabber Tools	Narzędzia Jabber'a
+Port	Port
+Resume Message	Dokończ Wiadomość
+
+//473
+proxy CONNECT	połączenie przez proxy
+Proxy name/IP	Nazwa proxy/IP
+Proxy port	Port proxy
+
+Are You sure want to discard 	Jesteś pewny że chcesz odrzucić 
+ from OWNER to 	 z WŁAŚCICIELA na 
+Modify affiliation	Modyfikuj przynależność
+
+Autofocus	Autofokus
+Add to roster	Dodaj do kontaktów
+Clear	Wyczyść
+
+Grant Membership	Daj Członkowstwo
+
+Connect	Połącz
+
+Unaffiliate	Odbierz Wszystko
+Grant Moderator	Daj Moderatora
+Revoke Moderator	Odbierz Moderatora
+Grant Admin	Daj Administratora
+Grant Ownership	Daj Właściciela
+
+Visitors are not allowed to send messages to all occupants	Wizytorzy nie są upoważnieni do wysyłania wiadomości do wszystkich uczestników konferencji
+ is inviting You to 	 zaprasza cię do 
+Ask subscription	Poproś o autoryzację
+Grant subscription	Daj autoryzację
+
+Invite to conference	Zaproś do konferencji
+Reason	Powód
+You have been invited to 	Zostałeś zaproszony do 
+
+Are You sure want to clear messagelist	Usunąć listę wiadomośći?
+
+Participants	Uczestnicy
+Abc	Abc
+
+room presences	uczestnicy pokoju
+
+ is now known as 	 zmienił(a) nick na 
+ was banned 	 został(a) zablokowany(a) 
+ was kicked 	 został(a) wyrzucony(a) 
+ has been kicked because room became members-only	 został(a) wyrzucony(a) ponieważ pokój jest tylko dla osób posiadających członkowstwo w pokoju
+ has left the channel	 opuścił(a) rozmowę
+ has joined the channel as 	 dołączył(a) do rozmowy jako 
+ and 	 i 
+ is now 	 jest teraz 
+
+has set the topic to	zmienił(a) temat na
+<large text>	<zbyt duży tekst>
+
+Are You sure want to delete?	Jesteś pewny że chcesz skasować?
+Are You sure want to delete account?	Jesteś pewny że chcesz skasować konto?
+
+See	Zobacz
+your time	twój czas
+your version	twoja wersja
+
+participant	uczestnik
+moderator	moderator
+visitor	wizytor
+
+none	nikt
+member	member
+admin	administrator
+owner	właściciel
+
+online	dostępny
+
+error	błąd
+chat	chętny do rozmowy
+away	oddalony
+xa	zaraz wracam
+dnd	niedostępny
+invisible	niewidoczny
+offline	wylogowany
+    
+You are now authorized	Dostałeś autoryzację
+
+Autostatus	Autostatus
+since: 	 (oddalony) z powodu nieobecności lub też bezczynności od: 
+
+Copy text	Kopiuj tekst
+Paste text	Wklej tekst
+
+Reason	Powód
+
+Template	Notatki
+New	Nowa
+To template	Do notatek
+Receive history	Pobieraj historię
+Conference history count	Wiadomości z historii
+
+Google token request	Pobieranie historii
+
+
+Show password	Pokaż hasło
+Keep alive type	Keep alive typ
+Autoaway period	Czas włączenia autostatusu
+Additional	Dodatki
+Full mode!	Opcja full mode!
+Language	Język
+    
+    
+balloon background	balloon background
+balloon shadow	balloon shadow
+messagelist & roster background	messagelist & roster background
+messagelist & roster even lines	messagelist & roster even lines
+messagelist & roster & common font	messagelist & roster & common font
+message subject	message subject
+message highlight	message highlight
+service discovery commands	service discovery commands
+contact default	contact default
+contact chat	contact chat
+contact away	contact away
+contact extended away	contact extended away
+contact do not disturb	contact do not disturb
+group color	group color
+keylock font	keylock font
+keylock background	keylock background
+message incoming	message incoming
+message outgoing	message outgoing
+message presence	message presence
+message auth	message auth
+message history	message history
+message for You	message for You
+progress bar remained	progress bar remained
+progress bar complete	progress bar complete
+progress border	progress border
+progress bar background	progress bar background
+Heap mon total	Heap mon total
+Heap mon free	Heap mon free
+Cursor background	Cursor background
+Header & Bottom background	Header & Bottom background
+Header font	Header font
+Archive background	Archive background
+
+keyblock	blokada klawiatury
+
+Color Tuning	Kolory
+I am Paranoic	Blokada wersji klienta
+
+allow	pozwól
+deny	odmów
+none	żadna
+from	z
+to	na
+both	obie
+
+Stanzas	Stanzas
+Type	Typ
+Action	Akcje
+
+Jid	Jid
+group	grupa
+subscription	autoryzacja
+ANY	dowolna
+
+message	wiadomość
+presence-in	ilość danych-przychodzące
+presence-out	ilość danych-wychodzące
+iq	iq
+Bars state	Bars state
+
+Check Update	Sprawdź Wersję
+Collapsed groups	Zwijanie grup
+Draw Gradients	Nadchodzące Pochylenie
+Network&Battery Indicator	Indykator Sieci i Baterii
+
+Airport: 	Lotnisko: 
+Temperature: 	Temperatura: 
+Sky conditions: 	Zachmurzenie: 
+Wind: 	Wiatr: 
+Visibility: 	Widoczność: 
+Airport not found!	Lotnisko nie znalezione!
+Humidity: 	Wilgotność: 

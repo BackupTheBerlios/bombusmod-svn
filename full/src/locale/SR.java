@@ -497,7 +497,7 @@ public class SR {
         if (lang==null) {
             String langFile=Config.getInstance().langFileName();
             if (langFile==null) lang=new Hashtable(); 
-            else lang=new StringLoader().hashtableLoader(langFile);
+            else lang=new StringLoader().hashtableLoader("/lang/"+langFile+".txt");
             MS_XMLLANG=(String)lang.get("xmlLang");
             
             MS_IFACELANG=MS_XMLLANG;

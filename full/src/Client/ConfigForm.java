@@ -284,8 +284,32 @@ public class ConfigForm implements
 	}
 	
         try {
-            lang.setSelectedIndex(cf.lang, true);
-        } catch (Exception e) { cf.lang=0; }
+            String tempLang=cf.lang;
+
+            if (tempLang=="") { //not detected
+                String locale=System.getProperty("microedition.locale");   
+                //System.out.println(locale);
+                if (locale!=null) {
+                    int pos=locale.indexOf("-");
+                    if (pos>-1)
+                        tempLang=locale.substring(0,pos);
+                } else {
+                    tempLang="en";
+                }
+            }
+            
+            //System.out.println(tempLang);
+            
+            int langnum=0;
+            for (Enumeration fff=langs[0].elements(); fff.hasMoreElements(); ) {
+                String loc=(String)fff.nextElement();
+                if (loc.indexOf(tempLang)>-1) {
+                    lang.setSelectedIndex(langnum, true);
+                    break;
+                }
+                langnum++;
+            }
+        } catch (Exception e) { lang.setSelectedIndex(0, true); }
         
         f.append(startup);
 
@@ -474,7 +498,8 @@ public class ConfigForm implements
 	    
 	    cf.textWrap=textWrap.getSelectedIndex();
 
-            cf.lang=lang.getSelectedIndex();
+            Vector langs[]=new StringLoader().stringLoader("/lang/res.txt",2);
+            cf.lang=(String) langs[0].elementAt(lang.getSelectedIndex());
 	    
 //#if FILE_IO
             cf.msgLog=his[0];
