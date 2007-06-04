@@ -124,7 +124,7 @@ public class Config {
     public int font2=0;
     public int font3=0;
 
-    public int lang=0;  //en
+    public int lang=-1;  //not detected
     public boolean capsState=true;
     public int textWrap=0;
     public boolean autoSubscribe=true;
@@ -331,9 +331,26 @@ public class Config {
     }
     
     public String langFileName(){
-        if (lang==0) return null;   //english
-	Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 2);
-	if (lang>=files[0].size()) return null;
+        Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 2);
+        
+        String locale=System.getProperty("microedition.locale");   
+        
+        if (lang==-1 && locale!=null) {
+            if (locale.indexOf("-")>0)
+                locale=locale.substring(0,locale.indexOf("-"));
+
+            //System.out.println("locase is: "+locale);
+
+            for (Enumeration r=files[0].elements(); r.hasMoreElements(); ) 
+            {
+                String loc=(String)r.nextElement();
+                if (loc.indexOf(locale)>-1) {
+                    return loc;
+                }
+            }
+        } else if (lang==0) return null;   //english
+
+	if (lang>=files[0].size()) return null;   //english
 	return (String) files[0].elementAt(lang);
     }
     
@@ -405,7 +422,7 @@ public class Config {
             
             outputStream.writeBoolean(lastMessages);
             
-            outputStream.writeBoolean(setAutoStatusMessage); //outputStream.writeBoolean(setKeyBlockStatus);
+            outputStream.writeBoolean(setAutoStatusMessage);
             
             outputStream.writeInt(autoAwayType);
             
