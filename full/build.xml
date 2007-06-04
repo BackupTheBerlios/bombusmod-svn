@@ -25,70 +25,25 @@
             <param value="rebuild" name="target.to.call"/>
         </antcall>
     </target>
-
-    <target name="rebuild-midp2-release">
-	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
-		    <param name="config.active" value="Release"/>
-	    </antcall>
-    </target>
-
-    <target name="rebuild-jzlib-release">
-	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
-		    <param name="config.active" value="ReleaseJZLIB"/>
-	    </antcall>
-    </target>
-    
-    <target name="deploy-release">
-        <antcall target="for-release-configs">
-            <param value="deploy" name="target.to.call"/>
-        </antcall>
-
-        <!-- version patch in arch packer 
-	<copy file="pack.cmd.txt" tofile="pack.cmd" overwrite="true" />
-	<replace 
-	    file="pack.cmd"
-	    propertyFile="resources/.version">
-	  <replacefilter 
-	    token="$BOMBUSREV$"
-	    property="bombus.revision"/>
-	</replace> -->
-
-        <!-- version patch in server files -->
-	<copy file="private/config.php.txt" tofile="ftp/config.php" overwrite="true" />
-	<property file="resources/.version" />
-	<replace 
-	    file="ftp/config.php" 
-	    token="$BOMBUSVERSION$"
-	    value="${bombus.version}"/>
-
-	<delete>
-	    <fileset dir="ftp" includes="bombus*.*" />
-	</delete>
 	
-	<tstamp>
-	    <format property="bombus.tstamp" pattern="MM_dd"/>	    
-	</tstamp>
-	<property name="destfile" location="ftp/bombus_${bombus.revision}(all)${bombus.tstamp}" />
-	<zip destfile="${destfile}.zip">
-	    <zipfileset dir="ftp/midp1.0" prefix="siemens-midp1.0"/>
-	    <zipfileset dir="ftp/midp2.0" prefix="midp2.0"/>
-	    <zipfileset dir="ftp/midp2.0z" prefix="midp2.0-ZLIB"/>
-	    <zipfileset file="changelog.txt"/>
-	</zip>
-
-	<tar destfile="${destfile}.tar">
-	    <tarfileset dir="ftp/midp1.0" prefix="siemens-midp1.0"/>
-	    <tarfileset dir="ftp/midp2.0" prefix="midp2.0"/>
-	    <tarfileset dir="ftp/midp2.0z" prefix="midp2.0-ZLIB"/>
-	    <tarfileset file="changelog.txt"/>
-	</tar>
-	<bzip2 src="${destfile}.tar" destfile="${destfile}.tar.bz2"/>
-	<delete>
-	    <fileset dir="ftp" includes="bombus*.tar" />
-	</delete>
+    <target name="rebuild-smallver">
+	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
+		    <param name="config.active" value="small_ver"/>
+	    </antcall>
     </target>
 
+    <target name="rebuild-fullver">
+	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
+		    <param name="config.active" value="full_ver"/>
+	    </antcall>
+    </target>
 
+    <target name="rebuild-adsky">
+	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
+		    <param name="config.active" value="adsky"/>
+	    </antcall>
+    </target>
+ 
     <!-- prepare version patch -->
     <target name="post-init">
 	<exec executable="svnversion" output="resources/.svnrev" />
