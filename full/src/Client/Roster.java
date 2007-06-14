@@ -27,14 +27,11 @@
 
 package Client;
 
-import Client.AccountSelect;
 import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
-import Conference.QueryConfigForm;
-import Conference.affiliation.Affiliations;
-import Info.Phone;
+import Stats.Stats;
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -44,30 +41,18 @@ import login.LoginListener;
 import login.NonSASLAuth;
 import login.SASLAuth;
 import midlet.Bombus;
-import ui.AlertBox;
 import ui.MainBar;
 import util.strconv;
 import vcard.VCard;
 import vcard.vCardForm;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
-import java.io.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
-import javax.microedition.midlet.MIDlet;
 import ui.*;
 
-//#ifdef SERVICE_DISCOVERY
-//# import ServiceDiscovery.ServiceDiscovery;
-//#endif
 
 import Conference.ConferenceForm;
-
-//#ifdef PRIVACY
-//# import PrivacyLists.PrivacySelect;
-//#endif
-
-import Client.Config;
 import Info.Version;
 
 //#if FILE_TRANSFER
@@ -114,7 +99,7 @@ public class Roster
     
     private Vector vContacts;
     
-    private Vector paintVContacts;  // дл�? атомных операций.
+    private Vector paintVContacts;
     
     public Groups groups;
     
@@ -140,6 +125,7 @@ public class Roster
     private Command cmdAdd=new Command(SR.MS_ADD_CONTACT, Command.SCREEN, 12);
     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
     private Command cmdAccount=new Command(SR.MS_ACCOUNT_, Command.SCREEN, 15);
+    private Command cmdCleanAllMessages=new Command(SR.MS_CLEAN_ALL_MESSAGES, Command.SCREEN, 50);
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
     private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
@@ -247,6 +233,8 @@ public class Roster
 //#endif
                 addCommand(cmdInfo);
                 addCommand(cmdAccount);
+                
+                addCommand(cmdCleanAllMessages);
 
                 if (ph.PhoneManufacturer()!=ph.NOKIA_9XXX) {
                     addCommand(cmdQuit);
@@ -286,8 +274,8 @@ public class Roster
         rscaler++;
         if (rscaler<4) return;
         rscaler=0;
-        rpercent++;
-        if (rpercent==100) rpercent=60;
+        if (rpercent<100) rpercent++;
+        //if (rpercent==100) rpercent=60;
         SplashScreen.getInstance().setProgress(rpercent);
     }
     
@@ -302,7 +290,6 @@ public class Roster
 	};
         setProgress(26);
 
-        //logoff();
         try {
             Account a=sd.account;
 //#if SASL_XGOOGLETOKEN
@@ -414,6 +401,20 @@ public class Roster
             }
         }
         reEnumRoster();
+    }
+    
+    public void cleanupAllHistories(){
+        int index=0;
+        synchronized (hContacts) {
+            while (index<hContacts.size()) {
+                Contact c=(Contact) hContacts.elementAt(index);
+                c.purge();
+                
+                index++;
+            }
+        }
+        reEnumRoster();
+        redraw();
     }
     
     public void cleanupGroup(){
@@ -707,6 +708,12 @@ public class Roster
         myMessage=strconv.toExtendedString(myMessage);
         
         Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
+        
+        //EntityCaps
+        JabberDataBlock cc=presence.addChild("c", null);
+        cc.setAttribute("xmlns", "http://jabber.org/protocol/caps");
+        cc.setAttribute("node", Version.url);
+        cc.setAttribute("ver", cf.m_ver);
 		
         if (isLoggedIn()) {
             if (status==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
@@ -757,6 +764,12 @@ public class Roster
         myMessage=strconv.toExtendedString(myMessage);
 
         Presence presence = new Presence(status, es.getPriority(), myMessage);
+        //EntityCaps
+        JabberDataBlock cc=presence.addChild("c", null);
+        cc.setAttribute("xmlns", "http://jabber.org/protocol/caps");
+        cc.setAttribute("node", Version.url);
+        cc.setAttribute("ver", cf.m_ver);
+        
         presence.setTo(to.getJid());
         if (theStream!=null) {
             theStream.send( presence );
@@ -957,18 +970,17 @@ public class Roster
 		
 	reconnectCount=0;
         
-        // залогинили�?ь. теперь, е�?ли был реконнект, то про�?то пошлём �?тату�?
+        //
         if (reconnect) {
             querysign=reconnect=false;
             sendPresence(myStatus, null);
             
-            //тут будем реконнектить конференции 
             if (cf.autoJoinConferences)
                     mucReconnect();
             return;
         }
         
-        // иначе будем читать ро�?тер
+        //
         theStream.enableRosterNotify(true);
         rpercent=60;
         //AutoAway=new TimerTaskAutoAway();
@@ -999,13 +1011,17 @@ public class Roster
         try {
             
             if( data instanceof Iq ) {
+                //System.out.println(data.toString());
+                
 		String from=data.getAttribute("from");
                 String type = (String) data.getTypeAttribute();
                 String id=(String) data.getAttribute("id");
                 
                 if (id!=null) {
-                    if (id.startsWith("ping")) 
+                    if (id.startsWith("ping")) {
                         theStream.pingSent=false; //incomplete, test on jabber:iq:version
+                        return JabberBlockListener.BLOCK_PROCESSED;
+                    }
 				
                     if (id.startsWith("nickvc")) {
                         
@@ -1051,7 +1067,7 @@ public class Roster
 
                             setProgress(SR.MS_CONNECTED,100);
                             reEnumRoster();
-                            // теперь пошлём при�?ут�?твие
+                            //
                             querysign=reconnect=false;
 
                             if (cf.autoLogin) {
@@ -1090,7 +1106,7 @@ public class Roster
                     if (id.startsWith("_ping")) {
                         Contact c=getContact(from, true);
                         querysign=false;
-                        c.setViewing(false);
+                        c.setIncoming(0);
                         from=data.getAttribute("from");
                         String pong=c.getPing();
                         if (pong!="") {
@@ -1139,30 +1155,37 @@ public class Roster
                     if (ping!=null){
                         Contact c=getContact(from, true);
                         if (ping.isJabberNameSpace("http://www.xmpp.org/extensions/xep-0199.html#ns")) { //ping
-                            c.setViewing(true);
+                            c.setIncoming(3);
                             theStream.send(new IqPing(data));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         return JabberBlockListener.BLOCK_REJECTED;
                     }
-                    
+                   
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
                         Contact c=getContact(from, true);
                         if (query.isJabberNameSpace("jabber:iq:version")) {
-                            c.setViewing(true);
+                            c.setIncoming(3);
                             theStream.send(new IqVersionReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;                            
                         }
                         if (query.isJabberNameSpace("jabber:iq:time")) {
-                            c.setViewing(true);
+                            c.setIncoming(3);
                             theStream.send(new IqTimeReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         if (query.isJabberNameSpace("jabber:iq:last")) {
-                            c.setViewing(true);
+                            c.setIncoming(3);
                             theStream.send(new IqLast(data, lastMessageTime));
                             return JabberBlockListener.BLOCK_PROCESSED;
+                        }
+                        if (query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) {
+                            String node=query.getAttribute("node");
+                            if (node==Version.url+"#"+Version.version) {
+                                theStream.send(new EntityCaps(data));
+                                return JabberBlockListener.BLOCK_PROCESSED;                                
+                            }
                         }
                     }
                 } else if (type.equals("set")) {
@@ -1173,6 +1196,8 @@ public class Roster
                     reEnumRoster();
                     return JabberBlockListener.BLOCK_PROCESSED;
                 } else if (type.equals("error")) {
+                    querysign=false;
+                    
                     JabberDataBlock ping=data.getChildBlock("ping");
                     if (ping!=null){
                         Contact c=getContact(from, true);
@@ -1186,6 +1211,24 @@ public class Roster
                             }
                         }
                     }
+                    // error on request version
+                    JabberDataBlock query=data.getChildBlock("query");
+                    if (query!=null){
+                        if (query.getAttribute("xmlns").equals("jabber:iq:version")) {
+                            JabberDataBlock error=data.getChildBlock("error");
+                            if (error!=null){
+                                if (error.getAttribute("code").equals("501")) {
+                                    //System.out.println("501");
+                                    from=data.getAttribute("from");
+
+                                    Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, null, SR.MS_NO_CLIENT_INFO);
+                                    messageStore( getContact(from, false), m); 
+                                    redraw();
+                                }
+                            }
+                        }
+                    }
+                    
                 }
             }
             
@@ -1205,7 +1248,7 @@ public class Roster
                 
                 String tStamp=message.getTimeStamp();
 		
-                int start_me=-1;    //  не добавл�?ть ник
+                int start_me=-1;
                 String name=null;
                 boolean groupchat=false;
                 conference=false;
@@ -1229,7 +1272,7 @@ public class Roster
                             if (body==null) 
                                 body=name+" "+SR.MS_HAS_SET_TOPIC_TO+" "+subj;
                             subj=null;
-                            start_me=-1; // не добавл�?ть /me к subj
+                            start_me=-1;
                             highlite=true;
                             mType=Msg.MESSAGE_TYPE_SUBJ;
                             //sendConferencePresence();
@@ -1278,7 +1321,7 @@ public class Roster
                     if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
                         invConf.getConference().status=Presence.PRESENCE_OFFLINE;
                     
-                    body=inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
+                    body=(inviteFrom==null)?"":inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
                     
                 } catch (Exception e) {}
                 
@@ -1309,7 +1352,7 @@ public class Roster
                     if (groupchat) compose=false;   //drop composing events in muc;
                     if (compose) c.acceptComposing=true ; 
                     if (body!=null) compose=false;
-                    c.setComposing(compose);
+                    c.setIncoming(compose?1:0);
                     if (compose) playNotify(888);
                 }
                 redraw();
@@ -1413,6 +1456,9 @@ public class Roster
                 String from=pr.getFrom();
                 pr.dispathch();
                 int ti=pr.getTypeIndex();
+
+                
+                
                 //PresenceContact(from, ti);
                 Msg m=new Msg(
                         (ti==Presence.PRESENCE_AUTH || ti==Presence.PRESENCE_AUTH_ASK)?
@@ -1422,34 +1468,48 @@ public class Roster
                         pr.getPresenceTxt());
                 
                 JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc");
-                if (xmuc!=null) try {
-                    MucContact c = mucContact(from);
+                if (xmuc!=null) {
+                    try {
+                        MucContact c = mucContact(from);
                     
-                    int rp=from.indexOf('/');
-                    String name=from.substring(rp+1);
-                    
-                    from=from.substring(0, rp);
+                        if (pr.hasEntityCaps()) {
+                            c.hasEntity=true;
+                            c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                            c.entityVer=pr.getEntityVer();
+                        }
 
-                    Msg chatPresence=new Msg(
-                           Msg.MESSAGE_TYPE_PRESENCE,
-			   name,
-                           null,
-                           c.processPresence(xmuc, pr) );
-                    if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1) {
-                        messageStore(getContact(from, false), chatPresence);
-                    }
-                    c.addMessage(m);
-                    c.priority=pr.getPriority();
-                    //if (ti>=0) c.setStatus(ti);
+                        int rp=from.indexOf('/');
+                        String name=from.substring(rp+1);
+
+                        from=from.substring(0, rp);
+
+                        Msg chatPresence=new Msg(
+                               Msg.MESSAGE_TYPE_PRESENCE,
+                               name,
+                               null,
+                               c.processPresence(xmuc, pr) );
+                        
+                        if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1) {
+                            messageStore(getContact(from, false), chatPresence);
+                        }
+                        c.addMessage(m);
+                        c.priority=pr.getPriority();
+                        //if (ti>=0) c.setStatus(ti);
                     
-                } /* if (muc) */ catch (Exception e) { /*e.printStackTrace();*/ }
-                else {
+                    } catch (Exception e) { /*e.printStackTrace();*/ }
+                } else {
                     boolean enNIL=false;
                     if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
                     
                     Contact c=getContact(from, enNIL); 
                     if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop presence
 
+                    if (pr.hasEntityCaps()) {
+                        c.hasEntity=true;
+                        c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                        c.entityVer=pr.getEntityVer();
+                    }
+                    
                      messageStore(c, m);
 					
                     if (ti==Presence.PRESENCE_AUTH_ASK) {
@@ -1466,18 +1526,19 @@ public class Roster
                         (ti==Presence.PRESENCE_ONLINE ||
                          ti==Presence.PRESENCE_CHAT)) {
                             if (lastAppearedContact!=null) 
-                                lastAppearedContact.setAppearing(false);
-                            c.setAppearing(true);
+                                lastAppearedContact.setIncoming(0);
+                            c.setIncoming(2);
                             lastAppearedContact=c;
                           }
                     if (ti==Presence.PRESENCE_OFFLINE) 
-                        c.setAppearing(false);
+                        c.setIncoming(0);
 
                     if (ti>=0) {
                         if (ti!=11 && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);
                     }
                 }
+
 		sort(hContacts);
                 reEnumRoster();
                 return JabberBlockListener.BLOCK_PROCESSED;                
@@ -1521,7 +1582,6 @@ public class Roster
                     String subscr=i.getAttribute("subscription");
                     boolean ask= (i.getAttribute("ask")!=null);
 
-                    // найдём группу
                     String group=i.getChildBlockText("group");
                     if (group.length()==0) group=Groups.COMMON_GROUP;
 
@@ -1566,7 +1626,11 @@ public class Roster
             if (message.messageType==message.MESSAGE_TYPE_IN)
                 playNotify(800);
         } else {
-            playNotify(1000);
+            if (c.getName().endsWith("!")) {
+                playNotify(100);
+            } else {
+                playNotify(1000);
+            }
 //#ifdef POPUPS
 //#             if (message.messageType==message.MESSAGE_TYPE_IN && (c instanceof MucContact)==false && cf.popUps)
 //#                 setWobbler(c.toString()+": "+message.getBody());
@@ -1622,6 +1686,10 @@ public class Roster
                 message=ac.soundOffline;
                 type=ac.soundOfflineType;
                 vibraLen=0;
+                break;
+            case 100: //VIP
+                message=ac.soundVIP;
+                type=ac.soundVIPType;
                 break;
             case 1000: //message
                 message=ac.messagesnd;
@@ -1750,9 +1818,10 @@ public class Roster
              sendPresence(Presence.PRESENCE_OFFLINE, null);
         } catch (Exception e2) { }
 
-        if (e instanceof SecurityException || reconnectCount>=maxReconnect) {
-            errorLog(error);
-        } else {
+        if (e instanceof SecurityException) { errorLog(error); return; }
+        if (e instanceof JabberStreamShutdownException) { errorLog(error); return; }
+        if (reconnectCount>=maxReconnect) { errorLog(error); return; }
+        {
             reconnectCount++;
             String mainbar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
             Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", mainbar, error);
@@ -1796,6 +1865,15 @@ public class Roster
 
     protected void keyPressed(int keyCode) {
         super.keyPressed(keyCode);
+        
+        if (keyCode=='1' && cf.collapsedGroups) { //collapse all groups
+            for (Enumeration e=groups.elements(); e.hasMoreElements();) {
+                Group grp=(Group)e.nextElement();
+                grp.collapsed=true;
+            }
+            reEnumRoster();
+            return;
+        }
 //#ifdef NEW_MENU
 //#         if (keyCode==cf.SOFT_LEFT) {
 //#             //setWobbler("left");
@@ -1875,12 +1953,12 @@ public class Roster
             Object atcursor=getFocusedObject();
             Contact c=null;
             if (atcursor instanceof Contact) c=(Contact)atcursor;
-            // а е�?ли кур�?ор на группе, то и�?кать �? �?амого начала.
+            //
             else c=(Contact)hContacts.firstElement();
             
             Enumeration i=hContacts.elements();
             
-            int pass=0; // 0=ищем кур�?ор, 1=ищем
+            int pass=0; //
             while (pass<2) {
                 if (!i.hasMoreElements()) i=hContacts.elements();
                 Contact p=(Contact)i.nextElement();
@@ -1986,8 +2064,11 @@ public class Roster
 //#         StringBuffer mess=new StringBuffer();
 //#         if (info==null) {
 //#             Contact contact=(Contact)getFocusedObject();
+//#             String ver=(contact.hasEntity)?"\nUse: "+contact.entityNode+" "+contact.entityVer+"":"";
 //#             
-//#             if (contact instanceof MucContact) {
+//#             boolean muc=(contact instanceof MucContact)?true:false;
+//#             
+//#             if (muc) {
 //#                 MucContact mucContact=(MucContact)contact;
 //#                 String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid;
 //#                 String aff=mucContact.affiliation;
@@ -2004,9 +2085,12 @@ public class Roster
 //#             } else {
 //#                 mess.append("jid: "+contact.bareJid);
 //#                 mess.append(contact.jid.getResource());
-//#                 mess.append("\nsubscription: "+contact.subscr);
+//# 
 //#             }
+//#             mess.append((ver!=null)?ver:"");
 //#             mess.append((contact.presence!=null)?"\nstatus: "+contact.presence:"");
+//#             mess.append((!muc)?"\nsubscription: "+contact.subscr:"");
+//#             
 //#         } else {
 //#             mess.append(info);
 //#         }
@@ -2019,14 +2103,11 @@ public class Roster
     public void logoff(){
         if (isLoggedIn())
         try {
-             //sendPresence(Presence.PRESENCE_OFFLINE);
-             
              ExtendedStatus es=StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);
              sendPresence(Presence.PRESENCE_OFFLINE, es.getMessage());
-             
-        } catch (Exception e) { 
-            //e.printStackTrace(); 
-        }
+        } catch (Exception e) { }
+
+        Stats.getInstance().save();
     };
 
    
@@ -2038,8 +2119,7 @@ public class Roster
             
             destroyView();
             logoff();
-            //StaticData sd=StaticData.getInstance();
-            //cf.saveToStorage();
+
 	    Bombus.getInstance().notifyDestroyed();
             return;
         }
@@ -2058,6 +2138,9 @@ public class Roster
         if (c==cmdInfo) { new Info.InfoWindow(display); }
 
         if (c==cmdTools) { new RosterToolsMenu(display); }
+        
+        if (c==cmdCleanAllMessages) { cleanupAllHistories(); }    
+        
         // stream-sensitive commands
         // check for closed socket
         if (!isLoggedIn()) return;
@@ -2357,8 +2440,7 @@ public class Roster
       synchronized(hContacts) {
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
           Contact c=(Contact)e.nextElement();
-            c.setViewing(false);
-            c.setAppearing(false);
+          c.setIncoming(0);
         }
       }
     }

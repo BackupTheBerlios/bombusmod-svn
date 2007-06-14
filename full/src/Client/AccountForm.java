@@ -118,6 +118,7 @@ class AccountForm implements CommandListener, ItemStateListener {
         keepAliveType.append("by socket", null);
         keepAliveType.append("1 byte", null);
         keepAliveType.append("<iq/>", null);
+        keepAliveType.append("ping", null);
         keepAliveType.append("version-ping", null);
         keepAliveType.setSelectedIndex(account.keepAliveType, true);
         f.append(keepAliveType);

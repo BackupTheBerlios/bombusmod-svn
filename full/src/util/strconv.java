@@ -30,6 +30,7 @@
  * @author Eugene Stahov
  */
 package util;
+import Info.Version;
 import java.io.ByteArrayOutputStream;
 import java.lang.*;
 import ui.Time;
@@ -39,7 +40,7 @@ public class strconv {
     /** Creates a new instance of strconv */
     private strconv() {
     }
-    
+   
     public static final String convCp1251ToUnicode(final String s){
         if (s==null) return null;
         StringBuffer b=new StringBuffer(s.length());
@@ -199,13 +200,53 @@ public class strconv {
     }
 
     public static String toExtendedString(String src){
+        String TIME_REP="%t";
+        String TIME_DEST=Time.timeString(Time.localTime());
+
+        return stringReplace(src,TIME_REP,TIME_DEST);
+    }
+    
+    public static String replaceCaps(String src){
+        if (src==null)
+            return null;
+        
+        String BOMBUSMOD_REP=Version.url;
+        if (src.indexOf(BOMBUSMOD_REP)>-1)
+            return stringReplace(src,BOMBUSMOD_REP,"Bombusmod");
+        
+        String BOMBUS_NG_REP="http://bombus-im.org/ng";
+        if (src.indexOf(BOMBUS_NG_REP)>-1)
+            return stringReplace(src,BOMBUS_NG_REP,"Bombus-NG");
+        
+        String PSI_REP="http://psi-im.org/caps";
+        if (src.indexOf(PSI_REP)>-1)
+            return stringReplace(src,PSI_REP,"Psi");
+        
+        String GOOGLE_REP="http://www.google.com/xmpp/client/caps";
+        if (src.indexOf(GOOGLE_REP)>-1)
+            return stringReplace(src,GOOGLE_REP,"Google");
+            
+        String MIRANDA_REP="http://miranda-im.org/caps";
+        if (src.indexOf(MIRANDA_REP)>-1)
+            return stringReplace(src,MIRANDA_REP,"Miranda");
+            
+        String GAJIM_REP="http://gajim.org/caps";
+        if (src.indexOf(GAJIM_REP)>-1)
+            return stringReplace(src,GAJIM_REP,"Gajim");
+            
+        String GAIM_REP="http://gaim.sf.net/caps";
+        if (src.indexOf(GAIM_REP)>-1)
+            return stringReplace(src,GAIM_REP,"Gaim");
+        
+        return src;
+    }
+    
+    public static String stringReplace(String src, String search, String dest){
         int pos = 0;
         int start_pos;
-        String search="%t";
         int lgn = search.length();
         
         if (src.indexOf(search)>-1) {
-            String time=Time.timeString(Time.localTime());
             
             while (true) {
                 start_pos=src.indexOf(search,pos);
@@ -214,7 +255,7 @@ public class strconv {
                 if (start_pos>-1) {
                     String end=src.substring(pos+lgn);
                     String start=src.substring(0, pos);
-                    src=start+time+end;
+                    src=start+dest+end;
                 } else {
                     break;
                 }
@@ -223,4 +264,141 @@ public class strconv {
         }
         return src;
     }
+    
+    
+    public static String getSizeString(long number)
+    {
+        StringBuffer suffix = new StringBuffer();
+        
+        try {
+            if ( number > 1000000 )
+            {
+                String ratio=Long.toString(number/10000);
+
+                int dotpos=ratio.length()-2;
+
+                suffix.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
+                suffix.append('.');
+                suffix.append(ratio.substring(dotpos));
+
+                suffix.append("mb");
+            }
+            else if ( number > 1000 )
+            {
+                String ratio=Long.toString(number/10);
+
+                int dotpos=ratio.length()-2;
+
+                suffix.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
+                suffix.append('.');
+                suffix.append(ratio.substring(dotpos));
+
+                suffix.append("kb");
+            }
+            else
+            {
+                suffix.append(number);
+                suffix.append("b");
+            }
+        } catch (Exception e) {
+            suffix.append("error");
+        }
+        
+        return suffix.toString();
+    }
+    
+/*   
+    private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
+        s.append(packed); s.append(read?"->":"<-"); s.append(unpacked);
+        String ratio=Long.toString((10*unpacked)/packed);
+        int dotpos=ratio.length()-1;
+        
+        
+        s.append(" (");
+        s.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
+        s.append('.');
+        s.append(ratio.substring(dotpos));
+        s.append('x');
+        s.append(")");
+        
+    }
+  
+    public static String URLEncode(String url)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        for (int i = 0; i < url.length(); i++)
+        {
+            switch (url.charAt(i))
+            {
+                case ' ':
+                    buffer.append("%20");
+                    break;
+                case '+':
+                    buffer.append("%2b");
+                    break;
+                case '\'':
+                    buffer.append("%27");
+                    break;
+                case '<':
+                    buffer.append("%3c");
+                    break;
+                case '>':
+                    buffer.append("%3e");
+                    break;
+                case '#':
+                    buffer.append("%23");
+                    break;
+                case '%':
+                    buffer.append("%25");
+                    break;
+                case '{':
+                    buffer.append("%7b");
+                    break;
+                case '}':
+                    buffer.append("%7d");
+                    break;
+                case '\\':
+                    buffer.append("%5c");
+                    break;
+                case '^':
+                    buffer.append("%5e");
+                    break;
+                case '~':
+                    buffer.append("%73");
+                    break;
+                case '[':
+                    buffer.append("%5b");
+                    break;
+                case ']':
+                    buffer.append("%5d");
+                    break;
+                case '-':
+                    buffer.append("%2D");
+                    break;
+                case '/':
+                    buffer.append("%2F");
+                    break;
+                case ':':
+                    buffer.append("%3A");
+                    break;
+                case '=':
+                    buffer.append("%3D");
+                    break;
+                case '?':
+                    buffer.append("%3F");
+                    break;
+                case '\r':
+                    buffer.append("%0D");
+                    break;
+                case '\n':
+                    buffer.append("%0A");
+                    break;
+                default:
+                    buffer.append(url.charAt(i));
+                    break;
+            }
+        }
+        return buffer.toString();
+    }*/
 }

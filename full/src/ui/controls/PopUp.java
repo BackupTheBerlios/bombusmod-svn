@@ -33,12 +33,10 @@ import javax.microedition.lcdui.Graphics;
 import ui.ColorScheme;
 import ui.FontCache;
 
-/**
- *
- * @author adsky
- */
 public class PopUp {
-    private int height, mHeight, width, mWidth, wBorder, hBorder;
+    private int popUpHeight, popUpWidth, widthBorder, heightBorder;
+    private int border=8;
+    private int padding=4;
     
     private Font font;
     
@@ -52,45 +50,56 @@ public class PopUp {
     private Vector strings;
     
     /** Creates a new instance of PopUp */
-    public PopUp(Graphics g, String txt, int width, int height) {
-        this.str=txt.trim();
-        this.mHeight=g.getClipHeight();
-        this.mWidth=g.getClipWidth();
-        this.width=width;
-        this.wBorder=(mWidth-width)/2;
-
-        if (str.startsWith("!")==true) {
-            kikoban=true;
-        }
+    public PopUp(Graphics g, String txt) {
+        str=txt.trim();
+        int height=g.getClipHeight();
+        int width=g.getClipWidth();
+        
+        kikoban=(str.startsWith("!"))?true:false;
         font=(kikoban)?FontCache.getClockFont():FontCache.getBalloonFont();
 
-        strings=parseMessage(width-4);
+        strings=parseMessage(width-border-padding);
         
+        int length=getMaxWidth();
+        
+        int strWdth=(length!=0)?length:getStrWidth(str);
+        
+        popUpWidth=(strWdth>(width-border))?width-border:strWdth+padding;
+
+        widthBorder=(strWdth>popUpWidth)?border/2:(width-popUpWidth)/2;
+
+
         int stringsHeight=getHeight();
 
-        if (stringsHeight>mHeight) {
-            this.hBorder=(mHeight-height)/2;
-            this.height=height;
+        if (stringsHeight>height) {
+            heightBorder=0;
+            popUpHeight=height;
         } else {
-            this.hBorder=(height-stringsHeight)/2;
-            this.height=stringsHeight+4;
+            popUpHeight=stringsHeight+padding;
+            heightBorder=(height-popUpHeight)/2;
         }
-        
-        g.translate(wBorder-g.getTranslateX(), hBorder-g.getTranslateY());
-        g.setClip(0,0,width,height);
+     
+        g.translate(widthBorder-g.getTranslateX(), heightBorder-g.getTranslateY());
+
+        g.setClip(0,0,popUpWidth+1,popUpHeight+1);
+
         draw(g);
     }
     
     public void draw(Graphics g) {
         g.setColor((kikoban)?0xff0000:ColorScheme.BALLOON_INK);
-        g.fillRoundRect(0,0,width,height,10,10);
+        
+        g.fillRect(1,1,popUpWidth,popUpHeight);                 //shadow
+
+        g.fillRect(0,0,popUpWidth,popUpHeight);                     //border
         
         g.setColor((kikoban)?0xff0000:ColorScheme.BALLOON_BGND);
-        g.fillRoundRect(1,1,width-2,height-2,10,10);
+        g.fillRect(1,1,popUpWidth-2,popUpHeight-2);                 //fill
         
         g.setColor((kikoban)?0xffff00:ColorScheme.BALLOON_INK);
         g.setFont(font);
-        drawAllStrings(g, 3,3);
+        
+        drawAllStrings(g, 2,3);
     }
 
     private Vector parseMessage(int stringWidth) {
@@ -124,7 +133,7 @@ public class PopUp {
                         if (newline) wordStartPos++;
                     }
                     if (w+wordWidth+cw>stringWidth || newline) {
-                        lines.addElement(s.toString()); //по�?ледн�?�? под�?трока в l
+                        lines.addElement(s.toString()); //lastest string in l
                         s.setLength(0); w=0;
                     }
                 }
@@ -149,7 +158,7 @@ public class PopUp {
                 lines.addElement(s.toString());
             }
             
-            if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);  //по�?ледн�?�? �?трока
+            if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);  //lastest string
             state++;
             
             s=null;
@@ -160,23 +169,43 @@ public class PopUp {
     private void drawAllStrings(Graphics g, int x, int y) {
         Vector lines=strings;
         if (lines.size()<1) return;
+        
+        int fh=getFontHeight();
 
 	for (int line=0; line<lines.size(); ) 
 	{
             g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
             line=line+1;
-            y += getFontHeight();
+            y += fh;
 	}
     }
     
     private int getFontHeight() {
-        int result=font.getHeight();
-        return result;
+        return font.getHeight();
+    }
+
+    private int getHeight() {
+        return getFontHeight()*strings.size();
     }
     
-    private int getHeight() {
-        int result=getFontHeight()*strings.size();
-        return result;
+    private int getStrWidth(String string) {
+        return font.stringWidth(string);
+    }
+    
+    private int getMaxWidth() {
+        Vector lines=strings;
+
+        int length=0;
+        
+        if (lines.size()<1) return length;
+
+	for (int line=0; line<lines.size(); ) 
+	{
+            String string=(String) lines.elementAt(line);
+            length=(length>getStrWidth(string))?length:getStrWidth(string);
+            line++;
+	}
+        return length;
     }
 }
  

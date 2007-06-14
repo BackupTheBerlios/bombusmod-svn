@@ -33,10 +33,10 @@ public class Version {
 //#if (!ZLIB)
 //#     public final static String version="$BOMBUSVERSION$";
 //#else
-    public final static String version="$BOMBUSVERSION$-Z";
+    public final static String version="$BOMBUSVERSION$";
 //#endif
     
-    public final static String url="http://www.apatin.net.ru";
+    public final static String url="http://BombusMod.net.ru";
     
     public static String getVersionLang() { return version+" ("+SR.MS_IFACELANG+")"; }
 

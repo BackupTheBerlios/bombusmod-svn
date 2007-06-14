@@ -30,6 +30,7 @@ package Client;
 //# import com.alsutton.jabber.datablocks.Iq;
 //# import java.util.Enumeration;
 //# import ui.VirtualList;
+//# //import ui.VirtualList;
 //#endif
 public class ConfigPrivateStorage 
 //#if SERVER_SIDE_CONFIG

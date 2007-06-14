@@ -53,6 +53,7 @@ public class Bookmarks
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
     private Command cmdAdvJoin=new Command ("Edit/join", Command.SCREEN, 10);
+    private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 12);
     private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 15);
     private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 16);
 //#ifdef SERVICE_DISCOVERY
@@ -87,6 +88,7 @@ public class Bookmarks
         
         addCommand(cmdCancel);
         addCommand(cmdJoin);
+        addCommand(cmdDoAutoJoin);
         addCommand(cmdAdvJoin);
 	addCommand(cmdNew);
         
@@ -174,6 +176,15 @@ public class Bookmarks
         else if (c==cmdRoomMembers) new Affiliations(display, roomJid, 3);  
 
         else if (c==cmdRoomBanned) new Affiliations(display, roomJid, 4);  
+        
+        else if (c==cmdDoAutoJoin) {
+            for (Enumeration e=StaticData.getInstance().roster.bookmarks.elements(); e.hasMoreElements();) {
+                BookmarkItem bm=(BookmarkItem) e.nextElement();
+                if (bm.autojoin) 
+                    ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, Config.getInstance().confMessageCount);
+            }
+            exitBookmarks();
+        }
         
         else if (c==cmdSave) {
             saveBookmarks();

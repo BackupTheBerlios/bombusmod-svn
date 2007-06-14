@@ -29,6 +29,7 @@
 package ui;
 import Info.Phone;
 import Info.Version;
+import Stats.Stats;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
@@ -37,6 +38,7 @@ import Client.*;
 //#endif
 import ui.controls.Balloon;
 import ui.controls.ScrollBar;
+import util.strconv;
 
 //#if ALT_INPUT
 //# import ui.inputbox.Box;
@@ -71,6 +73,7 @@ public abstract class VirtualList
     protected int getMainBarRGB() {return ColorScheme.BAR_INK;} 
     
     private Config cf=Config.getInstance();
+    private Stats stats=Stats.getInstance();
 
     public void eventOk(){
         try {
@@ -186,7 +189,12 @@ public abstract class VirtualList
     private int lastClickY;
     private int lastClickItem;
     private long lastClickTime;
-
+    
+//#ifdef ELF    
+//#     private static boolean sie_accu=true;
+//#     private static boolean sie_net=true;
+//#endif
+    
     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
     
     public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
@@ -241,6 +249,7 @@ public abstract class VirtualList
         //System.out.println(d.toString());
         if (d instanceof Canvas) {
             ((Canvas)d).repaint();
+            //((Canvas)d).serviceRepaints();
         }
     }
 
@@ -329,7 +338,7 @@ public abstract class VirtualList
        
         winHeight=height-itemBorder[0]-list_bottom;
 
-        int count=getItemCount(); // размер �?пи�?ка
+        int count=getItemCount(); // ������ ??��??��
         
         boolean scroll=(listHeight>winHeight);
 
@@ -359,7 +368,7 @@ public abstract class VirtualList
                 
                 int lh=el.getVHeight();
                 
-                // окно �?пи�?ка
+                // ���� ??��??��
                 setAbsOrg(g, 0, itemBorder[0]);
                 g.setClip(0,0, itemMaxWidth, winHeight);    
                 
@@ -404,6 +413,7 @@ public abstract class VirtualList
 
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
+        drawHeapMonitor(g, itemBorder[0]); //heap monitor
         if (showBalloon) {
             String text=null;
             try {
@@ -434,9 +444,9 @@ public abstract class VirtualList
         
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
-        drawHeapMonitor(g, itemBorder[0]); //heap monitor
+
 //#ifdef POPUPS
-//#         if (wobble.length()>0) new PopUp(g,wobble, width-20, height-20);
+//#         if (wobble.length()>0) new PopUp(g,wobble);
 //#endif
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
     }
@@ -463,13 +473,22 @@ public abstract class VirtualList
 
         g.setColor(getMainBarBGndRGB());
         g.fillRect(0, 0, width, h);
-
+   
         g.setColor(getMainBarRGB());
         g.setFont(bottomFont);
         
-        g.drawString(BottomInfo.get(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
+        StringBuffer s=new StringBuffer();    
+        s.append(Time.timeString(Time.localTime()));
+        s.append(" "+strconv.getSizeString(stats.getGPRS()));
+//#ifdef ELF
+//#         s.append(getAccuLevel()+getNetworkLevel());
+//#endif
+        if (s!=null) {
+            g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
+            s=null;
+        }
     }
-    
+
     private void drawMainPanel (final Graphics g) {    
         if (mainbar!=null) {
             int h=mainbar.getVHeight();
@@ -513,6 +532,7 @@ public abstract class VirtualList
         stickyWindow=true;
         
         repaint();
+        //serviceRepaints();
     }
     
     protected void fitCursorByTop(){
@@ -569,20 +589,21 @@ public abstract class VirtualList
 	if (cursor==lastClickItem)
 	    if (lastClickY-y<5 && y-lastClickY<5) 
 		if (clickTime-lastClickTime<500){
-		    y=0;    // запрет "тройного клика"
+		    y=0;    // ������ "�������� �����"
 		    eventOk();
 		}
 	lastClickTime=clickTime;
 	lastClickY=y;
 	lastClickItem=cursor;
         
-        // �?делаем �?лемент мак�?имально видимым
+        // ??������ ??������ ���??������� �������
         int il=itemLayoutY[cursor+1]-winHeight;
         if (il>win_top) win_top=il;
         il=itemLayoutY[cursor];
         if (il<win_top) win_top=il;
         
 	repaint();
+        //serviceRepaints();
     }
     protected void pointerDragged(int x, int y) { 
         if (scrollbar.pointerDragged(x, y, this)) stickyWindow=false; 
@@ -642,8 +663,8 @@ public abstract class VirtualList
                             System.gc();
 //#ifdef POPUPS
 //#                             if (cf.popUps) {
-//#                                 int freemem=(int)Runtime.getRuntime().freeMemory()/1000;
-//#                                 wobble="Free "+freemem+"kB";
+//#                                 int freemem=(int)Runtime.getRuntime().freeMemory();
+//#                                 wobble="Free "+strconv.getSizeString(freemem);
 //#                             }
 //#endif
                     }
@@ -657,6 +678,7 @@ public abstract class VirtualList
 //#         }
 //#endif
         repaint();
+        //serviceRepaints();
     }
 
     public void keyUp() {
@@ -691,19 +713,19 @@ public abstract class VirtualList
     private boolean itemPageDown() {
         try {
             stickyWindow=false;
-            // объект помещает�?�? полно�?тью на �?кране?
+            // ������ ��������???? �����??��� �� ??�����?
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
                 stickyWindow=true;
                 return false;
             }
             
-            // объект на �?кране е�?ть? (не �?мещён ли �?кран �?тилу�?ом)
+            // ������ �� ??����� �??��? (�� ??���� �� ??���� ??����??��)
             if (!cursorInWindow()) return false;
             
             int remainder=itemLayoutY[cursor+1]-win_top;
-            // хво�?т �?ообщени�? уже на �?кране?
+            // ���??� ??�������?? ��� �� ??�����?
             if (remainder<=winHeight) return false;
-            // хво�?т �?ообщени�? на �?ледующем �?кране?
+            // ���??� ??�������?? �� ??�������� ??�����?
             if (remainder<=2*winHeight) {
                 win_top=remainder-winHeight+win_top+8;
                 return true;
@@ -717,20 +739,20 @@ public abstract class VirtualList
     private boolean itemPageUp() {
         try {
             stickyWindow=false;
-            // объект помещает�?�? полно�?тью на �?кране?
+            // ������ ��������???? �����??��� �� ??�����?
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
                 //stickyWindow=true;
                 return false;
             }
             
-            // объект на �?кране е�?ть? (не �?мещён ли �?кран �?тилу�?ом)
+            // ������ �� ??����� �??��? (�� ??���� �� ??���� ??����??��)
             
             if (!cursorInWindow()) { return false; }
             
             int remainder=win_top-itemLayoutY[cursor];
-            // голова �?ообщени�? уже на �?кране?
+            // ������ ??�������?? ��� �� ??�����?
             if (remainder<=0) return false;
-            // хво�?т �?ообщени�? на �?ледующем �?кране?
+            // ���??� ??�������?? �� ??�������� ??�����?
             if (remainder<=winHeight) {
                 win_top=itemLayoutY[cursor];
                 return true;
@@ -741,9 +763,9 @@ public abstract class VirtualList
         return false;
     }
     /**
-     * �?обытие "�?ажатие кнопки LEFT"
-     * в кла�?�?е VirtualList функци�? перемещает кур�?ор на одну �?траницу вверх.
-     * возможно переопределить (override) функцию дл�? реализации необходимых дей�?твий
+     * ??������ "??������ ������ LEFT"
+     * � ���????� VirtualList ������?? ���������� ���??�� �� ���� ??������� �����.
+     * �������� �������������� (override) ������� ��?? ���������� ����������� ���??����
      */
     public void keyLeft() {
         try {
@@ -762,9 +784,9 @@ public abstract class VirtualList
     }
 
     /**
-     * �?обытие "�?ажатие кнопки RIGHT"
-     * в кла�?�?е VirtualList функци�? перемещает кур�?ор на одну �?траницу вниз.
-     * возможно переопределить (override) функцию дл�? реализации необходимых дей�?твий
+     * ??������ "??������ ������ RIGHT"
+     * � ���????� VirtualList ������?? ���������� ���??�� �� ���� ??������� ����.
+     * �������� �������������� (override) ������� ��?? ���������� ����������� ���??����
      */
     public void keyRight() { 
         try {
@@ -796,7 +818,7 @@ public abstract class VirtualList
 
     protected void keyGreen() { eventOk(); }
     
-    /** перезапу�?к ротации �?кроллера длинных �?трок */
+    /** ��������??� ������� ??�������� ������� ??���� */
     protected  void setRotator(){
 //#if (USE_ROTATOR)
 //#         try {
@@ -854,39 +876,40 @@ public abstract class VirtualList
                     sortVector.setElementAt(left,i+1);
                 }
             }
-        } catch (Exception e) {
-            //e.printStackTrace(); /* ClassCastException */
-        }
+        } catch (Exception e) { }
     }
-
-/*    
-    public void setTimeEvent(long time){
-        synchronized (this) {
-            timeEvent=(time==0)? 0:time+System.currentTimeMillis();
-            if (time!=0) setRotator();
-        }
-    };
-    protected long timeEvent;
-
+    
     public int getCursor() {
         return cursor;
     }
-
-    boolean probeTime(){
-        synchronized (this) {
-            if (timeEvent==0) return true;
-            long timeRemained=System.currentTimeMillis()-timeEvent;
-            //System.out.println(timeRemained);
-            if (timeRemained>=0) {
-                timeEvent=0;
-                onTime();
-            }
-        }
-        return false;
-    }
-    public void onTime() {};
-*/
+    
+    
+//#ifdef ELF    
+//#     public static String getAccuLevel() {
+//# 
+//#         if (sie_accu==false) return "";
+//#         try {
+//#             String cap=System.getProperty("MPJC_CAP");
+//#             return (cap==null)? "": " "+cap+"%";
+//#         } catch (Exception e) { sie_accu=false; }
+//# 
+//#         return "";
+//#     }
+//#     
+//#     public static String getNetworkLevel() {
+//# 
+//#         if (sie_net==false) return "";
+//#         try {
+//#             String rx=System.getProperty("MPJCRXLS");
+//#             int rp=rx.indexOf(',');
+//#             return (rp<0)? "": " "+rx.substring(0,rp)+"db";
+//#         } catch (Exception e) { sie_net=false; }
+//# 
+//#         return "";
+//#     }
+//#endif    
 }
+
 //#if (USE_ROTATOR)    
 //# class TimerTaskRotate extends Thread{
 //#      //private Timer t;
@@ -933,7 +956,7 @@ public abstract class VirtualList
 //#      }
 //#     
 //#      public void run() {
-//#          // РїСЂРѕРєСЂСѓС‚РєР° С‚РѕР»СЊРєРѕ СЂР°Р·
+//#          // прокрутка только раз
 //#          //stickyWindow=false;
 //#          
 //#          while (true) {
@@ -945,7 +968,7 @@ public abstract class VirtualList
 //#             synchronized (this) {
 //#                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
 //# 
-//#                 //if (attachedList!=null) stop=attachedList.probeTime(); else stop=true;
+//#                 if (attachedList==null) stop=true;
 //# 
 //#                 if (scrollLen>=0 || balloon>=0) { 
 //#                     stop=false;
@@ -974,6 +997,7 @@ public abstract class VirtualList
 //#                 //if (redraw) attachedList.redraw();
 //#              }
 //#              if (redraw) attachedList.redraw();
+//#                redraw=false;
 //#          }
 //#      }
 //#      public void destroyTask(){

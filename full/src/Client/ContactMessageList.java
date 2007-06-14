@@ -85,7 +85,6 @@ public class ContactMessageList extends MessageList
 //#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
 //#endif
     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
-    
      
     private ClipBoard clipboard;
 
@@ -143,6 +142,7 @@ public class ContactMessageList extends MessageList
 //#         if (hisStorage && contact instanceof MucContact==false) addCommand(cmdRecent);
 //#endif        
         addCommand(cmdMessage);
+        
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
             addCommand(cmdReply);
         }
@@ -164,8 +164,7 @@ public class ContactMessageList extends MessageList
 
         moveCursorTo(contact.firstUnread(), true);
         
-        contact.setViewing(false);
-        contact.setAppearing(false);
+        contact.setIncoming(0);
     }
     
     public void showNotify(){
@@ -195,13 +194,14 @@ public class ContactMessageList extends MessageList
     }
     
     protected void beginPaint(){
+        markRead(cursor);
         if (cursor==(messages.size()-1)) {
-            markRead(cursor);
             if (contact.moveToLatest) {
                 contact.moveToLatest=false;
                 moveCursorEnd();
             }
         }
+        
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
     }    
@@ -360,12 +360,9 @@ public class ContactMessageList extends MessageList
         contact.smartPurge(cursor+1);
         messages=new Vector();
         
+        contact.lastUnread=getItemCount()-1;
+        
         moveCursorHome();
-        
-        if (getItemCount()==0) //reset messages when clear list
-            sd.roster.countNewMsgs();
-        
-        //System.gc();
         redraw();
     }
     
@@ -438,7 +435,7 @@ public class ContactMessageList extends MessageList
                 try {
                     StringBuffer clipstr=new StringBuffer();
                     clipstr.append(clipboard.getClipBoard());
-                    if (clipstr!=null)
+                    if (clipstr.length()>0)
                         clipstr.append("\n\n");
                     
                     clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
@@ -467,6 +464,58 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
     }
+
+    private void nextContact(int direction){
+	Vector activeContacts=new Vector();
+        int nowContact = -1, contacts=-1;
+	for (Enumeration r=StaticData.getInstance().roster.getHContacts().elements(); r.hasMoreElements(); ) 
+	{
+	    Contact c=(Contact)r.nextElement();
+	    if (c.active()) {
+                contacts=contacts+1;
+                if (c==contact) nowContact=contacts;
+                activeContacts.addElement(c);
+            }
+	}
+        int size=activeContacts.size();
+        
+	if (size==0) return;
+
+        try {
+            nowContact+=direction;
+            if (nowContact<0) nowContact=size-1;
+            if (nowContact>=size) nowContact=0;
+            
+            Contact c=(Contact)activeContacts.elementAt(nowContact);
+            new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
+        } catch (Exception e) { }
+        
+    }
+
+    private void Reply() {
+        try {
+            if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_PRESENCE/*.MESSAGE_TYPE_HISTORY*/) return;
+            if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
+
+            Msg msg=getMessage(cursor);
+
+            new MessageEdit(display,contact,msg.from+": ");
+        } catch (Exception e) {/*no messages*/}
+    }
+    
+    private void Quote() {
+        try {
+            String msg=new StringBuffer()
+                .append((char)0xbb) // ï¿½
+                .append(" ")
+                .append(getMessage(cursor).toString())
+                .append("\n")
+                .toString();
+            new MessageEdit(display,contact,msg);
+            msg=null;
+        } catch (Exception e) {/*no messages*/}
+    }
+    
     
 //#ifdef ALT_INPUT
 //#     private void sendMessage(){
@@ -506,33 +555,6 @@ public class ContactMessageList extends MessageList
 //#         }
 //#     } 
 //#endif
-
-    private void nextContact(int direction){
-	Vector activeContacts=new Vector();
-        int nowContact = -1, contacts=-1;
-	for (Enumeration r=StaticData.getInstance().roster.getHContacts().elements(); r.hasMoreElements(); ) 
-	{
-	    Contact c=(Contact)r.nextElement();
-	    if (c.active()) {
-                contacts=contacts+1;
-                if (c==contact) nowContact=contacts;
-                activeContacts.addElement(c);
-            }
-	}
-        int size=activeContacts.size();
-        
-	if (size==0) return;
-
-        try {
-            nowContact+=direction;
-            if (nowContact<0) nowContact=size-1;
-            if (nowContact>=size) nowContact=0;
-            
-            Contact c=(Contact)activeContacts.elementAt(nowContact);
-            new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
-        } catch (Exception e) { }
-        
-    }
     
 //#if LAST_MESSAGES 
 //#     private void loadRecentList() {
@@ -545,28 +567,4 @@ public class ContactMessageList extends MessageList
 //#         } catch (Exception e) {}
 //#     }
 //#endif
-
-    private void Reply() {
-        try {
-            if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_PRESENCE/*.MESSAGE_TYPE_HISTORY*/) return;
-            if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
-
-            Msg msg=getMessage(cursor);
-
-            new MessageEdit(display,contact,msg.from+": ");
-        } catch (Exception e) {/*no messages*/}
-    }
-    
-    private void Quote() {
-        try {
-            String msg=new StringBuffer()
-                .append((char)0xbb) // »
-                .append(" ")
-                .append(getMessage(cursor).toString())
-                .append("\n")
-                .toString();
-            new MessageEdit(display,contact,msg);
-            msg=null;
-        } catch (Exception e) {/*no messages*/}
-    }
 }

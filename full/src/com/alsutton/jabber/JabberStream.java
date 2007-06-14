@@ -195,6 +195,14 @@ public class JabberStream implements XMLEventListener, Runnable {
      */
     public void sendKeepAlive(int type) throws IOException {
         switch (type){
+            case 4:
+                if (pingSent) {
+                    dispatcher.broadcastTerminatedConnection(new Exception("Version Ping Timeout"));
+                } else {
+                    System.out.println("Version Ping myself");
+                    versionPing();
+                }
+                break;
             case 3:
                 if (pingSent) {
                     dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
@@ -322,23 +330,41 @@ public class JabberStream implements XMLEventListener, Runnable {
             if ( name.equals( "stream:stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
-                throw new EndOfXMLException("Normal stream shutdown");
+                throw new JabberStreamShutdownException("Normal stream shutdown");
             }
              return;
         }
         
         JabberDataBlock parent = currentBlock.getParent();
         if( parent == null ) {
+            if (currentBlock.getTagName().equals("stream:error")) {
+                StringBuffer emsg=new StringBuffer("Stream error");
+                JabberDataBlock definedCondition=currentBlock.findNamespace("urn:ietf:params:xml:ns:xmpp-streams");
+                emsg.append(definedCondition.getTagName());
+                emsg.append(" ");
+                String text=currentBlock.getChildBlockText("text");
+                if (text.length()>0) emsg.append(text);
+                
+                dispatcher.halt();
+                iostream.close();
+                throw new JabberStreamShutdownException(emsg.toString());
+                
+            }
             dispatcher.broadcastJabberDataBlock( currentBlock );
             //System.out.println(currentBlock.toString());
         } else
             parent.addChild( currentBlock );
         currentBlock = parent;
     }
-
-    private void ping() {
+    private void versionPing() {
         JabberDataBlock ping=new Iq(null, Iq.TYPE_GET, "ping");
         ping.addChild("query", null).setNameSpace("jabber:iq:version");
+        pingSent=true;
+        send(ping);
+    }
+
+    private void ping() {
+        JabberDataBlock ping=new IqPing(null, "ping");
         pingSent=true;
         send(ping);
     }
@@ -358,6 +384,10 @@ public class JabberStream implements XMLEventListener, Runnable {
     }
     public int getBytesOut() {
         return iostream.getBytesS();
+    }
+
+    public long getBytes() {
+        return iostream.getBytes();
     }
     
      private class TimerTaskKeepAlive extends TimerTask{

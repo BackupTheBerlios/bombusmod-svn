@@ -32,6 +32,7 @@
 package midlet;
 
 import Info.Phone;
+import Stats.Stats;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -93,12 +94,12 @@ public class Bombus extends MIDlet implements Runnable{
     public void run(){
         
         SplashScreen s= SplashScreen.getInstance();
-        s.setProgress(3);
+        s.setProgress(1);
         
         try {
-            BottomInfo.getGPRS();
+            Stats.getGPRS();
         } catch (Exception e) { }
-        s.setProgress(5);
+        s.setProgress(3);
 
         Phone ph=Phone.getInstance();
         s.setProgress(8);

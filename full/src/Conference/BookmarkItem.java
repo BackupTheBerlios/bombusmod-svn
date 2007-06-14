@@ -51,7 +51,7 @@ public class BookmarkItem extends IconTextElement{
         return (autojoin)? RosterIcons.ICON_GCJOIN_INDEX : RosterIcons.ICON_GROUPCHAT_INDEX;
     }
 
-    public String toString(){ return jid+'/'+nick; }
+    public String toString(){ return (nick==null)? jid: jid+'/'+nick; }
     public String getJid() { return jid; }
 
     public int getColor(){ return ColorScheme.LIST_INK;}

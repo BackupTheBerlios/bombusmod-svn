@@ -1,2 +1,2 @@
 null	English
-/lang/ru.txt	Russian
+ru	Russian

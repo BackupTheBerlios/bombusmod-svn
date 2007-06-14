@@ -178,11 +178,10 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 				break;
 			case KEY_NUM4:
 				cpos -= 1; if (cpos < 0) cpos = 2;
-				repaint();
+                                serviceRepaints();
 				break;
 			case KEY_NUM6:
 				cpos += 1; if (cpos > 2) cpos = 0;
-				repaint();
 				break;
 			case KEY_NUM5:
                                 eventOk();
@@ -208,11 +207,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                                         break;
                                     case LEFT:
                                         cpos -= 1; if (cpos < 0) cpos = 2;
-                                        repaint();
                                         break;
                                     case RIGHT:
                                         cpos += 1; if (cpos > 2) cpos = 0;
-                                        repaint();
                                         break;
                                     case FIRE:
                                         eventOk();
@@ -229,6 +226,8 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                                         }
                                 }
                             } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+                            repaint();
+                            serviceRepaints();
 		}
 
 	}

@@ -48,6 +48,7 @@ public class AccountSelect
 
     Vector accountList;
     int activeAccount;
+    boolean enableQuit;
     
     Command cmdLogin=new Command(SR.MS_SELLOGIN, Command.OK,1);
     Command cmdSelect=new Command(SR.MS_NOLOGIN, Command.SCREEN,2);
@@ -62,12 +63,14 @@ public class AccountSelect
     /** Creates a new instance of AccountPicker */
     public AccountSelect(Display display, boolean enableQuit) {
         super();
+        this.enableQuit=enableQuit;
         //this.display=display;
 
         setMainBarItem(new MainBar(SR.MS_ACCOUNTS));
         
-        if (enableQuit)
+        if (enableQuit) {
             VirtualList.canBack=false;
+        }
         
         accountList=new Vector();
         Account a;
@@ -114,8 +117,8 @@ public class AccountSelect
             addCommand(cmdDel);
             addCommand(cmdLogin);
             addCommand(cmdSelect);
-            if (activeAccount>=0)
-                addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
+            if (activeAccount>=0 && !enableQuit)
+                addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
         }
     }
 

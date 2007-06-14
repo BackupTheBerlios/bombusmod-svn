@@ -51,10 +51,6 @@ public class Config {
     
     public final int vibraLen=getIntProperty("vibra_len",500);
 
-    /*public int socketLINGER=getIntProperty("LINGER",-1);
-    public int socketRCVBUF=getIntProperty("RCVBUF",-1);
-    public int socketSNDBUF=getIntProperty("SNDBUF",-1);*/
-    
     public final static int AWAY_OFF=0;
     public final static int AWAY_LOCK=1;
     public final static int AWAY_IDLE=2;
@@ -124,7 +120,7 @@ public class Config {
     public int font2=0;
     public int font3=0;
 
-    public String lang="";  //not detected
+    public String lang;  //not detected (en)
     public boolean capsState=true;
     public int textWrap=0;
     public boolean autoSubscribe=true;
@@ -174,7 +170,6 @@ public class Config {
 	    instance=new Config();
 	    instance.loadFromStorage();
 
-            //FontCache.balloonFontSize=Font.SIZE_SMALL;
             FontCache.rosterFontSize=instance.font1;
             FontCache.msgFontSize=instance.font2;
             FontCache.resetCache();
@@ -200,7 +195,6 @@ public class Config {
 			allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
             if (ph.PhoneManufacturer()==ph.SONYE_M600) {
-                System.out.println("bl");
                 KEY_BACK=-11;
             }
 	} else if (ph.PhoneManufacturer()==ph.NOKIA) {
@@ -295,7 +289,7 @@ public class Config {
             
             lastMessages=inputStream.readBoolean();
 
-            setAutoStatusMessage=inputStream.readBoolean(); //setKeyBlockStatus=inputStream.readBoolean();
+            setAutoStatusMessage=inputStream.readBoolean();
             
             autoAwayType=inputStream.readInt();
             
@@ -333,27 +327,22 @@ public class Config {
     }
     
     public String langFileName(){
-        Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 2);
+        if (lang==null) {
+            //auto-detecting
+            lang=System.getProperty("microedition.locale");
+            System.out.println(lang);
+            //We will use only language code from locale
+            if (lang==null) lang="en"; else lang=lang.substring(0, 2).toLowerCase();
+        }
         
-        String locale=System.getProperty("microedition.locale");   
-        //System.out.println(locale);
-        if (lang=="" && locale!=null) {
-
-            if (locale.indexOf("-")>0)
-                locale=locale.substring(0,locale.indexOf("-"));
-
-            for (Enumeration r=files[0].elements(); r.hasMoreElements(); ) 
-            {
-                String loc=(String)r.nextElement();
-                if (loc.indexOf(locale)>-1) {
-                    lang=loc;
-                    return loc;
-                }
-            }
-        } else if (lang=="") {
-            return "en";   //english
-        }        
-        return lang;
+        if (lang.equals("en")) return null;  //english
+	Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 3);
+        for (int i=0; i<files[0].size(); i++) {
+            String langCode=(String) files[0].elementAt(i);
+            if (lang.equals(langCode))
+        	return (String) files[1].elementAt(i);
+        }
+        return null; //unknown language ->en
     }
     
     public void saveToStorage(){
@@ -441,9 +430,7 @@ public class Config {
             outputStream.writeInt(messageLimit);
             
             outputStream.writeUTF(lang);            
-	} catch (Exception e) {
-            //e.printStackTrace();
-    }
+	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
     }

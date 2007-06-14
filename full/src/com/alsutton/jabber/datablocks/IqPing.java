@@ -34,24 +34,10 @@ public class IqPing extends Iq{
         super(request.getAttribute("from"),
               Iq.TYPE_RESULT,
               request.getAttribute("id") );
-/*
- <iq from='juliet@capulet.lit/chamber'
-    to='romeo@montague.lit/home' 
-    id='e2e1'
-    type='result'/>
- */
     }
     
-    public IqPing(String to) {
-/*
-<iq from='romeo@montague.lit/home' 
-    to='juliet@capulet.lit/chamber'
-    type='get' 
-    id='e2e1'>
-  <ping xmlns='http://www.xmpp.org/extensions/xep-0199.html#ns'/>
-</iq>
- */
-        super(to, Iq.TYPE_GET, "_ping");
+    public IqPing(String to, String id) {
+        super(to, Iq.TYPE_GET, id);
         addChild("ping",null).setNameSpace("http://www.xmpp.org/extensions/xep-0199.html#ns");
     }
 }

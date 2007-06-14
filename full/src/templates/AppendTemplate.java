@@ -43,10 +43,6 @@ import io.file.browse.BrowserListener;
 import util.strconv;
 //#endif
 
-/**
- *
- * @author EvgS
- */
 public class AppendTemplate         
         extends MessageList 
         implements CommandListener
@@ -155,6 +151,13 @@ public class AppendTemplate
             new Browser(null, display, this, false);
         }
 //#endif
+        if (c==cmdNew) {
+            try {
+                new NewTemplate(display);
+                messages=new Vector();
+                redraw();
+            } catch (Exception e) {/*no messages*/}
+        }
 	if (m==null) return;
         
 	if (c==cmdDelete) {
@@ -170,13 +173,6 @@ public class AppendTemplate
         }
 //#endif
 	if (c==cmdSelect) { pasteData(); }
-        if (c==cmdNew) {
-            try {
-                new NewTemplate(display);
-                messages=new Vector();
-                redraw();
-            } catch (Exception e) {/*no messages*/}
-        }
     }
     
     private void pasteData() {

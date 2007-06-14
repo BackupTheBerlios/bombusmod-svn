@@ -66,6 +66,7 @@ public class InfoWindow implements CommandListener{
         memInfo.append(Runtime.getRuntime().totalMemory()>>10);
         form.append(memInfo.toString());
 //#if ZLIB
+/*
         form.append("\n\n");
         String conn_stats;
         try {
@@ -74,6 +75,7 @@ public class InfoWindow implements CommandListener{
             conn_stats="disconnected";
         }
         form.append(conn_stats);
+ */
 //#endif
         memInfo=null;
         form.setCommandListener(this);

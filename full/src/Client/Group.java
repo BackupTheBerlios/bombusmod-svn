@@ -40,8 +40,11 @@ public class Group extends IconTextElement {
     int index; // group index
     protected int nContacts;
     protected int onlines;
+    
     public int imageExpandedIndex=RosterIcons.ICON_EXPANDED_INDEX;
     public int imageCollapsedIndex=RosterIcons.ICON_COLLAPSED_INDEX;
+    public int imageHasMessageIndex=RosterIcons.ICON_COLLAPSED_INDEX;
+    
     
     public Vector contacts;
     
@@ -59,13 +62,15 @@ public class Group extends IconTextElement {
         
     }
     public int getColor(){ return ColorScheme.GROUP_INK; }
+    
     public int getImageIndex() {
         return collapsed?
-            imageCollapsedIndex
+            (unreadMessages>0)?imageHasMessageIndex:imageCollapsedIndex
             :imageExpandedIndex;
     }
     
     public String getName() { return name; }
+    
     protected String mainbar(String mainbarStart) {
 	return mainbarStart+" ("+getOnlines()+'/'+getNContacts()+')';
     }
@@ -128,5 +133,4 @@ public class Group extends IconTextElement {
     public int getOnlines() {
         return onlines;
     }
-
 }

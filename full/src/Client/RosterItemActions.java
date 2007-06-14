@@ -101,22 +101,27 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef SERVICE_DISCOVERY
 //# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 //#endif
-	    addItem("Copy JID",892, 0x0f22);
+
 //#ifdef COLORS
 //# 	    addItem("Send current color scheme",912, 0x0f22);
 //#endif
 	    addItem("Send buffer",914, 0x0f22);
             
-            if (contact.getJid()==contact.getBareJid()) {
-                addItem(SR.MS_SEEN,890);    
-            } else {
-                if (contact.getStatus()<Presence.PRESENCE_OFFLINE) {
-                    addItem(SR.MS_IDLE,889);
-                    addItem("Ping",893);
-                }
-                if (contact.status>4)
+            if (contact.getGroupType()!=Groups.TYPE_SELF) {
+                addItem("Copy JID",892, 0x0f22);
+                if (contact.getJid()==contact.getBareJid()) {
+                    addItem(SR.MS_SEEN,890);    
+                } else {
                     addItem(SR.MS_ONLINE,890); 
+                }
             }
+            if (contact.getStatus()<Presence.PRESENCE_OFFLINE) {
+                addItem(SR.MS_IDLE,889);
+                addItem("Ping",893);
+            }
+                //if (contact.status>4) //not only for offline&invisible status
+                //    addItem(SR.MS_ONLINE,894); 
+            //}
             
                             
             //if (from.indexOf("/")>-1) lastType="idle";
@@ -130,7 +135,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
             
-	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return; //TODO: п©п╬п╢п╨п╩�?▌�?┤п╦�?┌�?▄ �?┌п╬�?┌ п╤п╣ �?│п©п╦�?│п╬п╨, �?┤�?┌п╬ п╦ п╢п╩�?�? ConferenceGroup
+	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return;
             
             boolean onlineConferences=false;
             for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
@@ -376,10 +381,16 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     try {
                         roster.setQuerySign(true);
                         c.setPing();
-                        roster.theStream.send(new IqPing(c.getJid()));
+                        roster.theStream.send(new IqPing(c.getJid(), "_ping"));
                     } catch (Exception e) {/*no messages*/}
                     break;
                 }
+                //case 894: //seen & online when online
+                //{
+                //    roster.setQuerySign(true);
+                //    roster.theStream.send(new IqLast(c.getJid()));
+                //    break;
+                //}
 //#ifdef COLORS
 //#                 case 912: //send color scheme
 //#                 {

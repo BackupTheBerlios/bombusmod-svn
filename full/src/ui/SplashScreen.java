@@ -102,6 +102,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
+        serviceRepaints();
 
         new Thread(this).start();
         
@@ -150,15 +151,15 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         } else {
             Font f=FontCache.getBalloonFont();
 
-            int h=4; // пїЅпїЅпїЅпїЅпїЅпїЅ statusbar
+            int h=4; // ?????? statusbar
 
-            int xp=pos*width/100;   //пїЅпїЅпїЅпїЅпїЅпїЅ statusbar
+            int xp=pos*width/100;   //?????? statusbar
 
-            int xt=(width/2);       // x пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            int xt=(width/2);       // x ??????? ??? ??????
 
-            int y=height-h-2;         // y пїЅпїЅпїЅпїЅпїЅпїЅпїЅ statusbar
+            int y=height-h-2;         // y ??????? statusbar
 
-            int yt=y-f.getHeight(); // y пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            int yt=y-f.getHeight(); // y ??????? ??? ??????
 
             g.setColor(ColorScheme.PGS_REMAINED);
             g.fillRect(1, y, width, h);
@@ -175,6 +176,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public void setProgress(int progress) {
         pos=progress;
         repaint();
+        serviceRepaints();
     }
 
     public void setFailed(){
@@ -207,8 +209,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (parentView!=null) display.setCurrent(parentView);
         parentView=null;
         repaint();
+        serviceRepaints();
         img=null;
-        instance=null; // РѕС?РІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјС?С‚Рё
+        instance=null; // о??вобождение пам??ти
         System.gc();
     }
 
@@ -230,6 +233,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
         public void run() {
             repaint();
+            serviceRepaints();
         }
         public void stop(){
             cancel();

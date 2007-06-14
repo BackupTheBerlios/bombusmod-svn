@@ -210,9 +210,9 @@ public class ConferenceForm implements CommandListener{
                 gchat.append('/');
                 gchat.append(nick);
                 join(gchat.toString(),pass, msgLimit);
-                gchat=null;
                 display.setCurrent(sd.roster);
             } catch (Exception e) { }
+            gchat=null;
         }
     }
     public static void join(String name, String pass, int maxStanzas) {

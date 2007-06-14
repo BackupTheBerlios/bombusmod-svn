@@ -80,7 +80,7 @@ public class SearchResult
 	    
             if (child.getTagName().equals("item")) {
                 StringBuffer vcard=new StringBuffer();
-                String jid=null;
+                String jid="";
 		
 	        int status=Presence.PRESENCE_ONLINE;
 
@@ -118,6 +118,7 @@ public class SearchResult
                 
                 items.addElement(serv);
                 sd.roster.addContact(serv);
+                vcard=null;
             }
         }
 //#ifdef POPUPS

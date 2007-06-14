@@ -486,8 +486,17 @@ public class SR {
     
     public static String MS_MESSAGE_COLLAPSE_LIMIT = loadString( "Message collapse limit" );
     
+    public static String MS_NO_CLIENT_INFO = loadString( "No client info" );
+
+    public static String MS_CLEAN_ALL_MESSAGES = loadString( "Delete all messages" );
+    
+    public static String MS_DO_AUTOJOIN="Join marked (auto)"; //temporary
+
+    public static String MS_STATS = loadString( "Statistics" );
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
+
     
     private SR() { }
     
@@ -497,13 +506,22 @@ public class SR {
         if (lang==null) {
             String langFile=Config.getInstance().langFileName();
             if (langFile==null) lang=new Hashtable(); 
-            else lang=new StringLoader().hashtableLoader("/lang/"+langFile+".txt");
+            else lang=new StringLoader().hashtableLoader(langFile);
             MS_XMLLANG=(String)lang.get("xmlLang");
             
             MS_IFACELANG=MS_XMLLANG;
             if (MS_IFACELANG==null) MS_IFACELANG="en";
         }
         String value=(String)lang.get(key);
+//#if LOCALE_DEBUG
+        if (value==null) {
+            if (!lang.isEmpty()) {
+                System.out.print("Can't find local string for <");
+                System.out.print(key);
+                System.out.println('>');
+            }
+        }
+//#endif
         return (value==null)?key:value;
     }
 

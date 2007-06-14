@@ -25,6 +25,7 @@
 
 package util;
 
+import Info.Version;
 import java.io.*;
 import javax.microedition.io.*;
 import javax.microedition.lcdui.*;
@@ -38,7 +39,7 @@ public class LastVersion implements CommandListener
     
     private Form form;
     
-    String url = "http://apatin.net.ru/news/lastest.php";
+    String url = Version.url+"/news/lastest.php";
     protected Command cmdGo = new Command(SR.MS_GOTO_URL, Command.SCREEN, 1);
     
     public LastVersion(Display display) {
@@ -100,6 +101,7 @@ public class LastVersion implements CommandListener
             //    result=result.substring(verStart+16,verEnd-1);
             //}
       }
+      b=null;
       return result;
    }
 }

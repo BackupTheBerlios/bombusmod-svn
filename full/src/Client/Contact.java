@@ -73,10 +73,6 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GC_MEMBER=5;
     public final static byte ORIGIN_GC_MYSELF=6;
 
-//#ifdef ANTISPAM
-//#     public Vector tempMsgs=new Vector();
-//#endif
-
     public String nick;
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
@@ -92,26 +88,31 @@ public class Contact extends IconTextElement{
     public String presence;
     
     public boolean acceptComposing;
-    public Integer incomingComposing;
-    private Integer incomingAppearing;
-    private Integer incomingViewing;
     
-    public boolean isSelected;
+    public int incomingState=0;
+    
+    public final static int INC_COMPOSING=1;
+    public final static int INC_APPEARING=2;
+    public final static int INC_VIEWING=3;
+    
+    //public boolean isSelected;
     
     public String msgSuspended;
     
-    //public int key1;
     protected int key0;
     protected String key1;
 
     public byte origin;
-    //public boolean gcMyself;
     
     public String subscr;
     public int offline_type=Presence.PRESENCE_UNKNOWN;
     public boolean ask_subscribe;
     
     public Vector msgs;
+
+//#ifdef ANTISPAM
+//#     public Vector tempMsgs=new Vector();
+//#endif
     
     private int newMsgCnt=-1;
     public int unreadType;
@@ -119,12 +120,16 @@ public class Contact extends IconTextElement{
     
     public VCard vcard;
     
+    public boolean hasEntity;
+    public String entityNode;
+    public String entityVer;
+    
     private Config cf=Config.getInstance();
     
 //#if FILE_IO    
-    int fileSize;
+    //int fileSize;
     private int filePos;
-    String filePath;
+    //String filePath;
     private FileIO file;
     private OutputStream os;
 //#endif
@@ -184,9 +189,7 @@ public class Contact extends IconTextElement{
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         }
-        if (incomingComposing!=null) return RosterIcons.ICON_COMPOSING_INDEX;
-        if (incomingViewing!=null) return RosterIcons.ICON_VIEWING_INDEX;
-        if (incomingAppearing!=null) return RosterIcons.ICON_APPEARING_INDEX;
+        if (incomingState>0) return incomingState;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
         return st;
@@ -219,25 +222,21 @@ public class Contact extends IconTextElement{
     }
     
     public void resetNewMsgCnt() { newMsgCnt=-1;}
-/*    
-    public void setPrivateState (int state) {
-        privateState=state;
-    }
-    
-    public int getPrivateState () {
-        return privateState;
-    }
-*/    
-    public void setComposing (boolean state) {
-        incomingComposing=(state)? new Integer(RosterIcons.ICON_COMPOSING_INDEX):null;
-    }
-    
-    public void setViewing (boolean state) {
-        incomingViewing=(state)? new Integer(RosterIcons.ICON_VIEWING_INDEX):null;
-    }
-    
-    public void setAppearing (boolean state) {
-        incomingAppearing=(state)? new Integer(RosterIcons.ICON_APPEARING_INDEX):null;
+  
+    public void setIncoming (int state) {
+        int i=0;
+        switch (state){
+            case INC_COMPOSING:
+                i=RosterIcons.ICON_COMPOSING_INDEX;
+                break;
+            case INC_APPEARING:
+                i=RosterIcons.ICON_APPEARING_INDEX;
+                break;
+            case INC_VIEWING:
+                i=RosterIcons.ICON_VIEWING_INDEX;
+                break;
+        }
+        incomingState=i;
     }
     
     public int compare(IconTextElement right){
@@ -350,8 +349,6 @@ public class Contact extends IconTextElement{
             
             return;
         } 
-        if (cf.autoScroll)
-            moveToLatest=true;
         
         msgs.addElement(m);
         
@@ -453,7 +450,7 @@ public class Contact extends IconTextElement{
     }
 
     public void setStatus(int status) {
-        setComposing(false);
+        setIncoming(0);
         this.status = status;
         if (status>=Presence.PRESENCE_OFFLINE) acceptComposing=false;
     }

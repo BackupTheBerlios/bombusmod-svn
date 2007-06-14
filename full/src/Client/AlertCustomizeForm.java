@@ -48,6 +48,7 @@ public class AlertCustomizeForm implements
     ChoiceGroup ConferenceFile;
     ChoiceGroup StartUpFile;
     ChoiceGroup OutgoingFile;
+    ChoiceGroup VIPFile;
     
     Gauge sndVol;
     
@@ -60,6 +61,7 @@ public class AlertCustomizeForm implements
     Command cmdConferenceSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
     Command cmdStartUpSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
     Command cmdOutgoingSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
+    Command cmdVIPSound=new Command(SR.MS_TEST_SOUND, Command.ITEM,10);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
     AlertCustomize ac;
@@ -172,7 +174,19 @@ public class AlertCustomizeForm implements
         OutgoingFile.addCommand(cmdOutgoingSound);
 	OutgoingFile.setItemCommandListener(this);
         
-
+        
+        VIPFile=new ChoiceGroup(SR.MS_SOUND+" for VIP", ChoiceGroup.POPUP);
+	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
+	    VIPFile.append( (String)f.nextElement(), null );
+	}
+        try {
+            VIPFile.setSelectedIndex(ac.soundVIPIndex, true);
+        } catch (Exception e) {ac.soundVIPIndex=0;}
+	f.append(VIPFile);
+        VIPFile.addCommand(cmdVIPSound);
+	VIPFile.setItemCommandListener(this);
+        
+        
         sndVol=new Gauge("Sound volume", true, 10,  ac.soundVol/10);
 	sndVol.addCommand(cmdMessageSound);
 	sndVol.setItemCommandListener(this);
@@ -196,6 +210,8 @@ public class AlertCustomizeForm implements
             ac.soundConferenceIndex=ConferenceFile.getSelectedIndex(); 
             ac.soundStartUpIndex=StartUpFile.getSelectedIndex();
             ac.soundOutgoingIndex=OutgoingFile.getSelectedIndex(); 
+            ac.soundVIPIndex=VIPFile.getSelectedIndex(); 
+            
 
 
  	    ac.loadSoundName();
@@ -206,6 +222,8 @@ public class AlertCustomizeForm implements
             ac.loadConferenceSoundName();
             ac.loadStartUpSoundName();
             ac.loadOutgoingSoundName();
+            ac.loadVIPSoundName();
+           
             ac.saveToStorage();
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();
@@ -238,6 +256,9 @@ public class AlertCustomizeForm implements
  	}
  	if (command==cmdOutgoingSound) {
             PlaySound(OutgoingFile.getSelectedIndex());
+ 	}
+ 	if (command==cmdVIPSound) {
+            PlaySound(VIPFile.getSelectedIndex());
  	}
     }
 

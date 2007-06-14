@@ -61,14 +61,15 @@ public class RosterMenu
 //#         addItem(SR.MS_STATUS_MENU, 1, 0x0f16);
 //#         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x0f21);
 //#         addItem(SR.MS_ALERT_PROFILE_CMD, 3, 0x0f17);
-//#         addItem(SR.MS_CONFERENCE, 4,0x40);
+//#         addItem(SR.MS_CONFERENCE, 4, RosterIcons.ICON_GROUPCHAT_INDEX);
 //#ifdef ARCHIVE
 //#         addItem(SR.MS_ARCHIVE, 5,0x0f12);
 //#endif
 //#         addItem(SR.MS_ADD_CONTACT, 6, 0x0f02);
 //#         addItem(SR.MS_TOOLS, 7,0x0f24);    
 //#         addItem(SR.MS_ACCOUNT_, 8,0x0f01);
-//#         addItem(SR.MS_ABOUT, 10,0x0f04);
+//#         addItem(SR.MS_ABOUT, 9,0x0f04);
+//#         addItem(SR.MS_CLEAN_ALL_MESSAGES, 10, RosterIcons.ICON_TRASHCAN_INDEX);
 //#         addItem(SR.MS_APP_QUIT, 11,0x0f22);
 //#     
 //# 	attachDisplay(display);
@@ -123,8 +124,11 @@ public class RosterMenu
 //#             case 8: //account
 //#                 new AccountSelect(display, false).setParentView(StaticData.getInstance().roster);
 //# 		break; 
-//#             case 10: //about
+//#             case 9: //about
 //#                 new Info.InfoWindow(display);
+//# 		break; 
+//#             case 10: //cleanup All Histories
+//#                 StaticData.getInstance().roster.cleanupAllHistories();
 //# 		break; 
 //# 	    case 11: {//quit
 //#                 StaticData.getInstance().roster.destroyView();

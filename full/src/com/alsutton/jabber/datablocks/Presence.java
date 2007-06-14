@@ -181,6 +181,39 @@ public class Presence extends JabberDataBlock
       String show=getChildBlockText("show");
       return (show.length()==0)? PRS_ONLINE: getChildBlockText("show");
   }
+  
+  public boolean hasEntityCaps()
+  {
+    JabberDataBlock cc=getChildBlock("c");
+    if (cc==null) return false;
+    
+    return (cc.isJabberNameSpace("http://jabber.org/protocol/caps"))?true:false;
+  }
+  
+    public String getEntityNode()
+    {
+        JabberDataBlock cc=getChildBlock("c");
+        if (cc!=null){
+            if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
+                return cc.getAttribute("node");
+            }
+        }
+    
+        return null;
+    }
+  
+    public String getEntityVer()
+    {
+        JabberDataBlock cc=getChildBlock("c");
+        if (cc!=null){
+            if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
+                return cc.getAttribute("ver");
+            }
+        }
+    
+        return null;
+    }
+  
 
   /**
      * Method to get the presence <B>from</B> field

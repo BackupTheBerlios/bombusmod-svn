@@ -74,7 +74,8 @@ public class Account extends IconTextElement{
 	StaticData sd=StaticData.getInstance();
 	Account a=sd.account=Account.createFromStorage(Config.getInstance().accountIndex);
 	if (a!=null) {
-            sd.roster.logoff();
+            if (sd.roster.isLoggedIn())
+                sd.roster.logoff();
 	    sd.roster.resetRoster();
             if (launch) sd.roster.sendPresence(Presence.PRESENCE_ONLINE, null);
         }
@@ -109,8 +110,8 @@ public class Account extends IconTextElement{
             a.nick     = inputStream.readUTF();
             a.resource = inputStream.readUTF();
 	    
-            // version и�?пользует�?�? дл�? корректной работы midp1 - аккаунты
-            // хран�?т�?�? в файле без разделени�? на запи�?и
+            // version и�?пользует�?�? дл�? корректной работы midp1 - аккаунты
+            // хран�?т�?�? в файле без разделени�? на запи�?и
             if (version>=2) a.useSSL=inputStream.readBoolean();
             if (version>=3) a.plainAuth=inputStream.readBoolean();
             

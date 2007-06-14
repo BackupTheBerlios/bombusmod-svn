@@ -234,9 +234,9 @@ public class MessageEdit
         
         if (sendInTranslit==true) {
             if (body!=null)
-               body=Translit.translit(body);
+               body=Translit.translit(body).trim();
             if (subj!=null )
-               subj=Translit.translit(subj);
+               subj=Translit.translit(subj).trim();
         }
         
         if (body!=null || subj!=null ) {

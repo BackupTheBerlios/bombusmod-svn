@@ -63,7 +63,7 @@ public class ActiveContacts
 	    Contact c=(Contact)r.nextElement();
 	    if (c.active()) activeContacts.addElement(c);
 	}
-	// РЅРµ СЃРѕР·РґР°С‘Рј РІРёРґ, РµСЃР»Рё РЅРµС‚ Р°РєС‚РёРІРЅС‹С… РєРѕРЅС‚Р°РєС‚РѕРІ
+	// РЅРµ СЃРѕР·РґР°С�?Р�? РІРёРґ, РµСЃР»Рё РЅРµС‚ Р°РєС‚РёРІРЅС‹С… РєРѕРЅС‚Р°РєС‚РѕРІ
 	if (getItemCount()==0) return;
 	
         MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ");
@@ -91,6 +91,7 @@ public class ActiveContacts
     public void eventOk() {
 	Contact c=(Contact)getFocusedObject();
 	new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
+        c.msgSuspended=null;
     }
     
     public void commandAction(Command c, Displayable d) {
@@ -104,10 +105,7 @@ public class ActiveContacts
     }
     
     protected void keyGreen(){
-        if (!sd.roster.isLoggedIn()) return;
-        
-	Contact c=(Contact)getFocusedObject();
-	new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
-        c.msgSuspended=null;
+        //if (!sd.roster.isLoggedIn()) return;
+        eventOk();
     }
 }

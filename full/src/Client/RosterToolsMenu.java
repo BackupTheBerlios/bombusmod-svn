@@ -31,6 +31,7 @@ package Client;
 //#endif
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
+//# import Stats.Stats;
 //#endif
 import javax.microedition.lcdui.Display;
 import locale.SR;
@@ -39,6 +40,7 @@ import locale.SR;
 //#endif
 import ui.Menu;
 import ui.MenuItem;
+import util.strconv;
 import vcard.VCard;
 import vcard.vCardForm;
 
@@ -67,6 +69,8 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_COLOR_TUNE, 6, 0x0f25);
 //#endif
         addItem(SR.MS_SOUNDS_OPTIONS, 7, 0x0f17);
+        
+        addItem(SR.MS_STATS, 8, 0x0f16);
        
         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
         
@@ -123,7 +127,27 @@ public class RosterToolsMenu
             case 7:
                 new AlertCustomizeForm(display);
                 return;
-               
+            case 8: //traffic stats
+                StringBuffer str= new StringBuffer();
+                Stats stats=Stats.getInstance();
+                str.append("Traffic stats:\nAll(");
+                str.append(stats.getSessionsCount());
+                str.append("): ");
+                
+                str.append(strconv.getSizeString(stats.getAllTraffic()));
+                
+                str.append("\nPrevious: ");
+                str.append(strconv.getSizeString(stats.getLatest()));
+                
+                str.append("\nCurrent: ");
+                str.append(strconv.getSizeString(stats.getCurrentTraffic()));
+
+                if (connected)
+                    str.append(StaticData.getInstance().roster.theStream.getStreamStats());
+
+                StaticData.getInstance().roster.setWobbler(str.toString());
+                str=null;
+                return;
             case 10:
                 new util.LastVersion(display);
                 return;

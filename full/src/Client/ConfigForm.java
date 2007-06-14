@@ -41,11 +41,6 @@ import ui.controls.NumberField;
 import util.StringLoader;
 import ui.*;
 
-/**
- *
- * @author Evg_S
- */
-
 public class ConfigForm implements
 	CommandListener 
 	,ItemCommandListener
@@ -114,6 +109,7 @@ public class ConfigForm implements
     boolean lc[];
     boolean se[];
     Vector files[];
+    Vector langs[];
     
 //#if FILE_IO
     private int HISTORY=0;
@@ -275,41 +271,28 @@ public class ConfigForm implements
 	textWrap.setSelectedIndex(cf.textWrap, true);
 	f.append(textWrap);
         
-        
+//******************** lang
         lang=new ChoiceGroup(SR.MS_LANGUAGE, ChoiceGroup.POPUP);
-	Vector langs[]=new StringLoader().stringLoader("/lang/res.txt",2);
-	
-	for (Enumeration f=langs[1].elements(); f.hasMoreElements(); ) {
-	    lang.append( (String)f.nextElement(), null );
-	}
-	
-        try {
-            String tempLang=cf.lang;
+	langs=new StringLoader().stringLoader("/lang/res.txt",3);
+        
+        String tempLang=cf.lang;
 
-            if (tempLang=="") { //not detected
-                String locale=System.getProperty("microedition.locale");   
-                //System.out.println(locale);
-                if (locale!=null) {
-                    int pos=locale.indexOf("-");
-                    if (pos>-1)
-                        tempLang=locale.substring(0,pos);
-                } else {
-                    tempLang="en";
-                }
+        if (tempLang==null) { //not detected
+            String locale=System.getProperty("microedition.locale");  
+            if (locale!=null) {
+                tempLang=locale.substring(0, 2).toLowerCase();
             }
-            
-            //System.out.println(tempLang);
-            
-            int langnum=0;
-            for (Enumeration fff=langs[0].elements(); fff.hasMoreElements(); ) {
-                String loc=(String)fff.nextElement();
-                if (loc.indexOf(tempLang)>-1) {
-                    lang.setSelectedIndex(langnum, true);
-                    break;
-                }
-                langnum++;
-            }
-        } catch (Exception e) { lang.setSelectedIndex(0, true); }
+        }
+
+	for (int i=0; i<langs[0].size(); i++) {
+            String label=(String) langs[2].elementAt(i);
+            String langCode=(String) langs[0].elementAt(i);
+	    lang.append( label, null );
+            if (tempLang.equals(langCode))
+                lang.setSelectedIndex(i, true);
+        }
+//******************** lang
+        
         
         f.append(startup);
 
@@ -498,8 +481,7 @@ public class ConfigForm implements
 	    
 	    cf.textWrap=textWrap.getSelectedIndex();
 
-            Vector langs[]=new StringLoader().stringLoader("/lang/res.txt",2);
-            cf.lang=(String) langs[0].elementAt(lang.getSelectedIndex());
+            cf.lang=(String) langs[0].elementAt( lang.getSelectedIndex() );
 	    
 //#if FILE_IO
             cf.msgLog=his[0];

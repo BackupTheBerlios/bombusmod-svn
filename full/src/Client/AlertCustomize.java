@@ -65,6 +65,10 @@ public class AlertCustomize {
     public int soundOutgoingIndex=0;
     public String soundOutgoing="";
     public String soundOutgoingType="tone sequence";
+    
+    public int soundVIPIndex=0;
+    public String soundVIP="";
+    public String soundVIPType="tone sequence";
 
     public int soundVol=100;
     
@@ -88,6 +92,7 @@ public class AlertCustomize {
 	    instance.loadConferenceSoundName();
 	    instance.loadStartUpSoundName();
 	    instance.loadOutgoingSoundName();
+            instance.loadVIPSoundName();
 	}
 	return instance;
     }
@@ -106,23 +111,15 @@ public class AlertCustomize {
             soundConferenceIndex=inputStream.readInt();
 	    soundStartUpIndex=inputStream.readInt();
 	    soundOutgoingIndex=inputStream.readInt();
+            soundVIPIndex=inputStream.readInt();
+            
             
             inputStream.close();
 	} catch (Exception e) {
             try {
                 if (inputStream!=null)
                     inputStream.close();
-            } catch (IOException ex) {
-                //ex.printStackTrace();
-            }
-	    soundsMsgIndex=0;            
-            soundOnlineIndex=0;
-            soundOfflineIndex=0;
-            soundForYouIndex=0;
-            soundComposingIndex=0;
-            soundConferenceIndex=0;
-	    soundStartUpIndex=0;
-	    soundOutgoingIndex=0;
+            } catch (IOException ex) {}
 	}
     }
     
@@ -139,6 +136,7 @@ public class AlertCustomize {
             outputStream.writeInt(soundConferenceIndex);
 	    outputStream.writeInt(soundStartUpIndex);
 	    outputStream.writeInt(soundOutgoingIndex);
+            outputStream.writeInt(soundVIPIndex);
 
             NvStorage.writeFileRecord(outputStream, "AlertCustomize", 0, true);
 	} catch (IOException e) {
@@ -196,5 +194,11 @@ public class AlertCustomize {
         if (soundOutgoingIndex>=size) soundOnlineIndex=0;
 	soundOutgoingType=(String) files[0].elementAt(soundOutgoingIndex);
 	soundOutgoing=(String) files[1].elementAt(soundOutgoingIndex);
+    }
+    
+    public void loadVIPSoundName(){
+        if (soundVIPIndex>=size) soundVIPIndex=0;
+	soundVIPType=(String) files[0].elementAt(soundVIPIndex);
+	soundVIP=(String) files[1].elementAt(soundVIPIndex);
     }
 }

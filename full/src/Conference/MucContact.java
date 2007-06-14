@@ -340,7 +340,7 @@ public class MucContact extends Contact{
         ConferenceGroup group=(ConferenceGroup)getGroup();
         if ( group.getSelfContact() == this ) {
             StaticData sd=StaticData.getInstance();
-            sd.roster.confJoin("bombusmod_talks@conference.jabber.ru/"+sd.account.getNickName());
+            sd.roster.confJoin("bombus-talks@conference.jabber.ru/"+sd.account.getNickName());
         }
     }  
     

@@ -45,6 +45,7 @@ public class ConferenceGroup extends Group{
 	this.label=label;
 	imageExpandedIndex=RosterIcons.ICON_GCJOIN_INDEX;
         imageCollapsedIndex=RosterIcons.ICON_GCCOLLAPSED_INDEX; 
+        imageHasMessageIndex=RosterIcons.ICON_MESSAGE_INDEX;
     }
 
     String label;
@@ -60,6 +61,5 @@ public class ConferenceGroup extends Group{
     public void setConference(MucContact conference) { this.conference=conference; }
     public int getOnlines(){ return (onlines>0)? onlines-1:0; }
     public int getNContacts(){ return (nContacts>0)? nContacts-1:0; }
-
     public long conferenceJoinTime;
 }

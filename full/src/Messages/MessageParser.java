@@ -148,6 +148,7 @@ public final class MessageParser implements Runnable{
         smileTable=new Vector();
         root=new Leaf();
 //#ifdef SMILES
+//#         StringBuffer s=new StringBuffer(10);
 //#         try { // generic errors
 //#             int strnumber=0;
 //#             boolean strhaschars=false;
@@ -155,7 +156,6 @@ public final class MessageParser implements Runnable{
 //#             
 //#             InputStream in=this.getClass().getResourceAsStream(resource);
 //#             
-//#             StringBuffer s=new StringBuffer(10);
 //#             boolean firstSmile=true;
 //#             
 //#             int c;
@@ -188,7 +188,9 @@ public final class MessageParser implements Runnable{
 //#             }
 //#             s=null;
 //#             in.close();
-//#         } catch (Exception e) { }
+//#         } catch (Exception e) {
+//#             s=null;
+//#         }
 //#endif
  	addSmile("http://",URL);
         addSmile("tel://",URL);
