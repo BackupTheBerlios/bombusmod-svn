@@ -52,7 +52,7 @@ public class Bookmarks
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
-    private Command cmdAdvJoin=new Command ("Edit/join", Command.SCREEN, 10);
+    private Command cmdAdvJoin=new Command (SR.MS_EDIT_JOIN, Command.SCREEN, 10);
     private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 12);
     private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 15);
     private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 16);

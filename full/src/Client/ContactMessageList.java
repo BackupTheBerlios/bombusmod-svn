@@ -71,7 +71,7 @@ public class ContactMessageList extends MessageList
 //#endif
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
 //#if LAST_MESSAGES
-//#     Command cmdRecent=new Command("Last Messages",Command.SCREEN,8);
+//#     Command cmdRecent=new Command(SR.MS_LAST_MESSAGES,Command.SCREEN,8);
 //#endif
     //Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,9);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);

@@ -481,7 +481,8 @@ public abstract class VirtualList
         s.append(Time.timeString(Time.localTime()));
         s.append(" "+strconv.getSizeString(stats.getGPRS()));
 //#ifdef ELF
-//#         s.append(getAccuLevel()+getNetworkLevel());
+//#         s.append(getNetworkLevel());
+//#         s.append(getAccuLevel());
 //#endif
         if (s!=null) {
             g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);

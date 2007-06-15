@@ -191,7 +191,7 @@ public class ColorForm implements CommandListener
     private static List selectionList;
 
 //#if (FILE_IO)
-    Command cmdSaveSkin=new Command("Save Skin", Command.ITEM,3); 
+    Command cmdSaveSkin=new Command(SR.MS_SAVE, Command.ITEM,3); 
     int fileSize;
     private int filePos;
     String filePath;
@@ -199,16 +199,16 @@ public class ColorForm implements CommandListener
     private OutputStream os;
 //#endif
     
-    private Command cmdCancel=new Command("Close", Command.BACK, 99);
+    private Command cmdCancel=new Command(SR.MS_CLOSE, Command.BACK, 99);
 
-    private Command selectCommand = new Command("Edit...", Command.ITEM, 1);
+    private Command selectCommand = new Command(SR.MS_EDIT, Command.ITEM, 1);
     
     public ColorForm(Display display) {
         super();
         this.display=display;
         parentView=display.getCurrent();
 
-        selectionList = new List("Colors", List.IMPLICIT, NAMES, IMAGES);
+        selectionList = new List(SR.MS_COLOR_TUNE, List.IMPLICIT, NAMES, IMAGES);
 
         selectionList.setSelectCommand(selectCommand);
 
@@ -248,7 +248,7 @@ public class ColorForm implements CommandListener
             os.write(b);
             filePos+=b.length;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 
@@ -265,9 +265,9 @@ public class ColorForm implements CommandListener
             try {
                 file.close();
             } catch (IOException ex2) {
-                ex2.printStackTrace();
+                //ex2.printStackTrace();
             }
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 //#endif 
@@ -290,7 +290,9 @@ public class ColorForm implements CommandListener
                 arrayInt[i]=color;
             }
             return Image.createRGBImage(arrayInt,w,h,false);
-        } catch (Exception ex) { ex.printStackTrace(); }
+        } catch (Exception ex) { 
+            //ex.printStackTrace(); 
+        }
         
         return null;
     }

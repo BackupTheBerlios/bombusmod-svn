@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
 import util.StringLoader;
+import util.Translit;
 
 public class ColorScheme {
     private static ColorScheme instance;
@@ -295,7 +296,7 @@ public class ColorScheme {
 //#     
 //#     public static String getSkin(){
 //#         StringBuffer body=new StringBuffer();
-//#         body.append("xmlSkin\t"+StaticData.getInstance().account.getNickName());
+//#         body.append("xmlSkin\t"+Translit.translit(StaticData.getInstance().account.getNickName()));
 //#         body.append("\r\n");
 //#         body.append("BALLOON_INK\t"+getColorString(BALLOON_INK)+"\r\n");
 //#         body.append("BALLOON_BGND\t"+getColorString(BALLOON_BGND)+"\r\n");

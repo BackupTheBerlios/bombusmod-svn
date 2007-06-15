@@ -1826,6 +1826,7 @@ public class Roster
             String mainbar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
             Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", mainbar, error);
             messageStore(selfContact(), m);
+            Stats.getInstance().save();
             new Reconnect(mainbar, error, display);
          }
      }

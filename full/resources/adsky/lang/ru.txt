@@ -448,3 +448,39 @@ Shared platform info	Скрыть инфо о клиенте
 Show new menu Показывать новое меню
 Save conference history	Сохранять историю конференции
 AutoStatus Message	Сообщение Автостатуса
+
+online	В сети
+Load Scheme	Загрузить схему
+show new menu	Графическое меню
+convert to cp1251	Сохранять в windows-1251
+AutoStatus time (min)	Автостатус через(мин)
+Address	Адрес
+Import from BackUp	Восстановить из файла
+Accept file	Принять файл
+Save To	Сохранить в
+Description	Описание
+Can't open file	Невозможно открыть файл
+New	Новый
+Time	Время
+Are You sure want to clear messagelist?	Очистить список сообщений
+Are you sure want to BAN this person?	Запретить входить в комнату?
+Shot	Снимок
+ has been unaffiliated and kicked from members-only room	 выгнали, так комната закрыта для гостей
+keyblock	блок кнопок
+Rename	Переименовать
+Move	Переместить
+Save	Сохранить
+Allow private	Разрешить приват
+Block private	Запретить приват
+Contact request chat, Allow or Block?	С вами хотят общаться, Разрешить или Запретить?
+shared platform info	показывать информацию о платформе
+Send in translit	Отправить транслитом
+Check Updates	Проверка обновления
+Collapsed groups	Свернутые группы
+Change nickname	Сменить ник
+Message collapse limit	Сворачивать сообщения больше
+No client info	Невозможно получить информацию
+Delete all messages	Удалить все сообщения
+Statistics	Статистика
+Last Messages	Последние сообщения
+Edit/join	Редактировать/Подключить

@@ -31,6 +31,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Image;
+import locale.SR;
 
 /**
  *
@@ -41,7 +42,7 @@ public class AlertBox implements CommandListener{
     protected Display display;
     protected Displayable next;
     protected Alert alert;
-    protected Command cmdOk=new Command("OK", Command.OK, 1);
+    protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
     /** Creates a new instance of AlertBox */
     public AlertBox(String mainbar, String text, Image image, Display display, Displayable nextDisplayable) {
         alert=new Alert(mainbar, text, image, null);

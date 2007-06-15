@@ -273,9 +273,9 @@ public class strconv {
         try {
             if ( number > 1000000 )
             {
-                String ratio=Long.toString(number/10000);
+                String ratio=Long.toString(number/100000);
 
-                int dotpos=ratio.length()-2;
+                int dotpos=ratio.length()-1;
 
                 suffix.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
                 suffix.append('.');
@@ -285,9 +285,9 @@ public class strconv {
             }
             else if ( number > 1000 )
             {
-                String ratio=Long.toString(number/10);
+                String ratio=Long.toString(number/100);
 
-                int dotpos=ratio.length()-2;
+                int dotpos=ratio.length()-1;
 
                 suffix.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
                 suffix.append('.');
@@ -308,21 +308,6 @@ public class strconv {
     }
     
 /*   
-    private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
-        s.append(packed); s.append(read?"->":"<-"); s.append(unpacked);
-        String ratio=Long.toString((10*unpacked)/packed);
-        int dotpos=ratio.length()-1;
-        
-        
-        s.append(" (");
-        s.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
-        s.append('.');
-        s.append(ratio.substring(dotpos));
-        s.append('x');
-        s.append(")");
-        
-    }
-  
     public static String URLEncode(String url)
     {
         StringBuffer buffer = new StringBuffer();

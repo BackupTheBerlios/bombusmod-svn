@@ -78,7 +78,7 @@ public class ArchiveList
     Command cmdImport=new Command(SR.MS_IMPORT_TO_FILE, Command.SCREEN, 7);
 //#endif
     Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 8);
-    Command cmdDeleteAll=new Command("Delete All", Command.SCREEN, 9);
+    Command cmdDeleteAll=new Command(SR.MS_DELETE_ALL, Command.SCREEN, 9);
     
 
     

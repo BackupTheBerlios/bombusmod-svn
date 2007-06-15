@@ -60,7 +60,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
         private int color;
         
-        Command cmdCancel = new Command(SR.MS_BACK /*"Back"*/, Command.BACK, 99);
+        Command cmdCancel = new Command(SR.MS_CANCEL /*"Back"*/, Command.CANCEL, 99);
 
 	public ColorSelector(Display display, int paramName) {
 		super();

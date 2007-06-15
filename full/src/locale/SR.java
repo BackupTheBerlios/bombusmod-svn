@@ -273,14 +273,14 @@ public class SR {
     
     public static String MS_SELECT_HISTORY_FOLDER=loadString("Select history folder");
     public static String CLASSIC_CHAT=loadString("Classic chat");
-    public static String MS_NEW_MENU=loadString("Show new menu");
+    public static String MS_NEW_MENU=loadString("show new menu");
     public static String MS_SOUND_VOLUME=loadString("Sound volume");
     public static String MS_LANGUAGE=loadString("Language");
     public static String MS_SAVE_HISTORY=loadString("Save history");
     public static String MS_SAVE_PRESENCES=loadString("Save presences");
     public static String MS_SAVE_HISTORY_CONF=loadString("Save conference history");
     public static String MS_SAVE_PRESENCES_CONF=loadString("Save conference presences");
-    public static String MS_1251_CORRECTION=loadString("1251 correction");
+    public static String MS_1251_CORRECTION=loadString("convert to cp1251");
     public static String MS_HISTORY_FOLDER=loadString("History folder");
     public static String MS_AUTOSTATUS=loadString("AutoStatus");
     public static String MS_AUTOSTATUS_TIME=loadString("AutoStatus time (min)");
@@ -470,29 +470,21 @@ public class SR {
 //#endif
     
     public final static String MS_SHOW_HARDWARE = loadString( "shared platform info" );
-
     public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
-
     public static String MS_CHECK_UPDATE = loadString( "Check Updates" );
-
     public static String MS_SHOW_RESOURCES = loadString( "Show Resources" );
-
-    
     public static String MS_COLLAPSED_GROUPS = loadString( "Collapsed groups" );
-
     public static String MS_SEND_BUFFER = loadString( "Send Buffer" );
-
     public static String MS_CHANGE_NICKNAME = loadString( "Change nickname" );
-    
     public static String MS_MESSAGE_COLLAPSE_LIMIT = loadString( "Message collapse limit" );
-    
     public static String MS_NO_CLIENT_INFO = loadString( "No client info" );
-
     public static String MS_CLEAN_ALL_MESSAGES = loadString( "Delete all messages" );
-    
     public static String MS_DO_AUTOJOIN="Join marked (auto)"; //temporary
-
     public static String MS_STATS = loadString( "Statistics" );
+    public static String MS_LAST_MESSAGES = loadString( "Last Messages" );
+    public static String MS_EDIT_JOIN = loadString( "Edit/join" );
+    public static String MS_APPLY_COLOR_SCHEME = loadString( "Apply Color Scheme" );
+    public static String MS_DELETE_ALL = loadString( "Delete All" );
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
@@ -516,9 +508,9 @@ public class SR {
 //#if LOCALE_DEBUG
         if (value==null) {
             if (!lang.isEmpty()) {
-                System.out.print("Can't find local string for <");
-                System.out.print(key);
-                System.out.println('>');
+                //System.out.print("Can't find local string for <");
+                System.out.println(key);
+                //System.out.println('>');
             }
         }
 //#endif

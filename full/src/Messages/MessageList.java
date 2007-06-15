@@ -57,7 +57,7 @@ public abstract class MessageList
 //#     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
 //#endif
 //#ifdef COLORS
-//#     protected Command cmdxmlSkin = new Command("Apply Color Scheme", Command.SCREEN, 30);
+//#     protected Command cmdxmlSkin = new Command(SR.MS_APPLY_COLOR_SCHEME, Command.SCREEN, 30);
 //#endif
     
     /** Creates a new instance of MessageList */

@@ -55,7 +55,7 @@ public class AppendTemplate
     Command cmdSelect=new Command(SR.MS_APPEND, Command.OK, 1);
     Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 1);
     Command cmdDelete=new Command(SR.MS_DELETE , Command.SCREEN, 2);
-    Command cmdDeleteAll=new Command("Delete All", Command.SCREEN, 3);
+    Command cmdDeleteAll=new Command(SR.MS_DELETE_ALL, Command.SCREEN, 3);
 //#if (FILE_IO)
     Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE, Command.SCREEN, 4);
     Command cmdImport=new Command(SR.MS_IMPORT_TO_FILE, Command.SCREEN, 5);
