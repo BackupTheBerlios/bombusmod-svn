@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
  *
- * Created on 5 Èþíü 2007 ã., 10:06
+ * Created on 5 ï¿½ï¿½ï¿½ï¿½ 2007 ï¿½., 10:06
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -60,11 +60,11 @@ public class EntityCaps extends Iq
 
         JabberDataBlock identity=query.addChild("identity", null);
         identity.setAttribute("category","client");
-        identity.setAttribute("type","handheld");
+        identity.setAttribute("type","mobile");
 
         for (int i=0; i<features.length;i++) {
             JabberDataBlock feature=query.addChild("feature", null);
-            identity.setAttribute("var",features[i]);
+            feature.setAttribute("var",features[i]);
         }
     }
 }

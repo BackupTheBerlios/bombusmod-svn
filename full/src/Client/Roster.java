@@ -713,7 +713,7 @@ public class Roster
         JabberDataBlock cc=presence.addChild("c", null);
         cc.setAttribute("xmlns", "http://jabber.org/protocol/caps");
         cc.setAttribute("node", Version.url);
-        cc.setAttribute("ver", cf.m_ver);
+        cc.setAttribute("ver", Version.version);
 		
         if (isLoggedIn()) {
             if (status==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
@@ -768,7 +768,7 @@ public class Roster
         JabberDataBlock cc=presence.addChild("c", null);
         cc.setAttribute("xmlns", "http://jabber.org/protocol/caps");
         cc.setAttribute("node", Version.url);
-        cc.setAttribute("ver", cf.m_ver);
+        cc.setAttribute("ver", Version.version);
         
         presence.setTo(to.getJid());
         if (theStream!=null) {
@@ -1182,7 +1182,8 @@ public class Roster
                         }
                         if (query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) {
                             String node=query.getAttribute("node");
-                            if (node==Version.url+"#"+Version.version) {
+                            if (node.equals(Version.url+"#"+Version.version)) {
+                                System.out.println("evtity");
                                 theStream.send(new EntityCaps(data));
                                 return JabberBlockListener.BLOCK_PROCESSED;                                
                             }
