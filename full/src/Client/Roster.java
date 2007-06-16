@@ -1183,7 +1183,7 @@ public class Roster
                         if (query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) {
                             String node=query.getAttribute("node");
                             if (node.equals(Version.url+"#"+Version.version)) {
-                                System.out.println("evtity");
+                                //System.out.println("evtity");
                                 theStream.send(new EntityCaps(data));
                                 return JabberBlockListener.BLOCK_PROCESSED;                                
                             }
@@ -1353,7 +1353,7 @@ public class Roster
                     if (groupchat) compose=false;   //drop composing events in muc;
                     if (compose) c.acceptComposing=true ; 
                     if (body!=null) compose=false;
-                    c.setIncoming(compose?1:0);
+                    c.setComposing(compose);
                     if (compose) playNotify(888);
                 }
                 redraw();
@@ -1531,9 +1531,10 @@ public class Roster
                             c.setIncoming(2);
                             lastAppearedContact=c;
                           }
-                    if (ti==Presence.PRESENCE_OFFLINE) 
+                    if (ti==Presence.PRESENCE_OFFLINE)  {
                         c.setIncoming(0);
-
+                        c.setComposing(false);
+                    }
                     if (ti>=0) {
                         if (ti!=11 && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);

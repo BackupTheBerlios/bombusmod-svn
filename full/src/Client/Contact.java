@@ -88,10 +88,10 @@ public class Contact extends IconTextElement{
     public String presence;
     
     public boolean acceptComposing;
+    public boolean showComposing;
     
     public int incomingState=0;
     
-    public final static int INC_COMPOSING=1;
     public final static int INC_APPEARING=2;
     public final static int INC_VIEWING=3;
     
@@ -189,6 +189,7 @@ public class Contact extends IconTextElement{
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         }
+        if (showComposing) return RosterIcons.ICON_COMPOSING_INDEX;
         if (incomingState>0) return incomingState;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
@@ -226,15 +227,14 @@ public class Contact extends IconTextElement{
     public void setIncoming (int state) {
         int i=0;
         switch (state){
-            case INC_COMPOSING:
-                i=RosterIcons.ICON_COMPOSING_INDEX;
-                break;
             case INC_APPEARING:
                 i=RosterIcons.ICON_APPEARING_INDEX;
                 break;
             case INC_VIEWING:
                 i=RosterIcons.ICON_VIEWING_INDEX;
                 break;
+            default:
+                i=0;
         }
         incomingState=i;
     }
@@ -462,13 +462,16 @@ public class Contact extends IconTextElement{
     public void setPing() {
         this.ping = Time.localTime();
     }
+    
+    public void setComposing (boolean state) {
+        showComposing=state;
+    }
 
     public String getPing() {
-        if (ping==-1)
-            return "";
+        if (ping==-1) return "";
         
-        String timePing=Long.toString((Time.localTime()-ping)/100);
-        int dotpos=timePing.length()-1;
+        String timePing=Long.toString((Time.localTime()-ping)/10);
+        int dotpos=timePing.length()-2;
         
         StringBuffer s=new StringBuffer();
         
