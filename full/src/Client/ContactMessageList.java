@@ -525,11 +525,14 @@ public class ContactMessageList extends MessageList
 //#         try {
 //#                 int comp=0; // composing event off
 //#                 Roster r=StaticData.getInstance().roster;
+//#                 String id=Time.utcLocalTime();
 //#                 if (text!=null) {
 //#                     String from=StaticData.getInstance().account.toString();
 //#                     
 //#                     if (contact.origin!=Contact.ORIGIN_GROUPCHAT) {
-//#                         contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text));
+//#                         Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
+//#                         msg.id=id;
+//#                         contact.addMessage(msg);
 //#                         comp=1; // composing event in message
 //#                     }
 //# 
@@ -539,7 +542,7 @@ public class ContactMessageList extends MessageList
 //# 
 //#                 try {
 //#                     if (text!=null || comp>0)
-//#                     r.sendMessage(contact, text, null, comp);
+//#                     r.sendMessage(contact, id, text, null, comp);
 //#                 } catch (Exception e) { }
 //#         } catch (Exception e) { }
 //#     } 
