@@ -53,7 +53,9 @@ public class ExtendedStatusList {
 	    while (re.hasNextElement() ){
 		indexes.addElement(new Integer(re.nextRecordId() ));
 	    }
-	} catch (Exception e) { e.printStackTrace();}
+	} catch (Exception e) { 
+            //e.printStackTrace();
+        }
     }
     
     public String msg(int index){
@@ -85,7 +87,9 @@ public class ExtendedStatusList {
     public void close(){
 	try {
 	    rs.closeRecordStore();
-	} catch (Exception e) { e.printStackTrace(); }
+	} catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
 	rs=null;
     }
     
@@ -100,6 +104,8 @@ public class ExtendedStatusList {
 	    RecordStore rs=RecordStore.openRecordStore("ex_status_list", true);
 	    rs.addRecord(b, 0, b.length);
 	    rs.closeRecordStore();
-	} catch (Exception e) { e.printStackTrace(); }
+	} catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
     }
 }

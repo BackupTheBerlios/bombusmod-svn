@@ -86,7 +86,9 @@ public class JabberDataBlockDispatcher extends Thread
   public void cancelBlockListener(JabberBlockListener listener) {
       synchronized (blockListeners) { 
           try { blockListeners.removeElement(listener); }
-          catch (Exception e) {e.printStackTrace(); }
+          catch (Exception e) {
+              //e.printStackTrace(); 
+          }
       }
   }
   
@@ -166,7 +168,9 @@ public class JabberDataBlockDispatcher extends Thread
               //TODO: reject iq stansas where type =="get" | "set"
           }
           
-      } catch (Exception e) {e.printStackTrace();}
+      } catch (Exception e) {
+          //e.printStackTrace();
+      }
     }
   }
 

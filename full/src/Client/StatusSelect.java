@@ -109,7 +109,9 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             Roster.autoXa=false;
             StaticData.getInstance().roster.setKeyTimer(0);
             StaticData.getInstance().roster.sendDirectPresence(status, to);
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
     }
     
     public int getItemCount(){   return statusList.size(); }

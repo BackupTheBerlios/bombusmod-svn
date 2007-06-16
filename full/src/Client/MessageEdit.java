@@ -42,6 +42,7 @@ import ui.VirtualList;
 import util.ClipBoard;
 import util.Translit;
 import util.strconv;
+import ui.Time;
 
 /**
  *
@@ -162,7 +163,7 @@ public class MessageEdit
         try {
             int freeSz=t.getMaxSize()-t.size();
             if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {}
        
         t.insert(sb.toString(), caretPos);
         sb=null;
@@ -232,6 +233,8 @@ public class MessageEdit
         Roster r=StaticData.getInstance().roster;
         int comp=0; // composing event off
         
+        String id=Time.utcLocalTime();
+        
         if (sendInTranslit==true) {
             if (body!=null)
                body=Translit.translit(body).trim();
@@ -242,6 +245,7 @@ public class MessageEdit
         if (body!=null || subj!=null ) {
             String from=StaticData.getInstance().account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+            msg.id=id;
             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
                 to.addMessage(msg);
                 comp=1; // composing event in message
@@ -254,7 +258,7 @@ public class MessageEdit
         
         try {
             if (body!=null || subj!=null || comp>0)
-                r.sendMessage(to, body, subj, comp);
+                r.sendMessage(to, id, body, subj, comp);
         } catch (Exception e) { }
         
         ((VirtualList)parentView).redraw();

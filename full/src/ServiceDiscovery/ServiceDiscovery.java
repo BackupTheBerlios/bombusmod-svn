@@ -305,7 +305,9 @@ public class ServiceDiscovery
     private void showResults(final Vector items) {
         try { 
             sort(items);
-        } catch (Exception e) { e.printStackTrace(); };
+        } catch (Exception e) { 
+            //e.printStackTrace(); 
+        };
         
         /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ {
             for (Enumeration e=cmds.elements(); e.hasMoreElements();) 

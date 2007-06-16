@@ -164,6 +164,8 @@ public class Config {
     public boolean collapsedGroups=false;
     
     public int messageLimit=300;
+    
+    public boolean eventDelivery=false;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -307,6 +309,8 @@ public class Config {
             
             lang=inputStream.readUTF();
             
+            eventDelivery=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -429,7 +433,9 @@ public class Config {
             
             outputStream.writeInt(messageLimit);
             
-            outputStream.writeUTF(lang);            
+            outputStream.writeUTF(lang);      
+            
+            outputStream.writeBoolean(eventDelivery);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

@@ -172,7 +172,8 @@ public class ConfigForm implements
         
 //#if ALT_INPUT
 //#         message.append(SR.CLASSIC_CHAT, null);
-//#endif        
+//#endif    
+            message.append(SR.MS_DELIVERY, null);
 
         boolean mv[]={
 //#ifdef SMILES
@@ -196,6 +197,7 @@ public class ConfigForm implements
 //#if ALT_INPUT
 //#             ,cf.altInput
 //#endif
+            ,cf.eventDelivery
         };
         this.mv=mv;
         
@@ -441,6 +443,8 @@ public class ConfigForm implements
 //#if ALT_INPUT
 //#         cf.altInput=mv[mvctr++];
 //#endif
+            cf.eventDelivery=mv[mvctr++];
+            
             
 	    cf.autoLogin=su[0];
 	    cf.autoJoinConferences=su[1];

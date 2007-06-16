@@ -32,6 +32,7 @@ import images.RosterIcons;
 import io.NvStorage;
 import locale.SR;
 import ui.MainBar;
+import ui.Time;
 import vcard.VCard;
 //import ui.*;
 import java.util.*;
@@ -333,12 +334,14 @@ public class ContactMessageList extends MessageList
             String from=StaticData.getInstance().account.toString();
             String body=clipboard.getClipBoard();
             String subj=null;
-
+            
+            String id=Time.utcLocalTime();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-
+            msg.id=id;
+            
             try {
                 if (body!=null)
-                    sd.roster.sendMessage(contact, body, subj, 1);
+                    sd.roster.sendMessage(contact, id, body, subj, 1);
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
             } catch (Exception e) {
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));

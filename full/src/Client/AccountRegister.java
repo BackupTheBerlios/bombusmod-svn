@@ -89,9 +89,11 @@ public class AccountRegister
     public void beginConversation(String SessionId) {
         spl.setProgress(SR.MS_REGISTERING,60);
         IqRegister iq=new IqRegister(raccount.getUserName(),raccount.getPassword(), "regac");
-        //try {
+        try {
             theStream.send(iq);
-        //} catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
     }
     public int blockArrived( JabberDataBlock data ) {
         //destroyView();
@@ -118,7 +120,7 @@ public class AccountRegister
         try {
             theStream.close();
         } catch (Exception e) { 
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         destroyView();
     }

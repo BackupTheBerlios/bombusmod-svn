@@ -122,7 +122,7 @@ public class PrivacyForm
                 form.set(2, textValue);
             }
              */
-        } catch (Exception e) {/* При �?мене на �?амого �?еб�? */ }
+        } catch (Exception e) {/* При �?мене на �?амого �?еб�? */ }
     }
     
     public void commandAction(Command c, Displayable d) {
@@ -148,7 +148,9 @@ public class PrivacyForm
                         item.order=targetList.rules.indexOf(item)*10;
                     }
                 destroyView();
-            } catch (Exception e) {e.printStackTrace();}
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
         }
     }
     

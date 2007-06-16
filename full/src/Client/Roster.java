@@ -867,7 +867,7 @@ public class Roster
      * Method to send a message to the specified recipient
      */
     
-    public void sendMessage(Contact to, final String body, final String subject , int composingState) {
+    public void sendMessage(Contact to, String id, final String body, final String subject , int composingState) {
         boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
 //#ifdef ANTISPAM
 //#         if (to instanceof MucContact && !groupchat) {
@@ -891,16 +891,31 @@ public class Roster
                 subject, 
                 groupchat 
         );
+        message.setAttribute("id", id);
         if (groupchat && body==null && subject==null) return;
+        JabberDataBlock event=new JabberDataBlock("x", null,null);
         if (composingState>0) {
-            JabberDataBlock event=new JabberDataBlock("x", null,null);
             event.setNameSpace("jabber:x:event");
             if (body==null) event.addChild(new JabberDataBlock("id",null, null));
             if (composingState==1) {
                 event.addChild("composing", null);
             }
-            message.addChild(event);
         }
+
+        if (body!=null && cf.eventDelivery) {
+            //delivery
+            if (to.deliveryType==Contact.DELIVERY_NONE) 
+                to.deliveryType=Contact.DELIVERY_HANDSHAKE;
+
+            if (to.deliveryType==Contact.DELIVERY_XEP22 || to.deliveryType==Contact.DELIVERY_HANDSHAKE)
+                event.addChild("delivered", null);
+
+            if (to.deliveryType==Contact.DELIVERY_XEP184 || to.deliveryType==Contact.DELIVERY_HANDSHAKE) {
+                message.addChild("request", null).setNameSpace(Contact.XEP184_NS);
+            }
+        }
+        
+        if (event.getChildBlocks()!=null) message.addChild(event);
         setKeyTimer(0);
         theStream.send( message );
         lastMessageTime=Time.localTime();
@@ -908,6 +923,23 @@ public class Roster
         
     }
     
+    private void sendDeliveryMessage(Contact c, String id) {
+        if (!cf.eventDelivery) return;
+        Message message=new Message(c.jid.getJid());
+        if (c.deliveryType==Contact.DELIVERY_XEP184) {
+            message.setAttribute("id", id);
+            message.addChild("received", null).setNameSpace(Contact.XEP184_NS);
+            theStream.send( message );
+        }
+        if (c.deliveryType==Contact.DELIVERY_XEP22) {
+            JabberDataBlock x=message.addChild("x", null);
+            x.setNameSpace("jabber:x:event");
+            x.addChild("id", id);
+            x.addChild("delivered", null);
+            theStream.send( message );
+        }
+    }    
+
     private Vector vCardQueue;
     public void resolveNicknames(int transportIndex){
 	vCardQueue=new Vector();
@@ -1106,7 +1138,7 @@ public class Roster
                     if (id.startsWith("_ping")) {
                         Contact c=getContact(from, true);
                         querysign=false;
-                        c.setIncoming(0);
+                        c.setIncoming(Contact.INC_NONE);
                         from=data.getAttribute("from");
                         String pong=c.getPing();
                         if (pong!="") {
@@ -1155,7 +1187,7 @@ public class Roster
                     if (ping!=null){
                         Contact c=getContact(from, true);
                         if (ping.isJabberNameSpace("http://www.xmpp.org/extensions/xep-0199.html#ns")) { //ping
-                            c.setIncoming(3);
+                            c.setIncoming(Contact.INC_VIEWING);
                             theStream.send(new IqPing(data));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
@@ -1166,17 +1198,17 @@ public class Roster
                     if (query!=null){
                         Contact c=getContact(from, true);
                         if (query.isJabberNameSpace("jabber:iq:version")) {
-                            c.setIncoming(3);
+                            c.setIncoming(Contact.INC_VIEWING);
                             theStream.send(new IqVersionReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;                            
                         }
                         if (query.isJabberNameSpace("jabber:iq:time")) {
-                            c.setIncoming(3);
+                            c.setIncoming(Contact.INC_VIEWING);
                             theStream.send(new IqTimeReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         if (query.isJabberNameSpace("jabber:iq:last")) {
-                            c.setIncoming(3);
+                            c.setIncoming(Contact.INC_VIEWING);
                             theStream.send(new IqLast(data, lastMessageTime));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
@@ -1342,24 +1374,51 @@ public class Roster
                         b=null;
                     }
                 }
-                
-                boolean compose=false;
+
                 JabberDataBlock x=message.getChildBlock("x");
-                
+
+                JabberDataBlock delivery=data.findNamespace(Contact.XEP184_NS);
+                if (delivery!=null) {
+                    c.deliveryType=Contact.DELIVERY_XEP184;
+                    if (delivery.getTagName().equals("received")) {
+                        //delivered
+                        c.markDelivered(data.getAttribute("id"));
+                    }
+                    if (delivery.getTagName().equals("request")) {
+                        sendDeliveryMessage(c, data.getAttribute("id"));
+                    }
+                }
+    
                 if (x!=null) {
+                    boolean compose=false;
                     compose=(  x.getChildBlock("composing")!=null 
                             && c.status<Presence.PRESENCE_OFFLINE); // drop composing events from offlines
-                    
-                    if (groupchat) compose=false;   //drop composing events in muc;
-                    if (compose) c.acceptComposing=true ; 
-                    if (body!=null) compose=false;
+                    if (groupchat || body!=null) {
+                        compose=false;   //if (groupchat) drop composing events in muc;
+                    }
+                    if (compose) {
+                        c.acceptComposing=true ; 
+                        playNotify(888);
+                    }
                     c.setComposing(compose);
-                    if (compose) playNotify(888);
+
+                    if (x.getChildBlock("delivered")!=null) {
+                        if (c.deliveryType==Contact.DELIVERY_HANDSHAKE) 
+                            c.deliveryType=Contact.DELIVERY_XEP22;
+                        
+                        if (c.deliveryType==Contact.DELIVERY_XEP22) if (body!=null) {
+                            //ask delivery
+                            sendDeliveryMessage(c, data.getAttribute("id"));
+                        } else {
+                            //delivered
+                            c.markDelivered(x.getChildBlockText("id"));
+                        }
+                    }
                 }
                 redraw();
 
                 if (body==null) return JabberBlockListener.BLOCK_REJECTED;
-                
+
                 Msg m=new Msg(mType, from, subj, body);
                 if (tStamp!=null) 
                     m.dateGmt=Time.dateIso8601(tStamp);
@@ -1401,7 +1460,6 @@ public class Roster
                     }
                     m.from=name;
                 }
- 
                 //if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST) {
 //#ifdef ANTISPAM
 //#                     if (cf.antispam) {
@@ -1527,12 +1585,12 @@ public class Roster
                         (ti==Presence.PRESENCE_ONLINE ||
                          ti==Presence.PRESENCE_CHAT)) {
                             if (lastAppearedContact!=null) 
-                                lastAppearedContact.setIncoming(0);
-                            c.setIncoming(2);
+                                lastAppearedContact.setIncoming(Contact.INC_NONE);
+                            c.setIncoming(Contact.INC_APPEARING);
                             lastAppearedContact=c;
                           }
                     if (ti==Presence.PRESENCE_OFFLINE)  {
-                        c.setIncoming(0);
+                        c.setIncoming(Contact.INC_NONE);
                         c.setComposing(false);
                     }
                     if (ti>=0) {
@@ -2443,7 +2501,7 @@ public class Roster
       synchronized(hContacts) {
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
           Contact c=(Contact)e.nextElement();
-          c.setIncoming(0);
+          c.setIncoming(Contact.INC_NONE);
         }
       }
     }

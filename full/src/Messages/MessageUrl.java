@@ -55,7 +55,9 @@ public class MessageUrl extends Menu{
 	String url=(String)urlList.elementAt(cursor);
 	try {
 	    Bombus.getInstance().platformRequest(url);
-	} catch (Exception e) { e.printStackTrace(); }
+	} catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
 	destroyView();
     }
 }

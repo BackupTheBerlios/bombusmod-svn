@@ -102,7 +102,7 @@ public class StringLoader {
                     key=line.substring(0, indexTab);
                     value=line.substring(indexTab+1, line.length() );
                     hash.put(key, value);
-                } catch (Exception e) { e.printStackTrace(); }
+                } catch (Exception e) { /* e.printStackTrace(); */ }
 	    }
 	    in.close();
 	} catch (Exception e)	{ /* Empty file or not found */}

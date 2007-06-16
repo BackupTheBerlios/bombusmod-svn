@@ -77,7 +77,7 @@ public class EventNotify
         release();
         
         
-        //display.flashBacklight(0x7fffffff);  //время в мс
+        //display.flashBacklight(0x7fffffff);  //пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ
 
         if (soundName!=null)
         try {
@@ -93,7 +93,7 @@ public class EventNotify
 	    try {
 		VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
 		vol.setLevel(sndVolume);
-	    } catch (Exception e) { e.printStackTrace(); }
+	    } catch (Exception e) { /* e.printStackTrace(); */}
 
 	    player.start();
         } catch (Exception e) { }

@@ -66,7 +66,9 @@ public class StatusList {
 	    createFromStream(Presence.PRESENCE_OFFLINE, SR.MS_OFFLINE, inputStream);
 	    
 	    inputStream.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
 
     }
     
@@ -89,7 +91,9 @@ public class StatusList {
                 outputStream.writeUTF(e.getMessage());
             }
             NvStorage.writeFileRecord(outputStream, "status", 0, true);            
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
     }
     
     public ExtendedStatus getStatus(final int status) {

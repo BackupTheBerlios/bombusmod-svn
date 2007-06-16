@@ -59,7 +59,9 @@ public class MessageArchive {
 		indexes.addElement(new Integer(re.nextRecordId() ));
 	    }
 	    
-	} catch (Exception e) { e.printStackTrace();}
+	} catch (Exception e) { 
+            //e.printStackTrace();
+        }
     }
 
     public int size(){
@@ -116,7 +118,9 @@ public class MessageArchive {
     public void close(){
 	try {
 	    rs.closeRecordStore();
-	} catch (Exception e) { e.printStackTrace(); }
+	} catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
 	rs=null;
     }
     
@@ -139,6 +143,8 @@ public class MessageArchive {
 	    rs.addRecord(b, 0, b.length);
 	    rs.closeRecordStore();
 
-	} catch (Exception e) { e.printStackTrace(); }
+	} catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
     }
 }

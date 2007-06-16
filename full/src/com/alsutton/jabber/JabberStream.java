@@ -408,7 +408,7 @@ public class JabberStream implements XMLEventListener, Runnable {
                  sendKeepAlive(type);
             } catch (Exception e) { 
                 dispatcher.broadcastTerminatedConnection(e);
-                e.printStackTrace(); 
+                //e.printStackTrace(); 
             }
          }
 	

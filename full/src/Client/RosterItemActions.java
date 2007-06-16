@@ -53,6 +53,7 @@ import ui.ColorScheme;
 import ui.IconTextElement;
 import ui.Menu;
 import ui.MenuItem;
+import ui.Time;
 import ui.YesNoAlert;
 import util.ClipBoard;
 import vcard.VCard;
@@ -255,7 +256,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             else try {
                 this.display=display; // to invoke dialog Y/N
                 doAction(action);
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) { 
+                //e.printStackTrace();
+            }
         }
      }
      
@@ -268,7 +271,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             int index=action=me.index;
             doAction(index);
             //destroyView();
-        } catch (Exception e) { e.printStackTrace();  }
+        } catch (Exception e) { 
+            //e.printStackTrace();  
+        }
     }
 
     private void doAction(final int index) {
@@ -397,15 +402,18 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                     String from=StaticData.getInstance().account.toString();
 //#                     String body=ColorScheme.getSkin();
 //#                     String subj="";
-//# 
+//#                     
+//#                     String id=Time.utcLocalTime();
+//#                     
 //#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-//#             
+//#                     msg.id=id;
+//#                     
 //#                     try {
-//#                         roster.sendMessage(c, body, subj, 0);
+//#                         roster.sendMessage(c, id, body, subj, 0);
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
 //#                     } catch (Exception e) {
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
-//#                         e.printStackTrace();
+//#                         //e.printStackTrace();
 //#                     }
 //#                     break;
 //#                 }
@@ -418,15 +426,17 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     
                     String from=StaticData.getInstance().account.toString();
                     String subj="";
-
+                    
+                    String id=Time.utcLocalTime();
+                    
                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-            
+                    msg.id=id;
                     try {
-                        roster.sendMessage(c, body, subj, 0);
+                        roster.sendMessage(c, id, body, subj, 0);
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
                     } catch (Exception e) {
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }
                     break;
                 }

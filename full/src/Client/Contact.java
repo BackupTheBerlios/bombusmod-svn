@@ -47,6 +47,7 @@ import java.util.*;
 import ui.IconTextElement;
 import ui.ImageList;
 import com.alsutton.jabber.datablocks.Presence;
+import com.alsutton.jabber.JabberDataBlock;
 
 /**
  * Contact
@@ -88,12 +89,21 @@ public class Contact extends IconTextElement{
     public String presence;
     
     public boolean acceptComposing;
-    public boolean showComposing;
+    public boolean showComposing=false;
+    
+    public int deliveryType;
     
     public int incomingState=0;
     
-    public final static int INC_APPEARING=2;
-    public final static int INC_VIEWING=3;
+    public final static int INC_NONE=0;
+    public final static int INC_APPEARING=1;
+    public final static int INC_VIEWING=2;
+    
+    public final static String XEP184_NS="http://www.xmpp.org/extensions/xep-0184.html#ns";
+    public final static int DELIVERY_NONE=0;
+    public final static int DELIVERY_HANDSHAKE=1;
+    public final static int DELIVERY_XEP184=2;
+    public final static int DELIVERY_XEP22=3;
     
     //public boolean isSelected;
     
@@ -183,13 +193,14 @@ public class Contact extends IconTextElement{
 //#         if (!tempMsgs.isEmpty())
 //#             return RosterIcons.ICON_AUTHRQ_INDEX;
 //#endif
+        if (showComposing==true) return RosterIcons.ICON_COMPOSING_INDEX;
+        
         if (getNewMsgsCount()>0)  {
             switch (unreadType) {
                 case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         }
-        if (showComposing) return RosterIcons.ICON_COMPOSING_INDEX;
         if (incomingState>0) return incomingState;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
@@ -233,8 +244,6 @@ public class Contact extends IconTextElement{
             case INC_VIEWING:
                 i=RosterIcons.ICON_VIEWING_INDEX;
                 break;
-            default:
-                i=0;
         }
         incomingState=i;
     }
@@ -482,5 +491,14 @@ public class Contact extends IconTextElement{
 
         this.ping=-1;
         return String.valueOf(s);
+    }
+    
+    void markDelivered(String id) {
+        if (id==null) return;
+        for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
+            Msg m=(Msg)e.nextElement();
+            if (m.id!=null)
+                if (m.id.equals(id)) m.delivered=true;
+        }
     }
 }

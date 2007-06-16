@@ -46,7 +46,8 @@ public class EntityCaps extends Iq
         "jabber:x:data", 
         "http://jabber.org/protocol/disco#info",
         "http://jabber.org/protocol/muc",
-        "http://www.xmpp.org/extensions/xep-0199.html#ns"
+        "http://www.xmpp.org/extensions/xep-0199.html#ns",
+        "http://www.xmpp.org/extensions/xep-0184.html#ns"
     };
     
     public EntityCaps(JabberDataBlock request) {

@@ -160,7 +160,9 @@ public class PrivacySelect
                 
                 return JabberBlockListener.NO_MORE_BLOCKS;
                 }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { 
+            //e.printStackTrace(); 
+        }
         return JabberBlockListener.BLOCK_REJECTED;
     }
 

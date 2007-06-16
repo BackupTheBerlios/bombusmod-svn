@@ -107,22 +107,21 @@ public class Msg //implements MessageList.Element
     
     public int messageType;
     
-    /** Отправитель �?ообщени�? */
     public String from;
     
-    /** Тема �?ообщени�? */
     public String subject;
 
-    /** Тело �?ообщени�? */
     private String body;
 
-    /** Дата �?ообщени�? */
     public long dateGmt;
     
     public boolean unread = false;
     
     public boolean itemCollapsed;
     public int  itemHeight=-1;
+    
+    public boolean delivered;
+    public String id;
     
     public void serialize(DataOutputStream os) throws IOException {
 	os.writeUTF(from);

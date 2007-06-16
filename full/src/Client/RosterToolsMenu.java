@@ -70,7 +70,7 @@ public class RosterToolsMenu
 //#endif
         addItem(SR.MS_SOUNDS_OPTIONS, 7, 0x0f17);
 //#ifdef POPUPS
-//#         addItem(SR.MS_STATS, 8, 0x0f16);
+//#         addItem(SR.MS_STATS, 8, 0x0f30);
 //#endif
         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
         
