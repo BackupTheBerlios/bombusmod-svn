@@ -39,7 +39,7 @@ public class LastVersion implements CommandListener
     
     private Form form;
     
-    String url = Version.url+"/news/lastest.php";
+    String url = Version.getUrl()+"/news/lastest.php";
     protected Command cmdGo = new Command(SR.MS_GOTO_URL, Command.SCREEN, 1);
     
     public LastVersion(Display display) {
@@ -96,7 +96,7 @@ public class LastVersion implements CommandListener
       if (result.length()>0) {
           result=strconv.convCp1251ToUnicode(result);
             //int verStart=result.indexOf("start search");
-            //int verEnd=result.indexOf("enâ search");
+            //int verEnd=result.indexOf("enï¿½ search");
             //if (verStart>0 && verEnd>0 ) {
             //    result=result.substring(verStart+16,verEnd-1);
             //}

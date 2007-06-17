@@ -327,6 +327,28 @@ public class Utf8IOStream implements Runnable{
     }
     
 //#else
+//#     
+//#      public String getStreamStats() {
+//#          StringBuffer stats=new StringBuffer();
+//#          try {
+//#              int sent=this.bytesSent;
+//#              int recv=this.bytesRecv;
+//#              stats.append("\nStream: in="); stats.append(recv);
+//#              stats.append(" out="); stats.append(sent);
+//#          } catch (Exception e) {
+//#              stats=null;
+//#              return "";
+//#          }
+//#          return stats.toString();
+//#      }
+//#      
+//#      public long getBytes() {
+//#          try {
+//#              return this.bytesSent+this.bytesRecv;
+//#          } catch (Exception e) { }
+//#          return 0;
+//#      }
+//#      
 //#     public int getBytesR() {
 //#         return this.bytesRecv;
 //#     }

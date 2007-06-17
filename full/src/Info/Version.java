@@ -39,5 +39,9 @@ public class Version {
     public final static String url="http://BombusMod.net.ru";
     
     public static String getVersionLang() { return version+" ("+SR.MS_IFACELANG+")"; }
+    
+    public static String getVersionNumber() { return version; }
+    
+    public static String getUrl() { return url; }
 
 }

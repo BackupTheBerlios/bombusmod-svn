@@ -304,6 +304,7 @@ public class Roster
             theStream= a.openJabberStream();
             setProgress(SR.MS_OPENING_STREAM, 40);
             theStream.setJabberListener( this );
+            theStream.addBlockListener(new EntityCaps());
         } catch( Exception e ) {
             setProgress(SR.MS_FAILED, 0);
             reconnect=false;
@@ -708,12 +709,6 @@ public class Roster
         myMessage=strconv.toExtendedString(myMessage);
         
         Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
-        
-        //EntityCaps
-        JabberDataBlock cc=presence.addChild("c", null);
-        cc.setAttribute("xmlns", "http://jabber.org/protocol/caps");
-        cc.setAttribute("node", Version.url);
-        cc.setAttribute("ver", Version.version);
 		
         if (isLoggedIn()) {
             if (status==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
@@ -752,28 +747,31 @@ public class Roster
         reEnumRoster();
     }
 
-    public void sendDirectPresence(int status, Contact to) {
+    public void sendDirectPresence(int status, String to, JabberDataBlock x) {
         if (to==null) { 
             sendPresence(status, null);
             return;
         }
-        if (to.jid.isTransport()) blockNotify(-111,10000);
+
         ExtendedStatus es= StatusList.getInstance().getStatus(status);
         myMessage=es.getMessage();
 
         myMessage=strconv.toExtendedString(myMessage);
 
         Presence presence = new Presence(status, es.getPriority(), myMessage);
-        //EntityCaps
-        JabberDataBlock cc=presence.addChild("c", null);
-        cc.setAttribute("xmlns", "http://jabber.org/protocol/caps");
-        cc.setAttribute("node", Version.url);
-        cc.setAttribute("ver", Version.version);
         
-        presence.setTo(to.getJid());
+        presence.setTo(to);
+        
+        if (x!=null) presence.addChild(x);
+
         if (theStream!=null) {
             theStream.send( presence );
         }
+    }
+    
+    public void sendDirectPresence(int status, Contact to, JabberDataBlock x) {
+        sendDirectPresence(status, to.getJid(), x);
+        if (to.jid.isTransport()) blockNotify(-111,10000);
         if (to instanceof MucContact) ((MucContact)to).commonPresence=false;
     }
 	
@@ -1212,14 +1210,16 @@ public class Roster
                             theStream.send(new IqLast(data, lastMessageTime));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
+                        /*
                         if (query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) {
                             String node=query.getAttribute("node");
-                            if (node.equals(Version.url+"#"+Version.version)) {
+                            if (node.equals(Version.getUrl()+"#"+Version.getVersionNumber())) {
                                 //System.out.println("evtity");
-                                theStream.send(new EntityCaps(data));
+                                theStream.send(new EntityCaps_(data));
                                 return JabberBlockListener.BLOCK_PROCESSED;                                
                             }
                         }
+                        */
                     }
                 } else if (type.equals("set")) {
                     //todo: verify xmlns==jabber:iq:roster

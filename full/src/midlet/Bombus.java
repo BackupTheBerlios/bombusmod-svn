@@ -116,7 +116,7 @@ public class Bombus extends MIDlet implements Runnable{
                 programIcon=Image.createImage("/_icon.png");
             }
         } catch (Exception e) { }
-        s.setProgress(Version.version,10);
+        s.setProgress(Version.getVersionNumber(),10);
 
 	Config cf=Config.getInstance();
         s.setProgress(12);

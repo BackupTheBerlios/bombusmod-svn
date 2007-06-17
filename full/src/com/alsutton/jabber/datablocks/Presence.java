@@ -27,7 +27,7 @@
 package com.alsutton.jabber.datablocks;
 import com.alsutton.jabber.*;
 import images.RosterIcons;
-
+import Client.EntityCaps;
 import java.util.*;
 import locale.SR;
 
@@ -74,6 +74,7 @@ public class Presence extends JabberDataBlock
     if (priority!=0) addChild("priority",String.valueOf(priority));
     if (message!=null) 
         if (message.length()>0) addChild("status",message);
+    if (status!=PRESENCE_OFFLINE) addChild(EntityCaps.presenceEntityCaps());
   }
 
   private StringBuffer text;

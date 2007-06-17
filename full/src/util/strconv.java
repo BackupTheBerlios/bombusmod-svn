@@ -210,7 +210,7 @@ public class strconv {
         if (src==null)
             return null;
         
-        String BOMBUSMOD_REP=Version.url;
+        String BOMBUSMOD_REP=Version.getUrl();
         if (src.indexOf(BOMBUSMOD_REP)>-1)
             return stringReplace(src,BOMBUSMOD_REP,"Bombusmod");
         
@@ -237,6 +237,10 @@ public class strconv {
         String GAIM_REP="http://gaim.sf.net/caps";
         if (src.indexOf(GAIM_REP)>-1)
             return stringReplace(src,GAIM_REP,"Gaim");
+        
+        String BOMBUS_REP="http://bombus-im.org/java";
+        if (src.indexOf(BOMBUS_REP)>-1)
+            return stringReplace(src,BOMBUS_REP,"Bombus");  
         
         return src;
     }

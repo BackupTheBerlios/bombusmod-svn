@@ -33,6 +33,7 @@ import ui.*;
 import javax.microedition.lcdui.*;
 import ui.controls.NumberField;
 import ui.controls.TextFieldCombo;
+import com.alsutton.jabber.datablocks.Presence;
 
 //import History.HistoryList;
 
@@ -172,6 +173,7 @@ public class ConferenceForm implements CommandListener{
         
         display.setCurrent(formJoin);
     }
+     
     public void commandAction(Command c, Displayable d){
         if (c==cmdCancel) { destroyView(); }
         
@@ -215,6 +217,7 @@ public class ConferenceForm implements CommandListener{
             gchat=null;
         }
     }
+    
     public static void join(String name, String pass, int maxStanzas) {
         StaticData sd=StaticData.getInstance();
         
@@ -236,7 +239,8 @@ public class ConferenceForm implements CommandListener{
         } catch (Exception e) {};
         
         if (sndprs) {
-            sd.roster.sendPresence(name, null, x, false);
+            //sd.roster.sendPresence(name, null, x, false);
+            sd.roster.sendDirectPresence(sd.roster.myStatus, name, x);
             sndprs=false;
         }
         

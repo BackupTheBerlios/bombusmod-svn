@@ -373,11 +373,11 @@ public class JabberStream implements XMLEventListener, Runnable {
     public void setZlibCompression() {
         iostream.setStreamCompression();
     }
-
-    public String getStreamStats() {
-        return iostream.getStreamStats();
-    }
 //#endif
+    
+     public String getStreamStats() {
+         return iostream.getStreamStats();
+     }
     
     public int getBytesIn() {
         return iostream.getBytesR();
