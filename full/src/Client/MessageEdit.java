@@ -232,7 +232,7 @@ public class MessageEdit
     public void run(){
         Roster r=StaticData.getInstance().roster;
         int comp=0; // composing event off
-        
+
         String id=Time.utcLocalTime();
         
         if (sendInTranslit==true) {
@@ -241,11 +241,13 @@ public class MessageEdit
             if (subj!=null )
                subj=Translit.translit(subj).trim();
         }
-        
+
         if (body!=null || subj!=null ) {
             String from=StaticData.getInstance().account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
             msg.id=id;
+            // не добавляем в групчат свои сообщения
+            // не шлём composing
             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
                 to.addMessage(msg);
                 comp=1; // composing event in message
@@ -253,14 +255,14 @@ public class MessageEdit
         } else if (to.acceptComposing) {
             comp=(composing)? 1:2;
         }
-        
         if (!cf.eventComposing) comp=0;
         
         try {
-            if (body!=null || subj!=null || comp>0)
+            if (body!=null || subj!=null || comp>0) {
                 r.sendMessage(to, id, body, subj, comp);
-        } catch (Exception e) { }
-        
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+
         ((VirtualList)parentView).redraw();
         ((VirtualList)parentView).repaint();
     }

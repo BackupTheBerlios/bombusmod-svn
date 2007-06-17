@@ -182,6 +182,7 @@ public class Roster
 	setProgress(24);
                 
         this.display=display;
+        VirtualList.canBack=false;
         
         cf=Config.getInstance();
         
@@ -770,7 +771,7 @@ public class Roster
     }
     
     public void sendDirectPresence(int status, Contact to, JabberDataBlock x) {
-        sendDirectPresence(status, to.getJid(), x);
+        sendDirectPresence(status, (to==null)? null: to.getJid(), x);
         if (to.jid.isTransport()) blockNotify(-111,10000);
         if (to instanceof MucContact) ((MucContact)to).commonPresence=false;
     }
@@ -866,59 +867,66 @@ public class Roster
      */
     
     public void sendMessage(Contact to, String id, final String body, final String subject , int composingState) {
-        boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
+        try {
+            boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
 //#ifdef ANTISPAM
-//#         if (to instanceof MucContact && !groupchat) {
-//#             MucContact mc=(MucContact) to;
-//#             if (mc.getPrivateState()!=MucContact.PRIVATE_DECLINE)
-//#                 mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
-//#         }
+//#             if (to instanceof MucContact && !groupchat) {
+//#                 MucContact mc=(MucContact) to;
+//#                 if (mc.getPrivateState()!=MucContact.PRIVATE_DECLINE)
+//#                     mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
+//#             }
 //#endif
-        if (autoAway) {
-                ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
-                String ms=es.getMessage();
-                sendPresence(oldStatus, ms);
-                autoAway=false;
-                autoXa=false;
-                myStatus=oldStatus;
-        }
-
-        Message message = new Message( 
-                to.getJid(), 
-                body, 
-                subject, 
-                groupchat 
-        );
-        message.setAttribute("id", id);
-        if (groupchat && body==null && subject==null) return;
-        JabberDataBlock event=new JabberDataBlock("x", null,null);
-        if (composingState>0) {
-            event.setNameSpace("jabber:x:event");
-            if (body==null) event.addChild(new JabberDataBlock("id",null, null));
-            if (composingState==1) {
-                event.addChild("composing", null);
+            if (autoAway) {
+                    ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
+                    String ms=es.getMessage();
+                    sendPresence(oldStatus, ms);
+                    autoAway=false;
+                    autoXa=false;
+                    myStatus=oldStatus;
             }
-        }
 
-        if (!groupchat && body!=null && cf.eventDelivery) {
-                //delivery
-                if (to.deliveryType==Contact.DELIVERY_NONE)
-                    to.deliveryType=Contact.DELIVERY_HANDSHAKE;
-                
-                if (to.deliveryType==Contact.DELIVERY_XEP22 || to.deliveryType==Contact.DELIVERY_HANDSHAKE)
-                    event.addChild("delivered", null);
-                
-                if (to.deliveryType==Contact.DELIVERY_XEP184 || to.deliveryType==Contact.DELIVERY_HANDSHAKE) {
-                    message.addChild("request", null).setNameSpace(Contact.XEP184_NS);
+            Message message = new Message( 
+                    to.getJid(), 
+                    body, 
+                    subject, 
+                    groupchat 
+            );
+            message.setAttribute("id", id);
+            if (groupchat && body==null && subject==null) return;
+
+            JabberDataBlock event=new JabberDataBlock("x", null,null);
+
+            if (composingState>0) {
+                event.setNameSpace("jabber:x:event");
+                if (body==null) event.addChild(new JabberDataBlock("id",null, null));
+                if (composingState==1) {
+                    event.addChild("composing", null);
+                }
             }
-        }
-        
-        if (event.getChildBlocks()!=null) message.addChild(event);
-        setKeyTimer(0);
-        theStream.send( message );
-        lastMessageTime=Time.localTime();
-        playNotify(999);
-        
+
+            if (!groupchat) {
+                if (body!=null) {
+                    if (cf.eventDelivery) {
+                        //delivery
+                        if (to.deliveryType==Contact.DELIVERY_NONE)
+                            to.deliveryType=Contact.DELIVERY_HANDSHAKE;
+
+                        if (to.deliveryType==Contact.DELIVERY_XEP22 || to.deliveryType==Contact.DELIVERY_HANDSHAKE)
+                            event.addChild("delivered", null);
+
+                        if (to.deliveryType==Contact.DELIVERY_XEP184 || to.deliveryType==Contact.DELIVERY_HANDSHAKE) {
+                            message.addChild("request", null).setNameSpace(Contact.XEP184_NS);
+                        }
+                    }
+                }
+            }
+
+            if (event.getChildBlocks()!=null) message.addChild(event);
+            setKeyTimer(0);
+            theStream.send( message );
+            lastMessageTime=Time.localTime();
+            playNotify(999);
+        } catch (Exception e) { e.printStackTrace(); }
     }
     
     private void sendDeliveryMessage(Contact c, String id) {
@@ -1374,6 +1382,8 @@ public class Roster
                         b=null;
                     }
                 }
+                
+                boolean compose=false;
 
                 JabberDataBlock x=message.getChildBlock("x");
 
@@ -1390,14 +1400,13 @@ public class Roster
                 }
     
                 if (x!=null) {
-                    boolean compose=false;
                     compose=(  x.getChildBlock("composing")!=null 
                             && c.status<Presence.PRESENCE_OFFLINE); // drop composing events from offlines
-                    if (groupchat || body!=null) {
-                        compose=false;   //if (groupchat) drop composing events in muc;
-                    }
+                    
+                    if (groupchat) compose=false;   //drop composing events in muc;
+                    if (compose) c.acceptComposing=true ; 
+                    if (body!=null) compose=false;
                     if (compose) {
-                        c.acceptComposing=true ; 
                         playNotify(888);
                     }
                     c.setComposing(compose);
@@ -1937,7 +1946,6 @@ public class Roster
         }
 //#ifdef NEW_MENU
 //#         if (keyCode==cf.SOFT_LEFT) {
-//#             //setWobbler("left");
 //#             new RosterMenu(display, getFocusedObject());
 //#             return;
 //#         }
