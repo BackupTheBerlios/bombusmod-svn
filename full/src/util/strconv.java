@@ -311,7 +311,35 @@ public class strconv {
         return suffix.toString();
     }
     
-/*   
+/* 
+    
+    public final String URLEncode(String message)
+    {
+        String s1 = "";
+        for(int j = 0; j < message.length(); j++)
+        {
+            int i;
+            if((i = message.charAt(j)) > '\177' || i < 48)
+            {
+                if(message.charAt(j) == ' ')
+                {
+                    s1 = s1 + '+';
+                    continue;
+                }
+                if(i > 1000)
+                    i -= 848;
+                String s2;
+                if((s2 = Integer.toString(i, 16)).length() == 1)
+                    s2 = '0' + s2;
+                s1 = s1 + '%' + s2.toUpperCase();
+            } else
+            {
+                s1 = s1 + message.charAt(j);
+            }
+        }
+        return s1;
+    }
+ *  
     public static String URLEncode(String url)
     {
         StringBuffer buffer = new StringBuffer();

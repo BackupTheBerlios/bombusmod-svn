@@ -182,7 +182,7 @@ public class Roster
 	setProgress(24);
                 
         this.display=display;
-        VirtualList.canBack=false;
+        //VirtualList.canBack=false;
         
         cf=Config.getInstance();
         

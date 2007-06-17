@@ -1,11 +1,4 @@
-<<<<<<< .mine
 en	null	English
 ru	/lang/ru.txt	Russian
 uk	/lang/uk.txt	Ukranian
 pl	/lang/pl.txt	Polish
-=======
-en	null	English
-ru	/lang/ru.txt	Russian
-uk	/lang/uk.txt	Ukranian
-pl	/lang/pl.txt	Polish
->>>>>>> .theirs

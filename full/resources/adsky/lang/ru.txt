@@ -113,7 +113,7 @@ Logon	Подключить
 Logoff	Отключить
 Login in progress	Проверка пароля
 at Host	Сервер
-join conferences	автовход в конференцию
+join conferences	автовход в конференции
 Status	Статус
 Smiles	Вкл/выкл смайлики
 Contact >	Контакт >

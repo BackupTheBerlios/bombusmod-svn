@@ -240,7 +240,9 @@ public class ConferenceForm implements CommandListener{
         
         if (sndprs) {
             //sd.roster.sendPresence(name, null, x, false);
-            sd.roster.sendDirectPresence(sd.roster.myStatus, name, x);
+            int status=StaticData.getInstance().roster.myStatus;
+            if (status==Presence.PRESENCE_INVISIBLE) status=Presence.PRESENCE_ONLINE;
+            sd.roster.sendDirectPresence(status, name, x);
             sndprs=false;
         }
         
