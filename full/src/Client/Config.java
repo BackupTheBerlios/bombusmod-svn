@@ -166,6 +166,8 @@ public class Config {
     public int messageLimit=300;
     
     public boolean eventDelivery=false;
+    
+    public boolean transliterateFilenames=false;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -311,6 +313,8 @@ public class Config {
             
             eventDelivery=inputStream.readBoolean();
             
+            transliterateFilenames=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -436,6 +440,8 @@ public class Config {
             outputStream.writeUTF(lang);      
             
             outputStream.writeBoolean(eventDelivery);
+            
+            outputStream.writeBoolean(transliterateFilenames);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

@@ -72,9 +72,6 @@ public class ConfigForm implements
     NumberField fieldLoc;
     NumberField fieldGmt;
     
-    ChoiceGroup history;
-    TextField historyFolder;
-    
     ChoiceGroup awayStatus;
 
     NumberField fieldAwatDelay;
@@ -83,10 +80,6 @@ public class ConfigForm implements
 //#     ChoiceGroup settings;
 //#endif
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
-    
-//#if FILE_IO
-    Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,11);
-//#endif
     
 //#ifdef COLORS
 //#     private ColorScheme cs=ColorScheme.getInstance();
@@ -107,20 +100,11 @@ public class ConfigForm implements
     boolean mv[];
     boolean ap[];
     boolean su[];
-    boolean his[];
     boolean aa[];
     boolean lc[];
     boolean se[];
     Vector files[];
     Vector langs[];
-    
-//#if FILE_IO
-    private int HISTORY=0;
-//#ifdef COLORS
-//#     private int COLORSHEME=1;
-//#endif
-    private int returnVal=0;
-//#endif
     
     /** Creates a new instance of ConfigForm */
     public ConfigForm(Display display) {
@@ -158,7 +142,6 @@ public class ConfigForm implements
 //#ifdef SMILES
 //#         message.append(SR.MS_SMILES, null);
 //#endif
-        message.append(SR.MS_STORE_PRESENCE,null);        
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
         message.append("AutoScroll", null);
@@ -167,10 +150,6 @@ public class ConfigForm implements
 //#endif
 //#ifdef POPUPS
 //#         message.append("PopUps", null);
-//#endif
-        
-//#if LAST_MESSAGES
-//#         message.append("Last messages", null);
 //#endif
         
 //#if ALT_INPUT
@@ -182,7 +161,6 @@ public class ConfigForm implements
 //#ifdef SMILES
 //#             cf.smiles,
 //#endif
-            cf.storeConfPresence,
             cf.eventComposing,
             cf.capsState,
             cf.autoScroll
@@ -191,10 +169,6 @@ public class ConfigForm implements
 //#endif
 //#ifdef POPUPS
 //#             ,cf.popUps
-//#endif
-                    
-//#if LAST_MESSAGES
-//#             ,cf.lastMessages
 //#endif
                     
 //#if ALT_INPUT
@@ -312,34 +286,6 @@ public class ConfigForm implements
         f.append(fieldLoc);
         
         f.append(lang);
-        
-//#if FILE_IO
-        history=new ChoiceGroup(SR.MS_HISTORY, Choice.MULTIPLE); //locale
-        history.append(SR.MS_SAVE_HISTORY, null); //locale
-        history.append(SR.MS_SAVE_PRESENCES,null);    //locale     
-        history.append(SR.MS_SAVE_HISTORY_CONF, null); //locale
-        history.append(SR.MS_SAVE_PRESENCES_CONF, null); //locale
-        history.append(SR.MS_1251_CORRECTION, null); //locale
-        
-        boolean his[]={
-            cf.msgLog,
-            cf.msgLogPresence,
-            cf.msgLogConf,
-            cf.msgLogConfPresence,
-            cf.cp1251
-        };
-        this.his=his;
-        
-        history.setSelectedFlags(his);
-        f.append(history);
-        
-        
-        historyFolder=new TextField(SR.MS_HISTORY_FOLDER, null, 200, TextField.ANY);
-        historyFolder.setString(cf.msgPath);
-        historyFolder.addCommand(cmdSetHistFolder);
-        f.append(historyFolder);
-        historyFolder.setItemCommandListener(this);
-//#endif
 
         autoAwayType=new ChoiceGroup(SR.MS_AWAY_TYPE, Choice.POPUP);
         autoAwayType.append(SR.MS_AWAY_OFF, null);
@@ -407,10 +353,7 @@ public class ConfigForm implements
             message.getSelectedFlags(mv);
             application.getSelectedFlags(ap);
 	    startup.getSelectedFlags(su);
-            
-//#if FILE_IO
-            history.getSelectedFlags(his);
-//#endif
+
             awayStatus.getSelectedFlags(aa);
 //#if SERVER_SIDE_CONFIG  
 //#             settings.getSelectedFlags(se);
@@ -428,7 +371,6 @@ public class ConfigForm implements
 //#ifdef SMILES
 //#             cf.smiles=mv[mvctr++];
 //#endif
-            cf.storeConfPresence=mv[mvctr++];
             cf.eventComposing=mv[mvctr++];
             cf.capsState=mv[mvctr++];
             cf.autoScroll=mv[mvctr++];
@@ -438,11 +380,7 @@ public class ConfigForm implements
 //#ifdef POPUPS
 //#             cf.popUps=mv[mvctr++];
 //#endif
-            
-//#if LAST_MESSAGES
-//#             cf.lastMessages=mv[mvctr++];
-//#endif
-            
+ 
 //#if ALT_INPUT
 //#         cf.altInput=mv[mvctr++];
 //#endif
@@ -489,16 +427,7 @@ public class ConfigForm implements
 	    cf.textWrap=textWrap.getSelectedIndex();
 
             cf.lang=(String) langs[0].elementAt( lang.getSelectedIndex() );
-	    
-//#if FILE_IO
-            cf.msgLog=his[0];
-            cf.msgLogPresence=his[1];
-            cf.msgLogConf=his[2];
-            cf.msgLogConfPresence=his[3];
-            cf.cp1251=his[4];
-            
-            cf.msgPath=historyFolder.getString();
-//#endif             
+          
             cf.setAutoStatusMessage=aa[0];
 
             
@@ -532,16 +461,9 @@ public class ConfigForm implements
 //#        
 //#if FILE_IO
 //#         if (command==cmdLoadSkinFS) {
-//#             returnVal=COLORSHEME;
 //#             new Browser(null, display, this, false);
 //#         }
 //#endif
-//#endif
-//#if FILE_IO
-        if (command==cmdSetHistFolder) {
-            returnVal=HISTORY;
-            new Browser(null, display, this, true);
-        }
 //#endif
     }
     
@@ -560,16 +482,7 @@ public class ConfigForm implements
 
 //#if FILE_IO
     public void BrowserFilePathNotify(String pathSelected) {
-        switch (returnVal) {
-            case 0:
-                historyFolder.setString(pathSelected);
-                break;
-//#ifdef COLORS
-//#             case 1:
-//#                 cs.loadSkin(pathSelected, 0);
-//#                 break;
-//#endif
-        }
+        cs.loadSkin(pathSelected, 0);
     }
 //#endif
 }

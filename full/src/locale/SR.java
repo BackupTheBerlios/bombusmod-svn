@@ -492,6 +492,13 @@ public class SR {
 //#endif
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
+    
+//#ifdef FILE_IO
+    public static String MS_HISTORY_OPTIONS = loadString( "History options" );
+
+    public static String MS_1251_TRANSLITERATE_FILENAMES = loadString( "Filenames transliterate" );
+//#endif
+
 
     
     private SR() { }

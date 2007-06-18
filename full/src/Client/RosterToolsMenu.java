@@ -27,6 +27,7 @@
 
 package Client;
 //#ifdef PRIVACY
+//# import History.HistoryConfig;
 //# import PrivacyLists.PrivacySelect;
 //#endif
 //#ifdef SERVICE_DISCOVERY
@@ -58,19 +59,22 @@ public class RosterToolsMenu
 //#endif
         addItem(SR.MS_MY_VCARD, 2, 0x0f16);
         addItem(SR.MS_OPTIONS, 3, 0x0f03);
+//#if (FILE_IO)
+        addItem(SR.MS_HISTORY_OPTIONS, 4, 0x0f17);
+//#endif
         
 //#if (FILE_IO)
-        addItem(SR.MS_ROOT,4, 0x0f10);
+        addItem(SR.MS_ROOT,5, 0x0f10);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-//#         addItem(SR.MS_FILE_TRANSFERS, 5, 0x0f34);
+//#         addItem(SR.MS_FILE_TRANSFERS, 6, 0x0f34);
 //#endif
 //#ifdef COLORS
-//#         addItem(SR.MS_COLOR_TUNE, 6, 0x0f25);
+//#         addItem(SR.MS_COLOR_TUNE, 7, 0x0f25);
 //#endif
-        addItem(SR.MS_SOUNDS_OPTIONS, 7, 0x0f17);
+        addItem(SR.MS_SOUNDS_OPTIONS, 8, 0x0f17);
 //#ifdef POPUPS
-//#         addItem(SR.MS_STATS, 8, 0x0f30);
+//#         addItem(SR.MS_STATS, 9, 0x0f30);
 //#endif
         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
         
@@ -109,26 +113,31 @@ public class RosterToolsMenu
             case 3:
                 new ConfigForm(display);
                 return;
+//#if FILE_IO
+            case 4: //history
+                new HistoryConfig(display);
+                return;
+//#endif 
 //#if (FILE_IO)
-            case 4:
+            case 5:
                 new io.file.browse.Browser(null, display, null, false);
                 return;
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-//#             case 5:
+//#             case 6:
 //#                 new io.file.transfer.TransferManager(display);
 //#                 return;
 //#endif
 //#ifdef COLORS
-//#             case 6:
+//#             case 7:
 //#                 new ColorForm(display);
 //#                 return;
 //#endif
-            case 7:
+            case 8:
                 new AlertCustomizeForm(display);
                 return;
 //#ifdef POPUPS
-//#             case 8: //traffic stats
+//#             case 9: //traffic stats
 //#                 StringBuffer str= new StringBuffer();
 //#                 Stats stats=Stats.getInstance();
 //#                 str.append("Traffic stats:\nAll(");
@@ -151,6 +160,7 @@ public class RosterToolsMenu
 //#                 return;
 //#endif
             case 10:
+                if (! connected) break;
                 new util.LastVersion(display);
                 return;
 /*

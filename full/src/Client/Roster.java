@@ -2617,7 +2617,7 @@ class TimerTaskAutoAway extends Thread{
                 int keyTimer=rRoster.keyTimer;
                 rRoster.setKeyTimer(keyTimer+5);
                 
-                if (cf.lightState) {
+                if (cf.lightState && !cf.allowLightControl) {
                     try {
                         DeviceControl.setLights(0, 100);
                     } catch (Exception e) {}

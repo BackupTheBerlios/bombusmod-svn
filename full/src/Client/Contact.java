@@ -41,6 +41,7 @@ import java.io.OutputStream;
 //#endif
 import ui.ColorScheme;
 import ui.Time;
+import util.Translit;
 import util.strconv;
 import vcard.VCard;
 import java.util.*;
@@ -329,7 +330,8 @@ public class Contact extends IconTextElement{
                } else {
                     bodyMessage=body.toString().getBytes();
                }
-                file=FileIO.createConnection(cf.msgPath+histRecord+".txt");
+               String filename=cf.msgPath+((cf.transliterateFilenames)?Translit.translit(histRecord):histRecord)+".txt";
+               file=FileIO.createConnection(filename);
                 try {
                     os = file.openOutputStream(0);
                     writeFile(bodyMessage);
@@ -339,11 +341,10 @@ public class Contact extends IconTextElement{
                 } catch (IOException ex) {
                     try {
                         file.close();
-                    } catch (IOException ex2) {
-                        //ex2.printStackTrace();
-                    }
+                    } catch (IOException ex2) { }
                     //ex.printStackTrace();
                 }
+                filename=null;
                 body=null;
                 bodyMessage=null;
             }
