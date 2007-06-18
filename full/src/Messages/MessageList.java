@@ -57,7 +57,7 @@ public abstract class MessageList
 //#     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
 //#endif
 //#ifdef COLORS
-//#     protected Command cmdxmlSkin = new Command(SR.MS_APPLY_COLOR_SCHEME, Command.SCREEN, 30);
+//#     protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 30);
 //#endif
     
     /** Creates a new instance of MessageList */
@@ -87,7 +87,7 @@ public abstract class MessageList
     }
     
     
-    public abstract int getItemCount(); // из protected �?делали public
+    public abstract int getItemCount(); // из protected �?делали public
 
     protected VirtualElement getItemRef(int index) {
 	if (messages.size()<getItemCount()) messages.setSize(getItemCount());

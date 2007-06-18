@@ -483,7 +483,7 @@ public class SR {
     public static String MS_STATS = loadString( "Statistics" );
     public static String MS_LAST_MESSAGES = loadString( "Last Messages" );
     public static String MS_EDIT_JOIN = loadString( "Edit/join" );
-    public static String MS_APPLY_COLOR_SCHEME = loadString( "Apply Color Scheme" );
+    public static String MS_USE_COLOR_SCHEME = loadString( "Use this Color scheme" );
     public static String MS_DELETE_ALL = loadString( "Delete All" );
     
     public final static String MS_DELIVERY = loadString( "delivery events" );

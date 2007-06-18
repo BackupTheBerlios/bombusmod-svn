@@ -1,7 +1,7 @@
 /*
  * HistoryConfig.java
  *
- * Created on 18 Èþíü 2007 ã., 15:35
+ * Created on 18 ï¿½ï¿½ï¿½ï¿½ 2007 ï¿½., 15:35
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -70,7 +70,7 @@ public class HistoryConfig implements
 //#endif
 
         boolean mv[]={
-            cf.storeConfPresence,
+            cf.storeConfPresence
 //#if LAST_MESSAGES
 //#             ,cf.lastMessages
 //#endif
