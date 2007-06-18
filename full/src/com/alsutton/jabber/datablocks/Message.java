@@ -48,7 +48,7 @@ public class Message extends JabberDataBlock
 
     setAttribute( "to", to );
     if( message != null )
-      setBodyText( message );
+        setBodyText( message );
     if (subject!=null) 
         setSubject(subject);
     setTypeAttribute((groupchat)?"groupchat":"chat");

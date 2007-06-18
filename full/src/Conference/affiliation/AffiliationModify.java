@@ -131,7 +131,7 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
 	
     public void ActionConfirmed() {
         modify();
-		destroyView();
+	destroyView();
     }
 
 }

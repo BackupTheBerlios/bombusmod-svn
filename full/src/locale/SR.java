@@ -487,7 +487,9 @@ public class SR {
     public static String MS_DELETE_ALL = loadString( "Delete All" );
     
     public final static String MS_DELIVERY = loadString( "delivery events" );
-    
+//#ifdef REQUEST_VOICE
+//#     public static String MS_REQUEST_PARTICIPANT_ROLE = "Request voice";
+//#endif
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
 

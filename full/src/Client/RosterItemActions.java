@@ -33,6 +33,9 @@ import Conference.ConferenceGroup;
 import Conference.InviteForm;
 import Conference.MucContact;
 import Conference.QueryConfigForm;
+//#ifdef REQUEST_VOICE
+//# import Conference.QueryRequestVoice;
+//#endif
 import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
@@ -174,7 +177,15 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     if (mc.roleCode==MucContact.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31);
                     else addItem(SR.MS_REVOKE_VOICE, 32);
                 }
-                
+//#ifdef REQUEST_VOICE
+//# 		if (selfContact.roleCode==MucContact.ROLE_VISITOR) {
+//#                     //System.out.println("im visitor");
+//#                     if (mc.roleCode==MucContact.ROLE_MODERATOR) {
+//#                         //System.out.println(mc.getJid()+" is a moderator");
+//#                         addItem(SR.MS_REQUEST_PARTICIPANT_ROLE,39);
+//#                     }
+//#  		}
+//#endif
                 if (myAffiliation>=MucContact.AFFILIATION_ADMIN) {
                     // admin use cases
                     
@@ -570,14 +581,18 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
                      return;
                  }
-                
+//#ifdef REQUEST_VOICE		 
+//#                 case 39: //request voice
+//#                  {
+//#                     new QueryRequestVoice(display, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
+//#                     return;
+//#                  }
+//#endif
                 case 892: //Copy JID
                 {
-                    MucContact mcJ=(MucContact) c;
-                    //System.out.println("2 muc "+mcJ.realJid);
                     try {
-                        if (mcJ.realJid!=null)
-                            clipboard.setClipBoard(mcJ.realJid);
+                        if (mc.realJid!=null)
+                            clipboard.setClipBoard(mc.realJid);
                     } catch (Exception e) {}
                     break;
                  }
