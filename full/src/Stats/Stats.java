@@ -69,7 +69,8 @@ public class Stats {
     }
     
     public long getCurrentTraffic(){
-        return sessionGPRS;
+        
+        return (sessionGPRS==0)?getGPRS():sessionGPRS;
     }
     
     public int getSessionsCount(){

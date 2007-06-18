@@ -27,11 +27,13 @@
 
 package Client;
 //#ifdef PRIVACY
-//# import History.HistoryConfig;
 //# import PrivacyLists.PrivacySelect;
 //#endif
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
+//#endif
+//#ifdef FILE_IO
+import History.HistoryConfig;
 //#endif
 import Stats.Stats;
 import javax.microedition.lcdui.Display;
@@ -60,7 +62,7 @@ public class RosterToolsMenu
         addItem(SR.MS_MY_VCARD, 2, 0x0f16);
         addItem(SR.MS_OPTIONS, 3, 0x0f03);
 //#if (FILE_IO)
-        addItem(SR.MS_HISTORY_OPTIONS, 4, 0x0f17);
+        addItem(SR.MS_HISTORY_OPTIONS, 4, 0x0f01);
 //#endif
         
 //#if (FILE_IO)

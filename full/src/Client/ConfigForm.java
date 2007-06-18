@@ -44,9 +44,9 @@ import ui.*;
 
 public class ConfigForm implements
 	CommandListener 
-	,ItemCommandListener
-//#if (FILE_IO)
-        , BrowserListener
+//#if  FILE_IO && COLORS 
+//# 	,ItemCommandListener
+//#         , BrowserListener
 //#endif
 {
     private Display display;
@@ -473,9 +473,9 @@ public class ConfigForm implements
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
     }
 
-//#if FILE_IO
-    public void BrowserFilePathNotify(String pathSelected) {
-        cs.loadSkin(pathSelected, 0);
-    }
+//#if FILE_IO && COLORS
+//#     public void BrowserFilePathNotify(String pathSelected) {
+//#         cs.loadSkin(pathSelected, 0);
+//#     }
 //#endif
 }

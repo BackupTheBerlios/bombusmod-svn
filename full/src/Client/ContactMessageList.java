@@ -597,7 +597,9 @@ public class ContactMessageList extends MessageList
 //#ifdef FILE_IO
     private void saveMessages() {
         if (cf.msgPath==null) {
-           StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
+//#ifdef POPUPS
+//#            StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
+//#endif
            return;
         }
          String fromName=StaticData.getInstance().account.getUserName();
