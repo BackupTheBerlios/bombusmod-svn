@@ -112,7 +112,7 @@ public class ConfigForm implements
         parentView=display.getCurrent();
         
         cf=Config.getInstance();
-        
+
         f=new Form(SR.MS_OPTIONS);
         roster=new ChoiceGroup(SR.MS_ROSTER_ELEMENTS, Choice.MULTIPLE);
         roster.append(SR.MS_OFFLINE_CONTACTS, null);
@@ -123,7 +123,7 @@ public class ConfigForm implements
         roster.append(SR.MS_AUTOFOCUS,null);
 	roster.append(SR.MS_AUTH_NEW,null);
         roster.append(SR.MS_SHOW_RESOURCES,null);
-        
+
         boolean ra[]={
             cf.showOfflineContacts,
             cf.selfContact,
@@ -177,7 +177,7 @@ public class ConfigForm implements
             ,cf.eventDelivery
         };
         this.mv=mv;
-        
+ 
         message.setSelectedFlags(mv);
         
         MessageLimit=new NumberField(SR.MS_MESSAGE_COLLAPSE_LIMIT, cf.messageLimit, 200, 1000);
@@ -191,9 +191,9 @@ public class ConfigForm implements
         startup.setSelectedFlags(su);
         
 //#ifdef NEW_MENU
-//#         ap=new boolean[6];
+//#         ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?7:6];
 //#else
-        ap=new boolean[5];
+        ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?6:5];
 //#endif
 	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
@@ -211,11 +211,12 @@ public class ConfigForm implements
 //#             application.append(SR.MS_NEW_MENU,null);
 //#             ap[apctr++]=cf.newMenu;
 //#endif
+
         if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE) { 
             application.append("Turn on light",null);
             ap[apctr++]=cf.lightState;
         }
-            
+   
 	if (!cf.ghostMotor) {
             application.append(SR.MS_FLASHBACKLIGHT,null);
             ap[apctr++]=cf.blFlash;
@@ -225,7 +226,7 @@ public class ConfigForm implements
             application.append(SR.MS_ENABLE_POPUP,null);
             ap[apctr++]=cf.popupFromMinimized;
         }
-            
+
         application.setSelectedFlags(ap);
         
 	//keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 10, 10000 );
@@ -304,7 +305,7 @@ public class ConfigForm implements
         this.aa=aa;
         awayStatus.setSelectedFlags(aa);
         f.append(awayStatus);
-        
+    
         f.append(autoAwayType);
         f.append(fieldAwatDelay);
 
@@ -324,7 +325,7 @@ public class ConfigForm implements
 //# 
 //# 	SkinFile.setItemCommandListener(this);
 //#endif
-        
+    
 //#if SERVER_SIDE_CONFIG  
 //#         settings=new ChoiceGroup(SR.MS_OPTIONS, Choice.MULTIPLE);
 //#         settings.append(SR.MS_SAVE_OPTIONS_TO_SERVER, null);
@@ -337,8 +338,7 @@ public class ConfigForm implements
 //#         f.append(settings);
 //#endif
         f.addCommand(cmdOk);
-        f.addCommand(cmdCancel);
-        
+        f.addCommand(cmdCancel);       
         f.setCommandListener(this);
 	//f.setItemStateListener(this);
         
@@ -403,10 +403,11 @@ public class ConfigForm implements
 //#         VirtualList.newMenu=cf.newMenu=ap[apctr++];
 //#endif
             
-            if (cf.allowLightControl) { 
+            if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE) { 
                 cf.lightState=ap[apctr++];
                 StaticData.getInstance().roster.lightState=!cf.lightState;
-                setLight(cf.lightState);                
+                if (cf.allowLightControl)
+                    StaticData.getInstance().roster.setLight(cf.lightState);                
             }
 
             if (!cf.ghostMotor) {
@@ -470,14 +471,6 @@ public class ConfigForm implements
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
-    }
-    
-    public static void setLight(boolean state) {
-        if (state) {
-            com.siemens.mp.game.Light.setLightOn();
-        } else {
-            com.siemens.mp.game.Light.setLightOff();  
-        }
     }
 
 //#if FILE_IO

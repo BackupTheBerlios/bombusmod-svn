@@ -293,7 +293,10 @@ public class Contact extends IconTextElement{
 //#         }
 //#endif        
 //#if FILE_IO
-        if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
+        if (cf.msgLog && cf.msgPath==null) {
+           StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
+        } else 
+            if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
         {
             //String histRecord=(nick==null)?getBareJid():nick;
             String fromName=StaticData.getInstance().account.getUserName();

@@ -497,6 +497,8 @@ public class SR {
     public static String MS_HISTORY_OPTIONS = loadString( "History options" );
 
     public static String MS_1251_TRANSLITERATE_FILENAMES = loadString( "Filenames transliterate" );
+
+    public static String MS_SAVE_CHAT = loadString( "Save chat" );
 //#endif
 
 

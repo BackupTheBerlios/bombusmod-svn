@@ -31,6 +31,7 @@ import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
+import Info.Phone;
 import Stats.Stats;
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
@@ -192,11 +193,9 @@ public class Roster
         lightState=cf.lightState;
         
         if (allowLightControl) {
-            if (lightState) {
-                try {
-                    Light.setLightOn();
-                } catch( Exception e ) { }
-            }
+            try {
+                setLight(lightState);
+            } catch( Exception e ) { }
         }
         
         playNotify(777);
@@ -251,6 +250,14 @@ public class Roster
 	updateMainBar();
         
         SplashScreen.getInstance().setExit(display, this);
+    }
+    
+    public static void setLight(boolean state) {
+        if (state) {
+            Light.setLightOn();
+        } else {
+            Light.setLightOff();  
+        }
     }
     
     void addOptionCommands(){
@@ -2591,10 +2598,13 @@ class TimerTaskAutoAway extends Thread{
     private Roster rRoster;
     
     private Config cf=Config.getInstance();
+    private Phone ph=Phone.getInstance();
 
     private int autoAwayDelay=cf.autoAwayDelay*60;
     private int autoXaDelay=cf.autoAwayDelay*180;
     private int autoAwayType=cf.autoAwayType;
+    
+    private short setLight=-1;
 
     private TimerTaskAutoAway() {
         start();
@@ -2617,7 +2627,9 @@ class TimerTaskAutoAway extends Thread{
                 int keyTimer=rRoster.keyTimer;
                 rRoster.setKeyTimer(keyTimer+5);
                 
-                if (cf.lightState && !cf.allowLightControl) {
+                if (setLight<0) {
+                    setLight=(ph.PhoneManufacturer()==ph.SONYE)?(short)1:0;
+                } else if (cf.lightState && setLight>0) {
                     try {
                         DeviceControl.setLights(0, 100);
                     } catch (Exception e) {}

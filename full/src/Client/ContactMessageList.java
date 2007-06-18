@@ -30,9 +30,14 @@ import Conference.MucContact;
 import Messages.MessageList;
 import images.RosterIcons;
 import io.NvStorage;
+import io.file.FileIO;
+import java.io.IOException;
+import java.io.OutputStream;
 import locale.SR;
 import ui.MainBar;
 import ui.Time;
+import util.Translit;
+import util.strconv;
 import vcard.VCard;
 //import ui.*;
 import java.util.*;
@@ -86,7 +91,13 @@ public class ContactMessageList extends MessageList
 //#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
 //#endif
     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
-     
+//#ifdef FILE_IO
+    Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 15);
+    
+    private int filePos;
+    private FileIO file;
+    private OutputStream os;
+//#endif
     private ClipBoard clipboard;
 
     StaticData sd;
@@ -102,6 +113,8 @@ public class ContactMessageList extends MessageList
 //#endif
     
     private boolean composing=true;
+
+
   
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
@@ -160,7 +173,9 @@ public class ContactMessageList extends MessageList
 //#         addCommand(cmdTemplate);
 //#endif
         addCommand(cmdCopy);
-
+//#ifdef FILE_IO
+        addCommand(cmdSaveChat);
+//#endif
         setCommandListener(this);
 
         moveCursorTo(contact.firstUnread(), true);
@@ -289,6 +304,11 @@ public class ContactMessageList extends MessageList
                 clipstr=null;
             } catch (Exception e) {/*no messages*/}
         }
+//#ifdef FILE_IO
+        if (c==cmdSaveChat) {
+            saveMessages();
+        }
+//#endif        
 //#if TEMPLATES
 //#         if (c==cmdTemplate) {
 //#             try {
@@ -573,4 +593,68 @@ public class ContactMessageList extends MessageList
 //#         } catch (Exception e) {}
 //#     }
 //#endif
+    
+//#ifdef FILE_IO
+    private void saveMessages() {
+        if (cf.msgPath==null) {
+           StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
+           return;
+        }
+         String fromName=StaticData.getInstance().account.getUserName();
+         StringBuffer body=new StringBuffer();
+         
+         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) 
+         {
+            Msg message=(Msg) messages.nextElement();
+             
+            if (message.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=contact.toString();
+
+            body.append(message.getDayTime());
+            body.append(" <");
+            body.append(fromName);
+            body.append("> ");
+            if (message.subject!=null) {
+                body.append(message.subject);
+                body.append("\r\n");
+            }
+            body.append(message.getBody());
+            body.append("\r\n");
+         }
+
+         //save
+         
+           byte[] bodyMessage;
+           String histRecord=(contact.nick==null)?contact.getBareJid():contact.nick;
+           if (cf.cp1251) {
+                bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
+           } else {
+                bodyMessage=body.toString().getBytes();
+           }
+               
+           String filename=cf.msgPath+"log_"+((cf.transliterateFilenames)?Translit.translit(histRecord):histRecord)+".txt";
+           file=FileIO.createConnection(filename);
+            try {
+                os = file.openOutputStream(0);
+                writeFile(bodyMessage);
+                os.close();
+                os.flush();
+                file.close();
+            } catch (IOException ex) {
+                try {
+                    file.close();
+                } catch (IOException ex2) { }
+            }
+            filename=null;
+            body=null;
+            bodyMessage=null;
+    }
+
+    private void writeFile(byte b[]){
+        try {
+            os.write(b);
+            filePos+=b.length;
+        } catch (IOException ex) { }
+    }
+//#endif
+
 }
