@@ -27,6 +27,7 @@
 
 package Client;
 //#if FILE_IO
+import Info.Phone;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
@@ -98,6 +99,8 @@ public class ConfigForm implements
 //#endif
 //#endif
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
+    
+    private Phone ph=Phone.getInstance();
     
     Config cf;
     boolean ra[];
@@ -234,7 +237,7 @@ public class ConfigForm implements
 //#             application.append(SR.MS_NEW_MENU,null);
 //#             ap[apctr++]=cf.newMenu;
 //#endif
-        if (cf.allowLightControl) { 
+        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE) { 
             application.append("Turn on light",null);
             ap[apctr++]=cf.lightState;
         }

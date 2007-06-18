@@ -50,6 +50,8 @@ import com.alsutton.jabber.datablocks.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.*;
+import com.nokia.mid.ui.DeviceControl;
+import com.siemens.mp.game.Light;
 
 
 import Conference.ConferenceForm;
@@ -192,7 +194,7 @@ public class Roster
         if (allowLightControl) {
             if (lightState) {
                 try {
-                    com.siemens.mp.game.Light.setLightOn();
+                    Light.setLightOn();
                 } catch( Exception e ) { }
             }
         }
@@ -2581,7 +2583,6 @@ public class Roster
                 deleteContact(cr);                
         }
     }
-
 }
 
 class TimerTaskAutoAway extends Thread{
@@ -2614,7 +2615,14 @@ class TimerTaskAutoAway extends Thread{
             
             synchronized (this) {
                 int keyTimer=rRoster.keyTimer;
-                rRoster.setKeyTimer(keyTimer+5);                        
+                rRoster.setKeyTimer(keyTimer+5);
+                
+                if (cf.lightState) {
+                    try {
+                        DeviceControl.setLights(0, 100);
+                    } catch (Exception e) {}
+                }
+                
                 if (keyTimer>=autoAwayDelay && autoAwayType==cf.AWAY_IDLE && keyTimer<=autoXaDelay && !rRoster.autoAway && !rRoster.autoXa) {
                     try {
                         rRoster.setAutoAway();
