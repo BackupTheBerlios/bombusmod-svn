@@ -241,6 +241,14 @@ public class strconv {
         String BOMBUS_REP="http://bombus-im.org/java";
         if (src.indexOf(BOMBUS_REP)>-1)
             return stringReplace(src,BOMBUS_REP,"Bombus");  
+			
+        String KOPETE_REP="http://kopete.kde.org/jabber/caps";
+        if (src.indexOf(KOPETE_REP)>-1)
+            return stringReplace(src,KOPETE_REP,"Kopete");  
+
+        String PIDGIN_REP="http://pidgin.im/caps";
+        if (src.indexOf(PIDGIN_REP)>-1)
+            return stringReplace(src,PIDGIN_REP,"Pidgin");  
         
         return src;
     }
