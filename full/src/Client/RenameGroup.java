@@ -34,7 +34,6 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.StringItem;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.TextFieldCombo;

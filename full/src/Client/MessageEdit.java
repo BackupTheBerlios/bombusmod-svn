@@ -28,7 +28,6 @@
 package Client;
 import Conference.AppendNick;
 import Info.Phone;
-import Info.Version;
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -37,11 +36,9 @@ import locale.SR;
 //#if TEMPLATES
 //# import templates.AppendTemplate;
 //#endif
-import ui.AlertBox;
 import ui.VirtualList;
 import util.ClipBoard;
 import util.Translit;
-import util.strconv;
 import ui.Time;
 
 /**

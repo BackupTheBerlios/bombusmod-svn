@@ -26,7 +26,6 @@
 package com.alsutton.jabber.datablocks;
 
 import com.alsutton.jabber.JabberDataBlock;
-import ui.Time;
 
 public class IqPing extends Iq{
 

@@ -26,7 +26,6 @@
  */
 
 package Client;
-import images.RosterIcons;
 import locale.SR;
 import midlet.Bombus;
 import ui.*;
@@ -34,7 +33,6 @@ import java.io.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.MainBar;
-import ui.controls.NumberField;
 import io.NvStorage;
 
 

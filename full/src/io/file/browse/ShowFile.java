@@ -27,12 +27,9 @@
 
 package io.file.browse;
 
-import Client.Msg;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.microedition.io.Connector;
-import javax.microedition.io.file.FileConnection;
 import javax.microedition.lcdui.*;
 import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;

@@ -27,18 +27,13 @@
 
 package Client;
 import Conference.MucContact;
+import History.HistoryWrite;
 import Messages.MessageList;
 import images.RosterIcons;
 import io.NvStorage;
-import io.file.FileIO;
-import java.io.IOException;
-import java.io.OutputStream;
 import locale.SR;
 import ui.MainBar;
 import ui.Time;
-import util.Translit;
-import util.strconv;
-import vcard.VCard;
 //import ui.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -46,10 +41,6 @@ import util.ClipBoard;
 
 //#ifdef ARCHIVE
 //# import archive.MessageArchive;
-//#endif
-
-//#ifdef SMILES
-//# import images.SmilesIcons;
 //#endif
 
 //#if TEMPLATES
@@ -93,10 +84,6 @@ public class ContactMessageList extends MessageList
     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
 //#ifdef FILE_IO
     Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 15);
-    
-    private int filePos;
-    private FileIO file;
-    private OutputStream os;
 //#endif
     private ClipBoard clipboard;
 
@@ -625,37 +612,8 @@ public class ContactMessageList extends MessageList
 
          //save
          
-           byte[] bodyMessage;
-           String histRecord=(contact.nick==null)?contact.getBareJid():contact.nick;
-           if (cf.cp1251) {
-                bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
-           } else {
-                bodyMessage=body.toString().getBytes();
-           }
-               
-           String filename=cf.msgPath+"log_"+((cf.transliterateFilenames)?Translit.translit(histRecord):histRecord)+".txt";
-           file=FileIO.createConnection(filename);
-            try {
-                os = file.openOutputStream(0);
-                writeFile(bodyMessage);
-                os.close();
-                os.flush();
-                file.close();
-            } catch (IOException ex) {
-                try {
-                    file.close();
-                } catch (IOException ex2) { }
-            }
-            filename=null;
-            body=null;
-            bodyMessage=null;
-    }
-
-    private void writeFile(byte b[]){
-        try {
-            os.write(b);
-            filePos+=b.length;
-        } catch (IOException ex) { }
+           String histRecord="log_"+((contact.nick==null)?contact.getBareJid():contact.nick);
+           new HistoryWrite(body, histRecord);
     }
 //#endif
 

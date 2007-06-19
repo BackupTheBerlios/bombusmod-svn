@@ -25,8 +25,6 @@
 
 package ui;
 
-import Client.Config;
-import Client.StaticData;
 //#if (FILE_IO)
 import io.file.FileIO;
 import io.file.browse.Browser;
@@ -34,14 +32,8 @@ import io.file.browse.BrowserListener;
 import java.io.IOException;
 import java.io.OutputStream;
 //#endif
-import java.util.Enumeration;
-import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.controls.NumberField;
-import ui.ColorSelector;
-import ui.*;
-
 
 public class ColorForm implements CommandListener
 //#if (FILE_IO)

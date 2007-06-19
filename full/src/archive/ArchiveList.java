@@ -39,11 +39,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.ComplexString;
 //#if FILE_IO
 import io.file.FileIO;
 import io.file.browse.Browser;
@@ -51,7 +49,6 @@ import io.file.browse.BrowserListener;
 //#endif
 import ui.Time;
 import util.ClipBoard;
-import util.StringLoader;
 import util.strconv;
 import ui.YesNoAlert;
 

@@ -28,7 +28,6 @@
 package PrivacyLists;
 import Client.*;
 import javax.microedition.lcdui.*;
-import java.util.*;
 import locale.SR;
 import ui.controls.TextFieldCombo;
 

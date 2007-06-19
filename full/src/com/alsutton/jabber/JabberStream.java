@@ -34,7 +34,6 @@ import java.util.*;
 import javax.microedition.io.*;
 import com.alsutton.jabber.datablocks.*;
 import com.alsutton.xmlparser.*;
-import util.StringLoader;
 import locale.SR;
 
 

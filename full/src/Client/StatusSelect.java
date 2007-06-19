@@ -26,14 +26,13 @@
  */
 
 package Client;
-import images.RosterIcons;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import ui.MainBar;
 import ui.controls.NumberField;
-import util.strconv;
+
 //import ui.controls.TextFieldCombo;
 
 /**

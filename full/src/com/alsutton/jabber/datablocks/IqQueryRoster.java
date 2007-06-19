@@ -28,7 +28,6 @@
 package com.alsutton.jabber.datablocks;
 
 import com.alsutton.jabber.*;
-import java.util.*;
 
 /**
  * Class representing the iq message block

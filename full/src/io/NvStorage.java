@@ -27,7 +27,6 @@
 
 package io;
 import java.io.*;
-import util.strconv;
 
 import javax.microedition.rms.*;
 

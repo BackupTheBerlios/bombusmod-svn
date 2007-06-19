@@ -29,7 +29,6 @@ package Conference;
 import Client.Config;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
-import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import ui.*;
 

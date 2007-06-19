@@ -29,26 +29,15 @@ package Client;
 import Conference.MucContact;
 //#if LAST_MESSAGES
 //# import History.HistoryStorage;
-//#endif
-import com.alsutton.jabber.JabberDataBlock;
-import images.RosterIcons;
-import io.NvStorage;
-//#if FILE_IO
-import io.file.FileIO;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+//# import History.HistoryWrite;
+//# import images.RosterIcons;
 //#endif
 import ui.ColorScheme;
 import ui.Time;
-import util.Translit;
-import util.strconv;
 import vcard.VCard;
 import java.util.*;
 import ui.IconTextElement;
-import ui.ImageList;
 import com.alsutton.jabber.datablocks.Presence;
-import com.alsutton.jabber.JabberDataBlock;
 
 /**
  * Contact
@@ -136,15 +125,6 @@ public class Contact extends IconTextElement{
     public String entityVer;
     
     private Config cf=Config.getInstance();
-    
-//#if FILE_IO    
-    //int fileSize;
-    private int filePos;
-    //String filePath;
-    private FileIO file;
-    private OutputStream os;
-//#endif
-    
 
     protected Contact (){
         super(RosterIcons.getInstance());
@@ -329,30 +309,9 @@ public class Contact extends IconTextElement{
                 body.append(m.getBody());
                 body.append("\r\n");
                 
-               byte[] bodyMessage;
-               String histRecord=(nick==null)?getBareJid():nick;
-               if (cf.cp1251) {
-                    bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
-               } else {
-                    bodyMessage=body.toString().getBytes();
-               }
-               String filename=cf.msgPath+((cf.transliterateFilenames)?Translit.translit(histRecord):histRecord)+".txt";
-               file=FileIO.createConnection(filename);
-                try {
-                    os = file.openOutputStream(0);
-                    writeFile(bodyMessage);
-                    os.close();
-                    os.flush();
-                    file.close();
-                } catch (IOException ex) {
-                    try {
-                        file.close();
-                    } catch (IOException ex2) { }
-                    //ex.printStackTrace();
-                }
-                filename=null;
-                body=null;
-                bodyMessage=null;
+                String histRecord=(nick==null)?getBareJid():nick;
+                
+                new HistoryWrite(body, histRecord);
             }
        }
 //#endif
@@ -377,14 +336,6 @@ public class Contact extends IconTextElement{
             if (newMsgCnt>=0) newMsgCnt++;
         }
     }
-//#if (FILE_IO)    
-    private void writeFile(byte b[]){
-        try {
-            os.write(b);
-            filePos+=b.length;
-        } catch (IOException ex) { }
-    }
-//#endif
   
     public int getColor() { return (status>7)?0:COLORS[status]; }
 

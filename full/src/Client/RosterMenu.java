@@ -26,10 +26,7 @@
 package Client;
 //#ifdef NEW_MENU
 //# import Conference.Bookmarks;
-//# import Conference.ConferenceForm;
 //# import Conference.MucContact;
-//# import Info.Phone;
-//# import Info.Version;
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -37,7 +34,6 @@ package Client;
 //# import javax.microedition.lcdui.Display;
 //# import locale.SR;
 //# import midlet.Bombus;
-//# import ui.IconTextElement;
 //# import ui.Menu;
 //# import ui.MenuItem;
 //#endif

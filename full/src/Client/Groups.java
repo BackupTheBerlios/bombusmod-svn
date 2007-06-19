@@ -30,7 +30,6 @@ package Client;
 import images.RosterIcons;
 import java.util.*;
 import locale.SR;
-import ui.ImageList;
 
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;

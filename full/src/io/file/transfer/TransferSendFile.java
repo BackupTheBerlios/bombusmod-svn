@@ -27,7 +27,6 @@
 
 package io.file.transfer;
 
-import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Command;

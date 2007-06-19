@@ -34,7 +34,6 @@ import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
 import Client.Config;
-import Conference.ConferenceForm;
 import com.alsutton.jabber.datablocks.Presence;
 
 import util.StringLoader;

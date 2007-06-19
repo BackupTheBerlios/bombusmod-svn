@@ -56,7 +56,6 @@ import com.siemens.mp.game.Light;
 
 
 import Conference.ConferenceForm;
-import Info.Version;
 
 //#if FILE_TRANSFER
 //# import io.file.transfer.TransferDispatcher;

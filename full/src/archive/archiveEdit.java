@@ -30,7 +30,6 @@ package archive;
 import Client.Msg;
 import Client.StaticData;
 import Info.Phone;
-import archive.ArchiveList;
 import javax.microedition.lcdui.*;
 import locale.SR;
 

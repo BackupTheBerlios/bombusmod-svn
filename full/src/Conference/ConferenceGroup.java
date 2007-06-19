@@ -27,11 +27,8 @@
 
 package Conference;
 
-import Client.Contact;
 import Client.Group;
 import images.RosterIcons;
-import java.util.*;
-import ui.ImageList;
 
 /**
  *

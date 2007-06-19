@@ -15,7 +15,6 @@ import Client.StaticData;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
-import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Choice;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;

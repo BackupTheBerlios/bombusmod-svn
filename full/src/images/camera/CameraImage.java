@@ -28,7 +28,6 @@
 package images.camera;
 
 import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -36,7 +35,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Item;
 import javax.microedition.media.Manager;
-import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import javax.microedition.media.control.GUIControl;
 import javax.microedition.media.control.VideoControl;

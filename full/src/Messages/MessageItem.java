@@ -29,10 +29,6 @@ package Messages;
 
 import Client.Msg;
 import images.RosterIcons;
-//#ifdef SMILES
-//# import images.SmilesIcons;
-//#endif
-import Client.Roster;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;

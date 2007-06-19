@@ -32,7 +32,6 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
-import java.util.Vector;
 import locale.SR;
 import Client.Msg;
 import ui.VirtualList;

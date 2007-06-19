@@ -27,7 +27,6 @@
 
 package PrivacyLists;
 
-import Client.Roster;
 import Client.StaticData;
 import ui.MainBar;
 import images.RosterIcons;

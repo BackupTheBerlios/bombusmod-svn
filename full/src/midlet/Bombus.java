@@ -35,7 +35,6 @@ import Info.Phone;
 import Stats.Stats;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
-import locale.SR;
 
 import ui.*;
 

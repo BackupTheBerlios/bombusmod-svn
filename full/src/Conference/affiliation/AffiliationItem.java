@@ -27,12 +27,10 @@
 
 package Conference.affiliation;
 
-import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
 import ui.ColorScheme;
 import ui.IconTextElement;
-import ui.ImageList;
 
 /**
  *

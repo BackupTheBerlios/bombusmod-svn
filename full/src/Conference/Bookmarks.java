@@ -31,13 +31,11 @@ import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
 //#endif
-import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import java.util.*;
 import com.alsutton.jabber.*;
-import com.alsutton.jabber.datablocks.Iq;
 import ui.MainBar;
 
 /**

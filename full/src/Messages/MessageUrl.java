@@ -28,7 +28,6 @@
 package Messages;
 
 import java.util.Vector;
-import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.Display;
 import midlet.Bombus;
 import ui.Menu;

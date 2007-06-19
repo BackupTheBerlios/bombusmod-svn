@@ -27,10 +27,8 @@
 
 package Info;
 import Client.Roster;
-import Client.StaticData;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import midlet.Bombus;
 
 /**
  *

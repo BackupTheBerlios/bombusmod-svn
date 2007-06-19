@@ -34,10 +34,7 @@ import com.jcraft.jzlib.ZOutputStream;
 //#endif
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
 import javax.microedition.io.*;
 import Client.Config;
 import util.strconv;

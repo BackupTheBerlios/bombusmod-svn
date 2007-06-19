@@ -27,7 +27,6 @@
 
 package io.file.transfer;
 
-import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Message;

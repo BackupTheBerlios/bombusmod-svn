@@ -26,7 +26,6 @@
  */
 
 package ServiceDiscovery;
-import images.RosterIcons;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;

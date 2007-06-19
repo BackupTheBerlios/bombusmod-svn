@@ -28,16 +28,11 @@
 package Client;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
-import java.util.*;
 import java.io.*;
 import javax.microedition.midlet.MIDlet;
 import midlet.Bombus;
 import ui.ColorScheme;
 import ui.IconTextElement;
-import ui.ImageList;
-import javax.microedition.rms.*;
-import javax.microedition.lcdui.*;
-import Client.Roster;
 import com.alsutton.jabber.*;
 import io.NvStorage;
 

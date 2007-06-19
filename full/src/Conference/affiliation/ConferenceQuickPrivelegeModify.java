@@ -27,12 +27,10 @@
 
 package Conference.affiliation;
 
-import Client.Roster;
 import Client.StaticData;
 import Conference.*;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import java.util.Hashtable;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;

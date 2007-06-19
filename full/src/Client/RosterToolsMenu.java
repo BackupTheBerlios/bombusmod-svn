@@ -152,7 +152,7 @@ public class RosterToolsMenu
 //#                 str.append(strconv.getSizeString(stats.getLatest()));
 //#                 
 //#                 str.append("\nCurrent: ");
-//#                 str.append(strconv.getSizeString(stats.getCurrentTraffic()));
+//#                 str.append(strconv.getSizeString(stats.getGPRS()));
 //# 
 //#                 if (connected)
 //#                     str.append(StaticData.getInstance().roster.theStream.getStreamStats());

@@ -27,8 +27,6 @@
 
 package Client;
 
-import Client.RenameGroup;
-import Conference.ConferenceForm;
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
 import Conference.MucContact;
@@ -49,11 +47,9 @@ import com.alsutton.jabber.datablocks.Presence;
 //# import io.file.transfer.TransferSendFile;
 //#endif
 import java.util.Enumeration;
-import java.util.Hashtable;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.ColorScheme;
-import ui.IconTextElement;
 import ui.Menu;
 import ui.MenuItem;
 import ui.Time;

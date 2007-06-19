@@ -27,11 +27,9 @@
 
 package ServiceDiscovery;
 
-import Client.StaticData;
 import images.RosterIcons;
 import ui.ColorScheme;
 import ui.IconTextElement;
-import ui.ImageList;
 
 /**
  *

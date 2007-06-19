@@ -29,12 +29,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Vector;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStore;
-import javax.microedition.rms.RecordStoreException;
-import javax.microedition.rms.RecordStoreNotOpenException;
 
 public class TemplateContainer {
     

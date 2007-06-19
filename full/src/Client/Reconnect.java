@@ -27,7 +27,6 @@
 
 package Client;
 
-import com.alsutton.jabber.datablocks.Presence;
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;

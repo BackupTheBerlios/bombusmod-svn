@@ -30,23 +30,14 @@ package io.file.browse;
 import ui.MainBar;
 import images.RosterIcons;
 import io.file.FileIO;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Vector;
-
-import javax.microedition.io.Connector;
-import javax.microedition.io.file.FileConnection;
-import javax.microedition.io.file.FileSystemRegistry;
-import javax.microedition.lcdui.Alert;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Image;
 import locale.SR;
-import ui.AlertBox;
 import ui.ColorScheme;
 import ui.IconTextElement;
 import ui.VirtualElement;

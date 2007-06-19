@@ -29,7 +29,6 @@ package ServiceDiscovery;
 
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.TextFieldCombo;
 /**
  *

@@ -37,7 +37,6 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.ImageList;
 import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;

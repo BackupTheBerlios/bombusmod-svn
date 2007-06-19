@@ -26,9 +26,6 @@
  */
 
 package Client;
-import java.util.Hashtable;
-import ui.ImageList;
-import java.util.Vector;
 /**
  *
  * @author Eugene Stahov

@@ -29,9 +29,6 @@ package Messages;
 
 import Client.Config;
 import Client.Msg;
-//#ifdef SMILES
-//# import images.SmilesIcons;
-//#endif
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -39,7 +36,6 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.ColorScheme;
-import ui.ComplexString;
 import ui.VirtualElement;
 import ui.VirtualList;
 import ui.FontCache;

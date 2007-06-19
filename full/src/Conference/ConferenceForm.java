@@ -29,7 +29,6 @@ package Conference;
 import Client.*;
 import com.alsutton.jabber.JabberDataBlock;
 import locale.SR;
-import ui.*;
 import javax.microedition.lcdui.*;
 import ui.controls.NumberField;
 import ui.controls.TextFieldCombo;

@@ -28,13 +28,9 @@
 package Client;
 
 import images.RosterIcons;
-import java.util.Enumeration;
-import java.io.*;
-import java.util.Vector;
 import ui.ColorScheme;
 import ui.IconTextElement;
-import ui.ImageList;
-import com.alsutton.jabber.datablocks.Presence;
+
 /**
  *
  * @author Eugene Stahov

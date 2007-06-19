@@ -25,7 +25,6 @@
 */
 
 package com.alsutton.jabber;
-import java.io.*;
 import java.util.*;
 
 /**
