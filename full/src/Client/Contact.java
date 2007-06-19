@@ -29,9 +29,9 @@ package Client;
 import Conference.MucContact;
 //#if LAST_MESSAGES
 //# import History.HistoryStorage;
-//# import History.HistoryWrite;
-//# import images.RosterIcons;
 //#endif
+import History.HistoryWrite;
+import images.RosterIcons;
 import ui.ColorScheme;
 import ui.Time;
 import vcard.VCard;
@@ -274,11 +274,11 @@ public class Contact extends IconTextElement{
 //#endif        
 //#if FILE_IO
 
-         if (cf.msgLog && cf.msgPath==null) {
+        if (cf.msgLog && cf.msgPath==null) {
 //#ifdef POPUPS
 //#             StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
 //#endif
-         } else 
+        } else 
             if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
         {
             //String histRecord=(nick==null)?getBareJid():nick;
