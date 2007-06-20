@@ -922,9 +922,9 @@ public class Roster
                         if (to.deliveryType==Contact.DELIVERY_XEP22 || to.deliveryType==Contact.DELIVERY_HANDSHAKE)
                             event.addChild("delivered", null);
 
-                        if (to.deliveryType==Contact.DELIVERY_XEP184 || to.deliveryType==Contact.DELIVERY_HANDSHAKE) {
-                            message.addChild("request", null).setNameSpace(Contact.XEP184_NS);
-                        }
+                        //if (to.deliveryType==Contact.DELIVERY_XEP184 || to.deliveryType==Contact.DELIVERY_HANDSHAKE) {
+                        //    message.addChild("request", null).setNameSpace(Contact.XEP184_NS);
+                        //}
                     }
                 }
             }
@@ -1226,16 +1226,6 @@ public class Roster
                             theStream.send(new IqLast(data, lastMessageTime));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
-                        /*
-                        if (query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) {
-                            String node=query.getAttribute("node");
-                            if (node.equals(Version.getUrl()+"#"+Version.getVersionNumber())) {
-                                //System.out.println("evtity");
-                                theStream.send(new EntityCaps_(data));
-                                return JabberBlockListener.BLOCK_PROCESSED;                                
-                            }
-                        }
-                        */
                     }
                 } else if (type.equals("set")) {
                     //todo: verify xmlns==jabber:iq:roster

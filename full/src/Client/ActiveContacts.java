@@ -29,6 +29,7 @@ package Client;
 
 import java.util.Enumeration;
 import java.util.Vector;
+import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -107,5 +108,11 @@ public class ActiveContacts
     protected void keyGreen(){
         //if (!sd.roster.isLoggedIn()) return;
         eventOk();
+    }
+    
+    public void destroyView(){
+        StaticData.getInstance().roster.reEnumRoster();
+        if (display!=null)
+            display.setCurrent(parentView);
     }
 }

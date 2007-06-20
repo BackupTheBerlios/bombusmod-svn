@@ -1,7 +1,7 @@
 /*
  * EntityCaps.java
  *
- * Created on 17 Июнь 2007 г., 2:58
+ * Created on 17 �?юнь 2007 г., 2:58
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -57,8 +57,7 @@ public class EntityCaps implements JabberBlockListener{
         c.setAttribute("xmlns", "http://jabber.org/protocol/caps");
         c.setAttribute("node", BOMBUS_NAMESPACE);
         c.setAttribute("ver", Version.getVersionNumber());
-        //c.setAttribute("ext", appVersion.c_str());
-        
+       
         return c;
     }
     
@@ -71,6 +70,9 @@ public class EntityCaps implements JabberBlockListener{
         "jabber:x:event",
         "http://jabber.org/protocol/disco#info",
         "http://www.xmpp.org/extensions/xep-0199.html#ns",
-        "http://jabber.org/protocol/muc"
+        "http://jabber.org/protocol/muc",
+        "http://jabber.org/protocol/si",
+        "http://jabber.org/protocol/si/profile/file-transfer"
+        //, "http://jabber.org/protocol/ibb"
     };
 }

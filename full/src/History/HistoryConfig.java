@@ -138,7 +138,9 @@ public class HistoryConfig implements
             
             cf.msgPath=historyFolder.getString();
 //#endif             
-
+            
+            cf.saveToStorage();
+            
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();
         }

@@ -27,6 +27,7 @@
 
 package io.file.browse;
 
+import Client.Config;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +36,7 @@ import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import locale.SR;
+import util.strconv;
 
 /**
  *
@@ -53,6 +55,8 @@ public class ShowFile implements CommandListener{
     private byte[] b;
 
     private Player pl;
+    
+    private Config cf=Config.getInstance();
     
     public ShowFile(Display display, String fileName, int type) {
         this.display=display;
@@ -89,16 +93,34 @@ public class ShowFile implements CommandListener{
 	}    
     
 	private void read(String file) {
-            load(file);
-            TextBox tb = new TextBox(file+"("+len+" bytes)", null, len, TextField.ANY | TextField.UNEDITABLE);
+           load(file);
+           TextBox tb = new TextBox(file+"("+len+" bytes)", null, len, TextField.ANY | TextField.UNEDITABLE);
 
-            tb.addCommand(back);
-            tb.setCommandListener(this);
+           tb.addCommand(back);
+           tb.setCommandListener(this);
+            
 
-            if (len > 0) tb.setString(new String(b, 0, len));
+            if (len > 0) {
+               String s=new String();
+                try {
+                    int maxSize=tb.getMaxSize();
+                    
+                    if (maxSize>len){
+                        s=new String(b, 0, len);
+                    } else {
+                        s=new String(b, 0, maxSize);
+                    }
+                } catch (Exception e) {}
+               
+                   if (cf.cp1251) {
+                        tb.setString(strconv.convCp1251ToUnicode(s));
+                   } else {
+                        tb.setString(s);
+                   }
+            }
 
-            tb.setCommandListener(this);
-            display.setCurrent(tb);
+           tb.setCommandListener(this);
+           display.setCurrent(tb);
 	}    
     
 	private void play(String file) {
