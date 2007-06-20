@@ -903,6 +903,7 @@ public class Roster
             if (groupchat && body==null && subject==null) return;
 
             JabberDataBlock event=new JabberDataBlock("x", null,null);
+			event.setNameSpace("jabber:x:event");
 
             if (composingState>0) {
                 event.setNameSpace("jabber:x:event");
