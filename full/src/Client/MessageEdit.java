@@ -230,7 +230,7 @@ public class MessageEdit
         Roster r=StaticData.getInstance().roster;
         int comp=0; // composing event off
 
-        String id=Time.utcLocalTime();
+        String id=String.valueOf((int) System.currentTimeMillis());
         
         if (sendInTranslit==true) {
             if (body!=null)
