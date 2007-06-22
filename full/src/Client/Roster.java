@@ -75,46 +75,6 @@ public class Roster
         YesNoAlert.YesNoListener
 {
     
-    
-    private Jid myJid;
-    
-    /**
-     * The stream representing the connection to ther server
-     */
-    public JabberStream theStream ;
-        
-    int messageCount;
-    
-    private Object messageIcon;
-    public Object transferIcon;
-   
-    boolean reconnect=false;
-    boolean querysign=false;
-    
-    //boolean storepresence=true;
-    
-    public int myStatus=Config.getInstance().loginstatus;
-    
-    //private Vector hContacts;
-    public Vector hContacts;
-    
-    private Vector vContacts;
-    
-    private Vector paintVContacts;
-    
-    public Groups groups;
-    
-    public Vector bookmarks;
-    
-    public static boolean autoAway=false;
-    public static boolean autoXa=false;
-
-    public static int oldStatus=0;
-    
-    public static boolean forme=false;
-    public static boolean conference=false;
-
-
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
     private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
@@ -133,6 +93,37 @@ public class Roster
     
     private Config cf;
     private StaticData sd=StaticData.getInstance();
+    
+    
+    private Jid myJid;
+
+    public JabberStream theStream ;
+        
+    int messageCount;
+    
+    private Object messageIcon;
+    public Object transferIcon;
+   
+    boolean reconnect=false;
+    boolean querysign=false;
+    
+    public int myStatus=Config.getInstance().loginstatus;
+    private String myMessage;
+
+    public Vector hContacts;
+    
+    private Vector vContacts;
+    
+    private Vector paintVContacts;
+    
+    public Groups groups;
+    
+    public Vector bookmarks;
+    
+    public static boolean autoAway=false;
+    public static boolean autoXa=false;
+
+    public static int oldStatus=0;
 
 //#if (MOTOROLA_BACKLIGHT)
     private int blState=Integer.MAX_VALUE;
@@ -144,23 +135,11 @@ public class Roster
 //#endif
     
     public long lastMessageTime=Time.localTime();
-    public static int keyTimer=0;
-    //public JabberBlockListener discoveryListener;
-    
-    private int pr;
-
-    private String ms;
-
-    //public boolean setAutoStatus;
-
-    private String myMessage;    
 	
     private final static int maxReconnect=5;
     public int reconnectCount;
     
     public static String startTime=Time.dispLocalTime();
-
-    //public static boolean keyLockState=false;
 	
     private static long notifyReadyTime=System.currentTimeMillis();
     private static int blockNotifyEvent=-111;
@@ -169,7 +148,7 @@ public class Roster
 
     private boolean allowLightControl=false;
 
-    boolean lightState=false;
+    //boolean lightState=false;
     
     private AutoStatusTask autostatus;
     private SELightTask selight;
@@ -189,11 +168,10 @@ public class Roster
         cf=Config.getInstance();
         
         allowLightControl=cf.allowLightControl;
-        lightState=cf.lightState;
         
         if (allowLightControl) {
             try {
-                setLight(lightState);
+                setLight(cf.lightState);
             } catch( Exception e ) { }
         }
         
@@ -212,8 +190,35 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
         getKeys();
+
+	updateMainBar();
+        
+        addMenuCommands();
+        
+        SplashScreen.getInstance().setExit(display, this);
+        
+        autostatus=new AutoStatusTask();
+        
+        if (myStatus<2)
+            messageActivity();
+        
+        if (ph.PhoneManufacturer()==ph.SONYE) {
+            selight=new SELightTask();
+            selight.setLight(cf.lightState);
+        }
+    }
+    
+    public void setLight(boolean state) {
+        if (state) {
+            Light.setLightOn();
+        } else {
+            Light.setLightOff();  
+        }
+    }
+    
+    public void addMenuCommands(){
 //#ifdef NEW_MENU
-//#         if (!VirtualList.newMenu) {
+//#         if (!cf.newMenu) {
 //#endif
                 int activeType=Command.SCREEN;
                 if (ph.PhoneManufacturer()==ph.NOKIA) activeType=Command.BACK;
@@ -246,26 +251,6 @@ public class Roster
 //#ifdef NEW_MENU
 //#         }
 //#endif
-	updateMainBar();
-        
-        SplashScreen.getInstance().setExit(display, this);
-        
-        autostatus=new AutoStatusTask();
-        if (cf.loginstatus<2)
-            messageActivity();
-        
-        if (ph.PhoneManufacturer()==ph.SONYE) {
-            selight=new SELightTask();
-            selight.setLight(lightState);
-        }
-    }
-    
-    public static void setLight(boolean state) {
-        if (state) {
-            Light.setLightOn();
-        } else {
-            Light.setLightOff();  
-        }
     }
     
     void addOptionCommands(){
@@ -428,7 +413,6 @@ public class Roster
             while (index<hContacts.size()) {
                 Contact c=(Contact) hContacts.elementAt(index);
                 c.purge();
-                
                 index++;
             }
         }
@@ -1305,7 +1289,6 @@ public class Roster
                 int start_me=-1;
                 String name=null;
                 boolean groupchat=false;
-                conference=false;
 				
 		int mType=Msg.MESSAGE_TYPE_IN;
                 
@@ -1313,7 +1296,6 @@ public class Roster
 		    String type=message.getTypeAttribute();
                     if (type.equals("groupchat")) {
                         groupchat=true;
-                        conference=true;
                         start_me=0; // добавить ник в начало
                         int rp=from.indexOf('/');
                         
@@ -1385,7 +1367,7 @@ public class Roster
                 // /me
 
                 if (body!=null) {
-                    forme=false;
+                    //forme=false;
                     if (body.startsWith("/me ")) start_me=3;
                     if (start_me>=0) {
                         StringBuffer b=new StringBuffer(name);
@@ -1477,7 +1459,6 @@ public class Roster
 	                        } else if (body.indexOf(" "+myNick+".")>-1) highlite=true;
 			}
                         //TODO: custom highliting dictionary
-                        forme=highlite;
                         m.setHighlite(highlite); 
                     }
                     m.from=name;
@@ -1698,13 +1679,15 @@ public class Roster
         
         if (cf.autoFocus) focusToContact(c, false);
 
-        if (forme) {
+        if (message.isHighlited()) {
             playNotify(500);
+        }
 //#ifdef POPUPS
-//#             if (message.messageType==message.MESSAGE_TYPE_IN && cf.popUps)
-//#                 setWobbler(message.getBody());
+//#         //else if (message.messageType==message.MESSAGE_TYPE_IN && cf.popUps) {
+//#         //        setWobbler(message.getBody());
+//#         //} 
 //#endif
-        } else if (conference) {
+        else if (c.origin>=c.ORIGIN_GROUPCHAT) {
             if (message.messageType==message.MESSAGE_TYPE_IN)
                 playNotify(800);
         } else {
@@ -1714,7 +1697,7 @@ public class Roster
                 playNotify(1000);
             }
 //#ifdef POPUPS
-//#             if (message.messageType==message.MESSAGE_TYPE_IN && (c instanceof MucContact)==false && cf.popUps)
+//#             if (message.messageType==message.MESSAGE_TYPE_IN && !(c instanceof MucContact) && cf.popUps)
 //#                 setWobbler(c.toString()+": "+message.getBody());
 //#endif
         }
@@ -1952,9 +1935,11 @@ public class Roster
             /*|| keyCode=='#' */) {
             //System.out.println("Flip closed");
             if (cf.autoAwayType==Config.AWAY_LOCK) 
-                if (!autoAway) autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+                if (!autoAway) 
+                    autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+            return;
         } else {
-            if (keyCode!=cf.keyLock) userActivity();
+            userActivity();
         }
         
         if (keyCode=='1' && cf.collapsedGroups) { //collapse all groups
@@ -1984,47 +1969,8 @@ public class Roster
                 if (isContact && !isMucContact) {
                     new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
                 }
+                return;
             } catch (Exception e) { /* NullPointerException */ }
-        
-       /*
-        if (keyCode==SE_FLIPCLOSE_JP6  || keyCode== SIEMENS_FLIPCLOSE) {
-            //System.out.println("Flip closed");
-            
-            if (cf.autoAwayType==cf.AWAY_LOCK) {
-                if (!autoAway) {
-                    autoAway=true;
-                    if (cf.setAutoStatusMessage) {
-                        sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
-                    } else {
-                        sendPresence(Presence.PRESENCE_AWAY, null);
-                    }
-                }
-            }
-            //if (cf.allowMinimize)
-            //    Submob.getInstance().hideApp(true);
-        }
-        if (keyCodBombusModFLIPOPEN_JP6  || keyCode==SIEMENS_FLIPOPEN) {
-            //System.out.println("Flip closed");
-            
-            if (cf.autoAwayType==cf.AWAY_LOCK) {
-                if (autoAway) {
-                    ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
-                    String ms=es.getMessage();
-                    autoAway=false;
-                    autoXa=false;
-                    sendPresence(oldStatus, ms);
-                }
-            }
-            
-            if (cf.allowMinimize)
-                Submob.getInstance().hideApp(false);
-        }
-        */
-         if (keyCode!=cf.keyLock) {
-            userActivity();
-            //setAutoStatus(Presence.PRESENCE_ONLINE);
-         }            
-        
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {
             // backlight management
@@ -2039,11 +1985,15 @@ public class Roster
 
     private void userActivity() {
         if (cf.autoAwayType==Config.AWAY_IDLE) {
-            autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
-        } else if (cf.autoAwayType!=Config.AWAY_MESSAGE) {
-            autostatus.setTimeEvent(0);
-            setAutoStatus(Presence.PRESENCE_ONLINE);
-        }  
+            if (!autoAway) {
+                autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+                return;
+            }
+        } else {
+            return;
+        }
+        autostatus.setTimeEvent(0);
+        setAutoStatus(Presence.PRESENCE_ONLINE);
     }
     
     public void messageActivity() {
@@ -2568,24 +2518,25 @@ public class Roster
     
     private void getKeys()
     {
-        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
+        int pm=ph.PhoneManufacturer();
+        if (pm==ph.SIEMENS || pm==ph.SIEMENS2) {
              cf.SOFT_LEFT=-1;
              cf.SOFT_RIGHT=-4;
              return;
         }
 
-        if (ph.PhoneManufacturer()==ph.WINDOWS) {
+        if (pm==ph.WINDOWS) {
              cf.SOFT_LEFT=40;
              cf.SOFT_RIGHT=41;
              return;     
         }
-        if (ph.PhoneManufacturer()==ph.NOKIA || ph.PhoneManufacturer()==ph.SONYE) {
+        if (pm==ph.NOKIA || pm==ph.SONYE) {
             cf.SOFT_LEFT=-6;
             cf.SOFT_RIGHT=-7;
             return;
         } 
         
-        if (ph.PhoneManufacturer()==ph.MOTOEZX) {
+        if (pm==ph.MOTOEZX) {
             cf.SOFT_LEFT=-21;
             cf.SOFT_RIGHT=-22;
             return;

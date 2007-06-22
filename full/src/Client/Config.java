@@ -324,9 +324,6 @@ public class Config {
 	VirtualList.fullscreen=fullscreen;
 	VirtualList.isbottom=isbottom;
 	VirtualList.memMonitor=memMonitor;
-//#ifdef NEW_MENU
-//#         VirtualList.newMenu=newMenu;
-//#endif
     }
     
     public String langFileName(){

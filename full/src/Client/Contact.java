@@ -375,8 +375,10 @@ public class Contact extends IconTextElement{
 //#         purgeTemps();
 //#endif
         msgs=new Vector();
-        vcard.clearVCard();
-        vcard=null;
+        if (vcard!=null) {
+            vcard.clearVCard();
+            vcard=null;
+        }
         resetNewMsgCnt();
     }
 
@@ -388,8 +390,10 @@ public class Contact extends IconTextElement{
                 for (int i=0; i<cursor; i++)
                     msgs.removeElementAt(0);
         } catch (Exception e) { }
-        vcard.clearVCard();
-        vcard=null;
+        if (vcard!=null) {
+            vcard.clearVCard();
+            vcard=null;
+        }
         resetNewMsgCnt();
     }
     

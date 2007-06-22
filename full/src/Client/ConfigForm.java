@@ -398,12 +398,12 @@ public class ConfigForm implements
             cf.enableVersionOs=ap[apctr++];
             
 //#ifdef NEW_MENU
-//#         VirtualList.newMenu=cf.newMenu=ap[apctr++];
+//#             cf.newMenu=ap[apctr++];
 //#endif
             
             if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE) { 
                 cf.lightState=ap[apctr++];
-                StaticData.getInstance().roster.lightState=!cf.lightState;
+                //StaticData.getInstance().roster.lightState=!cf.lightState;
                 if (cf.allowLightControl)
                     StaticData.getInstance().roster.setLight(cf.lightState);                
             }

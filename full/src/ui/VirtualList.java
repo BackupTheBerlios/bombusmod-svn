@@ -120,9 +120,7 @@ public abstract class VirtualList
     public static short greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
-//#ifdef NEW_MENU
-//#     public static boolean newMenu;
-//#endif
+
     public static boolean canBack=true;
 
     int width;
@@ -152,6 +150,7 @@ public abstract class VirtualList
         listHeight=y;
         itemLayoutY=layout;
     }
+    
     protected int getElementIndexAt(int yPos){
         int end=getItemCount()-1;
         if (end<0) return -1;
@@ -936,7 +935,7 @@ public abstract class VirtualList
 //#     }
 //#     
 //#     public void run() {
-//#         // прокрутка только раз
+//#         // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 //#         //stickyWindow=false;
 //#     
 //#         while (true) {

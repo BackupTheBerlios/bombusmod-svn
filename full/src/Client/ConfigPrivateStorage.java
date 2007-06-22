@@ -245,9 +245,6 @@ public class ConfigPrivateStorage
 //#             VirtualList.fullscreen=cf.fullscreen;
 //#             VirtualList.isbottom=cf.isbottom;
 //#             VirtualList.memMonitor=cf.memMonitor;
-//#ifdef NEW_MENU
-//#             VirtualList.newMenu=cf.newMenu;
-//#endif
 //# 	} catch (Exception e) {}
 //#     }
 //#     

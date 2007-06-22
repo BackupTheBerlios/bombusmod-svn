@@ -63,7 +63,7 @@ public abstract class MessageList
 	messages=new Vector();
         smiles=Config.getInstance().smiles;
     
-	//enableListWrapping(true); //TEST:переход через конец списка, нихрена неудобно
+        enableListWrapping(false);
 	
         cursor=0;//activate
 //#ifdef SMILES
