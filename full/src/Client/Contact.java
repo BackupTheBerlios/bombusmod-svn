@@ -30,7 +30,7 @@ import Conference.MucContact;
 //#if LAST_MESSAGES
 //# import History.HistoryStorage;
 //#endif
-import History.HistoryWrite;
+import History.HistoryAppend;
 import images.RosterIcons;
 import ui.ColorScheme;
 import ui.Time;
@@ -174,14 +174,16 @@ public class Contact extends IconTextElement{
 //#         if (!tempMsgs.isEmpty())
 //#             return RosterIcons.ICON_AUTHRQ_INDEX;
 //#endif
-        if (showComposing==true) return RosterIcons.ICON_COMPOSING_INDEX;
-        
+       
         if (getNewMsgsCount()>0)  {
             switch (unreadType) {
                 case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         }
+        
+        if (showComposing==true) return RosterIcons.ICON_COMPOSING_INDEX;
+        
         if (incomingState>0) return incomingState;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
@@ -311,7 +313,7 @@ public class Contact extends IconTextElement{
                 
                 String histRecord=(nick==null)?getBareJid():nick;
                 
-                new HistoryWrite(body, histRecord);
+                new HistoryAppend(body, histRecord);
             }
        }
 //#endif
@@ -373,6 +375,7 @@ public class Contact extends IconTextElement{
 //#         purgeTemps();
 //#endif
         msgs=new Vector();
+        vcard.clearVCard();
         vcard=null;
         resetNewMsgCnt();
     }
@@ -385,7 +388,7 @@ public class Contact extends IconTextElement{
                 for (int i=0; i<cursor; i++)
                     msgs.removeElementAt(0);
         } catch (Exception e) { }
-        
+        vcard.clearVCard();
         vcard=null;
         resetNewMsgCnt();
     }

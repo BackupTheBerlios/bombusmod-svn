@@ -33,7 +33,7 @@ import images.RosterIcons;
 import images.SmilesIcons;
 import java.io.*;
 import java.util.*;
-import midlet.Bombus;
+import midlet.BombusMod;
 import ui.FontCache;
 import util.StringLoader;
 import ui.Time;
@@ -51,7 +51,8 @@ public class Config {
 
     public final static int AWAY_OFF=0;
     public final static int AWAY_LOCK=1;
-    public final static int AWAY_IDLE=2;
+    public final static int AWAY_MESSAGE=2;
+    public final static int AWAY_IDLE=3;
     
     public static int KEY_BACK = -11;
     public static int SOFT_LEFT = -1000;
@@ -81,10 +82,6 @@ public class Config {
     public String defGcRoom="bombusmod@conference.jabber.ru";
     
     Phone ph=Phone.getInstance();
-    
-    public String m_client=getStringProperty("m_client","BombusMod");    
-    public String m_ver=getStringProperty("m_ver",Version.getVersionLang());
-    public String m_os=getStringProperty("m_os",ph.getOs()); 
     
     // non-volatile values
     public int accountIndex=-1;
@@ -453,7 +450,7 @@ public class Config {
     
     public final String getStringProperty(final String key, final String defvalue) {
 	try {
-	    String s=Bombus.getInstance().getAppProperty(key);
+	    String s=BombusMod.getInstance().getAppProperty(key);
 	    return (s==null)?defvalue:s;
 	} catch (Exception e) {	}
         return defvalue;
@@ -461,7 +458,7 @@ public class Config {
     
     public final int getIntProperty(final String key, final int defvalue) {
 	try {
-	    String s=Bombus.getInstance().getAppProperty(key);
+	    String s=BombusMod.getInstance().getAppProperty(key);
 	    return Integer.parseInt(s);
 	} catch (Exception e) { }
 	return defvalue;
@@ -469,7 +466,7 @@ public class Config {
     
     public final char getCharProperty(final String key, final char defvalue) {
 	try {
-	    String s=Bombus.getInstance().getAppProperty(key);
+	    String s=BombusMod.getInstance().getAppProperty(key);
 	    return s.charAt(0);
 	} catch (Exception e) {	}
         return defvalue;
@@ -477,7 +474,7 @@ public class Config {
     
     public final boolean getBooleanProperty(final String key, final boolean defvalue) {
 	try {
-	    String s=Bombus.getInstance().getAppProperty(key);
+	    String s=BombusMod.getInstance().getAppProperty(key);
 	    if (s.equals("true")) return true;
 	    if (s.equals("yes")) return true;
 	    if (s.equals("1")) return true;

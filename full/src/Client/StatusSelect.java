@@ -106,7 +106,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         try {
             Roster.autoAway=false;
             Roster.autoXa=false;
-            StaticData.getInstance().roster.setKeyTimer(0);
+            StaticData.getInstance().roster.messageActivity();
             StaticData.getInstance().roster.sendDirectPresence(status, to, null);
         } catch (Exception e) { 
             //e.printStackTrace(); 

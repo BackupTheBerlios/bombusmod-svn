@@ -288,6 +288,7 @@ public class ConfigForm implements
         autoAwayType=new ChoiceGroup(SR.MS_AWAY_TYPE, Choice.POPUP);
         autoAwayType.append(SR.MS_AWAY_OFF, null);
         autoAwayType.append(SR.MS_AWAY_LOCK, null);
+        autoAwayType.append(SR.MS_MESSAGE_LOCK, null);
         autoAwayType.append(SR.MS_IDLE, null);
         autoAwayType.setSelectedIndex(cf.autoAwayType, true);
         

@@ -30,7 +30,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.io.*;
 import javax.microedition.midlet.MIDlet;
-import midlet.Bombus;
+import midlet.BombusMod;
 import ui.ColorScheme;
 import ui.IconTextElement;
 import com.alsutton.jabber.*;
@@ -79,7 +79,7 @@ public class Account extends IconTextElement{
 
     public static Account createFromJad(){
         Account a=new Account();
-        MIDlet m=Bombus.getInstance();
+        MIDlet m=BombusMod.getInstance();
         try {
             a.userName=m.getAppProperty("def_user");
             a.password=m.getAppProperty("def_pass");
@@ -166,7 +166,6 @@ public class Account extends IconTextElement{
             do {
                 if (is.available()==0) {a=null; break;}
                 a=createFromDataInputStream(is);
-                //a.updateJidCache();
                 index--;
             } while (index>-1);
             is.close();

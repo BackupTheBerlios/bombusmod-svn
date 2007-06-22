@@ -410,7 +410,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                     String body=ColorScheme.getSkin();
 //#                     String subj="";
 //#                     
-//#                     String id=Time.utcLocalTime();
+//#                     String id=String.valueOf((int) System.currentTimeMillis());
 //#                     
 //#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
 //#                     msg.id=id;
@@ -434,7 +434,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     String from=StaticData.getInstance().account.toString();
                     String subj="";
                     
-                    String id=Time.utcLocalTime();
+                    String id=String.valueOf((int) System.currentTimeMillis());
                     
                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
                     msg.id=id;

@@ -1,9 +1,8 @@
 /*
- * MessageUrl.java
+ * SELightTask.java
  *
- * Created on 22.12.2005, 3:01
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
- *
+ * Created on 21.06.2007, 11:23
+ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -25,38 +24,41 @@
  *
  */
 
-package Messages;
+package Client;
 
-import java.util.Vector;
-import javax.microedition.lcdui.Display;
-import midlet.BombusMod;
-import ui.Menu;
+import com.nokia.mid.ui.DeviceControl;
 
-/**
- *
- * @author EvgS
- */
-public class MessageUrl extends Menu{
+public class SELightTask implements Runnable {    
+    private boolean stop;
+    private boolean setLight;
     
-    private Vector urlList;
-    /** Creates a new instance of MessageUrl */
-    public MessageUrl(Display display, Vector urlList) {
-	super("URLs");
-	this.urlList=urlList;
-	
-	for (int i=0; i<urlList.size(); i++) { // throws exception
-	    addItem((String)urlList.elementAt(i), i);
-	}
-	attachDisplay(display);
+    public SELightTask() {
+        new Thread(this).start();
     }
     
-    public void eventOk() {
-	String url=(String)urlList.elementAt(cursor);
-	try {
-	    BombusMod.getInstance().platformRequest(url);
-	} catch (Exception e) { 
-            //e.printStackTrace(); 
+    public void setLight(boolean setLight){
+        this.setLight=setLight;
+    }
+
+    public void destroyTask(){
+        stop=false;
+    }
+
+    public void run() {
+        while (!stop) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                stop=true;
+            }
+            
+            try {
+                 if (setLight)
+                     DeviceControl.setLights(0, 100);
+            } catch (Exception e) {
+                setLight=false;
+            }
         }
-	destroyView();
     }
+
 }

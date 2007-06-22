@@ -120,6 +120,7 @@ public class ArchiveList
  	super ();
  	this.target=target;
         this.caretPos=caretPos;
+        enableListWrapping(true); //TEST:переход через конец списка
 	setCommandListener(this);
 	addCommand(cmdBack);
 	addCommand(cmdDelete);

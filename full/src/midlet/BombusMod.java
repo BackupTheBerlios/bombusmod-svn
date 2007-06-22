@@ -1,5 +1,5 @@
 /*
- * Bombus.java
+ * BombusMod.java
  *
  * Created on 5.01.2005, 21:46
  *
@@ -47,7 +47,7 @@ import Info.Version;
  * @author  Eugene Stahov
  * @version
  */
-public class Bombus extends MIDlet implements Runnable{
+public class BombusMod extends MIDlet implements Runnable{
     
     private Display display;    // The display for this MIDlet
     private boolean isRunning;
@@ -58,10 +58,12 @@ public class Bombus extends MIDlet implements Runnable{
     public static Image splash;
     //IconTextList l;
     
-    private static Bombus instance; 
+    private static BombusMod instance; 
         
-    /** Bombus constructor. starts splashscreen */
-    public Bombus() {
+    /**
+     * BombusMod constructor. starts splashscreen
+     */
+    public BombusMod() {
 	instance=this; 
         display = Display.getDisplay(this);
         SplashScreen s= SplashScreen.getInstance();
@@ -164,7 +166,7 @@ public class Bombus extends MIDlet implements Runnable{
         isMinimized=hide;
     }
     
-    public static Bombus getInstance() {
+    public static BombusMod getInstance() {
         return instance;
     }
   

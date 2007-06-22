@@ -38,7 +38,7 @@ import images.RosterIcons;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.microedition.lcdui.*;
-import midlet.Bombus;
+import midlet.BombusMod;
 
 /**
  *
@@ -217,7 +217,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
     public void run() {
         try {
-            img=Bombus.splash;
+            img=BombusMod.splash;
             if (img==null) img=Image.createImage("/images/splash.png");
         } catch (Exception e) {};
         

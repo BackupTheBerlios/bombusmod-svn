@@ -103,6 +103,7 @@ public class AppendTemplate
 	super (display);
 	this.target=target;
         this.caretPos=caretPos;
+        enableListWrapping(true); //TEST:переход через конец списка
 	if (target!=null) {
 	    addCommand(cmdSelect);
 	}

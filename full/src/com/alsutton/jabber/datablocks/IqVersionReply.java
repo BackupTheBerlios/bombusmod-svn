@@ -28,27 +28,26 @@
 
 package com.alsutton.jabber.datablocks;
 
+import Client.Config;
+import Info.Phone;
+import Info.Version;
 import com.alsutton.jabber.*;
-import Client.*;
 
 /**
  *
  * @author Eugene Stahov
  */
 public class IqVersionReply extends Iq{
-    
-    private Config cf=Config.getInstance();
-    
     /** Creates a new instance of IqVersionReply */
     public IqVersionReply(JabberDataBlock request) {
         super(request.getAttribute("from"), Iq.TYPE_RESULT, request.getAttribute("id") );
         JabberDataBlock query=addChild("query",null);
         query.setNameSpace("jabber:iq:version");
 
-        query.addChild("name", cf.m_client);
-        query.addChild("version", cf.m_ver);
-        if (cf.enableVersionOs) {
-            query.addChild("os", cf.m_os);
+        query.addChild("name", "BombusMod");
+        query.addChild("version", Version.getVersionLang());
+        if (Config.getInstance().enableVersionOs) {
+            query.addChild("os", Phone.getInstance().getOs());
         }
     }
     

@@ -33,7 +33,7 @@ package Client;
 //# import images.RosterIcons;
 //# import javax.microedition.lcdui.Display;
 //# import locale.SR;
-//# import midlet.Bombus;
+//# import midlet.BombusMod;
 //# import ui.Menu;
 //# import ui.MenuItem;
 //#endif
@@ -129,7 +129,7 @@ public class RosterMenu
 //# 	    case 11: {//quit
 //#                 StaticData.getInstance().roster.destroyView();
 //#                 StaticData.getInstance().roster.logoff();
-//#                 Bombus.getInstance().notifyDestroyed();
+//#                 BombusMod.getInstance().notifyDestroyed();
 //#                 return;
 //# 	    }
 //# 	}

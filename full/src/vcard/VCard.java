@@ -193,4 +193,17 @@ public class VCard {
     public boolean isEmpty() {
         return empty;
     }
+    
+    public void clearVCard() {
+        vCardFields=null;
+        vCardFields2=null;
+        vCardLabels=null;
+
+        vCardData=null;
+        jid=null;
+        id=null;
+
+        photo=null;
+        photoType=null;
+    }
 }

@@ -27,7 +27,7 @@
 
 package Client;
 import locale.SR;
-import midlet.Bombus;
+import midlet.BombusMod;
 import ui.*;
 import java.io.*;
 import java.util.*;
@@ -83,10 +83,10 @@ public class AccountSelect
                 index++;
              }
        } while (a!=null);
+        
         if (accountList.isEmpty()) {
             a=Account.createFromJad();
             if (a!=null) {
-                //a.updateJidCache();
                 accountList.addElement(a);
                 rmsUpdate();
             }
@@ -97,7 +97,8 @@ public class AccountSelect
         attachDisplay(display);
         addCommand(cmdAdd);
         
-        if (enableQuit) addCommand(cmdQuit);
+        if (enableQuit) 
+            addCommand(cmdQuit);
         
         commandState();
         setCommandListener(this);
@@ -126,7 +127,7 @@ public class AccountSelect
     public void commandAction(Command c, Displayable d){
         if (c==cmdQuit) {
             destroyView();
-            Bombus.getInstance().notifyDestroyed();
+            BombusMod.getInstance().notifyDestroyed();
             return;
         }
         VirtualList.canBack=true;
@@ -156,7 +157,8 @@ public class AccountSelect
     }
     
     private void switchAccount(boolean login){
-        if (!login) parentView=StaticData.getInstance().roster;
+        if (!login) 
+            parentView=StaticData.getInstance().roster;
         destroyView();
 	Config cf=Config.getInstance();
         cf.accountIndex=cursor;

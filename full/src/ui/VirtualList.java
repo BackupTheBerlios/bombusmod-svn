@@ -319,6 +319,7 @@ public abstract class VirtualList
                 drawMainPanel(g);
             }
         }
+        drawHeapMonitor(g, itemBorder[0]); //heap monitor
 
 //#if ALT_INPUT 
 //#         if (inputbox!=null) {
@@ -413,7 +414,7 @@ public abstract class VirtualList
 
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
-        drawHeapMonitor(g, itemBorder[0]); //heap monitor
+
         if (showBalloon) {
             String text=null;
             try {
@@ -665,7 +666,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#                             if (cf.popUps) {
 //#                                 int freemem=(int)Runtime.getRuntime().freeMemory();
-//#                                 wobble="Free "+strconv.getSizeString(freemem);
+//#                                 wobble="Free "+(freemem/1000)+" kb";
 //#                             }
 //#endif
                     }
@@ -714,19 +715,16 @@ public abstract class VirtualList
     private boolean itemPageDown() {
         try {
             stickyWindow=false;
-            // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ???? пїЅпїЅпїЅпїЅпїЅ??пїЅпїЅпїЅ пїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅ?
+
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
                 stickyWindow=true;
                 return false;
             }
-            
-            // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅ пїЅ??пїЅпїЅ? (пїЅпїЅ ??пїЅпїЅпїЅпїЅ пїЅпїЅ ??пїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅ??пїЅпїЅ)
+
             if (!cursorInWindow()) return false;
             
             int remainder=itemLayoutY[cursor+1]-win_top;
-            // пїЅпїЅпїЅ??пїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅ?? пїЅпїЅпїЅ пїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅ?
             if (remainder<=winHeight) return false;
-            // пїЅпїЅпїЅ??пїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅ?? пїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅ?
             if (remainder<=2*winHeight) {
                 win_top=remainder-winHeight+win_top+8;
                 return true;
@@ -740,20 +738,15 @@ public abstract class VirtualList
     private boolean itemPageUp() {
         try {
             stickyWindow=false;
-            // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ???? пїЅпїЅпїЅпїЅпїЅ??пїЅпїЅпїЅ пїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅ?
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
                 //stickyWindow=true;
                 return false;
             }
-            
-            // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅ пїЅ??пїЅпїЅ? (пїЅпїЅ ??пїЅпїЅпїЅпїЅ пїЅпїЅ ??пїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅ??пїЅпїЅ)
-            
+
             if (!cursorInWindow()) { return false; }
             
             int remainder=win_top-itemLayoutY[cursor];
-            // пїЅпїЅпїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅ?? пїЅпїЅпїЅ пїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅ?
             if (remainder<=0) return false;
-            // пїЅпїЅпїЅ??пїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅ?? пїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅ?
             if (remainder<=winHeight) {
                 win_top=itemLayoutY[cursor];
                 return true;
@@ -763,11 +756,7 @@ public abstract class VirtualList
         } catch (Exception e) {}
         return false;
     }
-    /**
-     * ??пїЅпїЅпїЅпїЅпїЅпїЅ "??пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ LEFT"
-     * пїЅ пїЅпїЅпїЅ????пїЅ VirtualList пїЅпїЅпїЅпїЅпїЅпїЅ?? пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ??пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
-     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (override) пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ?? пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ??пїЅпїЅпїЅпїЅ
-     */
+
     public void keyLeft() {
         try {
             stickyWindow=false;
@@ -784,11 +773,6 @@ public abstract class VirtualList
         } catch (Exception e) {};
     }
 
-    /**
-     * ??пїЅпїЅпїЅпїЅпїЅпїЅ "??пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ RIGHT"
-     * пїЅ пїЅпїЅпїЅ????пїЅ VirtualList пїЅпїЅпїЅпїЅпїЅпїЅ?? пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ??пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
-     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (override) пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ?? пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ??пїЅпїЅпїЅпїЅ
-     */
     public void keyRight() { 
         try {
             stickyWindow=false;
@@ -819,7 +803,6 @@ public abstract class VirtualList
 
     protected void keyGreen() { eventOk(); }
     
-    /** пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ??пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ??пїЅпїЅпїЅпїЅ */
     protected  void setRotator(){
 //#if (USE_ROTATOR)
 //#         try {
@@ -834,10 +817,6 @@ public abstract class VirtualList
 //#         }
  //#endif
     }
-    // cursor rotator
-//#if (USE_ROTATOR)    
-//#     //private TimerTaskRotate rotator;
-//#endif
     
     protected void drawCursor (Graphics g, int width, int height){
             g.setColor(ColorScheme.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
@@ -877,7 +856,9 @@ public abstract class VirtualList
                     sortVector.setElementAt(left,i+1);
                 }
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            e.printStackTrace(); /* ClassCastException */
+        }
     }
     
     public int getCursor() {
@@ -913,24 +894,23 @@ public abstract class VirtualList
 
 //#if (USE_ROTATOR)    
 //# class TimerTaskRotate extends Thread{
-//#      //private Timer t;
-//#      private int scrollLen;
-//#      private int balloon;
-//#      private int scroll;
-//# 
+//#     //private Timer t;
+//#     private int scrollLen;
+//#     private int balloon;
+//#     private int scroll;
 //#     
-//#      private boolean stop;
-//#      private boolean exit;
-//#      
-//#      private VirtualList attachedList;
-//#  
-//#      private static TimerTaskRotate instance;
+//#     private boolean stop;
+//#     private boolean exit;
+//#     
+//#     private VirtualList attachedList;
+//#     
+//#     private static TimerTaskRotate instance;
 //#     
 //#     private TimerTaskRotate() {
-//#         stop=true;
 //#         exit=false;
-//#          start();
-//#      }
+//#         stop=true;
+//#         start();
+//#     }
 //#     
 //#     public static void startRotate(int max, VirtualList list){
 //#         //Windows mobile J9 hanging test
@@ -940,73 +920,73 @@ public abstract class VirtualList
 //#             return;
 //#         }
 //#         if (instance==null) instance=new TimerTaskRotate();
-//#         list.offset=0;
 //#         if (max<0) {
 //#             instance.destroyTask(); return;
 //#         }
 //#         
-//#          synchronized (instance) {
-//#              list.offset=0;
-//#              instance.scrollLen=max;
+//#         synchronized (instance) {
+//#             list.offset=0;
+//#             instance.scrollLen=max;
 //#             //list.showBalloon=false; //<< uncomment this to disable keep balloon floating when traversing
-//#              instance.balloon=(list.showBalloon)? 6 : 13;
-//#              instance.scroll=7;
-//#              instance.attachedList=list;
-//#              instance.stop=false;
-//#          }
-//#      }
+//#             instance.balloon=(list.showBalloon)? 6 : 13;
+//#             instance.scroll=7;
+//#             instance.attachedList=list;
+//#             instance.stop=false;
+//#         }
+//#     }
 //#     
-//#      public void run() {
-//#          // РїСЂРѕРєСЂСѓС‚РєР° С‚РѕР»СЊРєРѕ СЂР°Р·
-//#          //stickyWindow=false;
-//#          
-//#          while (true) {
-//#              if (exit) return;
-//#              try {  sleep(300);  } catch (Exception e) {}
-//#              if (stop) continue;
-//#              
-//#             boolean redraw = false; 
+//#     public void run() {
+//#         // прокрутка только раз
+//#         //stickyWindow=false;
+//#     
+//#         while (true) {
+//#             if (exit) return;
+//#             try {  sleep(300);  } catch (Exception e) {}
+//#             if (stop) continue;
+//#             
+//#             boolean redraw = false;
 //#             synchronized (this) {
 //#                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
-//# 
+//#                 
 //#                 if (attachedList==null) stop=true;
-//# 
+//#                 
 //#                 if (scrollLen>=0 || balloon>=0) { 
 //#                     stop=false;
 //#                     redraw=true;
 //#                 }
+//#                 
 //#                 if (stop) {
 //#                     if (attachedList!=null) attachedList.offset=0;
 //#                     attachedList.showBalloon=false;
 //#                     attachedList=null;
 //#                     continue;
 //#                 }
-//# 
+//#                 
 //#                 //scroll state machine
 //#                 if (scroll>0) scroll--;
 //#                 if (scroll==0) {
 //#                     if (attachedList.offset>=scrollLen) {
 //#                         scrollLen=-1;
-//#                          attachedList.offset=0;
-//#                      } else attachedList.offset+=20;
-//#                  }
-//# 
+//#                         attachedList.offset=0;
+//#                     } else attachedList.offset+=20;
+//#                 }
+//#                 
 //#                 //balloon state machine
 //#                 if (balloon>=0) balloon--;
 //#                 attachedList.showBalloon=(balloon<7 && balloon>0);
-//# 
-//#                 //if (redraw) attachedList.redraw();
-//#              }
-//#              if (redraw) attachedList.redraw();
-//#                redraw=false;
-//#          }
-//#      }
-//#      public void destroyTask(){
-//#          synchronized (this) { 
-//#              if (attachedList!=null) attachedList.offset=0;
-//#              stop=true; 
+//#                 
+//#             }
+//#             if (redraw) attachedList.redraw();
+//#             redraw=false;
+//#             
+//#         }
+//#     }
+//#     public void destroyTask(){
+//#         synchronized (this) { 
+//#             if (attachedList!=null) attachedList.offset=0;
+//#             stop=true; 
 //#             //attachedList=null;
-//#          }
-//#      }
-//#  }
+//#         }
+//#     }
+//# }
 //#endif

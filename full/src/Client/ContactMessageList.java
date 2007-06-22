@@ -27,7 +27,7 @@
 
 package Client;
 import Conference.MucContact;
-import History.HistoryWrite;
+import History.HistoryAppend;
 import Messages.MessageList;
 import images.RosterIcons;
 import io.NvStorage;
@@ -342,7 +342,7 @@ public class ContactMessageList extends MessageList
             String body=clipboard.getClipBoard();
             String subj=null;
             
-            String id=Time.utcLocalTime();
+            String id=String.valueOf((int) System.currentTimeMillis());
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
             msg.id=id;
             
@@ -532,7 +532,7 @@ public class ContactMessageList extends MessageList
 //#         try {
 //#                 int comp=0; // composing event off
 //#                 Roster r=StaticData.getInstance().roster;
-//#                 String id=Time.utcLocalTime();
+//#                 String id=String.valueOf((int) System.currentTimeMillis());
 //#                 if (text!=null) {
 //#                     String from=StaticData.getInstance().account.toString();
 //#                     
@@ -613,7 +613,7 @@ public class ContactMessageList extends MessageList
          //save
          
            String histRecord="log_"+((contact.nick==null)?contact.getBareJid():contact.nick);
-           new HistoryWrite(body, histRecord);
+           new HistoryAppend(body, histRecord);
     }
 //#endif
 
