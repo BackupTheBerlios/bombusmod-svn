@@ -146,6 +146,8 @@ public class ConfigPrivateStorage
 //#             cs.addChild("eventDelivery", (cf.eventDelivery)?"1":"0");
 //#             
 //#             cs.addChild("transliterateFilenames", (cf.transliterateFilenames)?"1":"0");
+//#             
+//#             cs.addChild("rosterStatus", (cf.rosterStatus)?"1":"0");
 //#         }
 //#         //System.out.println(iq.toString());
 //#         roster.theStream.send(iq);
@@ -234,7 +236,9 @@ public class ConfigPrivateStorage
 //#             
 //#             cf.eventDelivery=getBooleanProperty("eventDelivery",true);
 //#             
-//#             cf.transliterateFilenames=getBooleanProperty("transliterateFilenames",true);
+//#             cf.transliterateFilenames=getBooleanProperty("transliterateFilenames",false);
+//#             
+//#             cf.rosterStatus=getBooleanProperty("rosterStatus",true);
 //#             
 //#             cf.lastProfile=cf.profile=cf.def_profile;
 //#             if (cf.lastProfile==AlertProfile.VIBRA) cf.lastProfile=0;

@@ -102,7 +102,6 @@ public class BookmarkQuery implements JabberBlockListener{
             String roomJid=(String) defs[0].elementAt(i);
             String nick=(String) defs[1].elementAt(i);
             String pass=(String) defs[2].elementAt(i);
-            //if (nick==null) nick="";
             if (pass==null) pass="";
             BookmarkItem bm=new BookmarkItem(roomJid, nick, pass, false);
             bookmarks.addElement(bm);

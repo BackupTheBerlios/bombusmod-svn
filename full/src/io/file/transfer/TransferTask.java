@@ -342,4 +342,8 @@ public class TransferTask
         errMsg="Canceled";
         closeFile();
     }
+
+    public String getSecondString() {
+        return jid;
+    }
 }

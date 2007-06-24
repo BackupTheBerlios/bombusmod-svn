@@ -95,4 +95,8 @@ public class AffiliationItem extends IconTextElement{
     public String getTipString() {
         return reason;
     }	
+
+    public String getSecondString() {
+        return null;
+    }
 }

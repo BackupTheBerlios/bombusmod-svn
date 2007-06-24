@@ -183,6 +183,11 @@ public class Presence extends JabberDataBlock
       return (show.length()==0)? PRS_ONLINE: getChildBlockText("show");
   }
   
+  public String getStatus(){
+      String status=getChildBlockText("status");
+      return (status.length()==0)? null: getChildBlockText("status");
+  }
+  
   public boolean hasEntityCaps()
   {
     JabberDataBlock cc=getChildBlock("c");

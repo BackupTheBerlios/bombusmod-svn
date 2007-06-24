@@ -309,4 +309,8 @@ public class Account extends IconTextElement{
         if (!server.startsWith("gmail")) return false;
         return isSASL();
     }
+
+    public String getSecondString() {
+         return getJid();
+    }
 }

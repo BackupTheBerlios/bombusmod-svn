@@ -188,4 +188,8 @@ public class MessageItem implements
 //#     
 //#     boolean smilesEnabled() {return smiles; }
 //#endif
+
+    public String getSecondString() {
+        return null;
+    }
 }

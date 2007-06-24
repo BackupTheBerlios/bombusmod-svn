@@ -484,3 +484,5 @@ Delete all messages	Удалить все сообщения
 Statistics	Статистика
 Last Messages	Последние сообщения
 Edit/join	Редактировать/Подключить
+Save chat	Сохранить сообщения
+show statuses	показывать статусы

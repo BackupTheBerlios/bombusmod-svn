@@ -318,7 +318,6 @@ public abstract class VirtualList
                 drawMainPanel(g);
             }
         }
-        drawHeapMonitor(g, itemBorder[0]); //heap monitor
 
 //#if ALT_INPUT 
 //#         if (inputbox!=null) {
@@ -367,14 +366,14 @@ public abstract class VirtualList
                 boolean sel=(itemIndex==cursor);
                 
                 int lh=el.getVHeight();
-                
-                // ���� ??��??��
+
                 setAbsOrg(g, 0, itemBorder[0]);
                 g.setClip(0,0, itemMaxWidth, winHeight);    
                 
                 g.translate(0,itemYpos);
                 
                 g.setColor(el.getColorBGnd());
+
                 if (sel) {
                     drawCursor(g, itemMaxWidth, lh); 
                     baloon=g.getTranslateY();
@@ -413,7 +412,9 @@ public abstract class VirtualList
 
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
-
+        
+        drawHeapMonitor(g, itemBorder[0]); //heap monitor
+        
         if (showBalloon) {
             String text=null;
             try {

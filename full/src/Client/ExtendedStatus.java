@@ -74,4 +74,8 @@ public class ExtendedStatus extends IconTextElement{
     public int getPriority() { return priority; }
     public void setPriority(int p) { priority=p; }
 
+    public String getSecondString() {
+        return null;
+    }
+
 }

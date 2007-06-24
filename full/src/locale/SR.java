@@ -501,6 +501,8 @@ public class SR {
 
     public static String MS_SAVE_CHAT = loadString( "Save chat" );
 //#endif
+    public static String MS_SHOW_STATUSES = loadString( "show statuses" );
+
 
 
     

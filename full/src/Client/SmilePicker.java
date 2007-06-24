@@ -200,4 +200,8 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         if (cursor!=lines-1) return;
         if (xCursor >= xLastCnt) xCursor=xLastCnt-1;
     }
+
+    public String getSecondString() {
+        return null;
+    }
 }

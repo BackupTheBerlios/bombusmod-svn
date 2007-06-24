@@ -163,6 +163,8 @@ public class Config {
     public boolean eventDelivery=false;
     
     public boolean transliterateFilenames=false;
+    
+    public boolean rosterStatus=true;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -310,6 +312,8 @@ public class Config {
             
             transliterateFilenames=inputStream.readBoolean();
             
+            rosterStatus=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -434,6 +438,8 @@ public class Config {
             outputStream.writeBoolean(eventDelivery);
             
             outputStream.writeBoolean(transliterateFilenames);
+            
+            outputStream.writeBoolean(rosterStatus);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

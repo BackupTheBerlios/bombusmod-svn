@@ -52,4 +52,8 @@ public class MenuItem extends IconTextElement
     protected int getImageIndex() { return iconIndex;  }
     public int getColor() { return ColorScheme.LIST_INK; }
     public String toString(){ return name; }
+
+    public String getSecondString() {
+        return null;
+    }
 }

@@ -125,4 +125,8 @@ public class BookmarkItem extends IconTextElement{
         sd.roster.sendPresence(name, null, x, false);
         sd.roster.reEnumRoster();
     }
+
+    public String getSecondString() {
+        return null;
+    }
 }

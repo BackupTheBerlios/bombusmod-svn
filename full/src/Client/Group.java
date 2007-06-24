@@ -133,4 +133,8 @@ public class Group extends IconTextElement {
     public int getOnlines() {
         return onlines;
     }
+
+    public String getSecondString() {
+        return null;
+    }
 }

@@ -1550,6 +1550,8 @@ public class Roster
                                name,
                                null,
                                c.processPresence(xmuc, pr) );
+                                        
+                        c.statusString=pr.getStatus();
                         
                         if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1) {
                             messageStore(getContact(from, false), chatPresence);
@@ -1571,8 +1573,10 @@ public class Roster
                         c.entityNode=strconv.replaceCaps(pr.getEntityNode());
                         c.entityVer=pr.getEntityVer();
                     }
+                                    
+                    c.statusString=pr.getStatus();
                     
-                     messageStore(c, m);
+                    messageStore(c, m);
 					
                     if (ti==Presence.PRESENCE_AUTH_ASK) {
                         if (cf.autoSubscribe) {
@@ -1927,7 +1931,16 @@ public class Roster
     }
 
     protected void keyPressed(int keyCode) {
-        super.keyPressed(keyCode);
+       super.keyPressed(keyCode);
+
+       //workaround for SE JP6 - enabling vibra in closed state
+        if (keyCode==SE_FLIPCLOSE_JP6) {
+            display.setCurrent(null);
+            try {
+                Thread.sleep(300);
+            } catch (Exception ex) {}
+            display.setCurrent(this);
+        }
         
         if (keyCode==SE_FLIPCLOSE_JP6 
             || keyCode== SIEMENS_FLIPCLOSE 
@@ -2016,7 +2029,7 @@ public class Roster
             if (atcursor instanceof Contact) c=(Contact)atcursor;
             //
             else c=(Contact)hContacts.firstElement();
-            
+
             Enumeration i=hContacts.elements();
             
             int pass=0; //

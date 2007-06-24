@@ -229,4 +229,5 @@ public class ComplexString extends Vector implements VirtualElement{
 
     public String getTipString() { return null; }
 
+    public String getSecondString() { return null; }
 }

@@ -120,6 +120,8 @@ public class ConfigForm implements
         roster.append(SR.MS_AUTOFOCUS,null);
 	roster.append(SR.MS_AUTH_NEW,null);
         roster.append(SR.MS_SHOW_RESOURCES,null);
+        roster.append(SR.MS_SHOW_STATUSES,null);
+        
 
         boolean ra[]={
             cf.showOfflineContacts,
@@ -129,7 +131,8 @@ public class ConfigForm implements
             cf.collapsedGroups,
             cf.autoFocus,
             cf.autoSubscribe,
-            cf.showResources
+            cf.showResources,
+            cf.rosterStatus
         };
         this.ra=ra;
 
@@ -364,6 +367,7 @@ public class ConfigForm implements
             cf.autoFocus=ra[5];
             cf.autoSubscribe=ra[6];
             cf.showResources=ra[7];
+            cf.rosterStatus=ra[8];
             
             int mvctr=0;
 //#ifdef SMILES

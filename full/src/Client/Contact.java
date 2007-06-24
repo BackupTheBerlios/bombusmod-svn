@@ -77,6 +77,7 @@ public class Contact extends IconTextElement{
     public boolean moveToLatest=false;
 
     public String presence;
+    public String statusString;
     
     public boolean acceptComposing;
     public boolean showComposing=false;
@@ -240,16 +241,6 @@ public class Contact extends IconTextElement{
         if ((cmp=c.priority-priority) !=0) return cmp;
         return c.transport-transport;
     };
-    
-//#ifdef ANTISPAM
-//#     public void addTempMessage(Msg m) {
-//#         tempMsgs.addElement(m);
-//#     }
-//# 
-//#     public final void purgeTemps() {
-//#         tempMsgs=new Vector();
-//#     }
-//#endif
     
     public void addMessage(Msg m) {
         boolean first_replace=false;
@@ -465,5 +456,19 @@ public class Contact extends IconTextElement{
             if (m.id!=null)
                 if (m.id.equals(id)) m.delivered=true;
         }
+    }
+    
+//#ifdef ANTISPAM
+//#     public void addTempMessage(Msg m) {
+//#         tempMsgs.addElement(m);
+//#     }
+//# 
+//#     public final void purgeTemps() {
+//#         tempMsgs=new Vector();
+//#     }
+//#endif
+
+    public String getSecondString() {
+        return (cf.rosterStatus)?statusString:null;
     }
 }

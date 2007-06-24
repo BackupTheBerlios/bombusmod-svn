@@ -29,7 +29,6 @@ package ui;
 import javax.microedition.lcdui.*;
 
 public interface VirtualElement {
-
     public int getVHeight();
 
     public int getVWidth();
@@ -41,6 +40,8 @@ public interface VirtualElement {
     public void drawItem(Graphics g, int ofs, boolean selected);
 
     public String getTipString();
+    
+    public String getSecondString();
 
     public void onSelect();
 }

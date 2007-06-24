@@ -267,5 +267,9 @@ public class Browser extends VirtualList implements CommandListener{
             if (cpi==0) cpi=name.compareTo(fileItem.name);
             return cpi;
         }
+
+        public String getSecondString() {
+            return null;
+        }
     }
 }

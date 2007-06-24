@@ -406,6 +406,10 @@ public class ServiceDiscovery
                 default:
             }
         }
+
+        public String getSecondString() {
+            return null;
+        }
     }
     private void exitDiscovery(){
         stream.cancelBlockListener(this);

@@ -90,6 +90,10 @@ public class AlertProfile extends VirtualList implements CommandListener {
             if (index==defp) s.append(" (default)");
             return s.toString();
         }
+
+        public String getSecondString() { 
+            return null;
+        }
     }
     
     public void commandAction(Command c, Displayable d){

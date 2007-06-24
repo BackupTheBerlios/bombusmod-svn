@@ -31,11 +31,6 @@ import ui.ImageList;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
-
-/**
- *
- * @author Eugene Stahov
- */
 abstract public class IconTextElement implements VirtualElement 
 {
     
@@ -46,62 +41,84 @@ abstract public class IconTextElement implements VirtualElement
     
     ImageList il;
     
+    int heightFirstLine;
+    
     abstract protected int getImageIndex();
-    //abstract public void onSelect();
 
-    public int getBGndRGB(){ return 0xffffff;}
     public int getFontIndex() { return 0;}
     
     private Font getFont() {
-        //if (!Config.getInstance().showResources)
-        //    return FontCache.getRosterNormalFont();
         return (getFontIndex()==0)?
             FontCache.getRosterNormalFont():
             FontCache.getRosterBoldFont();
     }
-    public void drawItem(Graphics g,int ofs,boolean sel){
+    private Font getSmallFont() {
+        return FontCache.getBalloonFont();
+    }
+    
+    public void drawItem(Graphics g,int ofs, boolean sel){
+       g.setFont(getFont());
+       
        String str=null;
        str=toString();
        
-       g.setFont(getFont());
-       if (il!=null) il.drawImage(g, getImageIndex(), 2, imageYOfs);
+       String secstr=null;
+       secstr=getSecondString();
+       
+       if (sel && secstr!=null)       
+            itemHeight=heightFirstLine+getSmallFont().getHeight();
+       else 
+            itemHeight=heightFirstLine;
+       
+       if (il!=null) 
+           il.drawImage(g, getImageIndex(), 2, imageYOfs);
        g.clipRect(4+imgWidth, 0, g.getClipWidth(), itemHeight);
-       g.drawString(str,4+imgWidth-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
+       g.drawString(str,4+imgWidth-ofs, fontYOfs+1, Graphics.TOP|Graphics.LEFT);
+       if (sel && secstr!=null) {
+           g.setFont(getSmallFont());
+           g.drawString(secstr,4+imgWidth-ofs, fontYOfs+getFont().getHeight()+1, Graphics.TOP|Graphics.LEFT);
+       }
     }
+
     public int getVWidth(){ 
         try {
-            return getFont().stringWidth(toString())+imgWidth+4;            
+            int wst=0;
+            int wft=0;
+            if (getSecondString()!=null)
+                wst=getSmallFont().stringWidth(getSecondString())+imgWidth+4;
+            
+            wft=getFont().stringWidth(toString());
+            
+            return ((wft>wst)?wft:wst)+imgWidth+4;            
         } catch (Exception e) {
             return 0;
         }
     }
-    //public int getItemCount()
-    public int getVHeight(){ return itemHeight;}
-    public int getColorBGnd(){ return ColorScheme.LIST_BGND;}
-    public void onSelect(){};
     
-    /*public void eventOk(){
-        if (atCursor!=null) atCursor.onSelect();
+    public int getVHeight(){ 
+        return itemHeight;
     }
-     */
-/** Creates a new instance of IconTextList */
+    public int getColorBGnd(){ return ColorScheme.LIST_BGND;}
+
+    public void onSelect(){ };
+    
     public IconTextElement(ImageList il) {
         super();
         this.il=il;
-        int hf=FontCache.getRosterNormalFont().getHeight();
-        int hi=0;
+        int heightFont=FontCache.getRosterNormalFont().getHeight();
+        int heightImage=0;
 	if (il!=null){
-	    hi=il.getHeight();
+	    heightImage=il.getHeight();
             imgWidth=il.getWidth();
 	}
-        itemHeight=(hi>hf)?hi:hf;
-        imageYOfs=(itemHeight-hi)/2;
-        fontYOfs=(itemHeight-hf)/2;
+        itemHeight=heightFirstLine=(heightImage>heightFont)?heightImage:heightFont;
+        imageYOfs=(itemHeight-heightImage)/2;
+        fontYOfs=(itemHeight-heightFont)/2;
     }
-    
+
     public String getTipString() {
         return null;
     }
     
-    public int compare(IconTextElement right) { return 0; /* stub */ }
+    public int compare(IconTextElement right) { return 0; }
 }

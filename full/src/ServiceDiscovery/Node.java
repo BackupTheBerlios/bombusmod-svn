@@ -53,5 +53,9 @@ public class Node extends IconTextElement{
     public String getNode() { return node; }
 
     public String toString() { return (name!=null)? name:node; }
+
+    public String getSecondString() {
+        return null;
+    }
     
 }
