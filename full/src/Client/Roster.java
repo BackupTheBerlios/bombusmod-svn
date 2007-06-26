@@ -1283,6 +1283,7 @@ public class Roster
                 if (oob!=null) body+=oob;
                 if (body.length()==0) body=null; 
                 String subj=message.getSubject().trim(); if (subj.length()==0) subj=null;
+				String type=message.getTypeAttribute();
                 
                 String tStamp=message.getTimeStamp();
 		
@@ -1293,7 +1294,7 @@ public class Roster
 		int mType=Msg.MESSAGE_TYPE_IN;
                 
                 try { // type=null
-		    String type=message.getTypeAttribute();
+		    //String type=message.getTypeAttribute();
                     if (type.equals("groupchat")) {
                         groupchat=true;
                         start_me=0; // добавить ник в начало
@@ -1340,7 +1341,7 @@ public class Roster
                         }
                     }
                     if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
-                } catch (Exception e) {}
+                } catch (Exception e) { type="chat"; } //force type to chat
                 
                 try {
                     //TODO: invitations
@@ -1380,7 +1381,8 @@ public class Roster
                 
                 boolean compose=false;
 
-                JabberDataBlock x=message.getChildBlock("x");
+                //JabberDataBlock x=message.getChildBlock("x");
+				JabberDataBlock x=(type.equals("chat"))? message.getChildBlock("x") : null;
 
                 JabberDataBlock delivery=data.findNamespace(Contact.XEP184_NS);
                 if (delivery!=null) {

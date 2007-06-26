@@ -49,7 +49,7 @@ public class AccountRegister
     private Account raccount;
     private JabberStream theStream ;
     private SplashScreen spl=SplashScreen.getInstance();
-    //private Command cmdOK=new Command("Cancel",Command.BACK, 2);
+    private Command cmdOK=new Command(SR.MS_OK,Command.BACK, 2);
     private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK, 2);
     
     /** Creates a new instance of AccountRegister */
@@ -102,7 +102,10 @@ public class AccountRegister
             int pgs=100;
             String type=data.getTypeAttribute();
             String mainbar=SR.MS_DONE; 
-            if (!type.equals("result")) {
+            if (type.equals("result")) {
+                spl.removeCommand(cmdCancel);
+                spl.addCommand(cmdOK);
+            } else {
                 pgs=0;
                 mainbar=SR.MS_ERROR_ +((JabberDataBlock)
                     data.getChildBlock("error").
