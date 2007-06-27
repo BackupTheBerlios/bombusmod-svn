@@ -503,6 +503,8 @@ public class SR {
 //#endif
     public static String MS_SHOW_STATUSES = loadString( "show statuses" );
 
+    public static String MS_USER_MOOD = loadString( "User mood" );
+
 
 
     

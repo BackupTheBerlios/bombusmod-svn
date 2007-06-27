@@ -195,7 +195,6 @@ public class ServiceDiscovery
     
     public int blockArrived(JabberDataBlock data) {
         //System.out.println("<< "+data.toString());
-        
         if (!(data instanceof Iq)) return JabberBlockListener.BLOCK_REJECTED;
         String id=data.getAttribute("id");
         if (!id.startsWith("disco")) return JabberBlockListener.BLOCK_REJECTED;

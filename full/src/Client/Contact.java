@@ -31,6 +31,7 @@ import Conference.MucContact;
 //# import History.HistoryStorage;
 //#endif
 import History.HistoryAppend;
+import UserMood.MoodLocale;
 import images.RosterIcons;
 import ui.ColorScheme;
 import ui.Time;
@@ -77,7 +78,7 @@ public class Contact extends IconTextElement{
     public boolean moveToLatest=false;
 
     public String presence;
-    public String statusString;
+    public String statusString=null;
     
     public boolean acceptComposing;
     public boolean showComposing=false;
@@ -124,7 +125,11 @@ public class Contact extends IconTextElement{
     public boolean hasEntity;
     public String entityNode;
     public String entityVer;
-    
+
+//#ifdef MOOD
+//#     public String mood=null;
+//#     public String moodText=null;
+//#endif
     private Config cf=Config.getInstance();
 
     protected Contact (){
@@ -469,6 +474,41 @@ public class Contact extends IconTextElement{
 //#endif
 
     public String getSecondString() {
-        return (cf.rosterStatus)?statusString:null;
+        StringBuffer s=new StringBuffer();
+        if (cf.rosterStatus) {
+//#ifdef MOOD
+//#             if (mood!=null && cf.userMoods) {
+//#                 s.append(MoodLocale.loadString(mood));
+//#                 if (moodText!=null) {
+//#                     s.append(" (");
+//#                     s.append(moodText);
+//#                     s.append(")");
+//#                 }
+//#             } else
+//#endif
+            if (statusString!=null)
+                s.append(statusString);
+            
+            return (s.toString().length()<1)?null:s.toString();
+        }
+        s=null;
+        return null;
     }
+    
+    
+//#ifdef MOOD
+//# //    public String getUserMood() {
+//# //        return mood;
+//# //    }
+//#     public void setUserMood (String mood) {
+//#         this.mood=mood;
+//#     }
+//#     
+//# //    public String getUserMoodText() {
+//# //        return moodText;
+//# //    }
+//#     public void setUserMoodText(String moodText) {
+//#         this.moodText=moodText;
+//#     }
+//#endif
 }

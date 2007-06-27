@@ -27,6 +27,9 @@ package Client;
 //#ifdef NEW_MENU
 //# import Conference.Bookmarks;
 //# import Conference.MucContact;
+//#ifdef MOOD
+//# import UserMood.MoodSelect;
+//#endif
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -48,6 +51,8 @@ public class RosterMenu
 //#     
 //#     private Config cf=Config.getInstance();
 //#     private StaticData sd=StaticData.getInstance();
+//#     
+//#     private Roster roster=StaticData.getInstance().roster;
 //# 
 //#     /** Creates a new instance of RosterToolsMenu */
 //#     public RosterMenu(Display display, Object o) {
@@ -56,23 +61,27 @@ public class RosterMenu
 //#         addItem(SR.MS_ITEM_ACTIONS, 0, 0x0f27);
 //#         addItem(SR.MS_STATUS_MENU, 1, 0x0f16);
 //#         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x0f21);
-//#         addItem(SR.MS_ALERT_PROFILE_CMD, 3, 0x0f17);
-//#         addItem(SR.MS_CONFERENCE, 4, RosterIcons.ICON_GROUPCHAT_INDEX);
-//#ifdef ARCHIVE
-//#         addItem(SR.MS_ARCHIVE, 5,0x0f12);
+//#ifdef MOOD
+//#         if (roster.useUserMood)
+//#             addItem(SR.MS_USER_MOOD, 3, 0x0f16);
 //#endif
-//#         addItem(SR.MS_ADD_CONTACT, 6, 0x0f02);
-//#         addItem(SR.MS_TOOLS, 7,0x0f24);    
-//#         addItem(SR.MS_ACCOUNT_, 8,0x0f01);
-//#         addItem(SR.MS_ABOUT, 9,0x0f04);
-//#         addItem(SR.MS_CLEAN_ALL_MESSAGES, 10, RosterIcons.ICON_TRASHCAN_INDEX);
-//#         addItem(SR.MS_APP_QUIT, 11,0x0f22);
+//#         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x0f17);
+//#         addItem(SR.MS_CONFERENCE, 5, RosterIcons.ICON_GROUPCHAT_INDEX);
+//#ifdef ARCHIVE
+//#         addItem(SR.MS_ARCHIVE, 6,0x0f12);
+//#endif
+//#         addItem(SR.MS_ADD_CONTACT, 7, 0x0f02);
+//#         addItem(SR.MS_TOOLS, 8,0x0f24);    
+//#         addItem(SR.MS_ACCOUNT_, 9,0x0f01);
+//#         addItem(SR.MS_ABOUT, 10,0x0f04);
+//#         addItem(SR.MS_CLEAN_ALL_MESSAGES, 110, RosterIcons.ICON_TRASHCAN_INDEX);
+//#         addItem(SR.MS_APP_QUIT, 12,0x0f22);
 //#     
 //# 	attachDisplay(display);
 //#     }
 //#     public void eventOk(){
 //# 	destroyView();
-//#         boolean connected= ( StaticData.getInstance().roster.theStream != null );
+//#         boolean connected= ( roster.theStream != null );
 //# 	MenuItem me=(MenuItem) getFocusedObject();
 //#         
 //# 	if (me==null)  return;
@@ -80,29 +89,38 @@ public class RosterMenu
 //# 	int index=me.index;
 //# 	switch (index) {
 //# 	    case 0: //actions
-//#                 if (connected) new RosterItemActions(display, o, -1).setParentView(StaticData.getInstance().roster); 
+//#                 if (connected) {
+//#                     new RosterItemActions(display, o, -1).setParentView(roster);
+//#                 } 
 //#                 break;
 //# 	    case 1: //status
 //#                 StaticData.getInstance().roster.reconnectCount=0; 
-//# 				new StatusSelect(display, null).setParentView(StaticData.getInstance().roster);
+//# 		new StatusSelect(display, null).setParentView(roster);
 //# 		break;
 //#             case 2: //active
-//#                 new ActiveContacts(display, null).setParentView(StaticData.getInstance().roster);
+//#                 new ActiveContacts(display, null).setParentView(roster);
 //# 		break;
-//#             case 3: //alert
-//#                 new AlertProfile(display).setParentView(StaticData.getInstance().roster);
-//# 		break;
-//#             case 4: //conference
+//#ifdef MOOD
+//#             case 3: //user mood
 //#                 if (connected) {
-//#                    new Bookmarks(display, null).setParentView(StaticData.getInstance().roster);
+//#                     new MoodSelect(display, null).setParentView(roster);
+//#                 }
+//# 		break;
+//#endif
+//#             case 4: //alert
+//#                 new AlertProfile(display).setParentView(roster);
+//# 		break;
+//#             case 5: //conference
+//#                 if (connected) {
+//#                    new Bookmarks(display, null).setParentView(roster);
 //#                 }
 //#                 break;
 //#ifdef ARCHIVE
-//#             case 5: //archive
-//#                 new ArchiveList(display, null, -1).setParentView(StaticData.getInstance().roster);
+//#             case 6: //archive
+//#                 new ArchiveList(display, null, -1).setParentView(roster);
 //# 		break;
 //#endif
-//#             case 6: {//add contact
+//#             case 7: {//add contact
 //#                 if (connected)  {
 //#                     Contact cn=null;
 //#                     if (o instanceof Contact) {
@@ -114,21 +132,21 @@ public class RosterMenu
 //#                     break;
 //#                 }
 //#             }
-//#             case 7: //tools
-//#                 new RosterToolsMenu(display).setParentView(StaticData.getInstance().roster);
+//#             case 8: //tools
+//#                 new RosterToolsMenu(display).setParentView(roster);
 //# 		break;
-//#             case 8: //account
-//#                 new AccountSelect(display, false).setParentView(StaticData.getInstance().roster);
+//#             case 9: //account
+//#                 new AccountSelect(display, false).setParentView(roster);
 //# 		break; 
-//#             case 9: //about
+//#             case 10: //about
 //#                 new Info.InfoWindow(display);
 //# 		break; 
-//#             case 10: //cleanup All Histories
-//#                 StaticData.getInstance().roster.cleanupAllHistories();
+//#             case 11: //cleanup All Histories
+//#                 roster.cleanupAllHistories();
 //# 		break; 
-//# 	    case 11: {//quit
-//#                 StaticData.getInstance().roster.destroyView();
-//#                 StaticData.getInstance().roster.logoff();
+//# 	    case 12: {//quit
+//#                 roster.destroyView();
+//#                 roster.logoff();
 //#                 BombusMod.getInstance().notifyDestroyed();
 //#                 return;
 //# 	    }

@@ -126,6 +126,8 @@ public class Bookmarks
     }
     
     public void eventOk(){
+        if (getItemCount()==0) return;
+        
         BookmarkItem join=(BookmarkItem)getFocusedObject();
         if (join==null) return;
         if (join.isUrl) return;
@@ -150,18 +152,25 @@ public class Bookmarks
     }
     
     public void commandAction(Command c, Displayable d){
+        if (c==cmdCancel) exitBookmarks();
+        if (c==cmdNew) { 
+            new ConferenceForm(display);
+            return;
+        }
+
 	if (getItemCount()==0) return;
         String roomJid=((BookmarkItem)getFocusedObject()).getJid();
-        
-        if (c==cmdCancel) exitBookmarks();
-        else if (c==cmdJoin) eventOk();
+
+        if (c==cmdJoin) eventOk();
         else if (c==cmdAdvJoin) {
             BookmarkItem join=(BookmarkItem)getFocusedObject();
             new ConferenceForm(display, join, cursor);
         }
-	else if (c==cmdNew) new ConferenceForm(display);
 
-        else if (c==cmdDel) deleteBookmark();
+        else if (c==cmdDel) {
+            deleteBookmark();
+            return;
+        }
 //#ifdef SERVICE_DISCOVERY
 //#         else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
 //#endif

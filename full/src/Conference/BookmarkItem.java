@@ -96,7 +96,7 @@ public class BookmarkItem extends IconTextElement{
         data.setAttribute("name", name);
         data.setAttribute((isUrl)?"url":"jid", jid);
         data.setAttribute("autojoin", (autojoin)?"true":"false");
-        if (nick.length()>0) data.addChild("nick",nick);
+        if (nick!=null) if (nick.length()>0) data.addChild("nick",nick);
         if (password.length()>0) data.addChild("password",password);
 
         return data;

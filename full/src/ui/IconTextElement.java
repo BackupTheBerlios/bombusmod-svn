@@ -65,9 +65,9 @@ abstract public class IconTextElement implements VirtualElement
        String secstr=null;
        secstr=getSecondString();
        
-       if (sel && secstr!=null)       
-            itemHeight=heightFirstLine+getSmallFont().getHeight();
-       else 
+       if (sel && secstr!=null) {
+                itemHeight=heightFirstLine+getSmallFont().getHeight();
+       } else 
             itemHeight=heightFirstLine;
        
        if (il!=null) 
@@ -85,7 +85,7 @@ abstract public class IconTextElement implements VirtualElement
             int wst=0;
             int wft=0;
             if (getSecondString()!=null)
-                wst=getSmallFont().stringWidth(getSecondString())+imgWidth+4;
+                wst=getSmallFont().stringWidth(getSecondString())+imgWidth+2;
             
             wft=getFont().stringWidth(toString());
             

@@ -31,7 +31,6 @@ import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
-import Info.Phone;
 import Stats.Stats;
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
@@ -120,6 +119,10 @@ public class Roster
     
     public Vector bookmarks;
     
+    public Vector serverFeatures;
+//#ifdef MOOD
+//#     public boolean useUserMood=false;
+//#endif
     public static boolean autoAway=false;
     public static boolean autoXa=false;
 
@@ -1045,6 +1048,7 @@ public class Roster
         }
         //query bookmarks
         theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+        theStream.addBlockListener(new DiscoInfo());
     }
 
     public void bindResource(String myJid) {
@@ -1054,7 +1058,6 @@ public class Roster
 
     public int blockArrived( JabberDataBlock data ) {
         try {
-            
             if( data instanceof Iq ) {
                 //System.out.println(data.toString());
                 
@@ -1275,6 +1278,36 @@ public class Roster
             else if( data instanceof Message ) {
                 querysign=false;
                 boolean highlite=false;
+                
+//#ifdef MOOD
+//#                 try {
+//#                     //TODO: moods
+//#                     JabberDataBlock xmlns=data.findNamespace("http://jabber.org/protocol/pubsub#event");
+//#                     
+//#                     JabberDataBlock items=xmlns.getChildBlock("items");
+//# 
+//#                     if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
+//#                         //System.out.print("usermood for ");
+//#                         String from=data.getAttribute("from");
+//#                         Contact c=getContact(from, true);
+//#                         if (items.getChildBlock("item").getAttribute("id")!=null) {
+//#                             JabberDataBlock mood=items.getChildBlock("item").getChildBlock("mood");
+//#                             
+//#                             //System.out.print(from+" is: ");
+//#                             String userMood=((JabberDataBlock)mood.getChildBlocks().firstElement()).getTagName();
+//#                             //System.out.println(userMood);
+//#                             c.setUserMood(userMood);
+//#                             
+//#                             //System.out.println("("+mood.getChildBlock("text").getText()+")");
+//#                             c.setUserMoodText(mood.getChildBlock("text").getText());
+//#                         } else {
+//#                             c.setUserMood("");
+//#                             c.setUserMoodText("");
+//#                         }
+//#                     }
+//#                 } catch (Exception e) { /*System.out.println("not mood");*/ }
+//#endif
+                
                 Message message = (Message) data;
                 
                 String from=message.getFrom();
@@ -1283,7 +1316,7 @@ public class Roster
                 if (oob!=null) body+=oob;
                 if (body.length()==0) body=null; 
                 String subj=message.getSubject().trim(); if (subj.length()==0) subj=null;
-				String type=message.getTypeAttribute();
+		String type=message.getTypeAttribute();
                 
                 String tStamp=message.getTimeStamp();
 		
@@ -1315,6 +1348,7 @@ public class Roster
                             //sendConferencePresence();
                         }
                     }
+                    
                     if (type.equals("error")) {
                         
                         String errCode=message.getChildBlock("error").getAttribute("code");
@@ -1361,7 +1395,7 @@ public class Roster
                     body=(inviteFrom==null)?"":inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
                     
                 } catch (Exception e) {}
-                
+
                 Contact c=getContact(from, true);
 
                 if (name==null) name=c.getName();
@@ -2154,7 +2188,10 @@ public class Roster
 //# 
 //#             }
 //#             mess.append((ver!=null)?ver:"");
-//#             mess.append((contact.presence!=null)?"\nstatus: "+contact.presence:"");
+//#             String ss=contact.getSecondString();
+//#             if (ss!=null)
+//#                 mess.append((ss.length()>0)?"\n"+ss:"");
+//#             ss=null;
 //#             mess.append((!muc)?"\nsubscription: "+contact.subscr:"");
 //#             
 //#         } else {
@@ -2167,13 +2204,15 @@ public class Roster
 //#endif
     
     public void logoff(){
-        if (isLoggedIn())
+        if (isLoggedIn()) {
+            try {
+                 ExtendedStatus es=StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);
+                 sendPresence(Presence.PRESENCE_OFFLINE, es.getMessage());
+            } catch (Exception e) { }
+        }
         try {
-             ExtendedStatus es=StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);
-             sendPresence(Presence.PRESENCE_OFFLINE, es.getMessage());
+             Stats.getInstance().save();
         } catch (Exception e) { }
-
-        Stats.getInstance().save();
     };
 
    

@@ -165,7 +165,9 @@ public class Config {
     public boolean transliterateFilenames=false;
     
     public boolean rosterStatus=true;
-
+//#ifdef MOOD
+//#     public boolean userMoods=true;
+//#endif
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
