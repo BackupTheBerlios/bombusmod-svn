@@ -11,3 +11,4 @@
 //#ifdef ANTISPAM
 //#ifdef SERVER_SIDE_CONFIG
 //#ifdef REQUEST_VOICE
+//#ifdef MOOD
