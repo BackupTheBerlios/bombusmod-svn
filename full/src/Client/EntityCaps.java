@@ -59,7 +59,7 @@ public class EntityCaps implements JabberBlockListener{
         c.setAttribute("ver", Version.getVersionNumber());
 //#ifdef MOOD
 //#         if (Config.getInstance().userMoods)
-//#             c.setAttribute("ext", "ep-notify");
+//#             c.setAttribute("ext", "mood+notify");
 //#endif
         return c;
     }
