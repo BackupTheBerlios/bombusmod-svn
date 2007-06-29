@@ -77,9 +77,9 @@ public class EntityCaps implements JabberBlockListener{
         "http://jabber.org/protocol/si",
         "http://jabber.org/protocol/si/profile/file-transfer",
 //#ifdef MOOD
-//#         "http://jabber.org/protocol/mood+notify" //!!! mood+notify
-//#         //"http://jabber.org/protocol/mood" //!!! mood
+//#         "http://jabber.org/protocol/mood+notify", //!!! mood+notify
+//#         //"http://jabber.org/protocol/mood", //!!! mood
 //#endif
-        //, "http://jabber.org/protocol/ibb"
+        "http://jabber.org/protocol/ibb"
     };
 }

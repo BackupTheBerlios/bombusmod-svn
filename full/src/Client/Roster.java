@@ -32,6 +32,7 @@ import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 import Stats.Stats;
+import UserMood.MoodSelect;
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -77,6 +78,9 @@ public class Roster
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
     private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
+//#ifdef MOOD
+//#     private Command cmdUserMood=new Command(SR.MS_USER_MOOD, Command.SCREEN, 7);
+//#endif
     private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
     private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
 //#ifdef ARCHIVE
@@ -233,6 +237,7 @@ public class Roster
                 addCommand(cmdStatus);
                 addCommand(cmdActions);
                 addCommand(cmdActiveContacts);
+
                 addCommand(cmdAlert);
                 addCommand(cmdAdd);
                 addCommand(cmdConference);
@@ -257,6 +262,10 @@ public class Roster
     }
     
     void addOptionCommands(){
+//#ifdef MOOD
+//#         if (useUserMood)
+//#             addCommand(cmdUserMood);
+//#endif
         if (cf.allowMinimize) addCommand(cmdMinimize);
     }
     public void setProgress(String pgs,int percent){
@@ -2215,20 +2224,24 @@ public class Roster
         } catch (Exception e) { }
     };
 
+    public void quit() {
+        autostatus.destroyTask();
+        if (ph.PhoneManufacturer()==ph.SONYE)
+            selight.destroyTask();
+
+        cf.isbottom=VirtualList.isbottom; //save panels state on exit       
+        cf.saveToStorage();
+
+        destroyView();
+        logoff();
+
+        BombusMod.getInstance().notifyDestroyed();
+    }
    
     public void commandAction(Command c, Displayable d){
         userActivity();
         if (c==cmdQuit) {
-            autostatus.destroyTask();
-            selight.destroyTask();
-            
-            cf.isbottom=VirtualList.isbottom; //save panels state on exit       
-            cf.saveToStorage();
-            
-            destroyView();
-            logoff();
-
-	    BombusMod.getInstance().notifyDestroyed();
+            quit();
             return;
         }
         if (c==cmdMinimize) { BombusMod.getInstance().hideApp(true);  }
@@ -2252,6 +2265,10 @@ public class Roster
         // stream-sensitive commands
         // check for closed socket
         if (!isLoggedIn()) return;
+        
+        if (c==cmdUserMood) {
+            new MoodSelect(display, null);
+        }
         
         if (c==cmdConference) { 
             //new ConferenceForm(display); 

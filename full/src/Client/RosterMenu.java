@@ -145,9 +145,7 @@ public class RosterMenu
 //#                 roster.cleanupAllHistories();
 //# 		break; 
 //# 	    case 12: {//quit
-//#                 roster.destroyView();
-//#                 roster.logoff();
-//#                 BombusMod.getInstance().notifyDestroyed();
+//#                 roster.quit();
 //#                 return;
 //# 	    }
 //# 	}

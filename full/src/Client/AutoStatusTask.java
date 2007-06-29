@@ -28,10 +28,8 @@ package Client;
 
 public class AutoStatusTask implements Runnable {    
     private boolean stop;
-    private long timeAwayEvent;
-    private long timeXaEvent;
-
-    private Config cf=Config.getInstance();
+    private long timeAwayEvent=0;
+    private long timeXaEvent=0;
     
     public AutoStatusTask() {
         new Thread(this).start();
@@ -39,13 +37,11 @@ public class AutoStatusTask implements Runnable {
     
     public void setTimeEvent(long delay){
         timeAwayEvent=(delay==0)? 0:delay+System.currentTimeMillis();
-        timeXaEvent=(delay==0)? 0:(delay*3)+System.currentTimeMillis();
+        timeXaEvent=(delay==0)? 0:(delay*2)+System.currentTimeMillis();
     }
 
     boolean isAwayTimerSet() { return (timeAwayEvent!=0); }
-/*
-    boolean isXaTimerSet() { return (timeXaEvent!=0); }
-*/
+
     public void destroyTask(){
         stop=false;
     }
@@ -59,31 +55,28 @@ public class AutoStatusTask implements Runnable {
             }
        
             if (timeAwayEvent==0 && timeXaEvent==0) continue;
-            //if (timeXaEvent==0) continue;
             
-            long timeAwayRemained=System.currentTimeMillis()-timeAwayEvent;
-            long timeXaRemained=System.currentTimeMillis()-timeXaEvent;
+            long timeAwayRemained=(timeAwayEvent!=0)?System.currentTimeMillis()-timeAwayEvent:0;
+            long timeXaRemained=(timeXaEvent!=0)?System.currentTimeMillis()-timeXaEvent:0;
 
-            //if (timeAwayRemained<0) System.out.println("AWAY: "+timeAwayRemained);
+            if (timeAwayEvent!=0) System.out.println("AWAY: "+timeAwayRemained);
             
-            if ((timeAwayRemained>0 && timeAwayEvent!=0) && timeXaRemained<0) {
+            if (timeAwayRemained>0 && timeAwayEvent!=0) {
                 timeAwayEvent=0;
-                //System.out.println("away"); //away
+                System.out.println("away"); //away
                 StaticData.getInstance().roster.setAutoAway(); //away
             }
             
-            //if (timeAwayRemained>0 && timeXaRemained<0) System.out.println("XA: "+timeXaRemained);
+            if (timeAwayEvent==0 && timeXaEvent!=0) System.out.println("XA: "+timeXaRemained);
             
-            if (timeAwayRemained>0 && timeXaRemained>0) {
+            if (timeAwayEvent==0 && timeXaRemained>0) {
                 timeXaEvent=0;
-                //System.out.println("xa"); //xa
+                System.out.println("xa"); //xa
                 StaticData.getInstance().roster.setAutoXa(); //xa
             }
 
-            if (timeAwayRemained<0) continue;
-            if (timeXaRemained<0) continue;
-
-            
+            //if (timeAwayRemained<0) continue;
+            //if (timeXaRemained<0) continue;
         }
     }
 

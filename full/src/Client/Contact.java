@@ -371,10 +371,12 @@ public class Contact extends IconTextElement{
 //#         purgeTemps();
 //#endif
         msgs=new Vector();
-        if (vcard!=null) {
-            vcard.clearVCard();
-            vcard=null;
-        }
+        try {
+            if (vcard!=null) {
+                vcard.clearVCard();
+                vcard=null;
+            }
+        } catch (Exception e) { }
         resetNewMsgCnt();
     }
 
@@ -477,11 +479,11 @@ public class Contact extends IconTextElement{
         StringBuffer s=new StringBuffer();
         if (cf.rosterStatus) {
 //#ifdef MOOD
-//#             if (mood!=null && cf.userMoods) {
-//#                 s.append(MoodLocale.loadString(mood));
-//#                 if (moodText!=null) {
+//#             if (getUserMood()!=null) {
+//#                 s.append(MoodLocale.loadString(getUserMood()));
+//#                 if (getUserMoodText()!=null) {
 //#                     s.append(" (");
-//#                     s.append(moodText);
+//#                     s.append(getUserMoodText());
 //#                     s.append(")");
 //#                 }
 //#             } else
@@ -497,16 +499,16 @@ public class Contact extends IconTextElement{
     
     
 //#ifdef MOOD
-//# //    public String getUserMood() {
-//# //        return mood;
-//# //    }
+//#     public String getUserMood() {
+//#         return mood;
+//#     }
 //#     public void setUserMood (String mood) {
 //#         this.mood=mood;
 //#     }
 //#     
-//# //    public String getUserMoodText() {
-//# //        return moodText;
-//# //    }
+//#     public String getUserMoodText() {
+//#         return moodText;
+//#     }
 //#     public void setUserMoodText(String moodText) {
 //#         this.moodText=moodText;
 //#     }
