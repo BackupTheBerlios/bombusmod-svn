@@ -505,6 +505,10 @@ public class SR {
 
     public static String MS_USER_MOOD = loadString( "User mood" );
 
+    public final static String MS_NIL_DROP_MP="drop all";
+    public final static String MS_NIL_DROP_P="receive messages";
+    public final static String MS_NIL_ALLOW_ALL="messages & presences";
+     
 
 
     

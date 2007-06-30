@@ -168,6 +168,9 @@ public class Config {
 //#ifdef MOOD
 //#     public boolean userMoods=true;
 //#endif
+    
+    public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -257,7 +260,7 @@ public class Config {
             
             autoFocus=inputStream.readBoolean();
             
-            inputStream.readInt(); //lang
+            notInListDropLevel=inputStream.readInt();
             
             storeConfPresence=inputStream.readBoolean();
             
@@ -383,7 +386,7 @@ public class Config {
             
             outputStream.writeBoolean(autoFocus);
             
-            outputStream.writeInt(0); //lang
+            outputStream.writeInt(notInListDropLevel /*keepAlive*/);
             
             outputStream.writeBoolean(storeConfPresence); 
 

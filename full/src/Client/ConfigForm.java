@@ -53,6 +53,8 @@ public class ConfigForm implements
     ChoiceGroup roster;
     ChoiceGroup message;
     
+    ChoiceGroup nil;
+    
     NumberField MessageLimit;
     
     ChoiceGroup startup;
@@ -137,6 +139,12 @@ public class ConfigForm implements
         this.ra=ra;
 
         roster.setSelectedFlags(ra);
+
+        nil=new ChoiceGroup(SR.MS_NOT_IN_LIST, ChoiceGroup.POPUP);
+        nil.append(SR.MS_NIL_DROP_MP, null);
+        nil.append(SR.MS_NIL_DROP_P, null);
+        nil.append(SR.MS_NIL_ALLOW_ALL, null);
+        nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel, true);
 
         message=new ChoiceGroup(SR.MS_MESSAGES, Choice.MULTIPLE);
 //#ifdef SMILES
@@ -240,6 +248,9 @@ public class ConfigForm implements
         font2.setSelectedIndex(cf.font2/8, true);
 
         f.append(roster);
+        
+        f.append(nil);
+        
         f.append(font1);
 
         f.append(message);
@@ -359,6 +370,9 @@ public class ConfigForm implements
 //#if SERVER_SIDE_CONFIG  
 //#             settings.getSelectedFlags(se);
 //#endif 
+            
+            cf.notInListDropLevel=nil.getSelectedIndex();
+            
             cf.showOfflineContacts=ra[0];
             cf.selfContact=ra[1];
             cf.showTransports=ra[2];

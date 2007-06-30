@@ -60,11 +60,6 @@ import Conference.ConferenceForm;
 //# import io.file.transfer.TransferDispatcher;
 //#endif
 
-/**
- *
- * @author Eugene Stahov
- */
-//public class Roster implements JabberListener, VList.Callback{
 public class Roster
         extends VirtualList
         implements
@@ -159,6 +154,15 @@ public class Roster
     
     private AutoStatusTask autostatus;
     private SELightTask selight;
+
+    private final static int SOUND_FOR_ME=500;
+    private final static int SOUND_FOR_CONFERENCE=800;
+    private final static int SOUND_MESSAGE=1000;
+    private final static int SOUND_START_UP=777;
+    private final static int SOUND_FOR_VIP=100;
+    private final static int SOUND_COMPOSING=888;
+    private final static int SOUND_OUTGOING=999;
+            
     
     /**
      * Creates a new instance of Roster
@@ -182,7 +186,7 @@ public class Roster
             } catch( Exception e ) { }
         }
         
-        playNotify(777);
+        playNotify(SOUND_START_UP);
         
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
@@ -942,7 +946,7 @@ public class Roster
             if (event.getChildBlocks()!=null) message.addChild(event);
             theStream.send( message );
             lastMessageTime=Time.localTime();
-            playNotify(999);
+            playNotify(SOUND_OUTGOING);
         } catch (Exception e) { e.printStackTrace(); }
         
         messageActivity();
@@ -1405,7 +1409,8 @@ public class Roster
                     
                 } catch (Exception e) {}
 
-                Contact c=getContact(from, true);
+                Contact c=getContact(from, cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES);
+                if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
 
                 if (name==null) name=c.getName();
                 // /me
@@ -1447,7 +1452,7 @@ public class Roster
                     if (compose) c.acceptComposing=true ; 
                     if (body!=null) compose=false;
                     if (compose) {
-                        playNotify(888);
+                        playNotify(SOUND_COMPOSING);
                     }
                     c.setComposing(compose);
 
@@ -1607,11 +1612,11 @@ public class Roster
                     
                     } catch (Exception e) { /*e.printStackTrace();*/ }
                 } else {
-                    boolean enNIL=false;
+                    boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
                     if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
                     
                     Contact c=getContact(from, enNIL); 
-                    if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop presence
+                    if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
 
                     if (pr.hasEntityCaps()) {
                         c.hasEntity=true;
@@ -1640,13 +1645,13 @@ public class Roster
                                 lastAppearedContact.setIncoming(Contact.INC_NONE);
                             c.setIncoming(Contact.INC_APPEARING);
                             lastAppearedContact=c;
-                          }
+                    }
                     if (ti==Presence.PRESENCE_OFFLINE)  {
                         c.setIncoming(Contact.INC_NONE);
                         c.setComposing(false);
                     }
                     if (ti>=0) {
-                        if (ti!=11 && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
+                        if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);
                     }
                 }
@@ -1716,34 +1721,37 @@ public class Roster
 //#             setWobbler(message.from+"\n"+message.getBody());
 //#         }
 //#endif
-        if (!message.unread) return;
+        if (countNewMsgs())
+            reEnumRoster();
+        
+        if (!message.unread) 
+            return;
         //TODO: clear unread flag if not-in-list IS HIDDEN
-        
-        if (countNewMsgs()) reEnumRoster();
-        
-        if (c.getGroupType()==Groups.TYPE_IGNORE) return;    // no signalling/focus on ignore
+
+        if (c.getGroupType()==Groups.TYPE_IGNORE) 
+            return;    // no signalling/focus on ignore
         
 	if (cf.popupFromMinimized)
 	    BombusMod.getInstance().hideApp(false);
         
-        if (cf.autoFocus) focusToContact(c, false);
+        if (cf.autoFocus) 
+            focusToContact(c, false);
 
         if (message.isHighlited()) {
-            playNotify(500);
+            playNotify(SOUND_FOR_ME);
         }
-//#ifdef POPUPS
-//#         //else if (message.messageType==message.MESSAGE_TYPE_IN && cf.popUps) {
-//#         //        setWobbler(message.getBody());
-//#         //} 
-//#endif
         else if (c.origin>=c.ORIGIN_GROUPCHAT) {
-            if (message.messageType==message.MESSAGE_TYPE_IN)
-                playNotify(800);
+            if (message.messageType==message.MESSAGE_TYPE_IN) {
+                if (c.origin!=c.ORIGIN_GROUPCHAT && c instanceof MucContact)
+                     playNotify(SOUND_FOR_ME);
+                else
+                    playNotify(SOUND_FOR_CONFERENCE);
+            }
         } else {
             if (c.getName().endsWith("!")) {
-                playNotify(100);
+                playNotify(SOUND_FOR_VIP);
             } else {
-                playNotify(1000);
+                playNotify(SOUND_MESSAGE);
             }
 //#ifdef POPUPS
 //#             if (message.messageType==message.MESSAGE_TYPE_IN && !(c instanceof MucContact) && cf.popUps)
@@ -1798,33 +1806,33 @@ public class Roster
                 type=ac.soundOfflineType;
                 vibraLen=0;
                 break;
-            case 100: //VIP
+            case SOUND_FOR_VIP: //VIP
                 message=ac.soundVIP;
                 type=ac.soundVIPType;
                 break;
-            case 1000: //message
+            case SOUND_MESSAGE: //message
                 message=ac.messagesnd;
                 type=ac.messageSndType;
                 break;
-            case 800: //conference
+            case SOUND_FOR_CONFERENCE: //conference
                 message=ac.soundConference;
                 type=ac.soundConferenceType;
                 break;
-            case 500: //message for you
+            case SOUND_FOR_ME: //message for you
                 message=ac.soundForYou;
                 type=ac.soundForYouType;
                 break;
-            case 777: //startup
+            case SOUND_START_UP: //startup
                 message=ac.soundStartUp;
                 type=ac.soundStartUpType;
                 vibraLen=0;
                 break;
-            case 888: //composing
+            case SOUND_COMPOSING: //composing
                 message=ac.soundComposing;
                 type=ac.soundComposingType;
                 vibraLen=0;
                 break;
-            case 999: //Outgoing
+            case SOUND_OUTGOING: //Outgoing
                 message=ac.soundOutgoing;
                 type=ac.soundOutgoingType;
                 vibraLen=0;
@@ -1835,17 +1843,11 @@ public class Roster
                 vibraLen=0;
                 break;
         }
-            int profile=cf.profile;
-            if (profile==AlertProfile.AUTO) profile=AlertProfile.ALL;
-            
-        /*
-        if (cf.allowLightControl && !lightState && profile==AlertProfile.FLASH) {
-            try {
-                com.siemens.mp.game.Light.setLightOn();
-                com.siemens.mp.game.Light.setLightOff(); 
-            } catch (Exception e) { } 
-        }
-        */
+        
+        int profile=cf.profile;
+        if (profile==AlertProfile.AUTO) 
+            profile=AlertProfile.ALL;
+
         EventNotify notify=null;
         
         switch (profile) {
@@ -1854,7 +1856,8 @@ public class Roster
             case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen,       blFlashEn); break;
             case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0,              blFlashEn); break;
         }
-        if (notify!=null) notify.startNotify();
+        if (notify!=null) 
+            notify.startNotify();
         blockNotify(event, 2000);
     }
 
@@ -2058,7 +2061,7 @@ public class Roster
         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
              if (myStatus<2)
                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
-             else 
+             else if (!autoAway) 
                 autostatus.setTimeEvent(0);
         }
     }
