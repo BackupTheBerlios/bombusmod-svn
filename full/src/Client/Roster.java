@@ -32,7 +32,9 @@ import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 import Stats.Stats;
-import UserMood.MoodSelect;
+//#ifdef MOOD
+//# import UserMood.MoodSelect;
+//#endif
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -1745,7 +1747,7 @@ public class Roster
         else if (c.origin>=c.ORIGIN_GROUPCHAT) {
             if (message.messageType==message.MESSAGE_TYPE_IN) {
                 if (c.origin!=c.ORIGIN_GROUPCHAT && c instanceof MucContact)
-                     playNotify(SOUND_FOR_ME);
+                     playNotify(SOUND_MESSAGE); //private message
                 else
                     playNotify(SOUND_FOR_CONFERENCE);
             }
@@ -2270,11 +2272,11 @@ public class Roster
         // stream-sensitive commands
         // check for closed socket
         if (!isLoggedIn()) return;
-        
-        if (c==cmdUserMood) {
-            new MoodSelect(display, null);
-        }
-        
+//#ifdef MOOD
+//#         if (c==cmdUserMood) {
+//#             new MoodSelect(display, null);
+//#         }
+//#endif        
         if (c==cmdConference) { 
             //new ConferenceForm(display); 
             new Bookmarks(display, null);

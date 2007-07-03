@@ -91,7 +91,8 @@ public class Contact extends IconTextElement{
     public final static int INC_APPEARING=1;
     public final static int INC_VIEWING=2;
     
-/*    public final static String XEP184_NS="http://www.xmpp.org/extensions/xep-0184.html#ns";
+/*  
+    public final static String XEP184_NS="http://www.xmpp.org/extensions/xep-0184.html#ns";
     public final static int DELIVERY_NONE=0;
     public final static int DELIVERY_HANDSHAKE=1;
     public final static int DELIVERY_XEP184=2;

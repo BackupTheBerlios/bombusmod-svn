@@ -30,11 +30,13 @@ public class EntityCaps implements JabberBlockListener{
         JabberDataBlock query=data.getChildBlock("query");
         if (query==null) return BLOCK_REJECTED;
         String node=query.getAttribute("node");
+        
+        
         if (query.isJabberNameSpace("http://jabber.org/protocol/caps")) {
             if (!node.startsWith(BOMBUS_NAMESPACE))
                 return BLOCK_REJECTED;
         } else if (query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) {
-            if (node!=null) return BLOCK_REJECTED;
+            if (node==null) return BLOCK_REJECTED;
         } else return BLOCK_REJECTED;
         
         JabberDataBlock result=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
@@ -45,9 +47,17 @@ public class EntityCaps implements JabberBlockListener{
         identity.setAttribute("type","mobile");
         identity.setAttribute("name", "BombusMod");
 
-        for (int i=0; i<features.length; i++) {
-            query.addChild("feature", null).setAttribute("var",features[i]);
-        }
+//#ifdef MOOD
+//#         if (node.endsWith("#mood+notify")) {
+//#             query.addChild("feature", null).setAttribute("var","http://jabber.org/protocol/mood+notify");
+//#         } else {
+//#endif
+            for (int i=0; i<features.length; i++) {
+                query.addChild("feature", null).setAttribute("var",features[i]);
+            }
+//#ifdef MOOD
+//#         }
+//#endif
         
         StaticData.getInstance().roster.theStream.send(result);
         
@@ -67,6 +77,7 @@ public class EntityCaps implements JabberBlockListener{
     }
     
     private final static String BOMBUS_NAMESPACE=Version.getUrl();
+    
     private final static String features[]={
         "jabber:iq:version",
         "jabber:x:data",
@@ -79,8 +90,7 @@ public class EntityCaps implements JabberBlockListener{
         "http://jabber.org/protocol/si",
         "http://jabber.org/protocol/si/profile/file-transfer",
 //#ifdef MOOD
-//#         "http://jabber.org/protocol/mood+notify", //!!! mood+notify
-//#         //"http://jabber.org/protocol/mood", //!!! mood
+//#         "http://jabber.org/protocol/mood+notify",
 //#endif
         "http://jabber.org/protocol/ibb"
     };
