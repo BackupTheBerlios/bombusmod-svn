@@ -66,8 +66,6 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         addCommand(cmdOk);
         addCommand(cmdEdit);
         addCommand(cmdDef);
-        //addCommand(cmdPriority);
-        //addCommand(cmdAll);
         addCommand(cmdCancel);
         setCommandListener(this);
         
@@ -108,9 +106,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             Roster.autoXa=false;
             StaticData.getInstance().roster.messageActivity();
             StaticData.getInstance().roster.sendDirectPresence(status, to, null);
-        } catch (Exception e) { 
-            //e.printStackTrace(); 
-        }
+        } catch (Exception e) { }
     }
     
     public int getItemCount(){   return statusList.size(); }
@@ -178,6 +174,8 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             if (c==cmdOk) {
                 boolean flags[]=new boolean[3];
                 
+                addNewStatusText.getSelectedFlags(flags);
+                
                 if (selStatus.getSelectedIndex()>0) {
                     if (flags[2]) {
                         status.setMessage(tfMessage.getString());
@@ -191,7 +189,6 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
 		int priority=tfPriority.getValue();
                 status.setPriority(priority);
                 
-                addNewStatusText.getSelectedFlags(flags);
                 if (flags[0]) {
                     for (Enumeration e=StatusList.getInstance().statusList.elements(); e.hasMoreElements();) {
                         ((ExtendedStatus)e.nextElement()).setPriority(priority);
@@ -204,13 +201,14 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
                     statuslist.delete(selStatus.getSelectedIndex()-1);
                 }
                 save();
-                destroyView();
             }
-            if (c==cmdCancel) {  destroyView();  }
+            
+            destroyView();
         }
         
         public void destroyView(){
-            if (display!=null)   display.setCurrent(parentView);
+            if (display!=null)   
+                display.setCurrent(parentView);
         }
     }
 }

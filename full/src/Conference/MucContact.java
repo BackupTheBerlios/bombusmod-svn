@@ -42,21 +42,20 @@ import ui.VirtualList;
  */
 public class MucContact extends Contact{
     
-    public final static int AFFILIATION_OUTCAST=-1;
-    public final static int AFFILIATION_NONE=0;
-    public final static int AFFILIATION_MEMBER=1;
-    public final static int AFFILIATION_ADMIN=2;
-    public final static int AFFILIATION_OWNER=3;
+    public final static short AFFILIATION_OUTCAST=-1;
+    public final static short AFFILIATION_NONE=0;
+    public final static short AFFILIATION_MEMBER=1;
+    public final static short AFFILIATION_ADMIN=2;
+    public final static short AFFILIATION_OWNER=3;
     
-    public final static int ROLE_VISITOR=-1;
-    public final static int ROLE_PARTICIPANT=0;
-    public final static int ROLE_MODERATOR=1;
-    
-    //public final static int GROUP_OFFLINE=5;
-    public final static int GROUP_VISITOR=4;
-    public final static int GROUP_MEMBER=3;
-    public final static int GROUP_PARTICIPANT=2;
-    public final static int GROUP_MODERATOR=1;
+    public final static short ROLE_VISITOR=-1;
+    public final static short ROLE_PARTICIPANT=0;
+    public final static short ROLE_MODERATOR=1;
+
+    public final static short GROUP_VISITOR=4;
+    public final static short GROUP_MEMBER=3;
+    public final static short GROUP_PARTICIPANT=2;
+    public final static short GROUP_MODERATOR=1;
     
 //#ifdef ANTISPAM
 //#     public final static int PRIVATE_DECLINE=-1;
@@ -72,8 +71,8 @@ public class MucContact extends Contact{
     public String affiliation;
     public String role;
     
-    public int roleCode;
-    public int affiliationCode;
+    public short roleCode;
+    public short affiliationCode;
     
     public boolean commonPresence=true;
     

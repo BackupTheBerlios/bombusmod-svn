@@ -1245,6 +1245,15 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
+                    JabberDataBlock time=data.getChildBlock("time");
+                    if (time!=null){
+                        // проверяем на запрос локального времени клиента xep-0202
+                        if (time.isJabberNameSpace("urn:xmpp:time")) {
+                            theStream.send(new UrnXmppTimeReply(data));
+                            return JabberBlockListener.BLOCK_PROCESSED;
+                        }
+                        return JabberBlockListener.BLOCK_REJECTED;
+                    }
                 } else if (type.equals("set")) {
                     //todo: verify xmlns==jabber:iq:roster
                     processRoster(data);
@@ -2135,7 +2144,7 @@ public class Roster
                     }
                 }
             }
-            new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor, false);
+            new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor);
             return;
         } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles

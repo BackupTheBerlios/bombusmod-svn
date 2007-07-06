@@ -70,7 +70,7 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
         f.append(this.jid);
         
         this.affiliation=new ChoiceGroup(SR.MS_SET_AFFILIATION /*"Set affiliation to"*/, ChoiceGroup.POPUP);
-        for (int index=0; index<=AffiliationItem.AFFILIATION_OUTCAST; index++) {
+        for (short index=0; index<=AffiliationItem.AFFILIATION_OUTCAST; index++) {
             String name=AffiliationItem.getAffiliationName(index);
             this.affiliation.append(name, null);
             if (affiliation.equals(name)) recentAffiliation=index;
@@ -95,7 +95,7 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
         query.setNameSpace("http://jabber.org/protocol/muc#admin");
         JabberDataBlock child=query.addChild("item", null);
         child.setAttribute("jid", jid.getString());
-        child.setAttribute("affiliation", AffiliationItem.getAffiliationName(affiliation.getSelectedIndex()));
+        child.setAttribute("affiliation", AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
 		
         String rs=reason.getString();
         if (rs.length()>0) child.addChild("reason", rs);        
@@ -119,7 +119,7 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
                 StringBuffer warn=new StringBuffer(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD /*"Are You sure want to discard "*/);
                 warn.append(jid.getString());
                 warn.append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/);
-                warn.append(AffiliationItem.getAffiliationName(affiliation.getSelectedIndex()));
+                warn.append(AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
                 new YesNoAlert(display, SR.MS_MODIFY_AFFILIATION/*"Modify affiliation"*/, warn.toString(), this);
                 warn=null;
             } else modify();

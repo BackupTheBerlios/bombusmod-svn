@@ -50,13 +50,18 @@ public class ConferenceGroup extends Group{
     private MucContact selfContact;
     public String password;
     private MucContact conference;
-    public String toString(){ return mainbar(label); }
+    public String toString(){ 
+        return mainbar(label);
+    }
 
     public MucContact getSelfContact() { return selfContact; }
     public void setSelfContact(MucContact selfContact) { this.selfContact=selfContact; }
+    
     public MucContact getConference() { return conference; }
     public void setConference(MucContact conference) { this.conference=conference; }
+    
     public int getOnlines(){ return (onlines>0)? onlines-1:0; }
     public int getNContacts(){ return (nContacts>0)? nContacts-1:0; }
+    
     public long conferenceJoinTime;
 }

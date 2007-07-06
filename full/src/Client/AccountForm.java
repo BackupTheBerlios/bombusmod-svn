@@ -109,10 +109,6 @@ class AccountForm implements CommandListener, ItemStateListener {
 	
 	register.setSelectedFlags(b);
 	f.append(register);
-        
-        proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   64, TextField.ANY); f.append(proxyHost);
-
-	proxyPort = new NumberField(SR.PROXY_PORT, account.getProxyPort(), 0, 65535);	f.append(proxyPort);
      
         keepAliveType=new ChoiceGroup(SR.MS_KEEPALIVE, ChoiceGroup.POPUP);
         keepAliveType.append("by socket", null);
@@ -127,7 +123,11 @@ class AccountForm implements CommandListener, ItemStateListener {
 	 
 	resourcebox = new TextField(SR.MS_RESOURCE, account.getResource(), 64, TextField.ANY); f.append(resourcebox);
 	nickbox = new TextField(SR.MS_NICKNAME, account.getNick(), 64, TextField.ANY); f.append(nickbox);
-	
+
+        proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   64, TextField.ANY); f.append(proxyHost);
+
+	proxyPort = new NumberField(SR.PROXY_PORT, account.getProxyPort(), 0, 65535);	f.append(proxyPort);
+        
 	f.addCommand(cmdOk);
         f.addCommand(cmdPwd);
 //#if SERVER_SIDE_CONFIG        

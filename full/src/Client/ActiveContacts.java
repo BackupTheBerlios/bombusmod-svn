@@ -64,7 +64,7 @@ public class ActiveContacts
 	    Contact c=(Contact)r.nextElement();
 	    if (c.active()) activeContacts.addElement(c);
 	}
-	// РЅРµ СЃРѕР·РґР°С�?Р�? РІРёРґ, РµСЃР»Рё РЅРµС‚ Р°РєС‚РёРІРЅС‹С… РєРѕРЅС‚Р°РєС‚РѕРІ
+	// РЅРµ СЃРѕР·РґР°С�?Р�? РІРёРґ, РµСЃР»Рё РЅРµС‚ Р°РєС‚РёРІРЅС‹С… РєРѕРЅС‚Р°РєС‚РѕРІ
 	if (getItemCount()==0) return;
 	
         MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ");
@@ -101,12 +101,41 @@ public class ActiveContacts
     }
     
     public void keyPressed(int keyCode) {
-	if (keyCode==KEY_NUM3) destroyView();
-	else super.keyPressed(keyCode);
+	if (keyCode==KEY_NUM3) {
+            destroyView();
+        } else if (keyCode==KEY_NUM0) {
+            if (getItemCount()<1)
+                return;
+            
+            System.gc();
+
+            Contact c=(Contact)getFocusedObject();
+
+            Enumeration i=activeContacts.elements();
+            
+            int pass=0; //
+            while (pass<2) {
+                if (!i.hasMoreElements()) i=activeContacts.elements();
+                Contact p=(Contact)i.nextElement();
+                if (pass==1) 
+                    if (p.getNewMsgsCount()>0) { 
+                        focusToContact(p);
+                        setRotator();
+                        break; 
+                    }
+                if (p==c) pass++; // полный круг пройден
+            }
+            return;
+        } else super.keyPressed(keyCode);
+    }
+    
+    private void focusToContact(final Contact c) {
+        int index=activeContacts.indexOf(c);
+        if (index>=0) 
+            moveCursorTo(index, true);
     }
     
     protected void keyGreen(){
-        //if (!sd.roster.isLoggedIn()) return;
         eventOk();
     }
     

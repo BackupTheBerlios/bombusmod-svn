@@ -31,7 +31,9 @@ import Conference.MucContact;
 //# import History.HistoryStorage;
 //#endif
 import History.HistoryAppend;
-import UserMood.MoodLocale;
+//#if MOOD
+//# import UserMood.MoodLocale;
+//#endif
 import images.RosterIcons;
 import ui.ColorScheme;
 import ui.Time;
@@ -57,13 +59,13 @@ public class Contact extends IconTextElement{
         ColorScheme.CONTACT_DEFAULT
     };
     
-    public final static byte ORIGIN_ROSTER=0;
-    public final static byte ORIGIN_ROSTERRES=1;
-    public final static byte ORIGIN_CLONE=2;
-    public final static byte ORIGIN_PRESENCE=3;
-    public final static byte ORIGIN_GROUPCHAT=4;
-    public final static byte ORIGIN_GC_MEMBER=5;
-    public final static byte ORIGIN_GC_MYSELF=6;
+    public final static short ORIGIN_ROSTER=0;
+    public final static short ORIGIN_ROSTERRES=1;
+    public final static short ORIGIN_CLONE=2;
+    public final static short ORIGIN_PRESENCE=3;
+    public final static short ORIGIN_GROUPCHAT=4;
+    public final static short ORIGIN_GC_MEMBER=5;
+    public final static short ORIGIN_GC_MYSELF=6;
 
     public String nick;
     public Jid jid;
@@ -83,26 +85,19 @@ public class Contact extends IconTextElement{
     public boolean acceptComposing;
     public boolean showComposing=false;
     
-    public int deliveryType;
+    public short deliveryType;
     
-    public int incomingState=0;
+    public short incomingState=0;
     
-    public final static int INC_NONE=0;
-    public final static int INC_APPEARING=1;
-    public final static int INC_VIEWING=2;
-    
-/*  
-    public final static String XEP184_NS="http://www.xmpp.org/extensions/xep-0184.html#ns";
-    public final static int DELIVERY_NONE=0;
-    public final static int DELIVERY_HANDSHAKE=1;
-    public final static int DELIVERY_XEP184=2;
-    public final static int DELIVERY_XEP22=3;
-*/    
+    public final static short INC_NONE=0;
+    public final static short INC_APPEARING=1;
+    public final static short INC_VIEWING=2;
+  
     //public boolean isSelected;
     
     public String msgSuspended;
     
-    protected int key0;
+    protected short key0;
     protected String key1;
 
     public byte origin;
@@ -131,6 +126,7 @@ public class Contact extends IconTextElement{
 //#     public String mood=null;
 //#     public String moodText=null;
 //#endif
+    
     private Config cf=Config.getInstance();
 
     protected Contact (){
@@ -226,7 +222,7 @@ public class Contact extends IconTextElement{
     public void resetNewMsgCnt() { newMsgCnt=-1;}
   
     public void setIncoming (int state) {
-        int i=0;
+        short i=0;
         switch (state){
             case INC_APPEARING:
                 i=RosterIcons.ICON_APPEARING_INDEX;
@@ -336,7 +332,9 @@ public class Contact extends IconTextElement{
         }
     }
   
-    public int getColor() { return (status>7)?0:COLORS[status]; }
+    public int getColor() { 
+        return (status>7)?0:COLORS[status];
+    }
 
     public int getFontIndex(){
         if (!cf.showResources)
@@ -347,12 +345,16 @@ public class Contact extends IconTextElement{
     public String toString() {
         if (!cf.showResources)
             return (nick==null)?getJid():nick;
-        if (origin>ORIGIN_GROUPCHAT) return nick;
-        if (origin==ORIGIN_GROUPCHAT) return getJid();
+        if (origin>ORIGIN_GROUPCHAT) 
+            return nick;
+        if (origin==ORIGIN_GROUPCHAT) 
+            return getJid();
         return (nick==null)?getJid():nick+jid.getResource(); 
     }
    
-    public final String getName(){ return (nick==null)?getBareJid():nick; }
+    public final String getName(){ 
+        return (nick==null)?getBareJid():nick; 
+    }
 
     public final String getJid() {
         return jid.getJid();
@@ -363,22 +365,27 @@ public class Contact extends IconTextElement{
     }
 
     public String getNickJid() {
-        if (nick==null) return bareJid;
+        if (nick==null) 
+            return bareJid;
         return nick+" <"+bareJid+">";
     }
     
     public final void purge() {
 //#ifdef ANTISPAM
-//#         purgeTemps();
+//#        try {
+//#            purgeTemps();
+//#        } catch (Exception e) { }
 //#endif
         msgs=new Vector();
+        
+        resetNewMsgCnt();
+        
         try {
             if (vcard!=null) {
                 vcard.clearVCard();
                 vcard=null;
             }
         } catch (Exception e) { }
-        resetNewMsgCnt();
     }
 
     public final void smartPurge(int cursor) {
@@ -389,10 +396,12 @@ public class Contact extends IconTextElement{
                 for (int i=0; i<cursor; i++)
                     msgs.removeElementAt(0);
         } catch (Exception e) { }
-        if (vcard!=null) {
-            vcard.clearVCard();
-            vcard=null;
-        }
+        try {
+            if (vcard!=null) {
+                vcard.clearVCard();
+                vcard=null;
+            }
+        } catch (Exception e) { }
         resetNewMsgCnt();
     }
     
@@ -402,15 +411,20 @@ public class Contact extends IconTextElement{
 
     public String getTipString() {
         int nm=getNewMsgsCount();
-        if (nm!=0) return String.valueOf(nm);
-        if (nick!=null) return bareJid;
+        if (nm!=0) 
+            return String.valueOf(nm);
+        if (nick!=null) 
+            return bareJid;
         return null;
     }
 
-    public Group getGroup() { return group; }
+    public Group getGroup() { 
+        return group; 
+    }
     
     public int getGroupType() {  
-        if (group==null) return 0; 
+        if (group==null) 
+            return 0; 
         return group.index;  
     }
     
@@ -425,7 +439,8 @@ public class Contact extends IconTextElement{
     public void setStatus(int status) {
         setIncoming(0);
         this.status = status;
-        if (status>=Presence.PRESENCE_OFFLINE) acceptComposing=false;
+        if (status>=Presence.PRESENCE_OFFLINE) 
+            acceptComposing=false;
     }
 
     public int getStatus() {
@@ -441,7 +456,8 @@ public class Contact extends IconTextElement{
     }
 
     public String getPing() {
-        if (ping==-1) return "";
+        if (ping==-1) 
+            return "";
         
         String timePing=Long.toString((Time.localTime()-ping)/10);
         int dotpos=timePing.length()-2;
@@ -462,7 +478,8 @@ public class Contact extends IconTextElement{
         for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
             Msg m=(Msg)e.nextElement();
             if (m.id!=null)
-                if (m.id.equals(id)) m.delivered=true;
+                if (m.id.equals(id)) 
+                    m.delivered=true;
         }
     }
     

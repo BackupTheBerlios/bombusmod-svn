@@ -176,13 +176,13 @@ public class Bookmarks
 //#endif
         else if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
 
-        else if (c==cmdRoomOwners) new Affiliations(display, roomJid, 1);  
+        else if (c==cmdRoomOwners) new Affiliations(display, roomJid, (short)1);  
 
-        else if (c==cmdRoomAdmins) new Affiliations(display, roomJid, 2);  
+        else if (c==cmdRoomAdmins) new Affiliations(display, roomJid, (short)2);  
 
-        else if (c==cmdRoomMembers) new Affiliations(display, roomJid, 3);  
+        else if (c==cmdRoomMembers) new Affiliations(display, roomJid, (short)3);  
 
-        else if (c==cmdRoomBanned) new Affiliations(display, roomJid, 4);  
+        else if (c==cmdRoomBanned) new Affiliations(display, roomJid, (short)4);  
         
         else if (c==cmdDoAutoJoin) {
             for (Enumeration e=StaticData.getInstance().roster.bookmarks.elements(); e.hasMoreElements();) {

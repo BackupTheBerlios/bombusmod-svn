@@ -37,13 +37,13 @@ import ui.IconTextElement;
  * @author EvgS
  */
 public class AffiliationItem extends IconTextElement{
-    public final static int AFFILIATION_NONE=0;
-    public final static int AFFILIATION_OWNER=1;
-    public final static int AFFILIATION_ADMIN=2;
-    public final static int AFFILIATION_MEMBER=3;
-    public final static int AFFILIATION_OUTCAST=4;
+    public final static short AFFILIATION_NONE=0;
+    public final static short AFFILIATION_OWNER=1;
+    public final static short AFFILIATION_ADMIN=2;
+    public final static short AFFILIATION_MEMBER=3;
+    public final static short AFFILIATION_OUTCAST=4;
     
-    public static String getAffiliationName(int index){
+    public static String getAffiliationName(short index){
         switch (index) {
             case AFFILIATION_OWNER: return "owner";
             case AFFILIATION_ADMIN: return "admin";
@@ -65,14 +65,15 @@ public class AffiliationItem extends IconTextElement{
 
     public String jid;
     public int affiliation;
-	public String reason;
+    public String reason;
         
     /** Creates a new instance of AffiliationItem */
     public AffiliationItem(String jid, String affiliation) {
         super(RosterIcons.getInstance());
         this.jid=jid;
-        for (int index=1; index<5; index++) {
-            if (affiliation.equals(getAffiliationName(index))) this.affiliation=index;
+        for (short index=1; index<5; index++) {
+            if (affiliation.equals(getAffiliationName(index))) 
+                this.affiliation=index;
         }
 	reason="";
     }
@@ -80,7 +81,9 @@ public class AffiliationItem extends IconTextElement{
     public AffiliationItem(JabberDataBlock item) {
         this(item.getAttribute("jid"), item.getAttribute("affiliation"));
         reason=item.getChildBlockText("reason");
-		if (reason.length()==0) reason=null;
+        
+	if (reason.length()==0) 
+            reason=null;
     }
     
     

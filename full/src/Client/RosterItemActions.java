@@ -503,7 +503,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     case 14: // outcasts
                     {
                         String roomJid=((ConferenceGroup)g).getConference().getJid();
-                        new Affiliations(display, roomJid, index-10);
+                        new Affiliations(display, roomJid, (short)(index-10));
                         return;
                     }
 

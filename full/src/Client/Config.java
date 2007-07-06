@@ -85,7 +85,7 @@ public class Config {
     
     // non-volatile values
     public int accountIndex=-1;
-    public boolean fullscreen=true;
+    public boolean fullscreen=false;
     public int def_profile=0;
     public boolean smiles=true;
     public boolean showOfflineContacts=false;
@@ -156,7 +156,7 @@ public class Config {
     
     public boolean enableVersionOs=true;
     
-    public boolean collapsedGroups=false;
+    public boolean collapsedGroups=true;
     
     public int messageLimit=300;
     

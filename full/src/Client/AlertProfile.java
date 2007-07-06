@@ -111,5 +111,7 @@ public class AlertProfile extends VirtualList implements CommandListener {
         destroyView();
     }
     
-    public int getItemCount(){   return alertNames.length; }
+    public int getItemCount(){
+        return alertNames.length;
+    }
 }

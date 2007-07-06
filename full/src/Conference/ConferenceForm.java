@@ -34,8 +34,6 @@ import ui.controls.NumberField;
 import ui.controls.TextFieldCombo;
 import com.alsutton.jabber.datablocks.Presence;
 
-//import History.HistoryList;
-
 /**
  *
  * @author EvgS
@@ -84,6 +82,9 @@ public class ConferenceForm implements CommandListener{
             server=confJid.substring(roomEnd+1);
         }
         createForm(display, room, server, nick, password, autojoin);
+        room=null;
+        server=null;
+        nick=null;
     }
     
     /** Creates a new instance of GroupChatForm */
@@ -108,6 +109,10 @@ public class ConferenceForm implements CommandListener{
             server=confJid.substring(roomEnd+1);
         }
         createForm(display, room, server, nick, join.password, join.autojoin);
+        confJid=null;
+        room=null;
+        server=null;
+        nick=null;
     }
     
     /** Creates a new instance of GroupChatForm */
@@ -123,6 +128,8 @@ public class ConferenceForm implements CommandListener{
         // default server
         if (server==null) server="conference."+sd.account.getServer();
         createForm(display, room, server, null, null, false); 
+        room=null;
+        server=null;
     }
 	
     /** Creates a new instance of GroupChatForm */
@@ -198,11 +205,9 @@ public class ConferenceForm implements CommandListener{
             StaticData.getInstance().roster.bookmarks.removeElement(editConf);
             StaticData.getInstance().roster.bookmarks.insertElementAt(new BookmarkItem(gchat.toString(), nick, pass, autojoin), cursor);
             new BookmarkQuery(BookmarkQuery.SAVE);
-            gchat=null;
             display.setCurrent(sd.roster);
         } else if (c==cmdAdd) {
             new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
-            gchat=null;
         } else if (c==cmdJoin) {
             try {
                 cf.confMessageCount=msgLimit;
@@ -213,8 +218,12 @@ public class ConferenceForm implements CommandListener{
                 join(gchat.toString(),pass, msgLimit);
                 display.setCurrent(sd.roster);
             } catch (Exception e) { }
-            gchat=null;
         }
+        gchat=null;
+        nick=null;
+        host=null;
+        room=null;
+        pass=null;
     }
     
     public static void join(String name, String pass, int maxStanzas) {
@@ -248,6 +257,7 @@ public class ConferenceForm implements CommandListener{
         sd.roster.reEnumRoster();
     }
     public void destroyView(){
-        if (parentView!=null) display.setCurrent(parentView);
+        if (parentView!=null) 
+            display.setCurrent(parentView);
     }
 }

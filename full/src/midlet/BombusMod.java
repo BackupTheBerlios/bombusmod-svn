@@ -54,21 +54,17 @@ public class BombusMod extends MIDlet implements Runnable{
     private boolean isMinimized;
     StaticData sd;
     
-    public static Image programIcon;
+    //public static Image programIcon;
     public static Image splash;
-    //IconTextList l;
     
     private static BombusMod instance; 
-        
-    /**
-     * BombusMod constructor. starts splashscreen
-     */
+
     public BombusMod() {
 	instance=this; 
         display = Display.getDisplay(this);
         SplashScreen s= SplashScreen.getInstance();
         display.setCurrent(s);
-        s.setProgress(/*SR.MS_LOADING*/ "Loading",3); // this message will not be localized
+        s.setProgress("Loading",3); // this message will not be localized
         sd=StaticData.getInstance();
     }
     
@@ -98,25 +94,20 @@ public class BombusMod extends MIDlet implements Runnable{
         s.setProgress(1);
         
         try {
-            Stats.getGPRS();
+            Stats.getInstance().getGPRS();
         } catch (Exception e) { }
+        
         s.setProgress(3);
 
-        Phone ph=Phone.getInstance();
-        s.setProgress(8);
+        //Phone ph=Phone.getInstance();
+        //s.setProgress(8);
         
         try {
             s.img=Image.createImage("/images/splash.png");
         } catch (Exception e) {
             s.img=null;
         }
-        
-        try {
-            if (ph.PhoneManufacturer()==ph.NOKIA) {
-                splash=s.img;
-                programIcon=Image.createImage("/_icon.png");
-            }
-        } catch (Exception e) { }
+
         s.setProgress(Version.getVersionNumber(),10);
 
 	Config cf=Config.getInstance();
@@ -127,13 +118,12 @@ public class BombusMod extends MIDlet implements Runnable{
 
         try {
             ColorScheme cl=ColorScheme.getInstance();
-        } catch (Exception e) {
-            System.out.println("Colors error");
-        }
+        } catch (Exception e) { }
         s.setProgress(20);
 
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
-        if (selAccount) s.setProgress("Entering setup",20);
+        if (selAccount) 
+            s.setProgress("Entering setup",20);
 	s.setProgress(23);
 
         sd.roster=new Roster(display);
@@ -152,8 +142,7 @@ public class BombusMod extends MIDlet implements Runnable{
      * Destroy must cleanup everything not handled by the garbage collector.
      * In this case there is nothing to cleanup.
      */
-    public void destroyApp(boolean unconditional) {
-    }
+    public void destroyApp(boolean unconditional) { }
 
     public void hideApp(boolean hide) {
 	if (hide) {

@@ -71,7 +71,7 @@ public class Affiliations
     private ClipBoard clipboard; 
     
     /** Creates a new instance of AffiliationList */
-    public Affiliations(Display display, String room, int affiliationIndex) {
+    public Affiliations(Display display, String room, short affiliationIndex) {
         super (display);
         this.room=room;
 	
@@ -122,9 +122,8 @@ public class Affiliations
         try {
             AffiliationItem item=(AffiliationItem)getFocusedObject();
             new AffiliationModify(display, room, item.jid, 
-					AffiliationItem.getAffiliationName(
-                        item.affiliation), 
-                        (item.reason==null)? "":item.reason
+					AffiliationItem.getAffiliationName( (short)item.affiliation), 
+                                        (item.reason==null)? "":item.reason
                     );
         } catch (Exception e) { }
     }

@@ -47,42 +47,4 @@ public class IqMood extends Iq{
         if (text!=null && text.length()>0)
             moodItem.addChild("text", text);
     }
-    
-    
-/* receiving
-<message from="ad@jabbus.org" to="bombusmod@jabbus.org/comp" >
-<event xmlns="http://jabber.org/protocol/pubsub#event">
-<items node="http://jabber.org/protocol/mood" >
-<retract id="current" />
-</items>
-</event>
-</message>
-
-
-<message from="ad@jabbus.org/Psi" to="bombusmod@jabbus.org/comp" >
-<event xmlns="http://jabber.org/protocol/pubsub#event">
-<items node="http://jabber.org/protocol/mood" >
-<item id="current" >
-<mood xmlns="http://jabber.org/protocol/mood">
-<afraid/>
-</mood>
-</item>
-</items>
-</event>
-</message>
-
-
-<message from="ad@jabbus.org/Psi" to="bombusmod@jabbus.org/comp" >
-<event xmlns="http://jabber.org/protocol/pubsub#event">
-<items node="http://jabber.org/protocol/mood" >
-<item id="current" >
-<mood xmlns="http://jabber.org/protocol/mood">
-<afraid/>
-<text>2</text>
-</mood>
-</item>
-</items>
-</event>
-</message>
- */
 }

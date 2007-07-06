@@ -65,7 +65,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     private TimerTaskClock tc;
     
     boolean motorola_backlight;
-    boolean siemens_slider;
+
     boolean singleflash;
     
     private StaticData sd=StaticData.getInstance();
@@ -76,7 +76,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public int keypressed=0;
     
     public static SplashScreen getInstance(){
-        if (instance==null) instance=new SplashScreen();
+        if (instance==null) 
+            instance=new SplashScreen();
         return instance;
     }
     
@@ -89,20 +90,18 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             Display display, 
             ComplexString status, 
             char exitKey, 
-            boolean motorola_backlight,
-            boolean siemens_slider) 
+            boolean motorola_backlight) 
     {
         this.status=status;
         this.display=display;
         kHold=this.exitKey=exitKey;
         this.motorola_backlight=motorola_backlight;
-        this.siemens_slider=siemens_slider;
         
         parentView=display.getCurrent();
 
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
-        serviceRepaints();
+        //serviceRepaints();
 
         new Thread(this).start();
         
@@ -121,7 +120,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         g.setColor(ColorScheme.BLK_BGND);
         g.fillRect(0,0, width, height);
 
-        if (img!=null) g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
+        if (img!=null) 
+            g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
         
         if (pos==-1) {
             Font f=FontCache.getClockFont();
@@ -176,7 +176,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public void setProgress(int progress) {
         pos=progress;
         repaint();
-        serviceRepaints();
+        //serviceRepaints();
     }
 
     public void setFailed(){
@@ -202,23 +202,25 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     }
     
     public void commandAction(Command c, Displayable d) {
-        if (c==cmdExit) close();
+        if (c==cmdExit) 
+            close();
     }
     
     public void close(){
         if (parentView!=null) display.setCurrent(parentView);
         parentView=null;
         repaint();
-        serviceRepaints();
+        //serviceRepaints();
         img=null;
-        instance=null; // о??вобождение пам??ти
+        instance=null; // пїЅ??пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ??пїЅпїЅ
         System.gc();
     }
 
     public void run() {
         try {
-            img=BombusMod.splash;
-            if (img==null) img=Image.createImage("/images/splash.png");
+            img=BombusMod.getInstance().splash;
+            if (img==null)
+                img=Image.createImage("/images/splash.png");
         } catch (Exception e) {};
         
         display.setCurrent(this);
@@ -233,7 +235,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
         public void run() {
             repaint();
-            serviceRepaints();
+            //serviceRepaints();
         }
         public void stop(){
             cancel();
@@ -246,7 +248,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (keyCode==-24) {
             destroyView();
         }
-        if (pos>25) close();
+        if (pos>23) 
+            close();
         kHold=0;
     }
     
@@ -261,8 +264,10 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
     private void destroyView(){
         status.setElementAt(null,6);
-        if (motorola_backlight) display.flashBacklight(Integer.MAX_VALUE);
-        if (display!=null) display.setCurrent(parentView);
+        if (motorola_backlight) 
+            display.flashBacklight(Integer.MAX_VALUE);
+        if (display!=null) 
+            display.setCurrent(parentView);
         img=null;
         tc.stop();
         
