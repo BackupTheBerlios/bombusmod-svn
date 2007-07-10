@@ -1752,24 +1752,32 @@ public class Roster
 
         if (message.isHighlited()) {
             playNotify(SOUND_FOR_ME);
+            setWobbler(message.getBody());
+            return;
         }
         else if (c.origin>=c.ORIGIN_GROUPCHAT) {
             if (message.messageType==message.MESSAGE_TYPE_IN) {
-                if (c.origin!=c.ORIGIN_GROUPCHAT && c instanceof MucContact)
+                if (c.origin!=c.ORIGIN_GROUPCHAT && c instanceof MucContact) {
                      playNotify(SOUND_MESSAGE); //private message
-                else
+                     return;
+                } else {
                     playNotify(SOUND_FOR_CONFERENCE);
+                    return;
+                }
             }
         } else {
+//#ifdef POPUPS
+//#             if (message.messageType==message.MESSAGE_TYPE_IN && !(c instanceof MucContact) &&  cf.popUps) {
+//#                 setWobbler(c.toString()+": "+message.getBody());
+//#             }
+//#endif
             if (c.getName().endsWith("!")) {
                 playNotify(SOUND_FOR_VIP);
+                return;
             } else {
                 playNotify(SOUND_MESSAGE);
+                return;
             }
-//#ifdef POPUPS
-//#             if (message.messageType==message.MESSAGE_TYPE_IN && !(c instanceof MucContact) && cf.popUps)
-//#                 setWobbler(c.toString()+": "+message.getBody());
-//#endif
         }
     }
 //#ifdef ANTISPAM

@@ -14,7 +14,7 @@ public class UrnXmppTimeReply extends Iq{
               request.getAttribute("id") );
         JabberDataBlock query=addChild("time",null);
         query.setNameSpace("urn:xmpp:time");
-	query.addChild("tzo", Integer.toString(Config.getInstance().gmtOffset));
+	query.addChild("tzo", "+0"+Integer.toString(Config.getInstance().gmtOffset)+":00");
         query.addChild("utc",ui.Time.utcLocalTime()+"Z");
     }
 }
