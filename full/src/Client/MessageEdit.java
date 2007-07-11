@@ -57,6 +57,8 @@ public class MessageEdit
     
     private ClipBoard clipboard;  // The clipboard class
     
+    private textSizeNotify textsizenotify;
+    
     private Contact to;
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
@@ -92,7 +94,8 @@ public class MessageEdit
         parentView=display.getCurrent();
         
         int maxSize=500;
-		t=new TextBox(to.toString(), null, maxSize, TextField.ANY);
+	
+        t=new TextBox(null, null, maxSize, TextField.ANY);
 		
         try {
             //expanding buffer as much as possible
@@ -107,8 +110,6 @@ public class MessageEdit
          } catch (Exception e) {
             t.setString("<send bugreport>");
          }
-        // debug code
-        //t.setTicker(new Ticker(String.valueOf(maxSize)));
 
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
@@ -137,6 +138,8 @@ public class MessageEdit
         
         //t.setInitialInputMode("MIDP_LOWERCASE_LATIN");
         new Thread(this).start() ; // composing
+        
+        textsizenotify = new textSizeNotify();
         
         setInitialCaps(cf.capsState);
         display.setCurrent(t);
@@ -258,13 +261,14 @@ public class MessageEdit
             if (body!=null || subj!=null || comp>0) {
                 r.sendMessage(to, id, body, subj, comp);
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { }
 
         ((VirtualList)parentView).redraw();
         ((VirtualList)parentView).repaint();
     }
     
     public void destroyView(){
+        textsizenotify.destroyTask();
         if (display!=null)   display.setCurrent(parentView);
     }
 
@@ -274,5 +278,39 @@ public class MessageEdit
         t.addCommand(state? cmdAbc: cmdABC);
         cf.capsState=state;
     }
+    
+    private void setTextSize() {
+        try {
+            int freeSz=t.getMaxSize()-t.size();
 
+            t.setTitle("("+freeSz+") "+to.toString());
+        } catch (Exception e) { 
+            t.setTitle(to.toString());
+        }
+    }
+    
+    private class textSizeNotify implements Runnable {    
+        private boolean stop;
+
+        public textSizeNotify() {
+            new Thread(this).start();
+        }
+
+        public void destroyTask(){
+            stop=false;
+        }
+
+        public void run() {
+            while (!stop) {
+                try {
+                    Thread.sleep(500); //спим 5 секунд
+                } catch (InterruptedException ex) {
+                    stop=true; //при ошибке завершаем таймер
+                }
+                
+                setTextSize();
+            }
+        }
+    }
 }
+
