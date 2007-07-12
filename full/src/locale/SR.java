@@ -508,9 +508,10 @@ public class SR {
     public final static String MS_NIL_DROP_MP="drop all";
     public final static String MS_NIL_DROP_P="receive messages";
     public final static String MS_NIL_ALLOW_ALL="messages & presences";
-     
 
+    public static String MS_QUIT_ASK = loadString( "Quit?" );
 
+    public static String MS_SURE_QUIT = loadString( "Are you sure want to Quit?" );
     
     private SR() { }
     

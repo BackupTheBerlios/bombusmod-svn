@@ -164,6 +164,11 @@ public class Roster
     private final static int SOUND_FOR_VIP=100;
     private final static int SOUND_COMPOSING=888;
     private final static int SOUND_OUTGOING=999;
+    
+    private final static int ACTION_DELETE=4;
+    private final static int ACTION_QUIT=99;
+
+    private int yesnoAction=0;
             
     
     /**
@@ -2044,15 +2049,18 @@ public class Roster
             return;
         }
         
-        if (keyCode==keyClear) 
+        if (keyCode==keyClear) {
+            if (!isLoggedIn()) return;
             try { 
                 boolean isContact=( getFocusedObject() instanceof Contact );
                 boolean isMucContact=( getFocusedObject() instanceof MucContact );
                 if (isContact && !isMucContact) {
-                    new RosterItemActions(display, getFocusedObject(), RosterItemActions.DELETE_CONTACT); 
+                   Contact c=(Contact) getFocusedObject();
+                   yesnoAction=ACTION_DELETE; new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
                 }
                 return;
             } catch (Exception e) { /* NullPointerException */ }
+        }
 //#if (MOTOROLA_BACKLIGHT)
         if (cf.ghostMotor) {
             // backlight management
@@ -2264,45 +2272,62 @@ public class Roster
    
     public void commandAction(Command c, Displayable d){
         userActivity();
-        if (c==cmdQuit) {
-            quit();
-            return;
-        }
-        if (c==cmdMinimize) { BombusMod.getInstance().hideApp(true);  }
+        if (c==cmdQuit) { cmdQuit(); }
+        else if (c==cmdMinimize) { cmdMinimize();  }
         
-        if (c==cmdActiveContacts) {
-            new ActiveContacts(display, null);
+        else if (c==cmdActiveContacts) {
+            cmdActiveContacts();
         }
         
-        if (c==cmdAccount){ new AccountSelect(display, false); }
-        if (c==cmdStatus) { reconnectCount=0; new StatusSelect(display, null); }
-        if (c==cmdAlert) { new AlertProfile(display); }
+        else if (c==cmdAccount){ cmdAccount(); }
+        else if (c==cmdStatus) { cmdStatus(); }
+        else if (c==cmdAlert) { cmdAlert(); }
 //#ifdef ARCHIVE
-//# 	if (c==cmdArchive) { new ArchiveList(display, null, -1); }
+//# 	else if (c==cmdArchive) { cmdArchive(); }
 //#endif
-        if (c==cmdInfo) { new Info.InfoWindow(display); }
+        else if (c==cmdInfo) { cmdInfo(); }
 
-        if (c==cmdTools) { new RosterToolsMenu(display); }
+        else if (c==cmdTools) { cmdTools(); }
         
-        if (c==cmdCleanAllMessages) { cleanupAllHistories(); }    
+        else if (c==cmdCleanAllMessages) { cmdCleanAllMessages(); }    
         
-        // stream-sensitive commands
-        // check for closed socket
-        if (!isLoggedIn()) return;
 //#ifdef MOOD
-//#         if (c==cmdUserMood) {
-//#             new MoodSelect(display, null);
-//#         }
+//#         else if (c==cmdUserMood) { cmdUserMood(); }
 //#endif        
-        if (c==cmdConference) { 
-            //new ConferenceForm(display); 
-            new Bookmarks(display, null);
+        else if (c==cmdConference) { 
+            cmdConference();
         }
-        if (c==cmdActions) try { 
-            new RosterItemActions(display, getFocusedObject(), -1);
-        } catch (Exception e) { /* NullPointerException */ }
+        else if (c==cmdActions) {
+            cmdActions();
+        }
         
-        if (c==cmdAdd) {
+        else if (c==cmdAdd) {
+            cmdAdd();
+        }
+    }
+    
+//menu actions
+    public void cmdQuit() { yesnoAction=ACTION_QUIT; new YesNoAlert(display, SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, this); }
+    public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
+    public void cmdActiveContacts() { new ActiveContacts(display, null); }
+    public void cmdAccount(){ new AccountSelect(display, false); }
+    public void cmdStatus() { reconnectCount=0; new StatusSelect(display, null); }
+    public void cmdAlert() { new AlertProfile(display); }
+//#ifdef ARCHIVE
+//#     public void cmdArchive() { new ArchiveList(display, null, -1); }
+//#endif
+    public void cmdInfo() { new Info.InfoWindow(display); }
+    public void cmdTools() { new RosterToolsMenu(display); }
+    public void cmdCleanAllMessages() { cleanupAllHistories(); }    
+
+//#ifdef MOOD
+//#    public void cmdUserMood() { if (isLoggedIn()) new MoodSelect(display, null); }
+//#endif        
+   public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, null); }
+   public void cmdActions() { if (isLoggedIn()) try { new RosterItemActions(display, getFocusedObject(), -1); } catch (Exception e) { /* NullPointerException */ }}
+   
+   public void cmdAdd() {
+       if (isLoggedIn()) {
             Object o=getFocusedObject();
             Contact cn=null;
             if (o instanceof Contact) {
@@ -2311,9 +2336,9 @@ public class Roster
             }
             if (o instanceof MucContact) { cn=(Contact)o; }
             new ContactEdit(display, cn);
-        }
-    }
-    
+       }
+   }
+//menu actions
 
     public void reEnterRoom(Group group) {
 	ConferenceGroup confGroup=(ConferenceGroup)group;
@@ -2379,7 +2404,14 @@ public class Roster
     }
     
     public void ActionConfirmed() {
-       deleteContact((Contact)getFocusedObject());
+        switch (yesnoAction) {
+            case ACTION_DELETE:
+                deleteContact((Contact)getFocusedObject());
+                break;
+            case ACTION_QUIT:
+                quit();
+        }
+
     }
 
     public void deleteContact(Contact c) {
@@ -2489,9 +2521,16 @@ public class Roster
                     groups.addToVector(tContacts, Groups.TYPE_SEARCH_RESULT);
                     
                     vContacts=tContacts;
-                     
-                    setRosterMainBar("("+groups.getRosterOnline()+"/"+groups.getRosterContacts()+")");
-
+                    
+                    StringBuffer onl=new StringBuffer();
+                    onl.append("(");
+                    onl.append(groups.getRosterOnline());
+                    onl.append("/");
+                    onl.append(groups.getRosterContacts());
+                    onl.append(")");
+                    setRosterMainBar(onl.toString());
+                    onl=null;
+                    
                     if (cursor<0) cursor=0;
 
                     if ( locCursor==cursor && focused!=null ) {
@@ -2679,60 +2718,4 @@ public class Roster
         }
     }
 }
-/*
-class TimerTaskAutoAway extends Thread{
-    private static TimerTaskAutoAway instance;
-     
-    private Roster rRoster;
-    
-    private Config cf=Config.getInstance();
-    private Phone ph=Phone.getInstance();
 
-    private int autoAwayDelay=cf.autoAwayDelay*60;
-    private int autoXaDelay=cf.autoAwayDelay*180;
-    private int autoAwayType=cf.autoAwayType;
-    
-    private short setLight=-1;
-
-    private TimerTaskAutoAway() {
-        start();
-     }
-    
-    public static void startRotate(int max, Roster roster){
-        if (instance==null) instance=new TimerTaskAutoAway();
-        synchronized (instance) {
-            instance.rRoster=roster;
-        }
-    }
-    
-     public void run() {
-        while (true) {
-            try {
-                sleep(5000);
-            } catch (Exception e) {}
-            
-            synchronized (this) {
-                int keyTimer=rRoster.keyTimer;
-                rRoster.setKeyTimer(keyTimer+5);
-                
-                if (setLight<0) {
-                    setLight=(ph.PhoneManufacturer()==ph.SONYE)?(short)1:0;
-                } else if (cf.lightState && setLight>0) {
-                    try {
-                        DeviceControl.setLights(0, 100);
-                    } catch (Exception e) {}
-                }
-                
-                if (keyTimer>=autoAwayDelay && autoAwayType==cf.AWAY_IDLE && keyTimer<=autoXaDelay && !rRoster.autoAway && !rRoster.autoXa) {
-                    try {
-                        rRoster.setAutoAway();
-                    } catch (Exception e) {}
-                } else if (autoAwayType==2 && keyTimer>=autoXaDelay && rRoster.autoAway && !rRoster.autoXa) {
-                    try {
-                        rRoster.setAutoXa();
-                    } catch (Exception e) {}
-                }
-            }
-        }
-    }
- }*/

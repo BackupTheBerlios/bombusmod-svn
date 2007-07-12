@@ -38,7 +38,7 @@ import ui.IconTextElement;
 public class ExtendedStatus extends IconTextElement{
     
     private String name;    // status name
-    private String status="";
+    private String status;
     private int priority;
     int index;
     
@@ -60,8 +60,6 @@ public class ExtendedStatus extends IconTextElement{
             s.append(status);
             s.append('"');
         }
-        
-        //return name+" ("+priority+") \""+status+"\""; 
         return s.toString();
     }
     public int getColor(){ return ColorScheme.LIST_INK;}

@@ -81,7 +81,6 @@ public class RosterMenu
 //#     }
 //#     public void eventOk(){
 //# 	destroyView();
-//#         boolean connected= ( roster.theStream != null );
 //# 	MenuItem me=(MenuItem) getFocusedObject();
 //#         
 //# 	if (me==null)  return;
@@ -89,63 +88,48 @@ public class RosterMenu
 //# 	int index=me.index;
 //# 	switch (index) {
 //# 	    case 0: //actions
-//#                 if (connected) {
-//#                     new RosterItemActions(display, o, -1).setParentView(roster);
-//#                 } 
+//#                 roster.cmdActions();
 //#                 break;
 //# 	    case 1: //status
-//#                 StaticData.getInstance().roster.reconnectCount=0; 
-//# 		new StatusSelect(display, null).setParentView(roster);
+//#                 roster.cmdStatus();
 //# 		break;
 //#             case 2: //active
-//#                 new ActiveContacts(display, null).setParentView(roster);
+//#                 roster.cmdActiveContacts();
 //# 		break;
 //#ifdef MOOD
 //#             case 3: //user mood
-//#                 if (connected) {
-//#                     new MoodSelect(display, null).setParentView(roster);
-//#                 }
-//# 		break;
+//#                 roster.cmdUserMood();
+//#                 break;
 //#endif
 //#             case 4: //alert
-//#                 new AlertProfile(display).setParentView(roster);
+//#                 roster.cmdAlert();
 //# 		break;
 //#             case 5: //conference
-//#                 if (connected) {
-//#                    new Bookmarks(display, null).setParentView(roster);
-//#                 }
+//#                 roster.cmdConference();
 //#                 break;
 //#ifdef ARCHIVE
 //#             case 6: //archive
-//#                 new ArchiveList(display, null, -1).setParentView(roster);
+//#                 roster.cmdArchive();
 //# 		break;
 //#endif
 //#             case 7: {//add contact
-//#                 if (connected)  {
-//#                     Contact cn=null;
-//#                     if (o instanceof Contact) {
-//#                         cn=(Contact)o;
-//#                         if (cn.getGroupType()!=Groups.TYPE_NOT_IN_LIST && cn.getGroupType()!=Groups.TYPE_SEARCH_RESULT) cn=null;
-//#                     }
-//#                     if (o instanceof MucContact) { cn=(Contact)o; }
-//#                     new ContactEdit(display, cn);
-//#                     break;
-//#                 }
+//#                 roster.cmdAdd();
+//#                 break;
 //#             }
 //#             case 8: //tools
-//#                 new RosterToolsMenu(display).setParentView(roster);
+//#                 roster.cmdTools();
 //# 		break;
 //#             case 9: //account
-//#                 new AccountSelect(display, false).setParentView(roster);
+//#                 roster.cmdAccount();
 //# 		break; 
 //#             case 10: //about
-//#                 new Info.InfoWindow(display);
+//#                 roster.cmdInfo();
 //# 		break; 
 //#             case 11: //cleanup All Histories
-//#                 roster.cleanupAllHistories();
+//#                 roster.cmdCleanAllMessages();
 //# 		break; 
 //# 	    case 12: {//quit
-//#                 roster.quit();
+//#                 roster.cmdQuit();
 //#                 return;
 //# 	    }
 //# 	}

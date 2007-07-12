@@ -57,7 +57,7 @@ public class MessageEdit
     
     private ClipBoard clipboard;  // The clipboard class
     
-    private textSizeNotify textsizenotify;
+    //private textSizeNotify textsizenotify;
     
     private Contact to;
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
@@ -138,11 +138,12 @@ public class MessageEdit
         
         //t.setInitialInputMode("MIDP_LOWERCASE_LATIN");
         new Thread(this).start() ; // composing
-        
-        textsizenotify = new textSizeNotify();
-        
+
         setInitialCaps(cf.capsState);
         display.setCurrent(t);
+        
+        //textsizenotify = new textSizeNotify();
+        //textsizenotify.startNotify();
     }
     
     public void insertText(String s, int caretPos) {
@@ -268,7 +269,8 @@ public class MessageEdit
     }
     
     public void destroyView(){
-        textsizenotify.destroyTask();
+        //textsizenotify.destroyTask();
+        //textsizenotify=null;
         if (display!=null)   display.setCurrent(parentView);
     }
 
@@ -278,39 +280,50 @@ public class MessageEdit
         t.addCommand(state? cmdAbc: cmdABC);
         cf.capsState=state;
     }
-    
-    private void setTextSize() {
-        try {
-            int freeSz=t.getMaxSize()-t.size();
-
-            t.setTitle("("+freeSz+") "+to.toString());
-        } catch (Exception e) { 
-            t.setTitle(to.toString());
-        }
-    }
-    
-    private class textSizeNotify implements Runnable {    
+/*
+ *  //memory leak :(
+ *
+    private class textSizeNotify extends Thread{   
         private boolean stop;
-
+        private boolean exit;
+        private textSizeNotify instance;
+    
         public textSizeNotify() {
-            new Thread(this).start();
+            exit=false;
+            stop=true;
+            start();
         }
 
         public void destroyTask(){
             stop=false;
         }
+        
+        public void startNotify(){
+            if (instance==null) instance=new textSizeNotify();
+            if (t==null) {
+                instance.destroyTask(); return;
+            }
+
+        }
 
         public void run() {
-            while (!stop) {
-                try {
-                    Thread.sleep(500); //спим 5 секунд
-                } catch (InterruptedException ex) {
-                    stop=true; //при ошибке завершаем таймер
-                }
+            while (true) {
+                if (exit) return;
+                try {  sleep(300);  } catch (Exception e) {}
                 
-                setTextSize();
+                if (stop) continue;
+                
+                try {
+                    int freeSz=t.getMaxSize()-t.size();
+
+                    t.setTitle("("+freeSz+") "+to.toString());
+                    freeSz=0;
+                } catch (Exception e) { 
+                    t.setTitle(to.toString());
+                }
             }
         }
     }
+ */
 }
 

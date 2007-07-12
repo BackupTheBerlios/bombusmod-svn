@@ -83,7 +83,6 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
     
     public void run(){
         try {
-            //System.out.println(getSel().getName());
             StaticData.getInstance().roster.theStream.send(new IqMood(null,"publish1",getSel().getName(),null));
         } catch (Exception e) { }
     }

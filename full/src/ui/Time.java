@@ -79,7 +79,7 @@ public class Time {
         c.setTime(new Date(date));
         return String.valueOf(c.get(Calendar.YEAR))+
                 lz2(c.get(Calendar.MONTH)+1)+
-                lz2(c.get(Calendar.DAY_OF_MONTH)+1)+
+                lz2(c.get(Calendar.DAY_OF_MONTH))+
                 'T'+timeString(date)+':'+lz2(c.get(Calendar.SECOND));
     }
     

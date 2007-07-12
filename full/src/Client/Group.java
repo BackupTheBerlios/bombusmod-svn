@@ -72,8 +72,17 @@ public class Group extends IconTextElement {
     public String getName() { return name; }
     
     protected String mainbar(String mainbarStart) {
-	return mainbarStart+" ("+getOnlines()+'/'+getNContacts()+')';
+        StringBuffer mb=new StringBuffer();
+        mb.append(mainbarStart);
+        mb.append(" (");
+        mb.append(getOnlines());
+        mb.append("/");
+        mb.append(getNContacts());
+        mb.append(")");
+
+        return mb.toString();
     }
+    
     public String toString(){ return mainbar(name);  }
 
     public void onSelect(){
