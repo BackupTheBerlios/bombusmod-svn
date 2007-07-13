@@ -37,8 +37,8 @@ import ui.IconTextElement;
  */
 public class ExtendedStatus extends IconTextElement{
     
-    private String name;    // status name
-    private String status;
+    private String name="";    // status name
+    private String status="";
     private int priority;
     int index;
     
