@@ -135,7 +135,7 @@ public class Bookmarks
         StaticData sd=StaticData.getInstance();
         ConferenceGroup grp=sd.roster.initMuc(join.toString(), join.password);
         JabberDataBlock x=new JabberDataBlock("x", null, null);
-        x.setNameSpace("http://jabber.org/protocol/muc");
+        x.setNameSpace("http://jabber.org/protocol/muc#user");
         
         JabberDataBlock history=x.addChild("history", null);
         history.setAttribute("maxstanzas", Integer.toString(Config.getInstance().confMessageCount));

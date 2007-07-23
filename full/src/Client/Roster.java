@@ -1401,7 +1401,7 @@ public class Roster
                             case 503: break;
                             case 504: body="Remote Server Timeout"; break;
                             case 510: body="Disconnected"; break;
-                            //default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
+                            default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
                         }
                     }
                     if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
@@ -1580,6 +1580,7 @@ public class Roster
                 return JabberBlockListener.BLOCK_PROCESSED;   
             }
             else if( data instanceof Presence ) {
+                //System.out.println("presence");
                 if (myStatus==Presence.PRESENCE_OFFLINE) return JabberBlockListener.BLOCK_REJECTED;
                 Presence pr= (Presence) data;
                 
@@ -1587,8 +1588,6 @@ public class Roster
                 pr.dispathch();
                 int ti=pr.getTypeIndex();
 
-                
-                
                 //PresenceContact(from, ti);
                 Msg m=new Msg(
                         (ti==Presence.PRESENCE_AUTH || ti==Presence.PRESENCE_AUTH_ASK)?
@@ -1596,12 +1595,13 @@ public class Roster
                         from,
                         null,
                         pr.getPresenceTxt());
-                
+
                 JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc#user");
+                //System.out.println(data.toString());
                 if (xmuc!=null) {
                     try {
                         MucContact c = mucContact(from);
-                    
+
                         if (pr.hasEntityCaps()) {
                             c.hasEntity=true;
                             c.entityNode=strconv.replaceCaps(pr.getEntityNode());
@@ -1609,6 +1609,7 @@ public class Roster
                         }
 
                         int rp=from.indexOf('/');
+
                         String name=from.substring(rp+1);
 
                         from=from.substring(0, rp);
@@ -1617,19 +1618,27 @@ public class Roster
                                Msg.MESSAGE_TYPE_PRESENCE,
                                name,
                                null,
-                               c.processPresence(xmuc, pr) );
-                                        
+                               c.processPresence(xmuc, pr) );            
                         c.statusString=pr.getStatus();
-                        
                         if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1) {
                             messageStore(getContact(from, false), chatPresence);
                         }
                         c.addMessage(m);
                         c.priority=pr.getPriority();
-                        //if (ti>=0) c.setStatus(ti);
+                    } catch (Exception e) { e.printStackTrace(); }
+                }/* else if (data.getChildBlock("x").getAttribute("xmlns").equals("http://jabber.org/protocol/muc") && data.getChildBlock("error")!=null) {
+                    //System.out.println("muc error");
+
+                    MucContact c = mucContact(from);
                     
-                    } catch (Exception e) { /*e.printStackTrace();*/ }
-                } else {
+                    Msg chatPresence=new Msg(
+                           Msg.MESSAGE_TYPE_PRESENCE,
+                           from,
+                           null,
+                           c.processPresence(xmuc, pr) );
+                    //messageStore(getContact(from, false), chatPresence);
+                    //c.addMessage(m);
+                }*/ else {
                     boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
                     if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
                     
@@ -2620,7 +2629,7 @@ public class Roster
         ConferenceGroup grp=initMuc(conference, "");
         
         JabberDataBlock x=new JabberDataBlock("x", null, null);
-        x.setNameSpace("http://jabber.org/protocol/muc");
+        x.setNameSpace("http://jabber.org/protocol/muc#user");
         
         if (grp.password.length()!=0) {
             // adding password to presence

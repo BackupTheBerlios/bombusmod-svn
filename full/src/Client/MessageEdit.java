@@ -95,7 +95,7 @@ public class MessageEdit
         
         int maxSize=500;
 	
-        t=new TextBox(null, null, maxSize, TextField.ANY);
+        t=new TextBox(to.toString(), null, maxSize, TextField.ANY);
 		
         try {
             //expanding buffer as much as possible

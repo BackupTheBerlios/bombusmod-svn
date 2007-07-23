@@ -108,7 +108,7 @@ public class BookmarkItem extends IconTextElement{
         ConferenceGroup grp=sd.roster.initMuc(name, pass);
 
         JabberDataBlock x=new JabberDataBlock("x", null, null);
-        x.setNameSpace("http://jabber.org/protocol/muc");
+        x.setNameSpace("http://jabber.org/protocol/muc#user");
         if (pass.length()!=0) {
             x.addChild("password", pass);
         }
