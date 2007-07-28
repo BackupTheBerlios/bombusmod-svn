@@ -73,6 +73,7 @@ public class MessageEdit
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
     private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
     private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
+    private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 16);
 //#if TEMPLATES
 //#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 97); 
 //#endif
@@ -120,7 +121,7 @@ public class MessageEdit
             t.addCommand(cmdInsNick);
         
         t.addCommand(cmdSendInTranslit);
-        
+        t.addCommand(cmdClearTitle);
 //#ifdef ARCHIVE
 //#         t.addCommand(cmdPaste);
 //#endif
@@ -195,6 +196,10 @@ public class MessageEdit
         if (c==cmdInsNick) { new AppendNick(display, to, this, caretPos); return; }
         if (c==cmdAbc) {setInitialCaps(false); return; }
         if (c==cmdABC) {setInitialCaps(true); return; }
+        if (c==cmdClearTitle) {
+            t.setTitle(t.getTitle()==null?to.toString():null); 
+            return; 
+        }
 //#ifdef ARCHIVE
 //# 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
 //#endif

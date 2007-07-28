@@ -232,13 +232,13 @@ public class ConferenceForm implements CommandListener{
         ConferenceGroup grp=sd.roster.initMuc(name, pass);
 
         JabberDataBlock x=new JabberDataBlock("x", null, null);
-        x.setNameSpace("http://jabber.org/protocol/muc#user");
+        x.setNameSpace("http://jabber.org/protocol/muc");
         if (pass.length()!=0) {
             x.addChild("password", pass); // adding password to presence
         }
         
         JabberDataBlock history=x.addChild("history", null);
-        history.setAttribute("maxstanzas", String.valueOf(maxStanzas));
+        history.setAttribute("maxstanzas", Integer.toString(maxStanzas));
         history.setAttribute("maxchars","32768");
         try {
             long last=grp.getConference().lastMessageTime;

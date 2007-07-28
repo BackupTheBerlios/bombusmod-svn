@@ -1409,7 +1409,7 @@ public class Roster
                 
                 try {
                     //TODO: invitations
-                    JabberDataBlock xmlns=message.findNamespace("http://jabber.org/protocol/muc#user");
+                    JabberDataBlock xmlns=message.findNamespace("http://jabber.org/protocol/muc");
                     String password=xmlns.getChildBlockText("password");
                     
                     JabberDataBlock invite=xmlns.getChildBlock("invite");
@@ -1596,7 +1596,7 @@ public class Roster
                         null,
                         pr.getPresenceTxt());
 
-                JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc#user");
+                JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc");
                 //System.out.println(data.toString());
                 if (xmuc!=null) {
                     try {
@@ -1766,7 +1766,9 @@ public class Roster
 
         if (message.isHighlited()) {
             playNotify(SOUND_FOR_ME);
-            setWobbler(message.getBody());
+//#ifdef POPUPS
+//#            setWobbler(message.getBody());
+//#endif
             return;
         }
         else if (c.origin>=c.ORIGIN_GROUPCHAT) {
@@ -2629,7 +2631,7 @@ public class Roster
         ConferenceGroup grp=initMuc(conference, "");
         
         JabberDataBlock x=new JabberDataBlock("x", null, null);
-        x.setNameSpace("http://jabber.org/protocol/muc#user");
+        x.setNameSpace("http://jabber.org/protocol/muc");
         
         if (grp.password.length()!=0) {
             // adding password to presence
