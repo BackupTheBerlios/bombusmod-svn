@@ -130,9 +130,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
 		addItem(SR.MS_EDIT,2, 0x0f13);
 		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
-                addItem(SR.MS_MOVE,1003);
+		addItem(SR.MS_MOVE,1003);
 		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
-                addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
+		addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
             
 	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return;

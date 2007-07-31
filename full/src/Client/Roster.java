@@ -1348,7 +1348,7 @@ public class Roster
                 String subj=message.getSubject().trim(); if (subj.length()==0) subj=null;
 		String type=message.getTypeAttribute();
                 
-                String tStamp=message.getTimeStamp();
+                long tStamp=message.getMessageTime();
 		
                 int start_me=-1;
                 String name=null;
