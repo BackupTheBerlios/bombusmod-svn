@@ -27,6 +27,8 @@
 
 package ui.controls;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -40,69 +42,57 @@ public class PopUp {
     
     private Font font;
     
-    private String str;
-    
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     private boolean wordsWrap;
     
     private boolean kikoban=false;
+
+    private int width;
+
+    private int height;
     
-    private Vector strings;
-    
-    /** Creates a new instance of PopUp */
-    public PopUp(Graphics g, String txt) {
-        str=txt.trim();
-        int height=g.getClipHeight();
-        int width=g.getClipWidth();
-        
-        kikoban=(str.startsWith("!"))?true:false;
-        font=(kikoban)?FontCache.getClockFont():FontCache.getBalloonFont();
+    private Vector messages = new Vector(); 
 
-        strings=parseMessage(width-border-padding);
-        
-        int length=getMaxWidth();
-        
-        int strWdth=(length!=0)?length:getStrWidth(str);
-        
-        popUpWidth=(strWdth>(width-border))?width-border:strWdth+padding;
+    synchronized public void setMessage(String message){
+//#ifdef DEBUG
+//# //	System.out.println("added message to array = "+message);
+//#endif
+        messages.addElement(parseMessage(message, width-border-padding));
+    }
 
-        widthBorder=(strWdth>popUpWidth)?border/2:(width-popUpWidth)/2;
-
-
-        int stringsHeight=getHeight();
-
-        if (stringsHeight>height) {
-            heightBorder=0;
-            popUpHeight=height;
-        } else {
-            popUpHeight=stringsHeight+padding;
-            heightBorder=(height-popUpHeight)/2;
-        }
-     
-        g.translate(widthBorder-g.getTranslateX(), heightBorder-g.getTranslateY());
-
-        g.setClip(0,0,popUpWidth+1,popUpHeight+1);
-
-        draw(g);
+    public PopUp() {
+        font=FontCache.getBalloonFont();
     }
     
-    public void draw(Graphics g) {
-        g.setColor((kikoban)?0xff0000:ColorScheme.BALLOON_INK);
+    public void next() {
+        if(messages.size()>0){
+            try{
+                messages.removeElementAt(0);
+            }catch (Throwable t){
+                t.printStackTrace();
+            }
+        }
+    }
+    
+    
+    
+    private void draw(Graphics g) {
+        g.setColor(ColorScheme.BALLOON_INK);
         
         g.fillRect(1,1,popUpWidth,popUpHeight);                 //shadow
 
         g.fillRect(0,0,popUpWidth,popUpHeight);                     //border
         
-        g.setColor((kikoban)?0xff0000:ColorScheme.BALLOON_BGND);
+        g.setColor(ColorScheme.BALLOON_BGND);
         g.fillRect(1,1,popUpWidth-2,popUpHeight-2);                 //fill
         
-        g.setColor((kikoban)?0xffff00:ColorScheme.BALLOON_INK);
+        g.setColor(ColorScheme.BALLOON_INK);
         g.setFont(font);
         
         drawAllStrings(g, 2,3);
     }
 
-    private Vector parseMessage(int stringWidth) {
+    private Vector parseMessage(String str, int stringWidth) {
         Vector lines=new Vector();
         int state=0;
         String txt=str;
@@ -167,7 +157,7 @@ public class PopUp {
     }
     
     private void drawAllStrings(Graphics g, int x, int y) {
-        Vector lines=strings;
+        Vector lines=(Vector) messages.elementAt(0);
         if (lines.size()<1) return;
         
         int fh=getFontHeight();
@@ -185,7 +175,9 @@ public class PopUp {
     }
 
     private int getHeight() {
-        return getFontHeight()*strings.size();
+        Vector message= (Vector)messages.elementAt(0);
+        
+        return getFontHeight()*message.size();
     }
     
     private int getStrWidth(String string) {
@@ -193,7 +185,7 @@ public class PopUp {
     }
     
     private int getMaxWidth() {
-        Vector lines=strings;
+        Vector lines=(Vector) messages.elementAt(0);
 
         int length=0;
         
@@ -207,5 +199,39 @@ public class PopUp {
 	}
         return length;
     }
+    
+    
+//paint
+    public void paintCustom(Graphics g) {
+	if(messages.size()<1)
+	    return;
+        
+        this.height=g.getClipHeight();
+        this.width=g.getClipWidth();
+        
+        int strWdth=getMaxWidth();
+        
+        popUpWidth=(strWdth>(width-border))?width-border:strWdth+padding;
+
+        widthBorder=(strWdth>popUpWidth)?border/2:(width-popUpWidth)/2;
+
+
+        int stringsHeight=getHeight();
+
+        if (stringsHeight>height) {
+            heightBorder=0;
+            popUpHeight=height;
+        } else {
+            popUpHeight=stringsHeight+padding;
+            heightBorder=(height-popUpHeight)/2;
+        }
+     
+        g.translate(widthBorder-g.getTranslateX(), heightBorder-g.getTranslateY());
+
+        g.setClip(0,0,popUpWidth+1,popUpHeight+1);
+
+        draw(g);
+    }
+//paint
 }
  

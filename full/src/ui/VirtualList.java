@@ -64,10 +64,10 @@ public abstract class VirtualList
     public Phone ph=Phone.getInstance();
     
 //#ifdef POPUPS
-//#     public static String wobble="";
-//#     
+//#     private static PopUp popup = new PopUp();
+//# 
 //#     public static void setWobble(String txt){
-//#         wobble=txt;
+//#         popup.setMessage(txt);
 //#     }
 //#endif
     protected int getMainBarRGB() {return ColorScheme.BAR_INK;} 
@@ -447,15 +447,20 @@ public abstract class VirtualList
         g.setClip(0,0, width, height);
 
 //#ifdef POPUPS
-//#         if (wobble.length()>0) new PopUp(g,wobble);
+//#         drawPopUp(g);
 //#endif
 	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
     }
-
+    
+//#ifdef POPUPS
+//#     protected void drawPopUp(final Graphics g) {
+//#         popup.paintCustom(g);
+//#     }
+//#endif
+    
     protected void drawBalloon(final Graphics g, int balloon, final String text) {
         setAbsOrg(g,0,balloon);
         Balloon.draw(g, text);
-        
     }
 
     private void drawHeapMonitor(final Graphics g, int y) {
@@ -568,9 +573,6 @@ public abstract class VirtualList
     protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  }
     
     protected void pointerPressed(int x, int y) {
-//#ifdef POPUPS
-//#         wobble=""; // hide woobbler
-//#endif
 	if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
             return;
@@ -615,7 +617,7 @@ public abstract class VirtualList
     private void key(int keyCode) {
         //System.out.println(keyCode);
 //#ifdef POPUPS
-//#         wobble="";
+//#         popup.next();
 //#endif
         if ((keyCode==cf.SOFT_RIGHT || keyCode==cf.KEY_BACK) && ph.PhoneManufacturer()!=ph.SONYE) {
             if (canBack==true)
@@ -666,7 +668,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#                             if (cf.popUps) {
 //#                                 int freemem=(int)Runtime.getRuntime().freeMemory();
-//#                                 wobble="Free "+(freemem/1000)+" kb";
+//#                                 setWobble("Free "+(freemem/1000)+" kb");
 //#                             }
 //#endif
                     }
