@@ -1767,7 +1767,8 @@ public class Roster
         if (message.isHighlited()) {
             playNotify(SOUND_FOR_ME);
 //#ifdef POPUPS
-//#            setWobbler(message.getBody());
+//#             if (cf.popUps)
+//#                 setWobbler(message.getBody());
 //#endif
             return;
         }
@@ -2147,7 +2148,7 @@ public class Roster
          if (keyCode==KEY_POUND) {
             System.gc();
 //#ifdef POPUPS
-//#             setWobbler(null);
+//#             //setWobbler(null);
 //#endif
             return;
          }
