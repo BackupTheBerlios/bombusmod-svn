@@ -2148,7 +2148,7 @@ public class Roster
          if (keyCode==KEY_POUND) {
             System.gc();
 //#ifdef POPUPS
-//#             //setWobbler(null);
+//#             setWobbler(null);
 //#endif
             return;
          }
