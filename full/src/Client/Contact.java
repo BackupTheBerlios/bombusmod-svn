@@ -30,7 +30,9 @@ import Conference.MucContact;
 //#if LAST_MESSAGES
 //# import History.HistoryStorage;
 //#endif
-import History.HistoryAppend;
+//#if (FILE_IO && HISTORY)
+//# import History.HistoryAppend;
+//#endif
 //#if MOOD
 //# import UserMood.MoodLocale;
 //#endif
@@ -267,48 +269,48 @@ public class Contact extends IconTextElement{
 //#                 new HistoryStorage(getBareJid(), m.getBody(), false);
 //#         }
 //#endif        
-//#if FILE_IO
-
-        if (cf.msgLog && cf.msgPath==null) {
+//#if FILE_IO && HISTORY
+//# 
+//#         if (cf.msgLog && cf.msgPath==null) {
 //#ifdef POPUPS
 //#             StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
 //#endif
-        } else 
-            if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
-        {
-            //String histRecord=(nick==null)?getBareJid():nick;
-            String fromName=StaticData.getInstance().account.getUserName();
-            if (m.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=toString();
-            boolean allowLog=false;
-            switch (m.messageType) {
-                case Msg.MESSAGE_TYPE_PRESENCE:
-                    if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConfPresence) allowLog=true;
-                    if (origin<ORIGIN_GROUPCHAT && cf.msgLogPresence) allowLog=true;
-                    break;
-                default:
-                    if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
-                    if (origin<ORIGIN_GROUPCHAT) allowLog=true;
-            }
-            if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
-                 allowLog=false;
-            if (allowLog)
-            {
-                StringBuffer body=new StringBuffer(m.getDayTime());
-                body.append(" <");
-                body.append(fromName);
-                body.append("> ");
-                if (m.subject!=null) {
-                    body.append(m.subject);
-                    body.append("\r\n");
-                }
-                body.append(m.getBody());
-                body.append("\r\n");
-                
-                String histRecord=(nick==null)?getBareJid():nick;
-                
-                new HistoryAppend(body, histRecord);
-            }
-       }
+//#         } else 
+//#             if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
+//#         {
+//#             //String histRecord=(nick==null)?getBareJid():nick;
+//#             String fromName=StaticData.getInstance().account.getUserName();
+//#             if (m.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=toString();
+//#             boolean allowLog=false;
+//#             switch (m.messageType) {
+//#                 case Msg.MESSAGE_TYPE_PRESENCE:
+//#                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConfPresence) allowLog=true;
+//#                     if (origin<ORIGIN_GROUPCHAT && cf.msgLogPresence) allowLog=true;
+//#                     break;
+//#                 default:
+//#                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
+//#                     if (origin<ORIGIN_GROUPCHAT) allowLog=true;
+//#             }
+//#             if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
+//#                  allowLog=false;
+//#             if (allowLog)
+//#             {
+//#                 StringBuffer body=new StringBuffer(m.getDayTime());
+//#                 body.append(" <");
+//#                 body.append(fromName);
+//#                 body.append("> ");
+//#                 if (m.subject!=null) {
+//#                     body.append(m.subject);
+//#                     body.append("\r\n");
+//#                 }
+//#                 body.append(m.getBody());
+//#                 body.append("\r\n");
+//#                 
+//#                 String histRecord=(nick==null)?getBareJid():nick;
+//#                 
+//#                 new HistoryAppend(body, histRecord);
+//#             }
+//#        }
 //#endif
 
         if (first_replace) {

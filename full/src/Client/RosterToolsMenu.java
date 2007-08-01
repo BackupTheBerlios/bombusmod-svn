@@ -32,8 +32,8 @@ package Client;
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
 //#endif
-//#ifdef FILE_IO
-import History.HistoryConfig;
+//#if (FILE_IO && HISTORY)
+//# import History.HistoryConfig;
 //#endif
 import Stats.Stats;
 import javax.microedition.lcdui.Display;
@@ -61,8 +61,8 @@ public class RosterToolsMenu
 //#endif
         addItem(SR.MS_MY_VCARD, 2, 0x0f16);
         addItem(SR.MS_OPTIONS, 3, 0x0f03);
-//#if (FILE_IO)
-        addItem(SR.MS_HISTORY_OPTIONS, 4, 0x0f01);
+//#if (FILE_IO && HISTORY)
+//#         addItem(SR.MS_HISTORY_OPTIONS, 4, 0x0f01);
 //#endif
         
 //#if (FILE_IO)
@@ -115,10 +115,10 @@ public class RosterToolsMenu
             case 3:
                 new ConfigForm(display);
                 return;
-//#if FILE_IO
-            case 4: //history
-                new HistoryConfig(display);
-                return;
+//#if (FILE_IO && HISTORY)
+//#             case 4: //history
+//#                 new HistoryConfig(display);
+//#                 return;
 //#endif 
 //#if (FILE_IO)
             case 5:
