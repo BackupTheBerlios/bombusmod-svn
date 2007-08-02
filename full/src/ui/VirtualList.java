@@ -104,7 +104,7 @@ public abstract class VirtualList
     public static final short SE_GREEN=-5;
     
     public static final short SIEMENS_FLIPOPEN=-24;
-    public static final short SIEMENS_FLIPCLOSE=-22;
+    public static final short SIEMENS_FLIPCLOSE=-22; //долбаный слайдер светит мессаджбокс и не дает яве обработать :(
     
     public static final short SIEMENS_VOLUP=-13;
     public static final short SIEMENS_VOLDOWN=-14;
@@ -639,6 +639,10 @@ public abstract class VirtualList
                 case MOTOROLA_FLIP: { userKeyPressed(keyCode); break; }
                 case KEY_NUM1:  { moveCursorHome();    break; }
                 case KEY_NUM7:  { moveCursorEnd();     break; }
+                
+                case KEY_NUM4:  { userKeyPressed(keyCode);    break; }
+                case KEY_NUM6:  { userKeyPressed(keyCode);     break; }
+                
                 case NOKIA_GREEN: {
                     if (ph.PhoneManufacturer()==ph.NOKIA) {
                         keyGreen();

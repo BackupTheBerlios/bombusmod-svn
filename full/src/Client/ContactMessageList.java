@@ -401,20 +401,24 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyRepeated(int keyCode) {
-        if (keyCode==KEY_NUM0) clearReadedMessageList();
-        else if (keyCode==KEY_NUM4) nextContact(-1);
-        else if (keyCode==KEY_NUM6) nextContact(1);
-	else super.keyRepeated(keyCode);
+        if (keyCode==KEY_NUM0) 
+            clearReadedMessageList();
+	else 
+            super.keyRepeated(keyCode);
     }       
 
     public void userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
+        
+        if (keyCode==KEY_NUM4) 
+            nextContact(-1); //previous contact with messages
+        if (keyCode==KEY_NUM6) 
+            nextContact(1); //next contact with messages
+        
 //#if ALT_INPUT  
 //#         if (cf.altInput) {
 //#             if (!startMessage) {
 //#                 if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
-//#                 if (keyCode==KEY_NUM4) nextContact(-1);
-//#                 if (keyCode==KEY_NUM6) nextContact(1);
 //#                 if (keyCode==keyClear) {
 //#                     if (messages.isEmpty()) return;
 //#                     clearReadedMessageList();
@@ -434,6 +438,7 @@ public class ContactMessageList extends MessageList
 //#             }
 //#         } else {
 //#endif
+       
             if (keyCode==KEY_NUM3) 
                 new ActiveContacts(display, contact);
         
@@ -441,7 +446,8 @@ public class ContactMessageList extends MessageList
                 Quote();
         
             if (cf.allowLightControl && (keyCode==SIEMENS_VOLUP || keyCode==SIEMENS_CAMERA)) { //copy&copy+
-                if (messages.isEmpty()) return;
+                if (messages.isEmpty()) 
+                    return;
                 try {
                     StringBuffer clipstr=new StringBuffer();
                     clipstr.append(clipboard.getClipBoard());
@@ -467,8 +473,8 @@ public class ContactMessageList extends MessageList
             }
         
             if (keyCode==keyClear) {
-                if (messages.isEmpty()) return;
-                clearReadedMessageList();
+                if (!messages.isEmpty())
+                    clearReadedMessageList();
             }
 //#if ALT_INPUT  
 //#         }
@@ -499,7 +505,6 @@ public class ContactMessageList extends MessageList
             Contact c=(Contact)activeContacts.elementAt(nowContact);
             new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
         } catch (Exception e) { }
-        
     }
 
     private void Reply() {
