@@ -27,8 +27,6 @@
 
 package ui.controls;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -44,16 +42,16 @@ public class PopUp {
     
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     private boolean wordsWrap;
-    
-    private boolean kikoban=false;
 
-    private int width;
+    private int width=100;
 
     private int height;
     
     private Vector messages = new Vector(); 
 
     synchronized public void setMessage(String message){
+        if (message==null && message=="")
+            return;
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif
@@ -72,24 +70,6 @@ public class PopUp {
                 t.printStackTrace();
             }
         }
-    }
-    
-    
-    
-    private void draw(Graphics g) {
-        g.setColor(ColorScheme.BALLOON_INK);
-        
-        g.fillRect(1,1,popUpWidth,popUpHeight);                 //shadow
-
-        g.fillRect(0,0,popUpWidth,popUpHeight);                     //border
-        
-        g.setColor(ColorScheme.BALLOON_BGND);
-        g.fillRect(1,1,popUpWidth-2,popUpHeight-2);                 //fill
-        
-        g.setColor(ColorScheme.BALLOON_INK);
-        g.setFont(font);
-        
-        drawAllStrings(g, 2,3);
     }
 
     private Vector parseMessage(String str, int stringWidth) {
@@ -230,7 +210,19 @@ public class PopUp {
 
         g.setClip(0,0,popUpWidth+1,popUpHeight+1);
 
-        draw(g);
+        g.setColor(ColorScheme.BALLOON_INK);
+        
+        g.fillRect(1,1,popUpWidth,popUpHeight);                 //shadow
+
+        g.fillRect(0,0,popUpWidth,popUpHeight);                     //border
+        
+        g.setColor(ColorScheme.BALLOON_BGND);
+        g.fillRect(1,1,popUpWidth-2,popUpHeight-2);                 //fill
+        
+        g.setColor(ColorScheme.BALLOON_INK);
+        g.setFont(font);
+        
+        drawAllStrings(g, 2,3);
     }
 //paint
 }

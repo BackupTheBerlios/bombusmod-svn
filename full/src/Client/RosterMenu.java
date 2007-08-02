@@ -24,22 +24,13 @@
  */
 
 package Client;
-//#ifdef NEW_MENU
-//# import Conference.Bookmarks;
-//# import Conference.MucContact;
-//#ifdef MOOD
-//# import UserMood.MoodSelect;
-//#endif
-//#ifdef ARCHIVE
-//# import archive.ArchiveList;
-//#endif
-//# import images.RosterIcons;
-//# import javax.microedition.lcdui.Display;
-//# import locale.SR;
-//# import midlet.BombusMod;
-//# import ui.Menu;
-//# import ui.MenuItem;
-//#endif
+
+import images.RosterIcons;
+import javax.microedition.lcdui.Display;
+import locale.SR;
+import ui.Menu;
+import ui.MenuItem;
+
 
 public class RosterMenu 
 //#ifdef NEW_MENU
@@ -54,7 +45,6 @@ public class RosterMenu
 //#     
 //#     private Roster roster=StaticData.getInstance().roster;
 //# 
-//#     /** Creates a new instance of RosterToolsMenu */
 //#     public RosterMenu(Display display, Object o) {
 //#         super(SR.MS_MAIN_MENU);
 //#         this.o=o;
@@ -74,7 +64,7 @@ public class RosterMenu
 //#         addItem(SR.MS_TOOLS, 8,0x0f24);    
 //#         addItem(SR.MS_ACCOUNT_, 9,0x0f01);
 //#         addItem(SR.MS_ABOUT, 10,0x0f04);
-//#         addItem(SR.MS_CLEAN_ALL_MESSAGES, 110, RosterIcons.ICON_TRASHCAN_INDEX);
+//#         addItem(SR.MS_CLEAN_ALL_MESSAGES, 11, RosterIcons.ICON_TRASHCAN_INDEX);
 //#         addItem(SR.MS_APP_QUIT, 12,0x0f22);
 //#     
 //# 	attachDisplay(display);
