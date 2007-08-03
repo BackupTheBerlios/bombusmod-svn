@@ -640,8 +640,8 @@ public abstract class VirtualList
                 case KEY_NUM1:  { moveCursorHome();    break; }
                 case KEY_NUM7:  { moveCursorEnd();     break; }
                 
-                case KEY_NUM4:  { userKeyPressed(keyCode);    break; }
-                case KEY_NUM6:  { userKeyPressed(keyCode);     break; }
+                case KEY_NUM4:  { userKeyPressed(keyCode); }
+                case KEY_NUM6:  { userKeyPressed(keyCode); }
                 
                 case NOKIA_GREEN: {
                     if (ph.PhoneManufacturer()==ph.NOKIA) {
