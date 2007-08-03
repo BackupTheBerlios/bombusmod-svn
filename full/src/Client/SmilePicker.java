@@ -34,15 +34,6 @@ import javax.microedition.lcdui.*;
 import java.util.Vector;
 import ui.controls.Balloon;
 
-/**
- *
- * @author Eugene Stahov
- */
-    
-/**
- *
- * @author Eugene Stahov
- */
 public class SmilePicker extends VirtualList implements CommandListener, VirtualElement{
 
     private final static int CURSOR_HOFFSET=1;
@@ -203,5 +194,18 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
 
     public String getSecondString() {
         return null;
+    }
+    
+    public void userKeyPressed(int keyCode) {
+        super.userKeyPressed(keyCode);
+        
+        if (keyCode==KEY_NUM3) {
+            super.keyLeft();
+            keyDwn();
+        }
+        else if (keyCode==KEY_NUM9) {
+            super.keyRight();
+            
+        }
     }
 }
