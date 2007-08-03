@@ -383,7 +383,7 @@ public abstract class VirtualList
                 g.setColor(el.getColor());
                 
                 g.clipRect(0, 0, itemMaxWidth, lh);
-                el.drawItem(g, (sel)?offset:0, sel);
+                el.drawItem(g, (sel)?offset:0, sel, (showBalloon)?true:false);
                 
                 itemIndex++;
 		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
@@ -505,7 +505,7 @@ public abstract class VirtualList
             g.fillRect(0, 0, width, h);
             
             g.setColor(getMainBarRGB());
-            mainbar.drawItem(g,0,false);
+            mainbar.drawItem(g,0,false, false);
         }
     }
 

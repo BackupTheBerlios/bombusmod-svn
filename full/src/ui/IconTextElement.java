@@ -41,7 +41,7 @@ abstract public class IconTextElement implements VirtualElement
     
     ImageList il;
     
-    int heightFirstLine;
+    int heightFirstLine=0;
     
     abstract protected int getImageIndex();
 
@@ -56,27 +56,28 @@ abstract public class IconTextElement implements VirtualElement
         return FontCache.getBalloonFont();
     }
     
-    public void drawItem(Graphics g,int ofs, boolean sel){
+    public void drawItem(Graphics g,int ofs, boolean sel, boolean drawsec){
        g.setFont(getFont());
        
-       String str=null;
-       str=toString();
+       String str=toString();
+       String secstr=getSecondString();
+
+       int offset=4+imgWidth;
        
-       String secstr=null;
-       secstr=getSecondString();
-       
-       if (sel && secstr!=null) {
-            itemHeight=heightFirstLine+getSmallFont().getHeight()-1;
-       } else 
-            itemHeight=heightFirstLine;
+       if (sel && drawsec && secstr!=null)
+           itemHeight=heightFirstLine+getSmallFont().getHeight()-1;
+       else
+           itemHeight=heightFirstLine;
        
        if (il!=null) 
            il.drawImage(g, getImageIndex(), 2, imageYOfs);
-       g.clipRect(4+imgWidth, 0, g.getClipWidth(), itemHeight);
-       g.drawString(str,4+imgWidth-ofs, fontYOfs+1, Graphics.TOP|Graphics.LEFT);
-       if (sel && secstr!=null) {
+
+       g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
+       
+       g.drawString(str,offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
+       if (sel && drawsec && secstr!=null) {
            g.setFont(getSmallFont());
-           g.drawString(secstr,4+imgWidth-ofs, fontYOfs+getFont().getHeight()+1, Graphics.TOP|Graphics.LEFT);
+           g.drawString(secstr, offset-ofs, fontYOfs+getFont().getHeight(), Graphics.TOP|Graphics.LEFT);
        }
     }
 
@@ -113,7 +114,7 @@ abstract public class IconTextElement implements VirtualElement
 	}
         itemHeight=heightFirstLine=(heightImage>heightFont)?heightImage:heightFont;
         imageYOfs=(itemHeight-heightImage)/2;
-        fontYOfs=(itemHeight-heightFont)/2;
+        fontYOfs=(itemHeight-heightFont+2)/2;
     }
 
     public String getTipString() {

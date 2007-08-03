@@ -37,7 +37,7 @@ public interface VirtualElement {
 
     public int getColor(); 
 
-    public void drawItem(Graphics g, int ofs, boolean selected);
+    public void drawItem(Graphics g, int ofs, boolean selected, boolean drawsec);
 
     public String getTipString();
     

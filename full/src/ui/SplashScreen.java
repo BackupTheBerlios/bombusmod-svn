@@ -132,7 +132,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
             g.setColor(ColorScheme.BLK_INK);
             g.translate(0, y);
-            status.drawItem(g, 0, false);
+            status.drawItem(g, 0, false, false);
 
             String time=Time.timeString(Time.localTime());
             int tw=f.stringWidth(time);

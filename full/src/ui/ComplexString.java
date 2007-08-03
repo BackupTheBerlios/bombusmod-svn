@@ -75,7 +75,7 @@ public class ComplexString extends Vector implements VirtualElement{
     
     public void onSelect(){};
     
-    public void drawItem(Graphics g, int offset, boolean selected){
+    public void drawItem(Graphics g, int offset, boolean selected, boolean drawsec){
         //g.setColor(0);
         boolean ralign=false;
 	boolean underline=false;
@@ -131,7 +131,7 @@ public class ComplexString extends Vector implements VirtualElement{
                 } /* Integer*/ else if (ob instanceof VirtualElement) { 
                     int clipw=g.getClipWidth(); 
                     int cliph=g.getClipHeight();
-                    ((VirtualElement)ob).drawItem(g,0,false);
+                    ((VirtualElement)ob).drawItem(g,0,false, false);
                     g.setClip(g.getTranslateX(), g.getTranslateY(), clipw, cliph);
                     //TODO: рисование не с нулевой позиции и вычисление ширины
                 }
