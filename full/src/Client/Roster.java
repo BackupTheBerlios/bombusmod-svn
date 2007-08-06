@@ -155,8 +155,9 @@ public class Roster
     //boolean lightState=false;
     
     private AutoStatusTask autostatus;
-    private SELightTask selight;
-
+//#ifdef SE_LIGHT
+//#     private SELightTask selight;
+//#endif
     private final static int SOUND_FOR_ME=500;
     private final static int SOUND_FOR_CONFERENCE=800;
     private final static int SOUND_MESSAGE=1000;
@@ -222,10 +223,12 @@ public class Roster
         if (myStatus<2)
             messageActivity();
         
-        if (ph.PhoneManufacturer()==ph.SONYE) {
-            selight=new SELightTask();
-            selight.setLight(cf.lightState);
-        }
+//#ifdef SE_LIGHT
+//#         if (ph.PhoneManufacturer()==ph.SONYE) {
+//#             selight=new SELightTask();
+//#             selight.setLight(cf.lightState);
+//#         }
+//#endif
     }
     
     public void setLight(boolean state) {
@@ -2280,9 +2283,10 @@ public class Roster
 
     public void quit() {
         autostatus.destroyTask();
-        if (ph.PhoneManufacturer()==ph.SONYE)
-            selight.destroyTask();
-
+//#ifdef SE_LIGHT
+//#         if (ph.PhoneManufacturer()==ph.SONYE)
+//#             selight.destroyTask();
+//#endif
         cf.isbottom=VirtualList.isbottom; //save panels state on exit       
         cf.saveToStorage();
 

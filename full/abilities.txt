@@ -12,3 +12,6 @@
 //#ifdef SERVER_SIDE_CONFIG
 //#ifdef REQUEST_VOICE
 //#ifdef MOOD
+//#ifdef HISTORY
+//#ifdef SE_LIGHT
+//#ifdef TEMPLATES

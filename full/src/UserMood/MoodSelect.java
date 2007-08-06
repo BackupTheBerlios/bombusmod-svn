@@ -110,7 +110,7 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
             parentView=display.getCurrent();
             this.mood=mood;
             
-            f=new Form(mood.getLocale());
+            f=new Form(mood.getMessage());
             
             tfMessage=new TextFieldCombo(SR.MS_MESSAGE, mood.getMessage(), 100, 0, "mood", display);
             f.append(tfMessage);

@@ -33,19 +33,19 @@ public class Mood extends IconTextElement {
     
     private String name;
     private String text;
-    private String locale;
+    //private String locale;
     int index;
 
     public Mood(int index, String name, String text) {
         super(SmilesIcons.getInstance());
-        this.text=text;
+        this.text=MoodLocale.loadString(text);
         this.name=name;
         this.index=index;
-        locale=MoodLocale.loadString(name);
+        //locale=MoodLocale.loadString(name);
     }
     
     public String toString(){ 
-        StringBuffer s=new StringBuffer(locale);
+        StringBuffer s=new StringBuffer(text);
         if (text!=null && text.length()>0) {
             s.append(" (");
             s.append(text);
@@ -66,7 +66,7 @@ public class Mood extends IconTextElement {
         return null;
     }
     
-    public String getLocale() { return locale; }
+    //public String getLocale() { return locale; }
 
     public int getImageIndex(){ return -1;}
     

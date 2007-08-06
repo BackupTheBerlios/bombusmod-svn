@@ -940,7 +940,8 @@ public abstract class VirtualList
 //#             list.offset=0;
 //#             return;
 //#         }
-//#         if (instance==null) instance=new TimerTaskRotate();
+//#         if (instance==null) 
+//#             instance=new TimerTaskRotate();
 //#         if (max<0) {
 //#             instance.destroyTask(); return;
 //#         }
@@ -949,8 +950,8 @@ public abstract class VirtualList
 //#             list.offset=0;
 //#             instance.scrollLen=max;
 //#             //list.showBalloon=false; //<< uncomment this to disable keep balloon floating when traversing
-//#             instance.balloon=(list.showBalloon)? 6 : 13;
-//#             instance.scroll=7;
+//#             instance.balloon=(list.showBalloon)? 7 : 15; //time to show
+//#             instance.scroll=8;
 //#             instance.attachedList=list;
 //#             instance.stop=false;
 //#         }
@@ -967,9 +968,14 @@ public abstract class VirtualList
 //#             
 //#             boolean redraw = false;
 //#             synchronized (this) {
-//#                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
+//#                 if (balloon<0) {
+//#                     stop=true;
+//#                     continue;
+//#                 }
+//#                 System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
 //#                 
-//#                 if (attachedList==null) stop=true;
+//#                 if (attachedList==null) 
+//#                     stop=true;
 //#                 
 //#                 if (scrollLen>=0 || balloon>=0) { 
 //#                     stop=false;
@@ -977,7 +983,8 @@ public abstract class VirtualList
 //#                 }
 //#                 
 //#                 if (stop) {
-//#                     if (attachedList!=null) attachedList.offset=0;
+//#                     if (attachedList!=null) 
+//#                         attachedList.offset=0;
 //#                     attachedList.showBalloon=false;
 //#                     attachedList=null;
 //#                     continue;
@@ -989,15 +996,18 @@ public abstract class VirtualList
 //#                     if (attachedList.offset>=scrollLen) {
 //#                         scrollLen=-1;
 //#                         attachedList.offset=0;
-//#                     } else attachedList.offset+=20;
+//#                     } else 
+//#                         attachedList.offset+=30;
 //#                 }
 //#                 
 //#                 //balloon state machine
-//#                 if (balloon>=0) balloon--;
-//#                 attachedList.showBalloon=(balloon<7 && balloon>0);
+//#                 if (balloon>=0) 
+//#                     balloon--;
+//#                 attachedList.showBalloon=(balloon<8 && balloon>0);
 //#                 
 //#             }
-//#             if (redraw) attachedList.redraw();
+//#             if (redraw) 
+//#                 attachedList.redraw();
 //#             redraw=false;
 //#             
 //#         }

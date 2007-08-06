@@ -46,7 +46,6 @@ public class MoodList {
         try {
             for (int i=0; i<Mood.MOODS.length;i++) {
                 moodList.addElement(new Mood(i,Mood.MOODS[i], null));
-                //System.out.println("private String MOOD_"+Mood.MOODS[i].toUpperCase()+"=\""+Mood.MOODS[i]+"\";");
             }
         } catch (Exception ex) { }
     }
