@@ -216,9 +216,9 @@ public class Roster
         SplashScreen.getInstance().setExit(display, this);
         
         autostatus=new AutoStatusTask();
-        
-        VirtualList.setWobble("");
-        
+//#ifdef POPUPS
+//#         VirtualList.setWobble("");
+//#endif       
         if (myStatus<2)
             messageActivity();
         
