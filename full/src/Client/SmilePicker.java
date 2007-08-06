@@ -205,7 +205,12 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         }
         else if (keyCode==KEY_NUM9) {
             super.keyRight();
-            
+		}
+		else if (keyCode==KEY_NUM4) {
+			keyLeft();
+		}
+		else if (keyCode==KEY_NUM5) {
+            keyRight();
         }
     }
 }
