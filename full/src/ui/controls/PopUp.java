@@ -50,12 +50,12 @@ public class PopUp {
     private Vector messages = new Vector(); 
 
     synchronized public void setMessage(String message){
-        if (message==null && message=="")
-            return;
+        if (message!=null && message!="")
+            messages.addElement(parseMessage(message, width-border-padding));
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif
-        messages.addElement(parseMessage(message, width-border-padding));
+        
     }
 
     public PopUp() {
@@ -183,11 +183,11 @@ public class PopUp {
     
 //paint
     public void paintCustom(Graphics g) {
-	if(messages.size()<1)
-	    return;
-        
         this.height=g.getClipHeight();
         this.width=g.getClipWidth();
+
+	if(messages.size()<1)
+	    return;
         
         int strWdth=getMaxWidth();
         

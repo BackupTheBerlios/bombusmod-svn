@@ -636,12 +636,27 @@ public abstract class VirtualList
                     break; 
                 }
                 case MOTOE680_VOL_UP:
-                case MOTOROLA_FLIP: { userKeyPressed(keyCode); break; }
-                case KEY_NUM1:  { moveCursorHome();    break; }
-                case KEY_NUM7:  { moveCursorEnd();     break; }
+                case MOTOROLA_FLIP: { 
+                    userKeyPressed(keyCode); 
+                    break; 
+                }
+                case KEY_NUM1:  { 
+                    moveCursorHome();    
+                    break; 
+                }
+                case KEY_NUM7:  { 
+                    moveCursorEnd();     
+                    break; 
+                }
                 
-                case KEY_NUM4:  { userKeyPressed(keyCode); }
-                case KEY_NUM6:  { userKeyPressed(keyCode); }
+                case KEY_NUM4:  { 
+                    userKeyPressed(keyCode); 
+                    break; 
+                }
+                case KEY_NUM6:  { 
+                    userKeyPressed(keyCode); 
+                    break; 
+                }
                 
                 case NOKIA_GREEN: {
                     if (ph.PhoneManufacturer()==ph.NOKIA) {

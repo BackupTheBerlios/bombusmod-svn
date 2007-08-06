@@ -74,10 +74,6 @@ public class Config {
      public boolean msgLogConf=false;
      public boolean msgLogConfPresence=false;
      public boolean cp1251=true;
-
-     
-    public char keyHide=getCharProperty("key_hide",'9');
-    public char keyOfflines=getCharProperty("key_offlines",'0');
     
     public String defGcRoom="bombusmod@conference.jabber.ru";
     

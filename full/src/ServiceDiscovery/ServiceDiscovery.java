@@ -38,6 +38,7 @@ import Client.*;
 import ui.MainBar;
 import io.NvStorage;
 import java.io.DataInputStream;
+import java.io.EOFException;
 
 /**
  *
@@ -121,16 +122,22 @@ public class ServiceDiscovery
             requestQuery(NS_INFO, "disco");
         } else {
             this.service=null;
+            
+            String myServer=sd.account.getServer();
+            items.addElement(new DiscoContact(null, myServer, 0));
 
             try {
                 DataInputStream is=NvStorage.ReadFileRecord("mru-"+ServerBox.MRU_ID, 0);
            
-                while (is.available()>0)
-                    items.addElement(new DiscoContact(null, is.readUTF(), 0));
-                is.close();
-            } catch (Exception e) { 
-                items.addElement(new DiscoContact(null, sd.account.getServer(), 0));
-            }
+                try {
+                    while (true) {
+                        String recent=is.readUTF();
+                        if (myServer.equals(recent)) continue; //only one instance for our service
+                        
+                        items.addElement(new DiscoContact(null, recent, 0));
+                    }
+                } catch (EOFException e) { is.close(); }
+            } catch (Exception e) {}
             
             //sort(items);
             discoIcon=0; 

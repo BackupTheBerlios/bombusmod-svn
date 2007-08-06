@@ -217,6 +217,8 @@ public class Roster
         
         autostatus=new AutoStatusTask();
         
+        VirtualList.setWobble("");
+        
         if (myStatus<2)
             messageActivity();
         
@@ -2144,6 +2146,14 @@ public class Roster
             setRotator();
             return;
         }
+        if (keyCode=='4') {
+            keyLeft();
+            return;
+        }
+        if (keyCode=='6') {
+            keyRight();
+            return;
+        }
         
          if (keyCode==KEY_POUND) {
             System.gc();
@@ -2183,7 +2193,7 @@ public class Roster
             updateMainBar();
             redraw();
             return;
-        } else if (keyCode==cf.keyOfflines) {
+        } else if (keyCode==KEY_NUM0) {
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
             return;
@@ -2199,7 +2209,7 @@ public class Roster
             new RosterToolsMenu(display);
         }
         
-        else if (keyCode==cf.keyHide) {
+        else if (keyCode==KEY_NUM9) {
             if (cf.allowMinimize)
                 BombusMod.getInstance().hideApp(true);
              else if (ph.PhoneManufacturer()==ph.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
