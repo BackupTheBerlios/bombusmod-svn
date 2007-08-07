@@ -407,7 +407,7 @@ public class ContactMessageList extends MessageList
             super.keyRepeated(keyCode);
     }       
 
-    public void userKeyPressed(int keyCode) {
+    public boolean userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
         
         if (keyCode==KEY_NUM4) 
@@ -447,7 +447,7 @@ public class ContactMessageList extends MessageList
         
             if (cf.allowLightControl && (keyCode==SIEMENS_VOLUP || keyCode==SIEMENS_CAMERA)) { //copy&copy+
                 if (messages.isEmpty()) 
-                    return;
+                    return true;
                 try {
                     StringBuffer clipstr=new StringBuffer();
                     clipstr.append(clipboard.getClipBoard());
@@ -479,6 +479,7 @@ public class ContactMessageList extends MessageList
 //#if ALT_INPUT  
 //#         }
 //#endif
+        return true;
     }
 
     private void nextContact(int direction){

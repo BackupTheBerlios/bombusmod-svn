@@ -196,7 +196,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         return null;
     }
     
-    public void userKeyPressed(int keyCode) {
+    public boolean userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
         
         if (keyCode==KEY_NUM3) {
@@ -205,12 +205,13 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         }
         else if (keyCode==KEY_NUM9) {
             super.keyRight();
-		}
-		else if (keyCode==KEY_NUM4) {
-			keyLeft();
-		}
-		else if (keyCode==KEY_NUM5) {
+	}
+	else if (keyCode==KEY_NUM4) {
+            keyLeft();
+	}
+	else if (keyCode==KEY_NUM5) {
             keyRight();
         }
+        return true;
     }
 }
