@@ -425,12 +425,11 @@ public class ArchiveList
 	archive.close();
     }
 	
-    public boolean userKeyPressed(int keyCode) {
+    public void userKeyPressed(int keyCode) {
        super.userKeyPressed(keyCode);
         if (keyCode==keyClear) {
             if (getItemCount()>0) new YesNoAlert(display, SR.MS_DELETE, SR.MS_SURE_DELETE, this);
         }
-       return true;
     }
 	
     public void ActionConfirmed() {

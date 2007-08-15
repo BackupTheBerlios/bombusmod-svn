@@ -29,6 +29,10 @@ package ui;
 
 import images.RosterIcons;
 
+/**
+ *
+ * @author Eugene Stahov
+ */
 public class MenuItem extends IconTextElement
 {
     

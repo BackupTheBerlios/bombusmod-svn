@@ -31,6 +31,10 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
 
+/**
+ *
+ * @author Evg_S
+ */
 public class Menu extends VirtualList implements CommandListener
 {
     Vector menuitems;
@@ -67,51 +71,5 @@ public class Menu extends VirtualList implements CommandListener
     public void commandAction(Command c, Displayable d) {
         if (c==cmdBack) destroyView();
 	if (c==cmdOk) eventOk();
-    }
-    
-    public boolean userKeyPressed(int keyCode){
-        switch (keyCode) {
-            case KEY_NUM1:  { 
-                moveCursorTo(0, true);    
-                break; 
-            }
-            case KEY_NUM2:  { 
-                 moveCursorTo(1, true);      
-                break; 
-            }
-            case KEY_NUM3:  { 
-                 moveCursorTo(2, true);      
-                break; 
-            }
-            case KEY_NUM4:  { 
-                 moveCursorTo(3, true);      
-                break; 
-            }
-            case KEY_NUM5:  { 
-                moveCursorTo(4, true);
-                break; 
-            }
-            case KEY_NUM6:  { 
-                 moveCursorTo(5, true);     
-                break; 
-            }
-            case KEY_NUM7:  { 
-                 moveCursorTo(6, true);     
-                break; 
-            }
-            case KEY_NUM8:  { 
-                 moveCursorTo(7, true);    
-                break; 
-            }
-            case KEY_NUM9:  { 
-                 moveCursorTo(8, true);  
-                break; 
-            }
-            case KEY_NUM0:  { 
-                 moveCursorTo(9, true);
-                break; 
-            }
-       }
-       return false;
     }
 }

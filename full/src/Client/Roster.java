@@ -2111,12 +2111,12 @@ public class Roster
         }
     }
 
-    public boolean userKeyPressed(int keyCode){
+    public void userKeyPressed(int keyCode){
         if (keyCode==KEY_NUM0) {
             cleanMarks();
             System.gc();
             
-            if (messageCount==0) return true;
+            if (messageCount==0) return;
             Object atcursor=getFocusedObject();
             Contact c=null;
             if (atcursor instanceof Contact) c=(Contact)atcursor;
@@ -2136,25 +2136,25 @@ public class Roster
                 }
                 if (p==c) pass++; // полный круг пройден
             }
-            return true;
+            return;
         }
         if (keyCode=='3') {
             searchGroup(-1);
             setRotator();
-            return true;
+            return;
         }
         if (keyCode=='9') {
             searchGroup(1);
             setRotator();
-            return true;
+            return;
         }
         if (keyCode=='4') {
             keyLeft();
-            return true;
+            return;
         }
         if (keyCode=='6') {
             keyRight();
-            return true;
+            return;
         }
         
          if (keyCode==KEY_POUND) {
@@ -2162,9 +2162,8 @@ public class Roster
 //#ifdef POPUPS
 //#             setWobbler(null);
 //#endif
-            return true;
+            return;
          }
-        return true;
      }
  
     protected void keyRepeated(int keyCode) {
