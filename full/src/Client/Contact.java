@@ -450,7 +450,7 @@ public class Contact extends IconTextElement{
     }
     
     public void setPing() {
-        this.ping = Time.localTime();
+        this.ping = Time.utcTimeMillis();
     }
     
     public void setComposing (boolean state) {
@@ -461,7 +461,7 @@ public class Contact extends IconTextElement{
         if (ping==-1) 
             return "";
         
-        String timePing=Long.toString((Time.localTime()-ping)/10);
+        String timePing=Long.toString((Time.utcTimeMillis()-ping)/10);
         int dotpos=timePing.length()-2;
         
         StringBuffer s=new StringBuffer();

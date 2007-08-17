@@ -22,6 +22,8 @@ public class EntityCaps implements JabberBlockListener{
     
     /** Creates a new instance of EntityCaps */
     public EntityCaps() {}
+    
+    private static String mood="ep-notify";
 
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
@@ -46,8 +48,8 @@ public class EntityCaps implements JabberBlockListener{
         identity.setAttribute("name", "BombusMod");
 
 //#ifdef MOOD
-//#         if (node.endsWith("#mood+notify")) {
-//#             query.addChild("feature", null).setAttribute("var","http://jabber.org/protocol/mood+notify");
+//#         if (node.endsWith("#"+mood)) {
+//#             query.addChild("feature", null).setAttribute("var","http://jabber.org/protocol/mood");
 //#         } else {
 //#endif
             for (int i=0; i<features.length; i++) {
@@ -69,7 +71,7 @@ public class EntityCaps implements JabberBlockListener{
         c.setAttribute("ver", Version.getVersionNumber());
 //#ifdef MOOD
 //#         if (Config.getInstance().userMoods)
-//#             c.setAttribute("ext", "mood+notify");
+//#             c.setAttribute("ext", mood);
 //#endif
         return c;
     }
@@ -80,16 +82,16 @@ public class EntityCaps implements JabberBlockListener{
         "jabber:iq:version",
         "jabber:x:data",
         "jabber:iq:last",
-        "jabber:iq:time",
+        "urn:xmpp:time",
         "jabber:x:event",
         "http://jabber.org/protocol/disco#info",
         "http://www.xmpp.org/extensions/xep-0199.html#ns",
         "http://jabber.org/protocol/muc",
         "http://jabber.org/protocol/si",
         "http://jabber.org/protocol/si/profile/file-transfer",
+        "http://jabber.org/protocol/ibb",
 //#ifdef MOOD
-//#         "http://jabber.org/protocol/mood+notify",
+//#         "http://jabber.org/protocol/mood"
 //#endif
-        "http://jabber.org/protocol/ibb"
     };
 }

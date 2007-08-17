@@ -142,11 +142,11 @@ public class ConferenceForm implements CommandListener{
         
         Form formJoin=new Form(SR.MS_JOIN_CONFERENCE);
 
-        roomField=new TextField(SR.MS_ROOM, room, 64, TextField.ANY);
+        roomField=new TextFieldCombo(SR.MS_ROOM, room, 64, TextField.ANY, "muc-room", display);
         TextFieldCombo.setLowerCaseLatin(roomField);
         formJoin.append(roomField);
         
-        hostField=new TextField(SR.MS_AT_HOST, server, 64, TextField.ANY);
+        hostField=new TextFieldCombo(SR.MS_AT_HOST, server, 64, TextField.ANY, "muc-host", display);
         TextFieldCombo.setLowerCaseLatin(hostField); 
         formJoin.append(hostField);
         

@@ -484,7 +484,7 @@ public abstract class VirtualList
         g.setFont(bottomFont);
         
         StringBuffer s=new StringBuffer();    
-        s.append(Time.timeString(Time.localTime()));
+        s.append(Time.localTime());
         s.append(" "+strconv.getSizeString(stats.getGPRS()));
 //#ifdef ELF
 //#         s.append(getNetworkLevel());

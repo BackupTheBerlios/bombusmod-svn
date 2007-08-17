@@ -283,8 +283,8 @@ public class vCardForm
      }
 	 
     private String getDate() {
-        long dateGmt=Time.localTime();
-        return Time.dayString(dateGmt).trim(); 
+        long dateGmt=Time.utcTimeMillis();
+        return Time.dayLocalString(dateGmt).trim(); 
     }
 
     public void commandAction(Command command, Item item) {

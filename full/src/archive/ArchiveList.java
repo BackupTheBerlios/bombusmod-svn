@@ -416,8 +416,8 @@ public class ArchiveList
     }
 //#endif
     private String getDate() {
-        long dateGmt=Time.localTime();
-        return Time.dayString(dateGmt).trim(); 
+        long dateGmt=Time.utcTimeMillis();
+        return Time.dayLocalString(dateGmt).trim(); 
     }
   
     public void destroyView(){

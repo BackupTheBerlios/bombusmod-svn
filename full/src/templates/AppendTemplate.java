@@ -209,8 +209,8 @@ public class AppendTemplate
     }
     
     private String getDate() {
-        long dateGmt=Time.localTime();
-        return Time.dayString(dateGmt).trim(); 
+        long dateGmt=Time.utcTimeMillis();
+        return Time.dayLocalString(dateGmt).trim(); 
     }
     
 //#if FILE_IO 

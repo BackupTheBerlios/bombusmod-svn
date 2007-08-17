@@ -96,8 +96,7 @@ public class InviteForm implements CommandListener{
             String rs=reason.getString();
             
             Message inviteMsg=new Message(room);
-            JabberDataBlock x=inviteMsg.addChild("x",null);
-            x.setNameSpace("http://jabber.org/protocol/muc");
+            JabberDataBlock x=inviteMsg.addChildNs("x", "http://jabber.org/protocol/muc");
             JabberDataBlock invite=x.addChild("invite",null);
             String invited=(contact instanceof MucContact)? ((MucContact)contact).realJid : contact.getBareJid();
             

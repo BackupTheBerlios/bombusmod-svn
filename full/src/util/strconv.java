@@ -201,7 +201,7 @@ public class strconv {
 
     public static String toExtendedString(String src){
         String TIME_REP="%t";
-        String TIME_DEST=Time.timeString(Time.localTime());
+        String TIME_DEST=Time.dispLocalTime();
 
         return stringReplace(src,TIME_REP,TIME_DEST);
     }

@@ -138,7 +138,7 @@ public class Roster
     private String token;
 //#endif
     
-    public long lastMessageTime=Time.localTime();
+    private long lastMessageTime=Time.utcTimeMillis();
 	
     private final static int maxReconnect=5;
     public int reconnectCount;
@@ -603,7 +603,7 @@ public class Roster
         c.origin=Contact.ORIGIN_GROUPCHAT;
         c.commonPresence=true;
 
-        grp.conferenceJoinTime=Time.localTime();
+        grp.conferenceJoinTime=Time.utcTimeMillis();
         grp.setConference(c);
         c.setGroup(grp);
         
@@ -957,7 +957,7 @@ public class Roster
 
             if (event.getChildBlocks()!=null) message.addChild(event);
             theStream.send( message );
-            lastMessageTime=Time.localTime();
+            lastMessageTime=Time.utcTimeMillis();
             playNotify(SOUND_OUTGOING);
         } catch (Exception e) { e.printStackTrace(); }
         
@@ -974,8 +974,7 @@ public class Roster
             theStream.send( message );
         }*/
         //if (c.deliveryType==Contact.DELIVERY_XEP22) {
-            JabberDataBlock x=message.addChild("x", null);
-            x.setNameSpace("jabber:x:event");
+            JabberDataBlock x=message.addChildNs("x", "jabber:x:event");
             x.addChild("id", id);
             x.addChild("delivered", null);
             theStream.send( message );
@@ -1244,6 +1243,7 @@ public class Roster
                             theStream.send(new IqVersionReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;                            
                         }
+                        //DEPRECATED
                         if (query.isJabberNameSpace("jabber:iq:time")) {
                             c.setIncoming(Contact.INC_VIEWING);
                             theStream.send(new IqTimeReply(data));
@@ -1255,14 +1255,10 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
-                    JabberDataBlock time=data.getChildBlock("time");
-                    if (time!=null){
-                        // РїСЂРѕРІРµСЂСЏРµРј РЅР° Р·Р°РїСЂРѕСЃ Р»РѕРєР°Р»СЊРЅРѕРіРѕ РІСЂРµРјРµРЅРё РєР»РёРµРЅС‚Р° xep-0202
-                        if (time.isJabberNameSpace("urn:xmpp:time")) {
-                            theStream.send(new UrnXmppTimeReply(data));
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        }
-                        return JabberBlockListener.BLOCK_REJECTED;
+                    // проверяем на запрос локального времени клиента XEP-0202
+                    if (data.findNamespace("urn:xmpp:time")!=null) {
+                        theStream.send(new IqTimeReply(data));
+                        return JabberBlockListener.BLOCK_PROCESSED;
                     }
                 } else if (type.equals("set")) {
                     //todo: verify xmlns==jabber:iq:roster
@@ -1311,33 +1307,32 @@ public class Roster
             // If we've received a message
             
             else if( data instanceof Message ) {
+                //System.out.println(data.toString());
                 querysign=false;
                 boolean highlite=false;
                 
 //#ifdef MOOD
 //#                 try {
-//#                     //TODO: moods
 //#                     JabberDataBlock xmlns=data.findNamespace("http://jabber.org/protocol/pubsub#event");
 //#                     
 //#                     JabberDataBlock items=xmlns.getChildBlock("items");
 //# 
 //#                     if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
-//#                         //System.out.print("usermood for ");
 //#                         String from=data.getAttribute("from");
 //#                         Contact c=getContact(from, true);
 //#                         if (items.getChildBlock("item").getAttribute("id")!=null) {
 //#                             JabberDataBlock mood=items.getChildBlock("item").getChildBlock("mood");
-//#                             
-//#                             //System.out.print(from+" is: ");
+//# 
 //#                             String userMood=((JabberDataBlock)mood.getChildBlocks().firstElement()).getTagName();
-//#                             //System.out.println(userMood);
 //#                             c.setUserMood(userMood);
-//#                             
-//#                             //System.out.println("("+mood.getChildBlock("text").getText()+")");
+//# 
 //#                             c.setUserMoodText(mood.getChildBlock("text").getText());
+//#                             
+//#                             Msg moodmessage=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, userMood, mood.getChildBlock("text").getText());
+//#                             messageStore(getContact(from, true), moodmessage);
 //#                         } else {
-//#                             c.setUserMood("");
-//#                             c.setUserMoodText("");
+//#                             c.setUserMood(null);
+//#                             c.setUserMoodText(null);
 //#                         }
 //#                     }
 //#                 } catch (Exception e) { /*System.out.println("not mood");*/ }
@@ -1349,8 +1344,11 @@ public class Roster
                 String body=message.getBody().trim();    
                 String oob=message.getOOB();
                 if (oob!=null) body+=oob;
-                if (body.length()==0) body=null; 
-                String subj=message.getSubject().trim(); if (subj.length()==0) subj=null;
+                if (body.length()==0) 
+                    body=null; 
+                String subj=message.getSubject().trim(); 
+                if (subj.length()==0) 
+                    subj=null;
 		String type=message.getTypeAttribute();
                 
                 long tStamp=message.getMessageTime();
@@ -1452,7 +1450,7 @@ public class Roster
                 boolean compose=false;
 
                 //JabberDataBlock x=message.getChildBlock("x");
-				JabberDataBlock x=(type.equals("chat"))? message.getChildBlock("x") : null;
+		JabberDataBlock x=(type.equals("chat"))? message.getChildBlock("x") : null;
 
                 /*JabberDataBlock delivery=data.findNamespace(Contact.XEP184_NS);
                 if (delivery!=null) {

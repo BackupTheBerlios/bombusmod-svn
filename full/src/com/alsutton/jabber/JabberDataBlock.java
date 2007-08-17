@@ -407,4 +407,16 @@ public class JabberDataBlock
   {
     return tagName;
   }
+  
+  /**
+   * Method to add a child with namespace
+   *
+   * @param name The child block name to add
+   * @param xmlns Child's namespace
+   */
+  public JabberDataBlock addChildNs(String name, String xmlns) {
+      JabberDataBlock child=addChild(name, null);
+      child.setNameSpace(xmlns);
+      return child;
+  }
 }
