@@ -48,7 +48,7 @@ public class IqLast extends Iq{
     
     public IqLast(String to) {
         super(to, Iq.TYPE_GET, "last");
-        addChild("query",null).setNameSpace("jabber:iq:last");
+        addChildNs("query", "jabber:iq:last");
     }
 
     public static String dispatchLast(JabberDataBlock data) {

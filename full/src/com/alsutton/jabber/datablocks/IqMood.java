@@ -31,16 +31,14 @@ public class IqMood extends Iq{
     public IqMood(String to, String id, String moodString, String text) {
         super(to, Iq.TYPE_SET, id);
         
-        JabberDataBlock pubsub=addChild("pubsub", null);
-        pubsub.setNameSpace("http://jabber.org/protocol/pubsub");
+        JabberDataBlock pubsub=addChildNs("pubsub", "http://jabber.org/protocol/pubsub");
         
         JabberDataBlock publish=pubsub.addChild("publish", null);
         publish.setAttribute("node","http://jabber.org/protocol/mood");
         
         JabberDataBlock item=publish.addChild("item", null);
 
-        JabberDataBlock moodItem=item.addChild("mood", null);
-        moodItem.setNameSpace("http://jabber.org/protocol/mood");
+        JabberDataBlock moodItem=item.addChildNs("mood", "http://jabber.org/protocol/mood");
         
         moodItem.addChild(moodString, null);
         

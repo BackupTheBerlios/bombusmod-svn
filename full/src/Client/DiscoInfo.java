@@ -66,8 +66,7 @@ public class DiscoInfo implements JabberBlockListener{
     
     public DiscoInfo() {
         JabberDataBlock request=new Iq(StaticData.getInstance().account.getServer(), Iq.TYPE_GET, "getServerFeatures");
-        JabberDataBlock query=request.addChild("query", null);
-        query.setNameSpace("http://jabber.org/protocol/disco#info");
+        JabberDataBlock query=request.addChildNs("query", "http://jabber.org/protocol/disco#info");
         //System.out.println(request.toString());
         StaticData.getInstance().roster.theStream.send(request);
     }

@@ -30,8 +30,7 @@ public class QueryRequestVoice {
         this.display=display;
         
         JabberDataBlock msg=new Message(admin.getJid());
-        JabberDataBlock x=msg.addChild("x", null);
-        x.setNameSpace("jabber:x:data"); 
+        JabberDataBlock x=msg.addChildNs("x", "jabber:x:data"); 
         x.setTypeAttribute("submit");
         
         JabberDataBlock fieldType=new JabberDataBlock("field", null, null);

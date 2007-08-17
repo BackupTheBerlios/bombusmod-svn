@@ -86,8 +86,7 @@ public class RenameGroup implements CommandListener{
         public IqQueryRenameGroup(String sourceGroup, String destGroup){
             super(null, Iq.TYPE_SET, "addros");
 
-            JabberDataBlock qB = addChild("query", null );
-            qB.setNameSpace( "jabber:iq:roster" );
+            JabberDataBlock qB = addChildNs("query", "jabber:iq:roster" );
 
             for (Enumeration e=roster.hContacts.elements(); e.hasMoreElements();){
                 Contact cr=(Contact)e.nextElement();

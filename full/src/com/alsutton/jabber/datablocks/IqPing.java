@@ -37,6 +37,6 @@ public class IqPing extends Iq{
     
     public IqPing(String to, String id) {
         super(to, Iq.TYPE_GET, id);
-        addChild("ping",null).setNameSpace("http://www.xmpp.org/extensions/xep-0199.html#ns");
+        addChildNs("ping", "http://www.xmpp.org/extensions/xep-0199.html#ns");
     }
 }

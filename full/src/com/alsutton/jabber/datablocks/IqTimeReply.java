@@ -55,7 +55,7 @@ public class IqTimeReply extends Iq{
     
     public IqTimeReply(String to) {
         super(to, Iq.TYPE_GET, "time");
-        addChild("query",null).setNameSpace("jabber:iq:time");
+        addChildNs("query", "jabber:iq:time");
     }
 
     public static String dispatchTime(JabberDataBlock data) {
