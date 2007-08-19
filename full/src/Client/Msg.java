@@ -81,12 +81,14 @@ public class Msg //implements MessageList.Element
         if (highlite) return ColorScheme.MSG_HIGHLIGHT;
         switch (messageType) {
             case MESSAGE_TYPE_IN: return ColorScheme.MESSAGE_IN;
+            case MESSAGE_TYPE_HEADLINE: return ColorScheme.MESSAGE_IN;
             case MESSAGE_TYPE_OUT: return ColorScheme.MESSAGE_OUT;
             case MESSAGE_TYPE_PRESENCE: return ColorScheme.MESSAGE_PRESENCE;
             case MESSAGE_TYPE_AUTH: return ColorScheme.MESSAGE_AUTH;
             case MESSAGE_TYPE_HISTORY: return ColorScheme.MESSAGE_HISTORY;
             case MESSAGE_TYPE_SUBJ:return ColorScheme.MSG_SUBJ;
             default: return ColorScheme.MESSAGE_HISTORY;
+            //case MESSAGE_TYPE_ERROR: return ColorScheme.MESSAGE_OUT;
         }
         //return 0;
     }
@@ -129,6 +131,7 @@ public class Msg //implements MessageList.Element
 	from=is.readUTF();
 	body=is.readUTF();
 	dateGmt=is.readLong();
+        messageType=MESSAGE_TYPE_IN;
 	try { subject=is.readUTF(); } catch (Exception e) { subject=null; }
     }
 

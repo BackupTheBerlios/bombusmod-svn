@@ -75,7 +75,7 @@ public class TextFieldCombo
           setString(value);
         } catch (Exception e) {/* no history available */}
         
-        cmdRecent=new Command(SR.MS_RECENT, Command.ITEM, 1);
+        cmdRecent=new Command(SR.MS_RECENT, Command.ITEM, 2);
 
         addCommand(cmdRecent);
         setItemCommandListener(this);
@@ -100,7 +100,7 @@ public class TextFieldCombo
         
         cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
         cmdSelect=new Command(SR.MS_SELECT, Command.OK, 1);
-		cmdClear=new Command(SR.MS_CLEAR, command.SCREEN,2);
+	cmdClear=new Command(SR.MS_CLEAR, command.SCREEN,2);
         
         list=new List(label, List.IMPLICIT);
         list.addCommand(cmdBack);

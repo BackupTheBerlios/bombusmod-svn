@@ -389,21 +389,22 @@ public class SR {
     public  static String MS_AFFILIATION_ADMIN=loadString("admin");
     public  static String MS_AFFILIATION_OWNER=loadString("owner");
     
-    public  static String MS_SEC1=loadString("second");
-    public  static String MS_SEC2=loadString("seconds");
     public  static String MS_SEC3=loadString("seconds_");
+    public  static String MS_SEC2=loadString("seconds");
+    public  static String MS_SEC1=loadString("second");
     
-    public  static String MS_MIN1=loadString("minute");
-    public  static String MS_MIN2=loadString("minutes");
     public  static String MS_MIN3=loadString("minutes_");
+    public  static String MS_MIN2=loadString("minutes");
+    public  static String MS_MIN1=loadString("minute");
     
-    public  static String MS_HOUR1=loadString("hour");
+    public  static String MS_HOUR3=loadString("hours_");    
     public  static String MS_HOUR2=loadString("hours");
-    public  static String MS_HOUR3=loadString("hours_");
+    public  static String MS_HOUR1=loadString("hour");
     
-    public  static String MS_DAY1=loadString("day");
+    public  static String MS_DAY3=loadString("days_");  
     public  static String MS_DAY2=loadString("days");
-    public  static String MS_DAY3=loadString("days_");
+    public  static String MS_DAY1=loadString("day");
+
     
     public static String MS_AUTO_XA=loadString("Auto xa since %t");
     public static String MS_AUTO_AWAY=loadString("Auto away since %t");
@@ -473,7 +474,7 @@ public class SR {
 //#     public static String MS_RESTORE_OPTIONS_FROM_SERVER = loadString( "Restore options from server" );
 //#endif
     
-    public final static String MS_SHOW_HARDWARE = loadString( "shared platform info" );
+
     public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
     public static String MS_CHECK_UPDATE = loadString( "Check Updates" );
     public static String MS_SHOW_RESOURCES = loadString( "Show Resources" );
@@ -483,14 +484,13 @@ public class SR {
     public static String MS_MESSAGE_COLLAPSE_LIMIT = loadString( "Message collapse limit" );
     public static String MS_NO_CLIENT_INFO = loadString( "No client info" );
     public static String MS_CLEAN_ALL_MESSAGES = loadString( "Delete all messages" );
-    public static String MS_DO_AUTOJOIN="Join marked (auto)"; //temporary
+    public static String MS_DO_AUTOJOIN = loadString( "Join marked (auto)" ); //temporary
     public static String MS_STATS = loadString( "Statistics" );
     public static String MS_LAST_MESSAGES = loadString( "Last Messages" );
     public static String MS_EDIT_JOIN = loadString( "Edit/join" );
     public static String MS_USE_COLOR_SCHEME = loadString( "Use this Color scheme" );
     public static String MS_DELETE_ALL = loadString( "Delete All" );
     
-    public final static String MS_DELIVERY = loadString( "delivery events" );
 //#ifdef REQUEST_VOICE
 //#     public static String MS_REQUEST_PARTICIPANT_ROLE = "Request voice";
 //#endif
@@ -508,9 +508,20 @@ public class SR {
 
     public static String MS_USER_MOOD = loadString( "User mood" );
 
-    public final static String MS_NIL_DROP_MP="drop all";
-    public final static String MS_NIL_DROP_P="receive messages";
-    public final static String MS_NIL_ALLOW_ALL="messages & presences";
+    public static String MS_SHOW_HARDWARE = loadString( "shared platform info" );
+    public static String MS_DELIVERY = loadString( "delivery events" );
+    public static String MS_NIL_DROP_MP = loadString( "drop all" );
+    public static String MS_NIL_DROP_P = loadString( "receive messages" );
+    public static String MS_NIL_ALLOW_ALL = loadString( "messages & presences" );
+    public static String MS_FONTSIZE_NORMAL = loadString( "normal" );
+    public static String MS_FONTSIZE_SMALL = loadString( "small" );
+    public static String MS_FONTSIZE_LARGE = loadString( "large" );
+    public static String MS_ALERT_PROFILE_AUTO = loadString( "Auto" );
+    public static String MS_ALERT_PROFILE_ALLSIGNALS = loadString( "All signals" );
+    public static String MS_ALERT_PROFILE_VIBRA = loadString( "Vibra" );
+    public static String MS_ALERT_PROFILE_SOUND = loadString( "Sound" );
+    public static String MS_ALERT_PROFILE_NOSIGNALS = loadString( "No signals" );
+    public static String MS_ALERT_PROFILE_DEFAULT = loadString( " (default)" );
 
     public static String MS_QUIT_ASK = loadString( "Quit?" );
 
@@ -530,11 +541,11 @@ public class SR {
             
             presences=new Hashtable();
             presences.put("online", loadString("online"));
-            presences.put("chat", loadString("free for chat"));
+            presences.put("chat", loadString("chat"));
             presences.put("away", loadString("away"));
-            presences.put("xa", loadString("not available"));
+            presences.put("xa", loadString("xa"));
             presences.put("invisible", loadString("invisible"));
-            presences.put("dnd", loadString("do not disturb"));
+            presences.put("dnd", loadString("dnd"));
             presences.put("unavailable", loadString("offline"));
         }
         String value=(String)lang.get(key);
