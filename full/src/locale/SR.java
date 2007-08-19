@@ -32,6 +32,9 @@ import java.util.Hashtable;
 import util.StringLoader;
 
 public class SR {
+
+    private static Hashtable lang;
+    private static Hashtable presences;
     
     public   static String MS_JID = loadString( "Jid" );
     public   static String MS_LOADING = loadString( "Loading" );
@@ -258,15 +261,15 @@ public class SR {
     public   static String MS_AND=loadString(" and ");
     public   static String MS_IS_NOW=loadString(" is now ");    
     
-    public  static String MS_ONLINE=loadString("online");
+    //public  static String MS_ONLINE=loadString("online");
     
     public  static String MS_ERROR=loadString("error");
-    public  static String MS_CHAT=loadString("chat");
-    public  static String MS_AWAY=loadString("away");
-    public  static String MS_XA=loadString("xa");
-    public  static String MS_DND=loadString("dnd");
-    public  static String MS_INVISIBLE=loadString("invisible");
-    public  static String MS_OFFLINE=loadString("offline");
+   // public  static String MS_CHAT=loadString("chat");
+    //public  static String MS_AWAY=loadString("away");
+   // public  static String MS_XA=loadString("xa");
+    //public  static String MS_DND=loadString("dnd");
+    //public  static String MS_INVISIBLE=loadString("invisible");
+   // public  static String MS_OFFLINE=loadString("offline");
 
     public static String MS_COLOR_TUNE=loadString("Color tune");
     public static String MS_LOAD_SKIN=loadString("Load Scheme");
@@ -515,8 +518,6 @@ public class SR {
     
     private SR() { }
     
-    private static Hashtable lang;
-    
     private static String loadString(String key) {
         if (lang==null) {
             String langFile=Config.getInstance().langFileName();
@@ -526,6 +527,15 @@ public class SR {
             
             MS_IFACELANG=MS_XMLLANG;
             if (MS_IFACELANG==null) MS_IFACELANG="en";
+            
+            presences=new Hashtable();
+            presences.put("online", loadString("online"));
+            presences.put("chat", loadString("free for chat"));
+            presences.put("away", loadString("away"));
+            presences.put("xa", loadString("not available"));
+            presences.put("invisible", loadString("invisible"));
+            presences.put("dnd", loadString("do not disturb"));
+            presences.put("unavailable", loadString("offline"));
         }
         String value=(String)lang.get(key);
 //#if LOCALE_DEBUG
@@ -538,6 +548,10 @@ public class SR {
         }
 //#endif
         return (value==null)?key:value;
+    }
+    
+    public static String getPresence(String presenceName) {
+        return (String) presences.get(presenceName);
     }
 
     public static void loaded() {

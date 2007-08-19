@@ -1255,7 +1255,7 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
-                    // проверяем на запрос локального времени клиента XEP-0202
+                    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ XEP-0202
                     if (data.findNamespace("urn:xmpp:time")!=null) {
                         theStream.send(new IqTimeReply(data));
                         return JabberBlockListener.BLOCK_PROCESSED;
@@ -1412,7 +1412,7 @@ public class Roster
                 
                 try {
                     //TODO: invitations
-                    JabberDataBlock xmlns=message.findNamespace("http://jabber.org/protocol/muc");
+                    JabberDataBlock xmlns=message.findNamespace("http://jabber.org/protocol/muc#user");
                     String password=xmlns.getChildBlockText("password");
                     
                     JabberDataBlock invite=xmlns.getChildBlock("invite");
@@ -1599,7 +1599,8 @@ public class Roster
                         null,
                         pr.getPresenceTxt());
 
-                JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc");
+                 JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc#user");
+                if (xmuc==null) xmuc=pr.findNamespace("http://jabber.org/protocol/muc"); //join errors
                 //System.out.println(data.toString());
                 if (xmuc!=null) {
                     try {

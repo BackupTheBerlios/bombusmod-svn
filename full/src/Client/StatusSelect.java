@@ -139,7 +139,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             parentView=display.getCurrent();
             this.status=status;
             
-            f=new Form(status.getName());
+            f=new Form(status.getScreenName());
             
             tfPriority=new NumberField(SR.MS_PRIORITY, status.getPriority(), -128, 128);
             f.append(tfPriority);

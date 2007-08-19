@@ -112,7 +112,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 if (contact.getJid()==contact.getBareJid()) {
                     addItem(SR.MS_SEEN,890);    
                 } else {
-                    addItem(SR.MS_ONLINE,890); 
+                    addItem(SR.getPresence("online"),890); 
                 }
             }
             if (contact.getStatus()<Presence.PRESENCE_OFFLINE) {

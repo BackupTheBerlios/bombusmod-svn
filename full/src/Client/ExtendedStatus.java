@@ -41,17 +41,19 @@ public class ExtendedStatus extends IconTextElement{
     private String status="";
     private int priority;
     int index;
+    private String screenName;
     
     /** Creates a new instance of ExtendedStatus */
-    public ExtendedStatus(int index, String name) {
+    public ExtendedStatus(int index, String name, String showName) {
         super(RosterIcons.getInstance());
         this.index=index;
         this.name=name;
+        this.screenName=showName;
     }
     
     //public void onSelect(){}
     public String toString(){ 
-        StringBuffer s=new StringBuffer(name);
+        StringBuffer s=new StringBuffer(screenName);
         s.append(" (");
         s.append(priority);
         s.append(") ");
@@ -62,6 +64,8 @@ public class ExtendedStatus extends IconTextElement{
         }
         return s.toString();
     }
+    public String getScreenName() { return screenName; }
+    
     public int getColor(){ return ColorScheme.LIST_INK;}
     public int getImageIndex(){ return index;}
 
@@ -73,7 +77,7 @@ public class ExtendedStatus extends IconTextElement{
     public void setPriority(int p) { priority=p; }
 
     public String getSecondString() {
-        return null;
+        return status;
     }
 
 }

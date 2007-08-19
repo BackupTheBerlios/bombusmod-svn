@@ -25,9 +25,10 @@
 */
 
 package com.alsutton.jabber.datablocks;
+import Client.EntityCaps;
 import com.alsutton.jabber.*;
 import images.RosterIcons;
-import Client.EntityCaps;
+
 import java.util.*;
 import locale.SR;
 
@@ -74,6 +75,7 @@ public class Presence extends JabberDataBlock
     if (priority!=0) addChild("priority",String.valueOf(priority));
     if (message!=null) 
         if (message.length()>0) addChild("status",message);
+    
     if (status!=PRESENCE_OFFLINE) addChild(EntityCaps.presenceEntityCaps());
   }
 
@@ -89,23 +91,21 @@ public class Presence extends JabberDataBlock
       if (type!=null) {
           if (type.equals(PRS_OFFLINE)) { 
               presenceCode=PRESENCE_OFFLINE;
-              text.append("offline");
+              text.append(SR.getPresence(PRS_OFFLINE));
           };
           if (type.equals("subscribe")) {
               presenceCode=PRESENCE_AUTH_ASK;
               text.append(SUBSCRIBE);
           } 
-          if (type.equals("subscribed")) 
-              text.append(SR.MS_YOU_ARE_NOW_AUTHORIZED);
-          
-          if (type.equals("unsubscribed")) 
-              text.append(UNSUBSCRIBED);
+          if (type.equals("subscribed")) text.append(SUBSCRIBED);
+          if (type.equals("unsubscribed")) text.append(UNSUBSCRIBED);
           
           if (type.equals(PRS_ERROR)) {
               presenceCode=PRESENCE_ERROR;
               text.append(PRS_ERROR);
               errText=getChildBlock("error").toString();
           }
+          
           if (type.length()==0) {
               //TODO: weather.13.net.ru workaround. remove warning when fixed
               presenceCode=PRESENCE_UNKNOWN;
@@ -113,13 +113,7 @@ public class Presence extends JabberDataBlock
           }
       } else {
           // online-kinds
-          show=getShow();
-          if (show.equals(PRS_ONLINE)) text.append(SR.MS_ONLINE);
-          if (show.equals(PRS_CHAT)) text.append(SR.MS_CHAT);
-          if (show.equals(PRS_AWAY)) text.append(SR.MS_AWAY);
-          if (show.equals(PRS_XA)) text.append(SR.MS_XA);
-          if (show.equals(PRS_DND)) text.append(SR.MS_DND);
-
+          show=getShow(); text.append(SR.getPresence(show));
           presenceCode=PRESENCE_ONLINE;
           if (show.equals(PRS_CHAT)) presenceCode=PRESENCE_CHAT;
           if (show.equals(PRS_AWAY)) presenceCode=PRESENCE_AWAY;
@@ -127,10 +121,10 @@ public class Presence extends JabberDataBlock
           if (show.equals(PRS_DND)) presenceCode=PRESENCE_DND;
       }
           
-      show=(errText==null)? getChildBlockText("status"):errText;
-      if (show.length()>0) {
-          text.append('(');
-          text.append( show );
+      String status=(errText==null)? getChildBlockText("status"):errText;
+      if (status.length()>0) {
+          text.append(" (");
+          text.append( status );
           text.append(')');
       }
       
@@ -141,6 +135,8 @@ public class Presence extends JabberDataBlock
           text.append(getPriority());
           text.append(']');
       }
+          
+      
   }
 
   /**
@@ -182,7 +178,15 @@ public class Presence extends JabberDataBlock
       String show=getChildBlockText("show");
       return (show.length()==0)? PRS_ONLINE: getChildBlockText("show");
   }
-  
+
+  /**
+     * Method to get the presence <B>from</B> field
+     * @return <B>from</B> field as a string
+     */
+  public String getFrom() {
+      return getAttribute("from");
+  }
+ 
   public String getStatus(){
       String status=getChildBlockText("status");
       return (status.length()==0)? null: getChildBlockText("status");
@@ -220,15 +224,6 @@ public class Presence extends JabberDataBlock
         return null;
     }
   
-
-  /**
-     * Method to get the presence <B>from</B> field
-     * @return <B>from</B> field as a string
-     */
-  public String getFrom() {
-      return getAttribute("from");
-  }
-  
   public final static int PRESENCE_ONLINE=0;
   public final static int PRESENCE_CHAT=1;
   public final static int PRESENCE_AWAY=2;
@@ -251,8 +246,9 @@ public class Presence extends JabberDataBlock
   public final static String PRS_DND="dnd";
   public final static String PRS_ONLINE="online";
   public final static String PRS_INVISIBLE="invisible";
-  
+
   public final static String SUBSCRIBE=SR.MS_USER_REQUEST_AUTORIZATION;
   public final static String SUBSCRIBED=SR.MS_YOU_ARE_NOW_AUTHORIZED;
   public final static String UNSUBSCRIBED=SR.MS_USER_REMOVED_AUTORIZATION;
+  
 }
