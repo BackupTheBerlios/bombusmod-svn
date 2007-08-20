@@ -129,11 +129,6 @@ public class Roster
 
     public static int oldStatus=0;
 
-//#if (MOTOROLA_BACKLIGHT)
-    private int blState=Integer.MAX_VALUE;
-
-//#endif
-
 //#if SASL
     private String token;
 //#endif
@@ -2020,8 +2015,6 @@ public class Roster
     }
 
     protected void keyPressed(int keyCode) {
-       super.keyPressed(keyCode);
-
        //workaround for SE JP6 - enabling vibra in closed state
         if (keyCode==SE_FLIPCLOSE_JP6) {
             display.setCurrent(null);
@@ -2043,7 +2036,7 @@ public class Roster
         } else {
             userActivity();
         }
-        
+
         if (keyCode=='1' && cf.collapsedGroups) { //collapse all groups
             for (Enumeration e=groups.elements(); e.hasMoreElements();) {
                 Group grp=(Group)e.nextElement();
@@ -2052,15 +2045,17 @@ public class Roster
             reEnumRoster();
             return;
         }
+       
 //#ifdef NEW_MENU
 //#         if (keyCode==cf.SOFT_LEFT) {
 //#             new RosterMenu(display, getFocusedObject());
 //#             return;
 //#         }
 //#endif
+       
         if (keyCode==cf.SOFT_RIGHT) {
-            if (!isLoggedIn()) return;
-            new RosterItemActions(display, getFocusedObject(), -1);
+            if (isLoggedIn()) 
+                new RosterItemActions(display, getFocusedObject(), -1);
             return;
         }
         
@@ -2071,98 +2066,63 @@ public class Roster
                 boolean isMucContact=( getFocusedObject() instanceof MucContact );
                 if (isContact && !isMucContact) {
                    Contact c=(Contact) getFocusedObject();
-                   yesnoAction=ACTION_DELETE; new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
+                   yesnoAction=ACTION_DELETE; 
+                   new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
                 }
                 return;
             } catch (Exception e) { /* NullPointerException */ }
         }
-//#if (MOTOROLA_BACKLIGHT)
-        if (cf.ghostMotor) {
-            // backlight management
-            if (keyCode=='*') blState=(blState==1)? Integer.MAX_VALUE : 1;
-            else blState=Integer.MAX_VALUE;
-            
-            display.flashBacklight(blState);
-        }
-//#endif
-    }
-    
-
-    private void userActivity() {
-        if (cf.autoAwayType==Config.AWAY_IDLE) {
-            if (!autoAway) {
-                autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
-                return;
-            }
-        } else {
-            return;
-        }
-        autostatus.setTimeEvent(0);
-        setAutoStatus(Presence.PRESENCE_ONLINE);
-    }
-    
-    public void messageActivity() {
-        if (cf.autoAwayType==Config.AWAY_MESSAGE) {
-             if (myStatus<2)
-                autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
-             else if (!autoAway) 
-                autostatus.setTimeEvent(0);
-        }
+       super.keyPressed(keyCode);
     }
 
     public void userKeyPressed(int keyCode){
-        if (keyCode==KEY_NUM0) {
-            cleanMarks();
-            System.gc();
-            
-            if (messageCount==0) return;
-            Object atcursor=getFocusedObject();
-            Contact c=null;
-            if (atcursor instanceof Contact) c=(Contact)atcursor;
-            //
-            else c=(Contact)hContacts.firstElement();
+        switch (keyCode) {
+            case KEY_NUM0:
+                cleanMarks();
+                System.gc();
 
-            Enumeration i=hContacts.elements();
-            
-            int pass=0; //
-            while (pass<2) {
-                if (!i.hasMoreElements()) i=hContacts.elements();
-                Contact p=(Contact)i.nextElement();
-                if (pass==1) if (p.getNewMsgsCount()>0) { 
-		    focusToContact(p, true);
-                    setRotator();
-                    break; 
+                if (messageCount==0) return;
+                Object atcursor=getFocusedObject();
+                Contact c=null;
+                if (atcursor instanceof Contact) c=(Contact)atcursor;
+                //
+                else c=(Contact)hContacts.firstElement();
+
+                Enumeration i=hContacts.elements();
+
+                int pass=0; //
+                while (pass<2) {
+                    if (!i.hasMoreElements()) i=hContacts.elements();
+                    Contact p=(Contact)i.nextElement();
+                    if (pass==1) if (p.getNewMsgsCount()>0) { 
+                        focusToContact(p, true);
+                        setRotator();
+                        break; 
+                    }
+                    if (p==c) pass++; // полный круг пройден
                 }
-                if (p==c) pass++; // полный круг пройден
-            }
-            return;
-        }
-        if (keyCode=='3') {
-            searchGroup(-1);
-            setRotator();
-            return;
-        }
-        if (keyCode=='9') {
-            searchGroup(1);
-            setRotator();
-            return;
-        }
-        if (keyCode=='4') {
-            keyLeft();
-            return;
-        }
-        if (keyCode=='6') {
-            keyRight();
-            return;
-        }
-        
-         if (keyCode==KEY_POUND) {
-            System.gc();
+                break;
+            case KEY_NUM3:
+                searchGroup(-1);
+                setRotator();
+                break;
+            case KEY_NUM9:
+                searchGroup(1);
+                setRotator();
+                break;
+            case KEY_NUM4:
+                keyLeft();
+                break;
+            case KEY_NUM6:
+                keyRight();
+                break;
+            case KEY_POUND:
+                System.gc();
 //#ifdef POPUPS
-//#             setWobbler(null);
+//#                 setWobbler(null);
 //#endif
-            return;
-         }
+                break;
+        }
      }
  
     protected void keyRepeated(int keyCode) {
@@ -2183,7 +2143,7 @@ public class Roster
                     }
                 }
             }
-            new SplashScreen(display, getMainBarItem(), cf.keyLock, cf.ghostMotor);
+            new SplashScreen(display, getMainBarItem(), cf.keyLock);
             return;
         } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles
@@ -2223,6 +2183,32 @@ public class Roster
              } catch (Exception e) { }   
         }
     }
+    
+    
+
+    private void userActivity() {
+        if (cf.autoAwayType==Config.AWAY_IDLE) {
+            if (!autoAway) {
+                autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+                return;
+            }
+        } else {
+            return;
+        }
+        autostatus.setTimeEvent(0);
+        setAutoStatus(Presence.PRESENCE_ONLINE);
+    }
+    
+    public void messageActivity() {
+        if (cf.autoAwayType==Config.AWAY_MESSAGE) {
+             if (myStatus<2)
+                autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+             else if (!autoAway) 
+                autostatus.setTimeEvent(0);
+        }
+    }
+    
+    
 //#ifdef POPUPS
 //#     public void setWobbler(String info) {
 //#         StringBuffer mess=new StringBuffer();

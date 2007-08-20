@@ -64,10 +64,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     private TimerTaskClock tc;
     
-    boolean motorola_backlight;
-
-    boolean singleflash;
-    
     private StaticData sd=StaticData.getInstance();
     
     
@@ -89,13 +85,11 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public SplashScreen(
             Display display, 
             ComplexString status, 
-            char exitKey, 
-            boolean motorola_backlight) 
+            char exitKey) 
     {
         this.status=status;
         this.display=display;
         kHold=this.exitKey=exitKey;
-        this.motorola_backlight=motorola_backlight;
         
         parentView=display.getCurrent();
 
@@ -144,10 +138,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
                 g.setFont(f);
                 g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
             }
-
-            if (motorola_backlight) 
-                if (singleflash) display.flashBacklight(1);
-            singleflash=false;
         } else {
             Font f=FontCache.getBalloonFont();
 
@@ -264,8 +254,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
     private void destroyView(){
         status.setElementAt(null,6);
-        if (motorola_backlight) 
-            display.flashBacklight(Integer.MAX_VALUE);
         if (display!=null) 
             display.setCurrent(parentView);
         img=null;

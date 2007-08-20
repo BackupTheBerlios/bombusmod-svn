@@ -972,7 +972,7 @@ public abstract class VirtualList
 //#                     stop=true;
 //#                     continue;
 //#                 }
-//#                 System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
+//#                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
 //#                 
 //#                 if (attachedList==null) 
 //#                     stop=true;
