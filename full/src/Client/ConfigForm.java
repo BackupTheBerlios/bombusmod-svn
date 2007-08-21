@@ -199,28 +199,30 @@ public class ConfigForm implements
         startup.setSelectedFlags(su);
         
 //#ifdef NEW_MENU
-//#         ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?7:6];
+//#         //ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?7:6];
+//#         ap=new boolean[8];
 //#else
-        ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?8:7];
+        //ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?8:7];
+        ap=new boolean[7];
 //#endif
 	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
         
-            application.append(SR.MS_FULLSCREEN,null);
-            ap[apctr++]=cf.fullscreen;
-            
-            application.append(SR.MS_HEAP_MONITOR,null);
-            ap[apctr++]=cf.memMonitor;
-            
-            application.append(SR.MS_SHOW_HARDWARE,null);
-            ap[apctr++]=cf.enableVersionOs;
-            
-            application.append(SR.MS_CONFIRM_EXIT,null);
-            ap[apctr++]=cf.queryExit;
-            
+        application.append(SR.MS_FULLSCREEN,null);
+        ap[apctr++]=cf.fullscreen;
+
+        application.append(SR.MS_HEAP_MONITOR,null);
+        ap[apctr++]=cf.memMonitor;
+
+        application.append(SR.MS_SHOW_HARDWARE,null);
+        ap[apctr++]=cf.enableVersionOs;
+
+        application.append(SR.MS_CONFIRM_EXIT,null);
+        ap[apctr++]=cf.queryExit;
+
 //#ifdef NEW_MENU
-//#             application.append(SR.MS_NEW_MENU,null);
-//#             ap[apctr++]=cf.newMenu;
+//#         application.append(SR.MS_NEW_MENU,null);
+//#         ap[apctr++]=cf.newMenu;
 //#endif
 
         if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE) { 
@@ -426,7 +428,6 @@ public class ConfigForm implements
             
             if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE) { 
                 cf.lightState=ap[apctr++];
-                //StaticData.getInstance().roster.lightState=!cf.lightState;
                 if (cf.allowLightControl)
                     StaticData.getInstance().roster.setLight(cf.lightState);                
             }
