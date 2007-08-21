@@ -200,6 +200,8 @@ public class ConferenceForm implements CommandListener{
         StringBuffer gchat=new StringBuffer(room.trim());
         gchat.append('@');
         gchat.append(host.trim());
+        
+        saveMsgCount(msgLimit);
             
         if (c==cmdEdit) {
             StaticData.getInstance().roster.bookmarks.removeElement(editConf);
@@ -210,7 +212,6 @@ public class ConferenceForm implements CommandListener{
             new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
             try {
-                cf.confMessageCount=msgLimit;
                 cf.defGcRoom=room+"@"+host;
                 cf.saveToStorage();
                 gchat.append('/');
@@ -224,6 +225,11 @@ public class ConferenceForm implements CommandListener{
         host=null;
         room=null;
         pass=null;
+    }
+    
+    private void saveMsgCount(int msgLimit) {
+        cf.confMessageCount=msgLimit;
+        cf.saveToStorage();
     }
     
     public static void join(String name, String pass, int maxStanzas) {
