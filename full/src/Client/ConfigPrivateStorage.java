@@ -148,6 +148,7 @@ public class ConfigPrivateStorage
 //#             cs.addChild("transliterateFilenames", (cf.transliterateFilenames)?"1":"0");
 //#             
 //#             cs.addChild("rosterStatus", (cf.rosterStatus)?"1":"0");
+//#             cs.addChild("queryExit", (cf.queryExit)?"1":"0");
 //#         }
 //#         //System.out.println(iq.toString());
 //#         roster.theStream.send(iq);
@@ -189,7 +190,7 @@ public class ConfigPrivateStorage
 //#             
 //#             cf.capsState=getBooleanProperty("capsState",true);
 //# 	    
-//# 	    cf.textWrap=getIntProperty("textWrap",0);
+//#             cf.textWrap=getIntProperty("textWrap",0);
 //#             
 //#             cf.loginstatus=getIntProperty("loginstatus",0);
 //# 
@@ -239,6 +240,7 @@ public class ConfigPrivateStorage
 //#             cf.transliterateFilenames=getBooleanProperty("transliterateFilenames",false);
 //#             
 //#             cf.rosterStatus=getBooleanProperty("rosterStatus",true);
+//#             cf.queryExit=getBooleanProperty("queryExit",false);
 //#             
 //#             cf.lastProfile=cf.profile=cf.def_profile;
 //#             if (cf.lastProfile==AlertProfile.VIBRA) cf.lastProfile=0;

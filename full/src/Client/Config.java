@@ -165,6 +165,8 @@ public class Config {
 //#     public boolean userMoods=true;
 //#endif
     
+    public boolean queryExit = false;
+    
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     
     public static Config getInstance(){
@@ -315,6 +317,8 @@ public class Config {
             
             rosterStatus=inputStream.readBoolean();
             
+            queryExit=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -441,6 +445,8 @@ public class Config {
             outputStream.writeBoolean(transliterateFilenames);
             
             outputStream.writeBoolean(rosterStatus);
+            
+            outputStream.writeBoolean(queryExit);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

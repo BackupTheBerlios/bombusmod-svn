@@ -2317,7 +2317,14 @@ public class Roster
     }
     
 //menu actions
-    public void cmdQuit() { yesnoAction=ACTION_QUIT; new YesNoAlert(display, SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, this); }
+    public void cmdQuit() { 
+        if (cf.queryExit) {
+            yesnoAction=ACTION_QUIT; 
+            new YesNoAlert(display, SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, this); 
+        } else {
+            quit();
+        }
+    }
     public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
     public void cmdActiveContacts() { new ActiveContacts(display, null); }
     public void cmdAccount(){ new AccountSelect(display, false); }

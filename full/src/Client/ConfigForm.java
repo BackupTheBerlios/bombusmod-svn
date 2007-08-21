@@ -215,6 +215,9 @@ public class ConfigForm implements
             application.append(SR.MS_SHOW_HARDWARE,null);
             ap[apctr++]=cf.enableVersionOs;
             
+            application.append(SR.MS_CONFIRM_EXIT,null);
+            ap[apctr++]=cf.queryExit;
+            
 //#ifdef NEW_MENU
 //#             application.append(SR.MS_NEW_MENU,null);
 //#             ap[apctr++]=cf.newMenu;
@@ -414,6 +417,8 @@ public class ConfigForm implements
 	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
             
             cf.enableVersionOs=ap[apctr++];
+            
+            cf.queryExit=ap[apctr++];
             
 //#ifdef NEW_MENU
 //#             cf.newMenu=ap[apctr++];

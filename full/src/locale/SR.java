@@ -526,6 +526,8 @@ public class SR {
     public static String MS_QUIT_ASK = loadString( "Quit?" );
 
     public static String MS_SURE_QUIT = loadString( "Are you sure want to Quit?" );
+
+    public static String MS_CONFIRM_EXIT = loadString( "exit confirmation" );
     
     private SR() { }
     
