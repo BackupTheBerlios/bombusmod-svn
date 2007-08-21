@@ -201,7 +201,7 @@ public class ConfigForm implements
 //#ifdef NEW_MENU
 //#         ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?7:6];
 //#else
-        ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?7:6];
+        ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?8:7];
 //#endif
 	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
