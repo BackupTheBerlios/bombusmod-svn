@@ -1336,6 +1336,10 @@ public class Roster
                 Message message = (Message) data;
                 
                 String from=message.getFrom();
+                //Enable forwarding only from self-jids
+                if (myJid.equals(new Jid(from), false)) {
+                    from=message.getXFrom();
+                }
                 String body=message.getBody().trim();    
                 String oob=message.getOOB();
                 if (oob!=null) body+=oob;
@@ -2451,7 +2455,7 @@ public class Roster
 <item jid="ad@xmpp.ru" subscription="remove" />
 </query>
 </iq>
-­
+ï¿½
 <iq from="ad@jabbus.org/?-work" to="ad@jabbus.org/?-work" id="push" type="set">
 <query xmlns="jabber:iq:roster">
 <item subscription="remove" jid="ad@xmpp.ru" />
