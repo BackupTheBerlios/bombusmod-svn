@@ -2444,8 +2444,29 @@ public class Roster
 	    hContacts.removeElement(c);
             countNewMsgs();
 	    reEnumRoster();
-	} else
-	    theStream.send(new IqQueryRoster(c.getBareJid(),null,null,"remove"));
+	} else {
+/*
+ <iq type="set" id="mir_20">
+<query xmlns="jabber:iq:roster">
+<item jid="ad@xmpp.ru" subscription="remove" />
+</query>
+</iq>
+­
+<iq from="ad@jabbus.org/?-work" to="ad@jabbus.org/?-work" id="push" type="set">
+<query xmlns="jabber:iq:roster">
+<item subscription="remove" jid="ad@xmpp.ru" />
+</query>
+</iq>
+*/
+            theStream.send(new IqQueryRoster(c.getBareJid(),null,null,"remove"));
+            
+            JabberDataBlock removeIq=new Iq(c.getJid(), Iq.TYPE_SET, "push");
+            JabberDataBlock query=removeIq.addChildNs("query", "jabber:iq:roster");
+            JabberDataBlock item= query.addChild("item",null);
+            item.setAttribute("subscription", "remove");
+            item.setAttribute("jid", c.getBareJid());
+            theStream.send(removeIq);
+        }
     }
    
     

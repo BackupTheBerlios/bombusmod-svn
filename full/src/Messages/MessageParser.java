@@ -43,8 +43,9 @@ public final class MessageParser implements Runnable{
     
     private final static int URL=-2;
     private final static int NOSMILE=-1;
+
     private Vector smileTable;
-    
+
     private Leaf root;
 
     // Singleton
@@ -64,9 +65,9 @@ public final class MessageParser implements Runnable{
         if (instance==null) instance=new MessageParser("/images/smiles.txt");
         return instance;
     }
-
-    public Vector getSmileTable() { return smileTable; }
-
+//#ifdef SMILES 
+//#     public Vector getSmileTable() { return smileTable; }
+//#endif
     private class Leaf {
         public int smile=NOSMILE;   // ??? ???????? ? ????
         public String smileChars;     // ??????? ?????????
@@ -186,10 +187,10 @@ public final class MessageParser implements Runnable{
 //#                     firstSmile=true;
 //#                 }
 //#             }
-//#             s=null;
+//#             s.setLength(0);
 //#             in.close();
 //#         } catch (Exception e) {
-//#             s=null;
+//#             s.setLength(0);
 //#         }
 //#endif
  	addSmile("http://",URL);
@@ -385,7 +386,7 @@ public final class MessageParser implements Runnable{
 
             task.notifyRepaint(lines, task.msg, true);
             state++;
-            s=null;
+            s.setLength(0);
         }
 }
     
