@@ -143,7 +143,7 @@ public class Roster
     private static long notifyReadyTime=System.currentTimeMillis();
     private static int blockNotifyEvent=-111;
     
-    public Contact lastAppearedContact=null;
+    //public Contact lastAppearedContact=null;
 
     private boolean allowLightControl=false;
 
@@ -1508,25 +1508,26 @@ public class Roster
 	                String myNick=mucGrp.getSelfContact().getName();
 			if (body.indexOf(myNick)>-1) {
                                 //highlite |= body.indexOf(myNick)>-1;
-	                        if (body.indexOf("> "+myNick+": ")>-1) {
+	                        if (body.indexOf("> "+myNick+": ")>-1)
 	                            highlite=true;
-	                        } else if (body.indexOf(" "+myNick+">")>-1) {
+	                        else if (body.indexOf(" "+myNick+">")>-1)
 	                            highlite=true;
-	                        } else if (body.indexOf(" "+myNick+",")>-1) {
+	                        else if (body.indexOf(" "+myNick+",")>-1)
 	                            highlite=true;
-	                        } else if (body.indexOf(": "+myNick+": ")>-1) {
+	                        else if (body.indexOf(": "+myNick+": ")>-1)
 	                            highlite=true;
-	                        } else if (body.indexOf(" "+myNick+" ")>-1) {
+	                        else if (body.indexOf(" "+myNick+" ")>-1)
 	                            highlite=true;
-	                        } else if (body.indexOf(", "+myNick)>-1) {
+	                        else if (body.indexOf(", "+myNick)>-1)
 	                            highlite=true;
-	                        } else if (body.endsWith(" "+myNick)) {
+	                        else if (body.endsWith(" "+myNick))
 	                            highlite=true;
-	                        } else if (body.indexOf(" "+myNick+"?")>-1) {
+	                        else if (body.indexOf(" "+myNick+"?")>-1)
 	                            highlite=true;
-	                        } else if (body.indexOf(" "+myNick+"!")>-1) {
+	                        else if (body.indexOf(" "+myNick+"!")>-1)
 	                            highlite=true;
-	                        } else if (body.indexOf(" "+myNick+".")>-1) highlite=true;
+	                        else if (body.indexOf(" "+myNick+".")>-1) 
+                                    highlite=true;
 			}
                         //TODO: custom highliting dictionary
                         m.setHighlite(highlite); 
@@ -1583,7 +1584,8 @@ public class Roster
             }
             else if( data instanceof Presence ) {
                 //System.out.println("presence");
-                if (myStatus==Presence.PRESENCE_OFFLINE) return JabberBlockListener.BLOCK_REJECTED;
+                if (myStatus==Presence.PRESENCE_OFFLINE) 
+                    return JabberBlockListener.BLOCK_REJECTED;
                 Presence pr= (Presence) data;
                 
                 String from=pr.getFrom();
@@ -1598,9 +1600,9 @@ public class Roster
                         null,
                         pr.getPresenceTxt());
 
-                 JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc#user");
+                JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc#user");
                 if (xmuc==null) xmuc=pr.findNamespace("http://jabber.org/protocol/muc"); //join errors
-                //System.out.println(data.toString());
+
                 if (xmuc!=null) {
                     try {
                         MucContact c = mucContact(from);
@@ -1629,32 +1631,23 @@ public class Roster
                         c.addMessage(m);
                         c.priority=pr.getPriority();
                     } catch (Exception e) { e.printStackTrace(); }
-                }/* else if (data.getChildBlock("x").getAttribute("xmlns").equals("http://jabber.org/protocol/muc") && data.getChildBlock("error")!=null) {
-                    //System.out.println("muc error");
-
-                    MucContact c = mucContact(from);
-                    
-                    Msg chatPresence=new Msg(
-                           Msg.MESSAGE_TYPE_PRESENCE,
-                           from,
-                           null,
-                           c.processPresence(xmuc, pr) );
-                    //messageStore(getContact(from, false), chatPresence);
-                    //c.addMessage(m);
-                }*/ else {
+                } else {
                     boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
                     if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
                     
                     Contact c=getContact(from, enNIL); 
-                    if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
+                    if (c==null) 
+                        return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
 
-                    if (pr.hasEntityCaps()) {
-                        c.hasEntity=true;
-                        c.entityNode=strconv.replaceCaps(pr.getEntityNode());
-                        c.entityVer=pr.getEntityVer();
+                    if (pr.getTypeIndex()!=pr.PRESENCE_ERROR) {
+                        if (pr.hasEntityCaps()) {
+                            c.hasEntity=true;
+                            c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                            c.entityVer=pr.getEntityVer();
+                        }
+
+                        c.statusString=pr.getStatus();
                     }
-                                    
-                    c.statusString=pr.getStatus();
                     
                     messageStore(c, m);
 					
@@ -1666,15 +1659,15 @@ public class Roster
                     }
 					
                     c.priority=pr.getPriority();
-                    if (ti>=0) c.setStatus(ti);
+                    if (ti>=0) 
+                        c.setStatus(ti);
                     
-                    if (notifyReady(-111) &&
-                        (ti==Presence.PRESENCE_ONLINE ||
-                         ti==Presence.PRESENCE_CHAT)) {
-                            if (lastAppearedContact!=null) 
-                                lastAppearedContact.setIncoming(Contact.INC_NONE);
+                    if (cf.showLastAppearedContact && notifyReady(-111) &&
+                        (ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT)) {
+                            //if (lastAppearedContact!=null) 
+                            //    lastAppearedContact.setIncoming(Contact.INC_NONE);
                             c.setIncoming(Contact.INC_APPEARING);
-                            lastAppearedContact=c;
+                            //lastAppearedContact=c;
                     }
                     if (ti==Presence.PRESENCE_OFFLINE)  {
                         c.setIncoming(Contact.INC_NONE);

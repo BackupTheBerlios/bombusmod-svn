@@ -528,6 +528,8 @@ public class SR {
     public static String MS_SURE_QUIT = loadString( "Are you sure want to Quit?" );
 
     public static String MS_CONFIRM_EXIT = loadString( "exit confirmation" );
+
+    public static String MS_SHOW_LAST_APPEARED_CONTACTS = loadString( "show last appeared contacts" );
     
     private SR() { }
     

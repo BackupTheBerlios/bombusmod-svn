@@ -167,6 +167,8 @@ public class Config {
     
     public boolean queryExit = false;
     
+    public boolean showLastAppearedContact = false;
+    
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     
     public static Config getInstance(){
@@ -319,6 +321,8 @@ public class Config {
             
             queryExit=inputStream.readBoolean();
             
+            showLastAppearedContact=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -447,6 +451,8 @@ public class Config {
             outputStream.writeBoolean(rosterStatus);
             
             outputStream.writeBoolean(queryExit);
+            
+            outputStream.writeBoolean(showLastAppearedContact);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
