@@ -13,6 +13,7 @@ import Info.Version;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
+import com.ssttr.crypto.SHA1;
 
 /**
  *
@@ -63,12 +64,35 @@ public class EntityCaps implements JabberBlockListener{
         
         return BLOCK_PROCESSED;
     }
+	
+    public static String ver=null;
+    
+    public static String calcVerHash() {
+        if (ver!=null) return ver;
+        
+        SHA1 sha1=new SHA1();
+        sha1.init();
+        
+        sha1.update("client/mobile");
+        sha1.update("<");
+        
+        for (int i=0; i<features.length; i++) {
+            sha1.update(features[i]);
+            sha1.update("<");
+        }
+        
+        sha1.finish();
+        ver=sha1.getDigestHex();
+        
+        return ver;
+    }
 
     public static JabberDataBlock presenceEntityCaps() {
         JabberDataBlock c=new JabberDataBlock("c", null, null);
         c.setAttribute("xmlns", "http://jabber.org/protocol/caps");
-        c.setAttribute("node", BOMBUS_NAMESPACE);
-        c.setAttribute("ver", Version.getVersionNumber());
+        c.setAttribute("node", BOMBUS_NAMESPACE+'#'+Version.getVersionNumber());
+        c.setAttribute("ver", calcVerHash());
+        c.setAttribute("hash", "sha-1");
 //#ifdef MOOD
 //#         if (Config.getInstance().userMoods)
 //#             c.setAttribute("ext", mood);
@@ -77,19 +101,19 @@ public class EntityCaps implements JabberBlockListener{
     }
     
     private final static String BOMBUS_NAMESPACE=Version.getUrl();
-    
+//features MUST be sorted
     private final static String features[]={
-        "jabber:iq:version",
-        "jabber:x:data",
-        "jabber:iq:last",
-        "urn:xmpp:time",
-        "jabber:x:event",
         "http://jabber.org/protocol/disco#info",
+		"http://jabber.org/protocol/ibb",
         "http://www.xmpp.org/extensions/xep-0199.html#ns",
         "http://jabber.org/protocol/muc",
         "http://jabber.org/protocol/si",
         "http://jabber.org/protocol/si/profile/file-transfer",
-        "http://jabber.org/protocol/ibb",
+        "jabber:iq:time", //DEPRECATED
+        "jabber:iq:version",
+        "jabber:x:data",
+        "jabber:x:event",
+        "urn:xmpp:time",
 //#ifdef MOOD
 //#         "http://jabber.org/protocol/mood"
 //#endif
