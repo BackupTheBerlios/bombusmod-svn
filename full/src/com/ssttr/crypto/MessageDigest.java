@@ -180,8 +180,7 @@ public abstract class MessageDigest
         return (digestValid)? digestBits:null;
     }
     
-    public String getDigestHex()
-    {
+	public String getDigestHex(){
         if (!digestValid) return null;
         StringBuffer out=new StringBuffer();
         
@@ -203,6 +202,9 @@ public abstract class MessageDigest
     	return out.toString();
     }
 
+    public String getDigestBase64(){
+        return util.strconv.toBase64(digestBits, digestBits.length);
+    }
 
     /**
      * Return a string that represents the algorithim of this
