@@ -194,6 +194,8 @@ public final class MessageParser implements Runnable{
 //#         }
 //#endif
  	addSmile("http://",URL);
+        addSmile("\01", ComplexString.NICK_ON);
+        addSmile("\02", ComplexString.NICK_OFF);
         addSmile("tel://",URL);
         addSmile("https://",URL);
         addSmile("native:",URL);
@@ -299,7 +301,7 @@ public final class MessageParser implements Runnable{
 //#                          l.addElement(s.toString());
 //#                      }
 //#                      s.setLength(0);
-//#                      int iw=il.getWidth();
+//#                      int iw=(smileIndex<0x01000000)? il.getWidth() : 0;
 //#                      if (w+iw>width) {
 //#                          task.notifyRepaint(lines, task.msg, false);
 //#                          l=new ComplexString(il);

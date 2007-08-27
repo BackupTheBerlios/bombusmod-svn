@@ -1438,8 +1438,13 @@ public class Roster
                     //forme=false;
                     if (body.startsWith("/me ")) start_me=3;
                     if (start_me>=0) {
-                        StringBuffer b=new StringBuffer(name);
-                        if (start_me==0) b.append("> ");
+                        StringBuffer b=new StringBuffer("\01");
+                        b.append(name);
+                        b.append("\02");
+                        if (start_me==0) 
+                            b.append("> ");
+                        else 
+                            b.insert(0,'*');
                         b.append(body.substring(start_me));
                         body=b.toString();
                         b=null;

@@ -162,7 +162,8 @@ public class MucContact extends Contact{
         } catch (Exception e) { statusCode=0; }
         
 
-        StringBuffer b=new StringBuffer(nick);
+        StringBuffer b=new StringBuffer();
+        appendL(b,nick);
         
         String statusText=presence.getChildBlockText("status");
         
@@ -173,7 +174,7 @@ public class MucContact extends Contact{
                 
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
-                    b.append(chNick);
+                    appendL(b,chNick);
                     String newJid=from.substring(0,rp+1)+chNick;
                     jid.setJid(newJid);
                     bareJid=newJid;
@@ -198,7 +199,7 @@ public class MucContact extends Contact{
 					
                     if (realJid!=null) {
                         b.append(" - ");
-                        b.append(realJid);
+                        appendL(b,realJid);
                     }
 
                     if (reason.indexOf("talks") > -1) toTalks();
@@ -237,7 +238,7 @@ public class MucContact extends Contact{
                 if (realJid!=null) {
                     this.realJid=realJid;  //for moderating purposes
                     b.append(" (");
-                    b.append(realJid);
+                    appendL(b, realJid);
                     b.append(')');
                 }
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
@@ -318,6 +319,12 @@ public class MucContact extends Contact{
         
         setStatus(presenceType);
         return b.toString();
+    }
+    
+    private void appendL(StringBuffer sb, String append){
+        sb.append((char)1);
+        sb.append(append);
+        sb.append((char)2);
     }
     
     public String getTipString() {

@@ -120,7 +120,7 @@ public class ArchiveList
  	super ();
  	this.target=target;
         this.caretPos=caretPos;
-        enableListWrapping(true); //TEST:переход через конец списка
+        enableListWrapping(true); //TEST:пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	setCommandListener(this);
 	addCommand(cmdBack);
 	addCommand(cmdDelete);
@@ -241,7 +241,8 @@ public class ArchiveList
 	    data=m.from;
 	    break;
 	default:
-	    data=m.getBody();
+	    data=m.quoteString();
+            //data=m.getBody();
 	}
 	target.insertText(data, caretPos);
 	destroyView();

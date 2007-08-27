@@ -60,6 +60,26 @@ public class ColorScheme {
 	}
 	return instance;
     }
+    
+
+    static int strong(int color) {
+        if (color==MESSAGE_IN) {
+            return MESSAGE_IN_S;
+        } else if (color==MESSAGE_OUT) {
+            return MESSAGE_OUT_S;
+        } else if (color==MESSAGE_PRESENCE) {
+            return MESSAGE_PRESENCE_S;
+        }
+        /*switch (color) {
+            case MESSAGE_IN: return MESSAGE_IN_S;
+            case MESSAGE_OUT: return MESSAGE_OUT_S;
+            case MESSAGE_PRESENCE: return MESSAGE_PRESENCE_S;
+        }
+        return color;
+         */
+        return color;
+    }
+  
 
     public static int BALLOON_INK	=0x4866ad;
     public static int BALLOON_BGND	=0xffffe0;
@@ -79,9 +99,12 @@ public class ColorScheme {
     public static int GROUP_INK         =0x000080;
     public static int BLK_INK           =0xffffff;
     public static int BLK_BGND          =0x000000;
-    public static int MESSAGE_IN	=0x0000b0;
-    public static int MESSAGE_OUT	=0xb00000;
-    public static int MESSAGE_PRESENCE	=0x006000;
+    public static int MESSAGE_IN        =0x0000b0;
+    public final static int MESSAGE_IN_S        =0x0060ff;
+    public static int MESSAGE_OUT       =0xb00000;
+    public final static int MESSAGE_OUT_S       =0xff4000;
+    public static int MESSAGE_PRESENCE  =0x006000;
+    public final static int MESSAGE_PRESENCE_S  =0x00c040;
     public static int MESSAGE_AUTH	=0x400040;
     public static int MESSAGE_HISTORY	=0x535353;
     public static int PGS_REMAINED	=0xffffff;
