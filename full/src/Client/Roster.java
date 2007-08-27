@@ -2045,6 +2045,7 @@ public class Roster
                 grp.collapsed=true;
             }
             reEnumRoster();
+            super.keyPressed(keyCode);
             return;
         }
        
