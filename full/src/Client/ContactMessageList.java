@@ -273,7 +273,7 @@ public class ContactMessageList extends MessageList
             try {
                 StringBuffer clipstr=new StringBuffer();
                 clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
-                clipstr.append(getMessage(cursor).getBody());
+                clipstr.append(getMessage(cursor).quoteString());
                 clipboard.setClipBoard(clipstr.toString());
                 clipstr=null;
             } catch (Exception e) {/*no messages*/}
@@ -285,7 +285,7 @@ public class ContactMessageList extends MessageList
                 clipstr.append(clipboard.getClipBoard());
                 clipstr.append("\n\n");
                 clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
-                clipstr.append(getMessage(cursor).getBody());
+                clipstr.append(getMessage(cursor).quoteString());
                 
                 clipboard.setClipBoard(clipstr.toString());
                 clipstr=null;
@@ -455,7 +455,7 @@ public class ContactMessageList extends MessageList
                         clipstr.append("\n\n");
                     
                     clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
-                    clipstr.append(getMessage(cursor).getBody());
+                    clipstr.append(getMessage(cursor).quoteString());
 
                     clipboard.setClipBoard(clipstr.toString());
                     clipstr=null;

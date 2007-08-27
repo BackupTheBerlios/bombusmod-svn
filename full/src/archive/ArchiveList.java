@@ -200,7 +200,7 @@ public class ArchiveList
         if (c == cmdCopy)
         {
             try {
-                clipboard.setClipBoard(getMessage(cursor).getBody());
+                clipboard.setClipBoard(getMessage(cursor).quoteString());
             } catch (Exception e) {/*no messages*/}
         }
         
@@ -209,7 +209,7 @@ public class ArchiveList
                 StringBuffer clipstr=new StringBuffer();
                 clipstr.append(clipboard.getClipBoard());
                 clipstr.append("\n\n");
-                clipstr.append(getMessage(cursor).getBody());
+                clipstr.append(getMessage(cursor).quoteString());
                 
                 clipboard.setClipBoard(clipstr.toString());
                 clipstr=null;
