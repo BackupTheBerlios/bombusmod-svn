@@ -228,8 +228,10 @@ public class ConferenceForm implements CommandListener{
     }
     
     private void saveMsgCount(int msgLimit) {
-        cf.confMessageCount=msgLimit;
-        cf.saveToStorage();
+        if (cf.confMessageCount!=msgLimit) {
+            cf.confMessageCount=msgLimit;
+            cf.saveToStorage();
+        }
     }
     
     public static void join(String name, String pass, int maxStanzas) {
