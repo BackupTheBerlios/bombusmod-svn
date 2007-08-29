@@ -176,7 +176,10 @@ public class ServiceDiscovery
     }
     
     private void requestQuery(String namespace, String id){
-        discoIcon=RosterIcons.ICON_PROGRESS_INDEX; mainbarUpdate(); redraw();
+        discoIcon=RosterIcons.ICON_PROGRESS_INDEX; 
+        mainbarUpdate(); 
+        redraw();
+        
         JabberDataBlock req=new Iq(service, Iq.TYPE_GET, discoId(id));
         JabberDataBlock qry=req.addChildNs("query", namespace);
         qry.setAttribute("node", node);
@@ -187,9 +190,12 @@ public class ServiceDiscovery
     }
     
     private void requestCommand(String namespace, String id){
-        discoIcon=RosterIcons.ICON_PROGRESS_INDEX; mainbarUpdate(); redraw();
+        discoIcon=RosterIcons.ICON_PROGRESS_INDEX; 
+        mainbarUpdate(); 
+        redraw();
+        
         JabberDataBlock req=new Iq(service, Iq.TYPE_SET, id);
-        JabberDataBlock qry=req.addChildNs("query", namespace);
+        JabberDataBlock qry=req.addChildNs("command", namespace);
         qry.setAttribute("node", node);
         qry.setAttribute("action", "execute");
 
