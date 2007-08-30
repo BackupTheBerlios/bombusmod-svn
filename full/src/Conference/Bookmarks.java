@@ -161,7 +161,8 @@ public class Bookmarks
 	if (getItemCount()==0) return;
         String roomJid=((BookmarkItem)getFocusedObject()).getJid();
 
-        if (c==cmdJoin) eventOk();
+        if (c==cmdJoin) 
+            eventOk();
         else if (c==cmdAdvJoin) {
             BookmarkItem join=(BookmarkItem)getFocusedObject();
             new ConferenceForm(display, join, cursor);
@@ -190,12 +191,12 @@ public class Bookmarks
                 if (bm.autojoin) 
                     ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, Config.getInstance().confMessageCount);
             }
-            exitBookmarks();
+            //exitBookmarks();
         }
         
         else if (c==cmdSave) {
             saveBookmarks();
-            exitBookmarks();
+            //exitBookmarks();
         }
         
         else if (c==cmdUp) { move(-1); keyUp(); }
@@ -205,11 +206,14 @@ public class Bookmarks
     
     private void deleteBookmark(){
         BookmarkItem del=(BookmarkItem)getFocusedObject();
-        if (del==null) return;
-        if (del.isUrl) return;
+        if (del==null) 
+            return;
+        if (del.isUrl) 
+            return;
 
         StaticData.getInstance().roster.bookmarks.removeElement(del);
-        if (getItemCount()<=cursor) moveCursorEnd();
+        if (getItemCount()<=cursor) 
+            moveCursorEnd();
         saveBookmarks();
         redraw();
     }
