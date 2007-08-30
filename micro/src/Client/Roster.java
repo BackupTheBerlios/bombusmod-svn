@@ -671,7 +671,7 @@ public class Roster
         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
         Presence presence = new Presence(myStatus, es.getPriority(), es.getMessage());
         if (isLoggedIn()) {
-            if (status==Presence.PRESENCE_OFFLINE) groups.requestGroupState(false);
+            //if (status==Presence.PRESENCE_OFFLINE) groups.requestGroupState(false);
             
             if (!StaticData.getInstance().account.isMucOnly() )
 		theStream.send( presence );
@@ -1008,7 +1008,7 @@ public class Roster
 
                         processRoster(data);
 
-                        groups.requestGroupState(true);
+                        //groups.requestGroupState(true);
                         
                         setProgress(SR.MS_CONNECTED,100);
 

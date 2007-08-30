@@ -39,7 +39,7 @@ import ui.ImageList;
  *
  * @author Evg_S
  */
-public class Groups implements JabberBlockListener{
+public class Groups{
     
     Vector groups;
     
@@ -55,9 +55,7 @@ public class Groups implements JabberBlockListener{
     public final static String IGNORE_GROUP="Ignore-List";
     public final static int TYPE_COMMON=5;
     public final static String COMMON_GROUP=SR.MS_GENERAL;//locale
-    
-    private final static String GROUPSTATE_NS="http://bombus-im.org/groups";
-    
+
     public Groups(){
         groups=new Vector();
         addGroup(Groups.TRANSP_GROUP, false);
@@ -156,50 +154,5 @@ public class Groups implements JabberBlockListener{
 
     void removeGroup(Group g) {
         groups.removeElement(g);
-    }
-
-    public int blockArrived(JabberDataBlock data) {
-        if (data instanceof Iq) 
-            if (data.getTypeAttribute().equals("result")) {
-            JabberDataBlock query=data.findNamespace("jabber:iq:private");
-            if (query==null) return BLOCK_REJECTED;
-            JabberDataBlock gs=query.findNamespace(GROUPSTATE_NS);
-            if (gs==null) return BLOCK_REJECTED;
-            
-            for (Enumeration e=gs.getChildBlocks().elements(); e.hasMoreElements();) {
-                JabberDataBlock item=(JabberDataBlock)e.nextElement();
-                String groupName=item.getText();
-                boolean collapsed=item.getAttribute("state").equals("collapsed");
-                
-                Group grp=getGroup(groupName);
-                if (grp==null) continue;
-                grp.collapsed=collapsed;
-            }
-            StaticData.getInstance().roster.reEnumRoster();
-            return NO_MORE_BLOCKS;
-        }
-        return BLOCK_REJECTED;
-    }
-
-    public void requestGroupState(boolean get) {
-        Roster roster=StaticData.getInstance().roster;
-        if (!roster.isLoggedIn()) return;
-        
-        JabberDataBlock iq=new Iq(null, (get)? Iq.TYPE_GET : Iq.TYPE_SET, (get)? "queryGS" : "setGS");
-        JabberDataBlock query=iq.addChildNs("query", "jabber:iq:private");
-        JabberDataBlock gs=query.addChildNs("gs", GROUPSTATE_NS);
-        
-        if (get) {
-            roster.theStream.addBlockListener(this);
-        } else {
-            for (Enumeration e=groups.elements(); e.hasMoreElements();) {
-                Group grp=(Group)e.nextElement();
-                if (grp.collapsed) {
-                    gs.addChild("item", grp.getName()).setAttribute("state", "collapsed");
-                }
-            }
-        }
-        System.out.println(iq.toString());
-        roster.theStream.send(iq);
     }
 }
