@@ -1,13 +1,32 @@
 /*
  * Contact.java
  *
- * Created on 6 января 2005 г., 19:16
+ * Created on 6.01.2005, 19:16
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Client;
+import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
 import io.file.FileIO;
 import ui.Colors;
@@ -42,6 +61,13 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GROUPCHAT=4;
     public final static byte ORIGIN_GC_MEMBER=5;
     public final static byte ORIGIN_GC_MYSELF=6;
+    
+
+    /*public final static String XEP184_NS="http://www.xmpp.org/extensions/xep-0184.html#ns";
+    public final static int DELIVERY_NONE=0;
+    public final static int DELIVERY_HANDSHAKE=1;
+    public final static int DELIVERY_XEP184=2;
+    public final static int DELIVERY_XEP22=3;*/
 
    
     /** Creates a new instance of Contact */
@@ -55,13 +81,14 @@ public class Contact extends IconTextElement{
     public String nick;
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
-    public int status;
+    protected int status;
     public int priority;
     private Group group;
     public int transport;
     
     public boolean acceptComposing;
     public Integer incomingComposing;
+    public int deliveryType;
     
     public String msgSuspended;
     
@@ -230,7 +257,6 @@ public class Contact extends IconTextElement{
             }
         }
 //#endif
-        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - presence, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
         if (first_replace) {
             msgs.setElementAt(m,0);
             return;
@@ -267,7 +293,7 @@ public class Contact extends IconTextElement{
         return bareJid;
     }
 
-    public final String getNickJid() {
+    public String getNickJid() {
         if (nick==null) return bareJid;
         return nick+" <"+bareJid+">";
     }
@@ -304,7 +330,9 @@ public class Contact extends IconTextElement{
 
     public String getTipString() {
         int nm=getNewMsgsCount();
-        return (nm==0)? null:String.valueOf(nm);
+        if (nm!=0) return String.valueOf(nm);
+        if (nick!=null) return bareJid;
+        return null;
     }
 
     public Group getGroup() { return group; }
@@ -319,4 +347,22 @@ public class Contact extends IconTextElement{
     }*/
     public void setGroup(Group group) { this.group = group; }
 
+    public void setStatus(int status) {
+        setComposing(false);
+        this.status = status;
+        if (status>=Presence.PRESENCE_OFFLINE) acceptComposing=false;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    void markDelivered(String id) {
+        if (id==null) return;
+        for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
+            Msg m=(Msg)e.nextElement();
+            if (m.id!=null)
+                if (m.id.equals(id)) m.delivered=true;
+        }
+    }
 }

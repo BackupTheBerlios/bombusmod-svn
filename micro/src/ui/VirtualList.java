@@ -1,10 +1,28 @@
 /*
  * VirtualList.java
  *
- * Created on 30 Январь 2005 г., 14:46
+ * Created on 30.01.2005, 14:46
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package ui;
@@ -88,17 +106,26 @@ public abstract class VirtualList
     public static final int NOKIA_GREEN=-10;
     public final static int NOKIA_PEN=-50;
     public static final int MOTOROLA_GREEN=-10;
-    public final static int MOTOROLA_FLIP=-200;
+
     public static final int MOTOE680_VOL_UP=-9;
     public static final int MOTOE680_VOL_DOWN=-8;
     public static final int MOTOE680_REALPLAYER=-6;
     public static final int MOTOE680_FMRADIO=-7;
-    public static final int SE_GREEN=0;
     
-    private final static int STRING_SZ=15;
+    public final static int MOTOROLA_FLIP=-200;
+    
+    public static final int SE_FLIPOPEN_JP6=-30;
+    public static final int SE_FLIPCLOSE_JP6=-31;
+    
+    public static final int SIEMENS_FLIPOPEN=-24;
+    public static final int SIEMENS_FLIPCLOSE=-22;
+    
+    
+    public int stringHeight=15;
 
     public static int keyClear=-8;
     public static int keyVolDown=0x1000;
+    public static int keyBack=0x1000;
     public static int greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
@@ -111,6 +138,7 @@ public abstract class VirtualList
      * не поддерживает двойную буферизацию экрана
      */
     private Image offscreen;
+    //protected boolean canback=true; // Enable destroyView() on keyBack by default
     
     /** признак положения курсора в конце списка */
     protected boolean atEnd; //FIXME: перенести поведение в функции keyRight();
@@ -211,8 +239,12 @@ public abstract class VirtualList
     public VirtualList() {
         width=getWidth();
         height=getHeight();
+        
+        if (Info.Version.getPlatformName().startsWith("Windows")) {
+            setTitle("Bombus CE");
+        }
         // rotator
-        rotator=new TimerTaskRotate(0);
+        //rotator=new TimerTaskRotate(0, this);
 //#if !(MIDP1)
         //addCommand(cmdSetFullScreen);
         setFullScreenMode(fullscreen);
@@ -270,6 +302,7 @@ public abstract class VirtualList
     protected void showNotify() {
 	if (!isDoubleBuffered()) 
 	    offscreen=Image.createImage(width, height);
+        TimerTaskRotate.startRotate(-1, this);
     }
     
     /** Вызывается при изменении размера отображаемой области. переопределяет наследуемый метод 
@@ -428,11 +461,9 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g) {
         if (memMonitor) {
-            int freemem=(int)Runtime.getRuntime().freeMemory();
-            int totalmem=(int)Runtime.getRuntime().totalMemory();
-            int ram=(int)((freemem*width)/totalmem);
-            g.setColor(Colors.HEAP_TOTAL);  g.fillRect(0,0,width,1);
-            g.setColor(Colors.HEAP_FREE);  g.fillRect(0,0,ram,1);
+            int ram=(int)((Runtime.getRuntime().freeMemory()*32)/Runtime.getRuntime().totalMemory());
+            g.setColor(Colors.HEAP_TOTAL);  g.fillRect(width-34,0,34,3);
+            g.setColor(Colors.HEAP_FREE);  g.fillRect(width-33,1,ram,2);
         }
     }
     
@@ -603,7 +634,7 @@ public abstract class VirtualList
             case KEY_NUM1:  { moveCursorHome();    break; }
             case KEY_NUM7:  { moveCursorEnd();     break; }
             case '5':{ eventOk(); break; }
-            case MOTOROLA_FLIP: break;
+            case MOTOROLA_FLIP: { userKeyPressed(keyCode); break; }
             default:
                 try {
                     switch (getGameAction(keyCode)){
@@ -616,6 +647,11 @@ public abstract class VirtualList
                             if (keyCode==greenKeyCode) { keyGreen(); break; }
 			    if (keyCode==keyVolDown) { moveCursorEnd(); break; }
 			    if (keyCode=='#') { System.gc(); break; }
+                            if (keyCode==keyBack) {
+                                //TODO: Check, is destroyView() allowed
+                                destroyView();
+                                return;
+                            }
                             userKeyPressed(keyCode);
                     }
                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
@@ -710,7 +746,7 @@ public abstract class VirtualList
                 win_top=remainder-winHeight+win_top+8;
                 return true;
             }
-            win_top+=winHeight-STRING_SZ;
+            win_top+=winHeight-stringHeight;
             return true;
         } catch (Exception e) {}
         return false;
@@ -737,7 +773,7 @@ public abstract class VirtualList
                 win_top=itemLayoutY[cursor];
                 return true;
             }
-            win_top-=winHeight-STRING_SZ;
+            win_top-=winHeight-stringHeight;
             return true;
         } catch (Exception e) {}
         return false;
@@ -804,54 +840,21 @@ public abstract class VirtualList
     
     /** перезапуск ротации скроллера длинных строк */
     protected  void setRotator(){
-        focusedItem(cursor);
-        rotator.destroyTask();
-        if (getItemCount()<1) return;
+        //TimerTaskRotate.startRotate(-1, this);
+        try {
+            if (getItemCount()<1) return;
+            focusedItem(cursor);
+        } catch (Exception e) { return; }
+        
         if (cursor>=0) {
             int itemWidth=getItemRef(cursor).getVWidth();
             if (itemWidth>=width-scrollbar.getScrollWidth() ) itemWidth-=width/2; else itemWidth=0;
-            rotator=new TimerTaskRotate( itemWidth );
+            TimerTaskRotate.startRotate(itemWidth, this);
         }
     }
     // cursor rotator
     
-    private class TimerTaskRotate extends TimerTask{
-        private Timer t;
-        private int Max;
-        private int balloon;
-        
-        public TimerTaskRotate(int max){
-            offset=0;
-            balloon=6;
-            //if (max<1) return;
-            Max=max;
-            t=new Timer();
-            t.schedule(this, 2000, 300);
-        }
-        public void run() {
-            // прокрутка только раз
-            //stickyWindow=false;
-            
-            if (Max==-1 && balloon==-1) cancel();
-            if (offset>=Max) {
-                Max=-1;
-                offset=0;
-            } else offset+=20;
-            
-            if (showBalloon=balloon>=0) balloon--;
-            redraw();
-            //System.out.println("Offset "+offset);
-        }
-        public void destroyTask(){
-            offset=0;
-            if (t!=null){
-                this.cancel();
-                t.cancel();
-                t=null;
-            }
-        }
-    }
-    private TimerTaskRotate rotator;
+    //private TimerTaskRotate rotator;
 
     
     /**
@@ -881,7 +884,8 @@ public abstract class VirtualList
      * присоединение к менеджеру предыдущего Displayable
      */
     public void destroyView(){
-        if (display!=null)   display.setCurrent(parentView);
+        if (display!=null && parentView!=null /*prevents potential app hiding*/ )   
+            display.setCurrent(parentView);
     }
 
     public int getListWidth() {
@@ -912,5 +916,105 @@ public abstract class VirtualList
             e.printStackTrace(); /* ClassCastException */
         }
     }
+    
+    public int getCursor() {
+        return cursor;
+    }
+}
 
+class TimerTaskRotate extends Thread{
+    //private Timer t;
+    private int scrollLen;
+    private int balloon;
+    private int scroll;
+    
+    private boolean stop;
+    private boolean exit;
+    
+    private VirtualList attachedList;
+    
+    private static TimerTaskRotate instance;
+    
+    private TimerTaskRotate() {
+        exit=false;
+        stop=true;
+        start();
+    }
+    
+    public static void startRotate(int max, VirtualList list){
+        //Windows mobile J9 hanging test
+        if (Info.Version.getPlatformName().startsWith("Windows")) {
+            list.showBalloon=true;
+            list.offset=0;
+            return;
+        }
+        if (instance==null) instance=new TimerTaskRotate();
+        if (max<0) {
+            instance.destroyTask(); return;
+        }
+        
+        synchronized (instance) {
+            list.offset=0;
+            instance.scrollLen=max;
+            //list.showBalloon=false; //<< uncomment this to disable keep balloon floating when traversing
+            instance.balloon=(list.showBalloon)? 6 : 13;
+            instance.scroll=7;
+            instance.attachedList=list;
+            instance.stop=false;
+        }
+    }
+    
+    public void run() {
+        // прокрутка только раз
+        //stickyWindow=false;
+    
+        while (true) {
+            if (exit) return;
+            try {  sleep(300);  } catch (Exception e) {}
+            if (stop) continue;
+            
+            boolean redraw = false;
+            synchronized (this) {
+                //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
+                
+                if (attachedList==null) stop=true;
+                
+                if (scrollLen>=0 || balloon>=0) { 
+                    stop=false;
+                    redraw=true;
+                }
+                
+                if (stop) {
+                    if (attachedList!=null) attachedList.offset=0;
+                    attachedList.showBalloon=false;
+                    attachedList=null;
+                    continue;
+                }
+                
+                //scroll state machine
+                if (scroll>0) scroll--;
+                if (scroll==0) {
+                    if (attachedList.offset>=scrollLen) {
+                        scrollLen=-1;
+                        attachedList.offset=0;
+                    } else attachedList.offset+=20;
+                }
+                
+                //balloon state machine
+                if (balloon>=0) balloon--;
+                attachedList.showBalloon=(balloon<7 && balloon>0);
+                
+            }
+            if (redraw) attachedList.redraw();
+            redraw=false;
+            
+        }
+    }
+    public void destroyTask(){
+        synchronized (this) { 
+            if (attachedList!=null) attachedList.offset=0;
+            stop=true; 
+            //attachedList=null;
+        }
+    }
 }

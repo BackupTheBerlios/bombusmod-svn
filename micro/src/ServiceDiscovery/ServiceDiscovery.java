@@ -1,15 +1,36 @@
 /*
  * ServiceDiscovery.java
  *
- * Created on 4 Июнь 2005 г., 21:12
+ * Created on 4.06.2005, 21:12
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package ServiceDiscovery;
 import Conference.ConferenceForm;
 import images.RosterIcons;
+import io.NvStorage;
+import java.io.DataInputStream;
+import java.io.EOFException;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -31,6 +52,7 @@ public class ServiceDiscovery
     private final static String NS_INFO="http://jabber.org/protocol/disco#info";
     private final static String NS_REGS="jabber:iq:register";
     private final static String NS_SRCH="jabber:iq:search";
+    private final static String NS_GATE="jabber:iq:gateway";
     private final static String NS_MUC="http://jabber.org/protocol/muc";
     private final static String NODE_CMDS="http://jabber.org/protocol/commands";
     
@@ -88,14 +110,39 @@ public class ServiceDiscovery
         
 
         addCommand(cmdBack);
-
-        this.node=node;
-        this.service=(service!=null)?service:sd.account.getServer();
         
         items=new Vector();
         features=new Vector();
+
+        this.node=node;
         
-        requestQuery(NS_INFO, "disco");
+        if (service!=null) {
+            this.service=service;
+            requestQuery(NS_INFO, "disco");
+        } else {
+            this.service=null;
+
+            String myServer=sd.account.getServer();
+            items.addElement(new DiscoContact(null, myServer, 0));
+            
+            try {
+                DataInputStream is=NvStorage.ReadFileRecord("mru-"+ServerBox.MRU_ID, 0);
+                
+                try {
+                    while (true) {
+                        String recent=is.readUTF();
+                        if (myServer.equals(recent)) continue; //only one instance for our service
+                        
+                        items.addElement(new DiscoContact(null, recent, 0));
+                    }
+                } catch (EOFException e) { is.close(); }
+            } catch (Exception e) {}
+            
+            //sort(items);
+            discoIcon=0; titleUpdate(); 
+            moveCursorHome();
+            redraw();
+        }
     }
     
     private String discoId(String id) {
@@ -105,14 +152,14 @@ public class ServiceDiscovery
     public int getItemCount(){ return items.size();}
     public VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index);}
     
-    protected void beginPaint(){ getTitleItem().setElementAt(sd.roster.messageIcon,4); }
+    protected void beginPaint(){ getTitleItem().setElementAt(sd.roster.getEventIcon(), 4); }
     
     
     private void titleUpdate(){
         
         getTitleItem().setElementAt(new Integer(discoIcon), 0);
-        getTitleItem().setElementAt(service, 2);
-        getTitleItem().setElementAt(sd.roster.messageIcon, 4);
+        getTitleItem().setElementAt((service==null)?"Recent services":service, 2);
+        getTitleItem().setElementAt(sd.roster.getEventIcon(), 4);
 	
 	int size=0;
 	try { size=items.size(); } catch (Exception e) {}
@@ -129,8 +176,7 @@ public class ServiceDiscovery
     private void requestQuery(String namespace, String id){
         discoIcon=RosterIcons.ICON_PROGRESS_INDEX; titleUpdate(); redraw();
         JabberDataBlock req=new Iq(service, Iq.TYPE_GET, discoId(id));
-        JabberDataBlock qry=req.addChild("query",null);
-        qry.setNameSpace(namespace);
+        JabberDataBlock qry=req.addChildNs("query", namespace);
         qry.setAttribute("node", node);
 
         //stream.addBlockListener(this);
@@ -141,8 +187,7 @@ public class ServiceDiscovery
     private void requestCommand(String namespace, String id){
         discoIcon=RosterIcons.ICON_PROGRESS_INDEX; titleUpdate(); redraw();
         JabberDataBlock req=new Iq(service, Iq.TYPE_SET, id);
-        JabberDataBlock qry=req.addChild("command",null);
-        qry.setNameSpace(namespace);
+        JabberDataBlock qry=req.addChildNs("command", namespace);
         qry.setAttribute("node", node);
         qry.setAttribute("action", "execute");
 
@@ -165,9 +210,8 @@ public class ServiceDiscovery
             //redraw();
             
             String err=((JabberDataBlock)(data.getChildBlock("error").getChildBlocks().firstElement())).getTagName();
-            Alert alert=new Alert("Error: ", err, null, null /*AlertType.ALARM*/); //locale
             
-            display.setCurrent(alert, this);
+            new AlertBox(SR.MS_ERROR_, err, null, display, this);
 
             return JabberBlockListener.BLOCK_PROCESSED;
         }
@@ -195,42 +239,38 @@ public class ServiceDiscovery
                 
                 
             }
-            
-            try { 
-                sort(items);
-            } catch (Exception e) { e.printStackTrace(); };
-            
-            /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ {
-                for (Enumeration e=cmds.elements(); e.hasMoreElements();) 
-                    items.insertElementAt(e.nextElement(),0);
-                this.items=items;
-                moveCursorHome();
-                discoIcon=0; titleUpdate(); 
-            }
+            showResults(items);
         } else if (id.equals(discoId("disco"))) {
             Vector cmds=new Vector();
-            if (childs!=null)
-            for (Enumeration e=childs.elements(); e.hasMoreElements();) {
-                JabberDataBlock i=(JabberDataBlock)e.nextElement();
-                if (i.getTagName().equals("feature")) {
-                    String var=i.getAttribute("var");
-                    features.addElement(var);
-                    if (var.equals(NS_MUC)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, strJoin)); }
-                    if (var.equals(NS_SRCH)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_SEARCH_INDEX, strSrch)); }
-                    if (var.equals(NS_REGS)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, strReg)); }
-                    //if (var.equals(NODE_CMDS)) { cmds.addElement(new DiscoCommand(AD_HOC_INDEX,strCmds)); } 
+            boolean gateway=false;
+            boolean client=false;
+            if (childs!=null) {
+                JabberDataBlock identity=query.getChildBlock("identity");
+                if (identity!=null) {
+                    String category=identity.getAttribute("category");
+                    String type=identity.getAttribute("type");
+                    if (category.equals("automation") && type.equals("command-node"))  {
+                        cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
+                    }
+                    if (category.equals("conference")) cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, strJoin));
                 }
-		if (i.getTagName().equals("identity")) {
-		    String category=i.getAttribute("category");
-		    String type=i.getAttribute("type");
-		    if (category.equals("automation") && type.equals("command-node"))  { 
-			cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds)); 
-		    } 
-		}
+                for (Enumeration e=childs.elements(); e.hasMoreElements();) {
+                    JabberDataBlock i=(JabberDataBlock)e.nextElement();
+                    if (i.getTagName().equals("feature")) {
+                        String var=i.getAttribute("var");
+                        features.addElement(var);
+                        //if (var.equals(NS_MUC)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, strJoin)); }
+                        if (var.equals(NS_SRCH)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_SEARCH_INDEX, strSrch)); }
+                        if (var.equals(NS_REGS)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, strReg)); }
+                        if (var.equals(NS_GATE)) { gateway=true; }
+                        //if (var.equals(NODE_CMDS)) { cmds.addElement(new DiscoCommand(AD_HOC_INDEX,strCmds)); }
+                    }
+                }
             }
             /*if (data.getAttribute("from").equals(service)) */ { //FIXME!!!
                 this.cmds=cmds;
                 requestQuery(NS_ITEMS, "disco2");
+                if (gateway) showResults(new Vector());
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
@@ -247,14 +287,27 @@ public class ServiceDiscovery
             if (title.equals("error")) {
                 text=data.getChildBlockText("error");
             }
-            Alert alert=new Alert(title, text, null, null /*AlertType.ALARM*/);
-            alert.setTimeout(15*1000);
             if (text=="Successful" && id.endsWith("Search") ) {
                 //new SearchResult(display, data);
-            } else display.setCurrent(alert, this);
+            } else new AlertBox(title, text, null, display, null);
         }
         redraw();
         return JabberBlockListener.BLOCK_PROCESSED;
+    }
+
+    private void showResults(final Vector items) {
+        
+        try { 
+            sort(items);
+        } catch (Exception e) { e.printStackTrace(); };
+        
+        /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ {
+            for (Enumeration e=cmds.elements(); e.hasMoreElements();) 
+                items.insertElementAt(e.nextElement(),0);
+            this.items=items;
+            moveCursorHome();
+            discoIcon=0; titleUpdate(); 
+        }
     }
     
     public void eventOk(){
@@ -313,7 +366,7 @@ public class ServiceDiscovery
             new ContactEdit(display, j);
             return;
         }*/
-        if (c==cmdRfsh) {requestQuery(NS_INFO, "disco"); }
+        if (c==cmdRfsh) { if (service!=null) requestQuery(NS_INFO, "disco"); }
         if (c==cmdSrv) { new ServerBox(display, service, this); }
         if (c==cmdFeatures) {new DiscoFeatures(display, service, features); }
         if (c==cmdCancel) exitDiscovery();
@@ -328,7 +381,7 @@ public class ServiceDiscovery
             super(RosterIcons.getInstance());
             this.icon=icon; this.name=name;
         }
-        public int getColor(){ return Colors.DISCO_CMD; }
+        public int getColor(){ return Colors.LIST_INK; }
         public int getImageIndex() { return icon; }
         public String toString(){ return name; }
         public void onSelect(){
@@ -341,7 +394,7 @@ public class ServiceDiscovery
                         room=service.substring(0,rp);
                         server=service.substring(rp+1);
                     }
-                    new ConferenceForm(display, room, server, null, null);
+                    new ConferenceForm(display, service, null);
                     break;
                 }
                 case RosterIcons.ICON_SEARCH_INDEX:

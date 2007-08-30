@@ -1,10 +1,28 @@
 /*
  * StringLoader.java
  *
- * Created on 25 Ноябрь 2005 г., 1:25
+ * Created on 25.11.2005, 1:25
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package util;
 
@@ -18,53 +36,62 @@ public class StringLoader {
     int afterEol;
     
     public Vector[] stringLoader(String resource, int columns) {
-	StringBuffer buf = new StringBuffer();
-	Vector table[] = new Vector[columns];
-	for (int i = 0; i<columns; i++) {
-	    table[i]=new Vector();
-	}
-	
-	afterEol=0;
 	InputStream in = this.getClass().getResourceAsStream(resource);
-	try {
-	    while (true) {
-		String line=readLine(in);
-		if (line==null)  break;
-		
-		if (line.startsWith("//")) continue; // skip all remarks
+        return stringLoader(in, columns);
+    }
 
-		int indexFrom=0;
-		
-		for (int i = 0; i<columns; i++) {
-		    String cell=null;
-		    try {
-			int indexTo=line.indexOf(0x09, indexFrom);
-			
-			if (indexTo<0) indexTo=line.length();
-			if (indexFrom<indexTo) cell=line.substring(indexFrom, indexTo);
-			indexFrom=indexTo+1;
-		    } catch (Exception e) { e.printStackTrace(); }
-		    
-		    table[i].addElement( cell );
-		}
-	    }
-	    in.close();
-	} catch (Exception e)	{ e.printStackTrace();}
-	return table;
+    public Vector[] stringLoader(final InputStream in, final int columns) {
+
+        StringBuffer buf = new StringBuffer();
+        Vector table[] = new Vector[columns];
+        for (int i = 0; i<columns; i++) {
+            table[i]=new Vector();
+        }
+        
+        afterEol=0;
+        try {
+            while (true) {
+        	String line=readLine(in);
+        	if (line==null)  break;
+        	
+        	if (line.startsWith("//")) continue; // skip all remarks
+
+        	int indexFrom=0;
+        	
+        	for (int i = 0; i<columns; i++) {
+        	    String cell=null;
+        	    try {
+        		int indexTo=line.indexOf(0x09, indexFrom);
+        		
+        		if (indexTo<0) indexTo=line.length();
+        		if (indexFrom<indexTo) cell=line.substring(indexFrom, indexTo);
+        		indexFrom=indexTo+1;
+        	    } catch (Exception e) { e.printStackTrace(); }
+        	    
+        	    table[i].addElement( cell );
+        	}
+            }
+            in.close();
+        } catch (Exception e)	{ e.printStackTrace();}
+        return table;
     }
     
     public Hashtable hashtableLoader(String resource) {
-	Hashtable hash = new Hashtable();
-	
-	afterEol=0;
 	InputStream in = this.getClass().getResourceAsStream(resource);
-	try {
-	    while (true) {
-		String line=readLine(in);
+        return hashtableLoader(in);
+    }
+
+    public Hashtable hashtableLoader(final InputStream in) {
+        Hashtable hash = new Hashtable();
+        
+        afterEol=0;
+        try {
+            while (true) {
+        	String line=readLine(in);
                 String key, value;
-		if (line==null)  break;
-		
-		if (line.startsWith("//")) continue; // skip all remarks
+        	if (line==null)  break;
+        	
+        	if (line.startsWith("//")) continue; // skip all remarks
 
                 String cell=null;
                 try {
@@ -76,10 +103,10 @@ public class StringLoader {
                     value=line.substring(indexTab+1, line.length() );
                     hash.put(key, value);
                 } catch (Exception e) { e.printStackTrace(); }
-	    }
-	    in.close();
-	} catch (Exception e)	{ /* Empty file or not found */}
-	return hash;
+            }
+            in.close();
+        } catch (Exception e)	{ /* Empty file or not found */}
+        return hash;
     }
     
     String readLine(InputStream inputstream) throws IOException {

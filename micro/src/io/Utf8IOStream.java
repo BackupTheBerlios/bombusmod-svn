@@ -1,10 +1,28 @@
 /*
  * Utf8IOStream.java
  *
- * Created on 18 Декабрь 2005 пїЅ., 0:52
+ * Created on 18.12.2005, 0:52
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package io;
@@ -182,16 +200,24 @@ public class Utf8IOStream implements Runnable{
 	    // cx, dx 
 	    return ((chr & 0x1f)<<6) | (chr2 &0x3f);
 	}
+        
+        int chr3= chRead() &0xff;
+        if (chr3==0xff) return -1;
+        if (chr3<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
+        
 	if (chr<0xf0) {
 	    // cx, dx 
-	    int chr3= chRead() &0xff;
-	    if (chr3==0xff) return -1;
-	    if (chr3<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
-	    else return ((chr & 0x0f)<<12) | ((chr2 &0x3f) <<6) | (chr3 &0x3f);
+	    return ((chr & 0x0f)<<12) | ((chr2 &0x3f) <<6) | (chr3 &0x3f);
 	}
-	
-	//System.out.print((char)j);
-	return -1;
+        
+	// chr>=0xf0
+        int chr4= chRead() &0xff;
+        if (chr3==0xff) return -1;
+        if (chr3<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
+        
+        //return ((chr & 0x07)<<18) | ((chr2 &0x3f) <<12) |((chr3 &0x3f) <<6) | (chr4 &0x3f);
+        return '?'; // java char type contains only 16-bit symbols
+        
 //#endif
     }
     
@@ -250,6 +276,20 @@ public class Utf8IOStream implements Runnable{
      */
     public void setStreamWaiting(boolean iStreamWaiting) {  this.iStreamWaiting = iStreamWaiting; }
 //#if ZLIB
+    private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
+        s.append(packed); s.append(read?">>>":"<<<"); s.append(unpacked);
+        String ratio=Long.toString((10*unpacked)/packed);
+        int dotpos=ratio.length()-1;
+        
+        /*
+        s.append(" ratio=");
+        s.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
+        s.append('.');
+        s.append(ratio.substring(dotpos));
+        s.append('x');
+         */
+    }
+    
     public String getStreamStats() {
         StringBuffer stats=new StringBuffer();
         int sent=this.bytesSent;
@@ -259,11 +299,19 @@ public class Utf8IOStream implements Runnable{
             recv+=z.getTotalIn()-z.getTotalOut();
             ZOutputStream zo = (ZOutputStream) outStream;
             sent+=zo.getTotalOut()-zo.getTotalIn();
-            stats.append("ZLib:\nin="); stats.append(z.getTotalIn()); stats.append(">>>"); stats.append(z.getTotalOut());
-            stats.append("\nout="); stats.append(zo.getTotalOut()); stats.append("<<<"); stats.append(zo.getTotalIn());
+            stats.append("ZLib:\nin="); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
+            stats.append("\nout="); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
         }
         stats.append("\nStream:\nin="); stats.append(recv);
         stats.append("\nout="); stats.append(sent);
+        stats.append("\n\nIP=");
+        try {
+            stats.append(((SocketConnection)connection).getLocalAddress());
+            stats.append(":"); 
+            stats.append(((SocketConnection)connection).getLocalPort());
+        } catch (Exception ex) {
+            stats.append("unknown");
+        } 
         
         return stats.toString();
     }

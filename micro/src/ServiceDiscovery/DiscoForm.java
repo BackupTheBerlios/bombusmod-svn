@@ -1,10 +1,28 @@
 /*
  * RegForm.java
  *
- * Created on 5 Июнь 2005 г., 20:04
+ * Created on 5.06.2005, 20:04
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package ServiceDiscovery;
@@ -12,6 +30,7 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
+import locale.SR;
 //import Client.*;
 
 
@@ -37,8 +56,8 @@ public class DiscoForm implements CommandListener{
     
     private boolean xData;
     
-    private Command cmdOk=new Command("Send", Command.OK /*Command.SCREEN*/, 1);
-    private Command cmdCancel=new Command("Cancel", Command.BACK, 99);
+    private Command cmdOk=new Command(SR.MS_SEND, Command.OK /*Command.SCREEN*/, 1);
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     
     private String id;
     
@@ -75,12 +94,21 @@ public class DiscoForm implements CommandListener{
                     fields.insertElementAt(field, 0);
                 } else { fields.addElement(field); }
             }
+
+            if (x!=null) {
+                JabberDataBlock registered=query.getChildBlock("registered");
+                if (registered!=null) {
+                    FormField unreg=new FormField(registered);
+                    fields.addElement(unreg);
+                }
+            }
             
             for (e=fields.elements(); e.hasMoreElements(); ){
                 FormField field=(FormField) e.nextElement();
                 if (!field.hidden) form.append(field.formItem);
             }
         }
+        
        
         form.setCommandListener(this);
         
@@ -99,17 +127,16 @@ public class DiscoForm implements CommandListener{
     
     private void sendForm(String id){
         JabberDataBlock req=new Iq(service, Iq.TYPE_SET, id);
-        JabberDataBlock qry=req.addChild(childName,null);
-        qry.setNameSpace(xmlns);
+        JabberDataBlock qry=req.addChildNs(childName, xmlns);
         //qry.setAttribute("action", "complete");
         qry.setAttribute("node", node);
         qry.setAttribute("sessionid", sessionId);
         
+        JabberDataBlock cform=qry;
         if (xData) {
-            JabberDataBlock x=qry.addChild("x", null);
-            x.setNameSpace("jabber:x:data");
+            JabberDataBlock x=qry.addChildNs("x", "jabber:x:data");
             x.setAttribute("type", "submit");
-            qry=x;
+            cform=x;
         }
         
         for (Enumeration e=fields.elements(); e.hasMoreElements(); ) {
@@ -118,13 +145,17 @@ public class DiscoForm implements CommandListener{
             JabberDataBlock ch=f.constructJabberDataBlock();
             if (ch!=null) {
                 if (ch.getTagName().equals("remove")) {
-                    qry.getChildBlocks().removeAllElements();
+                    cform=qry;
+                    Vector cb=cform.getChildBlocks();
+                    if (cb!=null) cb.removeAllElements();
+                    cform.addChild(ch);
+                    break;
                 }
-                qry.addChild(ch);
+                cform.addChild(ch);
             }
         }
         
-        //System.out.println(req.toString());
+        System.out.println(req.toString());
         //if (listener!=null) stream.addBlockListener(listener);
         stream.send(req);
     }

@@ -3,8 +3,26 @@
  *
  * Created on 3 Jrnz,hm 2005 г., 0:37
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package vcard;
@@ -45,12 +63,16 @@ public class vCardForm
     private Display display;
     private Displayable parentView;
     
-    protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99); //locale
-    protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK /*Command.SCREEN*/, 1); //locale
-    protected Command cmdRefresh=new Command("Refresh", Command.SCREEN, 2); //locale
-    protected Command cmdPhoto=new Command("Load Photo", Command.SCREEN,3); //locale
-    protected Command cmdDelPhoto=new Command("Clear Photo", Command.SCREEN,4); //locale
-    protected Command cmdCamera=new Command("Camera", Command.SCREEN,5);
+    protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
+    protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK /*Command.SCREEN*/, 1);
+    protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
+//#if (!SMALL)
+    protected Command cmdPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
+//#endif
+    protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,4);
+//#if (!SMALL)
+    protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,5);
+//#endif
     
     private Form f;
     private Vector items=new Vector();
@@ -74,7 +96,14 @@ public class vCardForm
             String name=(String)VCard.vCardLabels.elementAt(index);
             Item item=null;
             if (editable) {
-                item=new TextField(name, data, 200, TextField.ANY);
+                //truncating large string
+                if (data!=null) {
+                    int len=data.length();
+                    if (data.length()>500)
+                        data=data.substring(0, 494)+"<...>";
+                } 
+                
+                item=new TextField(name, data, 500, TextField.ANY);
                 items.addElement(item);
             } else if (data!=null) {
                 item=new StringItem (name, data);
@@ -84,18 +113,23 @@ public class vCardForm
 //#if !(MIDP1)
                 f.append(new Spacer(256, 3));
 //#else
-//--                f.append("\n");
+//#                 f.append("\n");
 //#endif
             }
         }
         
+        if (vcard.isEmpty() && !editable) 
+            f.append("\n[no vCard available]"); 
+        else { 
+            photoIndex=f.append("[]");
+            
+            photo=vcard.getPhoto();
+            setPhoto();
+            
+            f.append("\n\n[end of vCard]");
+
+        }
         
-        photoIndex=f.append("[no photo available]");
-        
-        f.append("\n\n[end of vCard]");
-        
-        photo=vcard.getPhoto();
-        setPhoto();
         
         f.addCommand(cmdCancel);
         f.addCommand(cmdRefresh);
@@ -104,7 +138,7 @@ public class vCardForm
 //#if (FILE_IO)
             f.addCommand(cmdPhoto);
 //#endif
-//#if !(MIDP1)
+//#if !(SMALL)
             String cameraAvailable=System.getProperty("supports.video.capture");
             if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
                 f.addCommand(cmdCamera);
@@ -118,13 +152,13 @@ public class vCardForm
     public void commandAction(Command c, Displayable d) {
         if (c==cmdCancel) destroyView();
         if (c==cmdRefresh) {
-            VCard.request(vcard.getJid());
+            VCard.request(vcard.getJid(), vcard.getId().substring(5));
             destroyView();
         }
         
 //#if (FILE_IO)
         if (c==cmdPhoto) {
-            new Browser(display, this, false);
+            new Browser(null, display, this, false);
         }
 //#endif
 
@@ -133,7 +167,10 @@ public class vCardForm
             new CameraImage(display, this);
 //#endif
 
-    if (c==cmdDelPhoto) {photo=null; setPhoto();}
+        if (c==cmdDelPhoto) {
+            photo=null; 
+            setPhoto();
+        }
         
         if (c!=cmdPublish) return;
         
@@ -155,7 +192,7 @@ public class vCardForm
 
     public void run() {
         StaticData.getInstance().roster.theStream.send(vcard.constructVCard());
-        System.out.println("VCard sent");
+        //System.out.println("VCard sent");
     }
 
 //#if (FILE_IO)
@@ -195,16 +232,18 @@ public class vCardForm
 //#endif
 
     private void setPhoto() {
-        if (photo==null) return;
-        String size=String.valueOf(photo.length)+" bytes";
-        Item photoItem;
+        
+        Item photoItem=new StringItem(null, "[no photo available]");
+        if (photo!=null) {
 //#if !(MIDP1)
-        try {
-            Image photoImg=Image.createImage(photo, 0, photo.length);
-            photoItem=new ImageItem(size, photoImg, 0, null);
-        } catch (Exception e) { photoItem=new StringItem(size, "[Unsupported format]"); }
-        f.set(photoIndex, photoItem);
+            String size=String.valueOf(photo.length)+" bytes";
+            try {
+                Image photoImg=Image.createImage(photo, 0, photo.length);
+                photoItem=new ImageItem(size, photoImg, 0, null);
+            } catch (Exception e) { photoItem=new StringItem(size, "[Unsupported format]"); }
 //#endif
+        }
+        f.set(photoIndex, photoItem);
     }
 
 }

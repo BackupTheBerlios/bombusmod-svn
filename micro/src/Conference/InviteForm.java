@@ -1,10 +1,28 @@
 /*
  * InviteForm.java
  *
- * Created on 15 Май 2006 г., 20:15
+ * Created on 15.05.2006 г., 20:15
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Conference;
@@ -55,7 +73,7 @@ public class InviteForm implements CommandListener{
         for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();
-                if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE)
+                if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.getStatus()==Presence.PRESENCE_ONLINE)
                     conferenceList.append(mc.toString(), null);
             } catch (Exception e) {}
         }
@@ -79,17 +97,13 @@ public class InviteForm implements CommandListener{
             String rs=reason.getString();
             
             Message inviteMsg=new Message(room);
-            JabberDataBlock x=inviteMsg.addChild("x",null);
-            x.setNameSpace("http://jabber.org/protocol/muc#user");
+            JabberDataBlock x=inviteMsg.addChildNs("x", "http://jabber.org/protocol/muc#user");
             JabberDataBlock invite=x.addChild("invite",null);
-            String whoInvite;
-            try {
-                MucContact mcAD=(MucContact) contact; 
-                whoInvite=mcAD.realJid;
-            } catch (Exception e) { whoInvite=contact.jid.getJid(); }
-
-            invite.setAttribute("to", whoInvite);
-             invite.addChild("reason",rs);
+            
+            String invited=(contact instanceof MucContact)? ((MucContact)contact).realJid : contact.getBareJid();
+            
+            invite.setAttribute("to", invited);
+            invite.addChild("reason",rs);
             
             //System.out.println(inviteMsg.toString());
             StaticData.getInstance().roster.theStream.send(inviteMsg);

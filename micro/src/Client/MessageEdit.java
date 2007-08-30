@@ -1,10 +1,28 @@
 /*
  * MessageEdit.java
  *
- * Created on 20 Февраль 2005 пїЅ., 21:20
+ * Created on 20.02.2005, 21:20
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Client;
@@ -12,6 +30,7 @@ import Conference.AppendNick;
 import archive.ArchiveList;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.Time;
 import ui.VirtualList;
 import util.ClipBoard;
 
@@ -54,82 +73,22 @@ public class MessageEdit
         this.to=to;
         this.display=display;
         parentView=display.getCurrent();
- 
-        if (charsCount>0) {
-            try {
-                t=new TextBox(to.toString(),null,charsCount, TextField.ANY);
-            } catch (Exception a) { 
-                charsCount=500;
-                t=new TextBox(to.toString(),null,charsCount, TextField.ANY);
-            }
-        } else {
-            try {
-                t=new TextBox(to.toString(),null,4096, TextField.ANY);
-                charsCount=4096;
-            } catch (Exception a) { 
-                try {
-                    t=new TextBox(to.toString(),null,2048, TextField.ANY);
-                    charsCount=2048;
-                } catch (Exception b) {  
-                    try {
-                        t=new TextBox(to.toString(),null,1024, TextField.ANY);
-                    } catch (Exception c) {
-                        try {
-                            t=new TextBox(to.toString(),null,500, TextField.ANY);
-                            charsCount=1024;
-                        } catch (Exception d) {
-                            try {
-                                t=new TextBox(to.toString(),null,960, TextField.ANY);
-                                charsCount=960;
-                            } catch (Exception e) {
-                                try {
-                                    t=new TextBox(to.toString(),null,896, TextField.ANY);
-                                    charsCount=896;
-                                } catch (Exception f) {
-                                    try {
-                                        t=new TextBox(to.toString(),null,832, TextField.ANY);
-                                        charsCount=832;
-                                    } catch (Exception g) {
-                                        try {
-                                            t=new TextBox(to.toString(),null,768, TextField.ANY);
-                                            charsCount=768;
-                                        } catch (Exception h) {
-                                            try {
-                                                t=new TextBox(to.toString(),null,704, TextField.ANY);
-                                                charsCount=704;
-                                            } catch (Exception i) {
-                                                try {
-                                                    t=new TextBox(to.toString(),null,640, TextField.ANY);
-                                                    charsCount=640;
-                                                } catch (Exception j) {
-                                                    try {
-                                                        t=new TextBox(to.toString(),null,576, TextField.ANY);
-                                                        charsCount=576;
-                                                    } catch (Exception k) {
-                                                        try {
-                                                            t=new TextBox(to.toString(),null,512, TextField.ANY);
-                                                            charsCount=512;
-                                                        } catch (Exception l) {
-                                                            t=new TextBox(to.toString(),null,500, TextField.ANY);
-                                                            charsCount=500;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                         }
-                     }
-                 }
-            }
-        }
-        
+       
+        int maxSize=500;
+        t=new TextBox(to.toString(), null, maxSize, TextField.ANY);
         try {
-            if (body!=null) t.setString(body);
+            //expanding buffer as much as possible
+            maxSize=t.setMaxSize(4096); //must not trow
+
+            if (body!=null) {
+                //trim body to maxSize
+                if (body.length()>maxSize)
+                    body=body.substring(0, maxSize-1);
+                t.setString(body);
+            }
+             
         } catch (Exception e) {
-            t.setString("<large text>"); //locale
+            t.setString("<send bugreport>");
         }
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
@@ -152,15 +111,31 @@ public class MessageEdit
         display.setCurrent(t);
     }
     
-    public void addText(String s) {
-        //t.insert(s, t.getCaretPosition());
-        if ( t.size()>0 )
-        if ( !t.getString().endsWith(" ") ) append(" ");
-        append(s);  // теперь вставка происходит всегда в конец строки
-        append(" "); // хвостовой пробел    
+    public void insertText(String s, int caretPos) {
+
+        String src=t.getString();
+
+        StringBuffer sb=new StringBuffer(s);
+        
+        //if (caretPos<0) caretPos=src.length();
+        
+        if (caretPos>0) 
+            if (src.charAt(caretPos-1)!=' ')   
+                sb.insert(0, ' ');
+        
+        if (caretPos<src.length())
+            if (src.charAt(caretPos)!=' ')
+                sb.append(' ');
+        
+        if (caretPos==src.length()) sb.append(' ');
+        
+        try {
+            int freeSz=t.getMaxSize()-t.size();
+            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
+        } catch (Exception e) {e.printStackTrace();}
+       
+        t.insert(sb.toString(), caretPos);
     }
-    
-    private void append(String s) { t.insert(s, t.size()); }
     
     public void setParentView(Displayable parentView){
         this.parentView=parentView;
@@ -168,13 +143,26 @@ public class MessageEdit
     
     public void commandAction(Command c, Displayable d){
         body=t.getString();
+        
+        int caretPos=t.getCaretPosition();
+        // +MOTOROLA STUB
+        String platform=Info.Version.getPlatformName();
+        if (platform.startsWith("Moto"))
+            if (!platform.startsWith("Motorola-EZX")) caretPos=-1;
+        // -MOTOROLA STUB
+        
+        if (caretPos<0) caretPos=body.length();
+        
         if (body.length()==0) body=null;
         
         if (c==cmdInsMe) { t.insert("/me ", 0); return; }
-        if (c==cmdInsNick) { new AppendNick(display, to); return; }
+
+        //if (c==cmdSmile) { new SmilePicker(display, this, caretPos); return; }
+        if (c==cmdInsNick) { new AppendNick(display, to, this, caretPos); return; }
+
         if (c==cmdAbc) {setInitialCaps(false); return; }
         if (c==cmdABC) {setInitialCaps(true); return; }
-	if (c==cmdPaste) { new ArchiveList(display, t); return; }
+	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
         
         if (c==cmdPasteText) { t.insert(clipboard.s, charsCount); return; }
         
@@ -191,7 +179,7 @@ public class MessageEdit
         if (c==cmdSubj) {
             if (body==null) return;
             subj=body;
-            body="/me has set the topic to: "+subj;
+            body=null; //"/me has set the topic to: "+subj;
         }
         // message/composing sending
         destroyView();
@@ -204,9 +192,12 @@ public class MessageEdit
         Roster r=StaticData.getInstance().roster;
         int comp=0; // composing event off
         
-        if (body!=null /*|| subj!=null*/ ) {
+        String id=String.valueOf((int) System.currentTimeMillis());
+        
+        if (body!=null || subj!=null ) {
             String from=StaticData.getInstance().account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+            msg.id=id;
             // не добавляем в групчат свои сообщения
             // не шлём composing
             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
@@ -219,8 +210,8 @@ public class MessageEdit
         if (!Config.getInstance().eventComposing) comp=0;
         
         try {
-            if (body!=null /*|| subj!=null*/ || comp>0)
-            r.sendMessage(to, body, subj, comp);
+            if (body!=null || subj!=null || comp>0)
+            r.sendMessage(to, id, body, subj, comp);
         } catch (Exception e) {
             e.printStackTrace();
         }

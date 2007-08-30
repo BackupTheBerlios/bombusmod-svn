@@ -1,19 +1,39 @@
 /*
  * Account.java
  *
- * Created on 19 Март 2005 г., 21:52
+ * Created on 19.03.2005, 21:52
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 package Client;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
+import io.NvStorage;
 import java.util.*;
 import java.io.*;
 import javax.microedition.midlet.MIDlet;
-import midlet.Bombus;
+import midlet.BombusSmall;
 import ui.Colors;
 import ui.IconTextElement;
 import ui.ImageList;
@@ -47,6 +67,9 @@ public class Account extends IconTextElement{
     private boolean enableProxy;
     private String proxyHostAddr;
     private int proxyPort;
+
+    public int keepAlivePeriod=200;
+    public int keepAliveType=1;
     
     //private String jid;
         
@@ -61,20 +84,14 @@ public class Account extends IconTextElement{
 	if (a!=null) {
             sd.roster.logoff();
 	    sd.roster.resetRoster();
-	}
-        if (a!=null && launch){
-            sd.roster.logoff();
-	    sd.roster.resetRoster();
-            sd.roster.myStatus=Presence.PRESENCE_ONLINE;
-            //sd.roster.querysign=true;
-            new Thread(sd.roster).start();
+            if (launch) sd.roster.sendPresence(Presence.PRESENCE_ONLINE);
         }
         return a;
     }
 
     public static Account createFromJad(){
         Account a=new Account();
-        MIDlet m=Bombus.getInstance();
+        MIDlet m=BombusSmall.getInstance();
         try {
             a.userName=m.getAppProperty("def_user");
             a.password=m.getAppProperty("def_pass");
@@ -120,6 +137,11 @@ public class Account extends IconTextElement{
 //#                 a.sasl=false; inputStream.readBoolean();
 //#endif
 
+            if (version>=7) {
+                a.keepAliveType=inputStream.readInt();
+                a.keepAlivePeriod=inputStream.readInt();
+            }
+            
         } catch (IOException e) { e.printStackTrace(); }
             
         return (a.userName==null)?null:a;
@@ -142,9 +164,11 @@ public class Account extends IconTextElement{
     public String getJid(){
         return userName+'@'+server+'/'+resource;
     }
-    /*public String getBareJid(){
+
+    public String getTipString() { return getJid(); }
+    public String getBareJid(){
         return userName+'@'+server;
-    }*/
+    }
     
     public static Account createFromStorage(int index) {
         Account a=null;
@@ -168,7 +192,7 @@ public class Account extends IconTextElement{
         if (proxyHostAddr==null) proxyHostAddr="";
         
         try {
-            outputStream.writeByte(6);
+            outputStream.writeByte(7);
             outputStream.writeUTF(userName);
             outputStream.writeUTF(password);
             outputStream.writeUTF(server);
@@ -188,6 +212,9 @@ public class Account extends IconTextElement{
             outputStream.writeInt(proxyPort);
             
             outputStream.writeBoolean(sasl);
+            
+            outputStream.writeInt(keepAliveType);
+            outputStream.writeInt(keepAlivePeriod);
 	    
         } catch (IOException e) {
             e.printStackTrace();
@@ -228,7 +255,9 @@ public class Account extends IconTextElement{
     public void setResource(String resource) { this.resource = resource;  }
 
     public String getNickName() { return (nick.length()==0)?getUserName():nick;  }
-    public void setNickName(String nick) { this.nick = nick;  }
+    public String getNick() { return (nick.length()==0)? null:nick;  }
+
+    public void setNick(String nick) { this.nick = nick;  }
 
     boolean isMucOnly() { return mucOnly; }
     public void setMucOnly(boolean mucOnly) {  this.mucOnly = mucOnly; }
@@ -280,5 +309,13 @@ public class Account extends IconTextElement{
 
     public void setSasl(boolean sasl) {
         this.sasl = sasl;
+    }
+
+    public boolean useGoogleToken() {
+        if (useSSL) return false;
+        /*if (hostAddr==null) return false;
+        if (hostAddr.indexOf("google")<0) return false; */
+        if (!server.startsWith("gmail")) return false;
+        return isSASL();
     }
 }

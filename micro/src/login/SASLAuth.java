@@ -1,10 +1,28 @@
 /*
  * SASLAuth.java
  *
- * Created on 8 Июль 2006 г., 23:34
+ * Created on 8.06.2006, 23:34
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package login;
@@ -42,7 +60,7 @@ public class SASLAuth implements JabberBlockListener{
         this.sessionId=sessionId;
         this.stream=stream;
         if (stream!=null) stream.addBlockListener(this);
-        listener.loginMessage(SR.MS_SASL_STREAM);
+        //listener.loginMessage(SR.MS_SASL_STREAM);
     }
     
 //#if SASL_XGOOGLETOKEN
@@ -87,7 +105,7 @@ public class SASLAuth implements JabberBlockListener{
                 
 //#if SASL_XGOOGLETOKEN
                 // X-GOOGLE-TOKEN mechanism
-                if (mech.getChildBlockByText("X-GOOGLE-TOKEN")!=null) {
+                if (mech.getChildBlockByText("X-GOOGLE-TOKEN")!=null  && token!=null) {
                     auth.setAttribute("mechanism", "X-GOOGLE-TOKEN");
                     auth.setText(token);
                     
@@ -101,9 +119,15 @@ public class SASLAuth implements JabberBlockListener{
 //#endif
 
                 if (mech.getChildBlockByText("PLAIN")!=null) {
+
+                    if (!account.getPlainAuth()) {
+                        listener.loginFailed("SASL: Plain auth required");
+                        return JabberBlockListener.NO_MORE_BLOCKS;
+                    }
+                    
                     auth.setAttribute("mechanism", "PLAIN");
                     String plain=
-                            strconv.unicodeToUTF(account.getJid())
+                            strconv.unicodeToUTF(account.getBareJid())
                             +(char)0x00
                             +strconv.unicodeToUTF(account.getUserName())
                             +(char)0x00
@@ -122,8 +146,7 @@ public class SASLAuth implements JabberBlockListener{
             // second stream - step 1. binding resource
             else if (data.getChildBlock("bind")!=null) {
                 JabberDataBlock bindIq=new Iq(null, Iq.TYPE_SET, "bind");
-                JabberDataBlock bind=bindIq.addChild("bind",null);
-                bind.setNameSpace("urn:ietf:params:xml:ns:xmpp-bind");
+                JabberDataBlock bind=bindIq.addChildNs("bind", "urn:ietf:params:xml:ns:xmpp-bind");
                 bind.addChild("resource", account.getResource());
                 stream.send(bindIq);
 
@@ -166,7 +189,7 @@ public class SASLAuth implements JabberBlockListener{
         else if ( data.getTagName().equals("compressed")) {
             stream.setZlibCompression();
             try {
-                stream.initiateStream(account.getServer(), true);
+                stream.initiateStream(account.getServer(), true, SR.MS_XMLLANG);
             } catch (IOException ex) { }
             return JabberBlockListener.NO_MORE_BLOCKS;
         }
@@ -179,7 +202,7 @@ public class SASLAuth implements JabberBlockListener{
         } else if ( data.getTagName().equals("success")) {
             // first stream - step 4b. success.
             try {
-                stream.initiateStream(account.getServer(), true);
+                stream.initiateStream(account.getServer(), true, SR.MS_XMLLANG);
             } catch (IOException ex) { }
             return JabberBlockListener.NO_MORE_BLOCKS; // at first stream
         }
@@ -188,9 +211,10 @@ public class SASLAuth implements JabberBlockListener{
             if (data.getTypeAttribute().equals("result")) {
                 // second stream - step 2. resource binded - opening session
                 if (data.getAttribute("id").equals("bind")) {
-                    //TODO: get assigned resource from result
+                    String myJid=data.getChildBlock("bind").getChildBlockText("jid");
+                    listener.bindResource(myJid);
                     JabberDataBlock session=new Iq(null, Iq.TYPE_SET, "sess");
-                    session.addChild("session",null).setNameSpace("urn:ietf:params:xml:ns:xmpp-session");
+                    session.addChildNs("session", "urn:ietf:params:xml:ns:xmpp-session");
                     stream.send(session);
                     listener.loginMessage(SR.MS_SESSION);
                     return JabberBlockListener.BLOCK_PROCESSED;

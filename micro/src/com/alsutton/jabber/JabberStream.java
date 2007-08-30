@@ -25,14 +25,16 @@
  */
 
 package com.alsutton.jabber;
+import Client.Account;
 import Client.Config;
-import Client.NvStorage;
+import Client.StaticData;
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
 import javax.microedition.io.*;
 import com.alsutton.jabber.datablocks.*;
 import com.alsutton.xmlparser.*;
+import locale.SR;
 import util.StringLoader;
 
 
@@ -56,6 +58,10 @@ public class JabberStream implements XMLEventListener, Runnable {
     private boolean rosterNotify;
     
     private String server; // for ping
+
+    public boolean pingSent;
+    
+    public boolean loggedIn;
     
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
     
@@ -89,7 +95,7 @@ public class JabberStream implements XMLEventListener, Runnable {
         }
 
         
-        dispatcher = new JabberDataBlockDispatcher();
+        dispatcher = new JabberDataBlockDispatcher(this);
         if( theListener != null ) {
             setJabberListener( theListener );
         }
@@ -97,12 +103,11 @@ public class JabberStream implements XMLEventListener, Runnable {
      
         new Thread( this ). start();
         
-        initiateStream(server, xmppV1);
+        initiateStream(server, xmppV1, SR.MS_XMLLANG);
         
-        keepAlive=new TimerTaskKeepAlive(Config.getInstance().keepAlive);
     }
 
-    public void initiateStream(final String server, final boolean xmppV1) throws IOException {
+    public void initiateStream(final String server, final boolean xmppV1, String xmlLang) throws IOException {
         
         //sendQueue=new Vector();
         
@@ -110,16 +115,26 @@ public class JabberStream implements XMLEventListener, Runnable {
         header.append( server );
         header.append( "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'" );
         if (xmppV1) header.append(" version='1.0'");
+        if (xmlLang!=null) {
+            header.append(" xml:lang='");
+            header.append(xmlLang);
+            header.append("'");
+        }
         header.append( '>' );
         send(header.toString());
     }
+
     
+    public void startKeepAliveTask(){
+        Account account=StaticData.getInstance().account;
+        if (account.keepAliveType==0) return;
+        keepAlive=new TimerTaskKeepAlive(account.keepAlivePeriod, account.keepAliveType);
+    }
     
     /**
      * The threads run method. Handles the parsing of incomming data in its
      * own thread.
      */
-    
     public void run() {
         try {
             XMLParser parser = new XMLParser( this );
@@ -138,19 +153,25 @@ public class JabberStream implements XMLEventListener, Runnable {
      */
     
     public void close() {
-        keepAlive.destroyTask();
+        if (keepAlive!=null) keepAlive.destroyTask();
         
         dispatcher.setJabberListener( null );
         try {
-            send( "</stream:stream>" );
+            //TODO: see FS#528
             try {  Thread.sleep(500); } catch (Exception e) {};
+            send( "</stream:stream>" );
+            int time=10;
+            while (dispatcher.isActive()) {
+                try {  Thread.sleep(500); } catch (Exception e) {};
+                if ((--time)<0) break;
+            }
             //connection.close();
         } catch( IOException e ) {
             // Ignore an IO Exceptions because they mean that the stream is
             // unavailable, which is irrelevant.
         } finally {
-	    iostream.close();
             dispatcher.halt();
+	    iostream.close();
         }
     }
     
@@ -172,15 +193,20 @@ public class JabberStream implements XMLEventListener, Runnable {
      *
      * @param The data to send to the server.
      */
-    public void sendKeepAlive() throws IOException {
-        switch (Config.getInstance().keepAliveType){
-            case 2:
-                ping();
+    public void sendKeepAlive(int type) throws IOException {
+        switch (type){
+            case 3:
+                if (pingSent) {
+                    dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
+                } else {
+                    //System.out.println("Ping myself");
+                    ping();
+                }
                 break;
-            case 1:
+            case 2:
                 send("<iq/>");
                 break;
-            default:
+            case 1:
                 send(" ");
         }
     }
@@ -291,12 +317,33 @@ public class JabberStream implements XMLEventListener, Runnable {
      * @param name The name of the tag that has just ended.
      */
     
-    public void tagEnded( String name ) {
-        if( currentBlock == null )
+    public void tagEnded( String name ) throws EndOfXMLException {
+        if( currentBlock == null ) {
+            if ( name.equals( "stream:stream" ) ) {
+                dispatcher.halt();
+                iostream.close();
+                throw new JabberStreamShutdownException("Normal stream shutdown");
+            }
             return;
-        
+        }
+
         JabberDataBlock parent = currentBlock.getParent();
         if( parent == null ) {
+
+            if (currentBlock.getTagName().equals("stream:error")) {
+                StringBuffer emsg=new StringBuffer("Stream error");
+                JabberDataBlock definedCondition=currentBlock.findNamespace("urn:ietf:params:xml:ns:xmpp-streams");
+                emsg.append(definedCondition.getTagName());
+                emsg.append(" ");
+                String text=currentBlock.getChildBlockText("text");
+                if (text.length()>0) emsg.append(text);
+                
+                dispatcher.halt();
+                iostream.close();
+                throw new JabberStreamShutdownException(emsg.toString());
+                
+            }
+            
             dispatcher.broadcastJabberDataBlock( currentBlock );
             //System.out.println(currentBlock.toString());
         } else
@@ -306,7 +353,8 @@ public class JabberStream implements XMLEventListener, Runnable {
 
     private void ping() {
         JabberDataBlock ping=new Iq(null, Iq.TYPE_GET, "ping");
-        ping.addChild("query", null).setNameSpace("jabber:iq:version");
+        ping.addChildNs("query", "jabber:iq:version");
+        pingSent=true;
         send(ping);
     }
 
@@ -322,16 +370,25 @@ public class JabberStream implements XMLEventListener, Runnable {
     
     private class TimerTaskKeepAlive extends TimerTask{
         private Timer t;
-        public TimerTaskKeepAlive(int periodSeconds){
+        private int verifyCtr;
+        private int period;
+        private int type;
+        public TimerTaskKeepAlive(int periodSeconds, int type){
             t=new Timer();
-            long period=periodSeconds*1000; // milliseconds
-            t.schedule(this, period, period);
+            this.type=type;
+            this.period=periodSeconds;
+            long periodRun=periodSeconds*1000; // milliseconds
+            t.schedule(this, periodRun, periodRun);
         }
         public void run() {
             try {
                 System.out.println("Keep-Alive");
-                sendKeepAlive();
-            } catch (Exception e) { e.printStackTrace(); }
+                sendKeepAlive(type);
+                
+            } catch (Exception e) { 
+                dispatcher.broadcastTerminatedConnection(e);
+                e.printStackTrace(); 
+            }
         }
 	
         public void destroyTask(){
@@ -353,6 +410,7 @@ public class JabberStream implements XMLEventListener, Runnable {
         }
         public void run(){
             try {
+                Thread.sleep(100);
                 StringBuffer buf=new StringBuffer();
                 data.constructXML(buf);
                 sendBuf( buf );

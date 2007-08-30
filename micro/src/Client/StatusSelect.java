@@ -1,10 +1,28 @@
 /*
  * SelectStatus.java
  *
- * Created on 27 Февраль 2005 г., 16:43
+ * Created on 27.02.2005, 16:43
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Client;
@@ -14,6 +32,7 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import ui.controls.NumberField;
+import ui.controls.TextFieldCombo;
 
 /**
  *
@@ -26,18 +45,20 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.OK,3);
     private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99); //locale
     /** Creates a new instance of SelectStatus */
-    private Vector statusList=StatusList.getInstance().statusList;
-    
+    private Vector statusList;
+    private Contact to;
+
     private Config cf;
     private int defp;
-    
-    public StatusSelect(Display d) {
+
+    public StatusSelect(Display d, Contact to) {
         super();
-        
+        statusList=StatusList.getInstance().statusList;
         cf=Config.getInstance();
-        
-        setTitleItem(new Title(SR.MS_STATUS)); //locale
-        
+        this.to=to;
+        if (to==null) { setTitleItem(new Title(SR.MS_STATUS)); }
+        else setTitleItem(new Title(to));
+
         addCommand(cmdOk);
         addCommand(cmdEdit);
         addCommand(cmdDef);
@@ -86,11 +107,11 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     public void run(){
         int status=getSel().getImageIndex();
         try {
-            StaticData.getInstance().roster.sendPresence(status);
+            StaticData.getInstance().roster.sendDirectPresence(status, to, null);
         } catch (Exception e) { e.printStackTrace(); }
     }
     
-    public int getItemCount(){   return StatusList.getInstance().statusList.size(); }
+    public int getItemCount(){   return statusList.size(); }
     
     private void save(){
         StatusList.getInstance().saveStatusToStorage();
@@ -116,7 +137,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             parentView=display.getCurrent();
             this.status=status;
             
-            f=new Form(status.getName());
+            f=new Form(status.getScreenName());
             
             tfPriority=new NumberField("Priority", status.getPriority(), -128, 128); //locale
             f.append(tfPriority);
@@ -124,8 +145,8 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             chPriorityAll=new ChoiceGroup(null, ChoiceGroup.MULTIPLE);
             chPriorityAll.append(SR.MS_ALL_STATUSES, null); //locale
             f.append(chPriorityAll);
-            
-            tfMessage=new TextField(SR.MS_MESSAGE, status.getMessage(), 100, 0); //locale
+
+            tfMessage=new TextFieldCombo(SR.MS_MESSAGE, status.getMessage(), 100, 0, "status", display);
             f.append(tfMessage);
             
             f.addCommand(cmdOk);

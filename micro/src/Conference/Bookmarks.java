@@ -1,10 +1,28 @@
 /*
  * Bookmarks.java
  *
- * Created on 18 Сентябрь 2005 пїЅ., 0:03
+ * Created on 18.09.2005, 0:03
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Conference;
@@ -24,144 +42,134 @@ import com.alsutton.jabber.datablocks.Iq;
  */
 public class Bookmarks 
         extends VirtualList 
-        implements CommandListener,
-        JabberBlockListener
+        implements CommandListener
 {
     
-    private Vector bookmarks;
+    //private Vector bookmarks;
     
     private BookmarkItem toAdd;
     
-    private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99); //locale
-    private Command cmdJoin=new Command (SR.MS_JOIN, Command.SCREEN, 10); //locale
-    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 15); //locale
-    private Command cmdRfsh=new Command ("Refresh", Command.SCREEN, 20); //locale
-    private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 30); //locale
-    
+    private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
+    private Command cmdJoin=new Command (SR.MS_SELECT, Command.SCREEN, 10);
+    private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 12);
+    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 15);
+    private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 16);
+    //private Command cmdRfsh=new Command (SR.MS_REFRESH, Command.SCREEN, 20);
+    private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 20);
+    private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 30);
+
     Roster roster=StaticData.getInstance().roster;
 
     JabberStream stream=roster.theStream;
+
     /** Creates a new instance of Bookmarks */
     public Bookmarks(Display display, BookmarkItem toAdd) {
-        super (display);
+        super ();
+        if (getItemCount()==0 && toAdd==null) {
+            new ConferenceForm(display);
+            return;
+        }
         setTitleItem(new Title(2, null, SR.MS_BOOKMARKS)); //locale
         
         this.toAdd=toAdd;
         
-        bookmarks=roster.bookmarks;
-        if ( bookmarks==null ) loadBookmarks(); 
-        else if (toAdd!=null) addBookmark();
+        //bookmarks=roster.bookmarks;
+        
+        if (toAdd!=null) addBookmark();
         
         addCommand(cmdCancel);
         addCommand(cmdJoin);
-        addCommand(cmdRfsh);
+        addCommand(cmdDoAutoJoin);
+        //addCommand(cmdRfsh);
+        addCommand(cmdNew);
         addCommand(cmdDel);
         addCommand(cmdDisco);
+        addCommand(cmdConfigure);
         setCommandListener(this);
+        attachDisplay(display);
     }
     
-    private void processIcon(boolean processing){
+    /*private void processIcon(boolean processing){
         getTitleItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
         redraw();
+    }*/
+    
+    protected int getItemCount() { 
+        Vector bookmarks=StaticData.getInstance().roster.bookmarks;
+        return (bookmarks==null)?0: bookmarks.size(); 
     }
     
-    protected int getItemCount() { return (bookmarks==null)?0: bookmarks.size(); }
-    protected VirtualElement getItemRef(int index) { return (VirtualElement) bookmarks.elementAt(index); }
+    protected VirtualElement getItemRef(int index) { 
+        return (VirtualElement) StaticData.getInstance().roster.bookmarks.elementAt(index); 
+    }
     
     public void loadBookmarks() {
-        stream.addBlockListener(this);
-        JabberDataBlock rq=new JabberDataBlock("storage", null, null);
-        rq.setNameSpace("storage:bookmarks");
-        bookmarksRq(false, rq, "getbookmarks");
-    }
-    
-    // пока здесь, но вообще-то это storageRq
-    public void bookmarksRq(boolean set, JabberDataBlock child, String id) {
-        JabberDataBlock request=new Iq(null, (set)?Iq.TYPE_SET: Iq.TYPE_GET, id);
-        //request.setAttribute("to", StaticData.getInstance().account.getBareJid());
-        JabberDataBlock query=request.addChild("query", null);
-        query.setNameSpace("jabber:iq:private");
-        query.addChild(child);
-        
-        processIcon(true);
-        //System.out.println(request.toString());
-        stream.send(request);
-    }
-    
-    public int blockArrived(JabberDataBlock data) {
-        try {
-            ///System.out.println(data.toString());
-            
-            if (data.getAttribute("id").equals("getbookmarks")) {
-                JabberDataBlock storage=data.findNamespace("jabber:iq:private").
-                        findNamespace("storage:bookmarks");
-                Vector bookmarks=new Vector();
-                try {
-                    for (Enumeration e=storage.getChildBlocks().elements(); e.hasMoreElements(); ){
-                        bookmarks.addElement(new BookmarkItem((JabberDataBlock)e.nextElement()));
-                    }
-                } catch (Exception e) { /* no any bookmarks */}
-                //StaticData.getInstance().roster.bookmarks=
-                this.bookmarks=bookmarks;
-                
-                addBookmark();
-                
-                if (display!=null) redraw();
-                roster.bookmarks=this.bookmarks=bookmarks;
-                
-                processIcon(false);
-                return JabberBlockListener.NO_MORE_BLOCKS;
-            }
-        } catch (Exception e) { }
-        return JabberBlockListener.BLOCK_REJECTED;
     }
 
     private void addBookmark() {
         if (toAdd!=null) {
-            this.bookmarks.addElement(toAdd);
+            StaticData.getInstance().roster.bookmarks.addElement(toAdd);
             saveBookmarks();
         }
     }
     
     public void eventOk(){
+        if (getItemCount()==0) return;
         BookmarkItem join=(BookmarkItem)getFocusedObject();
         if (join==null) return;
         if (join.isUrl) return;
-        ConferenceForm.join(join.toString(), join.password, 20);
-        stream.cancelBlockListener(this);
-        display.setCurrent(StaticData.getInstance().roster);
+        new ConferenceForm(display, join.toString(), join.password);
     }
     
     public void commandAction(Command c, Displayable d){
         if (c==cmdCancel) exitBookmarks();
+        if (c==cmdNew) { 
+            new ConferenceForm(display);
+            return;
+        }
+        
+        if (getItemCount()==0) return;
         if (c==cmdJoin) eventOk();
-        if (c==cmdRfsh) loadBookmarks();
-        if (c==cmdDel) deleteBookmark();
-        if (c==cmdDisco) new ServiceDiscovery(display, ((BookmarkItem)getFocusedObject()).getJid(), null);
+        //if (c==cmdRfsh) loadBookmarks();
+        if (c==cmdDel) {
+            deleteBookmark();
+            return;
+        }
+
+        String roomJid=((BookmarkItem)getFocusedObject()).getJid();
+        
+        if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
+        
+        if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
+        
+        if (c==cmdDoAutoJoin) {
+            for (Enumeration e=StaticData.getInstance().roster.bookmarks.elements(); e.hasMoreElements();) {
+                BookmarkItem bm=(BookmarkItem) e.nextElement();
+                if (bm.autojoin) 
+                    ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, 20);
+            }
+            exitBookmarks();
+        }
+
     }
     
     private void deleteBookmark(){
         BookmarkItem del=(BookmarkItem)getFocusedObject();
         if (del==null) return;
         if (del.isUrl) return;
-        bookmarks.removeElement(del);
+        StaticData.getInstance().roster.bookmarks.removeElement(del);
+        if (getItemCount()<=cursor) moveCursorEnd();
         saveBookmarks();
-        roster.bookmarks=this.bookmarks=bookmarks;
         redraw();
     }
     
     private void saveBookmarks() {
-        JabberDataBlock rq=new JabberDataBlock("storage", null, null);
-        rq.setNameSpace("storage:bookmarks");
-        for (Enumeration e=bookmarks.elements(); e.hasMoreElements(); ) {
-            rq.addChild( ((BookmarkItem)e.nextElement()).constructBlock() );
-        }
-        bookmarksRq(true, rq, "getbookmarks");
+        new BookmarkQuery(BookmarkQuery.SAVE);
     }
 
     private void exitBookmarks(){
-        stream.cancelBlockListener(this);
-        destroyView();
-        //display.setCurrent(StaticData.getInstance().roster);
+        //stream.cancelBlockListener(this);
+        //destroyView();
+        display.setCurrent(roster);
     }
 }

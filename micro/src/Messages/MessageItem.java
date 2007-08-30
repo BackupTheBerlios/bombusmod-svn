@@ -1,21 +1,41 @@
 /*
  * MessageItem.java
  *
- * Created on 21 Январь 2006 г., 23:17
+ * Created on 21.01.2006, 23:17
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Messages;
 
 import Client.Msg;
+import Client.Roster;
 import images.RosterIcons;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import ui.Colors;
 import ui.ComplexString;
+import ui.FontCache;
 import ui.Time;
 import ui.VirtualElement;
 import ui.VirtualList;
@@ -41,7 +61,14 @@ public class MessageItem implements
 	this.view=view;
     }
 
-    public int getVHeight() { return msg.itemHeight; }
+    public int getVHeight() { 
+        if (msg.itemHeight<0) msg.itemHeight=FontCache.getMsgFont().getHeight();
+        if (msg.delivered) {
+            int rh=RosterIcons.getInstance().getHeight();
+            if (msg.itemHeight<rh) return rh;
+        }
+        return msg.itemHeight; 
+    }
     
     public int getVWidth() { return 0; }
     
@@ -55,17 +82,22 @@ public class MessageItem implements
     
     public void drawItem(Graphics g, int ofs, boolean selected) {
         /*if (selected)*/
+        int xorg=g.getTranslateX();
+        int yorg=g.getTranslateY();
+        
         g.translate(1,0);
         if (msgLines==null) {
             MessageParser.getInstance().parseMsg(this, view.getListWidth());
             return;
         }
-        int y=0;
+        
         for (Enumeration e=msgLines.elements(); e.hasMoreElements(); ) {
             ComplexString line=(ComplexString) e.nextElement();
             if (line.isEmpty()) break;
             int h=line.getVHeight();
-            if (y>=0 && y<g.getClipHeight()) {
+            int cy=g.getClipY();
+            //clipping
+            if (cy <= h && cy+g.getClipHeight()>0 ) {
                 if (msg.itemCollapsed) if (msgLines.size()>1) {
                     RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
                     g.translate(8,0); //FIXME: хардкод
@@ -74,6 +106,16 @@ public class MessageItem implements
             }
             g.translate(0, h);
             if (msg.itemCollapsed) break;
+        }
+        
+        g.translate(xorg-g.getTranslateX(), yorg-g.getTranslateY());
+
+        if (msg.delivered) {
+            int right=g.getClipX()+g.getClipWidth();
+            RosterIcons.getInstance().drawImage(
+                    g, RosterIcons.ICON_DELIVERED_INDEX, 
+                    right-RosterIcons.getInstance().getWidth()-3, 0 
+            );
         }
     }
     
@@ -142,7 +184,8 @@ public class MessageItem implements
     }
 
     public String getTipString() {
-        if (Time.localTime() - msg.dateGmt> (24*60*60*1000)) return msg.getDayTime();
+        if (Time.utcTimeMillis() - msg.dateGmt> (24*60*60*1000)) return msg.getDayTime();
         return msg.getTime();
     }
+    //boolean smilesEnabled() {return smiles; }
 }

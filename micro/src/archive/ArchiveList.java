@@ -1,14 +1,34 @@
 /*
  * ArchiveList.java
  *
- * Created on 11 Ltrf,hm 2005 пїЅ., 5:24
+ * Created on 11.12.2005, 5:24
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 package archive;
 
+import Client.MessageEdit;
 import Client.Msg;
 import Client.Title;
 import Messages.MessageList;
@@ -20,6 +40,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import locale.SR;
 import ui.ComplexString;
+import ui.YesNoAlert;
 
 /**
  *
@@ -27,6 +48,7 @@ import ui.ComplexString;
  */
 public class ArchiveList 
     extends MessageList 
+    implements YesNoAlert.YesNoListener
 {
 
     Command cmdDelete=new Command(SR.MS_DELETE /*"Delete"*/, Command.SCREEN, 9);
@@ -36,11 +58,14 @@ public class ArchiveList
     //Command cmdNick=new Command("Paste Nickname", Command.SCREEN, 3);
     
     MessageArchive archive=new MessageArchive();
-    TextBox target;
+    MessageEdit target;
+    
+    private int caretPos;
     /** Creates a new instance of ArchiveList */
-    public ArchiveList(Display display, TextBox target) {
+    public ArchiveList(Display display, MessageEdit target, int caretPos) {
 	super ();
 	this.target=target;
+        this.caretPos=caretPos;
 	setCommandListener(this);
 	addCommand(cmdBack);
 	addCommand(cmdDelete);
@@ -48,6 +73,8 @@ public class ArchiveList
 	if (target!=null) {
 	    addCommand(cmdPaste);
 	    addCommand(cmdJid);
+            //TODO: re-enable item-specific dynamic commands)
+            addCommand(cmdSubj);
 	}
         
         attachDisplay(display);
@@ -81,14 +108,16 @@ public class ArchiveList
 
     public void commandAction(Command c, Displayable d) {
         super.commandAction(c,d);
-	if (c==cmdDelete) {
-	    archive.delete(cursor);
-	    messages=new Vector();
-	    redraw();
-	}
+	if (c==cmdDelete) { deleteMessage(); }
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
 	if (c==cmdJid) { pasteData(2); }
+    }
+
+    private void deleteMessage() {
+        archive.delete(cursor);
+        messages=new Vector();
+        redraw();
     }
     
     private void pasteData(int field) {
@@ -104,21 +133,26 @@ public class ArchiveList
 	    data=m.from;
 	    break;
 	default:
-	    data=m.getBody();
+	    data=m.quoteString();
 	}
-	try {
-	    int paste=target.getMaxSize()-target.size();
-	    if (paste>data.length()) paste=data.length();
-	    target.insert(data.substring(0,paste), target.size());
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+        if (data==null) return;
+        target.insertText(data, caretPos);
 	destroyView();
     }
     
     public void keyGreen() { pasteData(0); }
     
-    public void focusedItem(int index) {
+    public void userKeyPressed(int keyCode) {
+        super.userKeyPressed(keyCode);
+        if (keyCode==keyClear) {
+            if (getItemCount()>0) new YesNoAlert(display, SR.MS_DELETE, SR.MS_SURE_DELETE, this);
+        }
+    }
+    public void ActionConfirmed() {
+        deleteMessage();
+    }
+    
+    /*public void focusedItem(int index) {
 	if (target==null) return;
 	try {
 	    if (getMessage(index).subject!=null) {
@@ -127,10 +161,11 @@ public class ArchiveList
 	    }
 	} catch (Exception e) { }
 	removeCommand(cmdSubj);
-    }
+    }*/
     
     public void destroyView(){
 	super.destroyView();
 	archive.close();
     }
+
 }

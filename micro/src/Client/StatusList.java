@@ -1,19 +1,39 @@
 /*
  * StatusList.java
  *
- * Created on 3 Декабрь 2005 г., 17:33
+ * Created on 3.12.2005, 17:33
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Client;
 
 import com.alsutton.jabber.datablocks.Presence;
+import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Enumeration;
 import java.util.Vector;
+import locale.SR;
 
 /**
  *
@@ -42,7 +62,7 @@ public class StatusList {
 	    createFromStream(Presence.PRESENCE_XA, Presence.PRS_XA, inputStream);
 	    createFromStream(Presence.PRESENCE_DND, Presence.PRS_DND, inputStream);
 	    createFromStream(Presence.PRESENCE_INVISIBLE, Presence.PRS_INVISIBLE, inputStream);
-	    createFromStream(Presence.PRESENCE_OFFLINE, "offline", inputStream);
+	    createFromStream(Presence.PRESENCE_OFFLINE, Presence.PRS_OFFLINE, inputStream);
 	    
 	    inputStream.close();
         } catch (Exception e) { e.printStackTrace(); }
@@ -50,7 +70,7 @@ public class StatusList {
     }
     
     private void createFromStream(int presenceIndex, String presenceName, DataInputStream dataInputStream) {
-	ExtendedStatus status=new ExtendedStatus(presenceIndex, presenceName);
+	ExtendedStatus status=new ExtendedStatus(presenceIndex, presenceName, (String) SR.getPresence(presenceName));
         try {
 	    status.setPriority(dataInputStream.readInt());
             status.setMessage(dataInputStream.readUTF());

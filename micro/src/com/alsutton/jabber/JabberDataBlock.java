@@ -25,7 +25,6 @@
 */
 
 package com.alsutton.jabber;
-import Client.NvStorage;
 import java.util.*;
 
 /**
@@ -144,6 +143,17 @@ public class JabberDataBlock
       return child;
   }
 
+  /**
+   * Method to add a child with namespace
+   *
+   * @param name The child block name to add
+   * @param xmlns Child's namespace
+   */
+  public JabberDataBlock addChildNs(String name, String xmlns) {
+      JabberDataBlock child=addChild(name, null);
+      child.setNameSpace(xmlns);
+      return child;
+  }
 
   /**
    * Method to add some text to the text buffer for this block

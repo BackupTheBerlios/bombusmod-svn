@@ -27,6 +27,7 @@
 package com.alsutton.jabber.datablocks;
 import com.alsutton.jabber.*;
 import java.util.*;
+import ui.Time;
 
 /**
  * Title:        Message.java
@@ -153,7 +154,13 @@ public class Message extends JabberDataBlock
    * @return The message body as a string
    */
 
-  public String getBody() { return getChildBlockText( "body" ); }
+  public String getBody() { 
+      String body=getChildBlockText( "body" ); 
+      
+      JabberDataBlock error=getChildBlock("error");
+      if (error==null) return body;
+      return body+"Error\n"+error.toString();
+  }
   
   
   public String getOOB() {
@@ -171,9 +178,18 @@ public class Message extends JabberDataBlock
       return oob.toString();
   }
 
-  public String getTimeStamp(){
-      JabberDataBlock stamp=findNamespace("jabber:x:delay");
-      return (stamp!=null)? stamp.getAttribute("stamp") :null;
+  public long getMessageTime(){
+      try {
+          return Time.dateIso8601(
+                  findNamespace("jabber:x:delay").getAttribute("stamp")
+                  );
+      } catch (Exception e) { }
+      try {
+          return Time.dateIso8601(
+                  findNamespace("urn:xmpp:delay").getAttribute("stamp")
+                  );
+      } catch (Exception e) { }
+      return 0; //0 means no timestamp
   }
   /**
    * Construct a reply message
@@ -231,10 +247,10 @@ public class Message extends JabberDataBlock
      * Method to get the message from field
      * @return <B>from</B> field as a string
      */
-    public String getFrom() {
+    public String getXFrom() {
 	//try {
 	//    // jep-0146
-	//    JabberDataBlock fwd=findNamespace("jabber:x:forward");
+	//    JabberDataBlock fwd=findNamespace("jabber:x:forward"); // DEPRECATED
 	//    JabberDataBlock from=fwd.getChildBlock("from");
 	//    return from.getAttribute("jid");
 	//} catch (Exception ex) { /* normal case if not forwarded message */ };
@@ -248,6 +264,10 @@ public class Message extends JabberDataBlock
 	    }
 	} catch (Exception e) { /* normal case if not forwarded message */ };
 	
+        return (String) attributes.get( "from" );
+    }
+    
+    public String getFrom() {
         return (String) attributes.get( "from" );
     }
 }

@@ -1,13 +1,32 @@
 /*
  * ContactMessageList.java
  *
- * Created on 19 Февраль 2005 г., 23:54
+ * Created on 19.02.2005, 23:54
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Client;
+import Conference.MucContact;
 import Messages.MessageList;
 import Messages.MessageParser;
 import archive.MessageArchive;
@@ -23,19 +42,25 @@ import javax.microedition.lcdui.*;
  * @author Eugene Stahov
  */
 public class ContactMessageList extends MessageList
+        implements YesNoAlert.YesNoListener
 {
     
     Contact contact;
     Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
-    Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,2);
+    Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
+    Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,3);
     Command cmdQuoteNick=new Command("Quote nickname",Command.SCREEN,3);
     Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
-    Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,4);
-    Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,5);
-    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 6);
-    Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,7);
-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,7);
+
     Command cmdCopy = new Command("Copy", Command.SCREEN, 8);
+
+    Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
+    Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
+    Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
+    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
+    Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,11);
+    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
+
     
     private ClipBoard clipboard;
     
@@ -63,10 +88,16 @@ public class ContactMessageList extends MessageList
         addCommand(cmdContact);
 	addCommand(cmdActive);
         //if (getItemCount()>0) {
-            addCommand(cmdQuote);
-            addCommand(cmdArch);
+        addCommand(cmdQuote);
+        addCommand(cmdArch);
 	//}
+
         addCommand(cmdCopy);
+
+        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+            addCommand(cmdReply);
+        }
+
         setCommandListener(this);
         moveCursorTo(contact.firstUnread(), true);
         //setRotator();
@@ -81,14 +112,21 @@ public class ContactMessageList extends MessageList
         if (cmdSubscribe==null) return;
         try {
             Msg msg=(Msg) contact.msgs.elementAt(cursor); 
-            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) addCommand(cmdSubscribe);
-            else removeCommand(cmdSubscribe);
+            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
+                addCommand(cmdSubscribe);
+                addCommand(cmdUnsubscribed);
+            }
+            else {
+                removeCommand(cmdSubscribe);
+                removeCommand(cmdUnsubscribed);
+            }
         } catch (Exception e) {}
         
     }
     
     protected void beginPaint(){
-        getTitleItem().setElementAt(sd.roster.messageIcon,2);
+        getTitleItem().setElementAt(sd.roster.getEventIcon(), 2);
+        getTitleItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
         //getTitleItem().setElementAt(contact.incomingComposing, 3);
     }
     
@@ -124,12 +162,20 @@ public class ContactMessageList extends MessageList
         
     public void commandAction(Command c, Displayable d){
         super.commandAction(c,d);
-        /*if (c==cmdBack) {
-            //contact.lastReaded=contact.msgs.size();
-            //contact.resetNewMsgCnt();            
-            destroyView();
-            return;
-        }*/
+
+        /** login-insensitive commands */
+        if (c==cmdArch) {
+            try {
+                MessageArchive.store(getMessage(cursor));
+            } catch (Exception e) {/*no messages*/}
+        }
+        if (c==cmdPurge) {
+            clearMessageList();
+        }
+        
+        /** login-critical section */
+        if (!sd.roster.isLoggedIn()) return;
+
         if (c==cmdMessage) { 
             contact.msgSuspended=null; 
             keyGreen(); 
@@ -144,20 +190,30 @@ public class ContactMessageList extends MessageList
         if (c==cmdResume) { keyGreen(); }
         if (c==cmdQuote) {
             try {
-                new MessageEdit(display,contact,getMessage(cursor).toString());
+                String msg=new StringBuffer()
+                    .append((char)0xbb) // »
+                    .append(getMessage(cursor).quoteString())
+                    .append("\n")
+                    .toString();
+                new MessageEdit(display,contact,msg);
             } catch (Exception e) {/*no messages*/}
         }
-        if (c==cmdArch) {
+        if (c==cmdReply) {
             try {
-                MessageArchive.store(getMessage(cursor));
+                if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_OUT) return;
+                if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
+                
+                Msg msg=getMessage(cursor);
+                /*String body=msg.toString();
+                int nickLen=body.indexOf(">");
+                if (nickLen<0) nickLen=body.indexOf(" ");
+                if (nickLen<0) return;*/
+                
+                new MessageEdit(display,contact,msg.from+": ");
             } catch (Exception e) {/*no messages*/}
-        }
-        if (c==cmdPurge) {
-            clearMessageList();
         }
         if (c==cmdContact) {
-            if (sd.roster.theStream!=null)
-                new RosterItemActions(display, contact);
+            new RosterItemActions(display, contact, -1);
         }
 	
 	if (c==cmdActive) {
@@ -171,24 +227,14 @@ public class ContactMessageList extends MessageList
         }
         
         if (c==cmdSubscribe) {
-            if (contact.subscr==null) return;
-            boolean subscribe = 
-                    contact.subscr.startsWith("none") || 
-                    contact.subscr.startsWith("from");
-            if (contact.ask_subscribe) subscribe=false;
-
-            boolean subscribed = 
-                    contact.subscr.startsWith("none") || 
-                    contact.subscr.startsWith("to");
-                    //getMessage(cursor).messageType==Msg.MESSAGE_TYPE_AUTH;
-            
-            String to=contact.getBareJid();
-            
-            if (subscribed) sd.roster.sendPresence(to,"subscribed", null);
-            if (subscribe) sd.roster.sendPresence(to,"subscribe", null);
-
+            sd.roster.doSubscribe(contact);
+        }
+        
+        if (c==cmdUnsubscribed) {
+            sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null);
         }
     }
+
 
     private void clearMessageList() {
         //TODO: fix scrollbar size
@@ -200,6 +246,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyGreen(){
+        if (!sd.roster.isLoggedIn()) return;
         (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
         contact.msgSuspended=null;
     }
@@ -213,11 +260,10 @@ public class ContactMessageList extends MessageList
     public void userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
         if (keyCode==keyClear) {
-            //new YesNoAlert(display, this, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR){
-               // public void yes() { 
-                    clearMessageList();
-                //}
-            //};
+            if (messages.isEmpty()) return;
+            new YesNoAlert(display, SR.MS_CLEAR_LIST, SR.MS_SURE_CLEAR, this);
         }
     }
+
+    public void ActionConfirmed() { clearMessageList(); }
 }

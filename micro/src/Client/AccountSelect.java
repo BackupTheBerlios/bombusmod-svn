@@ -1,16 +1,36 @@
 /*
  * AccountPicker.java
  *
- * Created on 19 Март 2005 г., 23:26
+ * Created on 19.03.2005, 23:26
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 package Client;
 import images.RosterIcons;
+import io.NvStorage;
 import locale.SR;
-import midlet.Bombus;
+import midlet.BombusSmall;
 import ui.*;
 import java.io.*;
 import java.util.*;
@@ -98,7 +118,7 @@ public class AccountSelect
     public void commandAction(Command c, Displayable d){
         if (c==cmdQuit) {
             destroyView();
-            Bombus.getInstance().notifyDestroyed();
+            BombusSmall.getInstance().notifyDestroyed();
         }
         if (c==cmdCancel) {
             destroyView();
@@ -112,6 +132,11 @@ public class AccountSelect
             new AccountForm(this, display, null);
         }
         if (c==cmdDel) {
+            {
+                Config cf=Config.getInstance();
+                if (cf.accountIndex>cursor) cf.accountIndex--;
+                cf.saveToStorage();
+            }
             accountList.removeElement(getFocusedObject());
             rmsUpdate();
             moveCursorHome();
@@ -122,6 +147,7 @@ public class AccountSelect
     }
     
     private void switchAccount(boolean login){
+        if (!login) parentView=StaticData.getInstance().roster;
         destroyView();
 	Config cf=Config.getInstance();
         cf.accountIndex=cursor;

@@ -25,10 +25,12 @@
 */
 
 package com.alsutton.jabber.datablocks;
+import Client.EntityCaps;
 import com.alsutton.jabber.*;
 import images.RosterIcons;
 
 import java.util.*;
+import locale.SR;
 
 /**
  * Class representing the presence message block.
@@ -70,9 +72,11 @@ public class Presence extends JabberDataBlock
         case PRESENCE_XA: setShow(PRS_XA);break;
         case PRESENCE_DND: setShow(PRS_DND);break;
     }
-    if (priority>=0) addChild("priority",String.valueOf(priority));
+    if (priority!=0) addChild("priority",String.valueOf(priority));
     if (message!=null) 
         if (message.length()>0) addChild("status",message);
+    
+    if (status!=PRESENCE_OFFLINE) addChild(EntityCaps.presenceEntityCaps());
   }
 
   private StringBuffer text;
@@ -87,9 +91,12 @@ public class Presence extends JabberDataBlock
       if (type!=null) {
           if (type.equals(PRS_OFFLINE)) { 
               presenceCode=PRESENCE_OFFLINE;
-              text.append("offline");
+              text.append(SR.getPresence(PRS_OFFLINE));
           };
-          if (type.equals("subscribe")) text.append(SUBSCRIBE); 
+          if (type.equals("subscribe")) {
+              presenceCode=PRESENCE_AUTH_ASK;
+              text.append(SUBSCRIBE);
+          } 
           if (type.equals("subscribed")) text.append(SUBSCRIBED);
           if (type.equals("unsubscribed")) text.append(UNSUBSCRIBED);
           
@@ -98,9 +105,15 @@ public class Presence extends JabberDataBlock
               text.append(PRS_ERROR);
               errText=getChildBlock("error").toString();
           }
+          
+          if (type.length()==0) {
+              //TODO: weather.13.net.ru workaround. remove warning when fixed
+              presenceCode=PRESENCE_UNKNOWN;
+              text.append("UNKNOWN presence stanza");
+          }
       } else {
           // online-kinds
-          show=getShow(); text.append(show);
+          show=getShow(); text.append(SR.getPresence(show));
           presenceCode=PRESENCE_ONLINE;
           if (show.equals(PRS_CHAT)) presenceCode=PRESENCE_CHAT;
           if (show.equals(PRS_AWAY)) presenceCode=PRESENCE_AWAY;
@@ -108,16 +121,16 @@ public class Presence extends JabberDataBlock
           if (show.equals(PRS_DND)) presenceCode=PRESENCE_DND;
       }
           
-      show=(errText==null)? getChildBlockText("status"):errText;
-      if (show.length()>0) {
-          text.append('(');
-          text.append( show );
+      String status=(errText==null)? getChildBlockText("status"):errText;
+      if (status.length()>0) {
+          text.append(" (");
+          text.append( status );
           text.append(')');
       }
       
       // priority
       int priority=getPriority();
-      if (priority>=0) {
+      if (priority!=0) {
           text.append(" [");
           text.append(getPriority());
           text.append(']');
@@ -142,7 +155,7 @@ public class Presence extends JabberDataBlock
   public int getPriority(){
       try {
           return Integer.parseInt(getChildBlockText("priority"));
-      } catch (Exception e) {return -1;}
+      } catch (Exception e) {return 0;}
   }
   
   public void setShow(String text){ addChild("show", text); }
@@ -183,8 +196,9 @@ public class Presence extends JabberDataBlock
   public final static int PRESENCE_UNKNOWN=7;
   public final static int PRESENCE_INVISIBLE=RosterIcons.ICON_INVISIBLE_INDEX;
   public final static int PRESENCE_ERROR=RosterIcons.ICON_ERROR_INDEX;
-  public final static int PRESENCE_TRASH=RosterIcons.ICON_ERROR_INDEX+1;
+  public final static int PRESENCE_TRASH=RosterIcons.ICON_TRASHCAN_INDEX;
   public final static int PRESENCE_AUTH=-1;
+  public final static int PRESENCE_AUTH_ASK=-2;
   
   public final static String PRS_OFFLINE="unavailable";
   public final static String PRS_ERROR="error";

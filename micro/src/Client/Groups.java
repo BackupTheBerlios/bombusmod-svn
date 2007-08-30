@@ -1,14 +1,35 @@
 /*
  * Groups.java
  *
- * Created on 8 Май 2005 пїЅ., 0:36
+ * Created on 8.05.2005, 0:36
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Client;
 
+import com.alsutton.jabber.JabberBlockListener;
+import com.alsutton.jabber.JabberDataBlock;
+import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
 import java.util.*;
 import locale.SR;
@@ -18,7 +39,7 @@ import ui.ImageList;
  *
  * @author Evg_S
  */
-public class Groups{
+public class Groups implements JabberBlockListener{
     
     Vector groups;
     
@@ -34,6 +55,8 @@ public class Groups{
     public final static String IGNORE_GROUP="Ignore-List";
     public final static int TYPE_COMMON=5;
     public final static String COMMON_GROUP=SR.MS_GENERAL;//locale
+    
+    private final static String GROUPSTATE_NS="http://bombus-im.org/groups";
     
     public Groups(){
         groups=new Vector();
@@ -134,5 +157,49 @@ public class Groups{
     void removeGroup(Group g) {
         groups.removeElement(g);
     }
-    
+
+    public int blockArrived(JabberDataBlock data) {
+        if (data instanceof Iq) 
+            if (data.getTypeAttribute().equals("result")) {
+            JabberDataBlock query=data.findNamespace("jabber:iq:private");
+            if (query==null) return BLOCK_REJECTED;
+            JabberDataBlock gs=query.findNamespace(GROUPSTATE_NS);
+            if (gs==null) return BLOCK_REJECTED;
+            
+            for (Enumeration e=gs.getChildBlocks().elements(); e.hasMoreElements();) {
+                JabberDataBlock item=(JabberDataBlock)e.nextElement();
+                String groupName=item.getText();
+                boolean collapsed=item.getAttribute("state").equals("collapsed");
+                
+                Group grp=getGroup(groupName);
+                if (grp==null) continue;
+                grp.collapsed=collapsed;
+            }
+            StaticData.getInstance().roster.reEnumRoster();
+            return NO_MORE_BLOCKS;
+        }
+        return BLOCK_REJECTED;
+    }
+
+    public void requestGroupState(boolean get) {
+        Roster roster=StaticData.getInstance().roster;
+        if (!roster.isLoggedIn()) return;
+        
+        JabberDataBlock iq=new Iq(null, (get)? Iq.TYPE_GET : Iq.TYPE_SET, (get)? "queryGS" : "setGS");
+        JabberDataBlock query=iq.addChildNs("query", "jabber:iq:private");
+        JabberDataBlock gs=query.addChildNs("gs", GROUPSTATE_NS);
+        
+        if (get) {
+            roster.theStream.addBlockListener(this);
+        } else {
+            for (Enumeration e=groups.elements(); e.hasMoreElements();) {
+                Group grp=(Group)e.nextElement();
+                if (grp.collapsed) {
+                    gs.addChild("item", grp.getName()).setAttribute("state", "collapsed");
+                }
+            }
+        }
+        System.out.println(iq.toString());
+        roster.theStream.send(iq);
+    }
 }

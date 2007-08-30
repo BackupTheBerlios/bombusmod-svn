@@ -1,17 +1,35 @@
 /*
  * InfoWindow.java
  *
- * Created on 6 Сентябрь 2005 г., 22:21
+ * Created on 6.09.2005, 22:21
  *
- * Copyright (c) 2005-2006, Eugene Stahov (evgs), http://bombus.jrudevels.org
- * All rights reserved.
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Info;
 import Client.StaticData;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import midlet.Bombus;
+import midlet.BombusSmall;
 
 /**
  *
@@ -24,17 +42,18 @@ public class InfoWindow implements CommandListener{
     
     private Form form;
 
+    private Command cmdBack=new Command(SR.MS_CLOSE, Command.BACK, 99);
     /** Creates a new instance of InfoWindow */
     public InfoWindow(Display display) {
         this.display=display;
         parentView=display.getCurrent();
         
         form=new Form(SR.MS_ABOUT);
-        form.addCommand(new Command(SR.MS_CLOSE, Command.BACK, 99));
+        form.addCommand(cmdBack);
         form.append("Bombus v"+Version.version+"\nMobile Jabber client\n");
         form.append(Version.getOs());
-        form.append("\nCopyright (c) 2005-2006, Eugene Stahov (evgs),\n");
-        form.append (new StringItem(null, Version.url
+        form.append("\nCopyright (c) 2005-2007, Eugene Stahov (evgs),\n");
+        form.append (new StringItem(null, Version.BOMBUS_SITE_URL
 //#if !(MIDP1)
                 , Item.HYPERLINK
 //#endif
@@ -55,38 +74,15 @@ public class InfoWindow implements CommandListener{
         try {
             conn_stats=StaticData.getInstance().roster.theStream.getStreamStats();
         } catch (Exception e) {
-            conn_stats="disconnected";
+            conn_stats="Disconnected";
         }
         form.append(conn_stats);
-//#endif
-        try {
-           int accu=getAccuLevel();
-           int net=getNetworkLevel();
-
-           if (accu>=0) {
-               form.append("\nAccum level: "+accu+"%");
-           }
-           if (net>=0) {
-               form.append("\nNetwork level: "+net+"db");
-           }
-        } catch (Exception e) {}
-      
+//#endif      
         form.setCommandListener(this);
         display.setCurrent(form);
     }
     
     public void commandAction(Command c, Displayable d) {
-        display.setCurrent(parentView);
-    }
-    
-    public static int getAccuLevel() {
-        String cap=System.getProperty("MPJC_CAP");
-        return (cap==null)? -1: Integer.parseInt(cap);
-    }
-    
-    public static int getNetworkLevel() {
-        String rx=System.getProperty("MPJCRXLS");
-        int rp=rx.indexOf(',');
-        return (rp<0)? -1: Integer.parseInt(rx.substring(0,rp));
+        if (c==cmdBack) display.setCurrent(parentView);
     }
 }
