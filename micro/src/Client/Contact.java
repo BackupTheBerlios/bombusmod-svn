@@ -26,15 +26,11 @@
  */
 
 package Client;
-import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
-import io.file.FileIO;
 import ui.Colors;
-import util.strconv;
 import vcard.VCard;
 import java.util.*;
 import ui.IconTextElement;
-import ui.ImageList;
 import com.alsutton.jabber.datablocks.Presence;
 
 /**
@@ -61,18 +57,9 @@ public class Contact extends IconTextElement{
     public final static byte ORIGIN_GROUPCHAT=4;
     public final static byte ORIGIN_GC_MEMBER=5;
     public final static byte ORIGIN_GC_MYSELF=6;
-    
-
-    /*public final static String XEP184_NS="http://www.xmpp.org/extensions/xep-0184.html#ns";
-    public final static int DELIVERY_NONE=0;
-    public final static int DELIVERY_HANDSHAKE=1;
-    public final static int DELIVERY_XEP184=2;
-    public final static int DELIVERY_XEP22=3;*/
-
    
     /** Creates a new instance of Contact */
     protected Contact (){
-        //lastReaded=0;
         super(RosterIcons.getInstance());
         msgs=new Vector();
         key1="";
@@ -91,13 +78,11 @@ public class Contact extends IconTextElement{
     public int deliveryType;
     
     public String msgSuspended;
-    
-    //public int key1;
+
     protected int key0;
     protected String key1;
 
     public byte origin;
-    //public boolean gcMyself;
     
     public String subscr;
     public int offline_type=Presence.PRESENCE_UNKNOWN;
@@ -109,9 +94,7 @@ public class Contact extends IconTextElement{
     public int lastUnread;
     
     public VCard vcard;
-    
-    //public long conferenceJoinTime;
-    
+   
     public int firstUnread(){
         int unreadIndex=0;
         for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
@@ -128,7 +111,6 @@ public class Contact extends IconTextElement{
         this.subscr=subscr;
     
         setSortKey((Nick==null)?sJid:Nick);
-        //msgs.removeAllElements();
     }
     
     public Contact clone(Jid newjid, final int status) {
@@ -141,7 +123,6 @@ public class Contact extends IconTextElement{
         clone.offline_type=offline_type;
         clone.origin=ORIGIN_CLONE; 
         clone.status=status; 
-        //clone.transport=RosterIcons.getInstance().getTransportIndex(newjid.getTransport()); //<<<<
 
         clone.bareJid=bareJid;
         return clone;
@@ -160,7 +141,6 @@ public class Contact extends IconTextElement{
     }
     public int getNewMsgsCount() {
         if (getGroupType()==Groups.TYPE_IGNORE) return 0;
-        //return msgs.size()-lastReaded;
         if (newMsgCnt>-1) return newMsgCnt;
         int nm=0;
         unreadType=Msg.MESSAGE_TYPE_IN;
@@ -193,11 +173,6 @@ public class Contact extends IconTextElement{
         Contact c=(Contact) right;
         //1. status
         int cmp;
-        //if (origin>=ORIGIN_GROUPCHAT && c.origin>=ORIGIN_GROUPCHAT) {
-        //    if ((cmp=origin-c.origin) !=0) return cmp;
-        //} else {
-        //    if ((cmp=status-c.status) !=0) return cmp;
-        //}
         if ((cmp=key0-c.key0) !=0) return cmp;
         if ((cmp=status-c.status) !=0) return cmp;
         if ((cmp=key1.compareTo(c.key1)) !=0) return cmp;
@@ -212,51 +187,7 @@ public class Contact extends IconTextElement{
             if (msgs.size()==1) 
                 if ( ((Msg)msgs.firstElement()).isPresence())
                     if (origin!=ORIGIN_GROUPCHAT) first_replace=true;
-//#if !SMALL
-        Config cf=Config.getInstance();
 
-        if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
-        {
-            //String histRecord=(nick==null)?getBareJid():nick;
-            String fromName=StaticData.getInstance().account.getUserName();
-            if (m.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=toString();
-            boolean allowLog=false;
-            switch (m.messageType) {
-                case Msg.MESSAGE_TYPE_PRESENCE:
-                    if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConfPresence) allowLog=true;
-                    if (origin<ORIGIN_GROUPCHAT && cf.msgLogPresence) allowLog=true;
-                    break;
-                default:
-                    if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
-                    if (origin<ORIGIN_GROUPCHAT) allowLog=true;
-            }
-            if (allowLog)
-                //if (!first_replace || !m.)
-            {
-                StringBuffer body=new StringBuffer(m.getDayTime());
-                body.append(" <");
-                body.append(fromName);
-                body.append("> ");
-                if (m.subject!=null) {
-                    body.append(m.subject);
-                    body.append("\r\n");
-                }
-                body.append(m.getBody());
-                body.append("\r\n");
-                
-                //NvStorage.appendFile("Log_"+histRecord, body.toString());
-                           byte[] bodyMessage;
-                           String histRecord=(nick==null)?getBareJid():nick;
-                           if (cf.cp1251) {
-                                bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
-                           } else {
-                                bodyMessage=body.toString().getBytes();
-                           }
-                           FileIO f=FileIO.createConnection(cf.msgPath+histRecord+".txt");
-                           f.Write(bodyMessage);
-            }
-        }
-//#endif
         if (first_replace) {
             msgs.setElementAt(m,0);
             return;
@@ -283,7 +214,6 @@ public class Contact extends IconTextElement{
     }
     
     public final String getName(){ return (nick==null)?getBareJid():nick; }
-    //public void onSelect(){}
 
     public final String getJid() {
         return jid.getJid();
@@ -297,27 +227,7 @@ public class Contact extends IconTextElement{
         if (nick==null) return bareJid;
         return nick+" <"+bareJid+">";
     }
-    
-    /**
-     * Splits string like "name@jabber.ru/resource" to vector 
-     * containing 2 substrings
-     * @return Vector.elementAt(0)="name@jabber.ru"
-     * Vector.elementAt(1)="resource"
-     */
-    /*
-     public static final Vector SplitJid(final String jid) {
-        Vector result=new Vector();
-        int i=jid.lastIndexOf('/');
-        if (i==-1){
-            result.addElement(jid);
-            result.addElement(null);
-        } else {
-            result.addElement(jid.substring(0,i));
-            result.addElement(jid.substring(i+1));
-        }
-        return result;
-    }
-     */
+
     public final void purge() {
         msgs=new Vector();
         vcard=null;
@@ -342,9 +252,6 @@ public class Contact extends IconTextElement{
     }
     public boolean inGroup(Group ingroup) {  return group==ingroup;  }
 
-    /*public void setGroupIndex(int groupIndex) {
-        this.group = groupIndex;
-    }*/
     public void setGroup(Group group) { this.group = group; }
 
     public void setStatus(int status) {

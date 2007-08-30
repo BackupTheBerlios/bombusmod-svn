@@ -143,10 +143,10 @@
     <target name="post-jar">
         <!-- version patch in jad -->
 	<property file="resources/.version" />
-	<replace file="${dist.dir}/Bombus.jad"
+	<replace file="${dist.dir}/BombusSmall.jad"
 	    token="$BOMBUSVERSION$"
 	    value="${bombus.version}"/>
-	<replace file="${dist.dir}/Bombus.jad"
+	<replace file="${dist.dir}/BombusSmall.jad"
 	    token="$MIDLETVERSION$"
 	    value="${bombus.midlet}"/>
     </target>

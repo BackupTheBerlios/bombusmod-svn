@@ -54,7 +54,7 @@ public class StatusList {
     private StatusList() {
         statusList=new Vector(7);
 	try {
-	    DataInputStream inputStream=NvStorage.ReadFileRecord("status", 0);
+	    DataInputStream inputStream=NvStorage.ReadFileRecord("small_status", 0);
 	    
 	    createFromStream(Presence.PRESENCE_ONLINE, Presence.PRS_ONLINE, inputStream);
 	    createFromStream(Presence.PRESENCE_CHAT, Presence.PRS_CHAT, inputStream);
@@ -89,7 +89,7 @@ public class StatusList {
             }
         } catch (Exception e) { e.printStackTrace(); }
 
-        NvStorage.writeFileRecord(outputStream, "status", 0, true);
+        NvStorage.writeFileRecord(outputStream, "small_status", 0, true);
     }
     
     public ExtendedStatus getStatus(final int status) {

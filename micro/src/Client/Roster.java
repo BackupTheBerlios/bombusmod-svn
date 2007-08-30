@@ -1387,9 +1387,9 @@ public class Roster
     }
 
     public void playNotify(int event) {
-        String message=cf.messagesnd;
-	String type=cf.messageSndType;
-	int volume=cf.soundVol;
+        //String message=cf.messagesnd;
+	//String type=cf.messageSndType;
+	//int volume=cf.soundVol;
         int profile=cf.profile;
         if (profile==AlertProfile.AUTO) profile=AlertProfile.ALL;
         

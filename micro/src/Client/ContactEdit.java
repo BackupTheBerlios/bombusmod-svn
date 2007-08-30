@@ -91,16 +91,12 @@ public final class ContactEdit
         
         tAskSubscrCheckBox=new ChoiceGroup(SR.MS_SUBSCRIPTION, ChoiceGroup.MULTIPLE); //locale
         tAskSubscrCheckBox.append(SR.MS_ASK_SUBSCRIPTION, null); //locale
-        
-        
-//#if (!MIDP1)
-        //NOKIA FIX
+
         tGrpList.addCommand(cmdSet);
         tGrpList.setItemCommandListener(this);
         
         tTranspList.addCommand(cmdSet);
         tTranspList.setItemCommandListener(this);
-//#endif
         
         // Transport droplist
         tTranspList.append(sd.account.getServer(), null);
@@ -214,12 +210,10 @@ public final class ContactEdit
         
         if (c==cmdCancel) destroyView();
     }
-    
-//#if (!MIDP1)
+
     public void commandAction(Command command, Item item) {
         itemStateChanged(item);
     }
-//#endif
 
     private String getString(TextField t){
         if (t.size()==0) return null;

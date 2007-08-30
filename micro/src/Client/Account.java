@@ -30,16 +30,11 @@ package Client;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import io.NvStorage;
-import java.util.*;
 import java.io.*;
 import javax.microedition.midlet.MIDlet;
 import midlet.BombusSmall;
 import ui.Colors;
 import ui.IconTextElement;
-import ui.ImageList;
-import javax.microedition.rms.*;
-import javax.microedition.lcdui.*;
-import Client.Roster;
 import com.alsutton.jabber.*;
 
 /**
@@ -48,7 +43,7 @@ import com.alsutton.jabber.*;
  */
 public class Account extends IconTextElement{
     
-    public final static String storage="accnt_db";
+    public final static String storage="small_accnt_db";
             
     private String userName;
     private String password;
