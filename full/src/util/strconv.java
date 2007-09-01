@@ -250,6 +250,10 @@ public class strconv {
         if (src.indexOf(PIDGIN_REP)>-1)
             return stringReplace(src,PIDGIN_REP,"Pidgin");  
         
+        String QIP_REP="http://qip.ru/caps";
+        if (src.indexOf(QIP_REP)>-1)
+            return stringReplace(src,QIP_REP,"Qip");  
+        
         return src;
     }
     

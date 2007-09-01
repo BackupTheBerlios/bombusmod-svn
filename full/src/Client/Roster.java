@@ -1615,7 +1615,8 @@ public class Roster
                         if (pr.hasEntityCaps()) {
                             c.hasEntity=true;
                             c.entityNode=strconv.replaceCaps(pr.getEntityNode());
-                            c.entityVer=pr.getEntityVer();
+                            if (c.entityNode.indexOf("#")<0)
+                                c.entityVer=pr.getEntityVer();
                         }
 
                         int rp=from.indexOf('/');
@@ -1648,7 +1649,8 @@ public class Roster
                         if (pr.hasEntityCaps()) {
                             c.hasEntity=true;
                             c.entityNode=strconv.replaceCaps(pr.getEntityNode());
-                            c.entityVer=pr.getEntityVer();
+                            if (c.entityNode.indexOf("#")<0)
+                                c.entityVer=pr.getEntityVer();
                         }
 
                         c.statusString=pr.getStatus();
@@ -2217,30 +2219,36 @@ public class Roster
 //#         StringBuffer mess=new StringBuffer();
 //#         if (info==null) {
 //#             Contact contact=(Contact)getFocusedObject();
-//#             String ver=(contact.hasEntity)?"\nUse: "+contact.entityNode+" "+contact.entityVer+"":"";
+//#             String client=(contact.hasEntity)?"\nUse: "+contact.entityNode:"";
+//#             String clientVer=(contact.entityVer!=null)?"#"+contact.entityVer:"";
 //#             
 //#             boolean muc=(contact instanceof MucContact)?true:false;
 //#             
 //#             if (muc) {
 //#                 MucContact mucContact=(MucContact)contact;
-//#                 String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid;
+//#                 String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n";
 //#                 String aff=mucContact.affiliation;
 //#                 String role=mucContact.role;
 //#                 mess.append(jid);
 //#                 if (aff!=null)
-//#                     mess.append("\n"+aff);
+//#                     mess.append(aff);
 //# 
 //#                 if (role!=null)
 //#                     if (aff!=null)
 //#                         mess.append("/"+role);
 //#                     else 
 //#                         mess.append(role);
+//#                 
+//#                 jid=null;
+//#                 aff=null;
+//#                 role=null;
 //#             } else {
 //#                 mess.append("jid: "+contact.bareJid);
 //#                 mess.append(contact.jid.getResource());
 //# 
 //#             }
-//#             mess.append((ver!=null)?ver:"");
+//#             mess.append((client!=null)?client+clientVer:"");
+//#             clientVer=null;
 //#             String ss=contact.getSecondString();
 //#             if (ss!=null)
 //#                 mess.append((ss.length()>0)?"\n"+ss:"");
@@ -2251,7 +2259,7 @@ public class Roster
 //#             mess.append(info);
 //#         }
 //#         VirtualList.setWobble(mess.toString());
-//#         
+//# 
 //#         mess=null;
 //#     }
 //#endif
