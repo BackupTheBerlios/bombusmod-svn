@@ -36,8 +36,8 @@ package com.jcraft.jzlib;
 
 final public class ZStream{
 
-  //static final private int MAX_WBITS=15;        // 32K LZ77 window
-  //static final private int DEF_WBITS=MAX_WBITS;
+ // static final private int MAX_WBITS=15;        // 32K LZ77 window
+ // static final private int DEF_WBITS=MAX_WBITS;
 
   static final private int Z_NO_FLUSH=0;
   static final private int Z_PARTIAL_FLUSH=1;

@@ -48,7 +48,7 @@ final class StaticTree{
   // Bit length codes must not exceed MAX_BL_BITS bits
   static final int MAX_BL_BITS=7; 
 
-  /*private static final short[] static_ltree = {
+  /*static final short[] static_ltree = {
     12,  8, 140,  8,  76,  8, 204,  8,  44,  8,
     172,  8, 108,  8, 236,  8,  28,  8, 156,  8,
     92,  8, 220,  8,  60,  8, 188,  8, 124,  8,
@@ -109,7 +109,7 @@ final class StaticTree{
     163,  8,  99,  8, 227,  8
   };*/
 
-  static final short[] static_dtree = {
+ static final short[] static_dtree = {
     0, 5, 16, 5,  8, 5, 24, 5,  4, 5,
     20, 5, 12, 5, 28, 5,  2, 5, 18, 5,
     10, 5, 26, 5,  6, 5, 22, 5, 14, 5,

@@ -43,7 +43,7 @@ final class Deflate{
 
   static final public int MAX_WBITS=9;   //15         // 32K LZ77 window
   static final private int DEF_MEM_LEVEL=1;//8
-
+  
   static class Config{
     int good_length; // reduce lazy search above this match length
     int max_lazy;    // do not perform lazy search above this match length
@@ -612,6 +612,7 @@ final class Deflate{
     if (1 + last_eob_len + 10 - bi_valid < 9) {
       send_bits(STATIC_TREES<<1, 3);
       send_code(END_BLOCK, StaticTree.getStatic_ltree());
+
       bi_flush();
     }
     last_eob_len = 7;

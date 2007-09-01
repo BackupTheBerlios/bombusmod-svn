@@ -91,16 +91,7 @@ public class ZInputStream extends FilterInputStream {
     do {
       if((z.avail_in==0)&&(!nomoreinput)) { // if buffer is empty and more input is avaiable, refill it
 	z.next_in_index=0;
-        
-        int avail=in.available();
-        
-        while (avail==0) {
-            try { Thread.sleep(100); } catch (Exception e) {};
-            avail=in.available();
-        }
-
-	z.avail_in=in.read(buf, 0, (avail<bufsize)?avail:bufsize);//(bufsize<z.avail_out ? bufsize : z.avail_out));
-        
+	z.avail_in=in.read(buf, 0, bufsize);//(bufsize<z.avail_out ? bufsize : z.avail_out));
 	if(z.avail_in==-1) {
 	  z.avail_in=0;
 	  nomoreinput=true;
@@ -119,11 +110,6 @@ public class ZInputStream extends FilterInputStream {
     } 
     while(z.avail_out==len&&err==JZlib.Z_OK);
     //System.err.print("("+(len-z.avail_out)+")");
-    /*    for (int i=0; i<len-z.avail_out; i++) {
-            System.out.print((char) b[i]);
-        }
-        //System.out.println();
-     */
     return(len-z.avail_out);
   }
 
@@ -150,8 +136,8 @@ public class ZInputStream extends FilterInputStream {
   public int available() throws IOException {
       return bufsize;
   }
-
-
+  
+  
   /**
    * Returns the total number of bytes input so far.
    */

@@ -33,7 +33,6 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jcraft.jzlib;
-
 import util.ArrayLoader;
 
 final class InfTree{
@@ -232,7 +231,7 @@ final class InfTree{
   private static int[] fixed_tl;
 
   private static int[] fixed_td;
-
+  
   private int huft_build(int[] b, // code lengths in bits (all assumed <= BMAX)
                          int bindex, 
                          int n,   // number of codes (assumed <= 288)

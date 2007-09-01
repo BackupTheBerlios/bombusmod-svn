@@ -89,7 +89,7 @@ final class Tree{
   static final int DIST_CODE_LEN=512;
 
   static byte[] _dist_code;
-  /*static final byte[] _dist_code = {
+   /*static final byte[] _dist_code = {
     0,  1,  2,  3,  4,  4,  5,  5,  6,  6,  6,  6,  7,  7,  7,  7,  8,  8,  8,  8,
     8,  8,  8,  8,  9,  9,  9,  9,  9,  9,  9,  9, 10, 10, 10, 10, 10, 10, 10, 10,
     10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
@@ -119,7 +119,7 @@ final class Tree{
   };*/
 
   private static byte[] _length_code;
-  /*private static final byte[] _length_code={
+  /*static final byte[] _length_code={
     0,  1,  2,  3,  4,  5,  6,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 12, 12,
     13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16,
     17, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19,
@@ -374,4 +374,5 @@ final class Tree{
         return _length_code[lc];
     }
 }
+
 
