@@ -1,7 +1,0 @@
-//type	path	desc
-tone		tone sequence
-none		none
-audio/mpeg	/sounds/IncomingChat.mp3	IncomingChat.mp3
-audio/mpeg	/sounds/IncomingIM.mp3	IncomingIM.mp3
-audio/mpeg	/sounds/Outgoing.mp3	Outgoing.mp3
-audio/mpeg	/sounds/Outgoing.mp3	Outgoing.mp3
