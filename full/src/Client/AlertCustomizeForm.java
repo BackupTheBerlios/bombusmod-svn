@@ -91,7 +91,7 @@ public class AlertCustomizeForm implements
 	MessageFile.setItemCommandListener(this);
         
         
-        OnlineFile=new ChoiceGroup(SR.getPresence("online")+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
+        OnlineFile=new ChoiceGroup("Online "+SR.MS_SOUND, ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    OnlineFile.append( (String)f.nextElement(), null );
 	}
@@ -103,7 +103,7 @@ public class AlertCustomizeForm implements
 	OnlineFile.setItemCommandListener(this);
         
                  
-        OfflineFile=new ChoiceGroup(SR.getPresence("offline")+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
+        OfflineFile=new ChoiceGroup("Offline "+SR.MS_SOUND, ChoiceGroup.POPUP);
 	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
 	    OfflineFile.append( (String)f.nextElement(), null );
 	}

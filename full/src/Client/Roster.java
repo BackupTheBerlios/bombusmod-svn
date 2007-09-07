@@ -992,20 +992,34 @@ public class Roster
     }
     private void sendVCardReq(){
         querysign=false; 
-        if (vCardQueue!=null) if (!vCardQueue.isEmpty()) {
-            JabberDataBlock req=(JabberDataBlock) vCardQueue.lastElement();
-            vCardQueue.removeElement(req);
-            //System.out.println(k.nick);
-            theStream.send(req);
-            querysign=true;
+        if (vCardQueue!=null) {
+            if (!vCardQueue.isEmpty()) {
+                JabberDataBlock req=(JabberDataBlock) vCardQueue.lastElement();
+                vCardQueue.removeElement(req);
+                //System.out.println(k.nick);
+                theStream.send(req);
+                querysign=true;
+            }
         }
         updateMainBar();
     }
-    /**
-     * Method to handle an incomming datablock.
-     *
-     * @param data The incomming data
-     */
+
+    public void contactChangeTransport(int srcTransportIndex, String dstTransport){
+	setQuerySign(true);
+	for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+	    Contact k=(Contact) e.nextElement();
+	    if (k.jid.isTransport()) continue;
+	    if (k.transport==srcTransportIndex && k.getGroupType()>=Groups.TYPE_COMMON) { // works for contact in "General"
+                Jid kJid= new Jid(k.getBareJid());
+                String kFirst=kJid.getFirst();
+                String kName=k.getName();
+                
+                deleteContact(k); // contact deletion
+                storeContact(kFirst+"@"+dstTransport, kName, "", cf.autoSubscribe); // contact addition
+	    }
+	}
+	setQuerySign(false);
+    }
 
     public void loginFailed(String error){
         myStatus=Presence.PRESENCE_OFFLINE;
@@ -1695,17 +1709,7 @@ public class Roster
         }
         return JabberBlockListener.BLOCK_REJECTED;
     }
-/*    
-    void replyError (JabberDataBlock stanza) {
-        stanza.setAttribute("to", stanza.getAttribute("from"));
-        stanza.setAttribute("from", null);
-        stanza.setTypeAttribute("error");
-        JabberDataBlock error=stanza.addChild("error", null);
-        error.setTypeAttribute("cancel");
-        error.addChild("feature-not-implemented",null);
-        theStream.send(stanza);
-    }
-*/    
+
     void processRoster(JabberDataBlock data){
         JabberDataBlock q=data.getChildBlock("query");
         if (!q.isJabberNameSpace("jabber:iq:roster")) return;
@@ -1738,7 +1742,6 @@ public class Roster
             }
 	sort(hContacts);
     }
-    
     
     void messageStore(Contact c, Msg message) {
         if (c==null) return;  
@@ -1914,12 +1917,7 @@ public class Roster
 	    if (index>=0) moveCursorTo(index, force);
 	}
     }
-    
-    
-    /**
-     * Method to begin talking to the server (i.e. send a login message)
-     */
-    
+
     public void beginConversation(String SessionId) {
         //try {
         //setProgress(SR.MS_LOGINPGS, 42);
@@ -1939,13 +1937,7 @@ public class Roster
 //#         new NonSASLAuth(sd.account, SessionId, this, theStream);
 //#endif
     }
-    
-    /**
-     * If the connection is terminated then print a message
-     *
-     * @e The exception that caused the connection to be terminated, Note that
-     *  receiving a SocketException is normal when the client closes the stream.
-     */
+
     public void connectionTerminated( Exception e ) {
         String error=null;
         setProgress(SR.MS_DISCONNECTED, 0);
@@ -2456,19 +2448,6 @@ public class Roster
             countNewMsgs();
 	    reEnumRoster();
 	} else {
-/*
- <iq type="set" id="mir_20">
-<query xmlns="jabber:iq:roster">
-<item jid="ad@xmpp.ru" subscription="remove" />
-</query>
-</iq>
-�
-<iq from="ad@jabbus.org/?-work" to="ad@jabbus.org/?-work" id="push" type="set">
-<query xmlns="jabber:iq:roster">
-<item subscription="remove" jid="ad@xmpp.ru" />
-</query>
-</iq>
-*/
             theStream.send(new IqQueryRoster(c.getBareJid(),null,null,"remove"));
             
             JabberDataBlock removeIq=new Iq(c.getJid(), Iq.TYPE_SET, "push");

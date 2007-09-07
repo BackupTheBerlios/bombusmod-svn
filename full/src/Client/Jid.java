@@ -81,6 +81,15 @@ public class Jid {
         }
     }
     
+    public String getFirst(){
+        try {
+            int endIndex=bareJid.indexOf('@');
+            return bareJid.substring(0, endIndex);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
     /** выделение ресурса со слэшем */
     public String getResource(){ return resource; }
     
