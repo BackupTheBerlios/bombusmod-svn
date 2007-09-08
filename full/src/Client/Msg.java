@@ -61,6 +61,9 @@ public class Msg //implements MessageList.Element
         if (messageType>=MESSAGE_TYPE_IN) unread=true;
         if (messageType==MESSAGE_TYPE_PRESENCE || messageType==MESSAGE_TYPE_HEADLINE)
             itemCollapsed=true;
+        else if (body!=null)
+            if (body.length()>Config.getInstance().messageLimit)
+                itemCollapsed=true;
         //if (subj!=null && subject!=null)
         //    itemCollapsed=true;
     }
