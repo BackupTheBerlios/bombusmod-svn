@@ -81,7 +81,9 @@ public class ChangeTransport implements CommandListener{
 
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {
-            roster.contactChangeTransport(transportIndex, tTranspList.getString(tTranspList.getSelectedIndex()));
+//#if CHANGE_TRANSPORT            
+//#             roster.contactChangeTransport(transportIndex, tTranspList.getString(tTranspList.getSelectedIndex()));
+//#endif
         }
         display.setCurrent(StaticData.getInstance().roster);
     }

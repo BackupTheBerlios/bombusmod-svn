@@ -35,6 +35,7 @@ import com.alsutton.jabber.datablocks.Message;
 import java.util.Enumeration;
 import java.util.Vector;
 import util.strconv;
+import com.alsutton.jabber.XmppError;
 
 /**
  *
@@ -157,11 +158,7 @@ public class TransferDispatcher implements JabberBlockListener{
         } catch (Exception ex) {}
         
         JabberDataBlock reject=new Iq(task.jid, Iq.TYPE_ERROR, id);
-        JabberDataBlock error=reject.addChild("error",null);
-        error.setTypeAttribute("cancel");
-        error.setAttribute("code","406");
-        error.addChildNs("not-acceptable", "urn:ietf:params:xml:ns:xmpp-stanzas");
-        error.addChildNs("text", "urn:ietf:params:xml:ns:xmpp-stanzas").setText("block-size too long");
+        reject.addChild(new XmppError(XmppError.NOT_ACCEPTABLE, "block-size too long"));
         
         send(reject, true);
         

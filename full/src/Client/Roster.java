@@ -1003,24 +1003,24 @@ public class Roster
         }
         updateMainBar();
     }
-
-    public void contactChangeTransport(int srcTransportIndex, String dstTransport){
-	setQuerySign(true);
-	for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-	    Contact k=(Contact) e.nextElement();
-	    if (k.jid.isTransport()) continue;
-	    if (k.transport==srcTransportIndex && k.getGroupType()>=Groups.TYPE_COMMON) { // works for contact in "General"
-                Jid kJid= new Jid(k.getBareJid());
-                String kFirst=kJid.getFirst();
-                String kName=k.getName();
-                
-                deleteContact(k); // contact deletion
-                storeContact(kFirst+"@"+dstTransport, kName, "", cf.autoSubscribe); // contact addition
-	    }
-	}
-	setQuerySign(false);
-    }
-
+//#if CHANGE_TRANSPORT
+//#     public void contactChangeTransport(int srcTransportIndex, String dstTransport){
+//# 	setQuerySign(true);
+//# 	for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+//# 	    Contact k=(Contact) e.nextElement();
+//# 	    if (k.jid.isTransport()) continue;
+//# 	    if (k.transport==srcTransportIndex && k.getGroupType()>=Groups.TYPE_COMMON) { // works for contact in "General"
+//#                 Jid kJid= new Jid(k.getBareJid());
+//#                 String kFirst=kJid.getFirst();
+//#                 String kName=k.getName();
+//#                 
+//#                 deleteContact(k); // contact deletion
+//#                 storeContact(kFirst+"@"+dstTransport, kName, "", cf.autoSubscribe); // contact addition
+//# 	    }
+//# 	}
+//# 	setQuerySign(false);
+//#     }
+//#endif
     public void loginFailed(String error){
         myStatus=Presence.PRESENCE_OFFLINE;
         setProgress(SR.MS_LOGIN_FAILED, 0);
@@ -1397,16 +1397,15 @@ public class Roster
                     
                     if (type.equals("error")) {
                         
-                        String errCode=message.getChildBlock("error").getAttribute("code");
-                        switch (Integer.parseInt(errCode)) {
-                            case 403: body=SR.MS_VIZITORS_FORBIDDEN; break;
-                            case 404: body="User has left"; break;
-			    case 406: body="Cannot send message because you are not in room"; break;
-                            case 407: body="Registration Required"; break;
-                            case 409: body="Nickname is registered by another person"; break;
-                            case 503: break;
-                            default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
-                        }
+                        body=SR.MS_ERROR_+ XmppError.findInStanza(message).toString();
+                        //TODO: verify and cleanup
+                        //String errCode=message.getChildBlock("error").getAttribute("code");
+                        //
+                        //switch (Integer.parseInt(errCode)) {
+                        //    case 403: body=SR.MS_VIZITORS_FORBIDDEN; break;
+                        //    case 503: break;
+                        //    default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
+                        //}
                     }
                     if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
                 } catch (Exception e) { type="chat"; } //force type to chat

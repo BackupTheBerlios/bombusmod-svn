@@ -94,7 +94,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 		addItem(SR.MS_LOGON,5, 0x36);
 		addItem(SR.MS_LOGOFF,6, 0x37);
 		addItem(SR.MS_RESOLVE_NICKNAMES, 7);
-                addItem("Change transport", 915);
+//#if CHANGE_TRANSPORT
+//#                 addItem("Change transport", 915);
+//#endif
 	    }
 	    
 	    addItem(SR.MS_VCARD,1, 0x0f16);
@@ -340,12 +342,13 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     roster.resolveNicknames(c.transport);
                     break;
                 }
-                case 915: // change transport
-                {
-                    new ChangeTransport(display, c.transport);
-                    return;
-                }
-                
+//#if CHANGE_TRANSPORT
+//#                 case 915: // change transport
+//#                 {
+//#                     new ChangeTransport(display, c.transport);
+//#                     return;
+//#                 }
+//#endif
                 case 21:
                 {
                     roster.cleanupSearch();

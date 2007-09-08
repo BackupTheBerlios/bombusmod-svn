@@ -41,6 +41,7 @@ import locale.SR;
 import ui.ColorScheme;
 import ui.IconTextElement;
 import util.strconv;
+import com.alsutton.jabber.XmppError;
 
 /**
  *
@@ -147,10 +148,7 @@ public class TransferTask
 
     void decline() {
         JabberDataBlock reject=new Iq(jid, Iq.TYPE_ERROR, id);
-        JabberDataBlock error=reject.addChild("error",null);
-        error.setTypeAttribute("cancel");
-        error.setAttribute("code","405");
-        error.addChildNs("not-allowed", "urn:ietf:params:xml:ns:xmpp-stanzas");
+        reject.addChild(new XmppError(XmppError.NOT_ALLOWED, "declined by user"));
         TransferDispatcher.getInstance().send(reject, true);
         
         state=ERROR;
