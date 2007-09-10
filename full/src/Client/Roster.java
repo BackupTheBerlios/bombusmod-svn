@@ -1615,9 +1615,11 @@ public class Roster
 
                         if (pr.hasEntityCaps()) {
                             c.hasEntity=true;
-                            c.entityNode=strconv.replaceCaps(pr.getEntityNode());
-                            if (c.entityNode.indexOf("#")<0)
-                                c.entityVer=pr.getEntityVer();
+                            if (pr.getEntityNode()!=null) {
+                                c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                                if (c.entityNode.indexOf("#")<0)
+                                    c.entityVer=pr.getEntityVer();
+                            }
                         }
 
                         int rp=from.indexOf('/');
@@ -1649,9 +1651,11 @@ public class Roster
                     if (pr.getTypeIndex()!=pr.PRESENCE_ERROR) {
                         if (pr.hasEntityCaps()) {
                             c.hasEntity=true;
-                            c.entityNode=strconv.replaceCaps(pr.getEntityNode());
-                            if (c.entityNode.indexOf("#")<0)
-                                c.entityVer=pr.getEntityVer();
+                            if (pr.getEntityNode()!=null) {
+                                c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                                if (c.entityNode.indexOf("#")<0)
+                                    c.entityVer=pr.getEntityVer();
+                            }
                         }
 
                         c.statusString=pr.getStatus();
