@@ -1488,7 +1488,8 @@ public class Roster
                         /*if (c.deliveryType==Contact.DELIVERY_XEP22)*/ 
                         if (body!=null) {
                             //ask delivery
-                            sendDeliveryMessage(c, data.getAttribute("id"));
+                            if (c.status<Presence.PRESENCE_OFFLINE)
+                                sendDeliveryMessage(c, data.getAttribute("id"));
                         } else {
                             //delivered
                             c.markDelivered(x.getChildBlockText("id"));
