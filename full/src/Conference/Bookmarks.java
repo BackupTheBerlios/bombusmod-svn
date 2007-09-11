@@ -44,7 +44,7 @@ import ui.MainBar;
  */
 public class Bookmarks 
         extends VirtualList 
-        implements CommandListener
+        implements CommandListener, YesNoAlert.YesNoListener
 {   
     private BookmarkItem toAdd;
     
@@ -235,5 +235,18 @@ public class Bookmarks
             StaticData.getInstance().roster.bookmarks.setElementAt(p1, index+offset);
             StaticData.getInstance().roster.bookmarks.setElementAt(p2, index);
         } catch (Exception e) {/* IndexOutOfBounds */}
+    }
+
+    public void userKeyPressed(int keyCode) {
+        super.userKeyPressed(keyCode);
+        
+        if (keyCode==keyClear) {
+            new YesNoAlert(display, SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), this);
+        }
+    }
+    
+    public void ActionConfirmed() {
+        //
+        deleteBookmark();
     }
 }
