@@ -245,6 +245,7 @@ public class ColorForm implements CommandListener
     }
 
     public void BrowserFilePathNotify(String pathSelected) {
+        
         byte[] bodyMessage=ColorScheme.getSkin().getBytes();
                 
         file=FileIO.createConnection(pathSelected+"skin.txt");

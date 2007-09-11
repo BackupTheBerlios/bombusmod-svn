@@ -159,8 +159,11 @@ public class ConfigForm implements
 //#         message.append("Antispam Conference", null);
 //#endif
 //#ifdef POPUPS
-//#         message.append("PopUps", null);
+//#         message.append("popUps", null);
 //#endif
+        
+        message.append("show balloons", null);
+        
         
 //#if ALT_INPUT
 //#         message.append(SR.CLASSIC_CHAT, null);
@@ -180,6 +183,7 @@ public class ConfigForm implements
 //#ifdef POPUPS
 //#             ,cf.popUps
 //#endif
+            ,cf.showBalloons
                     
 //#if ALT_INPUT
 //#             ,cf.altInput
@@ -404,6 +408,7 @@ public class ConfigForm implements
 //#ifdef POPUPS
 //#             cf.popUps=mv[mvctr++];
 //#endif
+            VirtualList.showBalloons=cf.showBalloons=mv[mvctr++];
  
 //#if ALT_INPUT
 //#         cf.altInput=mv[mvctr++];

@@ -150,6 +150,7 @@ public class ConfigPrivateStorage
 //#             cs.addChild("rosterStatus", (cf.rosterStatus)?"1":"0");
 //#             cs.addChild("queryExit", (cf.queryExit)?"1":"0");
 //#             cs.addChild("showLastAppearedContact", (cf.showLastAppearedContact)?"1":"0");
+//#             cs.addChild("showBalloons", (cf.showBalloons)?"1":"0");
 //#         }
 //#         //System.out.println(iq.toString());
 //#         roster.theStream.send(iq);
@@ -244,6 +245,8 @@ public class ConfigPrivateStorage
 //#             cf.queryExit=getBooleanProperty("queryExit",false);
 //#             cf.showLastAppearedContact=getBooleanProperty("showLastAppearedContact",false);
 //#             
+//#             VirtualList.showBalloons=cf.showBalloons=getBooleanProperty("showBalloons",false);
+//#    
 //#             cf.lastProfile=cf.profile=cf.def_profile;
 //#             if (cf.lastProfile==AlertProfile.VIBRA) cf.lastProfile=0;
 //#             cf.updateTime();

@@ -120,6 +120,7 @@ public abstract class VirtualList
     public static short greenKeyCode=SIEMENS_GREEN;
     public static boolean fullscreen=false;
     public static boolean memMonitor;
+    public static boolean showBalloons;
 
     public static boolean canBack=true;
 
@@ -416,12 +417,14 @@ public abstract class VirtualList
         drawHeapMonitor(g, itemBorder[0]); //heap monitor
         
         if (showBalloon) {
-            String text=null;
-            try {
-                text=((VirtualElement)getFocusedObject()).getTipString();
-            } catch (Exception e) { }
-            if (text!=null)
-                drawBalloon(g, baloon, text);
+            if (showBalloons) {
+                String text=null;
+                try {
+                    text=((VirtualElement)getFocusedObject()).getTipString();
+                } catch (Exception e) { }
+                if (text!=null)
+                    drawBalloon(g, baloon, text);
+            }
         }
 //#if ALT_INPUT
 //#         if (inputbox!=null) {

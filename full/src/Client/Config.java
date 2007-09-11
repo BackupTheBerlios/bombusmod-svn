@@ -171,6 +171,8 @@ public class Config {
     
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     
+    public boolean showBalloons = true;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -323,6 +325,8 @@ public class Config {
             
             showLastAppearedContact=inputStream.readBoolean();
             
+            showBalloons=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -337,6 +341,7 @@ public class Config {
 	VirtualList.fullscreen=fullscreen;
 	VirtualList.isbottom=isbottom;
 	VirtualList.memMonitor=memMonitor;
+        VirtualList.showBalloons=showBalloons;
     }
     
     public String langFileName(){
@@ -451,8 +456,10 @@ public class Config {
             outputStream.writeBoolean(rosterStatus);
             
             outputStream.writeBoolean(queryExit);
-            
+           
             outputStream.writeBoolean(showLastAppearedContact);
+            outputStream.writeBoolean(showBalloons);
+            
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

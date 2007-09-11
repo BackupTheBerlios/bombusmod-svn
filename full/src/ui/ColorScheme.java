@@ -28,17 +28,20 @@
 package ui;
 
 import Client.StaticData;
-import io.NvStorage;
+
 //#if FILE_IO
 import io.file.FileIO;
 //#endif
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+//#ifdef COLORS
+//# import io.NvStorage;
+//# import java.io.DataInputStream;
+//# import java.io.DataOutputStream;
+//# import java.io.IOException;
+//# import java.io.InputStream;
+//# import util.Translit;
+//#endif
 import java.util.Hashtable;
 import util.StringLoader;
-import util.Translit;
 
 public class ColorScheme {
     private static ColorScheme instance;
