@@ -883,7 +883,10 @@ public class Roster
                 c.subscr.startsWith("to");
                 //getMessage(cursor).messageType==Msg.MESSAGE_TYPE_AUTH;
         
-        String to=c.getBareJid();
+        String to=c.getJid();//.getBareJid();
+        
+        System.out.println(c.getJid());
+        System.out.println(c.getBareJid());
         
         if (subscribed) sendPresence(to,"subscribed", null, false);
         if (subscribe) sendPresence(to,"subscribe", null, false);
