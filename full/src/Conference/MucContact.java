@@ -139,15 +139,18 @@ public class MucContact extends Contact{
 
         setSortKey(nick);
         
-        if (role.equals("moderator")) {
-             transport=RosterIcons.ICON_MODERATOR_INDEX;
-             key0=GROUP_MODERATOR;
-        } else if (role.equals("visitor")) {
-            transport=RosterIcons.getInstance().getTransportIndex("conference_visitors");
-            key0=GROUP_VISITOR;
-        } else {
-            transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
-            key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
+        switch (roleCode) {
+            case ROLE_MODERATOR:
+                transport=RosterIcons.ICON_MODERATOR_INDEX;
+                key0=GROUP_MODERATOR;
+                break;
+            case ROLE_VISITOR:
+                transport=RosterIcons.getInstance().getTransportIndex("conference_visitors");
+                key0=GROUP_VISITOR;
+                break;
+            default:
+                transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
+                key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
 
         int rp=from.indexOf('/');
