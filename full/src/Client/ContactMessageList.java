@@ -408,13 +408,6 @@ public class ContactMessageList extends MessageList
     }       
 
     public void userKeyPressed(int keyCode) {
-        super.userKeyPressed(keyCode);
-        
-        if (keyCode==KEY_NUM4) 
-            nextContact(-1); //previous contact with messages
-        if (keyCode==KEY_NUM6) 
-            nextContact(1); //next contact with messages
-        
 //#if ALT_INPUT  
 //#         if (cf.altInput) {
 //#             if (!startMessage) {
@@ -438,7 +431,13 @@ public class ContactMessageList extends MessageList
 //#             }
 //#         } else {
 //#endif
-       
+        super.userKeyPressed(keyCode);
+        
+        if (keyCode==KEY_NUM4) 
+            nextContact(-1); //previous contact with messages
+        if (keyCode==KEY_NUM6) 
+            nextContact(1); //next contact with messages
+        
             if (keyCode==KEY_NUM3) 
                 new ActiveContacts(display, contact);
         
