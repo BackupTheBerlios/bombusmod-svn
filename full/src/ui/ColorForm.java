@@ -36,8 +36,8 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 
 public class ColorForm implements CommandListener
-//#if (FILE_IO)
-        , BrowserListener
+//#if (FILE_IO && COLORS)
+//#         , BrowserListener
 //#endif
 {
     private Displayable currentChoice = null;
@@ -220,49 +220,51 @@ public class ColorForm implements CommandListener
             return;
         }
         
-//#if (FILE_IO)
-        if (c==cmdSaveSkin) new Browser(null,display, this, true);
+//#if (FILE_IO && COLORS)
+//#         if (c==cmdSaveSkin) new Browser(null,display, this, true);
 //#endif
         
         if (c==selectCommand) {
           try {
               if (!NAMES[pos].startsWith("(n/a)") && pos != NAMES.length) {
-                new ColorSelector(display, pos);
+//#if (COLORS)
+//#                 new ColorSelector(display, pos);
+//#endif
               }
           } catch(Exception err) {}
        }
     }
 
 
-//#if (FILE_IO)
-    void writeFile(byte b[]){
-        try {
-            os.write(b);
-            filePos+=b.length;
-        } catch (IOException ex) {
-            //ex.printStackTrace();
-        }
-    }
-
-    public void BrowserFilePathNotify(String pathSelected) {
-        
-        byte[] bodyMessage=ColorScheme.getSkin().getBytes();
-                
-        file=FileIO.createConnection(pathSelected+"skin.txt");
-        try {
-            os=file.openOutputStream();
-            writeFile(bodyMessage);
-            os.close();
-            file.close();
-        } catch (IOException ex) {
-            try {
-                file.close();
-            } catch (IOException ex2) {
-                //ex2.printStackTrace();
-            }
-            //ex.printStackTrace();
-        }
-    }
+//#if (FILE_IO && COLORS)
+//#     void writeFile(byte b[]){
+//#         try {
+//#             os.write(b);
+//#             filePos+=b.length;
+//#         } catch (IOException ex) {
+//#             //ex.printStackTrace();
+//#         }
+//#     }
+//# 
+//#     public void BrowserFilePathNotify(String pathSelected) {
+//# 
+//#         byte[] bodyMessage=ColorScheme.getSkin().getBytes();
+//#                 
+//#         file=FileIO.createConnection(pathSelected+"skin.txt");
+//#         try {
+//#             os=file.openOutputStream();
+//#             writeFile(bodyMessage);
+//#             os.close();
+//#             file.close();
+//#         } catch (IOException ex) {
+//#             try {
+//#                 file.close();
+//#             } catch (IOException ex2) {
+//#                 //ex2.printStackTrace();
+//#             }
+//#             //ex.printStackTrace();
+//#         }
+//#     }
 //#endif 
 
 

@@ -883,10 +883,7 @@ public class Roster
                 c.subscr.startsWith("to");
                 //getMessage(cursor).messageType==Msg.MESSAGE_TYPE_AUTH;
         
-        String to=c.getJid();//.getBareJid();
-        
-        System.out.println(c.getJid());
-        System.out.println(c.getBareJid());
+        String to=(c.jid.isTransport())?c.getJid():c.getBareJid();
         
         if (subscribed) sendPresence(to,"subscribed", null, false);
         if (subscribe) sendPresence(to,"subscribe", null, false);
@@ -2047,7 +2044,7 @@ public class Roster
        
         if (keyCode==cf.SOFT_RIGHT) {
             if (isLoggedIn()) 
-                new RosterItemActions(display, getFocusedObject(), -1);
+            new RosterItemActions(display, getFocusedObject(), -1);
             return;
         }
         

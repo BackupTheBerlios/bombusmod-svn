@@ -73,13 +73,13 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 		h = getHeight();
                 
                 //System.out.println(color+" "+cl.getColorString(color));
-                
-                red=cl.getColorInt(color,0);
-                green=cl.getColorInt(color,1);
-                blue=cl.getColorInt(color,2);
-                
-            	String s = cl.ColorToString(red, green, blue);
-                
+//#if (COLORS)
+//#                 red=cl.getColorInt(color,0);
+//#                 green=cl.getColorInt(color,1);
+//#                 blue=cl.getColorInt(color,2);
+//#                 
+//#             	//String s = cl.ColorToString(red, green, blue);
+//#endif
         	cpos = 0;
 
 		exit = false;
@@ -98,10 +98,12 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 		g.setColor(0xffffff);
 		g.fillRect(0, 0, w, h);
 		g.setFont(mfont);
-                
-            	String s = cl.ColorToString(red, green, blue);
-                //System.out.println(s);
-
+//#if (COLORS)
+//#             	String s = cl.ColorToString(red, green, blue);
+//#                 //System.out.println(s);
+//#else
+                String s = " ";
+//#endif
 		g.setColor(0);
 		g.setStrokeStyle(g.SOLID);
 		g.drawRect(2, 2, 15, 15);
@@ -352,7 +354,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                     cl.SCROLL_BGND=value; 
                     break;
             }
-            cl.saveToStorage();
+//#if (COLORS)
+//#             cl.saveToStorage();
+//#endif
 	}
 
 	private void movePoint() {
@@ -391,16 +395,18 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     }
     
     private void eventOk () {
-        String val = cl.ColorToString(red, green, blue);
-        
-        int finalColor=cl.getColorInt(val);
-        //System.out.println(val);
-        
-        setValue(finalColor);
-        ColorForm.COLORS[paramName]=finalColor;
-        ColorForm.IMAGES[paramName]=ColorForm.imageData(finalColor);
-        
-        ColorForm.updateItem(paramName);
+//#if (COLORS)
+//#         String val = cl.ColorToString(red, green, blue);
+//#         
+//#         int finalColor=cl.getColorInt(val);
+//#         //System.out.println(val);
+//#         
+//#         setValue(finalColor);
+//#         ColorForm.COLORS[paramName]=finalColor;
+//#         ColorForm.IMAGES[paramName]=ColorForm.imageData(finalColor);
+//#         
+//#         ColorForm.updateItem(paramName);
+//#endif
         exit = true;
     }
     
