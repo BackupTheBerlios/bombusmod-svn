@@ -38,6 +38,7 @@ import javax.microedition.lcdui.StringItem;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.TextFieldCombo;
+import ui.controls.TextFieldEx;
 
 /**
  *
@@ -76,7 +77,7 @@ public class TransferSendFile
         /*size=new TextField("size", "", 8, TextField.ANY | TextField.UNEDITABLE );
         f.append(size);*/
         
-        description=new TextField(SR.MS_DESCRIPTION, "", 128, TextField.ANY );
+        description=new TextFieldEx(SR.MS_DESCRIPTION, "", 128, TextField.ANY );
         f.append(description);
 
         

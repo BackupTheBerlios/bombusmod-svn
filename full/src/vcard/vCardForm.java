@@ -43,6 +43,8 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 
 import ui.Time;
+import ui.controls.StringItemEx;
+import ui.controls.TextFieldEx;
 import util.ClipBoard;
 
 /**
@@ -50,7 +52,7 @@ import util.ClipBoard;
  * @author EvgS
  */
 public class vCardForm 
-        implements CommandListener, Runnable, ItemCommandListener
+        implements CommandListener, Runnable
 //#if (FILE_IO)
         , BrowserListener
 //#endif
@@ -70,7 +72,6 @@ public class vCardForm
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,4);
     protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,5);
     protected Command cmdClear = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN, 6);
-    protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 7);    
     
     private Form f;
     private Vector items=new Vector();
@@ -81,7 +82,6 @@ public class vCardForm
     private String photoType=null;
     private int st=-1;
 
-    private ClipBoard clipboard;  // The clipboard class
 //#if FILE_IO    
     int fileSize;
     private int filePos;
@@ -120,12 +120,10 @@ public class vCardForm
                         data=data.substring(0, 494)+"<...>";
                 } 
                 
-                item=new TextField(name, data, 500, TextField.ANY);
+                item=new TextFieldEx(name, data, 500, TextField.ANY);
                 items.addElement(item);
             } else if (data!=null) {
-                item=new StringItem (name, data);
-                item.addCommand(cmdCopy);
-                item.setItemCommandListener(this);
+                item=new StringItemEx(name, data);
             }
             if (item!=null) {
                 f.append(item);
@@ -286,21 +284,7 @@ public class vCardForm
         long dateGmt=Time.utcTimeMillis();
         return Time.dayLocalString(dateGmt).trim(); 
     }
-
-    public void commandAction(Command command, Item item) {
-        if (command == cmdCopy)
-        {
-          try {
-            String text=((StringItem) item).getText();
-            CopyText(text);
-          } catch (Exception e) {/*no messages*/}
-        }
-    }
-
-    private void CopyText(String string) {
-        clipboard.setClipBoard(string);
-    }
-    
+   
 	
     public String getPhotoMIMEType() {
         try {

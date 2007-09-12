@@ -29,6 +29,7 @@ import Client.Roster;
 import Client.StaticData;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.controls.TextFieldEx;
 
 public class NewTemplate implements CommandListener, ItemStateListener 
 {
@@ -45,7 +46,7 @@ public class NewTemplate implements CommandListener, ItemStateListener
         this.display=display;
         parentView=display.getCurrent();         
         form=new Form(SR.MS_NEW_TEMPLATE);
-        templatebox=new TextField(SR.MS_NEW_TEMPLATE, null, 1024, TextField.ANY);
+        templatebox=new TextFieldEx(SR.MS_NEW_TEMPLATE, null, 1024, TextField.ANY);
         
         form.append(templatebox);
         form.addCommand(cmdOk);

@@ -32,6 +32,7 @@ import Client.StaticData;
 import Info.Phone;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.controls.TextBoxEx;
 
 /**
  *
@@ -42,7 +43,7 @@ public class archiveEdit implements CommandListener
     
     private Display display;
     private Displayable parentView;
-    private TextBox t;
+    private TextBoxEx t;
     private String body;
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
@@ -57,20 +58,7 @@ public class archiveEdit implements CommandListener
         this.display=display;
         parentView=display.getCurrent();
         
-        int maxSize=500;
-	t=new TextBox(SR.MS_EDIT, null, maxSize, TextField.ANY);
-		
-        try {
-            maxSize=t.setMaxSize(4096);
-            
-            body=msg.getBody();
-
-            if (body!=null) {
-                if (body.length()>maxSize)
-                    body=body.substring(0, maxSize-1);
-                t.setString(body);
-            }
-         } catch (Exception e) {}
+	t=new TextBoxEx(SR.MS_EDIT, "", TextField.ANY, display);
         
         
         t.addCommand(cmdOk);

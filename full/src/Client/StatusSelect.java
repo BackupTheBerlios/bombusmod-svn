@@ -32,6 +32,7 @@ import locale.SR;
 import ui.*;
 import ui.MainBar;
 import ui.controls.NumberField;
+import ui.controls.TextFieldEx;
 
 //import ui.controls.TextFieldCombo;
 
@@ -145,7 +146,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             f.append(tfPriority);
             
             //tfMessage=new TextFieldCombo(SR.MS_MESSAGE, status.getMessage(), 100, 0, "status", display);
-            tfMessage=new TextField(SR.MS_MESSAGE, status.getMessage(), 100, 0);
+            tfMessage=new TextFieldEx(SR.MS_MESSAGE, status.getMessage(), 100, 0);
             f.append(tfMessage);
             
             

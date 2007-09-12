@@ -37,6 +37,7 @@ import locale.SR;
 //# import templates.AppendTemplate;
 //#endif
 import ui.VirtualList;
+import ui.controls.TextBoxEx;
 import util.ClipBoard;
 import util.Translit;
 import ui.Time;
@@ -51,13 +52,9 @@ public class MessageEdit
     
     private Display display;
     private Displayable parentView;
-    private TextBox t;
+
     private String body;
     private String subj;
-    
-    private ClipBoard clipboard;  // The clipboard class
-    
-    //private textSizeNotify textsizenotify;
     
     private Contact to;
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
@@ -71,46 +68,25 @@ public class MessageEdit
     private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 5);
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
-    private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
-    private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
-    private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 16);
 //#if TEMPLATES
 //#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 97); 
-//#endif
-    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);    
+//#endif  
 
     private boolean composing=true;
     
     private Config cf=Config.getInstance();
- 
-    private int charsCount=1;
 
     private boolean sendInTranslit=false;
-    //private Command cmdSubject=new Command("Subject",Command.SCREEN,10);
+
+    private TextBoxEx t;
     
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Contact to, String body) {
         this.to=to;
         this.display=display;
         parentView=display.getCurrent();
-        
-        int maxSize=500;
-	
-        t=new TextBox(to.toString(), null, maxSize, TextField.ANY);
-		
-        try {
-            //expanding buffer as much as possible
-            maxSize=t.setMaxSize(4096); //must not trow
 
-            if (body!=null) {
-                //trim body to maxSize
-                if (body.length()>maxSize)
-                    body=body.substring(0, maxSize-1);
-                t.setString(body);
-            }
-         } catch (Exception e) {
-            t.setString("<send bugreport>");
-         }
+        t=new TextBoxEx(to.toString(), "", TextField.ANY, display);
 
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
@@ -121,13 +97,10 @@ public class MessageEdit
             t.addCommand(cmdInsNick);
         
         t.addCommand(cmdSendInTranslit);
-        t.addCommand(cmdClearTitle);
 //#ifdef ARCHIVE
 //#         t.addCommand(cmdPaste);
 //#endif
         t.addCommand(cmdSuspend);
-        if (!clipboard.isEmpty())
-            t.addCommand(cmdPasteText);
 //#if TEMPLATES
 //#         t.addCommand(cmdTemplate);
 //#endif
@@ -136,39 +109,10 @@ public class MessageEdit
         
         if (to.origin==Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdSubj);
-        
-        //t.setInitialInputMode("MIDP_LOWERCASE_LATIN");
+
         new Thread(this).start() ; // composing
 
-        setInitialCaps(cf.capsState);
         display.setCurrent(t);
-        
-        //textsizenotify = new textSizeNotify();
-        //textsizenotify.startNotify();
-    }
-    
-    public void insertText(String s, int caretPos) {
-        String src=t.getString();
-
-        StringBuffer sb=new StringBuffer(s);
-        
-        if (caretPos>0) 
-            if (src.charAt(caretPos-1)!=' ')   
-                sb.insert(0, ' ');
-        
-        if (caretPos<src.length())
-            if (src.charAt(caretPos)!=' ')
-                sb.append(' ');
-        
-        if (caretPos==src.length()) sb.append(' ');
-        
-        try {
-            int freeSz=t.getMaxSize()-t.size();
-            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
-        } catch (Exception e) {}
-       
-        t.insert(sb.toString(), caretPos);
-        sb=null;
     }
     
     public void setParentView(Displayable parentView){
@@ -179,13 +123,7 @@ public class MessageEdit
         body=t.getString();
 		
         
-        int caretPos=t.getCaretPosition();
-        // +MOTOROLA STUB
-        if (Phone.PhoneManufacturer()==Phone.MOTO)
-            caretPos=-1;
-        // -MOTOROLA STUB
-        
-        if (caretPos<0) caretPos=body.length();
+        int caretPos=t.getCaretPos();
 		
         if (body.length()==0) body=null;
         
@@ -194,16 +132,10 @@ public class MessageEdit
 //#         if (c==cmdSmile) { new SmilePicker(display, this, caretPos); return; }
 //#endif
         if (c==cmdInsNick) { new AppendNick(display, to, this, caretPos); return; }
-        if (c==cmdAbc) {setInitialCaps(false); return; }
-        if (c==cmdABC) {setInitialCaps(true); return; }
-        if (c==cmdClearTitle) {
-            t.setTitle(t.getTitle()==null?to.toString():null); 
-            return; 
-        }
 //#ifdef ARCHIVE
 //# 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
 //#endif
-        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), caretPos); return; }
+
 //#if TEMPLATES
 //#         if (c==cmdTemplate) { new AppendTemplate(display,  this, caretPos); return; }
 //#endif
@@ -274,61 +206,11 @@ public class MessageEdit
     }
     
     public void destroyView(){
-        //textsizenotify.destroyTask();
-        //textsizenotify=null;
         if (display!=null)   display.setCurrent(parentView);
     }
 
-    private void setInitialCaps(boolean state) {
-        t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
-        t.removeCommand(state? cmdABC: cmdAbc);
-        t.addCommand(state? cmdAbc: cmdABC);
-        cf.capsState=state;
+    public void insertText(String string, int caretPos) {
+        t.insertText(string, caretPos);
     }
-/*
- *  //memory leak :(
- *
-    private class textSizeNotify extends Thread{   
-        private boolean stop;
-        private boolean exit;
-        private textSizeNotify instance;
-    
-        public textSizeNotify() {
-            exit=false;
-            stop=true;
-            start();
-        }
-
-        public void destroyTask(){
-            stop=false;
-        }
-        
-        public void startNotify(){
-            if (instance==null) instance=new textSizeNotify();
-            if (t==null) {
-                instance.destroyTask(); return;
-            }
-
-        }
-
-        public void run() {
-            while (true) {
-                if (exit) return;
-                try {  sleep(300);  } catch (Exception e) {}
-                
-                if (stop) continue;
-                
-                try {
-                    int freeSz=t.getMaxSize()-t.size();
-
-                    t.setTitle("("+freeSz+") "+to.toString());
-                    freeSz=0;
-                } catch (Exception e) { 
-                    t.setTitle(to.toString());
-                }
-            }
-        }
-    }
- */
 }
 

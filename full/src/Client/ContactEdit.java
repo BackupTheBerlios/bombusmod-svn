@@ -30,6 +30,7 @@ import Conference.MucContact;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
+import ui.controls.TextFieldEx;
 
 /**
  *
@@ -79,10 +80,10 @@ public final class ContactEdit
         
         f=new Form(SR.MS_ADD_CONTACT);
         
-        tJid=new TextField(SR.MS_USER_JID, null, 150, TextField.ANY); 
+        tJid=new TextFieldEx(SR.MS_USER_JID, null, 150, TextField.ANY); 
         
-        tNick=new TextField(SR.MS_NAME, null, 32, TextField.ANY); 
-        tGroup=new TextField(SR.MS_GROUP ,null, 32, TextField.ANY);
+        tNick=new TextFieldEx(SR.MS_NAME, null, 32, TextField.ANY); 
+        tGroup=new TextFieldEx(SR.MS_GROUP ,null, 32, TextField.ANY);
         
         
         tGrpList=new ChoiceGroup(SR.MS_GROUP , ChoiceGroup.POPUP);

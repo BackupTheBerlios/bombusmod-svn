@@ -39,6 +39,7 @@ import javax.microedition.lcdui.StringItem;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.TextFieldCombo;
+import ui.controls.TextFieldEx;
 
 /**
  *
@@ -84,7 +85,7 @@ public class TransferAcceptFile
         }
         
         f=new Form("Accept file");
-        fileName=new TextField("File", name, FileIO.MAX_NAME_LEN, TextField.ANY);
+        fileName=new TextFieldEx("File", name, FileIO.MAX_NAME_LEN, TextField.ANY);
         path=new TextFieldCombo(SR.MS_SAVE_TO, t.filePath, 200, TextField.ANY, "recvPath", display);
         
         f.append(new StringItem(SR.MS_SENDER, t.jid));

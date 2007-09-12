@@ -43,6 +43,7 @@ import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.controls.TextFieldEx;
 
 public class HistoryConfig implements
 	CommandListener 
@@ -117,7 +118,7 @@ public class HistoryConfig implements
         history.setSelectedFlags(his);
         f.append(history);
         
-        historyFolder=new TextField(SR.MS_HISTORY_FOLDER, null, 200, TextField.ANY);
+        historyFolder=new TextFieldEx(SR.MS_HISTORY_FOLDER, null, 200, TextField.ANY);
         historyFolder.setString(cf.msgPath);
         historyFolder.addCommand(cmdSetHistFolder);
         f.append(historyFolder);
