@@ -180,7 +180,6 @@ public class PopUp {
         return length;
     }
     
-    
 //paint
     public void paintCustom(Graphics g) {
         this.height=g.getClipHeight();

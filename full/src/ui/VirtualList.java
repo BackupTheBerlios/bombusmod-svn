@@ -61,6 +61,8 @@ public abstract class VirtualList
 
     public static int isbottom=2; //default state both panels show, reverse disabled
 
+    private int lastKeyPressed = 0;
+    
     public Phone ph=Phone.getInstance();
     
 //#ifdef POPUPS
@@ -244,12 +246,11 @@ public abstract class VirtualList
     }
 
     public void redraw(){
-        //repaint(0,0,width,height);
         Displayable d=display.getCurrent();
         //System.out.println(d.toString());
         if (d instanceof Canvas) {
-            ((Canvas)d).repaint();
             //((Canvas)d).serviceRepaints();
+            ((Canvas)d).repaint();
         }
     }
 
@@ -488,7 +489,8 @@ public abstract class VirtualList
         
         StringBuffer s=new StringBuffer();    
         s.append(Time.localTime());
-        s.append(" "+strconv.getSizeString(stats.getGPRS()));
+        s.append(" ");
+        s.append(strconv.getSizeString(stats.getGPRS()));
 //#ifdef ELF
 //#         s.append(getNetworkLevel());
 //#         s.append(getAccuLevel());
@@ -542,7 +544,6 @@ public abstract class VirtualList
         stickyWindow=true;
         
         repaint();
-        //serviceRepaints();
     }
     
     protected void fitCursorByTop(){
@@ -573,7 +574,7 @@ public abstract class VirtualList
     
     protected void keyRepeated(int keyCode){ key(keyCode); }
     protected void keyReleased(int keyCode) { kHold=0; }
-    protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  }
+    protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  lastKeyPressed=keyCode; }
     
     protected void pointerPressed(int x, int y) {
 	if (scrollbar.pointerPressed(x, y, this)) {
@@ -609,16 +610,30 @@ public abstract class VirtualList
         il=itemLayoutY[cursor];
         if (il<win_top) win_top=il;
         
-	repaint();
-        //serviceRepaints();
+        repaint();
     }
     protected void pointerDragged(int x, int y) { 
         if (scrollbar.pointerDragged(x, y, this)) stickyWindow=false; 
     }
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
+    private boolean additionKey(int keyCode) {
+        switch (keyCode) {
+            case 0: 
+                setWobble("bl!");
+                return false;
+            default:
+                return true;
+        }
+    }
+    
     private void key(int keyCode) {
         //System.out.println(keyCode);
+        if (lastKeyPressed==KEY_STAR) {
+            if (!additionKey(keyCode))
+                return;
+        }
+            
 //#ifdef POPUPS
 //#         popup.next();
 //#endif
@@ -704,7 +719,6 @@ public abstract class VirtualList
 //#         }
 //#endif
         repaint();
-        //serviceRepaints();
     }
 
     public void keyUp() {
