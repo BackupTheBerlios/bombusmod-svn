@@ -86,6 +86,8 @@ public abstract class VirtualList
     }
 
     public void userKeyPressed(int keyCode){}
+    
+    public void userAdditionKeyPressed(int keyCode){}
 
     public static final short SIEMENS_GREEN=-11;
     public static final short NOKIA_GREEN=-10;
@@ -106,7 +108,7 @@ public abstract class VirtualList
     public static final short SE_GREEN=-5;
     
     public static final short SIEMENS_FLIPOPEN=-24;
-    public static final short SIEMENS_FLIPCLOSE=-22; //долбаный слайдер светит мессаджбокс и не дает яве обработать :(
+    public static final short SIEMENS_FLIPCLOSE=-22; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ :(
     
     public static final short SIEMENS_VOLUP=-13;
     public static final short SIEMENS_VOLDOWN=-14;
@@ -617,12 +619,38 @@ public abstract class VirtualList
     }
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
-    private boolean additionKey(int keyCode) {
-        lastKeyPressed=0;
+    private boolean additionKeyPressed(int keyCode) {
         switch (keyCode) {
-            case 0: 
-                setWobble("bl!");
+            case KEY_NUM0: 
+                //setWobble("bl!");
+                return true;
+            case KEY_NUM1: 
+                //setWobble("bl!");
+                return true;
+            case KEY_NUM2: 
+                //setWobble("bl!");
+                return true;
+            case KEY_NUM3: 
+                //setWobble("bl!");
+                return true;
+            case KEY_NUM4: 
+                new ConfigForm(display);
                 return false;
+            case KEY_NUM5: 
+                //setWobble("bl!");
+                return true;
+            case KEY_NUM6: 
+                //setWobble("bl!");
+                return true;
+            case KEY_NUM7: 
+                //setWobble("bl!");
+                return true;
+            case KEY_NUM8: 
+                //setWobble("bl!");
+                return true;
+            case KEY_NUM9: 
+                //setWobble("bl!");
+                return true;
             default:
                 return true;
         }
@@ -631,10 +659,8 @@ public abstract class VirtualList
     private void key(int keyCode) {
         //System.out.println(keyCode);
         if (lastKeyPressed==KEY_STAR && keyCode!=KEY_STAR) {
-            if (!additionKey(keyCode))
+            if (!additionKeyPressed(keyCode))
                 return;
-        } else {
-            
         }
             
 //#ifdef POPUPS
