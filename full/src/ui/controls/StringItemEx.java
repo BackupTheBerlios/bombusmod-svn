@@ -46,6 +46,9 @@ public class StringItemEx
     public void commandAction(Command command, Item item) {
         if (command == cmdCopy)
         {
+        if (clipboard.isEmpty()) {
+            addCommand(cmdCopyPlus);
+        }
           try {
             clipboard.setClipBoard(getText());
           } catch (Exception e) {/*no messages*/}

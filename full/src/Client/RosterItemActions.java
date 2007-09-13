@@ -232,10 +232,12 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 		addItem(SR.MS_DISCARD,21);
 	    if (group instanceof ConferenceGroup) {
 		MucContact self=((ConferenceGroup)group).getSelfContact();
-		if (self.status>=Presence.PRESENCE_OFFLINE) {// offline or error
+                
+		addItem(SR.MS_LEAVE_ROOM,22, 0x0f22);
+                
+                if (self.status>=Presence.PRESENCE_OFFLINE) {// offline or error
 		    addItem(SR.MS_REENTER,23, 0x0f21);
                 } else {
-		    addItem(SR.MS_LEAVE_ROOM,22, 0x0f22);
                     addItem(SR.MS_DIRECT_PRESENCE,46);
                     addItem(SR.MS_CHANGE_NICKNAME,23, 0x0f21);
 		    if (self.affiliationCode>=MucContact.AFFILIATION_OWNER) {

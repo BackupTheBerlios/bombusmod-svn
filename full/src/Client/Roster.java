@@ -31,6 +31,7 @@ import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
+import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Stats.Stats;
 //#ifdef MOOD
 //# import UserMood.MoodSelect;
@@ -2057,7 +2058,14 @@ public class Roster
                    Contact c=(Contact) getFocusedObject();
                    yesnoAction=ACTION_DELETE; 
                    new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
+                } else if (isContact && isMucContact) {
+                   Contact c=(Contact) getFocusedObject();
+                   ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                   String myNick=mucGrp.getSelfContact().getName();
+                   MucContact mc=(MucContact) c;
+                   new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                 }
+                
                 return;
             } catch (Exception e) { /* NullPointerException */ }
         }

@@ -50,7 +50,6 @@ public class TextFieldEx
         if (command == cmdCopy)
         {
             if (clipboard.isEmpty()) {
-                addCommand(cmdPaste);
                 addCommand(cmdCopyPlus);
             }
             try {
