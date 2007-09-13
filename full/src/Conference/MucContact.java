@@ -167,7 +167,7 @@ public class MucContact extends Contact{
         
         String statusText=presence.getChildBlockText("status");
         
-        if (presence.getTypeIndex()==Presence.PRESENCE_OFFLINE) {
+        if (presenceType==Presence.PRESENCE_OFFLINE) {
             String reason=item.getChildBlockText("reason");
             String realJid=item.getAttribute("jid");
             switch (statusCode) {
@@ -182,8 +182,9 @@ public class MucContact extends Contact{
                     nick=chNick;
                     break;
                     
-                case 307: //kick
                 case 301: //ban
+                    presenceType=Presence.PRESENCE_ERROR;
+                case 307: //kick
                     if (realJid!=null) {
                         b.append(" (");
                         b.append(realJid);
