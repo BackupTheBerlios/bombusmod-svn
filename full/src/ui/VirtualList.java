@@ -618,6 +618,7 @@ public abstract class VirtualList
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
     private boolean additionKey(int keyCode) {
+        lastKeyPressed=0;
         switch (keyCode) {
             case 0: 
                 setWobble("bl!");
@@ -629,9 +630,11 @@ public abstract class VirtualList
     
     private void key(int keyCode) {
         //System.out.println(keyCode);
-        if (lastKeyPressed==KEY_STAR) {
+        if (lastKeyPressed==KEY_STAR && keyCode!=KEY_STAR) {
             if (!additionKey(keyCode))
                 return;
+        } else {
+            
         }
             
 //#ifdef POPUPS
