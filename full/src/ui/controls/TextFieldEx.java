@@ -49,9 +49,13 @@ public class TextFieldEx
     public void commandAction(Command command, Item item) {
         if (command == cmdCopy)
         {
-          try {
-            clipboard.setClipBoard(getString());
-          } catch (Exception e) {/*no messages*/}
+            if (clipboard.isEmpty()) {
+                addCommand(cmdPaste);
+                addCommand(cmdCopyPlus);
+            }
+            try {
+               clipboard.setClipBoard(getString());
+            } catch (Exception e) {/*no messages*/}
         }
         if (command==cmdCopyPlus) {
             try {
