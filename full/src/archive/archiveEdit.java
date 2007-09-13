@@ -27,12 +27,13 @@
 
 package archive;
 
+import Client.Config;
 import Client.Msg;
 import Client.StaticData;
 import Info.Phone;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.controls.TextBoxEx;
+import util.ClipBoard;
 
 /**
  *
@@ -43,22 +44,49 @@ public class archiveEdit implements CommandListener
     
     private Display display;
     private Displayable parentView;
-    private TextBoxEx t;
+    private TextBox t;
     private String body;
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/,1);
+    
+    private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
+    private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
+    private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 16);
+    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);  
 
     private Msg msg;
     
     MessageArchive archive=new MessageArchive();
     
+    private ClipBoard clipboard;
+    
     public archiveEdit(Display display, Msg msg) {
         this.msg=msg;
         this.display=display;
         parentView=display.getCurrent();
+        this.body=msg.getBody();
         
-	t=new TextBoxEx(SR.MS_EDIT, "", TextField.ANY, display);
+	t=new TextBox(SR.MS_EDIT, "", 500, TextField.ANY);
+		
+        try {
+            //expanding buffer as much as possible
+            int maxSize=t.setMaxSize(4096); //must not trow
+
+            if (body!=null) {
+                if (body.length()>maxSize)
+                    body=body.substring(0, maxSize-1);
+                t.setString(body);
+            }
+         } catch (Exception e) {}
+
+        
+        if (!clipboard.isEmpty())
+            t.addCommand(cmdPasteText);
+        
+        t.addCommand(cmdClearTitle);
+        
+        setInitialCaps(Config.getInstance().capsState);
         
         
         t.addCommand(cmdOk);
@@ -78,6 +106,12 @@ public class archiveEdit implements CommandListener
         if (caretPos<0) caretPos=body.length();
 		
         if (body.length()==0) body=null;
+        
+        if (c==cmdAbc) {setInitialCaps(false); return; }
+        if (c==cmdABC) {setInitialCaps(true); return; }
+        
+        if (c==cmdClearTitle) { t.setTitle(t.getTitle()==null?SR.MS_EDIT:null); return; }
+        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
 
         Msg newmsg=null;
         if (c==cmdCancel) { 
@@ -102,5 +136,52 @@ public class archiveEdit implements CommandListener
 
     public void setParentView(Displayable parentView){
         this.parentView=parentView;
+    }
+    
+
+    public int getCaretPos() {
+        String body=t.getString();
+        
+        int caretPos=t.getCaretPosition();
+        // +MOTOROLA STUB
+        if (Phone.PhoneManufacturer()==Phone.MOTO)
+            caretPos=-1;
+        
+        if (caretPos<0) caretPos=body.length();
+        
+        return caretPos;
+    }
+    
+    
+    private void setInitialCaps(boolean state) {
+        t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
+        t.removeCommand(state? cmdABC: cmdAbc);
+        t.addCommand(state? cmdAbc: cmdABC);
+        Config.getInstance().capsState=state;
+    }
+    
+    
+    public void insertText(String s, int caretPos) {
+        String src=t.getString();
+
+        StringBuffer sb=new StringBuffer(s);
+        
+        if (caretPos>0) 
+            if (src.charAt(caretPos-1)!=' ')   
+                sb.insert(0, ' ');
+        
+        if (caretPos<src.length())
+            if (src.charAt(caretPos)!=' ')
+                sb.append(' ');
+        
+        if (caretPos==src.length()) sb.append(' ');
+        
+        try {
+            int freeSz=t.getMaxSize()-t.size();
+            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
+        } catch (Exception e) {}
+       
+        t.insert(sb.toString(), caretPos);
+        sb=null;
     }
 }

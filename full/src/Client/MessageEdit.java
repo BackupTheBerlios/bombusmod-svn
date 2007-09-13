@@ -37,7 +37,6 @@ import locale.SR;
 //# import templates.AppendTemplate;
 //#endif
 import ui.VirtualList;
-import ui.controls.TextBoxEx;
 import util.ClipBoard;
 import util.Translit;
 import ui.Time;
@@ -71,6 +70,11 @@ public class MessageEdit
 //#if TEMPLATES
 //#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 97); 
 //#endif  
+    
+    private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
+    private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
+    private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 16);
+    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);  
 
     private boolean composing=true;
     
@@ -78,7 +82,11 @@ public class MessageEdit
 
     private boolean sendInTranslit=false;
 
-    private TextBoxEx t;
+    private TextBox t;
+
+    private String subject;
+    
+    private ClipBoard clipboard;
     
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Contact to, String body) {
@@ -86,7 +94,29 @@ public class MessageEdit
         this.display=display;
         parentView=display.getCurrent();
 
-        t=new TextBoxEx(to.toString(), "", TextField.ANY, display);
+        t=new TextBox(to.toString(), "", 500, TextField.ANY);
+
+        this.subject=to.toString();
+		
+        try {
+            //expanding buffer as much as possible
+            int maxSize=t.setMaxSize(4096); //must not trow
+
+            if (body!=null) {
+                if (body.length()>maxSize)
+                    body=body.substring(0, maxSize-1);
+                t.setString(body);
+            }
+         } catch (Exception e) {}
+
+        
+        if (!clipboard.isEmpty())
+            t.addCommand(cmdPasteText);
+        
+        t.addCommand(cmdClearTitle);
+        
+        setInitialCaps(cf.capsState);
+        
 
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
@@ -121,9 +151,8 @@ public class MessageEdit
     
     public void commandAction(Command c, Displayable d){
         body=t.getString();
-		
         
-        int caretPos=t.getCaretPos();
+        int caretPos=getCaretPos();
 		
         if (body.length()==0) body=null;
         
@@ -135,7 +164,13 @@ public class MessageEdit
 //#ifdef ARCHIVE
 //# 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
 //#endif
-
+        
+        if (c==cmdAbc) {setInitialCaps(false); return; }
+        if (c==cmdABC) {setInitialCaps(true); return; }
+        
+        if (c==cmdClearTitle) { t.setTitle(t.getTitle()==null?subject:null); return; }
+        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
+                
 //#if TEMPLATES
 //#         if (c==cmdTemplate) { new AppendTemplate(display,  this, caretPos); return; }
 //#endif
@@ -209,8 +244,51 @@ public class MessageEdit
         if (display!=null)   display.setCurrent(parentView);
     }
 
-    public void insertText(String string, int caretPos) {
-        t.insertText(string, caretPos);
+
+    public int getCaretPos() {
+        String body=t.getString();
+        
+        int caretPos=t.getCaretPosition();
+        // +MOTOROLA STUB
+        if (Phone.PhoneManufacturer()==Phone.MOTO)
+            caretPos=-1;
+        
+        if (caretPos<0) caretPos=body.length();
+        
+        return caretPos;
+    }
+    
+    
+    private void setInitialCaps(boolean state) {
+        t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
+        t.removeCommand(state? cmdABC: cmdAbc);
+        t.addCommand(state? cmdAbc: cmdABC);
+        Config.getInstance().capsState=state;
+    }
+    
+    
+    public void insertText(String s, int caretPos) {
+        String src=t.getString();
+
+        StringBuffer sb=new StringBuffer(s);
+        
+        if (caretPos>0) 
+            if (src.charAt(caretPos-1)!=' ')   
+                sb.insert(0, ' ');
+        
+        if (caretPos<src.length())
+            if (src.charAt(caretPos)!=' ')
+                sb.append(' ');
+        
+        if (caretPos==src.length()) sb.append(' ');
+        
+        try {
+            int freeSz=t.getMaxSize()-t.size();
+            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
+        } catch (Exception e) {}
+       
+        t.insert(sb.toString(), caretPos);
+        sb=null;
     }
 }
 
