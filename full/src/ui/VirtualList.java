@@ -61,7 +61,13 @@ public abstract class VirtualList
 
     public static int isbottom=2; //default state both panels show, reverse disabled
 
+    private static final int USER_OTHER_KEY_PRESSED = 0;
+    private static final int USER_STAR_KEY_PRESSED = 1;
+    private static final int USER_KEY_EXECUTED = 2;
+    
     private int lastKeyPressed = 0;
+    private int additionKeyState = USER_OTHER_KEY_PRESSED;
+    
     
     public Phone ph=Phone.getInstance();
     
@@ -658,11 +664,20 @@ public abstract class VirtualList
     
     private void key(int keyCode) {
         //System.out.println(keyCode);
-        if (lastKeyPressed==KEY_STAR && keyCode!=KEY_STAR) {
-            if (!additionKeyPressed(keyCode))
-                return;
+
+        switch (additionKeyState) {
+            case USER_OTHER_KEY_PRESSED:
+                additionKeyState=(keyCode==KEY_STAR)?USER_STAR_KEY_PRESSED:USER_OTHER_KEY_PRESSED;
+                break;
+            case USER_STAR_KEY_PRESSED:
+                additionKeyState=(keyCode!=KEY_STAR)?USER_KEY_EXECUTED:USER_STAR_KEY_PRESSED;
+                if (!additionKeyPressed(keyCode))
+                    return;
+                break;
+            case USER_KEY_EXECUTED:
+                additionKeyState=(keyCode==KEY_STAR)?USER_STAR_KEY_PRESSED:USER_OTHER_KEY_PRESSED;
+                break;            
         }
-            
 //#ifdef POPUPS
 //#         popup.next();
 //#endif
