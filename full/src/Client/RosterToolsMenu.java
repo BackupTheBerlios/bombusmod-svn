@@ -79,7 +79,6 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_STATS, 9, 0x0f30);
 //#endif
         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
-        
 /*		
         addItem("ArchiveDump", 10);
 */        

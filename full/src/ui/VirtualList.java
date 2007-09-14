@@ -38,6 +38,10 @@ import Client.*;
 //#endif
 import ui.controls.Balloon;
 import ui.controls.ScrollBar;
+import ui.keys.userKeyExecute;
+import ui.keys.userKeyExecute;
+import ui.keys.userKeyExecute;
+import ui.keys.userKeysList;
 import util.strconv;
 
 //#if ALT_INPUT
@@ -625,59 +629,60 @@ public abstract class VirtualList
     }
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
-    private boolean additionKeyPressed(int keyCode) {
+    private void additionKeyPressed(int keyCode) {
+        int userCMD=-1;
         switch (keyCode) {
             case KEY_NUM0: 
-                //setWobble("bl!");
-                return true;
+                userCMD=0;
+                break;
             case KEY_NUM1: 
-                //setWobble("bl!");
-                return true;
+                userCMD=1;
+                break;
             case KEY_NUM2: 
-                //setWobble("bl!");
-                return true;
+                userCMD=2;
+                break;
             case KEY_NUM3: 
-                //setWobble("bl!");
-                return true;
+                userCMD=3;
+                break;
             case KEY_NUM4: 
-                new ConfigForm(display);
-                return false;
+                userCMD=4;
+                break;
             case KEY_NUM5: 
-                //setWobble("bl!");
-                return true;
+                userCMD=5;
+                break;
             case KEY_NUM6: 
-                //setWobble("bl!");
-                return true;
+                userCMD=6;
+                break;
             case KEY_NUM7: 
-                //setWobble("bl!");
-                return true;
+                userCMD=7;
+                break;
             case KEY_NUM8: 
-                //setWobble("bl!");
-                return true;
+                userCMD=8;
+                break;
             case KEY_NUM9: 
-                //setWobble("bl!");
-                return true;
-            default:
-                return true;
+                userCMD=9;
+                break;
+            case KEY_POUND: 
+                userCMD=10;
+                break;
         }
+        if (userCMD>-1)
+            new userKeyExecute(display, userCMD);
     }
     
     private void key(int keyCode) {
         //System.out.println(keyCode);
-
         switch (additionKeyState) {
             case USER_OTHER_KEY_PRESSED:
+            case USER_KEY_EXECUTED:                
                 additionKeyState=(keyCode==KEY_STAR)?USER_STAR_KEY_PRESSED:USER_OTHER_KEY_PRESSED;
                 break;
             case USER_STAR_KEY_PRESSED:
                 additionKeyState=(keyCode!=KEY_STAR)?USER_KEY_EXECUTED:USER_STAR_KEY_PRESSED;
-                if (!additionKeyPressed(keyCode))
-                    return;
+                additionKeyPressed(keyCode);
                 break;
-            case USER_KEY_EXECUTED:
-                additionKeyState=(keyCode==KEY_STAR)?USER_STAR_KEY_PRESSED:USER_OTHER_KEY_PRESSED;
-                break;            
         }
+
 //#ifdef POPUPS
 //#         popup.next();
 //#endif
@@ -706,11 +711,10 @@ public abstract class VirtualList
                     moveCursorHome();    
                     break; 
                 }
-                case KEY_NUM7:  { 
-                    moveCursorEnd();     
+                case KEY_NUM2:  { 
+                    keyUp();    
                     break; 
                 }
-                
                 case KEY_NUM4:  { 
                     userKeyPressed(keyCode); 
                     break; 
@@ -719,7 +723,14 @@ public abstract class VirtualList
                     userKeyPressed(keyCode); 
                     break; 
                 }
-                
+                case KEY_NUM7:  { 
+                    moveCursorEnd();     
+                    break; 
+                }                
+                case KEY_NUM8:  { 
+                    keyDwn();    
+                    break; 
+                }
                 case NOKIA_GREEN: {
                     if (ph.PhoneManufacturer()==ph.NOKIA) {
                         keyGreen();
