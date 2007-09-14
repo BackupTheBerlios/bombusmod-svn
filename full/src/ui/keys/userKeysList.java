@@ -133,7 +133,13 @@ public class userKeysList
             "config",
             "clear all",
             "reconnect",
-            "statistics"
+            "statistics",
+            "status",
+            "",
+            "",
+            "",
+            "",
+            "user keys"
     };
     
     public static final String[] KEYS_NAME = {

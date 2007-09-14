@@ -10,9 +10,10 @@
 package ui.keys;
 
 import Client.ConfigForm;
-import javax.microedition.lcdui.Canvas;
+import Client.StaticData;
+import java.util.Enumeration;
+import java.util.Vector;
 import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Graphics;
 
 /**
  *
@@ -21,19 +22,85 @@ import javax.microedition.lcdui.Graphics;
 public class userKeyExecute {
 
     private Display display;
-    
-    
-    
 
+    private Vector commandsList;
+    
+    private boolean initiated = false;
+    
+    
+    private void initCommands() {
+        //System.out.println("start init commands");
+        
+        commandsList=new Vector();
+        
+        userKey u;
+
+        int index=0;
+        do {
+            u=userKey.createFromStorage(index);
+            if (u!=null) {
+                commandsList.addElement(u);
+                index++;
+             }
+       } while (u!=null);
+        
+        initiated=true;
+        //System.out.println("commands initiated");
+    }
+ 
+
+    private int getCommandByKey(int key) {
+        if (!initiated)
+            initCommands();
+        
+        int commandNum = -1;
+         for (Enumeration commands=commandsList.elements(); commands.hasMoreElements(); ) 
+         {
+            userKey userKeyItem=(userKey) commands.nextElement();
+            if (userKeyItem.getKey()==key) {
+                if (userKeyItem.getActive()) {
+                    commandNum=userKeyItem.getCommandId();
+                }
+                //System.out.println("command found "+userKeysList.COMMANDS_DESC[commandNum]);
+            }
+            
+         }
+        return commandNum;
+    }
+    
     public userKeyExecute(Display display, int command) {
         this.display=display;
         
-        switch (command) {
+        if (command==10) { //TEMP REMOVE BEFORE TESTS!
+            new userKeysList(display);
+            return;
+        }
+
+        int commandId=getCommandByKey(command);
+        
+        //System.out.println("commandId "+commandId);
+
+        switch (commandId) {
+            /*
+            "none",
+            "config",
+            "clear all",
+            "reconnect",
+            "statistics",
+            "status",
+            "",
+            "",
+            "",
+            "",
+            "user keys"
+             */
+            case -1: // ky-ky?
+                break;
             case 0:
-                //setWobble("bl!");
+                // do nothing
                 break;
             case 1: 
-                //setWobble("bl!");
+                new ConfigForm(display);
                 break;
             case 2: 
                 //setWobble("bl!");
@@ -42,9 +109,9 @@ public class userKeyExecute {
                 //setWobble("bl!");
                 break;
             case 4: 
-                new ConfigForm(display);
                 break;
-            case 5: 
+            case 5:
+                StaticData.getInstance().roster.cmdStatus();
                 //setWobble("bl!");
                 break;
             case 6: 
@@ -59,7 +126,7 @@ public class userKeyExecute {
             case 9: 
                 //setWobble("bl!");
                 break;
-            case 10: 
+            case 10: //key pound
                 new userKeysList(display);
                 break;
         }
