@@ -139,25 +139,7 @@ public class RosterToolsMenu
                 return;
 //#ifdef POPUPS
 //#             case 9: //traffic stats
-//#                 StringBuffer str= new StringBuffer();
-//#                 Stats stats=Stats.getInstance();
-//#                 str.append("Traffic stats:\nAll(");
-//#                 str.append(stats.getSessionsCount());
-//#                 str.append("): ");
-//#                 
-//#                 str.append(strconv.getSizeString(stats.getAllTraffic()));
-//#                 
-//#                 str.append("\nPrevious: ");
-//#                 str.append(strconv.getSizeString(stats.getLatest()));
-//#                 
-//#                 str.append("\nCurrent: ");
-//#                 str.append(strconv.getSizeString(stats.getGPRS()));
-//# 
-//#                 if (connected)
-//#                     str.append(StaticData.getInstance().roster.theStream.getStreamStats());
-//# 
-//#                 StaticData.getInstance().roster.setWobbler(str.toString());
-//#                 str=null;
+//#                 StaticData.getInstance().roster.showStats();
 //#                 return;
 //#endif
             case 10:

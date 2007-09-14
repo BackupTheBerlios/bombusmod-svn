@@ -38,9 +38,9 @@ import Client.*;
 //#endif
 import ui.controls.Balloon;
 import ui.controls.ScrollBar;
-import ui.keys.userKeyExecute;
-import ui.keys.userKeyExecute;
-import ui.keys.userKeyExecute;
+import ui.keys.userKeyExec;
+import ui.keys.userKeyExec;
+import ui.keys.userKeyExec;
 import ui.keys.userKeysList;
 import util.strconv;
 
@@ -74,6 +74,8 @@ public abstract class VirtualList
     
     
     public Phone ph=Phone.getInstance();
+    
+    public userKeyExec ue=userKeyExec.getInstance();
     
 //#ifdef POPUPS
 //#     private static PopUp popup = new PopUp();
@@ -667,7 +669,7 @@ public abstract class VirtualList
                 break;
         }
         if (userCMD>-1)
-            new userKeyExecute(display, userCMD);
+            ue.commandExecute(display, userCMD);
     }
     
     private void key(int keyCode) {
@@ -1022,7 +1024,7 @@ public abstract class VirtualList
 //#             list.offset=0;
 //#             instance.scrollLen=max;
 //#             //list.showBalloon=false; //<< uncomment this to disable keep balloon floating when traversing
-//#             instance.balloon=(list.showBalloon)? 7 : 15; //time to show
+//#             instance.balloon=(list.showBalloon)? 3 : 10; //time to show
 //#             instance.scroll=8;
 //#             instance.attachedList=list;
 //#             instance.stop=false;
@@ -1035,7 +1037,7 @@ public abstract class VirtualList
 //#     
 //#         while (true) {
 //#             if (exit) return;
-//#             try {  sleep(300);  } catch (Exception e) {}
+//#             try {  sleep(600);  } catch (Exception e) {}
 //#             if (stop) continue;
 //#             
 //#             boolean redraw = false;

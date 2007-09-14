@@ -208,11 +208,14 @@ public class MessageEdit
 
         String id=String.valueOf((int) System.currentTimeMillis());
         
+        if (body!=null)
+            body=body.trim();
+        
         if (sendInTranslit==true) {
             if (body!=null)
-               body=Translit.translit(body).trim();
+               body=Translit.translit(body);
             if (subj!=null )
-               subj=Translit.translit(subj).trim();
+               subj=Translit.translit(subj);
         }
 
         if (body!=null || subj!=null ) {

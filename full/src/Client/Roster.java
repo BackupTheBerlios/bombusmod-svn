@@ -1476,7 +1476,7 @@ public class Roster
                     
                     if (groupchat) compose=false;   //drop composing events in muc;
                     if (compose) c.acceptComposing=true ; 
-                    if (body!=null) compose=false;
+                    if (message.getChildBlock("body")!=null) compose=false;
                     if (compose) {
                         playNotify(SOUND_COMPOSING);
                     }
@@ -2744,6 +2744,28 @@ public class Roster
             if (cr.getGroup()==deleteGroup)
                 deleteContact(cr);                
         }
+    }
+
+    public void showStats() {
+        StringBuffer str= new StringBuffer();
+        Stats stats=Stats.getInstance();
+        str.append("Traffic stats:\nAll(");
+        str.append(stats.getSessionsCount());
+        str.append("): ");
+
+        str.append(strconv.getSizeString(stats.getAllTraffic()));
+
+        str.append("\nPrevious: ");
+        str.append(strconv.getSizeString(stats.getLatest()));
+
+        str.append("\nCurrent: ");
+        str.append(strconv.getSizeString(stats.getGPRS()));
+
+        if (isLoggedIn())
+            str.append(theStream.getStreamStats());
+
+        setWobbler(str.toString());
+        str=null;
     }
 }
 

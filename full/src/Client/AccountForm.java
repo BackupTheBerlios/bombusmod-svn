@@ -181,11 +181,11 @@ class AccountForm implements CommandListener, ItemStateListener {
 	    String user = userbox.getString();
 	    int at = user.indexOf('@');
 	    if (at!=-1) user=user.substring(0, at);
-	    account.setUserName(user.trim());
+	    account.setUserName(user.trim().toLowerCase());
             
 	    account.setPassword(fixPassBugWEME());
             
-	    account.setServer(servbox.getString().trim());
+	    account.setServer(servbox.getString().trim().toLowerCase());
 	    account.setHostAddr(ipbox.getString());
 	    account.setResource(resourcebox.getString());
 	    account.setNick(nickbox.getString());

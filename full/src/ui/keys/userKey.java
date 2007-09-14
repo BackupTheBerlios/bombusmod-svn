@@ -1,7 +1,7 @@
 /*
  * userKey.java
  *
- * Created on 14 Сентябрь 2007 г., 10:42
+ * Created on 14 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2007 пїЅ., 10:42
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -41,8 +41,8 @@ public class userKey extends IconTextElement {
     
     public String toString(){
         StringBuffer s=new StringBuffer("");
-        s.append("'");
-        s.append(userKeysList.getKeyDesc(key));
+        s.append("'*+");
+        s.append(userKeyExec.getInstance().getKeyDesc(key));
         s.append("' - ");
         s.append(getDesc());
         
@@ -50,7 +50,7 @@ public class userKey extends IconTextElement {
     }
     
     public String getDesc(){
-        return userKeysList.getDesc(commandId);
+        return userKeyExec.getInstance().getDesc(commandId);
     }
     
     public static userKey createFromStorage(int index) {

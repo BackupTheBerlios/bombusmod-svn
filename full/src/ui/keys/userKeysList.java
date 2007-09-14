@@ -1,7 +1,7 @@
 /*
  * userKeysList.java
  *
- * Created on 14 Сентябрь 2007 г., 10:11
+ * Created on 14 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2007 пїЅ., 10:11
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -43,18 +43,7 @@ public class userKeysList
 
         setMainBarItem(new MainBar("Keys"));
         
-        commandsList=new Vector();
-        userKey u;
-        
-        int index=0;
-        do {
-            u=userKey.createFromStorage(index);
-            if (u!=null) {
-                commandsList.addElement(u);
-                //System.out.println(commandsList.elementAt(index).toString());
-                index++;
-             }
-       } while (u!=null);
+        commandsList=userKeyExec.getInstance().commandsList;
        
         attachDisplay(display);
         addCommand(cmdAdd);
@@ -95,7 +84,8 @@ public class userKeysList
         if (c==cmdAdd)
             new userKeyEdit(this, display, null);
         if (c==cmdDel) {
-            commandsList.removeElement(getFocusedObject());
+            //commandsList.removeElement(getFocusedObject());
+            userKeyExec.getInstance().commandsList.removeElement(getFocusedObject());
             
             rmsUpdate();
             moveCursorHome();
@@ -118,42 +108,5 @@ public class userKeysList
         }
         
         NvStorage.writeFileRecord(outputStream, userKey.storage, 0, true);
-    }
-
-    static String getDesc(int descId) {
-        return COMMANDS_DESC[descId];
-    }
-    
-    static String getKeyDesc(int commandId) {
-        return KEYS_NAME[commandId];
-    }
-
-    public static final String[] COMMANDS_DESC = {
-            "none",
-            "config",
-            "clear all",
-            "reconnect",
-            "statistics",
-            "status",
-            "",
-            "",
-            "",
-            "",
-            "user keys"
-    };
-    
-    public static final String[] KEYS_NAME = {
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "#"
-    };
-    
+    }    
 }

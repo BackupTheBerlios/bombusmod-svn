@@ -40,6 +40,7 @@ import ui.*;
 
 import Client.*;
 import Info.Version;
+import ui.keys.userKeyExec;
 
 
 /** Entry point class
@@ -98,9 +99,6 @@ public class BombusMod extends MIDlet implements Runnable{
         } catch (Exception e) { }
         
         s.setProgress(3);
-
-        //Phone ph=Phone.getInstance();
-        //s.setProgress(8);
         
         try {
             s.img=Image.createImage("/images/splash.png");
@@ -108,7 +106,11 @@ public class BombusMod extends MIDlet implements Runnable{
             s.img=null;
         }
 
-        s.setProgress(Version.getVersionNumber(),10);
+        s.setProgress(Version.getVersionNumber(),7);
+        
+        userKeyExec ue=userKeyExec.getInstance();
+        s.setProgress(10);
+        
 
 	Config cf=Config.getInstance();
         s.setProgress(12);

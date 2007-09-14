@@ -1,7 +1,7 @@
 /*
  * userKeyEdit.java
  *
- * Created on 14 Сентябрь 2007 г., 11:01
+ * Created on 14 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2007 пїЅ., 11:01
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -16,7 +16,6 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.ItemStateListener;
 import locale.SR;
 
 /**
@@ -62,15 +61,15 @@ class userKeyEdit implements CommandListener {
         f.append(active);
         
         keyDesc=new ChoiceGroup("Key action", ChoiceGroup.POPUP);
-        for (int i=0;i<keysList.COMMANDS_DESC.length;i++) {
-            keyDesc.append(keysList.COMMANDS_DESC[i], null);
+        for (int i=0;i<userKeyExec.getInstance().COMMANDS_DESC.length;i++) {
+            keyDesc.append(userKeyExec.getInstance().COMMANDS_DESC[i], null);
         }
         keyDesc.setSelectedIndex(u.getCommandId(), true);
         f.append(keyDesc);
         
         keyCode=new ChoiceGroup("Key", ChoiceGroup.POPUP);
-        for (int i=0;i<keysList.KEYS_NAME.length;i++) {
-            keyCode.append(keysList.KEYS_NAME[i], null);
+        for (int i=0;i<userKeyExec.getInstance().KEYS_NAME.length;i++) {
+            keyCode.append(userKeyExec.getInstance().KEYS_NAME[i], null);
         }
         keyCode.setSelectedIndex(u.getKey(), true);
         f.append(keyCode);
@@ -93,8 +92,10 @@ class userKeyEdit implements CommandListener {
             u.setCommand(keyDesc.getSelectedIndex());
             u.setKey(keyCode.getSelectedIndex());
 
-            if (newKey) 
+            if (newKey) {
                 keysList.commandsList.addElement(u);
+                //userKeyExec.getInstance().commandsList.addElement(u);
+            }
             
 	    keysList.rmsUpdate();
 	    keysList.commandState();
