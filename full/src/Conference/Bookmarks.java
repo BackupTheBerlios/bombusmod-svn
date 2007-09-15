@@ -120,7 +120,9 @@ public class Bookmarks
 
     private void addBookmark() {
         if (toAdd!=null) {
-            StaticData.getInstance().roster.bookmarks.addElement(toAdd);
+            Vector bm=StaticData.getInstance().roster.bookmarks;
+            bm.addElement(toAdd);
+            sort(bm);
             saveBookmarks();
         }
     }

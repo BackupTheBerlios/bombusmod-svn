@@ -129,4 +129,9 @@ public class BookmarkItem extends IconTextElement{
     public String getSecondString() {
         return null;
     }
+    
+    public int compare(IconTextElement right) {
+        return this.toString().compareTo(right.toString());
+    }
+            
 }
