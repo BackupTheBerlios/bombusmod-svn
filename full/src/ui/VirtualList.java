@@ -631,7 +631,7 @@ public abstract class VirtualList
     }
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
 
-    private void additionKeyPressed(int keyCode) {
+    private boolean additionKeyPressed(int keyCode) {
         int userCMD=-1;
         switch (keyCode) {
             case KEY_NUM0: 
@@ -669,7 +669,9 @@ public abstract class VirtualList
                 break;
         }
         if (userCMD>-1)
-            ue.commandExecute(display, userCMD);
+            return ue.commandExecute(display, userCMD);
+        
+        return true;
     }
     
     private void key(int keyCode) {
@@ -681,7 +683,8 @@ public abstract class VirtualList
                 break;
             case USER_STAR_KEY_PRESSED:
                 additionKeyState=(keyCode!=KEY_STAR)?USER_KEY_EXECUTED:USER_STAR_KEY_PRESSED;
-                additionKeyPressed(keyCode);
+                if (!additionKeyPressed(keyCode))
+                    return;
                 break;
         }
 

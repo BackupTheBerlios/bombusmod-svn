@@ -2770,7 +2770,7 @@ public class Roster
         if (isLoggedIn())
             str.append(theStream.getStreamStats());
 
-        setWobbler(str.toString());
+        VirtualList.setWobble(str.toString());
         str=null;
     }
 }

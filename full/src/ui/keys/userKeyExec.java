@@ -69,12 +69,12 @@ public class userKeyExec {
         return commandNum;
     }
     
-    public void commandExecute(Display display, int command) {
+    public boolean commandExecute(Display display, int command) { //return false if key not executed
         this.display=display;
         
         if (command==10) { //TEMP REMOVE BEFORE TESTS!
             new userKeysList(display);
-            return;
+            return true;
         }
 
         int commandId=getCommandByKey(command);
@@ -92,40 +92,43 @@ public class userKeyExec {
                 break;
             case 1: 
                 new ConfigForm(display);
-                break;
+                return true;
             case 2: 
                 roster.cleanupAllHistories();
-                break;
+                return true;
             case 3: 
                 roster.connectionTerminated(new Exception("reconnect by user"));
-                break;
+                return true;
             case 4: 
                 roster.showStats();
-                break;
+                return true;
             case 5:
                 roster.cmdStatus();
-                //setWobble("bl!");
-                break;
+                return true;
             case 6: 
                 new io.file.transfer.TransferManager(display);
-                break;
+                return true;
             case 7: 
                 roster.cmdArchive();
-                break;
+                return true;
 //#ifdef SERVICE_DISCOVERY
 //#             case 8: 
-//#                 if (connected) new ServiceDiscovery(display, null, null);
-//#                 break;
+//#                 if (connected) {
+//#                     new ServiceDiscovery(display, null, null);
+//#                     return true;
+//#                 }
 //#endif
 //#ifdef PRIVACY
 //#             case 9: 
 //#                 if (connected) new PrivacySelect(display);
-//#                 break;
+//#                 return true;
 //#endif
             case 10: //key pound
                 new userKeysList(display);
-                break;
+                return true;
         }
+        
+        return false;
     } 
 
 
