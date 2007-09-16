@@ -1676,6 +1676,12 @@ public class Roster
                     if (ti>=0) 
                         c.setStatus(ti);
                     
+                    if (c.nick==null) {
+                        JabberDataBlock nick = pr.findNamespace("http://jabber.org/protocol/nick");
+                        if (nick!=null) c.nick=nick.getText();
+                        
+                    }
+                    
                     if (cf.showLastAppearedContact && notifyReady(-111) &&
                         (ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT)) {
                             //if (lastAppearedContact!=null) 
