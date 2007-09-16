@@ -738,7 +738,7 @@ public class Roster
 
         myMessage=strconv.toExtendedString(myMessage);
         
-        Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
+        Presence presence = new Presence(myStatus, es.getPriority(), myMessage, StaticData.getInstance().account.getNick());
 		
         if (isLoggedIn()) {
             if (status==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
@@ -788,7 +788,7 @@ public class Roster
 
         myMessage=strconv.toExtendedString(myMessage);
 
-        Presence presence = new Presence(status, es.getPriority(), myMessage);
+        Presence presence = new Presence(status, es.getPriority(), myMessage, StaticData.getInstance().account.getNick());
         
         presence.setTo(to);
         
@@ -840,7 +840,7 @@ public class Roster
 
             myMessage=strconv.toExtendedString(myMessage);
 
-            Presence presence = new Presence(myStatus, es.getPriority(), myMessage);
+            Presence presence = new Presence(myStatus, es.getPriority(), myMessage, null);
             presence.setTo(myself.getJid());
             theStream.send(presence);
          }
