@@ -204,49 +204,55 @@ public class ConfigForm implements
         su[1]=cf.autoJoinConferences;
         startup.setSelectedFlags(su);
         
-//#ifdef NEW_MENU
-//#         //ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?7:6];
-//#         ap=new boolean[8];
-//#else
-        //ap=new boolean[(ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE)?8:7];
-        ap=new boolean[7];
+        boolean ap[]={
+            cf.fullscreen,
+            cf.memMonitor,
+            cf.enableVersionOs,
+            cf.queryExit,
+//#ifdef USER_KEYS
+//#             cf.userKeys,
 //#endif
+//#ifdef NEW_MENU
+//#             cf.newMenu,
+//#endif
+            cf.lightState,
+            cf.blFlash
+        };
+        this.ap=ap;
+        
 	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
         
         application.append(SR.MS_FULLSCREEN,null);
-        ap[apctr++]=cf.fullscreen;
+        apctr++;
 
         application.append(SR.MS_HEAP_MONITOR,null);
-        ap[apctr++]=cf.memMonitor;
+        apctr++;
 
         application.append(SR.MS_SHOW_HARDWARE,null);
-        ap[apctr++]=cf.enableVersionOs;
+        apctr++;
 
         application.append(SR.MS_CONFIRM_EXIT,null);
-        ap[apctr++]=cf.queryExit;
+        apctr++;
+        
 //#ifdef USER_KEYS
 //#         application.append(SR.MS_CUSTOM_KEYS,null);
-//#         ap[apctr++]=cf.userKeys;
+//#         apctr++;
 //#endif
 //#ifdef NEW_MENU
 //#         application.append(SR.MS_NEW_MENU,null);
-//#         ap[apctr++]=cf.newMenu;
+//#         apctr++;
 //#endif
 
-        if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE) { 
-            application.append("Turn on light",null);
-            ap[apctr++]=cf.lightState;
-        }
+        application.append("Turn on light",null);
+        apctr++;
    
-	if (!cf.ghostMotor) {
-            application.append(SR.MS_FLASHBACKLIGHT,null);
-            ap[apctr++]=cf.blFlash;
-        }
-            
+	application.append(SR.MS_FLASHBACKLIGHT,null);
+        apctr++;
+
 	if (cf.allowMinimize) {
             application.append(SR.MS_ENABLE_POPUP,null);
-            ap[apctr++]=cf.popupFromMinimized;
+            ap[apctr]=cf.popupFromMinimized;
         }
 
         application.setSelectedFlags(ap);
@@ -425,12 +431,8 @@ public class ConfigForm implements
 	    int apctr=0;
 
             VirtualList.fullscreen=cf.fullscreen=ap[apctr++];
-            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
-
 	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
-            
             cf.enableVersionOs=ap[apctr++];
-            
             cf.queryExit=ap[apctr++];
 //#ifdef USER_KEYS
 //#             cf.userKeys=ap[apctr++];
@@ -438,17 +440,8 @@ public class ConfigForm implements
 //#ifdef NEW_MENU
 //#             cf.newMenu=ap[apctr++];
 //#endif
-            
-            if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2 || ph.PhoneManufacturer()==ph.SONYE) { 
-                cf.lightState=ap[apctr++];
-                if (cf.allowLightControl)
-                    StaticData.getInstance().roster.setLight(cf.lightState);                
-            }
-
-            if (!cf.ghostMotor) {
-                cf.blFlash=ap[apctr++];
-            }
-
+            cf.lightState=ap[apctr++];
+            cf.blFlash=ap[apctr++];
             if (cf.allowMinimize) {
                 cf.popupFromMinimized=ap[apctr++];
             }
@@ -471,6 +464,12 @@ public class ConfigForm implements
             cf.autoAwayType=autoAwayType.getSelectedIndex();
             
             cf.messageLimit=MessageLimit.getValue();
+
+            
+            if (cf.allowLightControl)
+                StaticData.getInstance().roster.setLight(cf.lightState);   
+            
+            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
             
             cf.updateTime();
             
