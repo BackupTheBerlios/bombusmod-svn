@@ -38,10 +38,9 @@ import Client.*;
 //#endif
 import ui.controls.Balloon;
 import ui.controls.ScrollBar;
-import ui.keys.userKeyExec;
-import ui.keys.userKeyExec;
-import ui.keys.userKeyExec;
-import ui.keys.userKeysList;
+//#ifdef USER_KEYS
+//# import ui.keys.userKeyExec;
+//#endif
 import util.strconv;
 
 //#if ALT_INPUT
@@ -74,9 +73,9 @@ public abstract class VirtualList
     
     
     public Phone ph=Phone.getInstance();
-    
-    public userKeyExec ue=userKeyExec.getInstance();
-    
+//#ifdef USER_KEYS
+//#     public userKeyExec ue=userKeyExec.getInstance();
+//#endif
 //#ifdef POPUPS
 //#     private static PopUp popup = new PopUp();
 //# 
@@ -630,64 +629,68 @@ public abstract class VirtualList
         if (scrollbar.pointerDragged(x, y, this)) stickyWindow=false; 
     }
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
-
-    private boolean additionKeyPressed(int keyCode) {
-        int userCMD=-1;
-        switch (keyCode) {
-            case KEY_NUM0: 
-                userCMD=0;
-                break;
-            case KEY_NUM1: 
-                userCMD=1;
-                break;
-            case KEY_NUM2: 
-                userCMD=2;
-                break;
-            case KEY_NUM3: 
-                userCMD=3;
-                break;
-            case KEY_NUM4: 
-                userCMD=4;
-                break;
-            case KEY_NUM5: 
-                userCMD=5;
-                break;
-            case KEY_NUM6: 
-                userCMD=6;
-                break;
-            case KEY_NUM7: 
-                userCMD=7;
-                break;
-            case KEY_NUM8: 
-                userCMD=8;
-                break;
-            case KEY_NUM9: 
-                userCMD=9;
-                break;
-            case KEY_POUND: 
-                userCMD=10;
-                break;
-        }
-        if (userCMD>-1)
-            return ue.commandExecute(display, userCMD);
-        
-        return true;
-    }
     
+//#ifdef USER_KEYS
+//#     private boolean additionKeyPressed(int keyCode) {
+//#         int userCMD=-1;
+//#         switch (keyCode) {
+//#             case KEY_NUM0: 
+//#                 userCMD=0;
+//#                 break;
+//#             case KEY_NUM1: 
+//#                 userCMD=1;
+//#                 break;
+//#             case KEY_NUM2: 
+//#                 userCMD=2;
+//#                 break;
+//#             case KEY_NUM3: 
+//#                 userCMD=3;
+//#                 break;
+//#             case KEY_NUM4: 
+//#                 userCMD=4;
+//#                 break;
+//#             case KEY_NUM5: 
+//#                 userCMD=5;
+//#                 break;
+//#             case KEY_NUM6: 
+//#                 userCMD=6;
+//#                 break;
+//#             case KEY_NUM7: 
+//#                 userCMD=7;
+//#                 break;
+//#             case KEY_NUM8: 
+//#                 userCMD=8;
+//#                 break;
+//#             case KEY_NUM9: 
+//#                 userCMD=9;
+//#                 break;
+//#             case KEY_POUND: 
+//#                 userCMD=10;
+//#                 break;
+//#         }
+//#         if (userCMD>-1)
+//#             return ue.commandExecute(display, userCMD);
+//#         
+//#         return true;
+//#     }
+//#endif
     private void key(int keyCode) {
         //System.out.println(keyCode);
-        switch (additionKeyState) {
-            case USER_OTHER_KEY_PRESSED:
-            case USER_KEY_EXECUTED:                
-                additionKeyState=(keyCode==KEY_STAR)?USER_STAR_KEY_PRESSED:USER_OTHER_KEY_PRESSED;
-                break;
-            case USER_STAR_KEY_PRESSED:
-                additionKeyState=(keyCode!=KEY_STAR)?USER_KEY_EXECUTED:USER_STAR_KEY_PRESSED;
-                if (!additionKeyPressed(keyCode))
-                    return;
-                break;
-        }
-
+//#ifdef USER_KEYS
+//#         if (cf.userKeys) {
+//#             switch (additionKeyState) {
+//#                 case USER_OTHER_KEY_PRESSED:
+//#                 case USER_KEY_EXECUTED:                
+//#                     additionKeyState=(keyCode==KEY_STAR)?USER_STAR_KEY_PRESSED:USER_OTHER_KEY_PRESSED;
+//#                     break;
+//#                 case USER_STAR_KEY_PRESSED:
+//#                     additionKeyState=(keyCode!=KEY_STAR)?USER_KEY_EXECUTED:USER_STAR_KEY_PRESSED;
+//#                     if (!additionKeyPressed(keyCode))
+//#                         return;
+//#                     break;
+//#             }
+//#         }
+//#endif
 //#ifdef POPUPS
 //#         popup.next();
 //#endif
@@ -1027,8 +1030,8 @@ public abstract class VirtualList
 //#             list.offset=0;
 //#             instance.scrollLen=max;
 //#             //list.showBalloon=false; //<< uncomment this to disable keep balloon floating when traversing
-//#             instance.balloon=(list.showBalloon)? 3 : 10; //time to show
-//#             instance.scroll=8;
+//#             instance.balloon=(list.showBalloon)? 6 : 13; //time to show
+//#             instance.scroll=7;
 //#             instance.attachedList=list;
 //#             instance.stop=false;
 //#         }
@@ -1040,7 +1043,7 @@ public abstract class VirtualList
 //#     
 //#         while (true) {
 //#             if (exit) return;
-//#             try {  sleep(600);  } catch (Exception e) {}
+//#             try {  sleep(300);  } catch (Exception e) {}
 //#             if (stop) continue;
 //#             
 //#             boolean redraw = false;
@@ -1074,13 +1077,13 @@ public abstract class VirtualList
 //#                         scrollLen=-1;
 //#                         attachedList.offset=0;
 //#                     } else 
-//#                         attachedList.offset+=30;
+//#                         attachedList.offset+=20;
 //#                 }
 //#                 
 //#                 //balloon state machine
 //#                 if (balloon>=0) 
 //#                     balloon--;
-//#                 attachedList.showBalloon=(balloon<8 && balloon>0);
+//#                 attachedList.showBalloon=(balloon<7 && balloon>0);
 //#                 
 //#             }
 //#             if (redraw) 

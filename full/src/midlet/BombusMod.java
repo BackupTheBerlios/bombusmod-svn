@@ -31,7 +31,6 @@
  */
 package midlet;
 
-import Info.Phone;
 import Stats.Stats;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
@@ -40,8 +39,6 @@ import ui.*;
 
 import Client.*;
 import Info.Version;
-import ui.keys.userKeyExec;
-
 
 /** Entry point class
  *
@@ -95,7 +92,7 @@ public class BombusMod extends MIDlet implements Runnable{
         s.setProgress(1);
         
         try {
-            Stats.getInstance().getGPRS();
+            Stats.getInstance();
         } catch (Exception e) { }
         
         s.setProgress(3);
@@ -108,19 +105,17 @@ public class BombusMod extends MIDlet implements Runnable{
 
         s.setProgress(Version.getVersionNumber(),7);
         
-        userKeyExec ue=userKeyExec.getInstance();
-        s.setProgress(10);
+        //userKeyExec ue=userKeyExec.getInstance();
+        //s.setProgress(10);
         
 
 	Config cf=Config.getInstance();
         s.setProgress(12);
 
-        AlertCustomize ac=AlertCustomize.getInstance();
-        s.setProgress(15);
+       // AlertCustomize ac=AlertCustomize.getInstance();
+        //s.setProgress(15);
 
-        try {
-            ColorScheme cl=ColorScheme.getInstance();
-        } catch (Exception e) { }
+        ColorScheme cl=ColorScheme.getInstance();
         s.setProgress(20);
 
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
@@ -138,6 +133,8 @@ public class BombusMod extends MIDlet implements Runnable{
         } else {
             new AccountSelect(display, true);
         }
+        
+        s.img=null;
     }
     
     /**

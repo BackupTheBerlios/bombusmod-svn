@@ -173,6 +173,8 @@ public class Config {
     
     public boolean showBalloons = true;
     
+    public boolean userKeys = false;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -327,6 +329,8 @@ public class Config {
             
             showBalloons=inputStream.readBoolean();
             
+            userKeys=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -459,6 +463,8 @@ public class Config {
            
             outputStream.writeBoolean(showLastAppearedContact);
             outputStream.writeBoolean(showBalloons);
+            
+            outputStream.writeBoolean(userKeys);
             
 	} catch (Exception e) { }
 	

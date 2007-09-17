@@ -225,7 +225,10 @@ public class ConfigForm implements
 
         application.append(SR.MS_CONFIRM_EXIT,null);
         ap[apctr++]=cf.queryExit;
-
+//#ifdef USER_KEYS
+//#         application.append(SR.MS_CUSTOM_KEYS,null);
+//#         ap[apctr++]=cf.userKeys;
+//#endif
 //#ifdef NEW_MENU
 //#         application.append(SR.MS_NEW_MENU,null);
 //#         ap[apctr++]=cf.newMenu;
@@ -429,7 +432,9 @@ public class ConfigForm implements
             cf.enableVersionOs=ap[apctr++];
             
             cf.queryExit=ap[apctr++];
-            
+//#ifdef USER_KEYS
+//#             cf.userKeys=ap[apctr++];
+//#endif
 //#ifdef NEW_MENU
 //#             cf.newMenu=ap[apctr++];
 //#endif

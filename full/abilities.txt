@@ -15,3 +15,4 @@
 //#ifdef HISTORY - история
 //#ifdef SE_LIGHT - подсветка на сониэроиках и нокиях
 //#ifdef TEMPLATES - шаблоны
+//#ifdef USER_KEYS - настройка комбинаций кнопок

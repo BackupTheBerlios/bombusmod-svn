@@ -43,6 +43,9 @@ import locale.SR;
 //#endif
 import ui.Menu;
 import ui.MenuItem;
+//#ifdef USER_KEYS
+//# import ui.keys.userKeysList;
+//#endif
 import util.strconv;
 import vcard.VCard;
 import vcard.vCardForm;
@@ -79,6 +82,10 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_STATS, 9, 0x0f30);
 //#endif
         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
+//#ifdef USER_KEYS
+//#         if (Config.getInstance().userKeys)
+//#             addItem(SR.MS_CUSTOM_KEYS, 11, 0x0f03);
+//#endif
 /*		
         addItem("ArchiveDump", 10);
 */        
@@ -146,6 +153,11 @@ public class RosterToolsMenu
                 if (! connected) break;
                 new util.LastVersion(display);
                 return;
+//#ifdef USER_KEYS
+//#             case 11:
+//#                 new userKeysList(display);
+//#                 return;
+//#endif
 /*
             case 10:
                 new archive.DebugDumpArchive(display);

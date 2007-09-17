@@ -21,6 +21,7 @@ import Client.StaticData;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
+import locale.SR;
 
 public class userKeyExec {
     
@@ -62,7 +63,6 @@ public class userKeyExec {
                 if (userKeyItem.getActive()) {
                     commandNum=userKeyItem.getCommandId();
                 }
-                //System.out.println("command found "+userKeysList.COMMANDS_DESC[commandNum]);
             }
             
          }
@@ -71,17 +71,10 @@ public class userKeyExec {
     
     public boolean commandExecute(Display display, int command) { //return false if key not executed
         this.display=display;
-        
-        if (command==10) { //TEMP REMOVE BEFORE TESTS!
-            new userKeysList(display);
-            return true;
-        }
 
         int commandId=getCommandByKey(command);
         
         boolean connected= ( StaticData.getInstance().roster.isLoggedIn() );
-        
-        //System.out.println("commandId "+commandId);
 
         Roster roster=StaticData.getInstance().roster;
         switch (commandId) {
@@ -141,18 +134,17 @@ public class userKeyExec {
     }
 
     public static final String[] COMMANDS_DESC = {
-            "none",
-            "config",
-            "clear all",
-            "reconnect",
-            "statistics",
-            "status",
-            "filetransfer",
-            "archive",
-            "service discovery",
-            "privacy lists",
-            "",
-            "user keys"
+            SR.MS_NO,
+            SR.MS_OPTIONS,
+            SR.MS_CLEAN_ALL_MESSAGES,
+            SR.MS_RECONNECT,
+            SR.MS_STATS,
+            SR.MS_STATUS_MENU,
+            SR.MS_FILE_TRANSFERS,
+            SR.MS_ARCHIVE,
+            SR.MS_DISCO,
+            SR.MS_PRIVACY_LISTS,
+            SR.MS_CUSTOM_KEYS
     };
     
     public static final String[] KEYS_NAME = {

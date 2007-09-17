@@ -23,9 +23,9 @@ public class EntityCaps implements JabberBlockListener{
     
     /** Creates a new instance of EntityCaps */
     public EntityCaps() {}
-    
-    private static String mood="ep-notify";
-
+//#ifdef MOOD
+//#     private static String mood="ep-notify";
+//#endif
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
         if (!data.getTypeAttribute().equals("get")) return BLOCK_REJECTED;
@@ -101,10 +101,11 @@ public class EntityCaps implements JabberBlockListener{
     }
     
     private final static String BOMBUS_NAMESPACE=Version.getUrl();
+    
 //features MUST be sorted
     private final static String features[]={
         "http://jabber.org/protocol/disco#info",
-		"http://jabber.org/protocol/ibb",
+	"http://jabber.org/protocol/ibb",
         "http://www.xmpp.org/extensions/xep-0199.html#ns",
         "http://jabber.org/protocol/muc",
         "http://jabber.org/protocol/si",
