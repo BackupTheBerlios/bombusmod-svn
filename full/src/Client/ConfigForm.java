@@ -228,16 +228,11 @@ public class ConfigForm implements
 //#         apctr++;
 //#endif
 
-        application.append("Turn on light",null);
+        application.append(SR.MS_FLASHLIGHT,null);
         apctr++;
    
 	application.append(SR.MS_FLASHBACKLIGHT,null);
         apctr++;
-
-	if (cf.allowMinimize) {
-            application.append(SR.MS_ENABLE_POPUP,null);
-            ap[apctr]=cf.popupFromMinimized;
-        }
 
         boolean ap[]={
             cf.fullscreen,
@@ -251,8 +246,15 @@ public class ConfigForm implements
 //#             cf.newMenu,
 //#endif
             cf.lightState,
-            cf.blFlash
+            cf.blFlash,
+            false
         };
+        
+	if (cf.allowMinimize) {
+            application.append(SR.MS_ENABLE_POPUP,null);
+            ap[apctr]=cf.popupFromMinimized;
+        }
+
         this.ap=ap;
         
         application.setSelectedFlags(ap);

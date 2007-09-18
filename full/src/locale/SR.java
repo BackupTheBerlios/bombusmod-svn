@@ -546,6 +546,8 @@ public class SR {
     public static String MS_RECONNECT = loadString( "reconnect" );
 
     public static String MS_SORT = loadString( "Sort list" );
+
+    public static String MS_FLASHLIGHT = loadString( "Turn on light" );
     
     private SR() { }
     

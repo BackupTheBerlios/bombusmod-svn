@@ -42,11 +42,11 @@ public class MoodLocale {
         String value=(String)localeMood.get(name);
 //#if LOCALE_DEBUG
         if (value==null) {
-            if (!lang.isEmpty()) {
+            //if (!lang.isEmpty()) {
                 //System.out.print("Can't find local string for <");
-                System.out.println(key);
+            //    System.out.println(key);
                 //System.out.println('>');
-            }
+            //}
         }
 //#endif
         return (value==null)?name:value;
