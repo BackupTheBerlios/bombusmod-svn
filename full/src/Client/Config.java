@@ -346,6 +346,7 @@ public class Config {
 	VirtualList.isbottom=isbottom;
 	VirtualList.memMonitor=memMonitor;
         VirtualList.showBalloons=showBalloons;
+        VirtualList.userKeys=userKeys;
     }
     
     public String langFileName(){

@@ -260,6 +260,7 @@ public class ConfigPrivateStorage
 //#             VirtualList.fullscreen=cf.fullscreen;
 //#             VirtualList.isbottom=cf.isbottom;
 //#             VirtualList.memMonitor=cf.memMonitor;
+//#             VirtualList.userKeys=cf.userKeys;
 //# 	} catch (Exception e) {}
 //#     }
 //#     

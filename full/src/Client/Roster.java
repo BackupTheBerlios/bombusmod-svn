@@ -1234,6 +1234,7 @@ public class Roster
                         }
                     }
                 } else  if (type.equals("get")) {
+                    /*
                     JabberDataBlock ping=data.getChildBlock("ping");
                     if (ping!=null){
                         Contact c=getContact(from, true);
@@ -1243,7 +1244,7 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         return JabberBlockListener.BLOCK_REJECTED;
-                    }
+                    }*/
                    
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
@@ -1289,7 +1290,7 @@ public class Roster
                     JabberDataBlock ping=data.getChildBlock("ping");
                     if (ping!=null){
                         Contact c=getContact(from, true);
-                        if (ping.isJabberNameSpace("http://www.xmpp.org/extensions/xep-0199.html#ns")) { //ping
+                        if (ping.isJabberNameSpace("urn:xmpp:ping")) { //ping
                             from=data.getAttribute("from");
                             String pong=c.getPing();
                             if (pong!="") {

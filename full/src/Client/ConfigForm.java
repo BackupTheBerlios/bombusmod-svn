@@ -435,7 +435,7 @@ public class ConfigForm implements
             cf.enableVersionOs=ap[apctr++];
             cf.queryExit=ap[apctr++];
 //#ifdef USER_KEYS
-//#             cf.userKeys=ap[apctr++];
+//#             VirtualList.userKeys=cf.userKeys=ap[apctr++];
 //#endif
 //#ifdef NEW_MENU
 //#             cf.newMenu=ap[apctr++];

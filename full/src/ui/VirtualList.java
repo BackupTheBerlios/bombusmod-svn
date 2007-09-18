@@ -136,6 +136,7 @@ public abstract class VirtualList
     public static boolean fullscreen=false;
     public static boolean memMonitor;
     public static boolean showBalloons;
+    public static boolean userKeys;
 
     public static boolean canBack=true;
 
@@ -677,7 +678,7 @@ public abstract class VirtualList
     private void key(int keyCode) {
         //System.out.println(keyCode);
 //#ifdef USER_KEYS
-//#         if (cf.userKeys) {
+//#         if (userKeys) {
 //#             switch (additionKeyState) {
 //#                 case USER_OTHER_KEY_PRESSED:
 //#                 case USER_KEY_EXECUTED:                
