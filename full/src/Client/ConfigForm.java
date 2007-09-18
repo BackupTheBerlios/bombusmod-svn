@@ -204,22 +204,6 @@ public class ConfigForm implements
         su[1]=cf.autoJoinConferences;
         startup.setSelectedFlags(su);
         
-        boolean ap[]={
-            cf.fullscreen,
-            cf.memMonitor,
-            cf.enableVersionOs,
-            cf.queryExit,
-//#ifdef USER_KEYS
-//#             cf.userKeys,
-//#endif
-//#ifdef NEW_MENU
-//#             cf.newMenu,
-//#endif
-            cf.lightState,
-            cf.blFlash
-        };
-        this.ap=ap;
-        
 	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
         
@@ -255,6 +239,22 @@ public class ConfigForm implements
             ap[apctr]=cf.popupFromMinimized;
         }
 
+        boolean ap[]={
+            cf.fullscreen,
+            cf.memMonitor,
+            cf.enableVersionOs,
+            cf.queryExit,
+//#ifdef USER_KEYS
+//#             cf.userKeys,
+//#endif
+//#ifdef NEW_MENU
+//#             cf.newMenu,
+//#endif
+            cf.lightState,
+            cf.blFlash
+        };
+        this.ap=ap;
+        
         application.setSelectedFlags(ap);
         
 	//keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 10, 10000 );
