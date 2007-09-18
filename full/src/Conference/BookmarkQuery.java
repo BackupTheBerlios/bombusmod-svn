@@ -85,8 +85,6 @@ public class BookmarkQuery implements JabberBlockListener{
 				
                 if (bookmarks.isEmpty()) 
                     loadDefaults(bookmarks);
-                                
-                VirtualList.sort(bookmarks);
 					
                 StaticData.getInstance().roster.bookmarks=bookmarks;
                 StaticData.getInstance().roster.redraw();

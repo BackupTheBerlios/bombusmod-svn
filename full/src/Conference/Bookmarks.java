@@ -50,23 +50,24 @@ public class Bookmarks
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
-    private Command cmdAdvJoin=new Command (SR.MS_EDIT_JOIN, Command.SCREEN, 10);
-    private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 12);
-    private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 15);
-    private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 16);
+    private Command cmdAdvJoin=new Command (SR.MS_EDIT_JOIN, Command.SCREEN, 2);
+    private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 3);
+    private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 4);
+    private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 5);
 //#ifdef SERVICE_DISCOVERY
-//#     private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 17);
+//#     private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 6);
 //#endif
-    private Command cmdUp=new Command (SR.MS_MOVE_UP, Command.SCREEN, 18);
-    private Command cmdDwn=new Command (SR.MS_MOVE_DOWN, Command.SCREEN, 19);
-    private Command cmdSave=new Command (SR.MS_SAVE_LIST, Command.SCREEN, 20);
+    private Command cmdUp=new Command (SR.MS_MOVE_UP, Command.SCREEN, 7);
+    private Command cmdDwn=new Command (SR.MS_MOVE_DOWN, Command.SCREEN, 8);
+    private Command cmdSort=new Command (SR.MS_SORT, Command.SCREEN, 9);
+    private Command cmdSave=new Command (SR.MS_SAVE_LIST, Command.SCREEN, 10);
 
-    private Command cmdRoomOwners=new Command (SR.MS_OWNERS, Command.SCREEN, 21);
-    private Command cmdRoomAdmins=new Command (SR.MS_ADMINS, Command.SCREEN, 22);
-    private Command cmdRoomMembers=new Command (SR.MS_MEMBERS, Command.SCREEN, 23);
-    private Command cmdRoomBanned=new Command (SR.MS_BANNED, Command.SCREEN, 24);
+    private Command cmdRoomOwners=new Command (SR.MS_OWNERS, Command.SCREEN, 11);
+    private Command cmdRoomAdmins=new Command (SR.MS_ADMINS, Command.SCREEN, 12);
+    private Command cmdRoomMembers=new Command (SR.MS_MEMBERS, Command.SCREEN, 13);
+    private Command cmdRoomBanned=new Command (SR.MS_BANNED, Command.SCREEN, 14);
     
-    private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 30);
+    private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 15);
     
     Roster roster=StaticData.getInstance().roster;
 
@@ -92,6 +93,7 @@ public class Bookmarks
         
         addCommand(cmdUp);
         addCommand(cmdDwn);
+        addCommand(cmdSort);
         addCommand(cmdSave);
 //#ifdef SERVICE_DISCOVERY
 //#         addCommand(cmdDisco);
@@ -187,6 +189,10 @@ public class Bookmarks
 
         else if (c==cmdRoomBanned) new Affiliations(display, roomJid, (short)4);  
         
+        else if (c==cmdSort) {
+            sort(StaticData.getInstance().roster.bookmarks);
+        }
+        
         else if (c==cmdDoAutoJoin) {
             for (Enumeration e=StaticData.getInstance().roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
@@ -248,7 +254,6 @@ public class Bookmarks
     }
     
     public void ActionConfirmed() {
-        //
         deleteBookmark();
     }
 }

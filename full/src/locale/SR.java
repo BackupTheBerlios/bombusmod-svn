@@ -544,6 +544,8 @@ public class SR {
 //#endif
 
     public static String MS_RECONNECT = loadString( "reconnect" );
+
+    public static String MS_SORT = loadString( "Sort list" );
     
     private SR() { }
     
