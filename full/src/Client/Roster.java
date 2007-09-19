@@ -212,7 +212,8 @@ public class Roster
         
         SplashScreen.getInstance().setExit(display, this);
         
-        autostatus=new AutoStatusTask();
+        if (cf.autoAwayType!=cf.AWAY_OFF)
+            autostatus=new AutoStatusTask();
 //#ifdef POPUPS
 //#         VirtualList.setWobble("");
 //#endif       

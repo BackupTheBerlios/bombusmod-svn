@@ -37,9 +37,7 @@ public class AutoStatusTask implements Runnable {
     
     public void setTimeEvent(long delay){
         timeAwayEvent=(delay==0)? 0:delay+System.currentTimeMillis();
-        //    System.out.println("away set to: "+timeAwayEvent);  //пишем в вывод сколько поставили
         timeXaEvent=(delay==0)? 0:(delay*2)+timeAwayEvent;
-        //    System.out.println("xa set to: "+timeXaEvent);  //пишем в вывод сколько поставили
     }
 
     boolean isAwayTimerSet() { 
@@ -53,33 +51,25 @@ public class AutoStatusTask implements Runnable {
     public void run() {
         while (!stop) {
             try {
-                Thread.sleep(5000); //спим 5 секунд
+                Thread.sleep(5000);
             } catch (InterruptedException ex) {
-                stop=true; //при ошибке завершаем таймер
+                stop=true;
             }
        
-            if (timeAwayEvent==0 && timeXaEvent==0) //если оба события 0
-                continue; //пропускаем
+            if (timeAwayEvent==0 && timeXaEvent==0)
+                continue;
             
-            long timeAwayRemained=(timeAwayEvent!=0)?System.currentTimeMillis()-timeAwayEvent:0; //если событие не 0 - вычитаем из текущего времени, время собития или ставим 0
-            long timeXaRemained=(timeXaEvent!=0)?System.currentTimeMillis()-timeXaEvent:0; //если событие не 0 - вычитаем из текущего времени, время собития или ставим 0
-
-            //if (timeAwayEvent!=0) //если событие не 0
-            //    System.out.println("AWAY: "+timeAwayRemained);  //пишем в вывод сколько осталось
+            long timeAwayRemained=(timeAwayEvent!=0)?System.currentTimeMillis()-timeAwayEvent:0;
+            long timeXaRemained=(timeXaEvent!=0)?System.currentTimeMillis()-timeXaEvent:0;
             
-            //if (timeAwayEvent==0 && timeXaEvent!=0) //если событие не 0
-            //    System.out.println("XA: "+timeXaRemained);  //пишем в вывод сколько осталось
-            
-            if (timeAwayRemained>0 && timeAwayEvent!=0) { //если перешли через границу и собыитие не 0
-                timeAwayEvent=0; //ставим событие 0
-                //System.out.println("away"); //пишем в вывод away
-                StaticData.getInstance().roster.setAutoAway(); //ставим статус away
+            if (timeAwayRemained>0 && timeAwayEvent!=0) {
+                timeAwayEvent=0;
+                StaticData.getInstance().roster.setAutoAway();
             }
 
-            if (timeAwayEvent==0 && timeXaRemained>0) { //если перешли через границу и собыитие не 0
-                timeXaEvent=0; //ставим событие 0
-                //System.out.println("xa");  //пишем в вывод xa
-                StaticData.getInstance().roster.setAutoXa(); //ставим статус xa
+            if (timeAwayEvent==0 && timeXaRemained>0) {
+                timeXaEvent=0;
+                StaticData.getInstance().roster.setAutoXa();
             }
 
             //if (timeAwayRemained<0) continue;

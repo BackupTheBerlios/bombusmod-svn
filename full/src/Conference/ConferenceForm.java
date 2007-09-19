@@ -159,8 +159,7 @@ public class ConferenceForm implements CommandListener{
         
         msgLimitField=new NumberField(SR.MS_MSG_LIMIT, cf.confMessageCount, 0, 100);
         formJoin.append(msgLimitField);
-        
-        //autostatus
+
         AutoJoin=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
         AutoJoin.append("AutoJoin", null);
         
