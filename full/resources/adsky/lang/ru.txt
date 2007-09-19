@@ -486,4 +486,33 @@ Last Messages	Последние сообщения
 Edit/join	Редактировать/Подключить
 Save chat	Сохранить сообщения
 show statuses	показывать статусы
-Google token request	Запрос гуглепожатияby message	по сообщениюJoin marked (auto)	АвтоподключатьсяHistory options	Настройка историиFilenames transliterate	Имена файлов транслитомUser mood	Настроениеdelivery events	события доставкиdrop all	отбрасывать всеreceive messages	получать сообщенияmessages & presences	сообщения и статусыnormal	среднийsmall	мелкийlarge	крупныйAuto	АвтоAll signals	Все сигналыVibra	ВибрацияNo signals	Без сигналов (default)	 (по-умолчанию)Quit?	Выйти?Are you sure want to Quit?	Вы действительно хотите выйти?exit confirmation	подтверждение выходаshow last appeared contacts	показывать недавно подключившихсяcustom keys	сочетания кнопокAdd custom key	Добавить сочетание кнопокkeys action	действиеenabled	включеноkey	кнопкаreconnect	переподключениеSort list	Сортировать списокTurn on light	Не выключать подсветку
+Google token request	Запрос гуглепожатия
+by message	по сообщению
+Join marked (auto)	Автоподключаться
+History options	Настройка истории
+Filenames transliterate	Имена файлов транслитом
+User mood	Настроение
+delivery events	события доставки
+drop all	отбрасывать все
+receive messages	получать сообщения
+messages & presences	сообщения и статусы
+normal	средний
+small	мелкий
+large	крупный
+Auto	Авто
+All signals	Все сигналы
+Vibra	Вибрация
+No signals	Без сигналов
+ (default)	 (по-умолчанию)
+Quit?	Выйти?
+Are you sure want to Quit?	Вы действительно хотите выйти?
+exit confirmation	подтверждение выхода
+show last appeared contacts	показывать недавно подключившихся
+custom keys	сочетания кнопок
+Add custom key	Добавить сочетание кнопок
+keys action	действие
+enabled	включено
+key	кнопка
+reconnect	переподключение
+Sort list	Сортировать список
+Turn on light	Не выключать подсветку
