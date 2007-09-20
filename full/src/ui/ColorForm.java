@@ -73,8 +73,8 @@ public class ColorForm implements CommandListener
             SR.MS_BLK_BGND,
             SR.MS_MESSAGE_IN,
             SR.MS_MESSAGE_OUT,
-
             SR.MS_MESSAGE_PRESENCE,
+            
             SR.MS_MESSAGE_AUTH,
             SR.MS_MESSAGE_HISTORY,
             SR.MS_PGS_REMAINED,
@@ -89,7 +89,11 @@ public class ColorForm implements CommandListener
             SR.MS_CURSOR_OUTLINE,
             SR.MS_SCROLL_BRD,
             SR.MS_SCROLL_BAR,
-            SR.MS_SCROLL_BGND
+            SR.MS_SCROLL_BGND,
+                    
+            SR.MS_MESSAGE_IN_S,
+            SR.MS_MESSAGE_OUT_S,
+            SR.MS_MESSAGE_PRESENCE_S
         };
         
         public static int[] COLORS = {            
@@ -116,8 +120,8 @@ public class ColorForm implements CommandListener
             cl.BLK_BGND,
             cl.MESSAGE_IN,
             cl.MESSAGE_OUT,
-            
             cl.MESSAGE_PRESENCE,
+            
             cl.MESSAGE_AUTH,
             cl.MESSAGE_HISTORY,
             cl.PGS_REMAINED,
@@ -132,7 +136,10 @@ public class ColorForm implements CommandListener
             cl.CURSOR_OUTLINE,
             cl.SCROLL_BRD,
             cl.SCROLL_BAR,
-            cl.SCROLL_BGND
+            cl.SCROLL_BGND,
+            cl.MESSAGE_IN_S,
+            cl.MESSAGE_OUT_S,
+            cl.MESSAGE_PRESENCE_S
       };
         
       
@@ -160,8 +167,8 @@ public class ColorForm implements CommandListener
             imageData(cl.BLK_BGND),
             imageData(cl.MESSAGE_IN),
             imageData(cl.MESSAGE_OUT),
-
             imageData(cl.MESSAGE_PRESENCE),
+            
             imageData(cl.MESSAGE_AUTH),
             imageData(cl.MESSAGE_HISTORY),
             imageData(cl.PGS_REMAINED),
@@ -176,7 +183,11 @@ public class ColorForm implements CommandListener
             imageData(cl.CURSOR_OUTLINE),
             imageData(cl.SCROLL_BRD),
             imageData(cl.SCROLL_BAR),
-            imageData(cl.SCROLL_BGND)
+            imageData(cl.SCROLL_BGND),
+            
+            imageData(cl.MESSAGE_IN_S),
+            imageData(cl.MESSAGE_OUT_S),
+            imageData(cl.MESSAGE_PRESENCE_S)
       };
 
 

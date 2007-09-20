@@ -349,7 +349,7 @@ public class ConfigForm implements
 
 //#ifdef COLORS       
 //#         SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ChoiceGroup.POPUP);
-//# 	Skinfiles=new StringLoader().stringLoader("/skins/res.txt",2);
+//#         Skinfiles=new StringLoader().stringLoader("/skins/res.txt",2);
 //# 	for (Enumeration f=Skinfiles[1].elements(); f.hasMoreElements(); ) {
 //# 	    SkinFile.append( (String)f.nextElement(), null );
 //# 	}

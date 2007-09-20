@@ -38,7 +38,9 @@ import locale.SR;
 //#endif
 import ui.VirtualList;
 import util.ClipBoard;
-import util.Translit;
+//#ifdef TRANSLIT
+//# import util.Translit;
+//#endif
 import ui.Time;
 
 /**
@@ -64,7 +66,9 @@ public class MessageEdit
 //#endif
     private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
     private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
-    private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 5);
+//#ifdef TRANSLIT
+//#     private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 5);
+//#endif
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
 //#if TEMPLATES
@@ -79,9 +83,9 @@ public class MessageEdit
     private boolean composing=true;
     
     private Config cf=Config.getInstance();
-
-    private boolean sendInTranslit=false;
-
+//#ifdef TRANSLIT
+//#     private boolean sendInTranslit=false;
+//#endif
     private TextBox t;
 
     private String subject;
@@ -125,8 +129,9 @@ public class MessageEdit
 //#endif
         if (to.origin>=Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdInsNick);
-        
-        t.addCommand(cmdSendInTranslit);
+//#ifdef TRANSLIT
+//#         t.addCommand(cmdSendInTranslit);
+//#endif
 //#ifdef ARCHIVE
 //#         t.addCommand(cmdPaste);
 //#endif
@@ -184,10 +189,11 @@ public class MessageEdit
                 body=null;
         }
         if (c==cmdSend && body==null) return;
-        
-        if (c==cmdSendInTranslit) {
-            sendInTranslit=true;
-        }
+//#ifdef TRANSLIT
+//#         if (c==cmdSendInTranslit) {
+//#             sendInTranslit=true;
+//#         }
+//#endif
         if (c==cmdSubj) {
             if (body==null) return;
             subj=body;
@@ -210,14 +216,14 @@ public class MessageEdit
         
         if (body!=null)
             body=body.trim();
-        
-        if (sendInTranslit==true) {
-            if (body!=null)
-               body=Translit.translit(body);
-            if (subj!=null )
-               subj=Translit.translit(subj);
-        }
-
+//#ifdef TRANSLIT
+//#         if (sendInTranslit==true) {
+//#             if (body!=null)
+//#                body=Translit.translit(body);
+//#             if (subj!=null )
+//#                subj=Translit.translit(subj);
+//#         }
+//#endif
         if (body!=null || subj!=null ) {
             String from=StaticData.getInstance().account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);

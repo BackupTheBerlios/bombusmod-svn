@@ -103,11 +103,11 @@ public class ColorScheme {
     public static int BLK_INK           =0xffffff;
     public static int BLK_BGND          =0x000000;
     public static int MESSAGE_IN        =0x0000b0;
-    public final static int MESSAGE_IN_S        =0x0060ff;
+    public static int MESSAGE_IN_S        =0x0060ff;
     public static int MESSAGE_OUT       =0xb00000;
-    public final static int MESSAGE_OUT_S       =0xff4000;
+    public static int MESSAGE_OUT_S       =0xff4000;
     public static int MESSAGE_PRESENCE  =0x006000;
-    public final static int MESSAGE_PRESENCE_S  =0x00c040;
+    public static int MESSAGE_PRESENCE_S  =0x00c040;
     public static int MESSAGE_AUTH	=0x400040;
     public static int MESSAGE_HISTORY	=0x535353;
     public static int PGS_REMAINED	=0xffffff;
@@ -173,6 +173,10 @@ public class ColorScheme {
 //#             SCROLL_BGND=inputStream.readInt();
 //#             
 //#             CURSOR_OUTLINE=inputStream.readInt();
+//#    
+//#             MESSAGE_IN_S=inputStream.readInt();
+//#             MESSAGE_OUT_S=inputStream.readInt();
+//#             MESSAGE_PRESENCE_S=inputStream.readInt();
 //# 
 //# 	    inputStream.close();
 //# 	} catch (Exception e) { }
@@ -192,8 +196,8 @@ public class ColorScheme {
 //#             
 //# 	    outputStream.writeInt(DISCO_CMD);
 //#             
-//#             outputStream.writeInt(BAR_BGND);
-//#             outputStream.writeInt(BAR_INK);
+//#         outputStream.writeInt(BAR_BGND);
+//#         outputStream.writeInt(BAR_INK);
 //#             
 //# 	    outputStream.writeInt(CONTACT_DEFAULT);
 //# 	    outputStream.writeInt(CONTACT_CHAT);
@@ -225,6 +229,10 @@ public class ColorScheme {
 //# 	    outputStream.writeInt(SCROLL_BRD);
 //# 	    outputStream.writeInt(SCROLL_BAR);
 //# 	    outputStream.writeInt(SCROLL_BGND);
+//# 
+//# 	    outputStream.writeInt(MESSAGE_IN_S);
+//# 	    outputStream.writeInt(MESSAGE_OUT_S);
+//# 	    outputStream.writeInt(MESSAGE_PRESENCE_S);
 //#             
 //#             outputStream.writeInt(CURSOR_OUTLINE);
 //# 
@@ -258,6 +266,9 @@ public class ColorScheme {
 //#             MESSAGE_IN=loadInt("MESSAGE_IN", MESSAGE_IN);
 //#             MESSAGE_OUT=loadInt("MESSAGE_OUT", MESSAGE_OUT);
 //#             MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE", MESSAGE_PRESENCE);
+//#             MESSAGE_IN_S=loadInt("MESSAGE_IN_S", MESSAGE_IN_S);
+//#             MESSAGE_OUT_S=loadInt("MESSAGE_OUT_S", MESSAGE_OUT_S);
+//#             MESSAGE_PRESENCE_S=loadInt("MESSAGE_PRESENCE_S", MESSAGE_PRESENCE_S);
 //#             MESSAGE_AUTH=loadInt("MESSAGE_AUTH", MESSAGE_AUTH);
 //#             MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY", MESSAGE_HISTORY);
 //#             PGS_REMAINED=loadInt("PGS_REMAINED", PGS_REMAINED);
@@ -322,7 +333,11 @@ public class ColorScheme {
 //#     
 //#     public static String getSkin(){
 //#         StringBuffer body=new StringBuffer();
+//#ifdef TRANSLIT
 //#         body.append("xmlSkin\t"+Translit.translit(StaticData.getInstance().account.getNickName()));
+//#else
+//#         body.append("xmlSkin\t"+StaticData.getInstance().account.getNickName());
+//#endif
 //#         body.append("\r\n");
 //#         body.append("BALLOON_INK\t"+getColorString(BALLOON_INK)+"\r\n");
 //#         body.append("BALLOON_BGND\t"+getColorString(BALLOON_BGND)+"\r\n");
@@ -345,6 +360,9 @@ public class ColorScheme {
 //#         body.append("MESSAGE_IN\t"+getColorString(MESSAGE_IN)+"\r\n");
 //#         body.append("MESSAGE_OUT\t"+getColorString(MESSAGE_OUT)+"\r\n");
 //#         body.append("MESSAGE_PRESENCE\t"+getColorString(MESSAGE_PRESENCE)+"\r\n");
+//#         body.append("MESSAGE_IN_S\t"+getColorString(MESSAGE_IN_S)+"\r\n");
+//#         body.append("MESSAGE_OUT_S\t"+getColorString(MESSAGE_OUT_S)+"\r\n");
+//#         body.append("MESSAGE_PRESENCE_S\t"+getColorString(MESSAGE_PRESENCE_S)+"\r\n");
 //#         body.append("MESSAGE_AUTH\t"+getColorString(MESSAGE_AUTH)+"\r\n");
 //#         body.append("MESSAGE_HISTORY\t"+getColorString(MESSAGE_HISTORY)+"\r\n");
 //#         body.append("PGS_REMAINED\t"+getColorString(PGS_REMAINED)+"\r\n");

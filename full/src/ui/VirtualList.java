@@ -42,7 +42,6 @@ import ui.controls.ScrollBar;
 //# import ui.keys.userKeyExec;
 //#endif
 import util.strconv;
-
 //#if ALT_INPUT
 //# import ui.inputbox.Box;
 //#endif

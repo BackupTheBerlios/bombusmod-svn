@@ -27,7 +27,9 @@
 
 package Client;
 import Conference.MucContact;
-import History.HistoryAppend;
+//#ifdef HISTORY
+//# import History.HistoryAppend;
+//#endif
 import Messages.MessageList;
 import images.RosterIcons;
 import io.NvStorage;
@@ -585,7 +587,7 @@ public class ContactMessageList extends MessageList
 //#     }
 //#endif
     
-//#ifdef FILE_IO
+//#ifdef FILE_IO 
     private void saveMessages() {
         if (cf.msgPath==null) {
 //#ifdef POPUPS

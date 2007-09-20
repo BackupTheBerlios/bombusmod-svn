@@ -115,9 +115,11 @@ public class userKeyExec {
             case 5:
                 roster.cmdStatus();
                 return true;
-            case 6: 
-                new io.file.transfer.TransferManager(display);
-                return true;
+//#if (FILE_IO && FILE_TRANSFER)
+//#             case 6: 
+//#                 new io.file.transfer.TransferManager(display);
+//#                 return true;
+//#endif
             case 7: 
                 roster.cmdArchive();
                 return true;

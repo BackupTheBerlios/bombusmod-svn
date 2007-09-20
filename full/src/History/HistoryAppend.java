@@ -53,7 +53,11 @@ public class HistoryAppend {
        } else {
             bodyMessage=body.toString().getBytes();
        }
-       String filename=cf.msgPath+((cf.transliterateFilenames)?Translit.translit(histRecord):histRecord)+".txt";
+//#ifdef TRANSLIT
+//#        String filename=cf.msgPath+((cf.transliterateFilenames)?Translit.translit(histRecord):histRecord)+".txt";
+//#else
+       String filename=cf.msgPath+histRecord+".txt";
+//#endif
        file=FileIO.createConnection(filename);
         try {
             os = file.openOutputStream(0);

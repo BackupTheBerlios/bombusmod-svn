@@ -81,7 +81,9 @@ public class RosterToolsMenu
 //#ifdef POPUPS
 //#         addItem(SR.MS_STATS, 9, 0x0f30);
 //#endif
-        addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
+//#ifdef CHECK_VERSION
+//#         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
+//#endif
 //#ifdef USER_KEYS
 //#         if (Config.getInstance().userKeys)
 //#             addItem(SR.MS_CUSTOM_KEYS, 11, 0x0f03);
@@ -149,10 +151,12 @@ public class RosterToolsMenu
 //#                 StaticData.getInstance().roster.showStats();
 //#                 return;
 //#endif
-            case 10:
-                if (! connected) break;
-                new util.LastVersion(display);
-                return;
+//#ifdef CHECK_VERSION
+//#             case 10:
+//#                 if (! connected) break;
+//#                 new util.LastVersion(display);
+//#                 return;
+//#endif
 //#ifdef USER_KEYS
 //#             case 11:
 //#                 new userKeysList(display);

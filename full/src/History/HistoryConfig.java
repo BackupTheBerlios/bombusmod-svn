@@ -103,15 +103,19 @@ public class HistoryConfig implements
         history.append(SR.MS_SAVE_HISTORY_CONF, null); //locale
         history.append(SR.MS_SAVE_PRESENCES_CONF, null); //locale
         history.append(SR.MS_1251_CORRECTION, null); //locale
-        history.append(SR.MS_1251_TRANSLITERATE_FILENAMES, null); //locale
+//#ifdef TRANSLIT
+//#         history.append(SR.MS_1251_TRANSLITERATE_FILENAMES, null); //locale
+//#endif
         
         boolean his[]={
             cf.msgLog,
             cf.msgLogPresence,
             cf.msgLogConf,
             cf.msgLogConfPresence,
-            cf.cp1251,
-            cf.transliterateFilenames
+            cf.cp1251
+//#ifdef TRANSLIT
+//#             , cf.transliterateFilenames
+//#endif
         };
         this.his=his;
         
@@ -152,8 +156,9 @@ public class HistoryConfig implements
             cf.msgLogConf=his[2];
             cf.msgLogConfPresence=his[3];
             cf.cp1251=his[4];
-            cf.transliterateFilenames=his[5];
-            
+//#ifdef TRANSLIT
+//#             cf.transliterateFilenames=his[5];
+//#endif
             cf.msgPath=historyFolder.getString();
 //#endif             
             
