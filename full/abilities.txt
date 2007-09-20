@@ -1,19 +1,23 @@
 Фишечки :)
 
-//#ifdef COLORS - настройки цветов и что с ними связано
-//#ifdef ARCHIVE - архив
-//#ifdef POPUPS - всплывающая панель
-//#ifdef ELF - эльфовые функции... траффик и данные для нижней панели
-//#ifdef NEW_MENU - графическое меню
-//#ifdef SERVICE_DISCOVERY - диско
-//#ifdef PRIVACY - списки приватности
-//#ifdef SMILES - смайлы
-//#ifdef ANTISPAM - антиспам
-//#ifdef SERVER_SIDE_CONFIG - хранение конфига на стороне сервера
-//#ifdef REQUEST_VOICE - пока не нужно... запрос голоса для визиторов
-//#ifdef MOOD - настроения
-//#ifdef HISTORY - история
-//#ifdef SE_LIGHT - подсветка на сониэроиках и нокиях
-//#ifdef TEMPLATES - шаблоны
-//#ifdef USER_KEYS - настройка комбинаций кнопок
-//#ifdef AUTOSTATUS - автостатус
+COLORS - настройки цветов и что с ними связано
+ARCHIVE - архив
+POPUPS - всплывающая панель
+ELF - эльфовые функции... траффик и данные для нижней панели
+NEW_MENU - графическое меню
+SERVICE_DISCOVERY - диско
+PRIVACY - списки приватности
+SMILES - смайлы
+ANTISPAM - антиспам
+SERVER_SIDE_CONFIG - хранение конфига на стороне сервера
+REQUEST_VOICE - пока не нужно... запрос голоса для визиторов
+MOOD - настроения
+HISTORY - история сообщений
+SE_LIGHT - подсветка на сониэроиках и нокиях
+TEMPLATES - шаблоны
+USER_KEYS - настройка комбинаций кнопок
+AUTOSTATUS - автостатус
+USE_ROTATOR - баллуны и прокрутка длинных строк
+FILE_TRANSFER - передача файлов
+LAST_MESSAGES - последние 5 входящих сообщений контакта(хранятся в rms)
+ALT_INPUT - альтернативный способ ввода(классический чат)
