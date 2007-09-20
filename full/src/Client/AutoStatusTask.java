@@ -64,12 +64,16 @@ public class AutoStatusTask implements Runnable {
             
             if (timeAwayRemained>0 && timeAwayEvent!=0) {
                 timeAwayEvent=0;
-                StaticData.getInstance().roster.setAutoAway();
+//#ifdef AUTOSTATUS
+//#                 StaticData.getInstance().roster.setAutoAway();
+//#endif
             }
 
             if (timeAwayEvent==0 && timeXaRemained>0) {
                 timeXaEvent=0;
-                StaticData.getInstance().roster.setAutoXa();
+//#ifdef AUTOSTATUS
+//#                 StaticData.getInstance().roster.setAutoXa();
+//#endif
             }
 
             //if (timeAwayRemained<0) continue;

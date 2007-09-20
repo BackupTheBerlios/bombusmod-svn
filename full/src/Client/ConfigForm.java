@@ -70,11 +70,12 @@ public class ConfigForm implements
     //NumberField keepAlive;
     NumberField fieldLoc;
     NumberField fieldGmt;
-    
-    ChoiceGroup awayStatus;
-
-    NumberField fieldAwatDelay;
-    ChoiceGroup autoAwayType;
+//#ifdef AUTOSTATUS
+//#     ChoiceGroup awayStatus;
+//# 
+//#     NumberField fieldAwatDelay;
+//#     ChoiceGroup autoAwayType;
+//#endif
 //#if SERVER_SIDE_CONFIG  
 //#     ChoiceGroup settings;
 //#endif
@@ -99,7 +100,9 @@ public class ConfigForm implements
     boolean mv[];
     boolean ap[];
     boolean su[];
-    boolean aa[];
+//#ifdef AUTOSTATUS
+//#     boolean aa[];
+//#endif
     boolean lc[];
     boolean se[];
     Vector files[];
@@ -320,28 +323,29 @@ public class ConfigForm implements
         f.append(fieldLoc);
         
         f.append(lang);
-
-        autoAwayType=new ChoiceGroup(SR.MS_AWAY_TYPE, Choice.POPUP);
-        autoAwayType.append(SR.MS_AWAY_OFF, null);
-        autoAwayType.append(SR.MS_AWAY_LOCK, null);
-        autoAwayType.append(SR.MS_MESSAGE_LOCK, null);
-        autoAwayType.append(SR.MS_IDLE, null);
-        autoAwayType.setSelectedIndex(cf.autoAwayType, true);
-        
-        fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 60);
-
-        awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
-        awayStatus.append("AutoStatus Message", null);
-        
-        boolean aa[]={
-            cf.setAutoStatusMessage
-        };
-        this.aa=aa;
-        awayStatus.setSelectedFlags(aa);
-        f.append(awayStatus);
-    
-        f.append(autoAwayType);
-        f.append(fieldAwatDelay);
+//#ifdef AUTOSTATUS
+//#         autoAwayType=new ChoiceGroup(SR.MS_AWAY_TYPE, Choice.POPUP);
+//#         autoAwayType.append(SR.MS_AWAY_OFF, null);
+//#         autoAwayType.append(SR.MS_AWAY_LOCK, null);
+//#         autoAwayType.append(SR.MS_MESSAGE_LOCK, null);
+//#         autoAwayType.append(SR.MS_IDLE, null);
+//#         autoAwayType.setSelectedIndex(cf.autoAwayType, true);
+//#         
+//#         fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 60);
+//# 
+//#         awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
+//#         awayStatus.append("AutoStatus Message", null);
+//#         
+//#         boolean aa[]={
+//#             cf.setAutoStatusMessage
+//#         };
+//#         this.aa=aa;
+//#         awayStatus.setSelectedFlags(aa);
+//#         f.append(awayStatus);
+//#     
+//#         f.append(autoAwayType);
+//#         f.append(fieldAwatDelay);
+//#endif
 
 //#ifdef COLORS       
 //#         SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ChoiceGroup.POPUP);
@@ -387,8 +391,9 @@ public class ConfigForm implements
             message.getSelectedFlags(mv);
             application.getSelectedFlags(ap);
 	    startup.getSelectedFlags(su);
-
-            awayStatus.getSelectedFlags(aa);
+//#ifdef AUTOSTATUS
+//#             awayStatus.getSelectedFlags(aa);
+//#endif
 //#if SERVER_SIDE_CONFIG  
 //#             settings.getSelectedFlags(se);
 //#endif 
@@ -458,13 +463,13 @@ public class ConfigForm implements
 	    cf.textWrap=textWrap.getSelectedIndex();
 
             cf.lang=(String) langs[0].elementAt( lang.getSelectedIndex() );
-          
-            cf.setAutoStatusMessage=aa[0];
-
-            
-            cf.autoAwayDelay=fieldAwatDelay.getValue();
-            cf.autoAwayType=autoAwayType.getSelectedIndex();
-            
+//#ifdef AUTOSTATUS
+//#             cf.setAutoStatusMessage=aa[0];
+//# 
+//#             
+//#             cf.autoAwayDelay=fieldAwatDelay.getValue();
+//#             cf.autoAwayType=autoAwayType.getSelectedIndex();
+//#endif
             cf.messageLimit=MessageLimit.getValue();
 
             

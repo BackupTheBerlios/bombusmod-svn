@@ -102,12 +102,14 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     
     public void run(){
         int status=getSel().getImageIndex();
-        try {
-            Roster.autoAway=false;
-            Roster.autoXa=false;
-            StaticData.getInstance().roster.messageActivity();
-            StaticData.getInstance().roster.sendDirectPresence(status, to, null);
-        } catch (Exception e) { }
+//#ifdef AUTOSTATUS
+//#         try {
+//#             Roster.autoAway=false;
+//#             Roster.autoXa=false;
+//#             StaticData.getInstance().roster.messageActivity();
+//#             StaticData.getInstance().roster.sendDirectPresence(status, to, null);
+//#         } catch (Exception e) { }
+//#endif
     }
     
     public int getItemCount(){   return statusList.size(); }
