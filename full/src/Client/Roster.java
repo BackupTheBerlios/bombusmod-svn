@@ -121,9 +121,9 @@ public class Roster
     
     public Vector bookmarks;
     
-    public Vector serverFeatures;
 //#ifdef MOOD
 //#     public boolean useUserMood=false;
+//#     public Vector serverFeatures;
 //#endif
 //#ifdef AUTOSTATUS
 //#     private AutoStatusTask autostatus;
@@ -1096,7 +1096,9 @@ public class Roster
         }
         //query bookmarks
         theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-        theStream.addBlockListener(new DiscoInfo());
+//#ifdef MOOD
+//#         theStream.addBlockListener(new DiscoInfo());
+//#endif
     }
 
     public void bindResource(String myJid) {
@@ -2198,14 +2200,14 @@ public class Roster
         else if (keyCode==KEY_NUM9) {
             if (cf.allowMinimize)
                 BombusMod.getInstance().hideApp(true);
-             else if (ph.PhoneManufacturer()==ph.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
-             try {
-                  BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
-             } catch (Exception e) { }     
+            else if (ph.PhoneManufacturer()==ph.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
+                 try {
+                      BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
+                 } catch (Exception e) { }     
             else if (ph.PhoneManufacturer()==ph.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
-             try {
-                BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
-             } catch (Exception e) { }   
+                 try {
+                    BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
+                 } catch (Exception e) { }   
         }
     }
     
