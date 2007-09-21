@@ -2305,8 +2305,8 @@ public class Roster
 //#         if (ph.PhoneManufacturer()==ph.SONYE)
 //#             selight.destroyTask();
 //#endif
-        cf.isbottom=VirtualList.isbottom; //save panels state on exit       
-        cf.saveToStorage();
+        //cf.isbottom=VirtualList.isbottom; //save panels state on exit       
+        //cf.saveToStorage();
 
         destroyView();
         logoff();
