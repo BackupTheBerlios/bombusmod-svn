@@ -76,7 +76,7 @@ public abstract class VirtualList
 //#     public userKeyExec ue=userKeyExec.getInstance();
 //#endif
 //#ifdef POPUPS
-//#     private static PopUp popup = new PopUp();
+//#     public static PopUp popup = new PopUp();
 //# 
 //#     public static void setWobble(String txt){
 //#         popup.setMessage(txt);

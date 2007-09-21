@@ -550,6 +550,8 @@ public class SR {
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
+
+    public static String MS_CLEAR_POPUPS = loadString( "Clear popups" );
     
     private SR() { }
     

@@ -64,12 +64,13 @@ public class PopUp {
     
     public void next() {
         if(messages.size()>0){
-            try{
-                messages.removeElementAt(0);
-            }catch (Throwable t){
-                t.printStackTrace();
-            }
+            messages.removeElementAt(0);
         }
+    }
+    
+    public void clear() {
+        if(messages.size()>0)
+            messages.removeAllElements();
     }
 
     private Vector parseMessage(String str, int stringWidth) {

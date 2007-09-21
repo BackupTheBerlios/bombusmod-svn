@@ -2374,6 +2374,8 @@ public class Roster
     public void cmdInfo() { new Info.InfoWindow(display); }
     public void cmdTools() { new RosterToolsMenu(display); }
     public void cmdCleanAllMessages() { cleanupAllHistories(); }    
+    
+    public void cmdClearPopups() { VirtualList.popup.clear(); }
 
 //#ifdef MOOD
 //#    public void cmdUserMood() { if (isLoggedIn()) new MoodSelect(display, null); }

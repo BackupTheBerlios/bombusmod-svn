@@ -138,6 +138,9 @@ public class userKeyExec {
             case 10: //key pound
                 new userKeysList(display);
                 return true;
+            case 11:
+                roster.cmdClearPopups();
+                return true;
         }
         
         return false;
@@ -163,7 +166,8 @@ public class userKeyExec {
             SR.MS_ARCHIVE,
             SR.MS_DISCO,
             SR.MS_PRIVACY_LISTS,
-            SR.MS_CUSTOM_KEYS
+            SR.MS_CUSTOM_KEYS,
+            SR.MS_CLEAR_POPUPS
     };
     
     public static final String[] KEYS_NAME = {
