@@ -180,15 +180,14 @@ public class Roster
 	setProgress(24);
                 
         this.display=display;
-        //VirtualList.canBack=false;
-        
+       
         cf=Config.getInstance();
         
         allowLightControl=cf.allowLightControl;
         
         if (allowLightControl) {
             try {
-                setLight(cf.lightState);
+                setLight(true);
             } catch( Exception e ) { }
         }
         

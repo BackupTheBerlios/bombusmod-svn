@@ -103,11 +103,8 @@ public class ColorScheme {
     public static int BLK_INK           =0xffffff;
     public static int BLK_BGND          =0x000000;
     public static int MESSAGE_IN        =0x0000b0;
-    public static int MESSAGE_IN_S        =0x0060ff;
     public static int MESSAGE_OUT       =0xb00000;
-    public static int MESSAGE_OUT_S       =0xff4000;
     public static int MESSAGE_PRESENCE  =0x006000;
-    public static int MESSAGE_PRESENCE_S  =0x00c040;
     public static int MESSAGE_AUTH	=0x400040;
     public static int MESSAGE_HISTORY	=0x535353;
     public static int PGS_REMAINED	=0xffffff;
@@ -121,6 +118,9 @@ public class ColorScheme {
     public static int SCROLL_BRD	=0x950d04;
     public static int SCROLL_BAR	=0xbbbbbb;
     public static int SCROLL_BGND	=0xffffff;
+    public static int MESSAGE_IN_S        =0x0060ff;
+    public static int MESSAGE_OUT_S       =0xff4000;
+    public static int MESSAGE_PRESENCE_S  =0x00c040;
     
 //#ifdef COLORS
 //#     protected void loadFromStorage(){
@@ -196,8 +196,8 @@ public class ColorScheme {
 //#             
 //# 	    outputStream.writeInt(DISCO_CMD);
 //#             
-//#         outputStream.writeInt(BAR_BGND);
-//#         outputStream.writeInt(BAR_INK);
+//#             outputStream.writeInt(BAR_BGND);
+//#             outputStream.writeInt(BAR_INK);
 //#             
 //# 	    outputStream.writeInt(CONTACT_DEFAULT);
 //# 	    outputStream.writeInt(CONTACT_CHAT);
@@ -229,12 +229,12 @@ public class ColorScheme {
 //# 	    outputStream.writeInt(SCROLL_BRD);
 //# 	    outputStream.writeInt(SCROLL_BAR);
 //# 	    outputStream.writeInt(SCROLL_BGND);
-//# 
+//#             
+//#             outputStream.writeInt(CURSOR_OUTLINE);
+//#             
 //# 	    outputStream.writeInt(MESSAGE_IN_S);
 //# 	    outputStream.writeInt(MESSAGE_OUT_S);
 //# 	    outputStream.writeInt(MESSAGE_PRESENCE_S);
-//#             
-//#             outputStream.writeInt(CURSOR_OUTLINE);
 //# 
 //#         } catch (IOException e) { }
 //# 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);

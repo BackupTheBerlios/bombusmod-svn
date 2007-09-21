@@ -207,35 +207,19 @@ public class ConfigForm implements
         su[1]=cf.autoJoinConferences;
         startup.setSelectedFlags(su);
         
-	int apctr=0;
         application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
-        
         application.append(SR.MS_FULLSCREEN,null);
-        apctr++;
-
         application.append(SR.MS_HEAP_MONITOR,null);
-        apctr++;
-
         application.append(SR.MS_SHOW_HARDWARE,null);
-        apctr++;
-
         application.append(SR.MS_CONFIRM_EXIT,null);
-        apctr++;
-        
 //#ifdef USER_KEYS
 //#         application.append(SR.MS_CUSTOM_KEYS,null);
-//#         apctr++;
 //#endif
 //#ifdef NEW_MENU
 //#         application.append(SR.MS_NEW_MENU,null);
-//#         apctr++;
 //#endif
-
         application.append(SR.MS_FLASHLIGHT,null);
-        apctr++;
-   
 	application.append(SR.MS_FLASHBACKLIGHT,null);
-        apctr++;
 
         boolean ap[]={
             cf.fullscreen,
@@ -250,12 +234,11 @@ public class ConfigForm implements
 //#endif
             cf.lightState,
             cf.blFlash,
-            false
+            cf.popupFromMinimized
         };
         
 	if (cf.allowMinimize) {
             application.append(SR.MS_ENABLE_POPUP,null);
-            ap[apctr]=cf.popupFromMinimized;
         }
 
         this.ap=ap;
@@ -378,7 +361,6 @@ public class ConfigForm implements
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);       
         f.setCommandListener(this);
-	//f.setItemStateListener(this);
         
         display.setCurrent(f);
     }
@@ -427,7 +409,7 @@ public class ConfigForm implements
             VirtualList.showBalloons=cf.showBalloons=mv[mvctr++];
  
 //#if ALT_INPUT
-//#         cf.altInput=mv[mvctr++];
+//#             cf.altInput=mv[mvctr++];
 //#endif
             cf.eventDelivery=mv[mvctr++];
             

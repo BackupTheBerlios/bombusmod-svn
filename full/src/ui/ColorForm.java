@@ -137,6 +137,7 @@ public class ColorForm implements CommandListener
             cl.SCROLL_BRD,
             cl.SCROLL_BAR,
             cl.SCROLL_BGND,
+            
             cl.MESSAGE_IN_S,
             cl.MESSAGE_OUT_S,
             cl.MESSAGE_PRESENCE_S
