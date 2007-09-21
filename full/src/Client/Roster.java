@@ -2374,9 +2374,9 @@ public class Roster
     public void cmdInfo() { new Info.InfoWindow(display); }
     public void cmdTools() { new RosterToolsMenu(display); }
     public void cmdCleanAllMessages() { cleanupAllHistories(); }    
-    
-    public void cmdClearPopups() { VirtualList.popup.clear(); }
-
+//#ifdef POPUPS
+//#     public void cmdClearPopups() { VirtualList.popup.clear(); }
+//#endif
 //#ifdef MOOD
 //#    public void cmdUserMood() { if (isLoggedIn()) new MoodSelect(display, null); }
 //#endif        
@@ -2803,8 +2803,9 @@ public class Roster
 
         if (isLoggedIn())
             str.append(theStream.getStreamStats());
-
-        VirtualList.setWobble(str.toString());
+//#ifdef POPUPS
+//#         VirtualList.setWobble(str.toString());
+//#endif
         str=null;
     }
 }

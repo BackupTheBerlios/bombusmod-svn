@@ -138,9 +138,11 @@ public class userKeyExec {
             case 10: //key pound
                 new userKeysList(display);
                 return true;
-            case 11:
-                roster.cmdClearPopups();
-                return true;
+//#ifdef POPUPS
+//#             case 11:
+//#                 roster.cmdClearPopups();
+//#                 return true;
+//#endif
         }
         
         return false;

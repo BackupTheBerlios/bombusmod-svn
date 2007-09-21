@@ -293,10 +293,10 @@ public class ContactMessageList extends MessageList
                 clipstr=null;
             } catch (Exception e) {/*no messages*/}
         }
-//#ifdef FILE_IO
-        if (c==cmdSaveChat) {
-            saveMessages();
-        }
+//#if (FILE_IO && HISTORY)
+//#         if (c==cmdSaveChat) {
+//#             saveMessages();
+//#         }
 //#endif        
 //#if TEMPLATES
 //#         if (c==cmdTemplate) {
@@ -587,40 +587,40 @@ public class ContactMessageList extends MessageList
 //#     }
 //#endif
     
-//#ifdef FILE_IO 
-    private void saveMessages() {
-        if (cf.msgPath==null) {
+//#if (FILE_IO && HISTORY)
+//#     private void saveMessages() {
+//#         if (cf.msgPath==null) {
 //#ifdef POPUPS
 //#            StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
 //#endif
-           return;
-        }
-         String fromName=StaticData.getInstance().account.getUserName();
-         StringBuffer body=new StringBuffer();
-         
-         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) 
-         {
-            Msg message=(Msg) messages.nextElement();
-             
-            if (message.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=contact.toString();
-
-            body.append(message.getDayTime());
-            body.append(" <");
-            body.append(fromName);
-            body.append("> ");
-            if (message.subject!=null) {
-                body.append(message.subject);
-                body.append("\r\n");
-            }
-            body.append(message.getBody());
-            body.append("\r\n");
-         }
-
-         //save
-         
-           String histRecord="log_"+((contact.nick==null)?contact.getBareJid():contact.nick);
-           new HistoryAppend(body, histRecord);
-    }
+//#            return;
+//#         }
+//#          String fromName=StaticData.getInstance().account.getUserName();
+//#          StringBuffer body=new StringBuffer();
+//#          
+//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) 
+//#          {
+//#             Msg message=(Msg) messages.nextElement();
+//#              
+//#             if (message.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=contact.toString();
+//# 
+//#             body.append(message.getDayTime());
+//#             body.append(" <");
+//#             body.append(fromName);
+//#             body.append("> ");
+//#             if (message.subject!=null) {
+//#                 body.append(message.subject);
+//#                 body.append("\r\n");
+//#             }
+//#             body.append(message.getBody());
+//#             body.append("\r\n");
+//#          }
+//# 
+//#          //save
+//#          
+//#            String histRecord="log_"+((contact.nick==null)?contact.getBareJid():contact.nick);
+//#            new HistoryAppend(body, histRecord);
+//#     }
 //#endif
 
 }
