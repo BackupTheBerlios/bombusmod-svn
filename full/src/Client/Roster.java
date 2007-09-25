@@ -186,9 +186,7 @@ public class Roster
         allowLightControl=cf.allowLightControl;
         
         if (allowLightControl) {
-            try {
-                setLight(true);
-            } catch( Exception e ) { }
+			setLight(cf.lightState);
         }
         
         playNotify(SOUND_START_UP);
@@ -234,11 +232,13 @@ public class Roster
     }
     
     public void setLight(boolean state) {
-        if (state) {
-            Light.setLightOn();
-        } else {
-            Light.setLightOff();  
-        }
+		try {
+			if (state) {
+				Light.setLightOn();
+			} else {
+				Light.setLightOff();  
+			}
+		} catch( Exception e ) { }
     }
     
     public void addMenuCommands(){
