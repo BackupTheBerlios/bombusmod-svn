@@ -69,23 +69,24 @@ public class ContactMessageList extends MessageList
 //#     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
 //#endif
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
+    Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,8);
 //#if LAST_MESSAGES
-//#     Command cmdRecent=new Command(SR.MS_LAST_MESSAGES,Command.SCREEN,8);
+//#     Command cmdRecent=new Command(SR.MS_LAST_MESSAGES,Command.SCREEN,6);
 //#endif
-    //Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,9);
-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
-    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 11);
-    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 11);
+    //Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,10);
+    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
+    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 12);
+    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 13);
 //#if TEMPLATES
-//#     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,13);
+//#     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,14);
 //#endif
 //#ifdef ANTISPAM
 //#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.SCREEN, 22);
 //#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
 //#endif
-    Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
+    Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 15);
 //#ifdef FILE_IO
-    Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 15);
+    Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
 //#endif
     private ClipBoard clipboard;
 
@@ -150,7 +151,9 @@ public class ContactMessageList extends MessageList
             addCommand(cmdReply);
         }
         addCommand(cmdPurge);
-        //addCommand(cmdContact);
+        
+        if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
+            addCommand(cmdActions);
 
     
 	addCommand(cmdActive);
@@ -242,7 +245,7 @@ public class ContactMessageList extends MessageList
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
-        if (c==cmdPurge) {
+        else if (c==cmdPurge) {
             if (messages.isEmpty()) return;
             clearReadedMessageList();
         }
@@ -257,10 +260,15 @@ public class ContactMessageList extends MessageList
         if (c==cmdResume) { keyGreen(); }
         if (c==cmdQuote) {
             Quote();
-        }/*
-        if (c==cmdContact) {
-            new RosterItemActions(display, contact, -1);
-        }*/
+        }
+        if (c==cmdActions) {
+            if (contact instanceof MucContact) {
+                MucContact mc=(MucContact) contact;
+                new RosterItemActions(display, mc, -1);
+            } else {
+                new RosterItemActions(display, contact, -1);
+            }
+        }
 	
 	if (c==cmdActive) {
 	    new ActiveContacts(display, contact);
