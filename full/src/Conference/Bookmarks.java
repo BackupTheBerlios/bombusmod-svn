@@ -124,7 +124,7 @@ public class Bookmarks
         if (toAdd!=null) {
             Vector bm=StaticData.getInstance().roster.bookmarks;
             bm.addElement(toAdd);
-            sort(bm);
+            //sort(bm);
             saveBookmarks();
         }
     }
