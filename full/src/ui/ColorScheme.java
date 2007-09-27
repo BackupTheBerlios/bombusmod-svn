@@ -113,7 +113,7 @@ public class ColorScheme {
     public static int PGS_BGND          =0x000000;
     public static int HEAP_TOTAL	=0xffffff;
     public static int HEAP_FREE         =0x00007f;
-    public static int CURSOR_BGND	=0xfae0e0;
+    public static int CURSOR_BGND	=0xffb0a6;
     public static int CURSOR_OUTLINE	=0xf5dbdb;
     public static int SCROLL_BRD	=0x950d04;
     public static int SCROLL_BAR	=0xbbbbbb;
