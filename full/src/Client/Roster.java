@@ -1645,6 +1645,9 @@ public class Roster
                             }
                         }
 
+                        JabberDataBlock j2j=pr.findNamespace("j2j:history");
+                        c.setJ2J(j2j!=null);
+                        
                         int rp=from.indexOf('/');
 
                         String name=from.substring(rp+1);
@@ -1681,6 +1684,9 @@ public class Roster
                             }
                         }
 
+                        JabberDataBlock j2j=pr.findNamespace("j2j:history");
+                        c.setJ2J(j2j!=null);
+                        
                         c.statusString=pr.getStatus();
                     }
                     

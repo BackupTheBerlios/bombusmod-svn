@@ -58,7 +58,8 @@ public class Contact extends IconTextElement{
         ColorScheme.CONTACT_DND,
         ColorScheme.CONTACT_DEFAULT,
         ColorScheme.CONTACT_DEFAULT,
-        ColorScheme.CONTACT_DEFAULT
+        ColorScheme.CONTACT_DEFAULT,
+        ColorScheme.CONTACT_J2J
     };
     
     public final static short ORIGIN_ROSTER=0;
@@ -130,6 +131,8 @@ public class Contact extends IconTextElement{
 //#endif
     
     private Config cf=Config.getInstance();
+
+    private boolean j2j=false;
 
     protected Contact (){
         super(RosterIcons.getInstance());
@@ -331,7 +334,10 @@ public class Contact extends IconTextElement{
         }
     }
   
-    public int getColor() { 
+    public int getColor() {
+        if (j2j)
+            return COLORS[8];
+        
         return (status>7)?0:COLORS[status];
     }
 
@@ -433,6 +439,14 @@ public class Contact extends IconTextElement{
 
     public void setGroup(Group group) { 
         this.group = group; 
+    }
+    
+    public boolean isJ2J() {  
+        return j2j;  
+    }
+
+    public void setJ2J(boolean j2j) { 
+        this.j2j = j2j; 
     }
 
     public void setStatus(int status) {

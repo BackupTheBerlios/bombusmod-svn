@@ -93,7 +93,9 @@ public class ColorForm implements CommandListener
                     
             SR.MS_MESSAGE_IN_S,
             SR.MS_MESSAGE_OUT_S,
-            SR.MS_MESSAGE_PRESENCE_S
+            SR.MS_MESSAGE_PRESENCE_S,
+            
+            SR.MS_CONTACT+"J2J"
         };
         
         public static int[] COLORS = {            
@@ -140,7 +142,9 @@ public class ColorForm implements CommandListener
             
             cl.MESSAGE_IN_S,
             cl.MESSAGE_OUT_S,
-            cl.MESSAGE_PRESENCE_S
+            cl.MESSAGE_PRESENCE_S,
+            
+            cl.CONTACT_J2J
       };
         
       
@@ -188,7 +192,9 @@ public class ColorForm implements CommandListener
             
             imageData(cl.MESSAGE_IN_S),
             imageData(cl.MESSAGE_OUT_S),
-            imageData(cl.MESSAGE_PRESENCE_S)
+            imageData(cl.MESSAGE_PRESENCE_S),
+            
+            imageData(cl.CONTACT_J2J)
       };
 
 

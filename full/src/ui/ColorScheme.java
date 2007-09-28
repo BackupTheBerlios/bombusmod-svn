@@ -118,9 +118,11 @@ public class ColorScheme {
     public static int SCROLL_BRD	=0x950d04;
     public static int SCROLL_BAR	=0xbbbbbb;
     public static int SCROLL_BGND	=0xffffff;
-    public static int MESSAGE_IN_S        =0x0060ff;
-    public static int MESSAGE_OUT_S       =0xff4000;
-    public static int MESSAGE_PRESENCE_S  =0x00c040;
+    public static int MESSAGE_IN_S       =0x0060ff;
+    public static int MESSAGE_OUT_S      =0xff4000;
+    public static int MESSAGE_PRESENCE_S =0x00c040;
+    
+    public static int CONTACT_J2J        =0xff0000;
     
 //#ifdef COLORS
 //#     protected void loadFromStorage(){
@@ -177,6 +179,8 @@ public class ColorScheme {
 //#             MESSAGE_IN_S=inputStream.readInt();
 //#             MESSAGE_OUT_S=inputStream.readInt();
 //#             MESSAGE_PRESENCE_S=inputStream.readInt();
+//#   
+//#             CONTACT_J2J=inputStream.readInt();
 //# 
 //# 	    inputStream.close();
 //# 	} catch (Exception e) { }
@@ -235,6 +239,8 @@ public class ColorScheme {
 //# 	    outputStream.writeInt(MESSAGE_IN_S);
 //# 	    outputStream.writeInt(MESSAGE_OUT_S);
 //# 	    outputStream.writeInt(MESSAGE_PRESENCE_S);
+//#
+//# 	    outputStream.writeInt(CONTACT_J2J);
 //# 
 //#         } catch (IOException e) { }
 //# 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
@@ -282,6 +288,7 @@ public class ColorScheme {
 //#             SCROLL_BRD=loadInt("SCROLL_BRD", SCROLL_BRD);
 //#             SCROLL_BAR=loadInt("SCROLL_BAR", SCROLL_BAR);
 //#             SCROLL_BGND=loadInt("SCROLL_BGND", SCROLL_BGND);
+//#             CONTACT_J2J=loadInt("CONTACT_J2J", CONTACT_J2J);
 //#             saveToStorage();
 //#         } catch (Exception e) { }
 //#         skin=null;
@@ -376,7 +383,7 @@ public class ColorScheme {
 //#         body.append("SCROLL_BRD\t"+getColorString(SCROLL_BRD)+"\r\n");
 //#         body.append("SCROLL_BAR\t"+getColorString(SCROLL_BAR)+"\r\n");
 //#         body.append("SCROLL_BGND\t"+getColorString(SCROLL_BGND)+"\r\n");
-//# 
+//#         body.append("CONTACT_J2J\t"+getColorString(CONTACT_J2J)+"\r\n");
 //#         return body.toString();
 //#     }
 //# 
