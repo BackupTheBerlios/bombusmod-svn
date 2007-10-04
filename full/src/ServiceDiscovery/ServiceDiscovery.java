@@ -26,7 +26,9 @@
  */
 
 package ServiceDiscovery;
+//#ifndef WMUC
 import Conference.ConferenceForm;
+//#endif
 import images.RosterIcons;
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -397,6 +399,7 @@ public class ServiceDiscovery
         public String toString(){ return name; }
         public void onSelect(){
             switch (icon) {
+//#ifndef WMUC
                 case RosterIcons.ICON_GCJOIN_INDEX: {
                     int rp=service.indexOf('@');
                     String room=null;
@@ -408,6 +411,7 @@ public class ServiceDiscovery
                     new ConferenceForm(display, service, null, false);
                     break;
                 }
+//#endif
                 case RosterIcons.ICON_SEARCH_INDEX:
                     requestQuery(NS_SRCH, "discosrch");
                     break;

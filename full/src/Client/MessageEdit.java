@@ -26,7 +26,9 @@
  */
 
 package Client;
+//#ifndef WMUC
 import Conference.AppendNick;
+//#endif
 import Info.Phone;
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
@@ -60,7 +62,7 @@ public class MessageEdit
     private Contact to;
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private Command cmdSend=new Command(SR.MS_SEND, Command.OK /*Command.SCREEN*/,1);
+    private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
 //#ifdef SMILES
 //#     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
 //#endif
@@ -114,14 +116,6 @@ public class MessageEdit
          } catch (Exception e) {}
 
         
-        if (!clipboard.isEmpty())
-            t.addCommand(cmdPasteText);
-        
-        t.addCommand(cmdClearTitle);
-        
-        setInitialCaps(cf.capsState);
-        
-
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
 //#ifdef SMILES
@@ -135,6 +129,13 @@ public class MessageEdit
 //#ifdef ARCHIVE
 //#         t.addCommand(cmdPaste);
 //#endif
+        if (!clipboard.isEmpty())
+            t.addCommand(cmdPasteText);
+        
+        t.addCommand(cmdClearTitle);
+        
+        setInitialCaps(cf.capsState);
+        
         t.addCommand(cmdSuspend);
 //#if TEMPLATES
 //#         t.addCommand(cmdTemplate);
@@ -165,7 +166,9 @@ public class MessageEdit
 //#ifdef SMILES
 //#         if (c==cmdSmile) { new SmilePicker(display, this, caretPos); return; }
 //#endif
+//#ifndef WMUC
         if (c==cmdInsNick) { new AppendNick(display, to, this, caretPos); return; }
+//#endif
 //#ifdef ARCHIVE
 //# 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
 //#endif

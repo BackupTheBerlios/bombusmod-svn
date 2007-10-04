@@ -27,11 +27,14 @@
 
 package Client;
 
+//#ifndef WMUC
 import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
+import Conference.ConferenceForm;
+//#endif
 import Stats.Stats;
 //#ifdef MOOD
 //# import UserMood.MoodSelect;
@@ -56,9 +59,6 @@ import javax.microedition.lcdui.*;
 import ui.*;
 import com.siemens.mp.game.Light;
 
-
-import Conference.ConferenceForm;
-
 //#if FILE_TRANSFER
 //# import io.file.transfer.TransferDispatcher;
 //#endif
@@ -80,7 +80,9 @@ public class Roster
 //#     private Command cmdUserMood=new Command(SR.MS_USER_MOOD, Command.SCREEN, 7);
 //#endif
     private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
+//#ifndef WMUC
     private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
+//#endif
 //#ifdef ARCHIVE
 //#     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 10);
 //#endif
@@ -258,7 +260,9 @@ public class Roster
 
                 addCommand(cmdAlert);
                 addCommand(cmdAdd);
+//#ifndef WMUC
                 addCommand(cmdConference);
+//#endif
                 addCommand(cmdTools);
 //#ifdef ARCHIVE
 //#                 addCommand(cmdArchive);
@@ -454,7 +458,7 @@ public class Roster
         Group g=(Group)getFocusedObject();
         if (g==null) return;
         if (!g.collapsed) return;
-        
+//#ifndef WMUC
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg= (ConferenceGroup) g;
             if (cg.getSelfContact().status>=Presence.PRESENCE_OFFLINE 
@@ -462,7 +466,7 @@ public class Roster
                 return;
         }
         //int gi=g.index;
-
+//#endif
         int index=0;
 
         int onlineContacts=0;
@@ -552,7 +556,7 @@ public class Roster
             countNewMsgs();
         }
     }
-
+//#ifndef WMUC
     public MucContact findMucContact(Jid jid) {
         Contact contact=findContact(jid, true);
         try {
@@ -668,7 +672,7 @@ public class Roster
         sort(hContacts);
         return c;
     }
-    
+//#endif
     public final Contact getContact(final String jid, boolean createInNIL) {
         Jid J=new Jid(jid);
 
@@ -754,9 +758,9 @@ public class Roster
             
             if (!StaticData.getInstance().account.isMucOnly() )
 				theStream.send( presence );
-            
+//#ifndef WMUC
             multicastConferencePresence(myMessage); //null
-
+//#endif
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
                 try {
@@ -812,7 +816,9 @@ public class Roster
     public void sendDirectPresence(int status, Contact to, JabberDataBlock x) {
         sendDirectPresence(status, (to==null)? null: to.getJid(), x);
         if (to.jid.isTransport()) blockNotify(-111,10000);
+//#ifndef WMUC
         if (to instanceof MucContact) ((MucContact)to).commonPresence=false;
+//#endif
     }
 	
     public boolean isLoggedIn() {
@@ -823,7 +829,7 @@ public class Roster
     public Contact selfContact() {
 	return getContact(myJid.getJid(), false);
     }
-    
+//#ifndef WMUC
     public void multicastConferencePresence(String message) {
          if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
@@ -855,7 +861,7 @@ public class Roster
             theStream.send(presence);
          }
     }
-   
+//#endif
     public void sendPresence(String to, String type, JabberDataBlock child, boolean conference) {
         JabberDataBlock presence=new Presence(to, type);
        
@@ -907,6 +913,7 @@ public class Roster
     
     public void sendMessage(Contact to, String id, final String body, final String subject , int composingState) {
         try {
+//#ifndef WMUC
             boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
 //#ifdef ANTISPAM
 //#             if (to instanceof MucContact && !groupchat) {
@@ -914,6 +921,9 @@ public class Roster
 //#                 if (mc.getPrivateState()!=MucContact.PRIVATE_DECLINE)
 //#                     mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
 //#             }
+//#endif
+//#else 
+//#           boolean groupchat=false;  
 //#endif
 //#ifdef AUTOSTATUS
 //#             if (autoAway) {
@@ -1069,9 +1079,10 @@ public class Roster
         if (reconnect) {
             querysign=reconnect=false;
             sendPresence(myStatus, null);
-            
+//#ifndef WMUC
             if (cf.autoJoinConferences)
                     mucReconnect();
+//#endif
             return;
         }
         
@@ -1093,8 +1104,10 @@ public class Roster
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
         }
+//#ifndef WMUC
         //query bookmarks
         theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
 //#ifdef MOOD
 //#         theStream.addBlockListener(new DiscoInfo());
 //#endif
@@ -1431,7 +1444,7 @@ public class Roster
                     }
                     if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
                 } catch (Exception e) { type="chat"; } //force type to chat
-                
+//#ifndef WMUC
                 try {
                     //TODO: invitations
                     JabberDataBlock xmlns=message.findNamespace("http://jabber.org/protocol/muc#user");
@@ -1450,7 +1463,7 @@ public class Roster
                     body=(inviteFrom==null)?"":inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
                     
                 } catch (Exception e) {}
-
+//#endif
                 Contact c=getContact(from, cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES);
                 if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
 
@@ -1525,6 +1538,7 @@ public class Roster
                 Msg m=new Msg(mType, from, subj, body);
                 if (tStamp!=0) 
                     m.dateGmt=tStamp;
+//#ifndef WMUC
                 if (groupchat) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
                     if (mucGrp.getSelfContact().getJid().equals(message.getFrom())) {
@@ -1563,6 +1577,7 @@ public class Roster
                     }
                     m.from=name;
                 }
+//#endif
                 //if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST) {
 //#ifdef ANTISPAM
 //#                     if (cf.antispam) {
@@ -1628,7 +1643,7 @@ public class Roster
                         from,
                         null,
                         pr.getPresenceTxt());
-
+//#ifndef WMUC
                 JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc#user");
                 if (xmuc==null) xmuc=pr.findNamespace("http://jabber.org/protocol/muc"); //join errors
 
@@ -1667,6 +1682,7 @@ public class Roster
                         c.priority=pr.getPriority();
                     } catch (Exception e) { e.printStackTrace(); }
                 } else {
+//#endif
                     boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
                     if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
                     
@@ -1724,8 +1740,9 @@ public class Roster
                         if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);
                     }
+//#ifndef WMUC
                 }
-
+//#endif
 		sort(hContacts);
                 reEnumRoster();
                 return JabberBlockListener.BLOCK_PROCESSED;                
@@ -1803,6 +1820,7 @@ public class Roster
 //#endif
             return;
         }
+//#ifndef WMUC
         else if (c.origin>=c.ORIGIN_GROUPCHAT) {
             if (message.messageType==message.MESSAGE_TYPE_IN) {
                 if (c.origin!=c.ORIGIN_GROUPCHAT && c instanceof MucContact) {
@@ -1813,9 +1831,15 @@ public class Roster
                     return;
                 }
             }
-        } else {
+        } 
+//#endif
+        else {
 //#ifdef POPUPS
-//#             if (message.messageType==message.MESSAGE_TYPE_IN && !(c instanceof MucContact) &&  cf.popUps) {
+//#             if (message.messageType==message.MESSAGE_TYPE_IN && 
+//#ifndef WMUC
+//#                     !(c instanceof MucContact) &&  
+//#endif
+//#                     cf.popUps) {
 //#                 setWobbler(c.toString()+": "+message.getBody());
 //#             }
 //#endif
@@ -2086,19 +2110,25 @@ public class Roster
             if (!isLoggedIn()) return;
             try { 
                 boolean isContact=( getFocusedObject() instanceof Contact );
+//#ifndef WMUC
                 boolean isMucContact=( getFocusedObject() instanceof MucContact );
+//#else
+//#                 boolean isMucContact=false;
+//#endif
                 if (isContact && !isMucContact) {
                    Contact c=(Contact) getFocusedObject();
                    yesnoAction=ACTION_DELETE; 
                    new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
-                } else if (isContact && isMucContact) {
+                }
+//#ifndef WMUC
+                else if (isContact && isMucContact) {
                    Contact c=(Contact) getFocusedObject();
                    ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
                    String myNick=mucGrp.getSelfContact().getName();
                    MucContact mc=(MucContact) c;
                    new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                 }
-                
+//#endif
                 return;
             } catch (Exception e) { /* NullPointerException */ }
         }
@@ -2191,7 +2221,9 @@ public class Roster
             reEnumRoster();
             return;
         } 
+//#ifndef WMUC
         else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
+//#endif
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
         else if (keyCode==KEY_NUM6) {
@@ -2248,9 +2280,12 @@ public class Roster
 //#             Contact contact=(Contact)getFocusedObject();
 //#             String client=(contact.hasEntity)?"\nUse: "+contact.entityNode:"";
 //#             String clientVer=(contact.entityVer!=null)?"#"+contact.entityVer:"";
-//#             
+//#ifndef WMUC
 //#             boolean muc=(contact instanceof MucContact)?true:false;
-//#             
+//#else
+//#             boolean muc=false;
+//#endif
+//#ifndef WMUC
 //#             if (muc) {
 //#                 MucContact mucContact=(MucContact)contact;
 //#                 String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n";
@@ -2270,10 +2305,12 @@ public class Roster
 //#                 aff=null;
 //#                 role=null;
 //#             } else {
+//#endif
 //#                 mess.append("jid: "+contact.bareJid);
 //#                 mess.append(contact.jid.getResource());
-//# 
+//#ifndef WMUC
 //#             }
+//#endif
 //#             mess.append((client!=null)?client+clientVer:"");
 //#             clientVer=null;
 //#             String ss=contact.getSecondString();
@@ -2346,10 +2383,12 @@ public class Roster
         
 //#ifdef MOOD
 //#         else if (c==cmdUserMood) { cmdUserMood(); }
-//#endif        
+//#endif  
+//#ifndef WMUC
         else if (c==cmdConference) { 
             cmdConference();
         }
+//#endif
         else if (c==cmdActions) {
             cmdActions();
         }
@@ -2384,8 +2423,10 @@ public class Roster
 //#endif
 //#ifdef MOOD
 //#    public void cmdUserMood() { if (isLoggedIn()) new MoodSelect(display, null); }
-//#endif        
+//#endif 
+//#ifndef WMUC
    public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, null); }
+//#endif
    public void cmdActions() { if (isLoggedIn()) try { new RosterItemActions(display, getFocusedObject(), -1); } catch (Exception e) { /* NullPointerException */ }}
    
    public void cmdAdd() {
@@ -2396,12 +2437,14 @@ public class Roster
                 cn=(Contact)o;
                 if (cn.getGroupType()!=Groups.TYPE_NOT_IN_LIST && cn.getGroupType()!=Groups.TYPE_SEARCH_RESULT) cn=null;
             }
+//#ifndef WMUC
             if (o instanceof MucContact) { cn=(Contact)o; }
+//#endif
             new ContactEdit(display, cn);
        }
    }
 //menu actions
-
+//#ifndef WMUC
     public void reEnterRoom(Group group) {
 	ConferenceGroup confGroup=(ConferenceGroup)group;
         String confJid=confGroup.getSelfContact().getJid();
@@ -2431,7 +2474,7 @@ public class Roster
             if (contact.inGroup(group)) contact.setStatus(Presence.PRESENCE_OFFLINE);
          }
     }
-    
+//#endif
     protected void showNotify() { 
         super.showNotify(); 
         countNewMsgs(); 
@@ -2668,6 +2711,7 @@ public class Roster
 //#         }
 //#     }
 //#endif
+//#ifndef WMUC
     public void mucReconnect() {
         Enumeration e;
         
@@ -2685,6 +2729,7 @@ public class Roster
                         }
                     }
                 }
+                
             }
         }
     }
@@ -2712,7 +2757,7 @@ public class Roster
         sendPresence(conference, null, x, false);
         reEnumRoster();
     } 
-    
+//#endif
     public void cleanMarks() {
       synchronized(hContacts) {
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();){

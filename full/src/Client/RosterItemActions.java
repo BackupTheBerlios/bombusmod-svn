@@ -26,15 +26,17 @@
  */
 
 package Client;
-
+//#ifndef WMUC
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
 import Conference.MucContact;
 import Conference.QueryConfigForm;
+import Conference.affiliation.ConferenceQuickPrivelegeModify;
 //#ifdef REQUEST_VOICE
 //# import Conference.QueryRequestVoice;
 //#endif
 import Conference.affiliation.Affiliations;
+//#endif
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
 //#endif
@@ -57,7 +59,7 @@ import ui.YesNoAlert;
 import util.ClipBoard;
 import vcard.VCard;
 import vcard.vCardForm;
-import Conference.affiliation.ConferenceQuickPrivelegeModify;
+
 
 /**
  *
@@ -139,7 +141,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    }
             
 	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return;
-            
+//#ifndef WMUC
             boolean onlineConferences=false;
             for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
                 try {
@@ -202,7 +204,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     }
                     
                     
-//--toon               //m.addItem(new MenuItem("Set Affiliation",15));
+toon               //m.addItem(new MenuItem("Set Affiliation",15));
                 }
                 if (myAffiliation>=MucContact.AFFILIATION_OWNER) {
                     // owner use cases
@@ -220,6 +222,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 // usual contact - invite item check
                  if (onlineConferences) addItem(SR.MS_INVITE,40);
             }
+//#endif
 //#if (FILE_IO && FILE_TRANSFER)
 //#             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
 //#                 if (contact!=StaticData.getInstance().roster.selfContact())
@@ -230,6 +233,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    Group group=(Group)item;
 	    if (group.index==Groups.TYPE_SEARCH_RESULT)
 		addItem(SR.MS_DISCARD,21);
+//#ifndef WMUC
 	    if (group instanceof ConferenceGroup) {
 		MucContact self=((ConferenceGroup)group).getSelfContact();
                 
@@ -251,6 +255,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
  		    }
  		}
 	    } else {
+//#endif
                 if (    group.index!=Groups.TYPE_IGNORE
                         && group.index!=Groups.TYPE_NOT_IN_LIST
                         && group.index!=Groups.TYPE_SEARCH_RESULT
@@ -260,7 +265,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     addItem(SR.MS_RENAME,1001);
                     addItem(SR.MS_DELETE, DELETE_GROUP);
                 }
+//#ifndef WMUC
             }
+//#endif
  	}
 	if (getItemCount()>0) {
             if (action<0) 
@@ -390,13 +397,17 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 
                 case 892: //Copy JID
                 {
+//#ifndef WMUC
                     if (!(c instanceof MucContact)) {
                         //System.out.println("1 c "+c.bareJid);
+//#endif
                         try {
                             if (c.bareJid!=null)
                                 clipboard.setClipBoard(c.bareJid);
                         } catch (Exception e) {/*no messages*/}
+//#ifndef WMUC
                     }
+//#endif
                     break;
                 }
                 case 893: //ping
@@ -458,7 +469,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     }
                     break;
                 }
-                
+//#ifndef WMUC
                 case 40: //invite
                 {
                     //new InviteForm(c, display);
@@ -481,7 +492,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     }
                     return;
                 }
-
+//#endif
                 case 45: //direct presence
                 {
                     new StatusSelect(display, c);
@@ -496,7 +507,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                 }   
 //#endif
             }
-            
+//#ifndef WMUC
             if (c instanceof MucContact || g instanceof ConferenceGroup) {
                 MucContact mc=(MucContact) c;
                 
@@ -605,6 +616,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                  }
              }
         } else {
+//#endif
             Group sg=(Group)item;
 
             if (       sg.index!=Groups.TYPE_IGNORE 
@@ -626,7 +638,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     }    
                 }
             }
+//#ifndef WMUC
          }
+//#endif
      }
     
     public void ActionConfirmed() {

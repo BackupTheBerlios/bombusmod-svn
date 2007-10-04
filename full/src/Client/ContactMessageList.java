@@ -26,7 +26,9 @@
  */
 
 package Client;
+//#ifndef WMUC
 import Conference.MucContact;
+//#endif
 //#ifdef HISTORY
 //# import History.HistoryAppend;
 //#endif
@@ -146,10 +148,11 @@ public class ContactMessageList extends MessageList
 //#         if (hisStorage && contact instanceof MucContact==false) addCommand(cmdRecent);
 //#endif        
         addCommand(cmdMessage);
-        
+//#ifndef WMUC
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
             addCommand(cmdReply);
         }
+//#endif
         addCommand(cmdPurge);
         
         if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
@@ -262,12 +265,16 @@ public class ContactMessageList extends MessageList
             Quote();
         }
         if (c==cmdActions) {
+//#ifndef WMUC
             if (contact instanceof MucContact) {
                 MucContact mc=(MucContact) contact;
                 new RosterItemActions(display, mc, -1);
             } else {
+//#endif
                 new RosterItemActions(display, contact, -1);
+//#ifndef WMUC
             }
+//#endif
         }
 	
 	if (c==cmdActive) {
@@ -474,11 +481,15 @@ public class ContactMessageList extends MessageList
                 clipboard.setClipBoard("");
             }
             if (keyCode==KEY_POUND) {
+//#ifndef WMUC
                 if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                     Reply();
                 } else {
+//#endif
                     keyGreen();
+//#ifndef WMUC                    
                 }
+//#endif
             }
         
             if (keyCode==keyClear) {

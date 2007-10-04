@@ -56,7 +56,9 @@ public class RosterMenu
 //#             addItem(SR.MS_USER_MOOD, 3, 0x0f16);
 //#endif
 //#         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x0f17);
+//#ifndef WMUC
 //#         addItem(SR.MS_CONFERENCE, 5, RosterIcons.ICON_GROUPCHAT_INDEX);
+//#endif
 //#ifdef ARCHIVE
 //#         addItem(SR.MS_ARCHIVE, 6,0x0f12);
 //#endif
@@ -94,9 +96,11 @@ public class RosterMenu
 //#             case 4: //alert
 //#                 roster.cmdAlert();
 //# 		break;
+//#ifndef WMUC
 //#             case 5: //conference
 //#                 roster.cmdConference();
 //#                 break;
+//#endif
 //#ifdef ARCHIVE
 //#             case 6: //archive
 //#                 roster.cmdArchive();

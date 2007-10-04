@@ -26,7 +26,9 @@
  */
 
 package Client;
+//#ifndef WMUC
 import Conference.MucContact;
+//#endif
 //#if LAST_MESSAGES
 //# import History.HistoryStorage;
 //#endif
@@ -61,15 +63,16 @@ public class Contact extends IconTextElement{
         ColorScheme.CONTACT_DEFAULT,
         ColorScheme.CONTACT_J2J
     };
-    
+
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
     public final static short ORIGIN_CLONE=2;
     public final static short ORIGIN_PRESENCE=3;
     public final static short ORIGIN_GROUPCHAT=4;
+//#ifndef WMUC
     public final static short ORIGIN_GC_MEMBER=5;
     public final static short ORIGIN_GC_MYSELF=6;
-
+//#endif
     public String nick;
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
@@ -255,7 +258,8 @@ public class Contact extends IconTextElement{
             presence=m.getBody();
             if (msgs.size()==1) 
                 if ( ((Msg)msgs.firstElement()).isPresence())
-                   if (origin!=ORIGIN_GROUPCHAT) first_replace=true;
+                    if (origin!=ORIGIN_GROUPCHAT) 
+                       first_replace=true;
         }
         
 //#if LAST_MESSAGES

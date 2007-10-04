@@ -26,7 +26,9 @@
  */
 
 package Client;
+//#ifndef WMUC
 import Conference.MucContact;
+//#endif
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
@@ -114,20 +116,24 @@ public final class ContactEdit
         
         try {
             String jid;
+//#ifndef WMUC
             if (c instanceof MucContact) {
                 jid=Jid.toBareJid( ((MucContact)c).realJid );
             } else {
+//#endif
                 jid=c.getBareJid();
+//#ifndef WMUC
             }
+//#endif
             // edit contact
             tJid.setString(jid);
             tNick.setString(c.nick);
-            
+//#ifndef WMUC
             if (c instanceof MucContact) {
                 c=null;
                 throw new Exception();
             } 
-            
+//#endif
             if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST  && c.getGroupType()!=Groups.TYPE_SEARCH_RESULT) {
                 // edit contact
                 f.setTitle(jid);
