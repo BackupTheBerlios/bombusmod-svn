@@ -261,13 +261,14 @@ public class Contact extends IconTextElement{
                     if (origin!=ORIGIN_GROUPCHAT) 
                        first_replace=true;
         }
-        
 //#if LAST_MESSAGES
 //#         if (cf.lastMessages
 //#             && (origin!=ORIGIN_GROUPCHAT)
 //#             && (getGroupType()!=Groups.TYPE_TRANSP)
 //#             && (getGroupType()!=Groups.TYPE_IGNORE)
+//#ifndef WMUC
 //#             && ((this instanceof MucContact)==false)
+//#endif
 //#             && (m.messageType==Msg.MESSAGE_TYPE_IN))
 //#         {
 //#                 new HistoryStorage(getBareJid(), m.getBody(), false);
@@ -295,8 +296,10 @@ public class Contact extends IconTextElement{
 //#                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
 //#                     if (origin<ORIGIN_GROUPCHAT) allowLog=true;
 //#             }
+//#ifndef WMUC
 //#             if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
 //#                  allowLog=false;
+//#endif
 //#             if (allowLog)
 //#             {
 //#                 StringBuffer body=new StringBuffer(m.getDayTime());

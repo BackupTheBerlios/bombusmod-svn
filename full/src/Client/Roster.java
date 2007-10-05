@@ -1577,7 +1577,7 @@ public class Roster
                     }
                     m.from=name;
                 }
-//#endif
+
                 //if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST) {
 //#ifdef ANTISPAM
 //#                     if (cf.antispam) {
@@ -1620,6 +1620,7 @@ public class Roster
 //#                         } else 
 //#                             messageStore(c, m);
 //#                     } else
+//#endif
 //#endif
                         messageStore(c, m);
 

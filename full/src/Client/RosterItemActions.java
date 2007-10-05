@@ -204,7 +204,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     }
                     
                     
-toon               //m.addItem(new MenuItem("Set Affiliation",15));
+               //m.addItem(new MenuItem("Set Affiliation",15));
                 }
                 if (myAffiliation>=MucContact.AFFILIATION_OWNER) {
                     // owner use cases

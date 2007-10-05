@@ -122,7 +122,7 @@ public class ContactMessageList extends MessageList
         mainbar.addElement(null);
 
         cursor=0;//activate
-        
+//#ifndef WMUC     
 //#ifdef ANTISPAM
 //#         if (contact instanceof MucContact && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
 //#             MucContact mc=(MucContact) contact;
@@ -144,8 +144,13 @@ public class ContactMessageList extends MessageList
 //#             }
 //#         }
 //#endif
+//#endif
 //#if LAST_MESSAGES      
-//#         if (hisStorage && contact instanceof MucContact==false) addCommand(cmdRecent);
+//#         if (hisStorage 
+//#ifndef WMUC
+//#                 && contact instanceof MucContact==false
+//#endif
+//#                 ) addCommand(cmdRecent);
 //#endif        
         addCommand(cmdMessage);
 //#ifndef WMUC
@@ -327,7 +332,7 @@ public class ContactMessageList extends MessageList
         if (c==cmdUnsubscribed) {
             sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null, false);
         }
-        
+//#ifndef WMUC     
 //#ifdef ANTISPAM
 //#         if (c==cmdUnlock) {
 //#             MucContact mc=(MucContact) contact;
@@ -353,7 +358,7 @@ public class ContactMessageList extends MessageList
 //#             redraw();
 //#         }
 //#endif
-        
+//#endif
         if (c==cmdSendBuffer) {
             String from=StaticData.getInstance().account.toString();
             String body=clipboard.getClipBoard();
