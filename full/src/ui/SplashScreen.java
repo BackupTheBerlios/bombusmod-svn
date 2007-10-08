@@ -197,7 +197,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     }
     
     public void close(){
-        if (parentView!=null) display.setCurrent(parentView);
+        if (parentView!=null) 
+            display.setCurrent(parentView);
         parentView=null;
         repaint();
         //serviceRepaints();
@@ -237,19 +238,16 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public void keyPressed(int keyCode) { 
         if (keyCode==-24) {
             destroyView();
-        }
-        if (pos>23) 
+        } else if (pos>20) 
             close();
+        
         kHold=0;
     }
-    
-    public void keyReleased(int keyCode) { 
-        //System.out.println("blocked released"+(char) keyCode); kHold=0; 
-    }
+
     protected void keyRepeated(int keyCode) { 
-        //System.out.println("blocked repeat"+(char) keyCode);
         if (kHold==0)
-        if (keyCode==exitKey) destroyView(); 
+            if (keyCode==exitKey) 
+                destroyView(); 
     }
 
     private void destroyView(){

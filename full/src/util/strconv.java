@@ -40,6 +40,18 @@ public class strconv {
     /** Creates a new instance of strconv */
     private strconv() {
     }
+    
+    private static String BOMBUSMOD_REP=Version.getUrl();
+    private static String BOMBUS_NG_REP="http://bombus-im.org/ng";
+    private static String PSI_REP="http://psi-im.org/caps";
+    private static String GOOGLE_REP="http://www.google.com/xmpp/client/caps";
+    private static String MIRANDA_REP="http://miranda-im.org/caps";
+    private static String GAJIM_REP="http://gajim.org/caps";
+    private static String GAIM_REP="http://gaim.sf.net/caps";
+    private static String BOMBUS_REP="http://bombus-im.org/java";
+    private static String KOPETE_REP="http://kopete.kde.org/jabber/caps";
+    private static String PIDGIN_REP="http://pidgin.im/caps";
+    private static String QIP_REP="http://qip.ru/caps";
    
     public static final String convCp1251ToUnicode(final String s){
         if (s==null) return null;
@@ -208,55 +220,34 @@ public class strconv {
     
     public static String replaceCaps(String src){
         if (src==null)
-            return null;
-        
-        String BOMBUSMOD_REP=Version.getUrl();
+            return "tkabber?";
+
         if (src.indexOf(BOMBUSMOD_REP)>-1)
             return stringReplace(src,BOMBUSMOD_REP,"Bombusmod");
-        
-        String BOMBUS_NG_REP="http://bombus-im.org/ng";
-        if (src.indexOf(BOMBUS_NG_REP)>-1)
-            return stringReplace(src,BOMBUS_NG_REP,"Bombus-NG");
-        
-        String PSI_REP="http://psi-im.org/caps";
-        if (src.indexOf(PSI_REP)>-1)
-            return stringReplace(src,PSI_REP,"Psi");
-        
-        String GOOGLE_REP="http://www.google.com/xmpp/client/caps";
-        if (src.indexOf(GOOGLE_REP)>-1)
-            return stringReplace(src,GOOGLE_REP,"Google");
-            
-        String MIRANDA_REP="http://miranda-im.org/caps";
-        if (src.indexOf(MIRANDA_REP)>-1)
-            return stringReplace(src,MIRANDA_REP,"Miranda");
-            
-        String GAJIM_REP="http://gajim.org/caps";
-        if (src.indexOf(GAJIM_REP)>-1)
-            return stringReplace(src,GAJIM_REP,"Gajim");
-            
-        String GAIM_REP="http://gaim.sf.net/caps";
-        if (src.indexOf(GAIM_REP)>-1)
-            return stringReplace(src,GAIM_REP,"Gaim");
-        
-        String BOMBUS_REP="http://bombus-im.org/java";
-        if (src.indexOf(BOMBUS_REP)>-1)
+        else if (src.indexOf(BOMBUS_REP)>-1)
             return stringReplace(src,BOMBUS_REP,"Bombus");  
-			
-        String KOPETE_REP="http://kopete.kde.org/jabber/caps";
-        if (src.indexOf(KOPETE_REP)>-1)
+        else if (src.indexOf(BOMBUS_NG_REP)>-1)
+            return stringReplace(src,BOMBUS_NG_REP,"Bombus-NG");
+        else if (src.indexOf(PSI_REP)>-1)
+            return stringReplace(src,PSI_REP,"Psi");
+        else if (src.indexOf(MIRANDA_REP)>-1)
+            return stringReplace(src,MIRANDA_REP,"Miranda");
+        else if (src.indexOf(GAJIM_REP)>-1)
+            return stringReplace(src,GAJIM_REP,"Gajim");
+        else if (src.indexOf(GOOGLE_REP)>-1)
+            return stringReplace(src,GOOGLE_REP,"Google");
+        else if (src.indexOf(GAIM_REP)>-1)
+            return stringReplace(src,GAIM_REP,"Gaim");
+	else if (src.indexOf(KOPETE_REP)>-1)
             return stringReplace(src,KOPETE_REP,"Kopete");  
-
-        String PIDGIN_REP="http://pidgin.im/caps";
-        if (src.indexOf(PIDGIN_REP)>-1)
+        else if (src.indexOf(PIDGIN_REP)>-1)
             return stringReplace(src,PIDGIN_REP,"Pidgin");  
-        
-        String QIP_REP="http://qip.ru/caps";
-        if (src.indexOf(QIP_REP)>-1)
+        else if (src.indexOf(QIP_REP)>-1)
             return stringReplace(src,QIP_REP,"Qip");  
         
         return src;
     }
-    
+/*  
     public static String stringReplace(String src, String search, String dest){
         int pos = 0;
         int start_pos;
@@ -280,8 +271,24 @@ public class strconv {
         }
         return src;
     }
-    
-    
+*/  
+    protected static String stringReplace(String aSearch, String aFind, String aReplace) {
+        String result = aSearch;
+        if (result != null && result.length() > 0) {
+            int a = 0;
+            int b = 0;
+            while (true) {
+                a = result.indexOf(aFind, b);
+                if (a != -1) {
+                    result = result.substring(0, a) + aReplace + result.substring(a + aFind.length());
+                    b = a + aReplace.length();
+                } else
+                    break;
+            }
+        }
+        return result;
+    }
+
     public static String getSizeString(long number)
     {
         StringBuffer suffix = new StringBuffer();
