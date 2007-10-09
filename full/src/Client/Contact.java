@@ -399,7 +399,20 @@ public class Contact extends IconTextElement{
             }
         } catch (Exception e) { }
     }
-
+    
+    public final boolean deleteOld() {
+        int limit=cf.msglistLimit;
+        if (msgs.size()<=limit)
+            return false;
+        
+        int trash = msgs.size()-limit;
+            for (int i=0; i<trash; i++)
+                msgs.removeElementAt(0);
+        
+        resetNewMsgCnt();
+        return true;
+    }
+    
     public final void smartPurge(int cursor) {
         try {
             if (cursor==msgs.size() && msgs.size()>0)

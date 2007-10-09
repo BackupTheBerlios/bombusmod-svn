@@ -174,6 +174,8 @@ public class Config {
     public boolean showBalloons = true;
     
     public boolean userKeys = false;
+
+    public int msglistLimit=5;
     
     public static Config getInstance(){
 	if (instance==null) {

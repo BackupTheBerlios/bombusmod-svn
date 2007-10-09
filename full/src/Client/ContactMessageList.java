@@ -59,7 +59,6 @@ import util.ClipBoard;
 
 public class ContactMessageList extends MessageList
 {
-    
     Contact contact;
     Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
     Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
@@ -186,8 +185,10 @@ public class ContactMessageList extends MessageList
     public void showNotify(){
         super.showNotify();
         if (cmdResume==null) return;
-        if (contact.msgSuspended==null) removeCommand(cmdResume);
-        else addCommand(cmdResume);
+        if (contact.msgSuspended==null) 
+            removeCommand(cmdResume);
+        else 
+            addCommand(cmdResume);
         
         if (cmdSubscribe==null) return;
         try {
@@ -210,6 +211,9 @@ public class ContactMessageList extends MessageList
     }
     
     protected void beginPaint(){
+        if (contact.deleteOld())
+            messages=new Vector();
+        
         markRead(cursor);
         if (cursor==(messages.size()-1)) {
             if (contact.moveToLatest) {
