@@ -175,7 +175,7 @@ public class Config {
     
     public boolean userKeys = false;
 
-    public int msglistLimit=5;
+    public int msglistLimit=100;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -333,6 +333,8 @@ public class Config {
             
             userKeys=inputStream.readBoolean();
             
+            msglistLimit=inputStream.readInt();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -468,6 +470,8 @@ public class Config {
             outputStream.writeBoolean(showBalloons);
             
             outputStream.writeBoolean(userKeys);
+            
+            outputStream.writeInt(msglistLimit);
             
 	} catch (Exception e) { }
 	

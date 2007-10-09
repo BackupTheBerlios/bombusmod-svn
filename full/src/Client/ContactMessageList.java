@@ -211,8 +211,10 @@ public class ContactMessageList extends MessageList
     }
     
     protected void beginPaint(){
-        if (contact.deleteOld())
+        if (contact.redraw) {
             messages=new Vector();
+            contact.redraw=false;
+        }
         
         markRead(cursor);
         if (cursor==(messages.size()-1)) {

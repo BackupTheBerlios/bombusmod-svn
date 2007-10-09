@@ -127,6 +127,8 @@ public class Contact extends IconTextElement{
     public boolean hasEntity;
     public String entityNode;
     public String entityVer;
+    
+    public boolean redraw=false;
 
 //#ifdef MOOD
 //#     public String mood=null;
@@ -253,6 +255,9 @@ public class Contact extends IconTextElement{
     };
     
     public void addMessage(Msg m) {
+        
+        redraw=deleteOld();
+        
         boolean first_replace=false;
         if (m.isPresence()) { 
             presence=m.getBody();
