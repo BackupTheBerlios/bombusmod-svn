@@ -153,6 +153,7 @@ public class ConfigPrivateStorage
 //#             cs.addChild("showBalloons", (cf.showBalloons)?"1":"0");
 //#             
 //#             cs.addChild("userKeys", (cf.userKeys)?"1":"0");
+//#             cs.addChild("msglistLimit", Integer.toString(cf.msglistLimit));
 //#         }
 //#         //System.out.println(iq.toString());
 //#         roster.theStream.send(iq);
@@ -250,7 +251,7 @@ public class ConfigPrivateStorage
 //#             VirtualList.showBalloons=cf.showBalloons=getBooleanProperty("showBalloons",false);
 //#             
 //#             cf.userKeys=getBooleanProperty("userKeys",false);
-//#    
+//#             cf.msglistLimit=getIntProperty("msglistLimit",100);
 //#             cf.lastProfile=cf.profile=cf.def_profile;
 //#             if (cf.lastProfile==AlertProfile.VIBRA) cf.lastProfile=0;
 //#             cf.updateTime();

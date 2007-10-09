@@ -552,6 +552,8 @@ public class SR {
     public static String MS_IFACELANG;
 
     public static String MS_CLEAR_POPUPS = loadString( "Clear popups" );
+
+    public static String MS_MESSAGE_COUNT_LIMIT = loadString( "Chat history length" );
     
     private SR() { }
     
