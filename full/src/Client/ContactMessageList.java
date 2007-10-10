@@ -211,11 +211,6 @@ public class ContactMessageList extends MessageList
     }
     
     protected void beginPaint(){
-        if (contact.redraw) {
-            messages=new Vector();
-            contact.redraw=false;
-        }
-        
         markRead(cursor);
         if (cursor==(messages.size()-1)) {
             if (contact.moveToLatest) {
@@ -233,6 +228,19 @@ public class ContactMessageList extends MessageList
         if (msgIndex<contact.lastUnread) return;
         
         sd.roster.countNewMsgs();
+        
+        if (getRedraw()) {
+            setRedraw(false);
+            messages=new Vector();
+        }
+    }
+    
+    private boolean getRedraw() {
+        return contact.redraw;
+    }
+
+    private void setRedraw(boolean redraw) {
+        contact.redraw=redraw;
     }
     
     public int getItemCount(){ return contact.msgs.size(); }

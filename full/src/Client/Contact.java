@@ -256,8 +256,6 @@ public class Contact extends IconTextElement{
     
     public void addMessage(Msg m) {
         
-        redraw=deleteOld();
-        
         boolean first_replace=false;
         if (m.isPresence()) { 
             presence=m.getBody();
@@ -265,6 +263,8 @@ public class Contact extends IconTextElement{
                 if ( ((Msg)msgs.firstElement()).isPresence())
                     if (origin!=ORIGIN_GROUPCHAT) 
                        first_replace=true;
+        } else {
+            redraw=deleteOldMessages();
         }
 //#if LAST_MESSAGES
 //#         if (cf.lastMessages
@@ -405,19 +405,30 @@ public class Contact extends IconTextElement{
         } catch (Exception e) { }
     }
     
-    public final boolean deleteOld() {
+    public final boolean deleteOldMessages() {
         int limit=cf.msglistLimit;
-        if (msgs.size()<=limit)
+        if (msgs.size()<limit)
             return false;
         
         int trash = msgs.size()-limit;
             for (int i=0; i<trash; i++)
                 msgs.removeElementAt(0);
         
-        resetNewMsgCnt();
         return true;
     }
-    
+/*    
+    public final void deleteOld() {
+        int limit=cf.msglistLimit;
+        if (msgs.size()<=limit)
+            return;
+        
+        int trash = msgs.size()-limit;
+            for (int i=0; i<trash; i++)
+                msgs.removeElementAt(0);
+
+        return;
+    }
+*/    
     public final void smartPurge(int cursor) {
         try {
             if (cursor==msgs.size() && msgs.size()>0)
