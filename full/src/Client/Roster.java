@@ -103,6 +103,7 @@ public class Roster
     public JabberStream theStream ;
         
     int messageCount;
+    int highliteMessageCount;
     
     private Object messageIcon;
     public Object transferIcon;
@@ -410,19 +411,22 @@ public class Roster
             mainbar.setElementAt(null,1);
         } else {
             messageIcon=new Integer(RosterIcons.ICON_MESSAGE_INDEX);
-            mainbar.setElementAt(" "+messageCount+" ",1);
+            mainbar.setElementAt(((highliteMessageCount==0)?" ":" "+highliteMessageCount+"/")+messageCount+" ",1);
         }
         mainbar.setElementAt(messageIcon, 0);
     }
     
     boolean countNewMsgs() {
         int m=0;
+        int h=0;
         synchronized (hContacts) {
             for (Enumeration e=hContacts.elements();e.hasMoreElements();){
                 Contact c=(Contact)e.nextElement();
                 m+=c.getNewMsgsCount();
+                h+=c.getNewHighliteMsgsCount();
             }
         }
+        highliteMessageCount=h;
         messageCount=m;
 
         updateMainBar();

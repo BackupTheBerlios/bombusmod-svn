@@ -219,6 +219,18 @@ public class Contact extends IconTextElement{
         return newMsgCnt=nm;
     }
     
+    public int getNewHighliteMsgsCount() {
+        if (getGroupType()==Groups.TYPE_IGNORE) return 0;
+        int nm=0;
+        for (Enumeration e=msgs.elements(); e.hasMoreElements(); ) {
+            Msg m=(Msg)e.nextElement();
+            if (m.unread && m.isHighlited()) { 
+                nm++;
+            }
+        }
+        return nm;
+    }
+    
     public boolean needsCount(){ 
         return (newMsgCnt<0);  
     }
