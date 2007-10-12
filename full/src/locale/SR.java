@@ -554,6 +554,8 @@ public class SR {
     public static String MS_CLEAR_POPUPS = loadString( "Clear popups" );
 
     public static String MS_MESSAGE_COUNT_LIMIT = loadString( "Chat history length" );
+
+    public static String MS_COMPRESSION_LEVEL = loadString( "Compression level" );
     
     private SR() { }
     

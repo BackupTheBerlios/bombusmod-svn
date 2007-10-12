@@ -34,6 +34,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jzlib;
 
+import Client.StaticData;
+
 public 
 final class Deflate{
 
@@ -1313,7 +1315,7 @@ final class Deflate{
   }
     
   int deflateInit(ZStream strm, int level, int bits){
-    return deflateInit2(strm, level, Z_DEFLATED, bits, DEF_MEM_LEVEL,
+    return deflateInit2(strm, level, Z_DEFLATED, bits, StaticData.getInstance().account.getCompressionLevel(),
 			Z_DEFAULT_STRATEGY);
   }
   int deflateInit(ZStream strm, int level){
