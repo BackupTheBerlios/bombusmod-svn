@@ -419,4 +419,6 @@ public class JabberDataBlock
       child.setNameSpace(xmlns);
       return child;
   }
+  
+  void setTagName(String tagName) { this.tagName=tagName; }
 }

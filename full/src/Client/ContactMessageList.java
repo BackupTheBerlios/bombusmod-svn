@@ -230,8 +230,7 @@ public class ContactMessageList extends MessageList
         sd.roster.countNewMsgs();
         
         if (getRedraw()) {
-            setRedraw(false);
-            messages=new Vector();
+            setRedraw();            
         }
     }
     
@@ -239,8 +238,9 @@ public class ContactMessageList extends MessageList
         return contact.redraw;
     }
 
-    private void setRedraw(boolean redraw) {
-        contact.redraw=redraw;
+    private void setRedraw() {
+        contact.redraw=false;
+        messages=new Vector();
     }
     
     public int getItemCount(){ return contact.msgs.size(); }

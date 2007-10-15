@@ -337,7 +337,7 @@ public class JabberStream implements XMLEventListener, Runnable {
         JabberDataBlock parent = currentBlock.getParent();
         if( parent == null ) {
             if (currentBlock.getTagName().equals("stream:error")) {
-                XmppError xe=XmppError.decodeError(currentBlock);
+                XmppError xe=XmppError.decodeStreamError(currentBlock);
                 
                 dispatcher.halt();
                 iostream.close();
