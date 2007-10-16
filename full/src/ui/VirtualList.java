@@ -55,7 +55,8 @@ public abstract class VirtualList
 
     abstract protected VirtualElement getItemRef(int index);
 
-    protected int getMainBarBGndRGB() {return ColorScheme.BAR_BGND;} 
+    protected int getMainBarBGnd() {return ColorScheme.BAR_BGND;} 
+    protected int getMainBarBGndBottom() {return ColorScheme.BAR_BGND_BOTTOM;} 
     
     private StaticData sd=StaticData.getInstance();
 
@@ -494,8 +495,10 @@ public abstract class VirtualList
         
         g.setClip(0,0, width, h);
 
-        g.setColor(getMainBarBGndRGB());
-        g.fillRect(0, 0, width, h);
+        g.setColor(getMainBarBGnd());
+        g.fillRect(0, 0, width, h/2);
+        g.setColor(getMainBarBGndBottom());
+        g.fillRect(0, h/2, width, h/2);
    
         g.setColor(getMainBarRGB());
         g.setFont(bottomFont);
@@ -519,8 +522,10 @@ public abstract class VirtualList
             int h=mainbar.getVHeight();
             g.setClip(0,0, width, h);
             
-            g.setColor(getMainBarBGndRGB());
-            g.fillRect(0, 0, width, h);
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h/2);
+            g.setColor(getMainBarBGndBottom());
+            g.fillRect(0, h/2, width, h/2);
             
             g.setColor(getMainBarRGB());
             mainbar.drawItem(g,0,false, false);

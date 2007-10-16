@@ -92,8 +92,11 @@ public class ColorScheme {
     public static int MSG_SUBJ          =0xa00000;
     public static int MSG_HIGHLIGHT	=0x904090;
     public static int DISCO_CMD         =0x000080;
-    public static int BAR_BGND          =0xa00000;
+    
+    public static int BAR_BGND          =0xbb0000;
+    public static int BAR_BGND_BOTTOM   =0xa00000;
     public static int BAR_INK           =0xffffff;
+    
     public static int CONTACT_DEFAULT	=0x000000;
     public static int CONTACT_CHAT	=0x39358b;
     public static int CONTACT_AWAY	=0x008080;
@@ -181,6 +184,8 @@ public class ColorScheme {
 //#             MESSAGE_PRESENCE_S=inputStream.readInt();
 //#   
 //#             CONTACT_J2J=inputStream.readInt();
+//#
+//#             BAR_BGND_BOTTOM=inputStream.readInt();
 //# 
 //# 	    inputStream.close();
 //# 	} catch (Exception e) { }
@@ -241,6 +246,8 @@ public class ColorScheme {
 //# 	    outputStream.writeInt(MESSAGE_PRESENCE_S);
 //#
 //# 	    outputStream.writeInt(CONTACT_J2J);
+//#    
+//# 	    outputStream.writeInt(BAR_BGND_BOTTOM);
 //# 
 //#         } catch (IOException e) { }
 //# 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
@@ -260,6 +267,7 @@ public class ColorScheme {
 //#             MSG_HIGHLIGHT=loadInt("MSG_HIGHLIGHT", MSG_HIGHLIGHT);
 //#             DISCO_CMD=loadInt("DISCO_CMD", DISCO_CMD);
 //#             BAR_BGND=loadInt("BAR_BGND", BAR_BGND);
+//#             BAR_BGND_BOTTOM=loadInt("BAR_BGND_BOTTOM", BAR_BGND_BOTTOM);
 //#             BAR_INK=loadInt("BAR_INK", BAR_INK);
 //#             CONTACT_DEFAULT=loadInt("CONTACT_DEFAULT", CONTACT_DEFAULT);
 //#             CONTACT_CHAT=loadInt("CONTACT_CHAT", CONTACT_CHAT);
@@ -355,6 +363,7 @@ public class ColorScheme {
 //#         body.append("MSG_HIGHLIGHT\t"+getColorString(MSG_HIGHLIGHT)+"\r\n");
 //#         body.append("DISCO_CMD\t"+getColorString(DISCO_CMD)+"\r\n");
 //#         body.append("BAR_BGND\t"+getColorString(BAR_BGND)+"\r\n");
+//#         body.append("BAR_BGND_BOTTOM\t"+getColorString(BAR_BGND_BOTTOM)+"\r\n");
 //#         body.append("BAR_INK\t"+getColorString(BAR_INK)+"\r\n");
 //#         body.append("CONTACT_DEFAULT\t"+getColorString(CONTACT_DEFAULT)+"\r\n");
 //#         body.append("CONTACT_CHAT\t"+getColorString(CONTACT_CHAT)+"\r\n");

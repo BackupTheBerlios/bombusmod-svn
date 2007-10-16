@@ -60,6 +60,7 @@ public class ColorForm implements CommandListener
             SR.MS_MSG_HIGHLIGHT,
             SR.MS_DISCO_CMD,
             SR.MS_BAR_BGND,
+            SR.MS_BAR_BGND+"2",
             SR.MS_BAR_INK,
 
             SR.MS_CONTACT_DEFAULT,
@@ -109,6 +110,7 @@ public class ColorForm implements CommandListener
             cl.MSG_HIGHLIGHT,
             cl.DISCO_CMD,
             cl.BAR_BGND,
+            cl.BAR_BGND_BOTTOM,
             cl.BAR_INK,
             
             cl.CONTACT_DEFAULT,
@@ -159,6 +161,7 @@ public class ColorForm implements CommandListener
             imageData(cl.MSG_HIGHLIGHT),
             imageData(cl.DISCO_CMD),
             imageData(cl.BAR_BGND),
+            imageData(cl.BAR_BGND_BOTTOM),
             imageData(cl.BAR_INK),
 
             imageData(cl.CONTACT_DEFAULT),

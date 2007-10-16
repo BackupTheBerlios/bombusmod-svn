@@ -279,90 +279,93 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                     cl.BAR_BGND=value; 
                     break;
                 case 9:
-                    cl.BAR_INK=value; 
+                    cl.BAR_BGND_BOTTOM=value; 
                     break;
                 case 10:
-                    cl.CONTACT_DEFAULT=value; 
+                    cl.BAR_INK=value; 
                     break;
                 case 11:
-                    cl.CONTACT_CHAT=value; 
+                    cl.CONTACT_DEFAULT=value; 
                     break;
                 case 12:
-                    cl.CONTACT_AWAY=value; 
+                    cl.CONTACT_CHAT=value; 
                     break;
                 case 13:
-                    cl.CONTACT_XA=value; 
+                    cl.CONTACT_AWAY=value; 
                     break;
                 case 14:
-                    cl.CONTACT_DND=value; 
+                    cl.CONTACT_XA=value; 
                     break;
                 case 15:
-                    cl.GROUP_INK=value; 
+                    cl.CONTACT_DND=value; 
                     break;
                 case 16:
-                    cl.BLK_INK=value; 
+                    cl.GROUP_INK=value; 
                     break;
                 case 17:
-                    cl.BLK_BGND=value; 
+                    cl.BLK_INK=value; 
                     break;
                 case 18:
-                    cl.MESSAGE_IN=value; 
+                    cl.BLK_BGND=value; 
                     break;
                 case 19:
-                    cl.MESSAGE_OUT=value; 
+                    cl.MESSAGE_IN=value; 
                     break;
                 case 20:
-                    cl.MESSAGE_PRESENCE=value; 
+                    cl.MESSAGE_OUT=value; 
                     break;
                 case 21:
-                    cl.MESSAGE_AUTH=value; 
+                    cl.MESSAGE_PRESENCE=value; 
                     break;
                 case 22:
-                    cl.MESSAGE_HISTORY=value; 
+                    cl.MESSAGE_AUTH=value; 
                     break;
                 case 23:
-                    cl.PGS_REMAINED=value; 
+                    cl.MESSAGE_HISTORY=value; 
                     break;
                 case 24:
-                    cl.PGS_COMPLETE=value; 
+                    cl.PGS_REMAINED=value; 
                     break;
                 case 25:
-                    cl.PGS_BORDER=value; 
+                    cl.PGS_COMPLETE=value; 
                     break;
                 case 26:
-                    cl.PGS_BGND=value; 
+                    cl.PGS_BORDER=value; 
                     break;
                 case 27:
-                    cl.HEAP_TOTAL=value; 
+                    cl.PGS_BGND=value; 
                     break;
                 case 28:
-                    cl.HEAP_FREE=value; 
+                    cl.HEAP_TOTAL=value; 
                     break;
                 case 29:
-                    cl.CURSOR_BGND=value; 
+                    cl.HEAP_FREE=value; 
                     break;
                 case 30:
+                    cl.CURSOR_BGND=value; 
+                    break;
+                case 31:
                     cl.CURSOR_OUTLINE=value; 
                     break;                    
-                case 31:
+                case 32:
                     cl.SCROLL_BRD=value; 
                     break;
-                case 32:
+                case 33:
                     cl.SCROLL_BAR=value; 
                     break;
-                case 33:
+                case 34:
                     cl.SCROLL_BGND=value; 
                     break;
-                case 34:
+                case 35:
                     cl.MESSAGE_IN_S=value; 
                     break;
-                case 35:
+                case 36:
                     cl.MESSAGE_OUT_S=value; 
                     break;
-                case 36:
+                case 37:
                     cl.MESSAGE_PRESENCE_S=value; 
                     break;
-                case 37:
+                case 38:
                     cl.CONTACT_J2J=value; 
                     break;
             }
