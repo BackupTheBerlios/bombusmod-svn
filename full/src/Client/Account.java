@@ -60,9 +60,9 @@ public class Account extends IconTextElement{
 	
     public int keepAlivePeriod=200;
     public int keepAliveType=1;
-    
+/*
     public int compressionLevel=1;
-
+*/
     public Account() {
         super(RosterIcons.getInstance());
     }
@@ -132,9 +132,9 @@ public class Account extends IconTextElement{
             }
             
             inputStream.readBoolean(); //firstrun
-            
+/*
             a.compressionLevel= inputStream.readInt();
-
+*/
         } catch (IOException e) { /*e.printStackTrace();*/ }
             
         return (a.userName==null)?null:a;
@@ -208,9 +208,9 @@ public class Account extends IconTextElement{
             outputStream.writeInt(keepAlivePeriod);
             
             outputStream.writeBoolean(false);  //firstrun
-            
+/*
             outputStream.writeInt(compressionLevel);
-	    
+*/	    
         } catch (IOException e) {
             //e.printStackTrace();
         }
@@ -239,10 +239,10 @@ public class Account extends IconTextElement{
 
     public int getPort() { return port; }
     public void setPort(int port) { this.port = port; }
-    
+/*
     public int getCompressionLevel() { return compressionLevel; }
     public void setCompressionLevel(int compressionLevel) { this.compressionLevel = compressionLevel; }
-
+*/
     public boolean getUseSSL() { return useSSL; }
     public void setUseSSL(boolean ssl) { this.useSSL = ssl; }
 

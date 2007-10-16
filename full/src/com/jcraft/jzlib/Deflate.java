@@ -1315,7 +1315,8 @@ final class Deflate{
   }
     
   int deflateInit(ZStream strm, int level, int bits){
-    return deflateInit2(strm, level, Z_DEFLATED, bits, StaticData.getInstance().account.getCompressionLevel(),
+    return deflateInit2(strm, level, Z_DEFLATED, bits, DEF_MEM_LEVEL,
+            /*StaticData.getInstance().account.getCompressionLevel(),*/
 			Z_DEFAULT_STRATEGY);
   }
   int deflateInit(ZStream strm, int level){
