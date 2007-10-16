@@ -134,7 +134,7 @@ public class BombusMod extends MIDlet implements Runnable{
             new AccountSelect(display, true);
         }
         
-        s.img=null;
+        //s.img=null;
     }
     
     /**
