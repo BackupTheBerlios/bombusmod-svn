@@ -26,6 +26,7 @@
 
 package ui.keys;
 
+import Client.Config;
 import Client.ConfigForm;
 import Client.Roster;
 import Client.StaticData;
@@ -44,9 +45,12 @@ public class userKeyExec {
     
     private static userKeyExec instance;
     
+    static Config cf;
+    
     public static userKeyExec getInstance(){
 	if (instance==null) {
 	    instance=new userKeyExec();
+            cf=Config.getInstance();
             instance.initCommands();
 	}
 	return instance;
@@ -143,6 +147,11 @@ public class userKeyExec {
 //#                 roster.cmdClearPopups();
 //#                 return true;
 //#endif
+            case 12:
+                cf.lightState=!cf.lightState;
+                roster.setLight(cf.lightState);
+                cf.saveToStorage();
+                return true;
         }
         
         return false;
@@ -169,7 +178,8 @@ public class userKeyExec {
             SR.MS_DISCO,
             SR.MS_PRIVACY_LISTS,
             SR.MS_CUSTOM_KEYS,
-            SR.MS_CLEAR_POPUPS
+            SR.MS_CLEAR_POPUPS,
+            SR.MS_FLASHLIGHT
     };
     
     public static final String[] KEYS_NAME = {

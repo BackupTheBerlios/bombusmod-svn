@@ -458,8 +458,7 @@ public class ConfigForm implements
             cf.messageLimit=MessageLimit.getValue();
             cf.msglistLimit=MessageCountLimit.getValue();
             
-            if (cf.allowLightControl)
-                StaticData.getInstance().roster.setLight(cf.lightState);   
+            StaticData.getInstance().roster.setLight(cf.lightState);   
             
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
             

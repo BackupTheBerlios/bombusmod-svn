@@ -151,14 +151,13 @@ public class Roster
     
     //public Contact lastAppearedContact=null;
 
-    private boolean allowLightControl=false;
-
     //boolean lightState=false;
     
 
 //#ifdef SE_LIGHT
-//#     private SELightTask selight;
+//#     private SELightTask selight=SELightTask.getInstance();
 //#endif
+    
     private final static int SOUND_FOR_ME=500;
     private final static int SOUND_FOR_CONFERENCE=800;
     private final static int SOUND_MESSAGE=1000;
@@ -186,11 +185,7 @@ public class Roster
        
         cf=Config.getInstance();
         
-        allowLightControl=cf.allowLightControl;
-        
-        if (allowLightControl) {
-			setLight(cf.lightState);
-        }
+        setLight(cf.lightState);
         
         playNotify(SOUND_START_UP);
         
@@ -223,18 +218,10 @@ public class Roster
 //#ifdef POPUPS
 //#         VirtualList.setWobble("");
 //#endif
-        
-
-        
-//#ifdef SE_LIGHT
-//#         if (ph.PhoneManufacturer()==ph.SONYE) {
-//#             selight=new SELightTask();
-//#             selight.setLight(cf.lightState);
-//#         }
-//#endif
     }
     
     public void setLight(boolean state) {
+        if (cf.allowLightControl) {
 		try {
 			if (state) {
 				Light.setLightOn();
@@ -242,6 +229,12 @@ public class Roster
 				Light.setLightOff();  
 			}
 		} catch( Exception e ) { }
+         } 
+//#ifdef SE_LIGHT
+//#         else if (ph.PhoneManufacturer()==ph.SONYE) {
+//#             selight.setLight(state);
+//#          }
+//#endif
     }
     
     public void addMenuCommands(){

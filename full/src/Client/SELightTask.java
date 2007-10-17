@@ -29,6 +29,16 @@ package Client;
 import com.nokia.mid.ui.DeviceControl;
 
 public class SELightTask implements Runnable {    
+    
+    private static SELightTask instance;
+    
+    public static SELightTask getInstance(){
+	if (instance==null) {
+	    instance=new SELightTask();
+	}
+	return instance;
+    }
+    
     private boolean stop;
     private boolean setLight;
     
