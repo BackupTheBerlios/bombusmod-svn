@@ -159,6 +159,7 @@ public class ConfigForm implements
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
         message.append("AutoScroll", null);
+        message.append("Emulate tabs", null);
 //#ifdef ANTISPAM
 //#         message.append("Antispam Conference", null);
 //#endif
@@ -172,7 +173,7 @@ public class ConfigForm implements
 //#if ALT_INPUT
 //#         message.append(SR.CLASSIC_CHAT, null);
 //#endif    
-            message.append(SR.MS_DELIVERY, null);
+        message.append(SR.MS_DELIVERY, null);
 
         boolean mv[]={
 //#ifdef SMILES
@@ -180,7 +181,8 @@ public class ConfigForm implements
 //#endif
             cf.eventComposing,
             cf.capsState,
-            cf.autoScroll
+            cf.autoScroll,
+            cf.useTabs
 //#ifdef ANTISPAM
 //#             ,cf.antispam
 //#endif
@@ -403,6 +405,7 @@ public class ConfigForm implements
             cf.eventComposing=mv[mvctr++];
             cf.capsState=mv[mvctr++];
             cf.autoScroll=mv[mvctr++];
+            cf.useTabs=mv[mvctr++];
 //#ifdef ANTISPAM
 //#             cf.antispam=mv[mvctr++];
 //#endif

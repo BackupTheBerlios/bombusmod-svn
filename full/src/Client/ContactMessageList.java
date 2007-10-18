@@ -469,9 +469,9 @@ public class ContactMessageList extends MessageList
 //#endif
         super.userKeyPressed(keyCode);
         
-        if (keyCode==KEY_NUM4) 
+        if (keyCode==KEY_NUM4 && cf.useTabs) 
             nextContact(-1); //previous contact with messages
-        if (keyCode==KEY_NUM6) 
+        if (keyCode==KEY_NUM6 && cf.useTabs) 
             nextContact(1); //next contact with messages
         
             if (keyCode==KEY_NUM3) 

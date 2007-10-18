@@ -57,7 +57,7 @@ public class Config {
     public static int KEY_BACK = -11;
     public static int SOFT_LEFT = -1000;
     public static int SOFT_RIGHT = -1000;
-
+    
     public boolean ghostMotor=getBooleanProperty("moto_e398",false);
     public boolean blFlash=!ghostMotor; //true;
     
@@ -176,6 +176,8 @@ public class Config {
     public boolean userKeys = false;
 
     public int msglistLimit=100;
+    
+    public boolean useTabs=true;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -335,6 +337,8 @@ public class Config {
             
             msglistLimit=inputStream.readInt();
             
+            useTabs=inputStream.readBoolean();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -472,6 +476,8 @@ public class Config {
             outputStream.writeBoolean(userKeys);
             
             outputStream.writeInt(msglistLimit);
+            
+            outputStream.writeBoolean(useTabs);
             
 	} catch (Exception e) { }
 	

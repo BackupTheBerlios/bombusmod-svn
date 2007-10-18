@@ -152,6 +152,8 @@ public class ConfigPrivateStorage
 //#             
 //#             cs.addChild("userKeys", (cf.userKeys)?"1":"0");
 //#             cs.addChild("msglistLimit", Integer.toString(cf.msglistLimit));
+//#             
+//#             cs.addChild("useTabs", (cf.useTabs)?"1":"0");
 //#         }
 //#         //System.out.println(iq.toString());
 //#         roster.theStream.send(iq);
@@ -159,97 +161,100 @@ public class ConfigPrivateStorage
 //#     
 //#     protected void loadFromPrivateStorage(){
 //# 	try {
-//# 	    cf.accountIndex=getIntProperty("accountIndex",-1);
-//# 	    cf.showOfflineContacts=getBooleanProperty("showOfflineContacts",false);
-//# 	    cf.fullscreen=getBooleanProperty("fullscreen",true);
-//# 	    cf.def_profile = getIntProperty("def_profile",0);
-//# 	    cf.smiles=getBooleanProperty("smiles",true);
-//# 	    cf.showTransports=getBooleanProperty("showTransports",true);
-//# 	    cf.selfContact=getBooleanProperty("selfContact",false);
+//# 	    cf.accountIndex=cf.getIntProperty("accountIndex",-1);
+//# 	    cf.showOfflineContacts=cf.getBooleanProperty("showOfflineContacts",false);
+//# 	    cf.fullscreen=cf.getBooleanProperty("fullscreen",true);
+//# 	    cf.def_profile = cf.getIntProperty("def_profile",0);
+//# 	    cf.smiles=cf.getBooleanProperty("smiles",true);
+//# 	    cf.showTransports=cf.getBooleanProperty("showTransports",true);
+//# 	    cf.selfContact=cf.getBooleanProperty("selfContact",false);
 //# 
-//# 	    cf.ignore=getBooleanProperty("ignore",false);
-//#             cf.collapsedGroups=getBooleanProperty("collapsedGroups",false);
-//# 	    cf.eventComposing=getBooleanProperty("eventComposing",true);
+//# 	    cf.ignore=cf.getBooleanProperty("ignore",false);
+//#             cf.collapsedGroups=cf.getBooleanProperty("collapsedGroups",false);
+//# 	    cf.eventComposing=cf.getBooleanProperty("eventComposing",true);
 //# 	    
-//# 	    cf.gmtOffset=getIntProperty("gmtOffset",0);
-//# 	    cf.locOffset=getIntProperty("locOffset",0);
+//# 	    cf.gmtOffset=cf.getIntProperty("gmtOffset",0);
+//# 	    cf.locOffset=cf.getIntProperty("locOffset",0);
 //# 	    
-//# 	    cf.autoLogin=getBooleanProperty("autoLogin",true);
-//# 	    cf.autoJoinConferences=getBooleanProperty("autoJoinConferences",true);
+//# 	    cf.autoLogin=cf.getBooleanProperty("autoLogin",true);
+//# 	    cf.autoJoinConferences=cf.getBooleanProperty("autoJoinConferences",true);
 //# 	    
-//# 	    cf.popupFromMinimized=getBooleanProperty("popupFromMinimized",true);
+//# 	    cf.popupFromMinimized=cf.getBooleanProperty("popupFromMinimized",true);
 //# 	    
-//# 	    cf.blFlash=getBooleanProperty("blFlash",true);
-//# 	    cf.memMonitor=getBooleanProperty("memMonitor",true);
+//# 	    cf.blFlash=cf.getBooleanProperty("blFlash",true);
+//# 	    cf.memMonitor=cf.getBooleanProperty("memMonitor",true);
 //#             
-//#             cf.font1=getIntProperty("font1",0);
-//#             cf.font2=getIntProperty("font2",0);
+//#             cf.font1=cf.getIntProperty("font1",0);
+//#             cf.font2=cf.getIntProperty("font2",0);
 //#             
-//#             cf.autoFocus=getBooleanProperty("autoFocus",false);
+//#             cf.autoFocus=cf.getBooleanProperty("autoFocus",false);
 //#             
-//#             cf.lang=getStringProperty("lang","en");
+//#             cf.lang=cf.getStringProperty("lang","en");
 //#             
-//#             cf.storeConfPresence=getBooleanProperty("storeConfPresence",true);
+//#             cf.storeConfPresence=cf.getBooleanProperty("storeConfPresence",true);
 //#             
-//#             cf.capsState=getBooleanProperty("capsState",true);
+//#             cf.capsState=cf.getBooleanProperty("capsState",true);
 //# 	    
-//#             cf.textWrap=getIntProperty("textWrap",0);
+//#             cf.textWrap=cf.getIntProperty("textWrap",0);
 //#             
-//#             cf.loginstatus=getIntProperty("loginstatus",0);
+//#             cf.loginstatus=cf.getIntProperty("loginstatus",0);
 //# 
-//#             cf.msgPath=getStringProperty("msgPath","");
-//#             cf.msgLog=getBooleanProperty("msgLog",false);
-//#             cf.msgLogPresence=getBooleanProperty("msgLogPresence",false);
-//#             cf.msgLogConfPresence=getBooleanProperty("msgLogConfPresence",false);
-//#             cf.msgLogConf=getBooleanProperty("msgLogConf",false);
-//#             cf.cp1251=getBooleanProperty("cp1251",true);
+//#             cf.msgPath=cf.getStringProperty("msgPath","");
+//#             cf.msgLog=cf.getBooleanProperty("msgLog",false);
+//#             cf.msgLogPresence=cf.getBooleanProperty("msgLogPresence",false);
+//#             cf.msgLogConfPresence=cf.getBooleanProperty("msgLogConfPresence",false);
+//#             cf.msgLogConf=cf.getBooleanProperty("msgLogConf",false);
+//#             cf.cp1251=cf.getBooleanProperty("cp1251",true);
 //#             
-//#             cf.autoAwayDelay=getIntProperty("autoAwayDelay",5);
+//#             cf.autoAwayDelay=cf.getIntProperty("autoAwayDelay",5);
 //#         
-//#             cf.defGcRoom=getStringProperty("defGcRoom","bombusmod@conference.jabber.ru");
+//#             cf.defGcRoom=cf.getStringProperty("defGcRoom","bombusmod@conference.jabber.ru");
 //#             
-//#             cf.altInput=getBooleanProperty("altInput",false);
+//#             cf.altInput=cf.getBooleanProperty("altInput",false);
 //#             
-//#             cf.isbottom=getIntProperty("isbottom",2);
+//#             cf.isbottom=cf.getIntProperty("isbottom",2);
 //#             
-//#             cf.confMessageCount=getIntProperty("confMessageCount",20);
+//#             cf.confMessageCount=cf.getIntProperty("confMessageCount",20);
 //#             
-//#             cf.newMenu=getBooleanProperty("newMenu",false);
+//#             cf.newMenu=cf.getBooleanProperty("newMenu",false);
 //#             
-//#             cf.lightState=getBooleanProperty("lightState",true);
+//#             cf.lightState=cf.getBooleanProperty("lightState",true);
 //# 			
-//#             cf.autoSubscribe=getBooleanProperty("autoSubscribe",true);
+//#             cf.autoSubscribe=cf.getBooleanProperty("autoSubscribe",true);
 //#             
-//#             cf.lastMessages=getBooleanProperty("lastMessages",false);
+//#             cf.lastMessages=cf.getBooleanProperty("lastMessages",false);
 //# 
-//#             cf.setAutoStatusMessage=getBooleanProperty("setAutoStatusMessage",false);
+//#             cf.setAutoStatusMessage=cf.getBooleanProperty("setAutoStatusMessage",false);
 //#             
-//#             cf.autoAwayType=getIntProperty("autoAwayType",0);
+//#             cf.autoAwayType=cf.getIntProperty("autoAwayType",0);
 //#             
-//#             cf.autoScroll=getBooleanProperty("autoScroll",true);
+//#             cf.autoScroll=cf.getBooleanProperty("autoScroll",true);
 //#             
-//#             cf.popUps=getBooleanProperty("popUps",true);
+//#             cf.popUps=cf.getBooleanProperty("popUps",true);
 //#             
-//#             cf.showResources=getBooleanProperty("showResources",true);
+//#             cf.showResources=cf.getBooleanProperty("showResources",true);
 //#             
-//#             cf.antispam=getBooleanProperty("antispam",true);
+//#             cf.antispam=cf.getBooleanProperty("antispam",true);
 //#             
-//#             cf.enableVersionOs=getBooleanProperty("enableVersionOs",true);
+//#             cf.enableVersionOs=cf.getBooleanProperty("enableVersionOs",true);
 //#             
-//#             cf.messageLimit=getIntProperty("messageLimit",300);
+//#             cf.messageLimit=cf.getIntProperty("messageLimit",300);
 //#             
-//#             cf.eventDelivery=getBooleanProperty("eventDelivery",true);
+//#             cf.eventDelivery=cf.getBooleanProperty("eventDelivery",true);
 //#             
-//#             cf.transliterateFilenames=getBooleanProperty("transliterateFilenames",false);
+//#             cf.transliterateFilenames=cf.getBooleanProperty("transliterateFilenames",false);
 //#             
-//#             cf.rosterStatus=getBooleanProperty("rosterStatus",true);
-//#             cf.queryExit=getBooleanProperty("queryExit",false);
-//#             cf.showLastAppearedContact=getBooleanProperty("showLastAppearedContact",false);
+//#             cf.rosterStatus=cf.getBooleanProperty("rosterStatus",true);
+//#             cf.queryExit=cf.getBooleanProperty("queryExit",false);
+//#             cf.showLastAppearedContact=cf.getBooleanProperty("showLastAppearedContact",false);
 //#             
-//#             VirtualList.showBalloons=cf.showBalloons=getBooleanProperty("showBalloons",false);
+//#             VirtualList.showBalloons=cf.showBalloons=cf.getBooleanProperty("showBalloons",false);
 //#             
-//#             cf.userKeys=getBooleanProperty("userKeys",false);
-//#             cf.msglistLimit=getIntProperty("msglistLimit",100);
+//#             cf.userKeys=cf.getBooleanProperty("userKeys",false);
+//#             cf.msglistLimit=cf.getIntProperty("msglistLimit",100);
+//#             
+//#             cf.useTabs=cf.getBooleanProperty("useTabs",true);
+//#             
 //#             cf.lastProfile=cf.profile=cf.def_profile;
 //#             if (cf.lastProfile==AlertProfile.VIBRA) cf.lastProfile=0;
 //#             cf.updateTime();
@@ -261,36 +266,6 @@ public class ConfigPrivateStorage
 //#             VirtualList.memMonitor=cf.memMonitor;
 //#             VirtualList.userKeys=cf.userKeys;
 //# 	} catch (Exception e) {}
-//#     }
-//#     
-//#     public final String getStringProperty(final String key, final String defvalue) {
-//# 	try {
-//# 	    String s=cs.getChildBlock(key).getText();
-//#             //System.out.println(key+": "+s);
-//# 	    return (s==null)?defvalue:s;
-//# 	} catch (Exception e) {	}
-//#         return defvalue;
-//#     }
-//#     
-//#     public final int getIntProperty(final String key, final int defvalue) {
-//# 	try {
-//# 	    String s=cs.getChildBlock(key).getText();
-//#             //System.out.println(key+": "+s);
-//# 	    return Integer.parseInt(s);
-//# 	} catch (Exception e) { }
-//# 	return defvalue;
-//#     }
-//# 
-//#     public final boolean getBooleanProperty(final String key, final boolean defvalue) {
-//# 	try {
-//# 	    String s=cs.getChildBlock(key).getText();
-//#             //System.out.println(key+": "+s);
-//# 	    if (s.equals("true")) return true;
-//# 	    if (s.equals("yes")) return true;
-//# 	    if (s.equals("1")) return true;
-//#             return false;
-//# 	} catch (Exception e) { }
-//#         return defvalue;
 //#     }
 //#endif
 }
