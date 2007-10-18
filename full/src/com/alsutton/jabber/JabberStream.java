@@ -400,7 +400,9 @@ public class JabberStream implements XMLEventListener, Runnable {
              try {
                  System.out.println("Keep-Alive");
                  sendKeepAlive(type);
+//#ifndef WSYSTEMGC
                  System.gc();
+//#endif
             } catch (Exception e) { 
                 dispatcher.broadcastTerminatedConnection(e);
                 //e.printStackTrace(); 

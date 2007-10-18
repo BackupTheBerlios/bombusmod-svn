@@ -357,8 +357,9 @@ public class Roster
 	}
 	setMyJid(new Jid(sd.account.getJid()));
 	updateContact(sd.account.getNick(), myJid.getBareJid(), Groups.SELF_GROUP, "self", false);
-	
+//#ifndef WSYSTEMGC
 	System.gc();
+//#endif
     }
     
     public void errorLog(String s){
@@ -778,7 +779,9 @@ public class Roster
 //#                 autoAway=false;
 //#                 autoXa=false;
 //#endif
+//#ifndef WSYSTEMGC
                 System.gc();
+//#endif
             }
         }
         Contact c=selfContact();
@@ -1057,8 +1060,9 @@ public class Roster
             //e.printStackTrace();
         }
         theStream=null;
+//#ifndef WSYSTEMGC
         System.gc();
-		
+//#endif
         reconnect=false;
         setQuerySign(false);
         redraw();
@@ -1802,8 +1806,10 @@ public class Roster
     void messageStore(Contact c, Msg message) {
         if (c==null) return;  
         c.addMessage(message);
-        
-        if (cf.ghostMotor) System.gc(); 
+//#ifndef WSYSTEMGC
+        if (cf.ghostMotor) 
+            System.gc(); 
+//#endif
 //#ifdef POPUPS
 //#         if (message.messageType==message.MESSAGE_TYPE_AUTH && cf.popUps) {
 //#             setWobbler(message.from+"\n"+message.getBody());
@@ -2152,8 +2158,9 @@ public class Roster
         switch (keyCode) {
             case KEY_NUM0:
                 cleanMarks();
+//#ifndef WSYSTEMGC
                 System.gc();
-
+//#endif
                 if (messageCount==0) return;
                 Object atcursor=getFocusedObject();
                 Contact c=null;
@@ -2190,7 +2197,9 @@ public class Roster
                 keyRight();
                 break;
             case KEY_POUND:
+//#ifndef WSYSTEMGC
                 System.gc();
+//#endif
 //#ifdef POPUPS
 //#                 setWobbler(null);
 //#endif

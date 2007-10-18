@@ -106,9 +106,9 @@ public class ActiveContacts
         } else if (keyCode==KEY_NUM0) {
             if (getItemCount()<1)
                 return;
-            
+//#ifndef WSYSTEMGC
             System.gc();
-
+//#endif
             Contact c=(Contact)getFocusedObject();
 
             Enumeration i=activeContacts.elements();
