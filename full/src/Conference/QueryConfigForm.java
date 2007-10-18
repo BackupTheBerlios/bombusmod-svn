@@ -58,10 +58,10 @@ public class QueryConfigForm implements JabberBlockListener{
     }
     
     public int blockArrived(JabberDataBlock data) {
-        JabberDataBlock query=data.findNamespace(OWNER_XMLNS);
+        JabberDataBlock query=data.findNamespace("query", OWNER_XMLNS);
         if (query!=null) {
             StaticData.getInstance().roster.setQuerySign(false);
-//#ifdef SERVICE_DISCOVERY //? ???? ???
+//#ifdef SERVICE_DISCOVERY
 //#             if (data.getTypeAttribute().equals("result")) {
 //#                 new DiscoForm(display, data, StaticData.getInstance().roster.theStream, "muc_owner", "query");
 //#             }

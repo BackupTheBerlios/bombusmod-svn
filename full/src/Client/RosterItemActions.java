@@ -438,7 +438,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                     msg.id=id;
 //#                     
 //#                     try {
-//#                         roster.sendMessage(c, id, body, subj, 0);
+//#                         roster.sendMessage(c, id, body, subj, null);
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
 //#                     } catch (Exception e) {
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
@@ -461,7 +461,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
                     msg.id=id;
                     try {
-                        roster.sendMessage(c, id, body, subj, 0);
+                        roster.sendMessage(c, id, body, subj, null);
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
                     } catch (Exception e) {
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));

@@ -908,7 +908,7 @@ public class Roster
      * Method to send a message to the specified recipient
      */
     
-    public void sendMessage(Contact to, String id, final String body, final String subject , int composingState) {
+    public void sendMessage(Contact to, String id, final String body, final String subject , String composingState) {
         try {
 //#ifndef WMUC
             boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
@@ -941,10 +941,20 @@ public class Roster
             message.setAttribute("id", id);
             if (groupchat && body==null && subject==null) return;
 
+            if (composingState!=null) 
+                message.addChildNs(composingState, "http://jabber.org/protocol/chatstates");
+
+
+            if (!groupchat) 
+                if (body!=null) if (cf.eventDelivery) 
+                    message.addChildNs("request", "urn:xmpp:receipts");
+
+            /* xep-0022: deprecated
+            
             JabberDataBlock event=new JabberDataBlock("x", null,null);
 			event.setNameSpace("jabber:x:event");
 
-            if (composingState>0) {
+            if (composingState!=null) {
                 event.setNameSpace("jabber:x:event");
                 if (body==null) event.addChild(new JabberDataBlock("id",null, null));
                 if (composingState==1) {
@@ -955,21 +965,13 @@ public class Roster
             if (!groupchat) {
                 if (body!=null) {
                     if (cf.eventDelivery) {
-                        //delivery
-                        /*if (to.deliveryType==Contact.DELIVERY_NONE)
-                            to.deliveryType=Contact.DELIVERY_HANDSHAKE;
-
-                        if (to.deliveryType==Contact.DELIVERY_XEP22 || to.deliveryType==Contact.DELIVERY_HANDSHAKE)*/
                             event.addChild("delivered", null);
-
-                        //if (to.deliveryType==Contact.DELIVERY_XEP184 || to.deliveryType==Contact.DELIVERY_HANDSHAKE) {
-                        //    message.addChild("request", null).setNameSpace(Contact.XEP184_NS);
-                        //}
                     }
                 }
             }
 
             if (event.getChildBlocks()!=null) message.addChild(event);
+            */
             theStream.send( message );
             lastMessageTime=Time.utcTimeMillis();
             playNotify(SOUND_OUTGOING);
@@ -983,17 +985,19 @@ public class Roster
         if (!cf.eventDelivery) return;
         if (myStatus==Presence.PRESENCE_INVISIBLE) return;
         Message message=new Message(c.jid.getJid());
-        /*if (c.deliveryType==Contact.DELIVERY_XEP184) {
-            message.setAttribute("id", id);
-            message.addChild("received", null).setNameSpace(Contact.XEP184_NS);
-            theStream.send( message );
-        }*/
-        //if (c.deliveryType==Contact.DELIVERY_XEP22) {
+
+        //xep-0184
+        message.setAttribute("id", id);
+        message.addChildNs("received", "http://jabber.org/protocol/chatstates");
+        theStream.send( message );
+        
+            
+        /* xep-0022: deprecated
             JabberDataBlock x=message.addChildNs("x", "jabber:x:event");
             x.addChild("id", id);
             x.addChild("delivered", null);
             theStream.send( message );
-        //}
+        */
     }    
 
     private Vector vCardQueue;
@@ -1291,12 +1295,12 @@ public class Roster
                         }
                     }
                     // ��������� �� ������ ���������� ������� ������� XEP-0202
-                    if (data.findNamespace("urn:xmpp:time")!=null) {
+                    if (data.findNamespace("time", "urn:xmpp:time")!=null) {
                         theStream.send(new IqTimeReply(data));
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     // xep-0199 ping
-                    if (data.findNamespace("urn:xmpp:ping")!=null) {
+                    if (data.findNamespace("ping", "urn:xmpp:ping")!=null) {
                         Iq pong=new Iq(from, Iq.TYPE_RESULT, data.getAttribute("id"));
                         theStream.send(pong);
                         return JabberBlockListener.BLOCK_PROCESSED;
@@ -1444,7 +1448,7 @@ public class Roster
 //#ifndef WMUC
                 try {
                     //TODO: invitations
-                    JabberDataBlock xmlns=message.findNamespace("http://jabber.org/protocol/muc#user");
+                    JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
                     String password=xmlns.getChildBlockText("password");
                     
                     JabberDataBlock invite=xmlns.getChildBlock("invite");
@@ -1486,22 +1490,36 @@ public class Roster
                 
                 boolean compose=false;
 
-                //JabberDataBlock x=message.getChildBlock("x");
-		JabberDataBlock x=(type.equals("chat"))? message.getChildBlock("x") : null;
-
-                /*JabberDataBlock delivery=data.findNamespace(Contact.XEP184_NS);
-                if (delivery!=null) {
-                    c.deliveryType=Contact.DELIVERY_XEP184;
-                    if (delivery.getTagName().equals("received")) {
-                        //delivered
-                        c.markDelivered(data.getAttribute("id"));
-                    }
-                    if (delivery.getTagName().equals("request")) {
+                if (type.equals("chat")) {
+                    if (message.findNamespace("request", "urn:xmpp:receipts")!=null) {
                         sendDeliveryMessage(c, data.getAttribute("id"));
                     }
-                }*/
-    
-                if (x!=null) {
+                    
+                    if (message.findNamespace("received", "urn:xmpp:receipts")!=null) {
+                         c.markDelivered(data.getAttribute("id"));
+                     }
+
+                    if (message.findNamespace("active", "http://jabber.org/protocol/chatstates")!=null) {
+                        c.acceptComposing=true;
+                        c.setComposing(false);
+                     }
+
+                    if (message.findNamespace("paused", "http://jabber.org/protocol/chatstates")!=null) {
+                        c.acceptComposing=true;
+                        c.setComposing(false);
+                    }
+
+                    if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates")!=null) {
+                        c.acceptComposing=true;
+                        c.setComposing(true);
+                    }
+                }
+                 
+                
+                /*
+                JabberDataBlock x=(type.equals("chat"))? message.getChildBlock("x") : null;
+
+                 if (x!=null) {
                     compose=(  x.getChildBlock("composing")!=null 
                             && c.status<Presence.PRESENCE_OFFLINE); // drop composing events from offlines
                     
@@ -1514,10 +1532,6 @@ public class Roster
                     c.setComposing(compose);
 
                     if (x.getChildBlock("delivered")!=null) {
-                        /*if (c.deliveryType==Contact.DELIVERY_HANDSHAKE) 
-                            c.deliveryType=Contact.DELIVERY_XEP22;*/
-                        
-                        /*if (c.deliveryType==Contact.DELIVERY_XEP22)*/ 
                         if (body!=null) {
                             //ask delivery
                             if (c.status<Presence.PRESENCE_OFFLINE)
@@ -1528,6 +1542,7 @@ public class Roster
                         }
                     }
                 }
+                */
                 redraw();
 
                 if (body==null) return JabberBlockListener.BLOCK_REJECTED;
@@ -1642,8 +1657,8 @@ public class Roster
                         null,
                         pr.getPresenceTxt());
 //#ifndef WMUC
-                JabberDataBlock xmuc=pr.findNamespace("http://jabber.org/protocol/muc#user");
-                if (xmuc==null) xmuc=pr.findNamespace("http://jabber.org/protocol/muc"); //join errors
+                JabberDataBlock xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
+                if (xmuc==null) xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc"); //join errors
 
                 if (xmuc!=null) {
                     try {
@@ -1658,7 +1673,7 @@ public class Roster
                             }
                         }
 
-                        JabberDataBlock j2j=pr.findNamespace("j2j:history");
+                        JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                         c.setJ2J(j2j!=null);
                         
                         int rp=from.indexOf('/');
@@ -1698,7 +1713,7 @@ public class Roster
                             }
                         }
 
-                        JabberDataBlock j2j=pr.findNamespace("j2j:history");
+                        JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                         c.setJ2J(j2j!=null);
                         
                         c.statusString=pr.getStatus();
@@ -1718,7 +1733,7 @@ public class Roster
                         c.setStatus(ti);
                     
                     if (c.nick==null) {
-                        JabberDataBlock nick = pr.findNamespace("http://jabber.org/protocol/nick");
+                        JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
                         if (nick!=null) c.nick=nick.getText();
                         
                     }

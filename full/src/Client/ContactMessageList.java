@@ -384,7 +384,7 @@ public class ContactMessageList extends MessageList
             
             try {
                 if (body!=null)
-                    sd.roster.sendMessage(contact, id, body, subj, 1);
+                    sd.roster.sendMessage(contact, id, body, subj, null);
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
             } catch (Exception e) {
                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
@@ -574,7 +574,7 @@ public class ContactMessageList extends MessageList
 //#ifdef ALT_INPUT
 //#     private void sendMessage(){
 //#         try {
-//#                 int comp=0; // composing event off
+//#                 String comp=null; // composing event off
 //#                 Roster r=StaticData.getInstance().roster;
 //#                 String id=String.valueOf((int) System.currentTimeMillis());
 //#                 if (text!=null) {
@@ -584,15 +584,15 @@ public class ContactMessageList extends MessageList
 //#                         Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
 //#                         msg.id=id;
 //#                         contact.addMessage(msg);
-//#                         comp=1; // composing event in message
+//#                         comp="active"; // composing event in message
 //#                     }
 //# 
-//#                 } else if (contact.acceptComposing) comp=(composing)? 1:2;
+//#                 } else if (contact.acceptComposing) comp=(composing)? "composing":"paused";
 //# 
-//#                 if (!cf.eventComposing) comp=0;
+//#                 if (!Config.getInstance().eventComposing) comp=null;
 //# 
 //#                 try {
-//#                     if (text!=null || comp>0)
+//#                     if (text!=null || comp!=null)
 //#                     r.sendMessage(contact, id, text, null, comp);
 //#                 } catch (Exception e) { }
 //#         } catch (Exception e) { }

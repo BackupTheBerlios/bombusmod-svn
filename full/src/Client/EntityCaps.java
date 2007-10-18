@@ -104,6 +104,7 @@ public class EntityCaps implements JabberBlockListener{
     
 //features MUST be sorted
     private final static String features[]={
+        "http://jabber.org/protocol/chatstates", //xep-0085
         "http://jabber.org/protocol/disco#info",
 	"http://jabber.org/protocol/ibb",
         "http://www.xmpp.org/extensions/xep-0199.html#ns",
@@ -113,8 +114,9 @@ public class EntityCaps implements JabberBlockListener{
         "jabber:iq:time", //DEPRECATED
         "jabber:iq:version",
         "jabber:x:data",
-        "jabber:x:event",
+        //"jabber:x:event", //DEPRECATED
         "urn:xmpp:ping",
+        "urn:xmpp:receipts", //xep-0184
         "urn:xmpp:time",
 //#ifdef MOOD
 //#         "http://jabber.org/protocol/mood"

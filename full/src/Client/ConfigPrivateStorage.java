@@ -49,10 +49,10 @@ public class ConfigPrivateStorage
 //#     public int blockArrived(JabberDataBlock data) {
 //#         if (data instanceof Iq) 
 //#             if (data.getTypeAttribute().equals("result")) {
-//#             JabberDataBlock query=data.findNamespace("jabber:iq:private");
+//#             JabberDataBlock query=data.findNamespace("query", "jabber:iq:private");
 //#             if (query==null) return BLOCK_REJECTED;
 //#             
-//#             cs=query.findNamespace(CONFIG_NS);
+//#             cs=query.findNamespace("cs", CONFIG_NS);
 //#             if (cs==null) return BLOCK_REJECTED;
 //#             
 //#             //System.out.println(cs.toString());
@@ -67,12 +67,10 @@ public class ConfigPrivateStorage
 //#     public void requestGroupState(boolean get) {
 //#         Roster roster=StaticData.getInstance().roster;
 //#         if (!roster.isLoggedIn()) return;
-//#         
+//# 
 //#         JabberDataBlock iq=new Iq(null, (get)? Iq.TYPE_GET : Iq.TYPE_SET, (get)? "queryCS" : "setCS");
-//#         JabberDataBlock query=iq.addChild("query", null);
-//#         query.setNameSpace("jabber:iq:private");
-//#         JabberDataBlock cs=query.addChild("cs", null);
-//#         cs.setNameSpace(CONFIG_NS);
+//#         JabberDataBlock query=iq.addChildNs("query", "jabber:iq:private");
+//#         JabberDataBlock cs=query.addChildNs("cs", CONFIG_NS);
 //#         
 //#         if (get) {
 //#             roster.theStream.addBlockListener(this);
