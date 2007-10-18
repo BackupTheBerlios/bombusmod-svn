@@ -129,7 +129,7 @@ public abstract class VirtualList
     
     public int stringHeight=15;
 
-    public static short keyClear=-8;
+    public static final short keyClear=-8;
     public static short keyVolDown=0x1000;
     public static short keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;

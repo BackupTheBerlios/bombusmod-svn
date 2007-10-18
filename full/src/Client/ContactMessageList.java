@@ -453,67 +453,114 @@ public class ContactMessageList extends MessageList
 //#                     clearReadedMessageList();
 //#                 }
 //#             } else {
-//#                 if (keyCode==KEY_NUM1) updateBottom(1);
-//#                 if (keyCode==KEY_NUM2) updateBottom(2);
-//#                 if (keyCode==KEY_NUM3) updateBottom(3);
-//#                 if (keyCode==KEY_NUM4) updateBottom(4);
-//#                 if (keyCode==KEY_NUM5) updateBottom(5);
-//#                 if (keyCode==KEY_NUM6) updateBottom(6);
-//#                 if (keyCode==KEY_NUM7) updateBottom(7);
-//#                 if (keyCode==KEY_NUM8) updateBottom(8);
-//#                 if (keyCode==KEY_NUM9) updateBottom(9);
-//#                 if (keyCode==KEY_NUM0) updateBottom(0);
-//#                 if (keyCode==KEY_POUND) updateBottom(-1);
+//#                 switch (keyCode) {
+//#                     case KEY_NUM1:
+//#                         updateBottom(1);
+//#                         break;
+//#                     case KEY_NUM2:
+//#                         updateBottom(2);
+//#                         break;
+//#                     case KEY_NUM3:
+//#                         updateBottom(3);
+//#                         break;
+//#                     case KEY_NUM4:
+//#                         updateBottom(4);
+//#                         break;
+//#                     case KEY_NUM5:
+//#                         updateBottom(5);
+//#                         break;
+//#                     case KEY_NUM6:
+//#                         updateBottom(6);
+//#                         break;
+//#                     case KEY_NUM7:
+//#                         updateBottom(7);
+//#                         break;
+//#                     case KEY_NUM8:
+//#                         updateBottom(8);
+//#                         break;
+//#                     case KEY_NUM9:
+//#                         updateBottom(9);
+//#                         break;
+//#                     case KEY_NUM0:
+//#                         updateBottom(0);
+//#                         break;
+//#                     case KEY_POUND:
+//#                         updateBottom(-1);
+//#                         break;
+//#                 }
 //#             }
 //#         } else {
 //#endif
         super.userKeyPressed(keyCode);
         
-        if (keyCode==KEY_NUM4 && cf.useTabs) 
-            nextContact(-1); //previous contact with messages
-        if (keyCode==KEY_NUM6 && cf.useTabs) 
-            nextContact(1); //next contact with messages
-        
-            if (keyCode==KEY_NUM3) 
+        switch (keyCode) {
+            case KEY_NUM4:
+                if (cf.useTabs) {
+                    nextContact(-1); //previous contact with messages
+                    break;
+                } else {
+                    keyLeft();
+                    break;
+                }
+                
+            case KEY_NUM6:
+                if (cf.useTabs) {
+                    nextContact(1); //next contact with messages
+                    break;
+                } else {
+                    keyRight();
+                    break;
+                }
+            case KEY_NUM3:
                 new ActiveContacts(display, contact);
+                break;
         
-            if (keyCode==KEY_NUM9) 
+            case KEY_NUM9:
                 Quote();
+                break;
         
-            if (cf.allowLightControl && (keyCode==SIEMENS_VOLUP || keyCode==SIEMENS_CAMERA)) { //copy&copy+
-                if (messages.isEmpty()) 
-                    return;
-                try {
-                    StringBuffer clipstr=new StringBuffer();
-                    clipstr.append(clipboard.getClipBoard());
-                    if (clipstr.length()>0)
-                        clipstr.append("\n\n");
-                    
-                    clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
-                    clipstr.append(getMessage(cursor).quoteString());
+            case SIEMENS_VOLUP:
+            case SIEMENS_CAMERA:
+                 if (cf.allowLightControl) { //copy&copy+
+                    if (messages.isEmpty()) 
+                        return;
+                    try {
+                        StringBuffer clipstr=new StringBuffer();
+                        clipstr.append(clipboard.getClipBoard());
+                        if (clipstr.length()>0)
+                            clipstr.append("\n\n");
 
-                    clipboard.setClipBoard(clipstr.toString());
-                    clipstr=null;
-                } catch (Exception e) {/*no messages*/}
-            }
-            if (cf.allowLightControl && (keyCode==SIEMENS_VOLDOWN || keyCode==SIEMENS_MPLAYER)) { //clear clipboard
-                clipboard.setClipBoard("");
-            }
-            if (keyCode==KEY_POUND) {
+                        clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
+                        clipstr.append(getMessage(cursor).quoteString());
+
+                        clipboard.setClipBoard(clipstr.toString());
+                        clipstr=null;
+                    } catch (Exception e) {/*no messages*/}
+                    break;
+                 }
+            case SIEMENS_VOLDOWN:
+            case SIEMENS_MPLAYER:
+                if (cf.allowLightControl) { //clear clipboard
+                    clipboard.setClipBoard("");
+                    break;
+                }
+            case KEY_POUND:
 //#ifndef WMUC
                 if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                     Reply();
+                    break;
                 } else {
 //#endif
                     keyGreen();
+                    break;
 //#ifndef WMUC                    
                 }
 //#endif
-            }
-        
-            if (keyCode==keyClear) {
-                if (!messages.isEmpty())
+            case keyClear:
+                if (!messages.isEmpty()) {
                     clearReadedMessageList();
+                    break;
+                }
             }
 //#if ALT_INPUT  
 //#         }

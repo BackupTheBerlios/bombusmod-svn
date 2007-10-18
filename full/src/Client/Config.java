@@ -215,7 +215,7 @@ public class Config {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	} else if (ph.PhoneManufacturer()==ph.MOTOEZX) {
-	    VirtualList.keyClear=0x1000;
+	    //VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	    KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
 	} else if (ph.PhoneManufacturer()==ph.MOTO) {
@@ -223,7 +223,7 @@ public class Config {
 	    blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
-	    VirtualList.keyClear=0x1000;
+	    //VirtualList.keyClear=0x1000;
 	} else if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
             keyLock='#';
             keyVibra='*';
