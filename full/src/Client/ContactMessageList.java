@@ -218,7 +218,6 @@ public class ContactMessageList extends MessageList
                 moveCursorEnd();
             }
         }
-        
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
     }    

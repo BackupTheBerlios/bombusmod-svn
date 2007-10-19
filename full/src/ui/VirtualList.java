@@ -522,10 +522,10 @@ public abstract class VirtualList
             int h=mainbar.getVHeight();
             g.setClip(0,0, width, h);
             
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h/2);
+            g.setColor(getMainBarBGnd()); //10
+            g.fillRect(0, 0, width, h/2); //5
             g.setColor(getMainBarBGndBottom());
-            g.fillRect(0, h/2, width, (h/2)+1);
+            g.fillRect(0, h/2, width, h); //5 10
             
             g.setColor(getMainBarRGB());
             mainbar.drawItem(g,0,false, false);

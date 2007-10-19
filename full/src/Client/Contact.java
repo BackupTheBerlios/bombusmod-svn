@@ -181,7 +181,7 @@ public class Contact extends IconTextElement{
         clone.bareJid=bareJid;
         return clone;
     }
-    
+
     public int getImageIndex() {
 //#ifdef ANTISPAM
 //#         if (!tempMsgs.isEmpty())

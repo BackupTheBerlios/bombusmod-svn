@@ -40,6 +40,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import locale.SR;
+import midlet.BombusMod;
 
 public class userKeyExec {
     
@@ -152,6 +153,14 @@ public class userKeyExec {
                 roster.setLight(cf.lightState);
                 cf.saveToStorage();
                 return true;
+            case 13:
+                new Info.InfoWindow(display);
+                return true;
+            case 14:
+                if (cf.allowMinimize) {
+                    BombusMod.getInstance().hideApp(true);
+                    return true;
+                }
         }
         
         return false;
@@ -179,7 +188,9 @@ public class userKeyExec {
             SR.MS_PRIVACY_LISTS,
             SR.MS_CUSTOM_KEYS,
             SR.MS_CLEAR_POPUPS,
-            SR.MS_FLASHLIGHT
+            SR.MS_FLASHLIGHT,
+            SR.MS_ABOUT,
+            SR.MS_APP_MINIMIZE
     };
     
     public static final String[] KEYS_NAME = {

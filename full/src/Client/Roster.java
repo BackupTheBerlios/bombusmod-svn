@@ -153,6 +153,7 @@ public class Roster
 
     //boolean lightState=false;
     
+    private int blState=Integer.MAX_VALUE;
 
 //#ifdef SE_LIGHT
 //#     private SELightTask selight=SELightTask.getInstance();
@@ -2204,6 +2205,12 @@ public class Roster
 //#                 setWobbler(null);
 //#endif
                 break;
+            case KEY_STAR:
+            if (cf.ghostMotor) {
+                // backlight management
+                blState=(blState==1)? Integer.MAX_VALUE : 1;
+                display.flashBacklight(blState);
+            }
         }
      }
  
