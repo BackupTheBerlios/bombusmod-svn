@@ -991,7 +991,7 @@ public class Roster
 
         //xep-0184
         message.setAttribute("id", id);
-        message.addChildNs("received", "http://jabber.org/protocol/chatstates");
+        message.addChildNs("received", "urn:xmpp:receipts");
         theStream.send( message );
         
             
@@ -1771,8 +1771,8 @@ public class Roster
     }
 
     void processRoster(JabberDataBlock data){
-        JabberDataBlock q=data.getChildBlock("query");
-        if (!q.isJabberNameSpace("jabber:iq:roster")) return;
+        JabberDataBlock q=data.findNamespace("query", "jabber:iq:roster");
+        if (q==null) return;
         int type=0;
 		
         //verifying from attribute as in RFC3921/7.2
