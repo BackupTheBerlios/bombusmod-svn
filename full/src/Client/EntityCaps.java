@@ -49,7 +49,7 @@ public class EntityCaps implements JabberBlockListener{
         
         JabberDataBlock identity=query.addChild("identity", null);
         identity.setAttribute("category","client");
-        identity.setAttribute("type","mobile");
+        identity.setAttribute("type","phone");
         identity.setAttribute("name", "BombusMod");
 
 //#ifdef MOOD
