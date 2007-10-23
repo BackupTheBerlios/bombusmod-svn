@@ -124,4 +124,21 @@ public class AlertProfile extends VirtualList implements CommandListener {
     }
     
     public int getItemCount(){   return ALERT_COUNT; }
+
+    protected boolean leftCommand() {
+        return false;
+    }
+
+    protected boolean rightCommand() {
+            destroyView();
+            return true;
+    }
+
+    protected String getLeftCommand() {
+        return "Menu";
+    }
+
+    protected String getRightCommand() {
+        return "Back";
+    }
 }

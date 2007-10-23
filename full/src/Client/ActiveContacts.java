@@ -144,4 +144,21 @@ public class ActiveContacts
         if (display!=null)
             display.setCurrent(parentView);
     }
+
+    protected boolean leftCommand() {
+        return false;
+    }
+
+    protected boolean rightCommand() {
+            destroyView();
+            return true;
+    }
+
+    protected String getLeftCommand() {
+        return "Menu";
+    }
+
+    protected String getRightCommand() {
+        return "Back";
+    }
 }

@@ -25,8 +25,9 @@
  *
  */
 
-package Client;
+package Client.Menu;
 //#ifndef WMUC
+import Client.*;
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
 import Conference.MucContact;
@@ -74,7 +75,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	
     Roster roster;
     
-    private ClipBoard clipboard;
+    private ClipBoard clipboard=ClipBoard.getInstance();
     private int action;
     
     /** Creates a new instance of RosterItemActions */

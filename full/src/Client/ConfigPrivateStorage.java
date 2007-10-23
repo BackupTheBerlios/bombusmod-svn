@@ -123,9 +123,8 @@ public class ConfigPrivateStorage
 //#             cs.addChild("defGcRoom", cf.defGcRoom);
 //#             
 //#             cs.addChild("altInput", (cf.altInput)?"1":"0");
-//#             cs.addChild("isbottom", Integer.toString(cf.isbottom));
+//#             cs.addChild("drawTop", Integer.toString(cf.drawTop));
 //#             cs.addChild("confMessageCount", Integer.toString(cf.confMessageCount));
-//#             cs.addChild("newMenu", (cf.newMenu)?"1":"0");
 //#             cs.addChild("lightState", (cf.lightState)?"1":"0");
 //#             cs.addChild("autoSubscribe", (cf.autoSubscribe)?"1":"0");
 //#             cs.addChild("lastMessages", (cf.lastMessages)?"1":"0");
@@ -212,11 +211,9 @@ public class ConfigPrivateStorage
 //#             
 //#             cf.altInput=cf.getBooleanProperty("altInput",false);
 //#             
-//#             cf.isbottom=cf.getIntProperty("isbottom",2);
+//#             cf.drawTop=cf.getIntProperty("drawTop",1);
 //#             
 //#             cf.confMessageCount=cf.getIntProperty("confMessageCount",20);
-//#             
-//#             cf.newMenu=cf.getBooleanProperty("newMenu",false);
 //#             
 //#             cf.lightState=cf.getBooleanProperty("lightState",true);
 //# 			
@@ -262,7 +259,7 @@ public class ConfigPrivateStorage
 //#             cf.saveToStorage();
 //# 
 //#             VirtualList.fullscreen=cf.fullscreen;
-//#             VirtualList.isbottom=cf.isbottom;
+//#             VirtualList.drawTop=cf.drawTop;
 //#             VirtualList.memMonitor=cf.memMonitor;
 //#             VirtualList.userKeys=cf.userKeys;
 //# 	} catch (Exception e) {}

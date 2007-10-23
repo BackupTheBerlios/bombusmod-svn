@@ -84,7 +84,7 @@ public class ArchiveList
     
     private int caretPos;
     
-    private ClipBoard clipboard;
+    private ClipBoard clipboard=ClipBoard.getInstance();
     
 //#if FILE_IO    
     int fileSize;
@@ -121,9 +121,8 @@ public class ArchiveList
  	this.target=target;
         this.caretPos=caretPos;
         enableListWrapping(true); //TEST:������� ����� ����� ������
-	setCommandListener(this);
-	addCommand(cmdBack);
-	addCommand(cmdDelete);
+	/*
+        addCommand(cmdDelete);
         addCommand(cmdCopy);
         if (!clipboard.isEmpty()) {
             addCommand(cmdCopyPlus);
@@ -138,7 +137,7 @@ public class ArchiveList
 	    addCommand(cmdPaste);
 	    addCommand(cmdJid);
 	}
-        
+        */
         attachDisplay(display);
         
         
@@ -166,7 +165,7 @@ public class ArchiveList
     public Msg getMessage(int index) {
 	return archive.msg(index);
     }
-
+/*
     public void commandAction(Command c, Displayable d) {
         super.commandAction(c,d);
         
@@ -194,14 +193,14 @@ public class ArchiveList
             try {
                 new archiveEdit(display,getMessage(cursor)).setParentView(StaticData.getInstance().roster);
                 deleteMessage();
-            } catch (Exception e) {/*no messages*/}
+            } catch (Exception e) {}
         }
         
         if (c == cmdCopy)
         {
             try {
                 clipboard.setClipBoard(getMessage(cursor).quoteString());
-            } catch (Exception e) {/*no messages*/}
+            } catch (Exception e) {}
         }
         
         if (c==cmdCopyPlus) {
@@ -213,11 +212,11 @@ public class ArchiveList
                 
                 clipboard.setClipBoard(clipstr.toString());
                 clipstr=null;
-            } catch (Exception e) {/*no messages*/}
+            } catch (Exception e) {}
         }
     }
-	
-
+*/
+    
     private void deleteMessage() {
         archive.delete(cursor);
         messages=new Vector();
@@ -435,6 +434,23 @@ public class ArchiveList
 	
     public void ActionConfirmed() {
         deleteMessage();
+    }
+
+    protected boolean leftCommand() {
+        return false;
+    }
+
+    protected boolean rightCommand() {
+            destroyView();
+            return true;
+    }
+
+    protected String getLeftCommand() {
+        return "Menu";
+    }
+
+    protected String getRightCommand() {
+        return "Back";
     }
 
 }

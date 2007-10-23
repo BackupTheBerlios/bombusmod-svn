@@ -62,9 +62,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	
     private NumberField keepAlive;
     private ChoiceGroup keepAliveType;
-/*
-    private NumberField compressionbox;
-*/  
+ 
     Command cmdOk = new Command(SR.MS_OK /*"OK"*/, Command.OK, 1);
     Command cmdPwd = new Command(SR.MS_SHOWPWD, Command.SCREEN, 2);
 //#if SERVER_SIDE_CONFIG  
@@ -129,10 +127,8 @@ class AccountForm implements CommandListener, ItemStateListener {
         proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   64, TextField.ANY); f.append(proxyHost);
 
 	proxyPort = new NumberField(SR.PROXY_PORT, account.getProxyPort(), 0, 65535);	f.append(proxyPort);
-/*
-        compressionbox = new NumberField(SR.MS_COMPRESSION_LEVEL, account.getCompressionLevel(), 1, 8);	f.append(compressionbox);
-*/
-	f.addCommand(cmdOk);
+
+        f.addCommand(cmdOk);
         f.addCommand(cmdPwd);
 //#if SERVER_SIDE_CONFIG        
 //#         f.addCommand(cmdRequestOptions);
@@ -199,7 +195,6 @@ class AccountForm implements CommandListener, ItemStateListener {
 //#endif
 	    account.setMucOnly(b[3]);
 	    account.setEnableProxy(b[4]);
-	    //account.updateJidCache();
 	    
 	    account.setPort(portbox.getValue());
 
@@ -208,10 +203,9 @@ class AccountForm implements CommandListener, ItemStateListener {
 			
             account.keepAlivePeriod=keepAlive.getValue();
             account.keepAliveType=keepAliveType.getSelectedIndex();
-/*
-            account.setCompressionLevel(compressionbox.getValue());
-*/	    
-	    if (newaccount) accountSelect.accountList.addElement(account);
+	    
+	    if (newaccount) 
+                accountSelect.accountList.addElement(account);
 	    accountSelect.rmsUpdate();
 	    accountSelect.commandState();
 	    
@@ -226,6 +220,7 @@ class AccountForm implements CommandListener, ItemStateListener {
     }
     
     public void destroyView()	{
-	if (display!=null)   display.setCurrent(parentView);
+	if (display!=null)   
+            display.setCurrent(parentView);
     }
 }

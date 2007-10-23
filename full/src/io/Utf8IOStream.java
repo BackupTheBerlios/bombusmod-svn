@@ -298,7 +298,7 @@ public class Utf8IOStream implements Runnable{
                 stats.append("\nZLib:\nin="); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
                 stats.append("\nout="); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
             }
-            stats.append("\nStream: in="); stats.append(recv);
+            stats.append("\nStream:\nin="); stats.append(recv);
             stats.append(" out="); stats.append(sent);
         } catch (Exception e) {
             stats=null;

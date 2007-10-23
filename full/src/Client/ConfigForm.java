@@ -219,9 +219,6 @@ public class ConfigForm implements
 //#ifdef USER_KEYS
 //#         application.append(SR.MS_CUSTOM_KEYS,null);
 //#endif
-//#ifdef NEW_MENU
-//#         application.append(SR.MS_NEW_MENU,null);
-//#endif
         application.append(SR.MS_FLASHLIGHT,null);
 	application.append(SR.MS_FLASHBACKLIGHT,null);
 
@@ -232,9 +229,6 @@ public class ConfigForm implements
             cf.queryExit,
 //#ifdef USER_KEYS
 //#             cf.userKeys,
-//#endif
-//#ifdef NEW_MENU
-//#             cf.newMenu,
 //#endif
             cf.lightState,
             cf.blFlash,
@@ -372,7 +366,7 @@ public class ConfigForm implements
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdOk) {
-            VirtualList.isbottom=cf.isbottom;
+            VirtualList.drawTop=cf.drawTop;
             
             roster.getSelectedFlags(ra);
             message.getSelectedFlags(mv);
@@ -431,9 +425,6 @@ public class ConfigForm implements
             cf.queryExit=ap[apctr++];
 //#ifdef USER_KEYS
 //#             VirtualList.userKeys=cf.userKeys=ap[apctr++];
-//#endif
-//#ifdef NEW_MENU
-//#             cf.newMenu=ap[apctr++];
 //#endif
             cf.lightState=ap[apctr++];
             cf.blFlash=ap[apctr++];

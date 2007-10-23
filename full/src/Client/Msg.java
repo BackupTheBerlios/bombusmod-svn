@@ -29,6 +29,7 @@ package Client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Vector;
 import ui.ColorScheme;
 import ui.Time;
 
@@ -154,4 +155,45 @@ public class Msg //implements MessageList.Element
         }
         return out.toString();
     };
+    
+    public Vector getUrlList() { 
+        Vector urlList=new Vector();
+        addUrls(body, "http://", urlList);
+        addUrls(body, "https://", urlList);
+        addUrls(body, "tel://", urlList);
+        addUrls(body, "native:", urlList);
+        return (urlList.size()==0)? null: urlList;
+    }
+    
+    private void addUrls(String text, String addString, Vector urlList) {
+        int pos=0;
+        int len=text.length();
+        while (pos<len) {
+            int head=text.indexOf(addString, pos);
+            if (head>=0) {
+                pos=head;
+                
+                while (pos<len) {
+                    char c=text.charAt(pos);
+                    if (c==' ' || c==0x09 || c==0x0d || c==0x0a || c==0xa0 || c==')' )  
+                        break;
+                    pos++;
+                }
+                urlList.addElement(text.substring(head, pos));
+                
+            } else break;
+        }
+    }
+    
+    public boolean isHasUrl() { 
+        if (body.indexOf("http://")>-1)
+            return true;
+        if (body.indexOf("https://")>-1)
+            return true;
+        if (body.indexOf("tel://")>-1)
+            return true;
+        if (body.indexOf("native:")>-1)
+            return true;
+        return false; 
+    }
 }

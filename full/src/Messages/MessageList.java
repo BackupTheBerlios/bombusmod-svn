@@ -30,8 +30,6 @@ package Messages;
 import Client.Config;
 import Client.Msg;
 import java.util.Vector;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -42,19 +40,9 @@ import ui.FontCache;
 
 public abstract class MessageList 
     extends VirtualList
-    implements CommandListener
 {
     
     protected Vector messages;
-    
-    protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
-    protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
-//#ifdef SMILES
-//#     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
-//#endif
-//#ifdef COLORS
-//#     protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 30);
-//#endif
     
     /** Creates a new instance of MessageList */
   
@@ -66,14 +54,6 @@ public abstract class MessageList
         enableListWrapping(false);
 	
         cursor=0;//activate
-//#ifdef SMILES
-//#         addCommand(cmdSmiles);
-//#endif
-        addCommand(cmdBack);
-        addCommand(cmdUrl);
-//#ifdef COLORS
-//#         addCommand(cmdxmlSkin);
-//#endif
         stringHeight=FontCache.getMsgFont().getHeight();
     }
 
@@ -103,31 +83,6 @@ public abstract class MessageList
     
     protected boolean smiles;
 
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdBack) destroyView();
-        if (c==cmdUrl) {
-            try {
-                Vector urls=((MessageItem) getFocusedObject()).getUrlList();
-                new MessageUrl(display, urls); //throws NullPointerException if no urls
-            } catch (Exception e) {/* no urls found */}
-        }
-//#ifdef SMILES
-//#         if (c==cmdSmiles) {
-//#             try {
-//#                 ((MessageItem)getFocusedObject()).toggleSmiles();
-//#             } catch (Exception e){}
-//#         }
-//#endif
-//#ifdef COLORS
-//#         if (c==cmdxmlSkin) {
-//#             try {
-//#                 if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
-//#                    ColorScheme.getInstance().loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
-//#                 }
-//#             } catch (Exception e){}
-//#         }
-//#endif
-    }
 //#ifdef SMILES
 //#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
 //#         super.keyPressed(keyCode);

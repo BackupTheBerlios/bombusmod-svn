@@ -25,16 +25,21 @@
  *
  */
 
-package Client;
+package Client.Menu;
 //#ifdef PRIVACY
 //# import PrivacyLists.PrivacySelect;
 //#endif
+import Client.Config;
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
 //#endif
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryConfig;
 //#endif
+import Client.AlertCustomizeForm;
+import Client.ConfigForm;
+import Client.Contact;
+import Client.StaticData;
 import Stats.Stats;
 import javax.microedition.lcdui.Display;
 import locale.SR;

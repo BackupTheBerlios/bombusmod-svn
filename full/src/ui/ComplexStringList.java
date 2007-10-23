@@ -83,4 +83,21 @@ public class ComplexStringList extends VirtualList
         if (line==null) line=cacheUpdate(index);
         return line;
     }
+
+    protected boolean leftCommand() {
+        return false;
+    }
+
+    protected boolean rightCommand() {
+            destroyView();
+            return true;
+    }
+
+    protected String getLeftCommand() {
+        return "Menu";
+    }
+
+    protected String getRightCommand() {
+        return "Back";
+    }
 }

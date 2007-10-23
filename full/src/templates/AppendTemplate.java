@@ -45,9 +45,10 @@ import util.strconv;
 
 public class AppendTemplate         
         extends MessageList 
-        implements CommandListener
+        implements 
+        //CommandListener
 //#if (FILE_IO)
-        , BrowserListener
+        BrowserListener
 //#endif
 {
 
@@ -104,6 +105,7 @@ public class AppendTemplate
 	this.target=target;
         this.caretPos=caretPos;
         enableListWrapping(true); //TEST:переход через конец списка
+        /*
 	if (target!=null) {
 	    addCommand(cmdSelect);
 	}
@@ -116,12 +118,12 @@ public class AppendTemplate
 //#endif
 	addCommand(cmdBack);
 
+        setCommandListener(this);
+	*/
         try {
             focusedItem(0);
         } catch (Exception e) {}
-	
-	setCommandListener(this);
-	
+        
 	MainBar mainbar=new MainBar(SR.MS_SELECT);
 	mainbar.addRAlign();
 	mainbar.addElement(null);
@@ -139,7 +141,7 @@ public class AppendTemplate
     public Msg getMessage(int index) {
 	return template.msg(index);
     }
-
+/*
     public void commandAction(Command c, Displayable d) {
 	if (c==cmdBack) {
 	    destroyView();
@@ -157,7 +159,7 @@ public class AppendTemplate
                 new NewTemplate(display);
                 messages=new Vector();
                 redraw();
-            } catch (Exception e) {/*no messages*/}
+            } catch (Exception e) {}
         }
 	if (m==null) return;
         
@@ -175,7 +177,7 @@ public class AppendTemplate
 //#endif
 	if (c==cmdSelect) { pasteData(); }
     }
-    
+*/ 
     private void pasteData() {
 	if (target==null) return;
 	Msg m=getMessage(cursor);
@@ -368,4 +370,21 @@ public class AppendTemplate
         
     }
 //#endif
+
+    protected boolean leftCommand() {
+        return false;
+    }
+
+    protected boolean rightCommand() {
+            destroyView();
+            return true;
+    }
+
+    protected String getLeftCommand() {
+        return "Menu";
+    }
+
+    protected String getRightCommand() {
+        return "Back";
+    }
 }
