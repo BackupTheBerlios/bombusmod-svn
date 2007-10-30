@@ -25,7 +25,7 @@ public class StringItemEx
     implements ItemCommandListener
     {
     
-    private ClipBoard clipboard;  // The clipboard class
+    private ClipBoard clipboard=ClipBoard.getInstance();  // The clipboard class
 
     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 7);
     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 8);

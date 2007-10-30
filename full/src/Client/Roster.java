@@ -35,7 +35,7 @@ import Conference.MucContact;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.ConferenceForm;
 //#endif
-import Stats.Stats;
+import Client.Stats;
 //#ifdef MOOD
 //# import UserMood.MoodSelect;
 //#endif

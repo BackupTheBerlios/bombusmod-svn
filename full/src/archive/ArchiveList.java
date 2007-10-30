@@ -84,7 +84,7 @@ public class ArchiveList
     
     private int caretPos;
     
-    private ClipBoard clipboard;
+    private ClipBoard clipboard=ClipBoard.getInstance();
     
 //#if FILE_IO    
     int fileSize;

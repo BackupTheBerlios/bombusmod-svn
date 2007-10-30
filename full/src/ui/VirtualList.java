@@ -29,7 +29,7 @@
 package ui;
 import Info.Phone;
 import Info.Version;
-import Stats.Stats;
+import Client.Stats;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
@@ -43,7 +43,7 @@ import ui.controls.ScrollBar;
 //#endif
 import util.strconv;
 //#if ALT_INPUT
-//# import ui.inputbox.Box;
+//# import ui.controls.InputBox;
 //#endif
 
 public abstract class VirtualList         
@@ -188,9 +188,9 @@ public abstract class VirtualList
     
     protected VirtualElement mainbar;
  //#if ALT_INPUT   
-//#     protected Box inputbox; //alt
-//#     public Box getInputBoxItem() { return (Box)inputbox; } //alt
-//#     public void setInputBoxItem(Box ib) { this.inputbox=ib; } //alt
+//#     protected InputBox inputbox; //alt
+//#     public InputBox getInputBoxItem() { return (InputBox)inputbox; } //alt
+//#     public void setInputBoxItem(InputBox ib) { this.inputbox=ib; } //alt
 //#     //public static String inputBoxText=null;
  //#endif
     private boolean wrapping = true;

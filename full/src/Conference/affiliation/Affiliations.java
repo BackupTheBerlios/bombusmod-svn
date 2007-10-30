@@ -68,7 +68,7 @@ public class Affiliations
     protected VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index); }
     protected int getItemCount() { return items.size(); }
     
-    private ClipBoard clipboard; 
+    private ClipBoard clipboard=ClipBoard.getInstance(); 
     
     /** Creates a new instance of AffiliationList */
     public Affiliations(Display display, String room, short affiliationIndex) {

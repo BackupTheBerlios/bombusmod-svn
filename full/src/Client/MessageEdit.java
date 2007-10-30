@@ -92,7 +92,7 @@ public class MessageEdit
 
     private String subject;
     
-    private ClipBoard clipboard;
+    private ClipBoard clipboard=ClipBoard.getInstance();
     
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Contact to, String body) {

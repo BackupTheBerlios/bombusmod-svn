@@ -31,7 +31,7 @@
  */
 package midlet;
 
-import Stats.Stats;
+import Client.Stats;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 

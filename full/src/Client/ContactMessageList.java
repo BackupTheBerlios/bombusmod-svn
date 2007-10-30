@@ -54,7 +54,7 @@ import util.ClipBoard;
 //#endif
 
 //#ifdef ALT_INPUT
-//# import ui.inputbox.Box;
+//# import ui.controls.InputBox;
 //#endif
 
 public class ContactMessageList extends MessageList
@@ -89,7 +89,7 @@ public class ContactMessageList extends MessageList
 //#ifdef FILE_IO
     Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
 //#endif
-    private ClipBoard clipboard;
+    private ClipBoard clipboard=ClipBoard.getInstance();
 
     StaticData sd;
     
@@ -183,6 +183,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void showNotify(){
+        getRedraw(true);
         super.showNotify();
         if (cmdResume==null) return;
         if (contact.msgSuspended==null) 
@@ -226,15 +227,24 @@ public class ContactMessageList extends MessageList
 	if (msgIndex>=getItemCount()) return;
         if (msgIndex<contact.lastUnread) return;
         
+        if (cursor==(messages.size()-1)) {
+            if (contact.moveToLatest) {
+                contact.moveToLatest=false;
+                moveCursorEnd();
+            }
+        }
+        
         sd.roster.countNewMsgs();
         
-        if (getRedraw()) {
-            setRedraw();            
-        }
+        getRedraw(contact.redraw);
     }
     
-    private boolean getRedraw() {
-        return contact.redraw;
+    private void getRedraw(boolean redraw) {
+        if (redraw) {
+            contact.redraw=false;
+            messages=new Vector();
+            redraw();
+        }
     }
 
     private void setRedraw() {
@@ -649,7 +659,7 @@ public class ContactMessageList extends MessageList
 //#              if (inputbox!=null) {
 //#                  inputbox.sendKey(key);
 //#              } else {
-//#                  Box inputbox=new Box();
+//#                  InputBox inputbox=new InputBox();
 //#                  setInputBoxItem(inputbox);
 //#                  getInputBoxItem().sendKey(key);
 //#              }
