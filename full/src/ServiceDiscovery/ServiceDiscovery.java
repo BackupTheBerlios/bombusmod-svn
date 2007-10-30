@@ -433,23 +433,6 @@ public class ServiceDiscovery
         stream.cancelBlockListener(this);
         destroyView();
     }
-
-    protected boolean leftCommand() {
-        return false;
-    }
-
-    protected boolean rightCommand() {
-            destroyView();
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Menu";
-    }
-
-    protected String getRightCommand() {
-        return "Back";
-    }
 }
 class State{
     public String service;

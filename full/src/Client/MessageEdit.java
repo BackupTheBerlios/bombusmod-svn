@@ -92,13 +92,12 @@ public class MessageEdit
 
     private String subject;
     
-    private ClipBoard clipboard=ClipBoard.getInstance();
+    private ClipBoard clipboard;
     
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Contact to, String body) {
         this.to=to;
         this.display=display;
-        //this.body=to.msgSuspended;
         parentView=display.getCurrent();
 
         t=new TextBox(to.toString(), "", 500, TextField.ANY);
@@ -240,8 +239,7 @@ public class MessageEdit
             }
         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
         
-        if (!Config.getInstance().eventComposing) 
-            comp=null;
+        if (!Config.getInstance().eventComposing) comp=null;
         
         try {
             if (body!=null || subj!=null || comp!=null) {

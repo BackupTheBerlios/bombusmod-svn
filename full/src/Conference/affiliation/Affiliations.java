@@ -68,7 +68,7 @@ public class Affiliations
     protected VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index); }
     protected int getItemCount() { return items.size(); }
     
-    private ClipBoard clipboard=ClipBoard.getInstance(); 
+    private ClipBoard clipboard; 
     
     /** Creates a new instance of AffiliationList */
     public Affiliations(Display display, String room, short affiliationIndex) {
@@ -167,22 +167,5 @@ public class Affiliations
         processIcon(true);
         stream.addBlockListener(this);
         stream.send(request);
-    }
-
-    protected boolean leftCommand() {
-        return false;
-    }
-
-    protected boolean rightCommand() {
-            destroyView();
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Menu";
-    }
-
-    protected String getRightCommand() {
-        return "Back";
     }
 }

@@ -210,21 +210,4 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
                 keyRight(); break;
         }
     }
-
-    protected boolean leftCommand() {
-        return false;
-    }
-
-    protected boolean rightCommand() {
-            destroyView();
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Menu";
-    }
-
-    protected String getRightCommand() {
-        return "Back";
-    }
 }

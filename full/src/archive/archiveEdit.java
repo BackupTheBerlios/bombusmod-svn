@@ -59,7 +59,7 @@ public class archiveEdit implements CommandListener
     
     MessageArchive archive=new MessageArchive();
     
-    private ClipBoard clipboard=ClipBoard.getInstance();
+    private ClipBoard clipboard;
     
     public archiveEdit(Display display, Msg msg) {
         this.msg=msg;

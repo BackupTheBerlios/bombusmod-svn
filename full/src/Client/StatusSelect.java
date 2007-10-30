@@ -118,23 +118,6 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         StatusList.getInstance().saveStatusToStorage();
     }
 
-    protected boolean leftCommand() {
-        return false;
-    }
-
-    protected boolean rightCommand() {
-            destroyView();
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Menu";
-    }
-
-    protected String getRightCommand() {
-        return "Back";
-    }
-
     class StatusForm implements CommandListener{
         private Display display;
         public Displayable parentView;

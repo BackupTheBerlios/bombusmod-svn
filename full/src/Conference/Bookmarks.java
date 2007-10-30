@@ -256,21 +256,4 @@ public class Bookmarks
     public void ActionConfirmed() {
         deleteBookmark();
     }
-
-    protected boolean leftCommand() {
-        return false;
-    }
-
-    protected boolean rightCommand() {
-            destroyView();
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Menu";
-    }
-
-    protected String getRightCommand() {
-        return "Back";
-    }
 }

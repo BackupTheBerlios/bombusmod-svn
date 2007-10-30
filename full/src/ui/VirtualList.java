@@ -33,7 +33,6 @@ import Stats.Stats;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
-import ui.controls.newMenu;
 //#ifdef POPUPS
 //# import ui.controls.PopUp;
 //#endif
@@ -55,21 +54,15 @@ public abstract class VirtualList
     abstract protected int getItemCount();
 
     abstract protected VirtualElement getItemRef(int index);
-    
-    abstract protected boolean leftCommand();
-    abstract protected String getLeftCommand();
 
-    abstract protected boolean rightCommand();
-    abstract protected String getRightCommand();
-    
     protected int getMainBarBGnd() {return ColorScheme.BAR_BGND;} 
     protected int getMainBarBGndBottom() {return ColorScheme.BAR_BGND_BOTTOM;} 
     
     private StaticData sd=StaticData.getInstance();
 
-    //private boolean reverse=false;
+    private boolean reverse=false;
 
-    public static int drawTop=1;
+    public static int isbottom=2; //default state both panels show, reverse disabled
 
     private static final int USER_OTHER_KEY_PRESSED = 0;
     private static final int USER_STAR_KEY_PRESSED = 1;
@@ -78,7 +71,6 @@ public abstract class VirtualList
     private int lastKeyPressed = 0;
     private int additionKeyState = USER_OTHER_KEY_PRESSED;
     
-    public static newMenu menu = new newMenu();
     
     public Phone ph=Phone.getInstance();
 //#ifdef USER_KEYS
@@ -214,6 +206,11 @@ public abstract class VirtualList
     private int lastClickItem;
     private long lastClickTime;
     
+//#ifdef ELF    
+//#     private static boolean sie_accu=true;
+//#     private static boolean sie_net=true;
+//#endif
+    
     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
     
     public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
@@ -296,16 +293,14 @@ public abstract class VirtualList
         width=getWidth();	// patch for SE
         height=getHeight();
         
-        menu.setLeftCommand(getLeftCommand());
-        menu.setRightCommand(getRightCommand());
-        //boolean paintTop=true;
-        //boolean paintBottom=true;
+        boolean paintTop=true;
+        boolean paintBottom=true;
         
         int mHeight=0, iHeight=0; // nokia fix
         
 	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
-/*
-        switch (drawTop) {
+
+        switch (isbottom) {
             case 0: paintTop=false; paintBottom=false; reverse=false; break;
             case 1: paintTop=true;  paintBottom=false; reverse=false; break;
             case 2: paintTop=true;  paintBottom=true;  reverse=false; break;
@@ -315,7 +310,7 @@ public abstract class VirtualList
             case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
         }
         //paintTop=true;  paintBottom=true;  reverse=true;
-*/
+
         beginPaint();
         
         int list_bottom=0;        
@@ -329,11 +324,7 @@ public abstract class VirtualList
 
         iHeight=FontCache.getBalloonFont().getHeight(); // nokia fix
         
-        if (drawTop>0) {
-            if (mainbar!=null)
-                itemBorder[0]=mHeight; 
-            drawMainPanel(g);
-/*
+        if (paintTop) {
             if (reverse) {
                 itemBorder[0]=iHeight;
                 drawInfoPanel(g);
@@ -342,7 +333,6 @@ public abstract class VirtualList
                     itemBorder[0]=mHeight; 
                 drawMainPanel(g);
             }
- */
         }
 
 //#if ALT_INPUT 
@@ -350,10 +340,6 @@ public abstract class VirtualList
 //#                 list_bottom=inputbox.getHeight();
 //#         } else {
 //#endif
-                 if (menu!=null) {
-                    list_bottom=menu.getHeight();
-                 }
-/*
                 if (paintBottom) {
                     if (reverse) {
                         if (mainbar!=null) list_bottom=mHeight;
@@ -361,7 +347,6 @@ public abstract class VirtualList
                         list_bottom=iHeight; 
                     }
                 }
- */
 //#if ALT_INPUT
 //#         }
 //#endif
@@ -463,13 +448,6 @@ public abstract class VirtualList
 //#                 inputbox.draw(g, width, height);
 //#         } else {
 //#endif
-        
-                 if (menu!=null) {
-                    setAbsOrg(g, 0, 0);
-//                    setCenter();
-                    menu.draw(g);
-                 }
-/*
                 if (paintBottom) {
                     if (reverse) {
                         setAbsOrg(g, 0, height-mHeight);
@@ -479,7 +457,6 @@ public abstract class VirtualList
                         drawInfoPanel(g);
                     }
                 }
- */
 //#if ALT_INPUT
 //#         }
 //#endif
@@ -511,7 +488,7 @@ public abstract class VirtualList
             g.setColor(ColorScheme.HEAP_FREE);  g.fillRect(0,y,ram,1);
         }
     }
-/*
+    
     private void drawInfoPanel (final Graphics g) {
         Font bottomFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, Font.SIZE_SMALL);
         int h=bottomFont.getHeight();
@@ -531,41 +508,24 @@ public abstract class VirtualList
         s.append(" ");
         s.append(strconv.getSizeString(stats.getGPRS()));
 //#ifdef ELF
-//#          s.append(getNetworkLevel());
-//#          s.append(getAccuLevel());
+//#         s.append(getNetworkLevel());
+//#         s.append(getAccuLevel());
 //#endif
         if (s!=null) {
             g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
             s=null;
         }
     }
-  */  
-/*
-    private void setCenter() {
-        StringBuffer s=new StringBuffer();    
-        s.append(Time.localTime());
-        s.append(" ");
-        s.append(strconv.getSizeString(stats.getGPRS()));
-//#ifdef ELF
-//#         s.append(getNetworkLevel());
-//#         s.append(getAccuLevel());
-//#endif
-        if (s!=null) {
-            //g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
-            menu.setCenter(s.toString());
-            s=null;
-        }
-    }
-*/
+
     private void drawMainPanel (final Graphics g) {    
         if (mainbar!=null) {
             int h=mainbar.getVHeight();
             g.setClip(0,0, width, h);
             
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h/2);
+            g.setColor(getMainBarBGnd()); //10
+            g.fillRect(0, 0, width, h/2); //5
             g.setColor(getMainBarBGndBottom());
-            g.fillRect(0, h/2, width, h);
+            g.fillRect(0, h/2, width, h); //5 10
             
             g.setColor(getMainBarRGB());
             mainbar.drawItem(g,0,false, false);
@@ -635,20 +595,10 @@ public abstract class VirtualList
     protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  lastKeyPressed=keyCode; }
     
     protected void pointerPressed(int x, int y) {
-        int act=menu.pointerPressed(x, y, this);
-        
-        if (act==1) {
-            leftCommand();
+	if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
             return;
-        } else if (act==2) {
-            rightCommand();
-            stickyWindow=false;
-            return;
-        } else if (scrollbar.pointerPressed(x, y, this)) {
-            stickyWindow=false;
-            return;
-        }
+        } 
 	int i=0;
 	while (i<32) {
 	    if (y<itemBorder[i]) break;
@@ -749,12 +699,9 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#         popup.next();
 //#endif
-        if (keyCode==cf.SOFT_LEFT) {
-            leftCommand();
-            return;
-        }
-        if (keyCode==cf.SOFT_RIGHT || keyCode==cf.KEY_BACK) {
-            rightCommand();
+        if ((keyCode==cf.SOFT_RIGHT || keyCode==cf.KEY_BACK) && ph.PhoneManufacturer()!=ph.SONYE) {
+            if (canBack==true)
+                destroyView();
             return;
         }
         
@@ -1023,6 +970,32 @@ public abstract class VirtualList
     public int getCursor() {
         return cursor;
     }
+    
+    
+//#ifdef ELF    
+//#     public static String getAccuLevel() {
+//# 
+//#         if (sie_accu==false) return "";
+//#         try {
+//#             String cap=System.getProperty("MPJC_CAP");
+//#             return (cap==null)? "": " "+cap+"%";
+//#         } catch (Exception e) { sie_accu=false; }
+//# 
+//#         return "";
+//#     }
+//#     
+//#     public static String getNetworkLevel() {
+//# 
+//#         if (sie_net==false) return "";
+//#         try {
+//#             String rx=System.getProperty("MPJCRXLS");
+//#             int rp=rx.indexOf(',');
+//#             return (rp<0)? "": " "+rx.substring(0,rp)+"db";
+//#         } catch (Exception e) { sie_net=false; }
+//# 
+//#         return "";
+//#     }
+//#endif    
 }
 
 //#if (USE_ROTATOR)    

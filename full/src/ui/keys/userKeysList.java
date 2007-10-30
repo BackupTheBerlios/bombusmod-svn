@@ -139,23 +139,4 @@ public class userKeysList
 //#         NvStorage.writeFileRecord(outputStream, userKey.storage, 0, true);
 //#endif
     }    
-
-    protected boolean leftCommand() {
-        return false;
-    }
-
-    protected boolean rightCommand() {
-//#ifdef USER_KEYS
-//#             destroyView();
-//#endif
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Menu";
-    }
-
-    protected String getRightCommand() {
-        return "Back";
-    }
 }

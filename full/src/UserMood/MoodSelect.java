@@ -91,23 +91,6 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
         return moodList.size();
     }
 
-    protected boolean leftCommand() {
-        return false;
-    }
-
-    protected boolean rightCommand() {
-            destroyView();
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Menu";
-    }
-
-    protected String getRightCommand() {
-        return "Back";
-    }
-
 
     class MoodForm implements CommandListener{
         private Display display;

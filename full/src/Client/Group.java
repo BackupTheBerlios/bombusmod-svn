@@ -37,7 +37,7 @@ import ui.*;
  */
 public class Group extends IconTextElement {
     String name;
-    public int index; // group index
+    int index; // group index
     protected int nContacts;
     protected int onlines;
     

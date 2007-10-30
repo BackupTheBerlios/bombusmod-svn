@@ -28,29 +28,17 @@ package util;
 
 public class ClipBoard
 {
-    
-    // Singleton
-    private static ClipBoard instance;
-
-    public static ClipBoard getInstance(){
-        if (instance==null) {
-            instance=new ClipBoard();
-        }
-        return instance;
-    }
-    
-    private static String clipBoard="";
-
-
-    public String getClipBoard() {
-      return clipBoard;
-    }
-
-    public void setClipBoard(String str) {
-      clipBoard=(str.length()>4096)?str.substring(0,4095):str;
-    }
-
-    public boolean isEmpty() {
-      return (clipBoard=="")?true:false;
-    }
+      private static String _clipBoard="";
+      
+      public String getClipBoard() {
+          return _clipBoard;
+      }
+      
+      public void setClipBoard(String str) {
+          _clipBoard=(str.length()>4096)?str.substring(0,4095):str;
+      }
+      
+      public boolean isEmpty() {
+          return (_clipBoard.length()>0)?false:true;
+      }
 }

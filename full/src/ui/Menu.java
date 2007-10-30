@@ -35,14 +35,20 @@ import locale.SR;
  *
  * @author Evg_S
  */
-public class Menu extends VirtualList
+public class Menu extends VirtualList implements CommandListener
 {
     Vector menuitems;
+    /** Creates a new instance of Menu */
+    Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
+    Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     
     public Menu(String mainbar) {
         super();
         setMainBarItem(new MainBar(mainbar));
         menuitems=new Vector();
+        addCommand(cmdBack);
+        addCommand(cmdOk);
+        setCommandListener(this);
     }
     
     public VirtualElement getItemRef(int index){ 
@@ -61,22 +67,9 @@ public class Menu extends VirtualList
     public void addItem(String label, int index){
         addItem(new MenuItem(label, index, -1));
     }
-
-    protected boolean leftCommand() {
-        eventOk();
-        return true;
-    }
-
-    protected boolean rightCommand() {
-            destroyView();
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Ok";
-    }
-
-    protected String getRightCommand() {
-        return "Back";
+    
+    public void commandAction(Command c, Displayable d) {
+        if (c==cmdBack) destroyView();
+	if (c==cmdOk) eventOk();
     }
 }

@@ -28,9 +28,6 @@
 package Client;
 
 //#ifndef WMUC
-import Client.Menu.RosterItemActions;
-import Client.Menu.RosterMenu;
-import Client.Menu.RosterToolsMenu;
 import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
@@ -52,7 +49,6 @@ import login.NonSASLAuth;
 import login.SASLAuth;
 import midlet.BombusMod;
 import ui.MainBar;
-import ui.controls.newMenu;
 import util.strconv;
 import vcard.VCard;
 import vcard.vCardForm;
@@ -71,10 +67,33 @@ public class Roster
         extends VirtualList
         implements
         JabberListener,
+        CommandListener,
         Runnable,
         LoginListener,
         YesNoAlert.YesNoListener
 {
+    
+    private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
+    private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
+    private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
+//#ifdef MOOD
+//#     private Command cmdUserMood=new Command(SR.MS_USER_MOOD, Command.SCREEN, 7);
+//#endif
+    private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
+//#ifndef WMUC
+    private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
+//#endif
+//#ifdef ARCHIVE
+//#     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 10);
+//#endif
+    private Command cmdAdd=new Command(SR.MS_ADD_CONTACT, Command.SCREEN, 12);
+    private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
+    private Command cmdAccount=new Command(SR.MS_ACCOUNT_, Command.SCREEN, 15);
+    private Command cmdCleanAllMessages=new Command(SR.MS_CLEAN_ALL_MESSAGES, Command.SCREEN, 50);
+    private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
+    private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
+    private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
+    
     private Config cf;
     private StaticData sd=StaticData.getInstance();
     
@@ -104,11 +123,6 @@ public class Roster
     public Groups groups;
     
     public Vector bookmarks;
-
-//#ifdef ELF    
-//#     private static boolean sie_accu=true;
-//#     private static boolean sie_net=true;
-//#endif
     
 //#ifdef MOOD
 //#     public boolean useUserMood=false;
@@ -158,6 +172,7 @@ public class Roster
 
     private int yesnoAction=0;
             
+    
     /**
      * Creates a new instance of Roster
      * Sets up the stream to the server and adds this class as a listener
@@ -191,6 +206,8 @@ public class Roster
 
 	updateMainBar();
         
+        addMenuCommands();
+        
         SplashScreen.getInstance().setExit(display, this);
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType!=cf.AWAY_OFF)
@@ -220,7 +237,54 @@ public class Roster
 //#          }
 //#endif
     }
+    
+    public void addMenuCommands(){
+//#ifdef NEW_MENU
+//#         if (!cf.newMenu) {
+//#endif
+                int activeType=Command.SCREEN;
+                if (ph.PhoneManufacturer()==ph.NOKIA) activeType=Command.BACK;
+                if (ph.PhoneManufacturer()==ph.INTENT) activeType=Command.BACK;
+                if (ph.PhoneManufacturer()==ph.J2ME) activeType=Command.BACK;
 
+                cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
+
+                addCommand(cmdStatus);
+                addCommand(cmdActions);
+                addCommand(cmdActiveContacts);
+
+                addCommand(cmdAlert);
+                addCommand(cmdAdd);
+//#ifndef WMUC
+                addCommand(cmdConference);
+//#endif
+                addCommand(cmdTools);
+//#ifdef ARCHIVE
+//#                 addCommand(cmdArchive);
+//#endif
+                addCommand(cmdInfo);
+                addCommand(cmdAccount);
+                
+                addCommand(cmdCleanAllMessages);
+
+                if (ph.PhoneManufacturer()!=ph.NOKIA_9XXX) {
+                    addCommand(cmdQuit);
+                }
+
+                addOptionCommands();
+                setCommandListener(this);
+//#ifdef NEW_MENU
+//#         }
+//#endif
+    }
+    
+    void addOptionCommands(){
+//#ifdef MOOD
+//#         if (useUserMood)
+//#             addCommand(cmdUserMood);
+//#endif
+        if (cf.allowMinimize) addCommand(cmdMinimize);
+    }
     public void setProgress(String pgs,int percent){
         SplashScreen.getInstance().setProgress(pgs, percent);
         setRosterMainBar(pgs);
@@ -1673,9 +1737,10 @@ public class Roster
                     if (ti>=0) 
                         c.setStatus(ti);
                     
-                    if (c.nick==null && c.status<=Presence.PRESENCE_DND) {
+                    if (c.nick==null) {
                         JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
                         if (nick!=null) c.nick=nick.getText();
+                        
                     }
                     
                     if (cf.showLastAppearedContact && notifyReady(-111) &&
@@ -2191,8 +2256,8 @@ public class Roster
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
         else if (keyCode==KEY_NUM6) {
-            fullMode=VirtualList.drawTop;
-            cf.drawTop=VirtualList.drawTop=(fullMode+1)%2;
+            fullMode=VirtualList.isbottom;
+            cf.isbottom=VirtualList.isbottom=(fullMode+1)%7;
             cf.saveToStorage();
         } else if (keyCode==KEY_NUM7){
             new RosterToolsMenu(display);
@@ -2322,6 +2387,46 @@ public class Roster
         BombusMod.getInstance().notifyDestroyed();
     }
    
+    public void commandAction(Command c, Displayable d){
+//#ifdef AUTOSTATUS
+//#         userActivity();
+//#endif
+        if (c==cmdQuit) { cmdQuit(); }
+        else if (c==cmdMinimize) { cmdMinimize();  }
+        
+        else if (c==cmdActiveContacts) {
+            cmdActiveContacts();
+        }
+        
+        else if (c==cmdAccount){ cmdAccount(); }
+        else if (c==cmdStatus) { cmdStatus(); }
+        else if (c==cmdAlert) { cmdAlert(); }
+//#ifdef ARCHIVE
+//# 	else if (c==cmdArchive) { cmdArchive(); }
+//#endif
+        else if (c==cmdInfo) { cmdInfo(); }
+
+        else if (c==cmdTools) { cmdTools(); }
+        
+        else if (c==cmdCleanAllMessages) { cmdCleanAllMessages(); }    
+        
+//#ifdef MOOD
+//#         else if (c==cmdUserMood) { cmdUserMood(); }
+//#endif  
+//#ifndef WMUC
+        else if (c==cmdConference) { 
+            cmdConference();
+        }
+//#endif
+        else if (c==cmdActions) {
+            cmdActions();
+        }
+        
+        else if (c==cmdAdd) {
+            cmdAdd();
+        }
+    }
+    
 //menu actions
     public void cmdQuit() { 
         if (cf.queryExit) {
@@ -2777,60 +2882,10 @@ public class Roster
 
         if (isLoggedIn())
             str.append(theStream.getStreamStats());
-        
-//#ifdef ELF
-//#          str.append(getNetworkLevel());
-//#          str.append(getAccuLevel());
-//#endif
-        
 //#ifdef POPUPS
 //#         VirtualList.setWobble(str.toString());
 //#endif
         str=null;
-    }
-    
-//#ifdef ELF    
-//#     public static String getAccuLevel() {
-//# 
-//#         if (sie_accu==false) return "";
-//#         try {
-//#             String cap=System.getProperty("MPJC_CAP");
-//#             return (cap==null)? "": "\nAccu: "+cap+"%";
-//#         } catch (Exception e) { sie_accu=false; }
-//# 
-//#         return "";
-//#     }
-//#     
-//#     public static String getNetworkLevel() {
-//# 
-//#         if (sie_net==false) return "";
-//#         try {
-//#             String rx=System.getProperty("MPJCRXLS");
-//#             int rp=rx.indexOf(',');
-//#             return (rp<0)? "": "\nNet: "+rx.substring(0,rp)+"db";
-//#         } catch (Exception e) { sie_net=false; }
-//# 
-//#         return "";
-//#     }
-//#endif
-
-    protected boolean leftCommand() {
-        new RosterMenu(display, getFocusedObject());
-        return true;
-    }
-
-    protected boolean rightCommand() {
-            if (isLoggedIn()) 
-                new RosterItemActions(display, getFocusedObject(), -1);
-            return true;
-    }
-
-    protected String getLeftCommand() {
-        return "Menu";
-    }
-
-    protected String getRightCommand() {
-        return "Action";
     }
 }
 

@@ -105,6 +105,7 @@ public class Config {
     
     public boolean popupFromMinimized=true;
     public boolean memMonitor=true;
+    public boolean newMenu=false;
     
     public int font1=0;
     public int font2=0;
@@ -135,7 +136,7 @@ public class Config {
 
     public boolean altInput=false;
 
-    public int drawTop=1; //default state both panels show, reverse disabled
+    public int isbottom=2; //default state both panels show, reverse disabled
    
     public boolean lightState=false;
     
@@ -290,11 +291,11 @@ public class Config {
             
             altInput=inputStream.readBoolean();
             
-            drawTop=inputStream.readInt()%2;
+            isbottom=inputStream.readInt();
             
             confMessageCount=inputStream.readInt();
             
-            inputStream.readBoolean();
+            newMenu=inputStream.readBoolean();
             
             lightState=inputStream.readBoolean();
 			
@@ -350,7 +351,7 @@ public class Config {
         if (lastProfile==AlertProfile.VIBRA) lastProfile=0;
 	updateTime();
 	VirtualList.fullscreen=fullscreen;
-	VirtualList.drawTop=drawTop;
+	VirtualList.isbottom=isbottom;
 	VirtualList.memMonitor=memMonitor;
         VirtualList.showBalloons=showBalloons;
         VirtualList.userKeys=userKeys;
@@ -431,11 +432,11 @@ public class Config {
             
             outputStream.writeBoolean(altInput);
             
-            outputStream.writeInt(drawTop);
+            outputStream.writeInt(isbottom);
             
             outputStream.writeInt(confMessageCount);
             
-            outputStream.writeBoolean(false);
+            outputStream.writeBoolean(newMenu);
             
             outputStream.writeBoolean(lightState);
 			
