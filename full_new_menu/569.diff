@@ -1,0 +1,4977 @@
+Index: C:/bombus/bombusmod/full/nbproject/project.properties
+===================================================================
+--- C:/bombus/bombusmod/full/nbproject/project.properties	(revision 568)
++++ C:/bombus/bombusmod/full/nbproject/project.properties	(revision 569)
+@@ -3,7 +3,7 @@
+ build.classes.excludes=**/*.java,**/*.form,**/*.class,**/.nbintdb,**/*.mvd
+ build.dir=build/${config.active}
+ build.root.dir=build
+-configs.adsky.abilities=SASL=,USER_KEYS=,POPUPS=,SMILES=,PRIVACY=,USE_ROTATOR=,ARCHIVE=,ZLIB=,USE_UTF8_READER,NEW_MENU=,SERVICE_DISCOVERY=,OUTSTREAM_FLUSH
++configs.adsky.abilities=ARCHIVE=,USE_ROTATOR=,ZLIB=,USE_UTF8_READER,SASL=,NEW_MENU=,USER_KEYS=,SERVICE_DISCOVERY=,POPUPS=,OUTSTREAM_FLUSH,SMILES=
+ configs.adsky.deployment.copy.target=${file.reference.midp2.0z}
+ configs.adsky.deployment.ftp.passive=false
+ configs.adsky.deployment.ftp.password=
+@@ -29,7 +29,7 @@
+ configs.adsky.deployment.webdav.server=
+ configs.adsky.deployment.webdav.userid=
+ configs.adsky.filter.exclude.tests=false
+-configs.adsky.filter.excludes=templates,templates/**,History,History/**,Conference/QueryRequestVoice.java,ui/ColorSelector.java,ui/ColorForm.java,Client/DiscoInfo.java,Client/AutoStatusTask.java,Client/SELightTask.java,Client/ChangeTransport.java,Client/ConfigPrivateStorage.java,io/file/transfer,io/file/transfer/**,util/LastVersion.java,util/Translit.java,UserMood,UserMood/**
++configs.adsky.filter.excludes=templates,templates/**,History,History/**,Conference/QueryRequestVoice.java,ui/ColorSelector.java,ui/controls/MenuTest.java,ui/ColorForm.java,Client/DiscoInfo.java,Client/AutoStatusTask.java,Client/SELightTask.java,Client/ChangeTransport.java,Client/ConfigPrivateStorage.java,io/file/transfer,io/file/transfer/**,util/LastVersion.java,util/Translit.java,UserMood,UserMood/**
+ configs.adsky.filter.use.standard=true
+ configs.adsky.javac.debug=false
+ configs.adsky.javac.deprecation=false
+@@ -78,7 +78,7 @@
+ configs.full_ver.deployment.webdav.server=
+ configs.full_ver.deployment.webdav.userid=
+ configs.full_ver.filter.exclude.tests=false
+-configs.full_ver.filter.excludes=Client/DiscoInfo.java
++configs.full_ver.filter.excludes=Client/DiscoInfo.java,UserMood,UserMood/**
+ configs.full_ver.filter.use.standard=true
+ configs.full_ver.javac.debug=false
+ configs.full_ver.javac.deprecation=false
+@@ -98,7 +98,7 @@
+ configs.full_ver.platform.configuration=CLDC-1.0
+ configs.full_ver.platform.device=DefaultColorPhone
+ configs.full_ver.platform.profile=MIDP-2.0
+-configs.small_ver.abilities=MEM_STAT,MOTOROLA_BACKLIGHT=,USE_ROTATOR=,ZLIB=,ARCHIVE=,TRANSLATED=,SASL=,SASL_XGOOGLETOKEN=,ANTISPAM=,ELF=,OUTSTREAM_FLUSH,FILE_IO=,USE_UTF8_READER,MIDP2
++configs.small_ver.abilities=ELF=,MIDP2,SASL=,ANTISPAM=,TRANSLATED=,FILE_IO=,MEM_STAT,MOTOROLA_BACKLIGHT=,USE_ROTATOR=,ARCHIVE=,ZLIB=,USE_UTF8_READER,NEW_MENU=,OUTSTREAM_FLUSH,SASL_XGOOGLETOKEN=
+ configs.small_ver.deployment.copy.target=${file.reference.midp2.0}
+ configs.small_ver.deployment.ftp.passive=false
+ configs.small_ver.deployment.ftp.password=
+@@ -145,6 +145,52 @@
+ configs.small_ver.platform.device=DefaultColorPhone
+ configs.small_ver.platform.profile=MIDP-2.0
+ configs.small_verJZLIB.bombus.bootclasspath=${platform.home}/lib/satsa-jcrmi.jar:${platform.home}/lib/satsa-apdu.jar:${platform.home}/lib/jsr75.jar:${platform.home}/lib/satsa-pki.jar:${platform.home}/lib/mmapi.jar:${platform.home}/lib/wma20.jar:${platform.home}/lib/cldcapi10.jar:${platform.home}/lib/midpapi20.jar
++configs.test.abilities=MIDP2,SASL=,ANTISPAM=,FILE_IO=,USER_KEYS=,POPUPS=,SMILES=,PRIVACY=,COLORS=,ARCHIVE=,USE_ROTATOR=,ZLIB=,USE_UTF8_READER=,NEW_MENU=,FILE_TRANSFER=,SERVICE_DISCOVERY=,OUTSTREAM_FLUSH
++configs.test.filter.exclude.tests=false
++configs.test.filter.excludes=ui/ScreenManager.java,com/alsutton/jabber/datablocks/IqGetVCard.java,Client/DiscoInfo.java
++configs.test.filter.use.standard=true
++configs.test.manifest.jad=Bombus-Version: $BOMBUSVERSION$\n
++configs.test.manifest.manifest=
++configs.test.manifest.midlets=MIDlet-1: Bombus,/_icon.png,midlet.BombusMod\n
++configs.test.manifest.others=MIDlet-Vendor: Evgs adn ad\nMIDlet-Icon: /_icon.png\nMIDlet-Version: $MIDLETVERSION$\nMIDlet-Name: BombusMod\n
++configs.test.obfuscation.custom=
++configs.test.obfuscation.level=9
++configs.test.platform.active=Sun_Java_Wireless_Toolkit__2_3
++configs.test.platform.active.description=Sun Java Wireless Toolkit  2.3
++configs.test.platform.apis=JSR211-1.0,JSR75-1.0,JSR172-1.0,JSR82-1.0,JSR179-1.0,JSR184-1.0,MMAPI-1.1,JSR177-1.0,WMA-2.0
++configs.test.platform.bootclasspath=${platform.home}/lib/wma20.jar:${platform.home}/lib/jsr082.jar:${platform.home}/lib/j2me-ws.jar:${platform.home}/lib/jsr177.jar:${platform.home}/lib/jsr184.jar:${platform.home}/lib/jsr179.jar:${platform.home}/lib/mmapi.jar:${platform.home}/lib/jsr211.jar:${platform.home}/lib/jsr75.jar:${platform.home}/lib/cldcapi10.jar:${platform.home}/lib/midpapi20.jar
++configs.test.platform.configuration=CLDC-1.0
++configs.test.platform.device=DefaultColorPhone
++configs.test.platform.profile=MIDP-2.0
++configs.withoutmuc.abilities=SASL=,USER_KEYS=,POPUPS=,SMILES=,PRIVACY=,ARCHIVE=,USE_ROTATOR=,ZLIB=,WMUC=,USE_UTF8_READER,NEW_MENU=,SERVICE_DISCOVERY=,OUTSTREAM_FLUSH
++configs.withoutmuc.deployment.copy.target=${file.reference.__file.reference.midp2.0z_}
++configs.withoutmuc.deployment.jarurl=http://bombus.jrudevels.org/builds/beta/midp2.0z/${dist.jar}
++configs.withoutmuc.deployment.method=Copy
++configs.withoutmuc.deployment.override.jarurl=false
++configs.withoutmuc.filter.exclude.tests=false
++configs.withoutmuc.filter.excludes=templates,templates/**,History,History/**,Conference,Conference/**,ui/ColorSelector.java,ui/ColorForm.java,Client/DiscoInfo.java,Client/AutoStatusTask.java,Client/SELightTask.java,Client/ChangeTransport.java,Client/ConfigPrivateStorage.java,io/file/transfer,io/file/transfer/**,util/LastVersion.java,util/Translit.java,UserMood,UserMood/**
++configs.withoutmuc.filter.use.standard=true
++configs.withoutmuc.javac.debug=false
++configs.withoutmuc.javac.deprecation=false
++configs.withoutmuc.javac.encoding=UTF-8
++configs.withoutmuc.javac.optimize=true
++configs.withoutmuc.libs.classpath=resources/adsky
++configs.withoutmuc.manifest.jad=Bombus-Version: $BOMBUSVERSION$\nBackground: True\nFlipInsensitive: True\n
++configs.withoutmuc.manifest.manifest=
++configs.withoutmuc.manifest.midlets=MIDlet-1: Bombus_mod,/_icon.png,midlet.BombusMod\n
++configs.withoutmuc.manifest.others=MIDlet-Vendor: Evgs and ad\nMIDlet-Icon: /_icon.png\nMIDlet-Description: MIDP Jabber Client\nMIDlet-Version: $MIDLETVERSION$\nMIDlet-Name: Bombus_mod\n
++configs.withoutmuc.obfuscation.custom=
++configs.withoutmuc.obfuscation.level=9
++configs.withoutmuc.platform.active=Sun_Java_Wireless_Toolkit__2_3
++configs.withoutmuc.platform.active.description=Sun Java Wireless Toolkit  2.3
++configs.withoutmuc.platform.apis=JSR75-1.0,MMAPI-1.1,WMA-2.0
++configs.withoutmuc.platform.bootclasspath=${platform.home}/lib/wma20.jar:${platform.home}/lib/mmapi.jar:${platform.home}/lib/jsr75.jar:${platform.home}/lib/cldcapi10.jar:${platform.home}/lib/midpapi20.jar
++configs.withoutmuc.platform.configuration=CLDC-1.0
++configs.withoutmuc.platform.device=DefaultColorPhone
++configs.withoutmuc.platform.profile=MIDP-2.0
++configs.withoutmuc.run.method=STANDARD
++configs.withoutmuc.run.security.domain=trusted
++configs.withoutmuc.run.use.security.domain=true
+ deployment.copy.target=${file.reference.-TEMP_WIN}
+ deployment.jarurl=${dist.jar}
+ deployment.method=Copy
+@@ -155,6 +201,7 @@
+ dist.javadoc.dir=${dist.dir}/doc
+ dist.root.dir=dist
+ file.reference.-TEMP_WIN=D:/TEMP_WIN
++file.reference.__file.reference.midp2.0z_=${file.reference.midp2.0z}
+ file.reference.bombusmod-full=C:/Bombus/bombusmod/full
+ file.reference.builtin.ks=../../../Documents and Settings/User/.netbeans/5.0/config/j2me/builtin.ks
+ file.reference.resources-adsky=C:/Bombus/bombusmod/full
+Index: C:/bombus/bombusmod/full/nbproject/project.xml
+===================================================================
+--- C:/bombus/bombusmod/full/nbproject/project.xml	(revision 568)
++++ C:/bombus/bombusmod/full/nbproject/project.xml	(revision 569)
+@@ -5,6 +5,8 @@
+         <configurations xmlns="http://www.netbeans.org/ns/project-configurations/1">
+             <configuration>adsky</configuration>
+             <configuration>full_ver</configuration>
++            <configuration>test</configuration>
++            <configuration>withoutmuc</configuration>
+             <configuration>small_ver</configuration>
+         </configurations>
+         <data xmlns="http://www.netbeans.org/ns/j2me-project">
+Index: C:/bombus/bombusmod/full/nbproject/private/private.properties
+===================================================================
+--- C:/bombus/bombusmod/full/nbproject/private/private.properties	(revision 568)
++++ C:/bombus/bombusmod/full/nbproject/private/private.properties	(revision 569)
+@@ -1,9 +1,10 @@
+ #Fri Jul 06 21:00:50 MSD 2007
+ deployment.number=0.0.2
++file.reference.__file.reference.midp2.0z_=C:\\bombus\\bombusmod\\full\\${file.reference.midp2.0z}
+ file.reference.builtin.ks=C:\\Documents and Settings\\User\\.netbeans\\5.0\\config\\j2me\\builtin.ks
+ file.reference.resources-small=C\:\\Bombus\\bombusmod\\full\\resources\\small
+ file.reference.full=C\:\\Bombus\\bombusmod\\full
+-config.active=full_ver
++config.active=small_ver
+ netbeans.user=C:\\Documents and Settings\\User\\.netbeans\\5.0
+ file.reference.resources-adsky=C\:\\Bombus\\bombusmod\\full\\resources\\adsky
+ file.reference.adsky=C\:\\Bombus\\bombusmod\\full\\resources\\adsky
+Index: C:/bombus/bombusmod/full/src/archive/archiveEdit.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/archive/archiveEdit.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/archive/archiveEdit.java	(revision 569)
+@@ -59,7 +59,7 @@
+     
+     MessageArchive archive=new MessageArchive();
+     
+-    private ClipBoard clipboard;
++    private ClipBoard clipboard=ClipBoard.getInstance();
+     
+     public archiveEdit(Display display, Msg msg) {
+         this.msg=msg;
+Index: C:/bombus/bombusmod/full/src/archive/ArchiveList.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/archive/ArchiveList.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/archive/ArchiveList.java	(revision 569)
+@@ -84,7 +84,7 @@
+     
+     private int caretPos;
+     
+-    private ClipBoard clipboard;
++    private ClipBoard clipboard=ClipBoard.getInstance();
+     
+ //#if FILE_IO    
+     int fileSize;
+@@ -121,9 +121,8 @@
+  	this.target=target;
+         this.caretPos=caretPos;
+         enableListWrapping(true); //TEST:пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+-	setCommandListener(this);
+-	addCommand(cmdBack);
+-	addCommand(cmdDelete);
++	/*
++        addCommand(cmdDelete);
+         addCommand(cmdCopy);
+         if (!clipboard.isEmpty()) {
+             addCommand(cmdCopyPlus);
+@@ -138,7 +137,7 @@
+ 	    addCommand(cmdPaste);
+ 	    addCommand(cmdJid);
+ 	}
+-        
++        */
+         attachDisplay(display);
+         
+         
+@@ -166,7 +165,7 @@
+     public Msg getMessage(int index) {
+ 	return archive.msg(index);
+     }
+-
++/*
+     public void commandAction(Command c, Displayable d) {
+         super.commandAction(c,d);
+         
+@@ -194,14 +193,14 @@
+             try {
+                 new archiveEdit(display,getMessage(cursor)).setParentView(StaticData.getInstance().roster);
+                 deleteMessage();
+-            } catch (Exception e) {/*no messages*/}
++            } catch (Exception e) {}
+         }
+         
+         if (c == cmdCopy)
+         {
+             try {
+                 clipboard.setClipBoard(getMessage(cursor).quoteString());
+-            } catch (Exception e) {/*no messages*/}
++            } catch (Exception e) {}
+         }
+         
+         if (c==cmdCopyPlus) {
+@@ -213,11 +212,11 @@
+                 
+                 clipboard.setClipBoard(clipstr.toString());
+                 clipstr=null;
+-            } catch (Exception e) {/*no messages*/}
++            } catch (Exception e) {}
+         }
+     }
+-	
+-
++*/
++    
+     private void deleteMessage() {
+         archive.delete(cursor);
+         messages=new Vector();
+@@ -437,4 +436,21 @@
+         deleteMessage();
+     }
+ 
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
++
+ }
+Index: C:/bombus/bombusmod/full/src/ServiceDiscovery/SearchResult.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ServiceDiscovery/SearchResult.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ServiceDiscovery/SearchResult.java	(revision 569)
+@@ -147,4 +147,21 @@
+             new ContactMessageList((Contact) getFocusedObject(), display);
+         } catch (Exception e) {}
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/ServiceDiscovery/ServiceDiscovery.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ServiceDiscovery/ServiceDiscovery.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ServiceDiscovery/ServiceDiscovery.java	(revision 569)
+@@ -433,6 +433,23 @@
+         stream.cancelBlockListener(this);
+         destroyView();
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+ class State{
+     public String service;
+Index: C:/bombus/bombusmod/full/src/PrivacyLists/PrivacyModifyList.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/PrivacyLists/PrivacyModifyList.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/PrivacyLists/PrivacyModifyList.java	(revision 569)
+@@ -158,4 +158,21 @@
+         return JabberBlockListener.BLOCK_REJECTED;
+     }
+ 
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
++
+ }
+Index: C:/bombus/bombusmod/full/src/PrivacyLists/PrivacySelect.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/PrivacyLists/PrivacySelect.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/PrivacyLists/PrivacySelect.java	(revision 569)
+@@ -178,4 +178,21 @@
+         ignoreList.addChild(item);
+         PrivacyList.privacyListRq(true, ignoreList, "ignlst");
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/UserMood/MoodSelect.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/UserMood/MoodSelect.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/UserMood/MoodSelect.java	(revision 569)
+@@ -91,7 +91,24 @@
+         return moodList.size();
+     }
+ 
++    protected boolean leftCommand() {
++        return false;
++    }
+ 
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
++
++
+     class MoodForm implements CommandListener{
+         private Display display;
+         public Displayable parentView;
+Index: C:/bombus/bombusmod/full/src/templates/AppendTemplate.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/templates/AppendTemplate.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/templates/AppendTemplate.java	(revision 569)
+@@ -45,9 +45,10 @@
+ 
+ public class AppendTemplate         
+         extends MessageList 
+-        implements CommandListener
++        implements 
++        //CommandListener
+ //#if (FILE_IO)
+-        , BrowserListener
++        BrowserListener
+ //#endif
+ {
+ 
+@@ -104,6 +105,7 @@
+ 	this.target=target;
+         this.caretPos=caretPos;
+         enableListWrapping(true); //TEST:переход через конец списка
++        /*
+ 	if (target!=null) {
+ 	    addCommand(cmdSelect);
+ 	}
+@@ -116,12 +118,12 @@
+ //#endif
+ 	addCommand(cmdBack);
+ 
++        setCommandListener(this);
++	*/
+         try {
+             focusedItem(0);
+         } catch (Exception e) {}
+-	
+-	setCommandListener(this);
+-	
++        
+ 	MainBar mainbar=new MainBar(SR.MS_SELECT);
+ 	mainbar.addRAlign();
+ 	mainbar.addElement(null);
+@@ -139,7 +141,7 @@
+     public Msg getMessage(int index) {
+ 	return template.msg(index);
+     }
+-
++/*
+     public void commandAction(Command c, Displayable d) {
+ 	if (c==cmdBack) {
+ 	    destroyView();
+@@ -157,7 +159,7 @@
+                 new NewTemplate(display);
+                 messages=new Vector();
+                 redraw();
+-            } catch (Exception e) {/*no messages*/}
++            } catch (Exception e) {}
+         }
+ 	if (m==null) return;
+         
+@@ -175,7 +177,7 @@
+ //#endif
+ 	if (c==cmdSelect) { pasteData(); }
+     }
+-    
++*/ 
+     private void pasteData() {
+ 	if (target==null) return;
+ 	Msg m=getMessage(cursor);
+@@ -368,4 +370,21 @@
+         
+     }
+ //#endif
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/io/file/browse/Browser.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/io/file/browse/Browser.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/io/file/browse/Browser.java	(revision 569)
+@@ -223,6 +223,23 @@
+         
+         redraw();
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+     
+     
+     private class FileItem extends IconTextElement {
+Index: C:/bombus/bombusmod/full/src/io/file/transfer/TransferManager.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/io/file/transfer/TransferManager.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/io/file/transfer/TransferManager.java	(revision 569)
+@@ -88,4 +88,21 @@
+         }
+         
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/io/Utf8IOStream.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/io/Utf8IOStream.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/io/Utf8IOStream.java	(revision 569)
+@@ -298,7 +298,7 @@
+                 stats.append("\nZLib:\nin="); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
+                 stats.append("\nout="); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
+             }
+-            stats.append("\nStream: in="); stats.append(recv);
++            stats.append("\nStream:\nin="); stats.append(recv);
+             stats.append(" out="); stats.append(sent);
+         } catch (Exception e) {
+             stats=null;
+Index: C:/bombus/bombusmod/full/src/Messages/MessageList.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Messages/MessageList.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Messages/MessageList.java	(revision 569)
+@@ -30,8 +30,6 @@
+ import Client.Config;
+ import Client.Msg;
+ import java.util.Vector;
+-import javax.microedition.lcdui.Command;
+-import javax.microedition.lcdui.CommandListener;
+ import javax.microedition.lcdui.Display;
+ import javax.microedition.lcdui.Displayable;
+ import locale.SR;
+@@ -42,20 +40,10 @@
+ 
+ public abstract class MessageList 
+     extends VirtualList
+-    implements CommandListener
+ {
+     
+     protected Vector messages;
+     
+-    protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
+-    protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
+-//#ifdef SMILES
+-//#     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
+-//#endif
+-//#ifdef COLORS
+-//#     protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 30);
+-//#endif
+-    
+     /** Creates a new instance of MessageList */
+   
+     public MessageList() {
+@@ -66,14 +54,6 @@
+         enableListWrapping(false);
+ 	
+         cursor=0;//activate
+-//#ifdef SMILES
+-//#         addCommand(cmdSmiles);
+-//#endif
+-        addCommand(cmdBack);
+-        addCommand(cmdUrl);
+-//#ifdef COLORS
+-//#         addCommand(cmdxmlSkin);
+-//#endif
+         stringHeight=FontCache.getMsgFont().getHeight();
+     }
+ 
+@@ -103,32 +83,7 @@
+     
+     protected boolean smiles;
+ 
+-    public void commandAction(Command c, Displayable d) {
+-        if (c==cmdBack) destroyView();
+-        if (c==cmdUrl) {
+-            try {
+-                Vector urls=((MessageItem) getFocusedObject()).getUrlList();
+-                new MessageUrl(display, urls); //throws NullPointerException if no urls
+-            } catch (Exception e) {/* no urls found */}
+-        }
+ //#ifdef SMILES
+-//#         if (c==cmdSmiles) {
+-//#             try {
+-//#                 ((MessageItem)getFocusedObject()).toggleSmiles();
+-//#             } catch (Exception e){}
+-//#         }
+-//#endif
+-//#ifdef COLORS
+-//#         if (c==cmdxmlSkin) {
+-//#             try {
+-//#                 if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
+-//#                    ColorScheme.getInstance().loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
+-//#                 }
+-//#             } catch (Exception e){}
+-//#         }
+-//#endif
+-    }
+-//#ifdef SMILES
+ //#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+ //#         super.keyPressed(keyCode);
+ //#         if (keyCode=='*') 
+Index: C:/bombus/bombusmod/full/src/Messages/MessageItem.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Messages/MessageItem.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Messages/MessageItem.java	(revision 569)
+@@ -143,35 +143,6 @@
+         msg.itemHeight=height;
+     }
+ 
+-    public Vector getUrlList() { 
+-        Vector urlList=new Vector();
+-        addUrls(msg.getBody(), "http://", urlList);
+-        addUrls(msg.getBody(), "https://", urlList);
+-        addUrls(msg.getBody(), "tel://", urlList);
+-        addUrls(msg.getBody(), "native:", urlList);
+-        return (urlList.size()==0)? null: urlList;
+-    }
+-    
+-    private void addUrls(String text, String addString, Vector urlList) {
+-        int pos=0;
+-        int len=text.length();
+-        while (pos<len) {
+-            int head=text.indexOf(addString, pos);
+-            if (head>=0) {
+-                pos=head;
+-                
+-                while (pos<len) {
+-                    char c=text.charAt(pos);
+-                    if (c==' ' || c==0x09 || c==0x0d || c==0x0a || c==0xa0 || c==')' )  
+-                        break;
+-                    pos++;
+-                }
+-                urlList.addElement(text.substring(head, pos));
+-                
+-            } else break;
+-        }
+-    }
+-    
+     public void setEven(boolean even) {
+         this.even = even;
+     }
+Index: C:/bombus/bombusmod/full/src/Conference/affiliation/Affiliations.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Conference/affiliation/Affiliations.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Conference/affiliation/Affiliations.java	(revision 569)
+@@ -68,7 +68,7 @@
+     protected VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index); }
+     protected int getItemCount() { return items.size(); }
+     
+-    private ClipBoard clipboard; 
++    private ClipBoard clipboard=ClipBoard.getInstance(); 
+     
+     /** Creates a new instance of AffiliationList */
+     public Affiliations(Display display, String room, short affiliationIndex) {
+@@ -168,4 +168,21 @@
+         stream.addBlockListener(this);
+         stream.send(request);
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/Conference/Bookmarks.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Conference/Bookmarks.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Conference/Bookmarks.java	(revision 569)
+@@ -256,4 +256,21 @@
+     public void ActionConfirmed() {
+         deleteBookmark();
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/Conference/AppendNick.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Conference/AppendNick.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Conference/AppendNick.java	(revision 569)
+@@ -89,4 +89,20 @@
+         destroyView();
+     }
+ 
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/ui/ColorScheme.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ui/ColorScheme.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ui/ColorScheme.java	(revision 569)
+@@ -82,7 +82,6 @@
+          */
+         return color;
+     }
+-  
+ 
+     public static int BALLOON_INK	=0x4866ad;
+     public static int BALLOON_BGND	=0xffffe0;
+Index: C:/bombus/bombusmod/full/src/ui/Menu.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ui/Menu.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ui/Menu.java	(revision 569)
+@@ -35,20 +35,14 @@
+  *
+  * @author Evg_S
+  */
+-public class Menu extends VirtualList implements CommandListener
++public class Menu extends VirtualList
+ {
+     Vector menuitems;
+-    /** Creates a new instance of Menu */
+-    Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
+-    Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
+     
+     public Menu(String mainbar) {
+         super();
+         setMainBarItem(new MainBar(mainbar));
+         menuitems=new Vector();
+-        addCommand(cmdBack);
+-        addCommand(cmdOk);
+-        setCommandListener(this);
+     }
+     
+     public VirtualElement getItemRef(int index){ 
+@@ -67,9 +61,22 @@
+     public void addItem(String label, int index){
+         addItem(new MenuItem(label, index, -1));
+     }
+-    
+-    public void commandAction(Command c, Displayable d) {
+-        if (c==cmdBack) destroyView();
+-	if (c==cmdOk) eventOk();
++
++    protected boolean leftCommand() {
++        eventOk();
++        return true;
+     }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Ok";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/ui/VirtualList.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ui/VirtualList.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ui/VirtualList.java	(revision 569)
+@@ -33,6 +33,7 @@
+ import javax.microedition.lcdui.*;
+ import java.util.*;
+ import Client.*;
++import ui.controls.newMenu;
+ //#ifdef POPUPS
+ //# import ui.controls.PopUp;
+ //#endif
+@@ -54,15 +55,21 @@
+     abstract protected int getItemCount();
+ 
+     abstract protected VirtualElement getItemRef(int index);
++    
++    abstract protected boolean leftCommand();
++    abstract protected String getLeftCommand();
+ 
++    abstract protected boolean rightCommand();
++    abstract protected String getRightCommand();
++    
+     protected int getMainBarBGnd() {return ColorScheme.BAR_BGND;} 
+     protected int getMainBarBGndBottom() {return ColorScheme.BAR_BGND_BOTTOM;} 
+     
+     private StaticData sd=StaticData.getInstance();
+ 
+-    private boolean reverse=false;
++    //private boolean reverse=false;
+ 
+-    public static int isbottom=2; //default state both panels show, reverse disabled
++    public static int drawTop=1;
+ 
+     private static final int USER_OTHER_KEY_PRESSED = 0;
+     private static final int USER_STAR_KEY_PRESSED = 1;
+@@ -71,6 +78,7 @@
+     private int lastKeyPressed = 0;
+     private int additionKeyState = USER_OTHER_KEY_PRESSED;
+     
++    public static newMenu menu = new newMenu();
+     
+     public Phone ph=Phone.getInstance();
+ //#ifdef USER_KEYS
+@@ -206,11 +214,6 @@
+     private int lastClickItem;
+     private long lastClickTime;
+     
+-//#ifdef ELF    
+-//#     private static boolean sie_accu=true;
+-//#     private static boolean sie_net=true;
+-//#endif
+-    
+     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
+     
+     public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
+@@ -293,14 +296,16 @@
+         width=getWidth();	// patch for SE
+         height=getHeight();
+         
+-        boolean paintTop=true;
+-        boolean paintBottom=true;
++        menu.setLeftCommand(getLeftCommand());
++        menu.setRightCommand(getRightCommand());
++        //boolean paintTop=true;
++        //boolean paintBottom=true;
+         
+         int mHeight=0, iHeight=0; // nokia fix
+         
+ 	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
+-
+-        switch (isbottom) {
++/*
++        switch (drawTop) {
+             case 0: paintTop=false; paintBottom=false; reverse=false; break;
+             case 1: paintTop=true;  paintBottom=false; reverse=false; break;
+             case 2: paintTop=true;  paintBottom=true;  reverse=false; break;
+@@ -310,7 +315,7 @@
+             case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
+         }
+         //paintTop=true;  paintBottom=true;  reverse=true;
+-
++*/
+         beginPaint();
+         
+         int list_bottom=0;        
+@@ -324,7 +329,11 @@
+ 
+         iHeight=FontCache.getBalloonFont().getHeight(); // nokia fix
+         
+-        if (paintTop) {
++        if (drawTop>0) {
++            if (mainbar!=null)
++                itemBorder[0]=mHeight; 
++            drawMainPanel(g);
++/*
+             if (reverse) {
+                 itemBorder[0]=iHeight;
+                 drawInfoPanel(g);
+@@ -333,6 +342,7 @@
+                     itemBorder[0]=mHeight; 
+                 drawMainPanel(g);
+             }
++ */
+         }
+ 
+ //#if ALT_INPUT 
+@@ -340,6 +350,10 @@
+ //#                 list_bottom=inputbox.getHeight();
+ //#         } else {
+ //#endif
++                 if (menu!=null) {
++                    list_bottom=menu.getHeight();
++                 }
++/*
+                 if (paintBottom) {
+                     if (reverse) {
+                         if (mainbar!=null) list_bottom=mHeight;
+@@ -347,6 +361,7 @@
+                         list_bottom=iHeight; 
+                     }
+                 }
++ */
+ //#if ALT_INPUT
+ //#         }
+ //#endif
+@@ -448,6 +463,13 @@
+ //#                 inputbox.draw(g, width, height);
+ //#         } else {
+ //#endif
++        
++                 if (menu!=null) {
++                    setAbsOrg(g, 0, 0);
++//                    setCenter();
++                    menu.draw(g);
++                 }
++/*
+                 if (paintBottom) {
+                     if (reverse) {
+                         setAbsOrg(g, 0, height-mHeight);
+@@ -457,6 +479,7 @@
+                         drawInfoPanel(g);
+                     }
+                 }
++ */
+ //#if ALT_INPUT
+ //#         }
+ //#endif
+@@ -488,7 +511,7 @@
+             g.setColor(ColorScheme.HEAP_FREE);  g.fillRect(0,y,ram,1);
+         }
+     }
+-    
++/*
+     private void drawInfoPanel (final Graphics g) {
+         Font bottomFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, Font.SIZE_SMALL);
+         int h=bottomFont.getHeight();
+@@ -508,24 +531,41 @@
+         s.append(" ");
+         s.append(strconv.getSizeString(stats.getGPRS()));
+ //#ifdef ELF
++//#          s.append(getNetworkLevel());
++//#          s.append(getAccuLevel());
++//#endif
++        if (s!=null) {
++            g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
++            s=null;
++        }
++    }
++  */  
++/*
++    private void setCenter() {
++        StringBuffer s=new StringBuffer();    
++        s.append(Time.localTime());
++        s.append(" ");
++        s.append(strconv.getSizeString(stats.getGPRS()));
++//#ifdef ELF
+ //#         s.append(getNetworkLevel());
+ //#         s.append(getAccuLevel());
+ //#endif
+         if (s!=null) {
+-            g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
++            //g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
++            menu.setCenter(s.toString());
+             s=null;
+         }
+     }
+-
++*/
+     private void drawMainPanel (final Graphics g) {    
+         if (mainbar!=null) {
+             int h=mainbar.getVHeight();
+             g.setClip(0,0, width, h);
+             
+-            g.setColor(getMainBarBGnd()); //10
+-            g.fillRect(0, 0, width, h/2); //5
++            g.setColor(getMainBarBGnd());
++            g.fillRect(0, 0, width, h/2);
+             g.setColor(getMainBarBGndBottom());
+-            g.fillRect(0, h/2, width, h); //5 10
++            g.fillRect(0, h/2, width, h);
+             
+             g.setColor(getMainBarRGB());
+             mainbar.drawItem(g,0,false, false);
+@@ -595,10 +635,20 @@
+     protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  lastKeyPressed=keyCode; }
+     
+     protected void pointerPressed(int x, int y) {
+-	if (scrollbar.pointerPressed(x, y, this)) {
++        int act=menu.pointerPressed(x, y, this);
++        
++        if (act==1) {
++            leftCommand();
+             stickyWindow=false;
+             return;
+-        } 
++        } else if (act==2) {
++            rightCommand();
++            stickyWindow=false;
++            return;
++        } else if (scrollbar.pointerPressed(x, y, this)) {
++            stickyWindow=false;
++            return;
++        }
+ 	int i=0;
+ 	while (i<32) {
+ 	    if (y<itemBorder[i]) break;
+@@ -699,11 +749,14 @@
+ //#ifdef POPUPS
+ //#         popup.next();
+ //#endif
+-        if ((keyCode==cf.SOFT_RIGHT || keyCode==cf.KEY_BACK) && ph.PhoneManufacturer()!=ph.SONYE) {
+-            if (canBack==true)
+-                destroyView();
++        if (keyCode==cf.SOFT_LEFT) {
++            leftCommand();
+             return;
+         }
++        if (keyCode==cf.SOFT_RIGHT || keyCode==cf.KEY_BACK) {
++            rightCommand();
++            return;
++        }
+         
+ //#if ALT_INPUT
+ //#         if (inputbox==null) {
+@@ -970,32 +1023,6 @@
+     public int getCursor() {
+         return cursor;
+     }
+-    
+-    
+-//#ifdef ELF    
+-//#     public static String getAccuLevel() {
+-//# 
+-//#         if (sie_accu==false) return "";
+-//#         try {
+-//#             String cap=System.getProperty("MPJC_CAP");
+-//#             return (cap==null)? "": " "+cap+"%";
+-//#         } catch (Exception e) { sie_accu=false; }
+-//# 
+-//#         return "";
+-//#     }
+-//#     
+-//#     public static String getNetworkLevel() {
+-//# 
+-//#         if (sie_net==false) return "";
+-//#         try {
+-//#             String rx=System.getProperty("MPJCRXLS");
+-//#             int rp=rx.indexOf(',');
+-//#             return (rp<0)? "": " "+rx.substring(0,rp)+"db";
+-//#         } catch (Exception e) { sie_net=false; }
+-//# 
+-//#         return "";
+-//#     }
+-//#endif    
+ }
+ 
+ //#if (USE_ROTATOR)    
+Index: C:/bombus/bombusmod/full/src/ui/controls/StringItemEx.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ui/controls/StringItemEx.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ui/controls/StringItemEx.java	(revision 569)
+@@ -25,7 +25,7 @@
+     implements ItemCommandListener
+     {
+     
+-    private ClipBoard clipboard;  // The clipboard class
++    private ClipBoard clipboard=ClipBoard.getInstance();  // The clipboard class
+ 
+     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 7);
+     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 8);
+Index: C:/bombus/bombusmod/full/src/ui/controls/TextFieldEx.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ui/controls/TextFieldEx.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ui/controls/TextFieldEx.java	(revision 569)
+@@ -26,7 +26,7 @@
+     implements ItemCommandListener
+     {
+     
+-    private ClipBoard clipboard;  // The clipboard class
++    private ClipBoard clipboard=ClipBoard.getInstance();  // The clipboard class
+ 
+     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 7);
+     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 8);
+Index: C:/bombus/bombusmod/full/src/ui/controls/newMenu.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ui/controls/newMenu.java	(revision 0)
++++ C:/bombus/bombusmod/full/src/ui/controls/newMenu.java	(revision 569)
+@@ -0,0 +1,230 @@
++/*
++ * MenuTest.java
++ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * You can also redistribute and/or modify this program under the
++ * terms of the Psi License, specified in the accompanied COPYING
++ * file, as published by the Psi Project; either dated January 1st,
++ * 2005, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++package ui.controls;
++
++import javax.microedition.lcdui.Canvas;
++import javax.microedition.lcdui.Display;
++import javax.microedition.lcdui.Displayable;
++import javax.microedition.lcdui.Font;
++import javax.microedition.lcdui.Graphics;
++import ui.ColorScheme;
++import ui.Time;
++import ui.VirtualList;
++
++/**
++ *
++ * @author User
++ */
++public class newMenu {
++    
++    static Font boldFont = null;
++    protected static int boldHeight = 0;
++    
++    static Font normalFont = null;
++    
++    static int scWidth = 0;
++    static int scHeight = 0;
++    
++    protected String leftCommand = "";
++    protected String rightCommand = "";
++    
++    private boolean initiated=false;
++
++    private boolean hasPointerEvents;
++    private int point_y; 
++    private int point_x;
++    private int yTranslate;
++    
++    public newMenu() {
++        point_y=-1;
++        point_x=-1;
++    }
++
++    public static String cutStringToWidth(String s, Font font, int width){
++        String str = s;
++        if(font.stringWidth(str)<width)
++            return str;
++        int threeDots = font.stringWidth("...");
++        while(font.stringWidth(str)>width-threeDots)
++            str = str.substring(0, str.length()-2);
++        return str+"...";
++    }
++    
++    public static void drawFooter(Graphics g){
++        g.setColor(ColorScheme.BAR_BGND_BOTTOM);
++        g.fillRect(0, scHeight-(boldHeight/2), scWidth, boldHeight/2);
++        g.setColor(ColorScheme.BAR_BGND);
++        g.fillRect(0, scHeight-boldHeight, scWidth, boldHeight/2);
++    }
++    
++    public static void drawLeftCommand(Graphics g, String val){
++        g.setColor(ColorScheme.BAR_INK);
++        g.setFont(getBoldFont());
++        int tw = getBoldFont().stringWidth(val);
++        g.drawString(val, 2, scHeight, Graphics.LEFT | Graphics.BOTTOM);
++    }
++    
++    public static void drawRightCommand(Graphics g, String val){
++        g.setColor(ColorScheme.BAR_INK);
++        g.setFont(getBoldFont());
++        int tw = getBoldFont().stringWidth(val);
++        g.drawString(val, scWidth-tw-2, scHeight, Graphics.LEFT | Graphics.BOTTOM);
++    }
++    
++    public static Font getBoldFont() {
++        return boldFont;
++    }
++    
++    public static Font getNormalFont() {
++        return normalFont;
++    }
++    
++    public int getHeight() {
++        return boldHeight;
++    }
++    
++    
++    public String getLeftCommand() {
++        return leftCommand;
++    }
++    
++    private int getWidthLeftCommand() {
++        if(!leftCommand.equals("")) 
++            return getBoldFont().stringWidth(leftCommand);
++        
++        return 0;
++    }
++
++    public void setLeftCommand(String leftCommand) {
++        this.leftCommand = leftCommand;
++    }
++
++    public String getRightCommand() {
++        return rightCommand;
++    }
++    
++    private int getWidthRightCommand() {
++        if(!rightCommand.equals("")) 
++            return getBoldFont().stringWidth(rightCommand);
++        
++        return 0;
++    }
++
++    private boolean isClickOnLeftCommand(int x, int y) {
++        int cx=getWidthLeftCommand();
++        if (cx==0)
++            return false;
++        
++        if (x>cx)
++            return false;
++        
++        if (y<scHeight-boldHeight)
++            return false;
++               
++        return true;
++    }
++    
++    private boolean isClickOnRightCommand(int x, int y) {
++        int cx=getWidthRightCommand();
++        if (cx==0)
++            return false;
++        
++        if (x<(scWidth-cx))
++            return false;
++        
++        if (y<scHeight-boldHeight)
++            return false;
++               
++        return true;
++    }
++    
++
++    public void setRightCommand(String rightCommand) {
++        this.rightCommand = rightCommand;
++    }
++    
++    public void paint(Graphics g){
++        if((!leftCommand.equals("")) || (!rightCommand.equals(""))){
++            drawFooter(g);
++            if(!leftCommand.equals(""))
++                drawLeftCommand(g, leftCommand);
++            //if(!center.equals(""))
++                //drawCenter(g, center);
++            drawCenter(g, Time.localTime());
++            
++            if(!rightCommand.equals(""))
++                drawRightCommand(g, rightCommand);
++        }
++    }
++    
++    public void draw (Graphics g) {
++        if (!initiated)
++            init(g);
++        
++        paint(g);        
++    }
++
++    public void init(Graphics g) {
++        boldFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
++        boldHeight = boldFont.getHeight();
++        
++        normalFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
++        
++        scWidth = g.getClipWidth();
++        scHeight = g.getClipHeight();
++        
++        initiated = true;
++    }
++    
++    public static void drawCenter(Graphics g, String val){
++        g.setColor(ColorScheme.BAR_INK);
++        g.setFont(getNormalFont());
++        int tw = getNormalFont().stringWidth(val);
++        g.drawString(val, scWidth/2, scHeight, Graphics.HCENTER | Graphics.BOTTOM);
++    }
++    
++    
++/*           Pointer events              */
++    
++    public void setHasPointerEvents(boolean hasPointerEvents) {
++        this.hasPointerEvents = hasPointerEvents;
++    }
++    
++    public int pointerPressed(int x, int y, VirtualList v) {
++        if (isClickOnLeftCommand(x, y)) {
++            //System.out.println("isClickOnLeftCommand");
++            return 1;
++        }
++        
++        if (isClickOnRightCommand(x, y)) {
++            //System.out.println("isClickOnRightCommand");
++            return 2;
++        }
++        
++	return 0;
++    }
++    
++    
++}
+Index: C:/bombus/bombusmod/full/src/ui/ComplexStringList.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ui/ComplexStringList.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ui/ComplexStringList.java	(revision 569)
+@@ -83,4 +83,21 @@
+         if (line==null) line=cacheUpdate(index);
+         return line;
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/ui/keys/userKeysList.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/ui/keys/userKeysList.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/ui/keys/userKeysList.java	(revision 569)
+@@ -139,4 +139,23 @@
+ //#         NvStorage.writeFileRecord(outputStream, userKey.storage, 0, true);
+ //#endif
+     }    
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++//#ifdef USER_KEYS
++//#             destroyView();
++//#endif
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+\ No newline at end of file
+Index: C:/bombus/bombusmod/full/src/util/ClipBoard.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/util/ClipBoard.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/util/ClipBoard.java	(revision 569)
+@@ -28,17 +28,29 @@
+ 
+ public class ClipBoard
+ {
+-      private static String _clipBoard="";
+-      
+-      public String getClipBoard() {
+-          return _clipBoard;
+-      }
+-      
+-      public void setClipBoard(String str) {
+-          _clipBoard=(str.length()>4096)?str.substring(0,4095):str;
+-      }
+-      
+-      public boolean isEmpty() {
+-          return (_clipBoard.length()>0)?false:true;
+-      }
++    
++    // Singleton
++    private static ClipBoard instance;
++
++    public static ClipBoard getInstance(){
++        if (instance==null) {
++            instance=new ClipBoard();
++        }
++        return instance;
++    }
++    
++    private static String clipBoard="";
++
++
++    public String getClipBoard() {
++      return clipBoard;
++    }
++
++    public void setClipBoard(String str) {
++      clipBoard=(str.length()>4096)?str.substring(0,4095):str;
++    }
++
++    public boolean isEmpty() {
++      return (clipBoard=="")?true:false;
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/Client/RosterMenu.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/RosterMenu.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/RosterMenu.java	(revision 569)
+@@ -1,132 +0,0 @@
+-/*
+- * RosterMenu.java
+- * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * You can also redistribute and/or modify this program under the
+- * terms of the Psi License, specified in the accompanied COPYING
+- * file, as published by the Psi Project; either dated January 1st,
+- * 2005, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this library; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- *
+- */
+-
+-package Client;
+-
+-import images.RosterIcons;
+-import javax.microedition.lcdui.Display;
+-import locale.SR;
+-import ui.Menu;
+-import ui.MenuItem;
+-
+-
+-public class RosterMenu 
+-//#ifdef NEW_MENU
+-//#         extends Menu
+-//#endif
+-{
+-//#ifdef NEW_MENU
+-//#     private Object o;
+-//#     
+-//#     private Config cf=Config.getInstance();
+-//#     private StaticData sd=StaticData.getInstance();
+-//#     
+-//#     private Roster roster=StaticData.getInstance().roster;
+-//# 
+-//#     public RosterMenu(Display display, Object o) {
+-//#         super(SR.MS_MAIN_MENU);
+-//#         this.o=o;
+-//#         addItem(SR.MS_ITEM_ACTIONS, 0, 0x0f27);
+-//#         addItem(SR.MS_STATUS_MENU, 1, 0x0f16);
+-//#         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x0f21);
+-//#ifdef MOOD
+-//#         if (roster.useUserMood)
+-//#             addItem(SR.MS_USER_MOOD, 3, 0x0f16);
+-//#endif
+-//#         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x0f17);
+-//#ifndef WMUC
+-//#         addItem(SR.MS_CONFERENCE, 5, RosterIcons.ICON_GROUPCHAT_INDEX);
+-//#endif
+-//#ifdef ARCHIVE
+-//#         addItem(SR.MS_ARCHIVE, 6,0x0f12);
+-//#endif
+-//#         addItem(SR.MS_ADD_CONTACT, 7, 0x0f02);
+-//#         addItem(SR.MS_TOOLS, 8,0x0f24);    
+-//#         addItem(SR.MS_ACCOUNT_, 9,0x0f01);
+-//#         addItem(SR.MS_ABOUT, 10,0x0f04);
+-//#         addItem(SR.MS_CLEAN_ALL_MESSAGES, 11, RosterIcons.ICON_TRASHCAN_INDEX);
+-//#         addItem(SR.MS_APP_QUIT, 12,0x0f22);
+-//#     
+-//# 	attachDisplay(display);
+-//#     }
+-//#     public void eventOk(){
+-//# 	destroyView();
+-//# 	MenuItem me=(MenuItem) getFocusedObject();
+-//#         
+-//# 	if (me==null)  return;
+-//#         
+-//# 	int index=me.index;
+-//# 	switch (index) {
+-//# 	    case 0: //actions
+-//#                 roster.cmdActions();
+-//#                 break;
+-//# 	    case 1: //status
+-//#                 roster.cmdStatus();
+-//# 		break;
+-//#             case 2: //active
+-//#                 roster.cmdActiveContacts();
+-//# 		break;
+-//#ifdef MOOD
+-//#             case 3: //user mood
+-//#                 roster.cmdUserMood();
+-//#                 break;
+-//#endif
+-//#             case 4: //alert
+-//#                 roster.cmdAlert();
+-//# 		break;
+-//#ifndef WMUC
+-//#             case 5: //conference
+-//#                 roster.cmdConference();
+-//#                 break;
+-//#endif
+-//#ifdef ARCHIVE
+-//#             case 6: //archive
+-//#                 roster.cmdArchive();
+-//# 		break;
+-//#endif
+-//#             case 7: {//add contact
+-//#                 roster.cmdAdd();
+-//#                 break;
+-//#             }
+-//#             case 8: //tools
+-//#                 roster.cmdTools();
+-//# 		break;
+-//#             case 9: //account
+-//#                 roster.cmdAccount();
+-//# 		break; 
+-//#             case 10: //about
+-//#                 roster.cmdInfo();
+-//# 		break; 
+-//#             case 11: //cleanup All Histories
+-//#                 roster.cmdCleanAllMessages();
+-//# 		break; 
+-//# 	    case 12: {//quit
+-//#                 roster.cmdQuit();
+-//#                 return;
+-//# 	    }
+-//# 	}
+-//#     }
+-//#endif
+-}
+Index: C:/bombus/bombusmod/full/src/Client/RosterItemActions.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/RosterItemActions.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/RosterItemActions.java	(revision 569)
+@@ -1,661 +0,0 @@
+-/*
+- * RosterItemActions.java
+- *
+- * Created on 11.12.2005, 19:05
+- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * You can also redistribute and/or modify this program under the
+- * terms of the Psi License, specified in the accompanied COPYING
+- * file, as published by the Psi Project; either dated January 1st,
+- * 2005, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this library; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- *
+- */
+-
+-package Client;
+-//#ifndef WMUC
+-import Conference.ConferenceGroup;
+-import Conference.InviteForm;
+-import Conference.MucContact;
+-import Conference.QueryConfigForm;
+-import Conference.affiliation.ConferenceQuickPrivelegeModify;
+-//#ifdef REQUEST_VOICE
+-//# import Conference.QueryRequestVoice;
+-//#endif
+-import Conference.affiliation.Affiliations;
+-//#endif
+-//#ifdef SERVICE_DISCOVERY
+-//# import ServiceDiscovery.ServiceDiscovery;
+-//#endif
+-import com.alsutton.jabber.datablocks.IqLast;
+-import com.alsutton.jabber.datablocks.IqPing;
+-import com.alsutton.jabber.datablocks.IqTimeReply;
+-import com.alsutton.jabber.datablocks.IqVersionReply;
+-import com.alsutton.jabber.datablocks.Presence;
+-//#if FILE_TRANSFER
+-//# import io.file.transfer.TransferSendFile;
+-//#endif
+-import java.util.Enumeration;
+-import javax.microedition.lcdui.Display;
+-import locale.SR;
+-import ui.ColorScheme;
+-import ui.Menu;
+-import ui.MenuItem;
+-import ui.Time;
+-import ui.YesNoAlert;
+-import util.ClipBoard;
+-import vcard.VCard;
+-import vcard.vCardForm;
+-
+-
+-/**
+- *
+- * @author EvgS
+- */
+-public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
+-    
+-    public final static int DELETE_CONTACT=4;
+-    public final static int DELETE_GROUP=1004;
+-    
+-    Object item;
+-	
+-    Roster roster;
+-    
+-    private ClipBoard clipboard;
+-    private int action;
+-    
+-    /** Creates a new instance of RosterItemActions */
+-    public RosterItemActions(Display display, Object item, int action) {
+-	super(item.toString());
+-	this.item=item;
+-        this.action=action;
+-	
+-        roster=StaticData.getInstance().roster;
+-        
+-        if (!roster.isLoggedIn()) return;
+-	
+-        if (item==null) return;
+-        boolean isContact=( item instanceof Contact );
+-
+-	if (isContact) {
+-	    Contact contact=(Contact)item;
+-	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
+-		addItem(SR.MS_LOGON,5, 0x36);
+-		addItem(SR.MS_LOGOFF,6, 0x37);
+-		addItem(SR.MS_RESOLVE_NICKNAMES, 7);
+-//#if CHANGE_TRANSPORT
+-//#                 addItem("Change transport", 915);
+-//#endif
+-	    }
+-	    
+-	    addItem(SR.MS_VCARD,1, 0x0f16);
+-            addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
+-//#ifdef SERVICE_DISCOVERY
+-//# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
+-//#endif
+-
+-//#ifdef COLORS
+-//# 	    addItem("Send current color scheme",912, 0x0f22);
+-//#endif
+-	    addItem("Send buffer",914, 0x0f22);
+-            
+-            if (contact.getGroupType()!=Groups.TYPE_SELF) {
+-                addItem("Copy JID",892, 0x0f22);
+-                if (contact.getJid()==contact.getBareJid()) {
+-                    addItem(SR.MS_SEEN,890);    
+-                } else {
+-                    addItem(SR.getPresence("online"),890); 
+-                }
+-            }
+-            if (contact.getStatus()<Presence.PRESENCE_OFFLINE) {
+-                addItem(SR.MS_IDLE,889);
+-                addItem("Ping",893);
+-            }
+-                //if (contact.status>4) //not only for offline&invisible status
+-                //    addItem(SR.MS_ONLINE,894); 
+-            //}
+-            
+-                            
+-            //if (from.indexOf("/")>-1) lastType="idle";
+-	    
+-	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
+-		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
+-		addItem(SR.MS_EDIT,2, 0x0f13);
+-		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
+-		addItem(SR.MS_MOVE,1003);
+-		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
+-		addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
+-	    }
+-            
+-	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return;
+-//#ifndef WMUC
+-            boolean onlineConferences=false;
+-            for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
+-                try {
+-                    MucContact mcI=(MucContact)cI.nextElement();
+-                    if (mcI.origin==Contact.ORIGIN_GROUPCHAT && mcI.status==Presence.PRESENCE_ONLINE)
+-                        onlineConferences=true;
+-                } catch (Exception e) {}
+-            }
+-            
+-            if (contact instanceof MucContact) {
+-                MucContact selfContact= ((ConferenceGroup) contact.getGroup()).getSelfContact();
+-                MucContact mc=(MucContact) contact;
+-                
+-                //invite
+-                if (mc.realJid!=null) {
+-                    if (onlineConferences) addItem(SR.MS_INVITE,40, 0x0f20);
+-                }
+-                //invite
+-                
+-                int myAffiliation=selfContact.affiliationCode;
+-                if (myAffiliation==MucContact.AFFILIATION_OWNER) myAffiliation++; // allow owner to change owner's affiliation
+-
+-            
+-                addItem(SR.MS_TIME,891); 
+-                
+-                if (selfContact.roleCode==MucContact.ROLE_MODERATOR) {
+-                    addItem(SR.MS_KICK,8, 0x0f06);
+-                    
+-                    if (myAffiliation>=MucContact.AFFILIATION_ADMIN && mc.affiliationCode<myAffiliation)
+-                        addItem(SR.MS_BAN,9, 0x0f06);
+-                    
+-                    if (mc.affiliationCode<MucContact.AFFILIATION_ADMIN) 
+-                        /* 5.1.1 *** A moderator MUST NOT be able to revoke voice privileges from an admin or owner. */ 
+-                    if (mc.roleCode==MucContact.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31);
+-                    else addItem(SR.MS_REVOKE_VOICE, 32);
+-                }
+-//#ifdef REQUEST_VOICE
+-//# 		if (selfContact.roleCode==MucContact.ROLE_VISITOR) {
+-//#                     //System.out.println("im visitor");
+-//#                     if (mc.roleCode==MucContact.ROLE_MODERATOR) {
+-//#                         //System.out.println(mc.getJid()+" is a moderator");
+-//#                         addItem(SR.MS_REQUEST_PARTICIPANT_ROLE,39);
+-//#                     }
+-//#  		}
+-//#endif
+-                if (myAffiliation>=MucContact.AFFILIATION_ADMIN) {
+-                    // admin use cases
+-                    
+-                    //roles
+-                    if (mc.affiliationCode<MucContact.AFFILIATION_ADMIN) 
+-                        /* 5.2.1 ** An admin or owner MUST NOT be able to revoke moderation privileges from another admin or owner. */ 
+-                    if (mc.roleCode==MucContact.ROLE_MODERATOR) addItem(SR.MS_REVOKE_MODERATOR,31);
+-                    else addItem(SR.MS_GRANT_MODERATOR,33);
+-                    
+-                    //affiliations
+-                    if (mc.affiliationCode<myAffiliation) {
+-                        if (mc.affiliationCode!=MucContact.AFFILIATION_NONE) addItem(SR.MS_UNAFFILIATE,36);
+-                        /* 5.2.2 */
+-                        if (mc.affiliationCode!=MucContact.AFFILIATION_MEMBER) addItem(SR.MS_GRANT_MEMBERSHIP,35);
+-                    }
+-                    
+-                    
+-               //m.addItem(new MenuItem("Set Affiliation",15));
+-                }
+-                if (myAffiliation>=MucContact.AFFILIATION_OWNER) {
+-                    // owner use cases
+-                    //if (mc.affiliationCode<=selfContact.affiliationCode) /* 5.2.2 */
+-                    if (mc.affiliationCode!=MucContact.AFFILIATION_ADMIN) addItem(SR.MS_GRANT_ADMIN,37);
+-                    //else addItem(SR.MS_REVOKE_ADMIN,35);
+-                    
+-                    if (mc.affiliationCode!=MucContact.AFFILIATION_OWNER) addItem(SR.MS_GRANT_OWNERSHIP,38);
+-                    //else addItem(SR.MS_REVOKE_OWNERSHIP,37);
+-                }
+-                if (mc.realJid!=null && mc.getStatus()<Presence.PRESENCE_OFFLINE) {
+-                    
+-                }
+-            } else if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
+-                // usual contact - invite item check
+-                 if (onlineConferences) addItem(SR.MS_INVITE,40);
+-            }
+-//#endif
+-//#if (FILE_IO && FILE_TRANSFER)
+-//#             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
+-//#                 if (contact!=StaticData.getInstance().roster.selfContact())
+-//#                     addItem(SR.MS_SEND_FILE, 50, 0x0f34);
+-//#             
+-//#endif
+-        } else {
+-	    Group group=(Group)item;
+-	    if (group.index==Groups.TYPE_SEARCH_RESULT)
+-		addItem(SR.MS_DISCARD,21);
+-//#ifndef WMUC
+-	    if (group instanceof ConferenceGroup) {
+-		MucContact self=((ConferenceGroup)group).getSelfContact();
+-                
+-		addItem(SR.MS_LEAVE_ROOM,22, 0x0f22);
+-                
+-                if (self.status>=Presence.PRESENCE_OFFLINE) {// offline or error
+-		    addItem(SR.MS_REENTER,23, 0x0f21);
+-                } else {
+-                    addItem(SR.MS_DIRECT_PRESENCE,46);
+-                    addItem(SR.MS_CHANGE_NICKNAME,23, 0x0f21);
+-		    if (self.affiliationCode>=MucContact.AFFILIATION_OWNER) {
+-			addItem(SR.MS_CONFIG_ROOM,10, 0x0f03);
+-                    }
+-		    if (self.affiliationCode>=MucContact.AFFILIATION_ADMIN) {
+-			addItem(SR.MS_OWNERS,11);
+-			addItem(SR.MS_ADMINS,12);
+-			addItem(SR.MS_MEMBERS,13);
+-			addItem(SR.MS_BANNED,14);
+- 		    }
+- 		}
+-	    } else {
+-//#endif
+-                if (    group.index!=Groups.TYPE_IGNORE
+-                        && group.index!=Groups.TYPE_NOT_IN_LIST
+-                        && group.index!=Groups.TYPE_SEARCH_RESULT
+-                        && group.index!=Groups.TYPE_SELF
+-                        && group.index!=Groups.TYPE_TRANSP)
+-                {
+-                    addItem(SR.MS_RENAME,1001);
+-                    addItem(SR.MS_DELETE, DELETE_GROUP);
+-                }
+-//#ifndef WMUC
+-            }
+-//#endif
+- 	}
+-	if (getItemCount()>0) {
+-            if (action<0) 
+-                attachDisplay(display);
+-            else try {
+-                this.display=display; // to invoke dialog Y/N
+-                doAction(action);
+-            } catch (Exception e) { 
+-                //e.printStackTrace();
+-            }
+-        }
+-     }
+-     
+-     public void eventOk(){
+-         try {
+-             //final Roster roster=StaticData.getInstance().roster;
+-             MenuItem me=(MenuItem) getFocusedObject();
+-            destroyView();
+-            if (me==null) return;
+-            int index=action=me.index;
+-            doAction(index);
+-            //destroyView();
+-        } catch (Exception e) { 
+-            //e.printStackTrace();  
+-        }
+-    }
+-
+-    private void doAction(final int index) {
+-        boolean isContact=( item instanceof Contact );
+-        Contact c = null;
+-        Group g = null;
+-        if (isContact) c=(Contact)item; else g=(Group) item;
+-        
+-        String to=null;
+-        if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
+-
+-            switch (index) {
+-                case 0: // info
+-                    roster.setQuerySign(true);
+-                    roster.theStream.send(new IqVersionReply(to));
+-                    break;
+-                case 1: // vCard
+-                    if (c.vcard!=null) {
+-                        new vCardForm(display, c.vcard, c.getGroupType()==Groups.TYPE_SELF);
+-                        return;
+-                    }
+-                    VCard.request(c.getBareJid(), c.getJid());
+-                    break;
+-                    
+-                case 2:
+-                    (new ContactEdit(display, c )).parentView=roster;
+-                    return; //break;
+-                    
+-                case 3: //subscription
+-                    new SubscriptionEdit(display, c);
+-                    return; //break;
+-                case DELETE_CONTACT:
+-                    new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
+-                    return;
+-                case 6: // logoff
+-                {
+-                    roster.blockNotify(-111,10000); //block sounds to 10 sec
+-                    //querysign=true; displayStatus();
+-                    Presence presence = new Presence(
+-                            Presence.PRESENCE_OFFLINE, -1, "", null);
+-                    presence.setTo(c.getJid());
+-                    roster.theStream.send( presence );
+-                    break;
+-                }
+-                case 5: // logon
+-                {
+-                    roster.blockNotify(-111,10000); //block sounds to 10 sec
+-                    //querysign=true; displayStatus();
+-                    Presence presence = new Presence(roster.myStatus, 0, "", null);
+-                    presence.setTo(c.getJid());
+-                    roster.theStream.send( presence );
+-                    break;
+-                }
+-                case 7: // Nick resolver
+-                {
+-                    roster.resolveNicknames(c.transport);
+-                    break;
+-                }
+-//#if CHANGE_TRANSPORT
+-//#                 case 915: // change transport
+-//#                 {
+-//#                     new ChangeTransport(display, c.transport);
+-//#                     return;
+-//#                 }
+-//#endif
+-                case 21:
+-                {
+-                    roster.cleanupSearch();
+-                    break;
+-                }
+-//#ifdef SERVICE_DISCOVERY
+-//#                 case 30:
+-//#                 {
+-//#                     new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
+-//#                     return;
+-//#                 }
+-//#endif
+-                case 1003: 
+-                {
+-                    new RenameGroup(display, null, c);
+-                    return;
+-                }
+-                case 889: //idle
+-                {
+-                    roster.setQuerySign(true);
+-                    roster.theStream.send(new IqLast(c.getJid()));
+-                    break;
+-                }
+-                case 890: //seen & online
+-                {
+-                    roster.setQuerySign(true);
+-                    roster.theStream.send(new IqLast(c.getBareJid()));
+-                    break;
+-                }
+-                
+-                case 891: //time
+-                {
+-                    roster.setQuerySign(true);
+-                    roster.theStream.send(new IqTimeReply(c.getBareJid()));
+-                    break;
+-                }
+-                
+-                case 892: //Copy JID
+-                {
+-//#ifndef WMUC
+-                    if (!(c instanceof MucContact)) {
+-                        //System.out.println("1 c "+c.bareJid);
+-//#endif
+-                        try {
+-                            if (c.bareJid!=null)
+-                                clipboard.setClipBoard(c.bareJid);
+-                        } catch (Exception e) {/*no messages*/}
+-//#ifndef WMUC
+-                    }
+-//#endif
+-                    break;
+-                }
+-                case 893: //ping
+-                {
+-                    try {
+-                        roster.setQuerySign(true);
+-                        c.setPing();
+-                        roster.theStream.send(new IqPing(c.getJid(), "_ping"));
+-                    } catch (Exception e) {/*no messages*/}
+-                    break;
+-                }
+-                //case 894: //seen & online when online
+-                //{
+-                //    roster.setQuerySign(true);
+-                //    roster.theStream.send(new IqLast(c.getJid()));
+-                //    break;
+-                //}
+-//#ifdef COLORS
+-//#                 case 912: //send color scheme
+-//#                 {
+-//#                     String from=StaticData.getInstance().account.toString();
+-//#                     String body=ColorScheme.getSkin();
+-//#                     String subj="";
+-//#                     
+-//#                     String id=String.valueOf((int) System.currentTimeMillis());
+-//#                     
+-//#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+-//#                     msg.id=id;
+-//#                     
+-//#                     try {
+-//#                         roster.sendMessage(c, id, body, subj, null);
+-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
+-//#                     } catch (Exception e) {
+-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
+-//#                         //e.printStackTrace();
+-//#                     }
+-//#                     break;
+-//#                 }
+-//#endif               
+-                case 914: //send message from buffer
+-                {
+-                    String body=clipboard.getClipBoard();
+-                    if (body.length()==0)
+-                        return;
+-                    
+-                    String from=StaticData.getInstance().account.toString();
+-                    String subj="";
+-                    
+-                    String id=String.valueOf((int) System.currentTimeMillis());
+-                    
+-                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+-                    msg.id=id;
+-                    try {
+-                        roster.sendMessage(c, id, body, subj, null);
+-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+-                    } catch (Exception e) {
+-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
+-                        //e.printStackTrace();
+-                    }
+-                    break;
+-                }
+-//#ifndef WMUC
+-                case 40: //invite
+-                {
+-                    //new InviteForm(c, display);
+-                    if (c.jid!=null) {
+-                        new InviteForm(c, display);                        
+-                    } else {
+-                        MucContact mcJ=(MucContact) c;
+-
+-                        if (mcJ.realJid!=null) {
+-                            boolean onlineConferences=false;
+-                            for (Enumeration cJ=StaticData.getInstance().roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
+-                                try {
+-                                    MucContact mcN=(MucContact)cJ.nextElement();
+-                                    if (mcN.origin==Contact.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)
+-                                        onlineConferences=true;
+-                                } catch (Exception e) {}
+-                            }
+-                            if (onlineConferences) new InviteForm(mcJ, display);
+-                        }
+-                    }
+-                    return;
+-                }
+-//#endif
+-                case 45: //direct presence
+-                {
+-                    new StatusSelect(display, c);
+-                    return;
+-                }
+-                
+-//#if (FILE_IO && FILE_TRANSFER)
+-//#                 case 50: //send file
+-//#                 {
+-//#                     new TransferSendFile(display, c.getJid());
+-//#                     return;
+-//#                 }   
+-//#endif
+-            }
+-//#ifndef WMUC
+-            if (c instanceof MucContact || g instanceof ConferenceGroup) {
+-                MucContact mc=(MucContact) c;
+-                
+-                switch (index) { // muc contact actions
+-                    case 10: // room config
+-                    {
+-                        String roomJid=((ConferenceGroup)g).getConference().getJid();
+-                        new QueryConfigForm(display, roomJid);
+-                        break;
+-                    }
+-                    case 11: // owners
+-                    case 12: // admins
+-                    case 13: // members
+-
+-                    case 14: // outcasts
+-                    {
+-                        String roomJid=((ConferenceGroup)g).getConference().getJid();
+-                        new Affiliations(display, roomJid, (short)(index-10));
+-                        return;
+-                    }
+-
+-                    case 22:
+-                    {
+-                        roster.leaveRoom( g );
+-                        break;
+-                    }
+-                    case 23:
+-                    {
+-                        roster.reEnterRoom( g );
+-                        return; //break;
+-                    }
+-                    case 46: //conference presence
+-                    {
+-                        new StatusSelect(display, ((ConferenceGroup)g).getConference());
+-                        return;
+-                    }
+-                    
+-                     case 8: // kick
+-                     {
+-                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+-                        String myNick=mucGrp.getSelfContact().getName();
+-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+-                        return;
+-                     }
+-                     case 9: // ban
+-                     {
+-                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+-                        String myNick=mucGrp.getSelfContact().getName();
+-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
+-                        return;
+-                     }
+-                     case 31: //grant voice and revoke moderator
+-                     {
+-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null);
+-                        return;
+-                     }
+-                     case 32: //revoke voice
+-                     {
+-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.VISITOR,null);
+-                        return;
+-                     }
+-                     
+-                     case 33: //grant moderator
+-                     {
+-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR,null);
+-                        return;
+-                     }
+-                    
+-                case 35: //grant membership and revoke admin
+-                 {
+-                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,null);
+-                     return;
+-                 }
+-                 
+-                case 36: //revoke membership
+-                 {
+-                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,null);
+-                     return;
+-                 }
+-                 
+-                case 37: //grant admin and revoke owner
+-                 {
+-                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,null);
+-                     return;
+-                 }
+-                 
+-                case 38: //grant owner
+-                 {
+-                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
+-                     return;
+-                 }
+-//#ifdef REQUEST_VOICE		 
+-//#                 case 39: //request voice
+-//#                  {
+-//#                     new QueryRequestVoice(display, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
+-//#                     return;
+-//#                  }
+-//#endif
+-                case 892: //Copy JID
+-                {
+-                    try {
+-                        if (mc.realJid!=null)
+-                            clipboard.setClipBoard(mc.realJid);
+-                    } catch (Exception e) {}
+-                    break;
+-                 }
+-             }
+-        } else {
+-//#endif
+-            Group sg=(Group)item;
+-
+-            if (       sg.index!=Groups.TYPE_IGNORE 
+-                    && sg.index!=Groups.TYPE_NOT_IN_LIST
+-                    && sg.index!=Groups.TYPE_SEARCH_RESULT
+-                    && sg.index!=Groups.TYPE_SELF
+-                    && sg.index!=Groups.TYPE_TRANSP)
+-            {
+-                switch (index) {
+-                    case 1001: //rename
+-                    {
+-                        new RenameGroup(display, sg, null);
+-                        return;
+-                    }
+-                    case DELETE_GROUP: //delete
+-                    {
+-                        new YesNoAlert(display, SR.MS_DELETE_ASK, sg.getName(), this);
+-                        return;
+-                    }    
+-                }
+-            }
+-//#ifndef WMUC
+-         }
+-//#endif
+-     }
+-    
+-    public void ActionConfirmed() {
+-        switch (action) {
+-            case DELETE_CONTACT:
+-            {
+-                roster.deleteContact((Contact)item);
+-                break;
+-            }
+-            case DELETE_GROUP:
+-            {
+-                roster.deleteGroup((Group)item);
+-                break;
+-            }
+-        }
+-        display.setCurrent(roster);
+-    }
+-}
+Index: C:/bombus/bombusmod/full/src/Client/RosterToolsMenu.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/RosterToolsMenu.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/RosterToolsMenu.java	(revision 569)
+@@ -1,172 +0,0 @@
+-/*
+- * RosterToolsMenu.java
+- *
+- * Created on 11.12.2005, 20:43
+- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * You can also redistribute and/or modify this program under the
+- * terms of the Psi License, specified in the accompanied COPYING
+- * file, as published by the Psi Project; either dated January 1st,
+- * 2005, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this library; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- *
+- */
+-
+-package Client;
+-//#ifdef PRIVACY
+-//# import PrivacyLists.PrivacySelect;
+-//#endif
+-//#ifdef SERVICE_DISCOVERY
+-//# import ServiceDiscovery.ServiceDiscovery;
+-//#endif
+-//#if (FILE_IO && HISTORY)
+-//# import History.HistoryConfig;
+-//#endif
+-import Stats.Stats;
+-import javax.microedition.lcdui.Display;
+-import locale.SR;
+-//#ifdef COLORS
+-//# import ui.ColorForm;
+-//#endif
+-import ui.Menu;
+-import ui.MenuItem;
+-//#ifdef USER_KEYS
+-//# import ui.keys.userKeysList;
+-//#endif
+-import util.strconv;
+-import vcard.VCard;
+-import vcard.vCardForm;
+-
+-public class RosterToolsMenu
+-        extends Menu {
+-    
+-    /** Creates a new instance of RosterToolsMenu */
+-    public RosterToolsMenu(Display display) {
+-        super(SR.MS_JABBER_TOOLS);
+-//#ifdef SERVICE_DISCOVERY
+-//#         addItem(SR.MS_DISCO, 0, 0x13);
+-//#endif
+-//#ifdef PRIVACY
+-//#         addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
+-//#endif
+-        addItem(SR.MS_MY_VCARD, 2, 0x0f16);
+-        addItem(SR.MS_OPTIONS, 3, 0x0f03);
+-//#if (FILE_IO && HISTORY)
+-//#         addItem(SR.MS_HISTORY_OPTIONS, 4, 0x0f01);
+-//#endif
+-        
+-//#if (FILE_IO)
+-        addItem(SR.MS_ROOT,5, 0x0f10);
+-//#endif
+-//#if (FILE_IO && FILE_TRANSFER)
+-//#         addItem(SR.MS_FILE_TRANSFERS, 6, 0x0f34);
+-//#endif
+-//#ifdef COLORS
+-//#         addItem(SR.MS_COLOR_TUNE, 7, 0x0f25);
+-//#endif
+-        addItem(SR.MS_SOUNDS_OPTIONS, 8, 0x0f17);
+-//#ifdef POPUPS
+-//#         addItem(SR.MS_STATS, 9, 0x0f30);
+-//#endif
+-//#ifdef CHECK_VERSION
+-//#         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
+-//#endif
+-//#ifdef USER_KEYS
+-//#         if (Config.getInstance().userKeys)
+-//#             addItem(SR.MS_CUSTOM_KEYS, 11, 0x0f03);
+-//#endif
+-/*		
+-        addItem("ArchiveDump", 10);
+-*/        
+-        attachDisplay(display);
+-    }
+-    public void eventOk(){
+-        destroyView();
+-        boolean connected= ( StaticData.getInstance().roster.isLoggedIn() );
+-        MenuItem me=(MenuItem) getFocusedObject();
+-        if (me==null)  return;
+-        int index=me.index;
+-        switch (index) {
+-//#ifdef SERVICE_DISCOVERY
+-//#             case 0: // Service Discovery
+-//#                 if (connected) new ServiceDiscovery(display, null, null);
+-//#                 break;
+-//#endif
+-//#ifdef PRIVACY
+-//#             case 1: // Privacy Lists
+-//#                 if (connected) new PrivacySelect(display);
+-//#                 break;
+-//#endif
+-            case 2: {
+-                if (! connected) break;
+-                Contact c=StaticData.getInstance().roster.selfContact();
+-                if (c.vcard!=null) {
+-                    new vCardForm(display, c.vcard, true);
+-                    return;
+-                }
+-                VCard.request(c.getBareJid(), c.getJid());
+-                return;
+-            }
+-            case 3:
+-                new ConfigForm(display);
+-                return;
+-//#if (FILE_IO && HISTORY)
+-//#             case 4: //history
+-//#                 new HistoryConfig(display);
+-//#                 return;
+-//#endif 
+-//#if (FILE_IO)
+-            case 5:
+-                new io.file.browse.Browser(null, display, null, false);
+-                return;
+-//#endif
+-//#if (FILE_IO && FILE_TRANSFER)
+-//#             case 6:
+-//#                 new io.file.transfer.TransferManager(display);
+-//#                 return;
+-//#endif
+-//#ifdef COLORS
+-//#             case 7:
+-//#                 new ColorForm(display);
+-//#                 return;
+-//#endif
+-            case 8:
+-                new AlertCustomizeForm(display);
+-                return;
+-//#ifdef POPUPS
+-//#             case 9: //traffic stats
+-//#                 StaticData.getInstance().roster.showStats();
+-//#                 return;
+-//#endif
+-//#ifdef CHECK_VERSION
+-//#             case 10:
+-//#                 if (! connected) break;
+-//#                 new util.LastVersion(display);
+-//#                 return;
+-//#endif
+-//#ifdef USER_KEYS
+-//#             case 11:
+-//#                 new userKeysList(display);
+-//#                 return;
+-//#endif
+-/*
+-            case 10:
+-                new archive.DebugDumpArchive(display);
+-                return;
+-*/
+-        }
+-    }
+-}
+\ No newline at end of file
+Index: C:/bombus/bombusmod/full/src/Client/SmilePicker.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/SmilePicker.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/SmilePicker.java	(revision 569)
+@@ -210,4 +210,21 @@
+                 keyRight(); break;
+         }
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/Client/AccountForm.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/AccountForm.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/AccountForm.java	(revision 569)
+@@ -62,9 +62,7 @@
+ 	
+     private NumberField keepAlive;
+     private ChoiceGroup keepAliveType;
+-/*
+-    private NumberField compressionbox;
+-*/  
++ 
+     Command cmdOk = new Command(SR.MS_OK /*"OK"*/, Command.OK, 1);
+     Command cmdPwd = new Command(SR.MS_SHOWPWD, Command.SCREEN, 2);
+ //#if SERVER_SIDE_CONFIG  
+@@ -129,10 +127,8 @@
+         proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   64, TextField.ANY); f.append(proxyHost);
+ 
+ 	proxyPort = new NumberField(SR.PROXY_PORT, account.getProxyPort(), 0, 65535);	f.append(proxyPort);
+-/*
+-        compressionbox = new NumberField(SR.MS_COMPRESSION_LEVEL, account.getCompressionLevel(), 1, 8);	f.append(compressionbox);
+-*/
+-	f.addCommand(cmdOk);
++
++        f.addCommand(cmdOk);
+         f.addCommand(cmdPwd);
+ //#if SERVER_SIDE_CONFIG        
+ //#         f.addCommand(cmdRequestOptions);
+@@ -199,7 +195,6 @@
+ //#endif
+ 	    account.setMucOnly(b[3]);
+ 	    account.setEnableProxy(b[4]);
+-	    //account.updateJidCache();
+ 	    
+ 	    account.setPort(portbox.getValue());
+ 
+@@ -208,10 +203,9 @@
+ 			
+             account.keepAlivePeriod=keepAlive.getValue();
+             account.keepAliveType=keepAliveType.getSelectedIndex();
+-/*
+-            account.setCompressionLevel(compressionbox.getValue());
+-*/	    
+-	    if (newaccount) accountSelect.accountList.addElement(account);
++	    
++	    if (newaccount) 
++                accountSelect.accountList.addElement(account);
+ 	    accountSelect.rmsUpdate();
+ 	    accountSelect.commandState();
+ 	    
+@@ -226,6 +220,7 @@
+     }
+     
+     public void destroyView()	{
+-	if (display!=null)   display.setCurrent(parentView);
++	if (display!=null)   
++            display.setCurrent(parentView);
+     }
+ }
+Index: C:/bombus/bombusmod/full/src/Client/StatusSelect.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/StatusSelect.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/StatusSelect.java	(revision 569)
+@@ -118,6 +118,23 @@
+         StatusList.getInstance().saveStatusToStorage();
+     }
+ 
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
++
+     class StatusForm implements CommandListener{
+         private Display display;
+         public Displayable parentView;
+Index: C:/bombus/bombusmod/full/src/Client/ConfigPrivateStorage.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/ConfigPrivateStorage.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/ConfigPrivateStorage.java	(revision 569)
+@@ -123,9 +123,8 @@
+ //#             cs.addChild("defGcRoom", cf.defGcRoom);
+ //#             
+ //#             cs.addChild("altInput", (cf.altInput)?"1":"0");
+-//#             cs.addChild("isbottom", Integer.toString(cf.isbottom));
++//#             cs.addChild("drawTop", Integer.toString(cf.drawTop));
+ //#             cs.addChild("confMessageCount", Integer.toString(cf.confMessageCount));
+-//#             cs.addChild("newMenu", (cf.newMenu)?"1":"0");
+ //#             cs.addChild("lightState", (cf.lightState)?"1":"0");
+ //#             cs.addChild("autoSubscribe", (cf.autoSubscribe)?"1":"0");
+ //#             cs.addChild("lastMessages", (cf.lastMessages)?"1":"0");
+@@ -212,12 +211,10 @@
+ //#             
+ //#             cf.altInput=cf.getBooleanProperty("altInput",false);
+ //#             
+-//#             cf.isbottom=cf.getIntProperty("isbottom",2);
++//#             cf.drawTop=cf.getIntProperty("drawTop",1);
+ //#             
+ //#             cf.confMessageCount=cf.getIntProperty("confMessageCount",20);
+ //#             
+-//#             cf.newMenu=cf.getBooleanProperty("newMenu",false);
+-//#             
+ //#             cf.lightState=cf.getBooleanProperty("lightState",true);
+ //# 			
+ //#             cf.autoSubscribe=cf.getBooleanProperty("autoSubscribe",true);
+@@ -262,7 +259,7 @@
+ //#             cf.saveToStorage();
+ //# 
+ //#             VirtualList.fullscreen=cf.fullscreen;
+-//#             VirtualList.isbottom=cf.isbottom;
++//#             VirtualList.drawTop=cf.drawTop;
+ //#             VirtualList.memMonitor=cf.memMonitor;
+ //#             VirtualList.userKeys=cf.userKeys;
+ //# 	} catch (Exception e) {}
+Index: C:/bombus/bombusmod/full/src/Client/MessageEdit.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/MessageEdit.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/MessageEdit.java	(revision 569)
+@@ -92,12 +92,13 @@
+ 
+     private String subject;
+     
+-    private ClipBoard clipboard;
++    private ClipBoard clipboard=ClipBoard.getInstance();
+     
+     /** Creates a new instance of MessageEdit */
+     public MessageEdit(Display display, Contact to, String body) {
+         this.to=to;
+         this.display=display;
++        //this.body=to.msgSuspended;
+         parentView=display.getCurrent();
+ 
+         t=new TextBox(to.toString(), "", 500, TextField.ANY);
+@@ -239,7 +240,8 @@
+             }
+         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
+         
+-        if (!Config.getInstance().eventComposing) comp=null;
++        if (!Config.getInstance().eventComposing) 
++            comp=null;
+         
+         try {
+             if (body!=null || subj!=null || comp!=null) {
+Index: C:/bombus/bombusmod/full/src/Client/Contact.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Contact.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/Contact.java	(revision 569)
+@@ -76,7 +76,7 @@
+     public String nick;
+     public Jid jid;
+     public String bareJid;    // for roster/subscription manipulating
+-    protected int status;
++    public int status;
+     public int priority;
+     private Group group;
+     public int transport;
+Index: C:/bombus/bombusmod/full/src/Client/Group.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Group.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/Group.java	(revision 569)
+@@ -37,7 +37,7 @@
+  */
+ public class Group extends IconTextElement {
+     String name;
+-    int index; // group index
++    public int index; // group index
+     protected int nContacts;
+     protected int onlines;
+     
+Index: C:/bombus/bombusmod/full/src/Client/AccountSelect.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/AccountSelect.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/AccountSelect.java	(revision 569)
+@@ -178,4 +178,21 @@
+         NvStorage.writeFileRecord(outputStream, Account.storage, 0, true);
+     }
+ 
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
++
+ }
+Index: C:/bombus/bombusmod/full/src/Client/ContactMessageList.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/ContactMessageList.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/ContactMessageList.java	(revision 569)
+@@ -26,6 +26,9 @@
+  */
+ 
+ package Client;
++import Client.Menu.ContactMessageListMenu;
++import Client.Menu.RosterItemActions;
++
+ //#ifndef WMUC
+ import Conference.MucContact;
+ //#endif
+@@ -38,9 +41,9 @@
+ import locale.SR;
+ import ui.MainBar;
+ import ui.Time;
+-//import ui.*;
+ import java.util.*;
+ import javax.microedition.lcdui.*;
++import ui.VirtualList;
+ import util.ClipBoard;
+ 
+ //#ifdef ARCHIVE
+@@ -60,52 +63,19 @@
+ public class ContactMessageList extends MessageList
+ {
+     Contact contact;
+-    Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
+-    Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
+-    Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,3);
+-    Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
+-    Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
+-    Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
+-//#ifdef ARCHIVE
+-//#     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
+-//#endif
+-    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
+-    Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,8);
+-//#if LAST_MESSAGES
+-//#     Command cmdRecent=new Command(SR.MS_LAST_MESSAGES,Command.SCREEN,6);
+-//#endif
+-    //Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,10);
+-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
+-    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 12);
+-    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 13);
+-//#if TEMPLATES
+-//#     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,14);
+-//#endif
+-//#ifdef ANTISPAM
+-//#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.SCREEN, 22);
+-//#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
+-//#endif
+-    Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 15);
+-//#ifdef FILE_IO
+-    Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
+-//#endif
+-    private ClipBoard clipboard;
++    private ClipBoard clipboard=ClipBoard.getInstance();
+ 
+     StaticData sd;
+-    
+     private Config cf=Config.getInstance();
+ //#if LAST_MESSAGES
+ //#     private boolean hisStorage=(cf.lastMessages)?true:false;    
+-//#endif
+-    
++//#endif    
+ //#ifdef ALT_INPUT
+ //#     private boolean startMessage=false;
+ //#     private String text="";
+ //#endif
+     
+     private boolean composing=true;
+-
+-
+   
+     /** Creates a new instance of MessageList */
+     public ContactMessageList(Contact contact, Display display) {
+@@ -121,103 +91,19 @@
+         mainbar.addElement(null);
+ 
+         cursor=0;//activate
+-//#ifndef WMUC     
+-//#ifdef ANTISPAM
+-//#         if (contact instanceof MucContact && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+-//#             MucContact mc=(MucContact) contact;
+-//#             if (mc.roleCode!=MucContact.GROUP_MODERATOR) {
+-//#                 switch (mc.getPrivateState()) {
+-//#                     case MucContact.PRIVATE_DECLINE:
+-//#                         addCommand(cmdUnlock);
+-//#                         break;
+-//#                     case MucContact.PRIVATE_NONE:
+-//#                     case MucContact.PRIVATE_REQUEST:
+-//#                         addCommand(cmdUnlock);
+-//#                         addCommand(cmdBlock);
+-//#                         break;
+-//#                     case MucContact.PRIVATE_ACCEPT:
+-//#                         addCommand(cmdBlock);
+-//#                         break;
+-//#                 }
+-//#                 
+-//#             }
+-//#         }
+-//#endif
+-//#endif
+-//#if LAST_MESSAGES      
+-//#         if (hisStorage 
+-//#ifndef WMUC
+-//#                 && contact instanceof MucContact==false
+-//#endif
+-//#                 ) addCommand(cmdRecent);
+-//#endif        
+-        addCommand(cmdMessage);
+-//#ifndef WMUC
+-        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+-            addCommand(cmdReply);
+-        }
+-//#endif
+-        addCommand(cmdPurge);
+-        
+-        if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
+-            addCommand(cmdActions);
+ 
+-    
+-	addCommand(cmdActive);
+-        addCommand(cmdQuote);
+-//#ifdef ARCHIVE
+-//#         addCommand(cmdArch);
+-//#endif
+-//#if TEMPLATES
+-//#         addCommand(cmdTemplate);
+-//#endif
+-        addCommand(cmdCopy);
+-//#ifdef FILE_IO
+-        addCommand(cmdSaveChat);
+-//#endif
+-        setCommandListener(this);
+-
+         moveCursorTo(contact.firstUnread(), true);
+         
+         contact.setIncoming(0);
+     }
+     
+     public void showNotify(){
++        getRedraw(true);
+         super.showNotify();
+-        if (cmdResume==null) return;
+-        if (contact.msgSuspended==null) 
+-            removeCommand(cmdResume);
+-        else 
+-            addCommand(cmdResume);
+-        
+-        if (cmdSubscribe==null) return;
+-        try {
+-            Msg msg=(Msg) contact.msgs.elementAt(cursor); 
+-            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
+-                addCommand(cmdSubscribe);
+-                addCommand(cmdUnsubscribed);
+-            } else {
+-                removeCommand(cmdSubscribe);
+-                removeCommand(cmdUnsubscribed);
+-            }
+-        } catch (Exception e) {}
+-        
+-        if (!clipboard.isEmpty()) {
+-            addCommand(cmdCopyPlus);
+-            addCommand(cmdSendBuffer);
+-        }
+-        //getMainBarItem().setElementAt(sd.roster.getEventIcon(), 3);
+-        //getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 4);
+     }
+     
+     protected void beginPaint(){
+         markRead(cursor);
+-        if (cursor==(messages.size()-1)) {
+-            if (contact.moveToLatest) {
+-                contact.moveToLatest=false;
+-                moveCursorEnd();
+-            }
+-        }
+         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
+         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
+     }    
+@@ -226,178 +112,44 @@
+ 	if (msgIndex>=getItemCount()) return;
+         if (msgIndex<contact.lastUnread) return;
+         
++        if (cursor==(messages.size()-1)) {
++            if (contact.moveToLatest) {
++                contact.moveToLatest=false;
++                moveCursorEnd();
++            }
++        }
++        
+         sd.roster.countNewMsgs();
+         
+-        if (getRedraw()) {
+-            setRedraw();            
++        getRedraw(contact.redraw);
++    }
++    
++    private void getRedraw(boolean redraw) {
++        if (redraw) {
++            contact.redraw=false;
++            messages=new Vector();
++            redraw();
+         }
+     }
+     
+-    private boolean getRedraw() {
+-        return contact.redraw;
++    public int getItemCount(){ 
++        return contact.msgs.size(); 
+     }
+ 
+-    private void setRedraw() {
+-        contact.redraw=false;
+-        messages=new Vector();
+-    }
+-    
+-    public int getItemCount(){ return contact.msgs.size(); }
+-
+     public Msg getMessage(int index) { 
+-	Msg msg=(Msg) contact.msgs.elementAt(index); 
+-	if (msg.unread) contact.resetNewMsgCnt();
+-	msg.unread=false;
++	Msg msg = null;
++        try {     
++            msg=(Msg) contact.msgs.elementAt(index); 
++            if (msg.unread) contact.resetNewMsgCnt();
++            msg.unread=false;
++        } catch (Exception e) {/*no messages*/}
+ 	return msg;
+     }
+     
+     public void focusedItem(int index){ 
+         markRead(index); 
+     }
+-        
+-    public void commandAction(Command c, Displayable d){
+-        super.commandAction(c,d);
+-		
+-        /** login-insensitive commands */
+-//#ifdef ARCHIVE
+-//#         if (c==cmdArch) {
+-//#             try {
+-//#                 MessageArchive.store(getMessage(cursor));
+-//#             } catch (Exception e) {/*no messages*/}
+-//#         }
+-//#endif
+-        else if (c==cmdPurge) {
+-            if (messages.isEmpty()) return;
+-            clearReadedMessageList();
+-        }
+-        
+-        /** login-critical section */
+-        if (!sd.roster.isLoggedIn()) return;
+ 
+-        if (c==cmdMessage) { 
+-            contact.msgSuspended=null; 
+-            keyGreen(); 
+-        }
+-        if (c==cmdResume) { keyGreen(); }
+-        if (c==cmdQuote) {
+-            Quote();
+-        }
+-        if (c==cmdActions) {
+-//#ifndef WMUC
+-            if (contact instanceof MucContact) {
+-                MucContact mc=(MucContact) contact;
+-                new RosterItemActions(display, mc, -1);
+-            } else {
+-//#endif
+-                new RosterItemActions(display, contact, -1);
+-//#ifndef WMUC
+-            }
+-//#endif
+-        }
+-	
+-	if (c==cmdActive) {
+-	    new ActiveContacts(display, contact);
+-	}
+-        
+-        if (c==cmdReply) {
+-            Reply();
+-        }
+-        
+-        if (c == cmdCopy)
+-        {
+-            try {
+-                StringBuffer clipstr=new StringBuffer();
+-                clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
+-                clipstr.append(getMessage(cursor).quoteString());
+-                clipboard.setClipBoard(clipstr.toString());
+-                clipstr=null;
+-            } catch (Exception e) {/*no messages*/}
+-        }
+-        
+-        if (c==cmdCopyPlus) {
+-            try {
+-                StringBuffer clipstr=new StringBuffer();
+-                clipstr.append(clipboard.getClipBoard());
+-                clipstr.append("\n\n");
+-                clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
+-                clipstr.append(getMessage(cursor).quoteString());
+-                
+-                clipboard.setClipBoard(clipstr.toString());
+-                clipstr=null;
+-            } catch (Exception e) {/*no messages*/}
+-        }
+-//#if (FILE_IO && HISTORY)
+-//#         if (c==cmdSaveChat) {
+-//#             saveMessages();
+-//#         }
+-//#endif        
+-//#if TEMPLATES
+-//#         if (c==cmdTemplate) {
+-//#             try {
+-//#                 TemplateContainer.store(getMessage(cursor));
+-//#             } catch (Exception e) {/*no messages*/}
+-//#         }
+-//#endif
+-        if (c==cmdSubscribe) {
+-            sd.roster.doSubscribe(contact);
+-        }
+-		
+-        if (c==cmdUnsubscribed) {
+-            sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null, false);
+-        }
+-//#ifndef WMUC     
+-//#ifdef ANTISPAM
+-//#         if (c==cmdUnlock) {
+-//#             MucContact mc=(MucContact) contact;
+-//#             mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
+-//# 
+-//#             if (!contact.tempMsgs.isEmpty()) {
+-//#                 for (Enumeration tempMsgs=contact.tempMsgs.elements(); tempMsgs.hasMoreElements(); ) 
+-//#                 {
+-//#                     Msg tmpmsg=(Msg) tempMsgs.nextElement();
+-//#                     contact.addMessage(tmpmsg);
+-//#                 }
+-//#                 contact.purgeTemps();
+-//#             }
+-//#             redraw();
+-//#         }
+-//# 
+-//#         if (c==cmdBlock) {
+-//#             MucContact mc=(MucContact) contact;
+-//#             mc.setPrivateState(MucContact.PRIVATE_DECLINE);
+-//# 
+-//#             if (!contact.tempMsgs.isEmpty())
+-//#                 contact.purgeTemps();
+-//#             redraw();
+-//#         }
+-//#endif
+-//#endif
+-        if (c==cmdSendBuffer) {
+-            String from=StaticData.getInstance().account.toString();
+-            String body=clipboard.getClipBoard();
+-            String subj=null;
+-            
+-            String id=String.valueOf((int) System.currentTimeMillis());
+-            Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+-            msg.id=id;
+-            
+-            try {
+-                if (body!=null)
+-                    sd.roster.sendMessage(contact, id, body, subj, null);
+-                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+-            } catch (Exception e) {
+-                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
+-            }
+-            redraw();
+-        }
+-//#if LAST_MESSAGES
+-//#         if (c==cmdRecent) {
+-//#             //new HistoryList(contact.getBareJid(), display);
+-//#             loadRecentList();
+-//#         }
+-//#endif
+-    }
+-
+     private void clearReadedMessageList() {
+ //#if LAST_MESSAGES
+ //#         if (hisStorage) new HistoryStorage(contact.getBareJid(), "", true);
+@@ -659,52 +411,24 @@
+ //#     } 
+ //#endif
+     
+-//#if LAST_MESSAGES 
+-//#     private void loadRecentList() {
+-//#         try {
+-//#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
+-//#             while (is.available()>0) {
+-//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
+-//#             }
+-//#             is.close();
+-//#         } catch (Exception e) {}
+-//#     }
+-//#endif
++
+     
+-//#if (FILE_IO && HISTORY)
+-//#     private void saveMessages() {
+-//#         if (cf.msgPath==null) {
+-//#ifdef POPUPS
+-//#            StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
+-//#endif
+-//#            return;
+-//#         }
+-//#          String fromName=StaticData.getInstance().account.getUserName();
+-//#          StringBuffer body=new StringBuffer();
+-//#          
+-//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) 
+-//#          {
+-//#             Msg message=(Msg) messages.nextElement();
+-//#              
+-//#             if (message.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=contact.toString();
+-//# 
+-//#             body.append(message.getDayTime());
+-//#             body.append(" <");
+-//#             body.append(fromName);
+-//#             body.append("> ");
+-//#             if (message.subject!=null) {
+-//#                 body.append(message.subject);
+-//#                 body.append("\r\n");
+-//#             }
+-//#             body.append(message.getBody());
+-//#             body.append("\r\n");
+-//#          }
+-//# 
+-//#          //save
+-//#          
+-//#            String histRecord="log_"+((contact.nick==null)?contact.getBareJid():contact.nick);
+-//#            new HistoryAppend(body, histRecord);
+-//#     }
+-//#endif
++    protected boolean leftCommand() {
++        new ContactMessageListMenu(display, sd.roster.isLoggedIn(), contact, getMessage(cursor), cursor);
++        return true;
++    }
+ 
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
++
+ }
+Index: C:/bombus/bombusmod/full/src/Client/Config.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Config.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/Config.java	(revision 569)
+@@ -105,7 +105,6 @@
+     
+     public boolean popupFromMinimized=true;
+     public boolean memMonitor=true;
+-    public boolean newMenu=false;
+     
+     public int font1=0;
+     public int font2=0;
+@@ -136,7 +135,7 @@
+ 
+     public boolean altInput=false;
+ 
+-    public int isbottom=2; //default state both panels show, reverse disabled
++    public int drawTop=1; //default state both panels show, reverse disabled
+    
+     public boolean lightState=false;
+     
+@@ -291,11 +290,11 @@
+             
+             altInput=inputStream.readBoolean();
+             
+-            isbottom=inputStream.readInt();
++            drawTop=inputStream.readInt()%2;
+             
+             confMessageCount=inputStream.readInt();
+             
+-            newMenu=inputStream.readBoolean();
++            inputStream.readBoolean();
+             
+             lightState=inputStream.readBoolean();
+ 			
+@@ -351,7 +350,7 @@
+         if (lastProfile==AlertProfile.VIBRA) lastProfile=0;
+ 	updateTime();
+ 	VirtualList.fullscreen=fullscreen;
+-	VirtualList.isbottom=isbottom;
++	VirtualList.drawTop=drawTop;
+ 	VirtualList.memMonitor=memMonitor;
+         VirtualList.showBalloons=showBalloons;
+         VirtualList.userKeys=userKeys;
+@@ -432,11 +431,11 @@
+             
+             outputStream.writeBoolean(altInput);
+             
+-            outputStream.writeInt(isbottom);
++            outputStream.writeInt(drawTop);
+             
+             outputStream.writeInt(confMessageCount);
+             
+-            outputStream.writeBoolean(newMenu);
++            outputStream.writeBoolean(false);
+             
+             outputStream.writeBoolean(lightState);
+ 			
+Index: C:/bombus/bombusmod/full/src/Client/ActiveContacts.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/ActiveContacts.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/ActiveContacts.java	(revision 569)
+@@ -144,4 +144,21 @@
+         if (display!=null)
+             display.setCurrent(parentView);
+     }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/Client/Roster.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Roster.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/Roster.java	(revision 569)
+@@ -28,6 +28,9 @@
+ package Client;
+ 
+ //#ifndef WMUC
++import Client.Menu.RosterItemActions;
++import Client.Menu.RosterMenu;
++import Client.Menu.RosterToolsMenu;
+ import Conference.BookmarkQuery;
+ import Conference.Bookmarks;
+ import Conference.ConferenceGroup;
+@@ -49,6 +52,7 @@
+ import login.SASLAuth;
+ import midlet.BombusMod;
+ import ui.MainBar;
++import ui.controls.newMenu;
+ import util.strconv;
+ import vcard.VCard;
+ import vcard.vCardForm;
+@@ -67,33 +71,10 @@
+         extends VirtualList
+         implements
+         JabberListener,
+-        CommandListener,
+         Runnable,
+         LoginListener,
+         YesNoAlert.YesNoListener
+ {
+-    
+-    private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
+-    private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
+-    private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
+-//#ifdef MOOD
+-//#     private Command cmdUserMood=new Command(SR.MS_USER_MOOD, Command.SCREEN, 7);
+-//#endif
+-    private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
+-//#ifndef WMUC
+-    private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
+-//#endif
+-//#ifdef ARCHIVE
+-//#     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 10);
+-//#endif
+-    private Command cmdAdd=new Command(SR.MS_ADD_CONTACT, Command.SCREEN, 12);
+-    private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
+-    private Command cmdAccount=new Command(SR.MS_ACCOUNT_, Command.SCREEN, 15);
+-    private Command cmdCleanAllMessages=new Command(SR.MS_CLEAN_ALL_MESSAGES, Command.SCREEN, 50);
+-    private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
+-    private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
+-    private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
+-    
+     private Config cf;
+     private StaticData sd=StaticData.getInstance();
+     
+@@ -123,6 +104,11 @@
+     public Groups groups;
+     
+     public Vector bookmarks;
++
++//#ifdef ELF    
++//#     private static boolean sie_accu=true;
++//#     private static boolean sie_net=true;
++//#endif
+     
+ //#ifdef MOOD
+ //#     public boolean useUserMood=false;
+@@ -172,7 +158,6 @@
+ 
+     private int yesnoAction=0;
+             
+-    
+     /**
+      * Creates a new instance of Roster
+      * Sets up the stream to the server and adds this class as a listener
+@@ -206,8 +191,6 @@
+ 
+ 	updateMainBar();
+         
+-        addMenuCommands();
+-        
+         SplashScreen.getInstance().setExit(display, this);
+ //#ifdef AUTOSTATUS
+ //#         if (cf.autoAwayType!=cf.AWAY_OFF)
+@@ -237,54 +220,7 @@
+ //#          }
+ //#endif
+     }
+-    
+-    public void addMenuCommands(){
+-//#ifdef NEW_MENU
+-//#         if (!cf.newMenu) {
+-//#endif
+-                int activeType=Command.SCREEN;
+-                if (ph.PhoneManufacturer()==ph.NOKIA) activeType=Command.BACK;
+-                if (ph.PhoneManufacturer()==ph.INTENT) activeType=Command.BACK;
+-                if (ph.PhoneManufacturer()==ph.J2ME) activeType=Command.BACK;
+ 
+-                cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
+-
+-                addCommand(cmdStatus);
+-                addCommand(cmdActions);
+-                addCommand(cmdActiveContacts);
+-
+-                addCommand(cmdAlert);
+-                addCommand(cmdAdd);
+-//#ifndef WMUC
+-                addCommand(cmdConference);
+-//#endif
+-                addCommand(cmdTools);
+-//#ifdef ARCHIVE
+-//#                 addCommand(cmdArchive);
+-//#endif
+-                addCommand(cmdInfo);
+-                addCommand(cmdAccount);
+-                
+-                addCommand(cmdCleanAllMessages);
+-
+-                if (ph.PhoneManufacturer()!=ph.NOKIA_9XXX) {
+-                    addCommand(cmdQuit);
+-                }
+-
+-                addOptionCommands();
+-                setCommandListener(this);
+-//#ifdef NEW_MENU
+-//#         }
+-//#endif
+-    }
+-    
+-    void addOptionCommands(){
+-//#ifdef MOOD
+-//#         if (useUserMood)
+-//#             addCommand(cmdUserMood);
+-//#endif
+-        if (cf.allowMinimize) addCommand(cmdMinimize);
+-    }
+     public void setProgress(String pgs,int percent){
+         SplashScreen.getInstance().setProgress(pgs, percent);
+         setRosterMainBar(pgs);
+@@ -1737,10 +1673,9 @@
+                     if (ti>=0) 
+                         c.setStatus(ti);
+                     
+-                    if (c.nick==null) {
++                    if (c.nick==null && c.status<=Presence.PRESENCE_DND) {
+                         JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
+                         if (nick!=null) c.nick=nick.getText();
+-                        
+                     }
+                     
+                     if (cf.showLastAppearedContact && notifyReady(-111) &&
+@@ -2256,8 +2191,8 @@
+        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
+        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
+         else if (keyCode==KEY_NUM6) {
+-            fullMode=VirtualList.isbottom;
+-            cf.isbottom=VirtualList.isbottom=(fullMode+1)%7;
++            fullMode=VirtualList.drawTop;
++            cf.drawTop=VirtualList.drawTop=(fullMode+1)%2;
+             cf.saveToStorage();
+         } else if (keyCode==KEY_NUM7){
+             new RosterToolsMenu(display);
+@@ -2387,46 +2322,6 @@
+         BombusMod.getInstance().notifyDestroyed();
+     }
+    
+-    public void commandAction(Command c, Displayable d){
+-//#ifdef AUTOSTATUS
+-//#         userActivity();
+-//#endif
+-        if (c==cmdQuit) { cmdQuit(); }
+-        else if (c==cmdMinimize) { cmdMinimize();  }
+-        
+-        else if (c==cmdActiveContacts) {
+-            cmdActiveContacts();
+-        }
+-        
+-        else if (c==cmdAccount){ cmdAccount(); }
+-        else if (c==cmdStatus) { cmdStatus(); }
+-        else if (c==cmdAlert) { cmdAlert(); }
+-//#ifdef ARCHIVE
+-//# 	else if (c==cmdArchive) { cmdArchive(); }
+-//#endif
+-        else if (c==cmdInfo) { cmdInfo(); }
+-
+-        else if (c==cmdTools) { cmdTools(); }
+-        
+-        else if (c==cmdCleanAllMessages) { cmdCleanAllMessages(); }    
+-        
+-//#ifdef MOOD
+-//#         else if (c==cmdUserMood) { cmdUserMood(); }
+-//#endif  
+-//#ifndef WMUC
+-        else if (c==cmdConference) { 
+-            cmdConference();
+-        }
+-//#endif
+-        else if (c==cmdActions) {
+-            cmdActions();
+-        }
+-        
+-        else if (c==cmdAdd) {
+-            cmdAdd();
+-        }
+-    }
+-    
+ //menu actions
+     public void cmdQuit() { 
+         if (cf.queryExit) {
+@@ -2882,10 +2777,60 @@
+ 
+         if (isLoggedIn())
+             str.append(theStream.getStreamStats());
++        
++//#ifdef ELF
++//#          str.append(getNetworkLevel());
++//#          str.append(getAccuLevel());
++//#endif
++        
+ //#ifdef POPUPS
+ //#         VirtualList.setWobble(str.toString());
+ //#endif
+         str=null;
+     }
++    
++//#ifdef ELF    
++//#     public static String getAccuLevel() {
++//# 
++//#         if (sie_accu==false) return "";
++//#         try {
++//#             String cap=System.getProperty("MPJC_CAP");
++//#             return (cap==null)? "": "\nAccu: "+cap+"%";
++//#         } catch (Exception e) { sie_accu=false; }
++//# 
++//#         return "";
++//#     }
++//#     
++//#     public static String getNetworkLevel() {
++//# 
++//#         if (sie_net==false) return "";
++//#         try {
++//#             String rx=System.getProperty("MPJCRXLS");
++//#             int rp=rx.indexOf(',');
++//#             return (rp<0)? "": "\nNet: "+rx.substring(0,rp)+"db";
++//#         } catch (Exception e) { sie_net=false; }
++//# 
++//#         return "";
++//#     }
++//#endif
++
++    protected boolean leftCommand() {
++        new RosterMenu(display, getFocusedObject());
++        return true;
++    }
++
++    protected boolean rightCommand() {
++            if (isLoggedIn()) 
++                new RosterItemActions(display, getFocusedObject(), -1);
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Action";
++    }
+ }
+ 
+Index: C:/bombus/bombusmod/full/src/Client/Menu/ContactMessageListMenu.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Menu/ContactMessageListMenu.java	(revision 0)
++++ C:/bombus/bombusmod/full/src/Client/Menu/ContactMessageListMenu.java	(revision 569)
+@@ -0,0 +1,385 @@
++/*
++ * ContactMessageListMenu.java
++ *
++ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * You can also redistribute and/or modify this program under the
++ * terms of the Psi License, specified in the accompanied COPYING
++ * file, as published by the Psi Project; either dated January 1st,
++ * 2005, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++package Client.Menu;
++import Client.ActiveContacts;
++import Client.Config;
++import Client.Contact;
++import Client.MessageEdit;
++import Client.Msg;
++import Client.StaticData;
++import Conference.MucContact;
++//#ifdef HISTORY
++//# import History.HistoryAppend;
++//#endif
++import Messages.MessageItem;
++import Messages.MessageUrl;
++//#ifdef ARCHIVE
++//# import archive.MessageArchive;
++//#endif
++import io.NvStorage;
++import java.io.DataInputStream;
++import java.util.Enumeration;
++import java.util.Vector;
++import javax.microedition.lcdui.Display;
++import javax.microedition.lcdui.Displayable;
++import locale.SR;
++//#if TEMPLATES
++//# import templates.TemplateContainer;
++//# import History.HistoryStorage;
++//# import ui.ColorScheme;
++//#endif
++import ui.Menu;
++import ui.MenuItem;
++import ui.VirtualList;
++import util.ClipBoard;
++
++public class ContactMessageListMenu
++        extends Menu {
++
++    private boolean connected;
++    
++    private ClipBoard clipboard=ClipBoard.getInstance();
++    private StaticData sd=StaticData.getInstance();
++    private Config cf=Config.getInstance();
++//#if LAST_MESSAGES
++//#     private boolean hisStorage=(cf.lastMessages)?true:false;    
++//#endif
++
++    private Contact contact;
++
++    private Msg msg=null;
++    
++    private Displayable parentView;
++    
++    public ContactMessageListMenu(Display display, boolean loggedIn, Contact who, Msg message, int cursor) {
++        super(who.toString());
++        this.msg=message;
++        this.connected=loggedIn;
++        this.contact=who;
++        this.parentView=display.getCurrent();
++
++//#ifndef WMUC     
++//#ifdef ANTISPAM
++//#         if (contact instanceof MucContact && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
++//#             MucContact mc=(MucContact) contact;
++//#             if (mc.roleCode!=MucContact.GROUP_MODERATOR) {
++//#                 switch (mc.getPrivateState()) {
++//#                     case MucContact.PRIVATE_DECLINE:
++//#                         addItem(SR.MS_UNLOCK_PRIVATE, 23);
++//#                         break;
++//#                     case MucContact.PRIVATE_NONE:
++//#                     case MucContact.PRIVATE_REQUEST:
++//#                         addItem(SR.MS_UNLOCK_PRIVATE, 23);
++//#                         addItem(SR.MS_BLOCK_PRIVATE, 22);
++//#                         break;
++//#                     case MucContact.PRIVATE_ACCEPT:
++//#                         addItem(SR.MS_BLOCK_PRIVATE, 22);
++//#                         break;
++//#                 }
++//#                 
++//#             }
++//#         }
++//#endif
++//#endif
++        
++//#if LAST_MESSAGES      
++//#         if (hisStorage 
++//#ifndef WMUC
++//#                 && contact instanceof MucContact==false
++//#endif
++//#                 ) addItem(SR.MS_LAST_MESSAGES, 17);
++//#endif 
++
++        if (contact.msgSuspended!=null) 
++            addItem(SR.MS_RESUME, 0);
++        
++        addItem(SR.MS_NEW_MESSAGE, 3);
++        
++        if (msg!=null)
++            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
++                addItem(SR.MS_SUBSCRIBE, 1);
++                addItem(SR.MS_DECLINE, 2);
++        }
++
++//#ifndef WMUC
++        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
++            addItem(SR.MS_REPLY, 4);
++        }
++//#endif
++        if (msg!=null) {
++            addItem(SR.MS_CLEAR_LIST, 7);
++        }
++        
++        if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
++            addItem(SR.MS_CONTACT, 8);
++
++        if (msg!=null) {
++            if (msg.isHasUrl())
++                addItem(SR.MS_GOTO_URL,9);
++            if (msg.getBody().startsWith("xmlSkin"))
++            addItem(SR.MS_USE_COLOR_SCHEME,10);
++        }
++	addItem(SR.MS_ACTIVE_CONTACTS, 11);
++        if (msg!=null) {
++            addItem(SR.MS_QUOTE, 5);
++//#ifdef ARCHIVE
++//#             addItem(SR.MS_ADD_ARCHIVE, 6);
++//#endif
++//#if TEMPLATES
++//#         addItem(SR.MS_SAVE_TEMPLATE, 14);
++//#endif
++            addItem(SR.MS_COPY, 12);
++//#ifdef FILE_IO
++        addItem(SR.MS_SAVE_CHAT, 16);
++//#endif
++        }
++        if (!clipboard.isEmpty()) {
++            if (msg!=null) {
++                addItem("+ "+SR.MS_COPY, 13);
++            }
++            addItem(SR.MS_SEND_BUFFER, 15);
++        }
++
++        attachDisplay(display);
++    }
++    
++    public void eventOk(){
++        MenuItem me=(MenuItem) getFocusedObject();
++        if (me==null)  return;
++        int index=me.index;
++
++//#ifndef WMUC
++        MucContact mc=null;
++        if (contact instanceof MucContact) {
++            mc=(MucContact) contact;
++        }
++//#endif
++        
++        switch (index) {
++            case 0:
++                (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(parentView);
++                contact.msgSuspended=null;
++                return;
++            case 1:
++                sd.roster.doSubscribe(contact);
++                break;
++            case 2:
++                sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null, false);
++                break;
++            case 3:
++                contact.msgSuspended=null;
++               (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(parentView);
++               return;
++            case 4:
++                Reply();
++                return;
++            case 5:
++                Quote();
++                return;
++            case 6:
++                try {
++                    MessageArchive.store(msg);
++                } catch (Exception e) {/*no messages*/}
++                break;
++            case 7:
++                clearReadedMessageList();
++                destroyView();
++                return;
++            case 8:
++//#ifndef WMUC
++                if (contact instanceof MucContact) {
++                    new RosterItemActions(display, mc, -1);
++                } else {
++//#endif
++                    new RosterItemActions(display, contact, -1);
++//#ifndef WMUC
++                }
++//#endif
++                return;
++            case 9:
++                try {
++                    Vector urls=msg.getUrlList();
++                    new MessageUrl(display, urls);
++                } catch (Exception e) {/*no urls*/}
++                break;
++//#ifdef COLORS 
++//#             case 10:
++//#                 ColorScheme.getInstance().loadSkin(msg.getBody(),2);
++//#                 break;
++//#endif
++            case 11:
++                new ActiveContacts(display, contact);
++                return;
++            case 12:
++                try {
++                    StringBuffer clipstr=new StringBuffer();
++                    clipstr.append((msg.getSubject()==null)?"":msg.getSubject()+"\n");
++                    clipstr.append(msg.quoteString());
++                    clipboard.setClipBoard(clipstr.toString());
++                    clipstr=null;
++                } catch (Exception e) {/*no messages*/}
++                break;
++            case 13:
++                try {
++                    StringBuffer clipstr=new StringBuffer();
++                    clipstr.append(clipboard.getClipBoard());
++                    clipstr.append("\n\n");
++                    clipstr.append((msg.getSubject()==null)?"":msg.getSubject()+"\n");
++                    clipstr.append(msg.quoteString());
++
++                    clipboard.setClipBoard(clipstr.toString());
++                    clipstr=null;
++                } catch (Exception e) {/*no messages*/}
++                break;
++//#if TEMPLATES
++//#             case 14:
++//#                 try {
++//#                     TemplateContainer.store(msg);
++//#                 } catch (Exception e) {/*no messages*/}
++//#                 break;
++//#endif
++            case 15:
++                String from=StaticData.getInstance().account.toString();
++                String body=clipboard.getClipBoard();
++
++                String id=String.valueOf((int) System.currentTimeMillis());
++
++                try {
++                    if (body!=null)
++                        sd.roster.sendMessage(contact, id, body, null, null);
++                    contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"message sended from clipboard("+body.length()+"chars)"));
++                } catch (Exception e) {
++                    contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"message NOT sended"));
++                }
++                break;
++//#if LAST_MESSAGES
++//#             case 17:
++//#                 loadRecentList();
++//#                 break;
++//#endif
++//#ifndef WMUC 
++//#ifdef ANTISPAM
++//#             case 22:
++//#                 mc.setPrivateState(MucContact.PRIVATE_DECLINE);
++//# 
++//#                 if (!contact.tempMsgs.isEmpty())
++//#                     contact.purgeTemps();
++//#                 break;
++//#             case 23:
++//#                 mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
++//# 
++//#                 if (!contact.tempMsgs.isEmpty()) {
++//#                     for (Enumeration tempMsgs=contact.tempMsgs.elements(); tempMsgs.hasMoreElements(); ) 
++//#                     {
++//#                         Msg tmpmsg=(Msg) tempMsgs.nextElement();
++//#                         contact.addMessage(tmpmsg);
++//#                     }
++//#                     contact.purgeTemps();
++//#                 }
++//#                 break;
++//#endif
++//#endif
++        }
++        destroyView();
++    }
++    
++    
++//#if (FILE_IO && HISTORY)
++//#     private void saveMessages() {
++//#         if (cf.msgPath==null) return;
++//# 
++//#          String fromName=StaticData.getInstance().account.getUserName();
++//#          StringBuffer body=new StringBuffer();
++//#          
++//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) 
++//#          {
++//#             Msg message=(Msg) messages.nextElement();
++//#              
++//#             if (message.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=contact.toString();
++//# 
++//#             body.append(message.getDayTime());
++//#             body.append(" <");
++//#             body.append(fromName);
++//#             body.append("> ");
++//#             if (message.subject!=null) {
++//#                 body.append(message.subject);
++//#                 body.append("\r\n");
++//#             }
++//#             body.append(message.getBody());
++//#             body.append("\r\n");
++//#          }
++//# 
++//#          //save
++//#          
++//#            String histRecord="log_"+((contact.nick==null)?contact.getBareJid():contact.nick);
++//#            new HistoryAppend(body, histRecord);
++//#     }
++//#endif
++    
++    
++//#if LAST_MESSAGES 
++//#     private void loadRecentList() {
++//#         try {
++//#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
++//#             while (is.available()>0) {
++//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
++//#             }
++//#             is.close();
++//#         } catch (Exception e) {}
++//#     }
++//#endif
++    
++    private void clearReadedMessageList() {
++//#if LAST_MESSAGES
++//#         if (hisStorage) new HistoryStorage(contact.getBareJid(), "", true);
++//#endif
++        contact.smartPurge(cursor+1);
++       
++        contact.lastUnread=contact.msgs.size()-1;
++    }
++    
++    private void Reply() {
++        try {
++            if (msg.messageType < Msg.MESSAGE_TYPE_PRESENCE/*.MESSAGE_TYPE_HISTORY*/) return;
++            if (msg.messageType == Msg.MESSAGE_TYPE_SUBJ) return;
++
++            (new MessageEdit(display,contact,msg.from+": ")).setParentView(parentView);
++        } catch (Exception e) {/*no messages*/}
++    }
++    
++    private void Quote() {
++        try {
++            String message=new StringBuffer()
++                .append((char)0xbb) // пїЅ
++                .append(" ")
++                .append(msg.quoteString())
++                .append("\n")
++                .toString();
++            (new MessageEdit(display,contact,message)).setParentView(parentView);
++            message=null;
++        } catch (Exception e) {/*no messages*/}
++    }
++}
+Index: C:/bombus/bombusmod/full/src/Client/Menu/RosterMenu.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Menu/RosterMenu.java	(revision 0)
++++ C:/bombus/bombusmod/full/src/Client/Menu/RosterMenu.java	(revision 569)
+@@ -0,0 +1,133 @@
++/*
++ * RosterMenu.java
++ *
++ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * You can also redistribute and/or modify this program under the
++ * terms of the Psi License, specified in the accompanied COPYING
++ * file, as published by the Psi Project; either dated January 1st,
++ * 2005, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++package Client.Menu;
++
++import Client.*;
++import images.RosterIcons;
++import javax.microedition.lcdui.Display;
++import locale.SR;
++import ui.Menu;
++import ui.MenuItem;
++
++
++public class RosterMenu 
++//#ifdef NEW_MENU
++//#         extends Menu
++//#endif
++{
++//#ifdef NEW_MENU
++//#     private Object o;
++//#     
++//#     private Config cf=Config.getInstance();
++//#     private StaticData sd=StaticData.getInstance();
++//#     
++//#     private Roster roster=StaticData.getInstance().roster;
++//# 
++//#     public RosterMenu(Display display, Object o) {
++//#         super(SR.MS_MAIN_MENU);
++//#         this.o=o;
++//#         addItem(SR.MS_ITEM_ACTIONS, 0, 0x0f27);
++//#         addItem(SR.MS_STATUS_MENU, 1, 0x0f16);
++//#         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x0f21);
++//#ifdef MOOD
++//#         if (roster.useUserMood)
++//#             addItem(SR.MS_USER_MOOD, 3, 0x0f16);
++//#endif
++//#         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x0f17);
++//#ifndef WMUC
++//#         addItem(SR.MS_CONFERENCE, 5, RosterIcons.ICON_GROUPCHAT_INDEX);
++//#endif
++//#ifdef ARCHIVE
++//#         addItem(SR.MS_ARCHIVE, 6,0x0f12);
++//#endif
++//#         addItem(SR.MS_ADD_CONTACT, 7, 0x0f02);
++//#         addItem(SR.MS_TOOLS, 8,0x0f24);    
++//#         addItem(SR.MS_ACCOUNT_, 9,0x0f01);
++//#         addItem(SR.MS_ABOUT, 10,0x0f04);
++//#         addItem(SR.MS_CLEAN_ALL_MESSAGES, 11, RosterIcons.ICON_TRASHCAN_INDEX);
++//#         addItem(SR.MS_APP_QUIT, 12,0x0f22);
++//#     
++//# 	attachDisplay(display);
++//#     }
++//#     public void eventOk(){
++//# 	destroyView();
++//# 	MenuItem me=(MenuItem) getFocusedObject();
++//#         
++//# 	if (me==null)  return;
++//#         
++//# 	int index=me.index;
++//# 	switch (index) {
++//# 	    case 0: //actions
++//#                 roster.cmdActions();
++//#                 break;
++//# 	    case 1: //status
++//#                 roster.cmdStatus();
++//# 		break;
++//#             case 2: //active
++//#                 roster.cmdActiveContacts();
++//# 		break;
++//#ifdef MOOD
++//#             case 3: //user mood
++//#                 roster.cmdUserMood();
++//#                 break;
++//#endif
++//#             case 4: //alert
++//#                 roster.cmdAlert();
++//# 		break;
++//#ifndef WMUC
++//#             case 5: //conference
++//#                 roster.cmdConference();
++//#                 break;
++//#endif
++//#ifdef ARCHIVE
++//#             case 6: //archive
++//#                 roster.cmdArchive();
++//# 		break;
++//#endif
++//#             case 7: {//add contact
++//#                 roster.cmdAdd();
++//#                 break;
++//#             }
++//#             case 8: //tools
++//#                 roster.cmdTools();
++//# 		break;
++//#             case 9: //account
++//#                 roster.cmdAccount();
++//# 		break; 
++//#             case 10: //about
++//#                 roster.cmdInfo();
++//# 		break; 
++//#             case 11: //cleanup All Histories
++//#                 roster.cmdCleanAllMessages();
++//# 		break; 
++//# 	    case 12: {//quit
++//#                 roster.cmdQuit();
++//#                 return;
++//# 	    }
++//# 	}
++//#     }
++//#endif
++}
+Index: C:/bombus/bombusmod/full/src/Client/Menu/RosterToolsMenu.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Menu/RosterToolsMenu.java	(revision 0)
++++ C:/bombus/bombusmod/full/src/Client/Menu/RosterToolsMenu.java	(revision 569)
+@@ -0,0 +1,177 @@
++/*
++ * RosterToolsMenu.java
++ *
++ * Created on 11.12.2005, 20:43
++ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * You can also redistribute and/or modify this program under the
++ * terms of the Psi License, specified in the accompanied COPYING
++ * file, as published by the Psi Project; either dated January 1st,
++ * 2005, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ *
++ */
++
++package Client.Menu;
++//#ifdef PRIVACY
++//# import PrivacyLists.PrivacySelect;
++//#endif
++import Client.Config;
++//#ifdef SERVICE_DISCOVERY
++//# import ServiceDiscovery.ServiceDiscovery;
++//#endif
++//#if (FILE_IO && HISTORY)
++//# import History.HistoryConfig;
++//#endif
++import Client.AlertCustomizeForm;
++import Client.ConfigForm;
++import Client.Contact;
++import Client.StaticData;
++import Stats.Stats;
++import javax.microedition.lcdui.Display;
++import locale.SR;
++//#ifdef COLORS
++//# import ui.ColorForm;
++//#endif
++import ui.Menu;
++import ui.MenuItem;
++//#ifdef USER_KEYS
++//# import ui.keys.userKeysList;
++//#endif
++import util.strconv;
++import vcard.VCard;
++import vcard.vCardForm;
++
++public class RosterToolsMenu
++        extends Menu {
++    
++    /** Creates a new instance of RosterToolsMenu */
++    public RosterToolsMenu(Display display) {
++        super(SR.MS_JABBER_TOOLS);
++//#ifdef SERVICE_DISCOVERY
++//#         addItem(SR.MS_DISCO, 0, 0x13);
++//#endif
++//#ifdef PRIVACY
++//#         addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
++//#endif
++        addItem(SR.MS_MY_VCARD, 2, 0x0f16);
++        addItem(SR.MS_OPTIONS, 3, 0x0f03);
++//#if (FILE_IO && HISTORY)
++//#         addItem(SR.MS_HISTORY_OPTIONS, 4, 0x0f01);
++//#endif
++        
++//#if (FILE_IO)
++        addItem(SR.MS_ROOT,5, 0x0f10);
++//#endif
++//#if (FILE_IO && FILE_TRANSFER)
++//#         addItem(SR.MS_FILE_TRANSFERS, 6, 0x0f34);
++//#endif
++//#ifdef COLORS
++//#         addItem(SR.MS_COLOR_TUNE, 7, 0x0f25);
++//#endif
++        addItem(SR.MS_SOUNDS_OPTIONS, 8, 0x0f17);
++//#ifdef POPUPS
++//#         addItem(SR.MS_STATS, 9, 0x0f30);
++//#endif
++//#ifdef CHECK_VERSION
++//#         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
++//#endif
++//#ifdef USER_KEYS
++//#         if (Config.getInstance().userKeys)
++//#             addItem(SR.MS_CUSTOM_KEYS, 11, 0x0f03);
++//#endif
++/*		
++        addItem("ArchiveDump", 10);
++*/        
++        attachDisplay(display);
++    }
++    public void eventOk(){
++        destroyView();
++        boolean connected= ( StaticData.getInstance().roster.isLoggedIn() );
++        MenuItem me=(MenuItem) getFocusedObject();
++        if (me==null)  return;
++        int index=me.index;
++        switch (index) {
++//#ifdef SERVICE_DISCOVERY
++//#             case 0: // Service Discovery
++//#                 if (connected) new ServiceDiscovery(display, null, null);
++//#                 break;
++//#endif
++//#ifdef PRIVACY
++//#             case 1: // Privacy Lists
++//#                 if (connected) new PrivacySelect(display);
++//#                 break;
++//#endif
++            case 2: {
++                if (! connected) break;
++                Contact c=StaticData.getInstance().roster.selfContact();
++                if (c.vcard!=null) {
++                    new vCardForm(display, c.vcard, true);
++                    return;
++                }
++                VCard.request(c.getBareJid(), c.getJid());
++                return;
++            }
++            case 3:
++                new ConfigForm(display);
++                return;
++//#if (FILE_IO && HISTORY)
++//#             case 4: //history
++//#                 new HistoryConfig(display);
++//#                 return;
++//#endif 
++//#if (FILE_IO)
++            case 5:
++                new io.file.browse.Browser(null, display, null, false);
++                return;
++//#endif
++//#if (FILE_IO && FILE_TRANSFER)
++//#             case 6:
++//#                 new io.file.transfer.TransferManager(display);
++//#                 return;
++//#endif
++//#ifdef COLORS
++//#             case 7:
++//#                 new ColorForm(display);
++//#                 return;
++//#endif
++            case 8:
++                new AlertCustomizeForm(display);
++                return;
++//#ifdef POPUPS
++//#             case 9: //traffic stats
++//#                 StaticData.getInstance().roster.showStats();
++//#                 return;
++//#endif
++//#ifdef CHECK_VERSION
++//#             case 10:
++//#                 if (! connected) break;
++//#                 new util.LastVersion(display);
++//#                 return;
++//#endif
++//#ifdef USER_KEYS
++//#             case 11:
++//#                 new userKeysList(display);
++//#                 return;
++//#endif
++/*
++            case 10:
++                new archive.DebugDumpArchive(display);
++                return;
++*/
++        }
++    }
++}
+\ No newline at end of file
+Index: C:/bombus/bombusmod/full/src/Client/Menu/RosterItemActions.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Menu/RosterItemActions.java	(revision 0)
++++ C:/bombus/bombusmod/full/src/Client/Menu/RosterItemActions.java	(revision 569)
+@@ -0,0 +1,662 @@
++/*
++ * RosterItemActions.java
++ *
++ * Created on 11.12.2005, 19:05
++ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * You can also redistribute and/or modify this program under the
++ * terms of the Psi License, specified in the accompanied COPYING
++ * file, as published by the Psi Project; either dated January 1st,
++ * 2005, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ *
++ */
++
++package Client.Menu;
++//#ifndef WMUC
++import Client.*;
++import Conference.ConferenceGroup;
++import Conference.InviteForm;
++import Conference.MucContact;
++import Conference.QueryConfigForm;
++import Conference.affiliation.ConferenceQuickPrivelegeModify;
++//#ifdef REQUEST_VOICE
++//# import Conference.QueryRequestVoice;
++//#endif
++import Conference.affiliation.Affiliations;
++//#endif
++//#ifdef SERVICE_DISCOVERY
++//# import ServiceDiscovery.ServiceDiscovery;
++//#endif
++import com.alsutton.jabber.datablocks.IqLast;
++import com.alsutton.jabber.datablocks.IqPing;
++import com.alsutton.jabber.datablocks.IqTimeReply;
++import com.alsutton.jabber.datablocks.IqVersionReply;
++import com.alsutton.jabber.datablocks.Presence;
++//#if FILE_TRANSFER
++//# import io.file.transfer.TransferSendFile;
++//#endif
++import java.util.Enumeration;
++import javax.microedition.lcdui.Display;
++import locale.SR;
++import ui.ColorScheme;
++import ui.Menu;
++import ui.MenuItem;
++import ui.Time;
++import ui.YesNoAlert;
++import util.ClipBoard;
++import vcard.VCard;
++import vcard.vCardForm;
++
++
++/**
++ *
++ * @author EvgS
++ */
++public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
++    
++    public final static int DELETE_CONTACT=4;
++    public final static int DELETE_GROUP=1004;
++    
++    Object item;
++	
++    Roster roster;
++    
++    private ClipBoard clipboard=ClipBoard.getInstance();
++    private int action;
++    
++    /** Creates a new instance of RosterItemActions */
++    public RosterItemActions(Display display, Object item, int action) {
++	super(item.toString());
++	this.item=item;
++        this.action=action;
++	
++        roster=StaticData.getInstance().roster;
++        
++        if (!roster.isLoggedIn()) return;
++	
++        if (item==null) return;
++        boolean isContact=( item instanceof Contact );
++
++	if (isContact) {
++	    Contact contact=(Contact)item;
++	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
++		addItem(SR.MS_LOGON,5, 0x36);
++		addItem(SR.MS_LOGOFF,6, 0x37);
++		addItem(SR.MS_RESOLVE_NICKNAMES, 7);
++//#if CHANGE_TRANSPORT
++//#                 addItem("Change transport", 915);
++//#endif
++	    }
++	    
++	    addItem(SR.MS_VCARD,1, 0x0f16);
++            addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
++//#ifdef SERVICE_DISCOVERY
++//# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
++//#endif
++
++//#ifdef COLORS
++//# 	    addItem("Send current color scheme",912, 0x0f22);
++//#endif
++	    addItem("Send buffer",914, 0x0f22);
++            
++            if (contact.getGroupType()!=Groups.TYPE_SELF) {
++                addItem("Copy JID",892, 0x0f22);
++                if (contact.getJid()==contact.getBareJid()) {
++                    addItem(SR.MS_SEEN,890);    
++                } else {
++                    addItem(SR.getPresence("online"),890); 
++                }
++            }
++            if (contact.getStatus()<Presence.PRESENCE_OFFLINE) {
++                addItem(SR.MS_IDLE,889);
++                addItem("Ping",893);
++            }
++                //if (contact.status>4) //not only for offline&invisible status
++                //    addItem(SR.MS_ONLINE,894); 
++            //}
++            
++                            
++            //if (from.indexOf("/")>-1) lastType="idle";
++	    
++	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
++		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
++		addItem(SR.MS_EDIT,2, 0x0f13);
++		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
++		addItem(SR.MS_MOVE,1003);
++		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
++		addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
++	    }
++            
++	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return;
++//#ifndef WMUC
++            boolean onlineConferences=false;
++            for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
++                try {
++                    MucContact mcI=(MucContact)cI.nextElement();
++                    if (mcI.origin==Contact.ORIGIN_GROUPCHAT && mcI.status==Presence.PRESENCE_ONLINE)
++                        onlineConferences=true;
++                } catch (Exception e) {}
++            }
++            
++            if (contact instanceof MucContact) {
++                MucContact selfContact= ((ConferenceGroup) contact.getGroup()).getSelfContact();
++                MucContact mc=(MucContact) contact;
++                
++                //invite
++                if (mc.realJid!=null) {
++                    if (onlineConferences) addItem(SR.MS_INVITE,40, 0x0f20);
++                }
++                //invite
++                
++                int myAffiliation=selfContact.affiliationCode;
++                if (myAffiliation==MucContact.AFFILIATION_OWNER) myAffiliation++; // allow owner to change owner's affiliation
++
++            
++                addItem(SR.MS_TIME,891); 
++                
++                if (selfContact.roleCode==MucContact.ROLE_MODERATOR) {
++                    addItem(SR.MS_KICK,8, 0x0f06);
++                    
++                    if (myAffiliation>=MucContact.AFFILIATION_ADMIN && mc.affiliationCode<myAffiliation)
++                        addItem(SR.MS_BAN,9, 0x0f06);
++                    
++                    if (mc.affiliationCode<MucContact.AFFILIATION_ADMIN) 
++                        /* 5.1.1 *** A moderator MUST NOT be able to revoke voice privileges from an admin or owner. */ 
++                    if (mc.roleCode==MucContact.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31);
++                    else addItem(SR.MS_REVOKE_VOICE, 32);
++                }
++//#ifdef REQUEST_VOICE
++//# 		if (selfContact.roleCode==MucContact.ROLE_VISITOR) {
++//#                     //System.out.println("im visitor");
++//#                     if (mc.roleCode==MucContact.ROLE_MODERATOR) {
++//#                         //System.out.println(mc.getJid()+" is a moderator");
++//#                         addItem(SR.MS_REQUEST_PARTICIPANT_ROLE,39);
++//#                     }
++//#  		}
++//#endif
++                if (myAffiliation>=MucContact.AFFILIATION_ADMIN) {
++                    // admin use cases
++                    
++                    //roles
++                    if (mc.affiliationCode<MucContact.AFFILIATION_ADMIN) 
++                        /* 5.2.1 ** An admin or owner MUST NOT be able to revoke moderation privileges from another admin or owner. */ 
++                    if (mc.roleCode==MucContact.ROLE_MODERATOR) addItem(SR.MS_REVOKE_MODERATOR,31);
++                    else addItem(SR.MS_GRANT_MODERATOR,33);
++                    
++                    //affiliations
++                    if (mc.affiliationCode<myAffiliation) {
++                        if (mc.affiliationCode!=MucContact.AFFILIATION_NONE) addItem(SR.MS_UNAFFILIATE,36);
++                        /* 5.2.2 */
++                        if (mc.affiliationCode!=MucContact.AFFILIATION_MEMBER) addItem(SR.MS_GRANT_MEMBERSHIP,35);
++                    }
++                    
++                    
++               //m.addItem(new MenuItem("Set Affiliation",15));
++                }
++                if (myAffiliation>=MucContact.AFFILIATION_OWNER) {
++                    // owner use cases
++                    //if (mc.affiliationCode<=selfContact.affiliationCode) /* 5.2.2 */
++                    if (mc.affiliationCode!=MucContact.AFFILIATION_ADMIN) addItem(SR.MS_GRANT_ADMIN,37);
++                    //else addItem(SR.MS_REVOKE_ADMIN,35);
++                    
++                    if (mc.affiliationCode!=MucContact.AFFILIATION_OWNER) addItem(SR.MS_GRANT_OWNERSHIP,38);
++                    //else addItem(SR.MS_REVOKE_OWNERSHIP,37);
++                }
++                if (mc.realJid!=null && mc.getStatus()<Presence.PRESENCE_OFFLINE) {
++                    
++                }
++            } else if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
++                // usual contact - invite item check
++                 if (onlineConferences) addItem(SR.MS_INVITE,40);
++            }
++//#endif
++//#if (FILE_IO && FILE_TRANSFER)
++//#             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
++//#                 if (contact!=StaticData.getInstance().roster.selfContact())
++//#                     addItem(SR.MS_SEND_FILE, 50, 0x0f34);
++//#             
++//#endif
++        } else {
++	    Group group=(Group)item;
++	    if (group.index==Groups.TYPE_SEARCH_RESULT)
++		addItem(SR.MS_DISCARD,21);
++//#ifndef WMUC
++	    if (group instanceof ConferenceGroup) {
++		MucContact self=((ConferenceGroup)group).getSelfContact();
++                
++		addItem(SR.MS_LEAVE_ROOM,22, 0x0f22);
++                
++                if (self.status>=Presence.PRESENCE_OFFLINE) {// offline or error
++		    addItem(SR.MS_REENTER,23, 0x0f21);
++                } else {
++                    addItem(SR.MS_DIRECT_PRESENCE,46);
++                    addItem(SR.MS_CHANGE_NICKNAME,23, 0x0f21);
++		    if (self.affiliationCode>=MucContact.AFFILIATION_OWNER) {
++			addItem(SR.MS_CONFIG_ROOM,10, 0x0f03);
++                    }
++		    if (self.affiliationCode>=MucContact.AFFILIATION_ADMIN) {
++			addItem(SR.MS_OWNERS,11);
++			addItem(SR.MS_ADMINS,12);
++			addItem(SR.MS_MEMBERS,13);
++			addItem(SR.MS_BANNED,14);
++ 		    }
++ 		}
++	    } else {
++//#endif
++                if (    group.index!=Groups.TYPE_IGNORE
++                        && group.index!=Groups.TYPE_NOT_IN_LIST
++                        && group.index!=Groups.TYPE_SEARCH_RESULT
++                        && group.index!=Groups.TYPE_SELF
++                        && group.index!=Groups.TYPE_TRANSP)
++                {
++                    addItem(SR.MS_RENAME,1001);
++                    addItem(SR.MS_DELETE, DELETE_GROUP);
++                }
++//#ifndef WMUC
++            }
++//#endif
++ 	}
++	if (getItemCount()>0) {
++            if (action<0) 
++                attachDisplay(display);
++            else try {
++                this.display=display; // to invoke dialog Y/N
++                doAction(action);
++            } catch (Exception e) { 
++                //e.printStackTrace();
++            }
++        }
++     }
++     
++     public void eventOk(){
++         try {
++             //final Roster roster=StaticData.getInstance().roster;
++             MenuItem me=(MenuItem) getFocusedObject();
++            destroyView();
++            if (me==null) return;
++            int index=action=me.index;
++            doAction(index);
++            //destroyView();
++        } catch (Exception e) { 
++            //e.printStackTrace();  
++        }
++    }
++
++    private void doAction(final int index) {
++        boolean isContact=( item instanceof Contact );
++        Contact c = null;
++        Group g = null;
++        if (isContact) c=(Contact)item; else g=(Group) item;
++        
++        String to=null;
++        if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
++
++            switch (index) {
++                case 0: // info
++                    roster.setQuerySign(true);
++                    roster.theStream.send(new IqVersionReply(to));
++                    break;
++                case 1: // vCard
++                    if (c.vcard!=null) {
++                        new vCardForm(display, c.vcard, c.getGroupType()==Groups.TYPE_SELF);
++                        return;
++                    }
++                    VCard.request(c.getBareJid(), c.getJid());
++                    break;
++                    
++                case 2:
++                    (new ContactEdit(display, c )).parentView=roster;
++                    return; //break;
++                    
++                case 3: //subscription
++                    new SubscriptionEdit(display, c);
++                    return; //break;
++                case DELETE_CONTACT:
++                    new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
++                    return;
++                case 6: // logoff
++                {
++                    roster.blockNotify(-111,10000); //block sounds to 10 sec
++                    //querysign=true; displayStatus();
++                    Presence presence = new Presence(
++                            Presence.PRESENCE_OFFLINE, -1, "", null);
++                    presence.setTo(c.getJid());
++                    roster.theStream.send( presence );
++                    break;
++                }
++                case 5: // logon
++                {
++                    roster.blockNotify(-111,10000); //block sounds to 10 sec
++                    //querysign=true; displayStatus();
++                    Presence presence = new Presence(roster.myStatus, 0, "", null);
++                    presence.setTo(c.getJid());
++                    roster.theStream.send( presence );
++                    break;
++                }
++                case 7: // Nick resolver
++                {
++                    roster.resolveNicknames(c.transport);
++                    break;
++                }
++//#if CHANGE_TRANSPORT
++//#                 case 915: // change transport
++//#                 {
++//#                     new ChangeTransport(display, c.transport);
++//#                     return;
++//#                 }
++//#endif
++                case 21:
++                {
++                    roster.cleanupSearch();
++                    break;
++                }
++//#ifdef SERVICE_DISCOVERY
++//#                 case 30:
++//#                 {
++//#                     new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
++//#                     return;
++//#                 }
++//#endif
++                case 1003: 
++                {
++                    new RenameGroup(display, null, c);
++                    return;
++                }
++                case 889: //idle
++                {
++                    roster.setQuerySign(true);
++                    roster.theStream.send(new IqLast(c.getJid()));
++                    break;
++                }
++                case 890: //seen & online
++                {
++                    roster.setQuerySign(true);
++                    roster.theStream.send(new IqLast(c.getBareJid()));
++                    break;
++                }
++                
++                case 891: //time
++                {
++                    roster.setQuerySign(true);
++                    roster.theStream.send(new IqTimeReply(c.getBareJid()));
++                    break;
++                }
++                
++                case 892: //Copy JID
++                {
++//#ifndef WMUC
++                    if (!(c instanceof MucContact)) {
++                        //System.out.println("1 c "+c.bareJid);
++//#endif
++                        try {
++                            if (c.bareJid!=null)
++                                clipboard.setClipBoard(c.bareJid);
++                        } catch (Exception e) {/*no messages*/}
++//#ifndef WMUC
++                    }
++//#endif
++                    break;
++                }
++                case 893: //ping
++                {
++                    try {
++                        roster.setQuerySign(true);
++                        c.setPing();
++                        roster.theStream.send(new IqPing(c.getJid(), "_ping"));
++                    } catch (Exception e) {/*no messages*/}
++                    break;
++                }
++                //case 894: //seen & online when online
++                //{
++                //    roster.setQuerySign(true);
++                //    roster.theStream.send(new IqLast(c.getJid()));
++                //    break;
++                //}
++//#ifdef COLORS
++//#                 case 912: //send color scheme
++//#                 {
++//#                     String from=StaticData.getInstance().account.toString();
++//#                     String body=ColorScheme.getSkin();
++//#                     String subj="";
++//#                     
++//#                     String id=String.valueOf((int) System.currentTimeMillis());
++//#                     
++//#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
++//#                     msg.id=id;
++//#                     
++//#                     try {
++//#                         roster.sendMessage(c, id, body, subj, null);
++//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
++//#                     } catch (Exception e) {
++//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
++//#                         //e.printStackTrace();
++//#                     }
++//#                     break;
++//#                 }
++//#endif               
++                case 914: //send message from buffer
++                {
++                    String body=clipboard.getClipBoard();
++                    if (body.length()==0)
++                        return;
++                    
++                    String from=StaticData.getInstance().account.toString();
++                    String subj="";
++                    
++                    String id=String.valueOf((int) System.currentTimeMillis());
++                    
++                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
++                    msg.id=id;
++                    try {
++                        roster.sendMessage(c, id, body, subj, null);
++                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
++                    } catch (Exception e) {
++                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
++                        //e.printStackTrace();
++                    }
++                    break;
++                }
++//#ifndef WMUC
++                case 40: //invite
++                {
++                    //new InviteForm(c, display);
++                    if (c.jid!=null) {
++                        new InviteForm(c, display);                        
++                    } else {
++                        MucContact mcJ=(MucContact) c;
++
++                        if (mcJ.realJid!=null) {
++                            boolean onlineConferences=false;
++                            for (Enumeration cJ=StaticData.getInstance().roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
++                                try {
++                                    MucContact mcN=(MucContact)cJ.nextElement();
++                                    if (mcN.origin==Contact.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)
++                                        onlineConferences=true;
++                                } catch (Exception e) {}
++                            }
++                            if (onlineConferences) new InviteForm(mcJ, display);
++                        }
++                    }
++                    return;
++                }
++//#endif
++                case 45: //direct presence
++                {
++                    new StatusSelect(display, c);
++                    return;
++                }
++                
++//#if (FILE_IO && FILE_TRANSFER)
++//#                 case 50: //send file
++//#                 {
++//#                     new TransferSendFile(display, c.getJid());
++//#                     return;
++//#                 }   
++//#endif
++            }
++//#ifndef WMUC
++            if (c instanceof MucContact || g instanceof ConferenceGroup) {
++                MucContact mc=(MucContact) c;
++                
++                switch (index) { // muc contact actions
++                    case 10: // room config
++                    {
++                        String roomJid=((ConferenceGroup)g).getConference().getJid();
++                        new QueryConfigForm(display, roomJid);
++                        break;
++                    }
++                    case 11: // owners
++                    case 12: // admins
++                    case 13: // members
++
++                    case 14: // outcasts
++                    {
++                        String roomJid=((ConferenceGroup)g).getConference().getJid();
++                        new Affiliations(display, roomJid, (short)(index-10));
++                        return;
++                    }
++
++                    case 22:
++                    {
++                        roster.leaveRoom( g );
++                        break;
++                    }
++                    case 23:
++                    {
++                        roster.reEnterRoom( g );
++                        return; //break;
++                    }
++                    case 46: //conference presence
++                    {
++                        new StatusSelect(display, ((ConferenceGroup)g).getConference());
++                        return;
++                    }
++                    
++                     case 8: // kick
++                     {
++                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
++                        String myNick=mucGrp.getSelfContact().getName();
++                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
++                        return;
++                     }
++                     case 9: // ban
++                     {
++                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
++                        String myNick=mucGrp.getSelfContact().getName();
++                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
++                        return;
++                     }
++                     case 31: //grant voice and revoke moderator
++                     {
++                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null);
++                        return;
++                     }
++                     case 32: //revoke voice
++                     {
++                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.VISITOR,null);
++                        return;
++                     }
++                     
++                     case 33: //grant moderator
++                     {
++                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR,null);
++                        return;
++                     }
++                    
++                case 35: //grant membership and revoke admin
++                 {
++                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,null);
++                     return;
++                 }
++                 
++                case 36: //revoke membership
++                 {
++                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,null);
++                     return;
++                 }
++                 
++                case 37: //grant admin and revoke owner
++                 {
++                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,null);
++                     return;
++                 }
++                 
++                case 38: //grant owner
++                 {
++                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
++                     return;
++                 }
++//#ifdef REQUEST_VOICE		 
++//#                 case 39: //request voice
++//#                  {
++//#                     new QueryRequestVoice(display, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
++//#                     return;
++//#                  }
++//#endif
++                case 892: //Copy JID
++                {
++                    try {
++                        if (mc.realJid!=null)
++                            clipboard.setClipBoard(mc.realJid);
++                    } catch (Exception e) {}
++                    break;
++                 }
++             }
++        } else {
++//#endif
++            Group sg=(Group)item;
++
++            if (       sg.index!=Groups.TYPE_IGNORE 
++                    && sg.index!=Groups.TYPE_NOT_IN_LIST
++                    && sg.index!=Groups.TYPE_SEARCH_RESULT
++                    && sg.index!=Groups.TYPE_SELF
++                    && sg.index!=Groups.TYPE_TRANSP)
++            {
++                switch (index) {
++                    case 1001: //rename
++                    {
++                        new RenameGroup(display, sg, null);
++                        return;
++                    }
++                    case DELETE_GROUP: //delete
++                    {
++                        new YesNoAlert(display, SR.MS_DELETE_ASK, sg.getName(), this);
++                        return;
++                    }    
++                }
++            }
++//#ifndef WMUC
++         }
++//#endif
++     }
++    
++    public void ActionConfirmed() {
++        switch (action) {
++            case DELETE_CONTACT:
++            {
++                roster.deleteContact((Contact)item);
++                break;
++            }
++            case DELETE_GROUP:
++            {
++                roster.deleteGroup((Group)item);
++                break;
++            }
++        }
++        display.setCurrent(roster);
++    }
++}
+Index: C:/bombus/bombusmod/full/src/Client/Msg.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/Msg.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/Msg.java	(revision 569)
+@@ -29,6 +29,7 @@
+ import java.io.DataInputStream;
+ import java.io.DataOutputStream;
+ import java.io.IOException;
++import java.util.Vector;
+ import ui.ColorScheme;
+ import ui.Time;
+ 
+@@ -154,4 +155,45 @@
+         }
+         return out.toString();
+     };
++    
++    public Vector getUrlList() { 
++        Vector urlList=new Vector();
++        addUrls(body, "http://", urlList);
++        addUrls(body, "https://", urlList);
++        addUrls(body, "tel://", urlList);
++        addUrls(body, "native:", urlList);
++        return (urlList.size()==0)? null: urlList;
++    }
++    
++    private void addUrls(String text, String addString, Vector urlList) {
++        int pos=0;
++        int len=text.length();
++        while (pos<len) {
++            int head=text.indexOf(addString, pos);
++            if (head>=0) {
++                pos=head;
++                
++                while (pos<len) {
++                    char c=text.charAt(pos);
++                    if (c==' ' || c==0x09 || c==0x0d || c==0x0a || c==0xa0 || c==')' )  
++                        break;
++                    pos++;
++                }
++                urlList.addElement(text.substring(head, pos));
++                
++            } else break;
++        }
++    }
++    
++    public boolean isHasUrl() { 
++        if (body.indexOf("http://")>-1)
++            return true;
++        if (body.indexOf("https://")>-1)
++            return true;
++        if (body.indexOf("tel://")>-1)
++            return true;
++        if (body.indexOf("native:")>-1)
++            return true;
++        return false; 
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/Client/AlertProfile.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/AlertProfile.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/AlertProfile.java	(revision 569)
+@@ -124,4 +124,21 @@
+     }
+     
+     public int getItemCount(){   return ALERT_COUNT; }
++
++    protected boolean leftCommand() {
++        return false;
++    }
++
++    protected boolean rightCommand() {
++            destroyView();
++            return true;
++    }
++
++    protected String getLeftCommand() {
++        return "Menu";
++    }
++
++    protected String getRightCommand() {
++        return "Back";
++    }
+ }
+Index: C:/bombus/bombusmod/full/src/Client/ConfigForm.java
+===================================================================
+--- C:/bombus/bombusmod/full/src/Client/ConfigForm.java	(revision 568)
++++ C:/bombus/bombusmod/full/src/Client/ConfigForm.java	(revision 569)
+@@ -219,9 +219,6 @@
+ //#ifdef USER_KEYS
+ //#         application.append(SR.MS_CUSTOM_KEYS,null);
+ //#endif
+-//#ifdef NEW_MENU
+-//#         application.append(SR.MS_NEW_MENU,null);
+-//#endif
+         application.append(SR.MS_FLASHLIGHT,null);
+ 	application.append(SR.MS_FLASHBACKLIGHT,null);
+ 
+@@ -233,9 +230,6 @@
+ //#ifdef USER_KEYS
+ //#             cf.userKeys,
+ //#endif
+-//#ifdef NEW_MENU
+-//#             cf.newMenu,
+-//#endif
+             cf.lightState,
+             cf.blFlash,
+             cf.popupFromMinimized
+@@ -372,7 +366,7 @@
+     
+     public void commandAction(Command c, Displayable d) {
+         if (c==cmdOk) {
+-            VirtualList.isbottom=cf.isbottom;
++            VirtualList.drawTop=cf.drawTop;
+             
+             roster.getSelectedFlags(ra);
+             message.getSelectedFlags(mv);
+@@ -432,9 +426,6 @@
+ //#ifdef USER_KEYS
+ //#             VirtualList.userKeys=cf.userKeys=ap[apctr++];
+ //#endif
+-//#ifdef NEW_MENU
+-//#             cf.newMenu=ap[apctr++];
+-//#endif
+             cf.lightState=ap[apctr++];
+             cf.blFlash=ap[apctr++];
+             if (cf.allowMinimize) {
