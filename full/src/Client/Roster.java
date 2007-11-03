@@ -1493,7 +1493,7 @@ public class Roster
                     }
                 }
                 
-                boolean compose=false;
+                //boolean compose=false;
 
                 if (type.equals("chat")) {
                     if (message.findNamespace("request", "urn:xmpp:receipts")!=null) {
@@ -1737,7 +1737,7 @@ public class Roster
                     if (ti>=0) 
                         c.setStatus(ti);
                     
-                    if (c.nick==null) {
+                    if (c.nick==null && c.status<=Presence.PRESENCE_DND) {
                         JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
                         if (nick!=null) c.nick=nick.getText();
                         

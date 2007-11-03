@@ -149,7 +149,7 @@ public class XMLParser
             emptyTag = false,
             hasMoreData = true;
     String tagName = null;
-    Hashtable attributes = null;
+    Vector attributes = null;
 
     do
     {
@@ -180,7 +180,7 @@ public class XMLParser
       }
 
       if( attributes == null )
-        attributes = new Hashtable();
+        attributes = new Vector();
 
       int stringLength = data.length();
       int equalitySign = data.indexOf( '=' );
@@ -194,9 +194,9 @@ public class XMLParser
 
       String attributeName = data.substring(0, equalitySign);
       int valueStart = equalitySign+1;
-      if( valueStart >= data.length() )
-      {
-        attributes.put( attributeName, "" );
+      if( valueStart >= data.length() ) {
+        attributes.addElement(attributeName);
+        attributes.addElement("");
         continue;
       }
 
@@ -210,7 +210,8 @@ public class XMLParser
       //if( substringEnd > substringStart && endChar  == '\"' || endChar  == '\'' )
       //  substringEnd--;
 
-      attributes.put( attributeName, data.substring( valueStart, stringLength ) );
+      attributes.addElement(attributeName);
+      attributes.addElement(data.substring( valueStart, stringLength ));
     } while( hasMoreData );
 
     if( tagName.startsWith( "?") )
@@ -219,12 +220,12 @@ public class XMLParser
     //tagName = tagName;//.toLowerCase();
     
     boolean binflag=false;
-    if( startTag )
-    {
-      if( rootTag == null )
-        rootTag = tagName;
-      binflag=eventHandler.tagStarted( tagName, attributes);
-    }
+    if( startTag ) {
+       if( rootTag == null )
+          rootTag = tagName;
+      if (attributes!=null) attributes.trimToSize();
+       binflag=eventHandler.tagStarted( tagName, attributes);
+     }
 
     if( emptyTag || !startTag )
     {

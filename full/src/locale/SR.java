@@ -582,9 +582,9 @@ public class SR {
 //#if LOCALE_DEBUG
         if (value==null) {
             if (!lang.isEmpty()) {
-                //System.out.print("Can't find local string for <");
+                System.out.print("Can't find local string for <");
                 System.out.println(key);
-                //System.out.println('>');
+                System.out.println('>');
             }
         }
 //#endif
