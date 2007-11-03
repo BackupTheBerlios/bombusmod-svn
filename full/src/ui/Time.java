@@ -57,13 +57,28 @@ public class Time {
     
     public static String timeLocalString(long date){
         Calendar c=calDate(date);
-        return lz2(c.get(Calendar.DAY_OF_WEEK))+' '+lz2(c.get(Calendar.HOUR_OF_DAY))+':'+lz2(c.get(Calendar.MINUTE));
+        return lz2(c.get(Calendar.HOUR_OF_DAY))+':'+lz2(c.get(Calendar.MINUTE));
      }
     
     private static Calendar calDate(long date){
         c.setTime(new Date(date+utcToLocalOffsetMillis));
         return c;
     }
+    
+    public static String weekDayLocalString(long date){
+        int weekDay=calDate(date).get(Calendar.DAY_OF_WEEK);
+        String locWeekDay="";
+        switch (weekDay) {
+            case 1: locWeekDay=SR.MS_SUN; break;
+            case 2: locWeekDay=SR.MS_MON; break;
+            case 3: locWeekDay=SR.MS_TUE; break;
+            case 4: locWeekDay=SR.MS_WED; break;
+            case 5: locWeekDay=SR.MS_THU; break;
+            case 6: locWeekDay=SR.MS_FRI; break;
+            case 7: locWeekDay=SR.MS_SAT; break;            
+        }
+        return locWeekDay;
+     }
     
     public static String dayLocalString(long date){
         Calendar c=calDate(date);
@@ -112,9 +127,13 @@ public class Time {
         return dayLocalString(utcDate)+timeLocalString(utcDate);
      }
      
+     public static String localWeekDay(){
+        long utcDate=utcTimeMillis();
+        return weekDayLocalString(utcDate);
+     }
+     
      public static String localTime(){
         long utcDate=utcTimeMillis();
-         //Calendar c=calDate(date);
         return timeLocalString(utcDate);
      }
      

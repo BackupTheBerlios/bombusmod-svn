@@ -503,7 +503,9 @@ public abstract class VirtualList
         g.setColor(getMainBarRGB());
         g.setFont(bottomFont);
         
-        StringBuffer s=new StringBuffer();    
+        StringBuffer s=new StringBuffer();
+        s.append(Time.localWeekDay());
+        s.append(" ");
         s.append(Time.localTime());
         s.append(" ");
         s.append(strconv.getSizeString(stats.getGPRS()));

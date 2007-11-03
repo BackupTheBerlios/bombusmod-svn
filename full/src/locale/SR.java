@@ -569,6 +569,14 @@ public class SR {
 
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
+
+    public static String MS_SUN = loadString( "Sun" );
+    public static String MS_MON = loadString( "Mon" );
+    public static String MS_TUE = loadString( "Tue" );
+    public static String MS_WED = loadString( "Wed" );
+    public static String MS_THU = loadString( "Thu" );
+    public static String MS_FRI = loadString( "Fri" );
+    public static String MS_SAT = loadString( "Sat" );
     
     private SR() { }
     
