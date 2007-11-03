@@ -84,13 +84,13 @@ public class TransferAcceptFile
             }
         }
         
-        f=new Form("Accept file");
-        fileName=new TextFieldEx("File", name, FileIO.MAX_NAME_LEN, TextField.ANY);
+        f=new Form(SR.MS_ACCEPT_FILE);
+        fileName=new TextField(SR.MS_FILE, name, FileIO.MAX_NAME_LEN, TextField.ANY);
         path=new TextFieldCombo(SR.MS_SAVE_TO, t.filePath, 200, TextField.ANY, "recvPath", display);
-        
+         
         f.append(new StringItem(SR.MS_SENDER, t.jid));
         f.append(fileName);
-        f.append(new StringItem(SR.MS_SIZE, String.valueOf(t.fileSize)));
+        f.append(new StringItem(SR.MS_FILE_SIZE, String.valueOf(t.fileSize)));
         f.append(path);
         f.append(new StringItem(SR.MS_DESCRIPTION, t.description));
         

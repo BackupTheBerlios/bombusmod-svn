@@ -55,7 +55,7 @@ public class RosterToolsMenu
     
     /** Creates a new instance of RosterToolsMenu */
     public RosterToolsMenu(Display display) {
-        super(SR.MS_JABBER_TOOLS);
+        super(SR.MS_TOOLS);
 //#ifdef SERVICE_DISCOVERY
 //#         addItem(SR.MS_DISCO, 0, 0x13);
 //#endif

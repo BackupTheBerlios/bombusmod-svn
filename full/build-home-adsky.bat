@@ -1,3 +1,3 @@
 rem svn up
-f:\devel\netbeans-5.5\ide7\ant\bin\ant.bat rebuild-adsky
+e:\devel\netbeans\ide7\ant\bin\ant.bat rebuild-adsky
 pause

@@ -1454,20 +1454,26 @@ public class Roster
                 try {
                     //TODO: invitations
                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
-                    String password=xmlns.getChildBlockText("password");
+                    JabberDataBlock error=xmlns.getChildBlock("error");
+                    JabberDataBlock invite=message.getChildBlock("invite");
+                    // FS#657
+                    if (error!=null && invite!=null) {
+                        ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
+                        body=XmppError.decodeStanzaError(error).toString(); /*"error: invites are forbidden"*/
+                    };
                     
-                    JabberDataBlock invite=xmlns.getChildBlock("invite");
-                    String inviteFrom=invite.getAttribute("from");
-                    String inviteReason=invite.getChildBlockText("reason");
-                            
-                    String room=from+'/'+sd.account.getNickName();
-
-                    ConferenceGroup invConf=initMuc(room, password);
-                    if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
-                        invConf.getConference().status=Presence.PRESENCE_OFFLINE;
-                    
-                    body=(inviteFrom==null)?"":inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
-                    
+                    if (error==null && invite!=null) {
+                        String inviteFrom=invite.getAttribute("from");
+                        String inviteReason=invite.getChildBlockText("reason");
+                        String room=from+'/'+sd.account.getNickName();
+                        String password=xmlns.getChildBlockText("password");
+                        ConferenceGroup invConf=initMuc(room, password);
+                        
+                        if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
+                            invConf.getConference().status=Presence.PRESENCE_OFFLINE;
+                           
+                        body=inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
+                    }
                 } catch (Exception e) {}
 //#endif
                 Contact c=getContact(from, cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES);

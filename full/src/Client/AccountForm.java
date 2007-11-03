@@ -128,7 +128,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 
         proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   64, TextField.ANY); f.append(proxyHost);
 
-	proxyPort = new NumberField(SR.PROXY_PORT, account.getProxyPort(), 0, 65535);	f.append(proxyPort);
+	proxyPort = new NumberField(SR.MS_PROXY_PORT, account.getProxyPort(), 0, 65535); f.append(proxyPort);
 /*
         compressionbox = new NumberField(SR.MS_COMPRESSION_LEVEL, account.getCompressionLevel(), 1, 8);	f.append(compressionbox);
 */

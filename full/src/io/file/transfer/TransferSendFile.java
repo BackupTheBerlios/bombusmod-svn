@@ -69,16 +69,16 @@ public class TransferSendFile
         parentView=display.getCurrent();
         
         f=new Form(SR.MS_SEND_FILE);
-        f.append(new StringItem(SR.MS_TO+": ", recipientJid));
-        
+        f.append(new StringItem(SR.MS_SEND_FILE_TO, recipientJid));
+         
         fileName=new TextFieldCombo(SR.MS_FILE, null, 256, TextField.ANY | TextField.UNEDITABLE, "sendfile", display );
-        f.append(fileName);
-        
-        /*size=new TextField("size", "", 8, TextField.ANY | TextField.UNEDITABLE );
-        f.append(size);*/
-        
-        description=new TextFieldEx(SR.MS_DESCRIPTION, "", 128, TextField.ANY );
-        f.append(description);
+         f.append(fileName);
+         
+         /*size=new TextField("size", "", 8, TextField.ANY | TextField.UNEDITABLE );
+         f.append(size);*/
+         
+        description=new TextField(SR.MS_DESCRIPTION, "", 128, TextField.ANY );
+         f.append(description);
 
         
         f.addCommand(cmdOk);

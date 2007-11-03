@@ -112,7 +112,7 @@ public class Config {
     public int font3=0;
 
     public String lang;  //not detected (en)
-    public boolean capsState=true;
+    public boolean capsState=false;
     public int textWrap=0;
     public boolean autoSubscribe=true;
 	
@@ -154,7 +154,7 @@ public class Config {
     
     public boolean collapsedGroups=true;
     
-    public int messageLimit=300;
+    public int messageLimit=512;
     
     public boolean eventDelivery=false;
     

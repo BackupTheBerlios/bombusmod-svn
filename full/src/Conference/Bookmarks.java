@@ -79,11 +79,14 @@ public class Bookmarks
             new ConferenceForm(display);
             return;
         }
-        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS));
+        //setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS));
+        //setTitleItem(new Title(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));
         
         this.toAdd=toAdd;
 
         if (toAdd!=null) addBookmark();
+        
+        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));//for title updating after "add bookmark"
         
         addCommand(cmdCancel);
         addCommand(cmdJoin);
@@ -174,6 +177,7 @@ public class Bookmarks
 
         else if (c==cmdDel) {
             deleteBookmark();
+            setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));
             return;
         }
 //#ifdef SERVICE_DISCOVERY
