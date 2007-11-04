@@ -95,7 +95,7 @@ public class ZInputStream extends FilterInputStream {
         int avail=in.available();
         
         while (avail==0) {
-            try { Thread.sleep(100); } catch (Exception e) {};
+            try { Thread.sleep(100); } catch (Exception e) { };
             avail=in.available();
         }
 
@@ -110,14 +110,17 @@ public class ZInputStream extends FilterInputStream {
 	err=z.deflate(flush);
       else
 	err=z.inflate(flush);
-      if(nomoreinput&&(err==JZlib.Z_BUF_ERROR))
+      if(nomoreinput&&(err==JZlib.Z_BUF_ERROR)) {
         return(-1);
-      if(err!=JZlib.Z_OK && err!=JZlib.Z_STREAM_END)
+      }
+      if(err!=JZlib.Z_OK && err!=JZlib.Z_STREAM_END) {
 	throw new ZStreamException((compress ? "de" : "in")+"flating: "+z.msg);
-      if((nomoreinput||err==JZlib.Z_STREAM_END)&&(z.avail_out==len))
+      }
+      if((nomoreinput||err==JZlib.Z_STREAM_END)&&(z.avail_out==len)) {
 	return(-1);
+      }
     } 
-    while(z.avail_out==len&&err==JZlib.Z_OK);
+    while(z.avail_out==len&&err==JZlib.Z_OK); //!!!!
     //System.err.print("("+(len-z.avail_out)+")");
     /*    for (int i=0; i<len-z.avail_out; i++) {
             System.out.print((char) b[i]);

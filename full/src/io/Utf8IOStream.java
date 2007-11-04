@@ -95,6 +95,7 @@ public class Utf8IOStream implements Runnable{
 	    outStream.flush();
             outbuf=null;
 //#endif
+            
 	}
 //#if (XML_STREAM_DEBUG)        
 //#         System.out.println(">> "+data);
@@ -208,7 +209,8 @@ public class Utf8IOStream implements Runnable{
 	    int c = getNextCharacter();
 	    if (c<0) { 
 		eol=true;
-		if (buf.length()==0) return null;
+		if (buf.length()==0) 
+                    return null;
 		break;
 	    }
 	    if (c==0x0d || c==0x0a) {
