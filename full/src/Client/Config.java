@@ -58,6 +58,11 @@ public class Config {
     public static int SOFT_LEFT = -1000;
     public static int SOFT_RIGHT = -1000;
     
+    public final static int SUBSCR_AUTO=0;
+    public final static int SUBSCR_ASK=1;
+    public final static int SUBSCR_DROP=2;
+    public final static int SUBSCR_REJECT=3;
+    
     public boolean ghostMotor=getBooleanProperty("moto_e398",false);
     public boolean blFlash=!ghostMotor; //true;
     
@@ -114,7 +119,7 @@ public class Config {
     public String lang;  //not detected (en)
     public boolean capsState=false;
     public int textWrap=0;
-    public boolean autoSubscribe=true;
+    public int autoSubscribe=SUBSCR_ASK;
 	
     // runtime values
     public boolean allowMinimize=false;
@@ -178,6 +183,8 @@ public class Config {
     public int msglistLimit=100;
     
     public boolean useTabs=true;
+    
+    
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -299,7 +306,7 @@ public class Config {
             
             lightState=inputStream.readBoolean();
 			
-            autoSubscribe=inputStream.readBoolean();
+            /*autoSubscribe=*/inputStream.readBoolean();
             
             lastMessages=inputStream.readBoolean();
 
@@ -338,6 +345,8 @@ public class Config {
             msglistLimit=inputStream.readInt();
             
             useTabs=inputStream.readBoolean();
+            
+            autoSubscribe=inputStream.readInt();
             
 	    inputStream.close();
 	} catch (Exception e) {
@@ -440,7 +449,7 @@ public class Config {
             
             outputStream.writeBoolean(lightState);
 			
-            outputStream.writeBoolean(autoSubscribe);
+            outputStream.writeBoolean(false /*autoSubscribe*/);
             
             outputStream.writeBoolean(lastMessages);
             
@@ -478,6 +487,8 @@ public class Config {
             outputStream.writeInt(msglistLimit);
             
             outputStream.writeBoolean(useTabs);
+            
+            outputStream.writeInt(autoSubscribe);
             
 	} catch (Exception e) { }
 	

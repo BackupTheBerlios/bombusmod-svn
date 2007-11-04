@@ -1451,7 +1451,7 @@ public class Roster
                     if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
                 } catch (Exception e) { type="chat"; } //force type to chat
 //#ifndef WMUC
-                try {
+/*                try {
                     //TODO: invitations
                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
                     JabberDataBlock error=xmlns.getChildBlock("error");
@@ -1459,7 +1459,7 @@ public class Roster
                     // FS#657
                     if (error!=null && invite!=null) {
                         ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
-                        body=XmppError.decodeStanzaError(error).toString(); /*"error: invites are forbidden"*/
+                        body=XmppError.decodeStanzaError(error).toString(); 
                     };
                     
                     if (error==null && invite!=null) {
@@ -1475,6 +1475,31 @@ public class Roster
                         body=inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
                     }
                 } catch (Exception e) {}
+*/
+                
+                 try {
+                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
+                     JabberDataBlock error=xmlns.getChildBlock("error");
+                    JabberDataBlock invite=xmlns.getChildBlock("invite");
+                     // FS#657
+                    if (invite !=null) {
+                        if (error!=null ) {
+                            ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
+                            body=XmppError.decodeStanzaError(error).toString(); /*"error: invites are forbidden"*/
+                        } else {
+                            String inviteFrom=invite.getAttribute("from");
+                            String inviteReason=invite.getChildBlockText("reason");
+                            String room=from+'/'+sd.account.getNickName();
+                            String password=xmlns.getChildBlockText("password");
+                            ConferenceGroup invConf=initMuc(room, password);
+                            
+                            if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
+                                invConf.getConference().status=Presence.PRESENCE_OFFLINE;
+                            
+                            body=inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
+                        }
+                     }
+                } catch (Exception e) { e.printStackTrace(); }
 //#endif
                 Contact c=getContact(from, cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES);
                 if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
@@ -1707,7 +1732,7 @@ public class Roster
                     } catch (Exception e) { e.printStackTrace(); }
                 } else {
 //#endif
-                    boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
+/*                    boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
                     if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
                     
                     Contact c=getContact(from, enNIL); 
@@ -1738,7 +1763,38 @@ public class Roster
                             messageStore(c, new Msg(Msg.MESSAGE_TYPE_AUTH, from, null, SR.MS_AUTH_AUTO));
                         }
                     }
-					
+*/
+                    Contact c=null;
+
+                     if (ti==Presence.PRESENCE_AUTH_ASK) {
+                        //processing subscriptions
+                        if (cf.autoSubscribe==Config.SUBSCR_DROP)  return JabberBlockListener.BLOCK_REJECTED;
+                        
+                        if (cf.autoSubscribe==Config.SUBSCR_REJECT) {
+                            System.out.print(from); 
+                            System.out.println(": decline subscription");
+                            
+                            sendPresence(from, "unsubscribed", null, false);
+                            return JabberBlockListener.BLOCK_PROCESSED;
+                        }
+                        
+                        c=getContact(from, true); 
+                        messageStore(c, m);
+
+                        if (cf.autoSubscribe==Config.SUBSCR_AUTO) {
+                             doSubscribe(c);
+                             messageStore(c, new Msg(Msg.MESSAGE_TYPE_AUTH, from, null, SR.MS_AUTH_AUTO));
+                         }
+                    } else {
+                        // processing presences
+                        boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
+                        c=getContact(from, enNIL);
+                        
+                        if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
+                      
+                        messageStore(c, m);
+                     }
+                    
                     c.priority=pr.getPriority();
                     if (ti>=0) 
                         c.setStatus(ti);

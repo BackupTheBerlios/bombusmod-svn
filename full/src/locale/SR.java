@@ -560,9 +560,6 @@ public class SR {
     public static String MS_SEND_FILE_TO = loadString ( "To: " );
     public static String MS_FILE_SIZE = loadString( "size:" );  
 
-    public static String MS_XMLLANG;
-    public static String MS_IFACELANG;
-
     public static String MS_SUN = loadString( "Sun" );
     public static String MS_MON = loadString( "Mon" );
     public static String MS_TUE = loadString( "Tue" );
@@ -570,6 +567,15 @@ public class SR {
     public static String MS_THU = loadString( "Thu" );
     public static String MS_FRI = loadString( "Fri" );
     public static String MS_SAT = loadString( "Sat" );
+    
+//2007-11-04
+    public static String MS_SUBSCR_AUTO=loadString("Automatic subscription");
+    public static String MS_SUBSCR_ASK=loadString("Ask me");
+    public static String MS_SUBSCR_DROP=loadString("Drop subscription");
+    public static String MS_SUBSCR_REJECT=loadString("Deny subscription");  //TODO: correct according to RFC
+    
+    public static String MS_XMLLANG;
+    public static String MS_IFACELANG;
     
     private SR() { }
     

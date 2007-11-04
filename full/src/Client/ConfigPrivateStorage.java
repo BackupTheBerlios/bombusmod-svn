@@ -127,7 +127,6 @@ public class ConfigPrivateStorage
 //#             cs.addChild("confMessageCount", Integer.toString(cf.confMessageCount));
 //#             cs.addChild("newMenu", (cf.newMenu)?"1":"0");
 //#             cs.addChild("lightState", (cf.lightState)?"1":"0");
-//#             cs.addChild("autoSubscribe", (cf.autoSubscribe)?"1":"0");
 //#             cs.addChild("lastMessages", (cf.lastMessages)?"1":"0");
 //#             
 //#             cs.addChild("setAutoStatusMessage", (cf.setAutoStatusMessage)?"1":"0");
@@ -154,6 +153,8 @@ public class ConfigPrivateStorage
 //#             cs.addChild("msglistLimit", Integer.toString(cf.msglistLimit));
 //#             
 //#             cs.addChild("useTabs", (cf.useTabs)?"1":"0");
+//#             
+//#             cs.addChild("autoSubscribe", Integer.toString(cf.autoSubscribe));
 //#         }
 //#         //System.out.println(iq.toString());
 //#         roster.theStream.send(iq);
@@ -219,8 +220,6 @@ public class ConfigPrivateStorage
 //#             cf.newMenu=cf.getBooleanProperty("newMenu",false);
 //#             
 //#             cf.lightState=cf.getBooleanProperty("lightState",true);
-//# 			
-//#             cf.autoSubscribe=cf.getBooleanProperty("autoSubscribe",true);
 //#             
 //#             cf.lastMessages=cf.getBooleanProperty("lastMessages",false);
 //# 
@@ -254,6 +253,8 @@ public class ConfigPrivateStorage
 //#             cf.msglistLimit=cf.getIntProperty("msglistLimit",100);
 //#             
 //#             cf.useTabs=cf.getBooleanProperty("useTabs",true);
+//#             
+//#             cf.autoSubscribe=cf.getIntProperty("autoSubscribe", cf.SUBSCR_ASK);
 //#             
 //#             cf.lastProfile=cf.profile=cf.def_profile;
 //#             if (cf.lastProfile==AlertProfile.VIBRA) cf.lastProfile=0;
