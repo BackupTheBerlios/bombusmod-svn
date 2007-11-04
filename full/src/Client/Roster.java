@@ -1451,32 +1451,6 @@ public class Roster
                     if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
                 } catch (Exception e) { type="chat"; } //force type to chat
 //#ifndef WMUC
-/*                try {
-                    //TODO: invitations
-                    JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
-                    JabberDataBlock error=xmlns.getChildBlock("error");
-                    JabberDataBlock invite=message.getChildBlock("invite");
-                    // FS#657
-                    if (error!=null && invite!=null) {
-                        ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
-                        body=XmppError.decodeStanzaError(error).toString(); 
-                    };
-                    
-                    if (error==null && invite!=null) {
-                        String inviteFrom=invite.getAttribute("from");
-                        String inviteReason=invite.getChildBlockText("reason");
-                        String room=from+'/'+sd.account.getNickName();
-                        String password=xmlns.getChildBlockText("password");
-                        ConferenceGroup invConf=initMuc(room, password);
-                        
-                        if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
-                            invConf.getConference().status=Presence.PRESENCE_OFFLINE;
-                           
-                        body=inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
-                    }
-                } catch (Exception e) {}
-*/
-                
                  try {
                      JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
                      JabberDataBlock error=xmlns.getChildBlock("error");
@@ -1546,39 +1520,12 @@ public class Roster
                     }
 
                     if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates")!=null) {
+                        playNotify(SOUND_COMPOSING);
                         c.acceptComposing=true;
                         c.setComposing(true);
                     }
                 }
                  
-                
-                /*
-                JabberDataBlock x=(type.equals("chat"))? message.getChildBlock("x") : null;
-
-                 if (x!=null) {
-                    compose=(  x.getChildBlock("composing")!=null 
-                            && c.status<Presence.PRESENCE_OFFLINE); // drop composing events from offlines
-                    
-                    if (groupchat) compose=false;   //drop composing events in muc;
-                    if (compose) c.acceptComposing=true ; 
-                    if (message.getChildBlock("body")!=null) compose=false;
-                    if (compose) {
-                        playNotify(SOUND_COMPOSING);
-                    }
-                    c.setComposing(compose);
-
-                    if (x.getChildBlock("delivered")!=null) {
-                        if (body!=null) {
-                            //ask delivery
-                            if (c.status<Presence.PRESENCE_OFFLINE)
-                                sendDeliveryMessage(c, data.getAttribute("id"));
-                        } else {
-                            //delivered
-                            c.markDelivered(x.getChildBlockText("id"));
-                        }
-                    }
-                }
-                */
                 redraw();
 
                 if (body==null) return JabberBlockListener.BLOCK_REJECTED;
@@ -1732,38 +1679,6 @@ public class Roster
                     } catch (Exception e) { e.printStackTrace(); }
                 } else {
 //#endif
-/*                    boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
-                    if (ti==Presence.PRESENCE_AUTH_ASK) enNIL=true;
-                    
-                    Contact c=getContact(from, enNIL); 
-                    if (c==null) 
-                        return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
-
-                    if (pr.getTypeIndex()!=pr.PRESENCE_ERROR) {
-                        if (pr.hasEntityCaps()) {
-                            c.hasEntity=true;
-                            if (pr.getEntityNode()!=null) {
-                                c.entityNode=strconv.replaceCaps(pr.getEntityNode());
-                                if (c.entityNode.indexOf("#")<0)
-                                    c.entityVer=pr.getEntityVer();
-                            }
-                        }
-
-                        JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
-                        c.setJ2J(j2j!=null);
-                        
-                        c.statusString=pr.getStatus();
-                    }
-                    
-                    messageStore(c, m);
-					
-                    if (ti==Presence.PRESENCE_AUTH_ASK) {
-                        if (cf.autoSubscribe) {
-                            doSubscribe(c);
-                            messageStore(c, new Msg(Msg.MESSAGE_TYPE_AUTH, from, null, SR.MS_AUTH_AUTO));
-                        }
-                    }
-*/
                     Contact c=null;
 
                      if (ti==Presence.PRESENCE_AUTH_ASK) {
@@ -1779,6 +1694,7 @@ public class Roster
                         }
                         
                         c=getContact(from, true); 
+                        
                         messageStore(c, m);
 
                         if (cf.autoSubscribe==Config.SUBSCR_AUTO) {
@@ -1791,6 +1707,28 @@ public class Roster
                         c=getContact(from, enNIL);
                         
                         if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
+                        
+                        if (pr.getTypeIndex()!=pr.PRESENCE_ERROR) {
+                            if (pr.hasEntityCaps()) {
+                                System.out.println(pr.toString());
+                                c.hasEntity=true;
+                                if (pr.getEntityNode()!=null) {
+                                    String cl = strconv.replaceCaps(pr.getEntityNode());
+                                    
+                                    if (cl.indexOf("#")<0)
+                                        c.entityVer=pr.getEntityVer();
+                                    
+                                    c.entityNode=cl;
+                                } else {
+                                    c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                                }
+                            }
+
+                            JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
+                            c.setJ2J(j2j!=null);
+
+                            c.statusString=pr.getStatus();
+                        }
                       
                         messageStore(c, m);
                      }

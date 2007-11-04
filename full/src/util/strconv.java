@@ -221,6 +221,9 @@ public class strconv {
     public static String replaceCaps(String src){
         if (src==null)
             return "tkabber?";
+        
+        //if (src.indexOf("#")>0)
+        //    src = src.substring(0, src.indexOf("#"));        
 
         if (src.indexOf(BOMBUSMOD_REP)>-1)
             return stringReplace(src,BOMBUSMOD_REP,"Bombusmod");
@@ -247,31 +250,7 @@ public class strconv {
         
         return src;
     }
-/*  
-    public static String stringReplace(String src, String search, String dest){
-        int pos = 0;
-        int start_pos;
-        int lgn = search.length();
-        
-        if (src.indexOf(search)>-1) {
-            
-            while (true) {
-                start_pos=src.indexOf(search,pos);
-                pos=start_pos;
-
-                if (start_pos>-1) {
-                    String end=src.substring(pos+lgn);
-                    String start=src.substring(0, pos);
-                    src=start+dest+end;
-                } else {
-                    break;
-                }
-                pos=start_pos+lgn;
-            }
-        }
-        return src;
-    }
-*/  
+ 
     protected static String stringReplace(String aSearch, String aFind, String aReplace) {
         String result = aSearch;
         if (result != null && result.length() > 0) {
