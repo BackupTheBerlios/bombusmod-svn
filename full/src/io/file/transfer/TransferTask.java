@@ -269,12 +269,12 @@ public class TransferTask
         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
         JabberDataBlock open=iq.addChildNs("open", "http://jabber.org/protocol/ibb");
         open.setAttribute("sid", sid);
-        open.setAttribute("block-size","2048");
+        open.setAttribute("block-size","4096");
         TransferDispatcher.getInstance().send(iq, false);
     }
 
     public void run() {
-        byte buf[]=new byte[2048];
+        byte buf[]=new byte[4096];
         int seq=0;
         try {
         while (true) {

@@ -557,14 +557,7 @@ public class SR {
     public static String MS_SUBSCRIPTION_RECEIVED = loadString ( "You are now authorized" );
     public static String MS_SUBSCRIPTION_DELETED = loadString ( "Your authorization has been removed!" );
     public static String MS_HAS_CHANGED_SUBJECT_TO = loadString( " has changed subject to: " );
-    public static String MS_SEND_FILE = loadString ( "Send file" );
     public static String MS_SEND_FILE_TO = loadString ( "To: " );
-    public static String MS_FILE = loadString ( "File" );
-    public static String MS_DESCRIPTION = loadString ( "Description" );
-    public static String MS_PATH = loadString( "Path" );
-    public static String MS_ACCEPT_FILE = loadString( "Accept file" );
-    public static String MS_SAVE_TO = loadString( "Save to" );
-    public static String MS_SENDER = loadString( "Sender:" );
     public static String MS_FILE_SIZE = loadString( "size:" );  
 
     public static String MS_XMLLANG;

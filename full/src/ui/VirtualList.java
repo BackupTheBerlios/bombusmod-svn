@@ -29,10 +29,10 @@
 package ui;
 import Info.Phone;
 import Info.Version;
-import Client.Stats;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
+import ui.InfoBar;
 //#ifdef POPUPS
 //# import ui.controls.PopUp;
 //#endif
@@ -73,6 +73,8 @@ public abstract class VirtualList
     
     
     public Phone ph=Phone.getInstance();
+    private Stats stats=Stats.getInstance();
+    
 //#ifdef USER_KEYS
 //#     public userKeyExec ue=userKeyExec.getInstance();
 //#endif
@@ -86,7 +88,6 @@ public abstract class VirtualList
     protected int getMainBarRGB() {return ColorScheme.BAR_INK;} 
     
     private Config cf=Config.getInstance();
-    private Stats stats=Stats.getInstance();
 
     public void eventOk(){
         try {
@@ -187,12 +188,14 @@ public abstract class VirtualList
     protected boolean showBalloon;
     
     protected VirtualElement mainbar;
+    protected VirtualElement infobar;
+    
  //#if ALT_INPUT   
-//#     protected InputBox inputbox; //alt
-//#     public InputBox getInputBoxItem() { return (InputBox)inputbox; } //alt
-//#     public void setInputBoxItem(InputBox ib) { this.inputbox=ib; } //alt
-//#     //public static String inputBoxText=null;
+//#     protected InputBox inputbox;
+//#     public InputBox getInputBoxItem() { return (InputBox)inputbox; }
+//#     public void setInputBoxItem(InputBox ib) { this.inputbox=ib; }
  //#endif
+    
     private boolean wrapping = true;
     
     public static int fullMode; 
@@ -206,16 +209,19 @@ public abstract class VirtualList
     private int lastClickItem;
     private long lastClickTime;
     
-//#ifdef ELF    
-//#     private static boolean sie_accu=true;
-//#     private static boolean sie_net=true;
-//#endif
-    
     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
     
     public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
     public void setMainBarItem(ComplexString mainbar) { this.mainbar=mainbar; }
+    
+    public ComplexString getInfoBarItem() {return (ComplexString)infobar;}
+    public void setInfoBarItem(ComplexString infobar) { this.infobar=infobar; }    
 
+//#ifdef ELF    
+//#     private static boolean sie_accu=true;
+//#     private static boolean sie_net=true;
+//#endif    
+    
     public Object getFocusedObject() { 
         try {
             return getItemRef(cursor);
@@ -242,6 +248,12 @@ public abstract class VirtualList
 	
 	scrollbar=new ScrollBar();
 	scrollbar.setHasPointerEvents(hasPointerEvents());
+        
+        InfoBar infobar=new InfoBar(" ");
+        infobar.addElement(null); //1
+        infobar.addRAlign();
+        infobar.addElement(null); //3
+        setInfoBarItem(infobar);
     }
 
     /** Creates a new instance of VirtualList */
@@ -312,6 +324,8 @@ public abstract class VirtualList
         //paintTop=true;  paintBottom=true;  reverse=true;
 
         beginPaint();
+
+        setInfo();
         
         int list_bottom=0;        
         itemBorder[0]=0;
@@ -326,12 +340,16 @@ public abstract class VirtualList
         
         if (paintTop) {
             if (reverse) {
-                itemBorder[0]=iHeight;
-                drawInfoPanel(g);
+                //setInfoBar();
+                if (infobar!=null) {
+                    itemBorder[0]=iHeight;
+                    drawInfoPanel(g);
+                }
             } else {
-                if (mainbar!=null)
+                if (mainbar!=null) {
                     itemBorder[0]=mHeight; 
-                drawMainPanel(g);
+                    drawMainPanel(g);
+                }
             }
         }
 
@@ -342,7 +360,8 @@ public abstract class VirtualList
 //#endif
                 if (paintBottom) {
                     if (reverse) {
-                        if (mainbar!=null) list_bottom=mHeight;
+                        if (mainbar!=null) 
+                            list_bottom=mHeight;
                     } else {
                         list_bottom=iHeight; 
                     }
@@ -488,34 +507,23 @@ public abstract class VirtualList
             g.setColor(ColorScheme.HEAP_FREE);  g.fillRect(0,y,ram,1);
         }
     }
-    
-    private void drawInfoPanel (final Graphics g) {
-        Font bottomFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, Font.SIZE_SMALL);
-        int h=bottomFont.getHeight();
-        
-        g.setClip(0,0, width, h);
 
-        g.setColor(getMainBarBGnd());
-        g.fillRect(0, 0, width, h/2);
-        g.setColor(getMainBarBGndBottom());
-        g.fillRect(0, h/2, width, h/2);
-   
-        g.setColor(getMainBarRGB());
-        g.setFont(bottomFont);
-        
-        StringBuffer s=new StringBuffer();
-        s.append(Time.localWeekDay());
-        s.append(" ");
-        s.append(Time.localTime());
-        s.append(" ");
-        s.append(strconv.getSizeString(stats.getGPRS()));
-//#ifdef ELF
-//#         s.append(getNetworkLevel());
-//#         s.append(getAccuLevel());
-//#endif
-        if (s!=null) {
-            g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
-            s=null;
+    private void drawInfoPanel (final Graphics g) {
+        if (infobar!=null) {
+            int h=infobar.getVHeight();
+
+            g.setClip(0,0, width, h);
+
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h/2);
+            g.setColor(getMainBarBGndBottom());
+            g.fillRect(0, h/2, width, h/2);
+
+            g.setColor(getMainBarRGB());
+            //g.setFont(bottomFont);
+
+            //g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
+            getInfoBarItem().drawItem(g,0,false, false);
         }
     }
 
@@ -973,9 +981,25 @@ public abstract class VirtualList
         return cursor;
     }
     
+    public void setInfo() {
+            StringBuffer s=new StringBuffer();
+            s.append(Time.localWeekDay());
+            s.append(" ");
+            s.append(Time.localTime());
+            getInfoBarItem().setElementAt(s.toString(), 1);
+            s.setLength(0);
+            
+            s.append(strconv.getSizeString(stats.getGPRS()));
+//#ifdef ELF
+//#             s.append(getNetworkLevel());
+//#             s.append(getAccuLevel());
+//#endif
+            getInfoBarItem().setElementAt(s.toString(), 3);
+            s=null;
+    }
     
 //#ifdef ELF    
-//#     public static String getAccuLevel() {
+//#     private static String getAccuLevel() {
 //# 
 //#         if (sie_accu==false) return "";
 //#         try {
@@ -986,7 +1010,7 @@ public abstract class VirtualList
 //#         return "";
 //#     }
 //#     
-//#     public static String getNetworkLevel() {
+//#     private static String getNetworkLevel() {
 //# 
 //#         if (sie_net==false) return "";
 //#         try {
@@ -997,7 +1021,8 @@ public abstract class VirtualList
 //# 
 //#         return "";
 //#     }
-//#endif    
+//#endif 
+    
 }
 
 //#if (USE_ROTATOR)    

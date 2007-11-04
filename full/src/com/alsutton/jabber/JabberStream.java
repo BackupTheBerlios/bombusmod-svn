@@ -60,7 +60,7 @@ public class JabberStream implements XMLEventListener, Runnable {
     
     public boolean pingSent;
 	
-	public boolean loggedIn;
+    public boolean loggedIn;
     
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
     
@@ -106,9 +106,6 @@ public class JabberStream implements XMLEventListener, Runnable {
     }
 
     public void initiateStream(final String server, final boolean xmppV1, String xmlLang) throws IOException {
-        
-        //sendQueue=new Vector();
-        
         StringBuffer header=new StringBuffer("<stream:stream to='" );
         header.append( server );
         header.append( "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'" );
@@ -125,7 +122,8 @@ public class JabberStream implements XMLEventListener, Runnable {
 	
     public void startKeepAliveTask(){
         Account account=StaticData.getInstance().account;
-        if (account.keepAliveType==0) return;
+        if (account.keepAliveType==0) 
+            return;
         keepAlive=new TimerTaskKeepAlive(account.keepAlivePeriod, account.keepAliveType);
     }
     
@@ -177,19 +175,6 @@ public class JabberStream implements XMLEventListener, Runnable {
     /**
      * Method of sending data to the server.
      *
-     * @param data The data to send.
-     */
-    
- /* public void send( byte[] data ) throws IOException
-  {
-    outStream.write( data );
-    outStream.flush();
-  }
-  */
-    
-    /**
-     * Method of sending data to the server.
-     *
      * @param The data to send to the server.
      */
     public void sendKeepAlive(int type) throws IOException {
@@ -220,12 +205,10 @@ public class JabberStream implements XMLEventListener, Runnable {
     
     public void send( String data ) throws IOException {
 	iostream.send(new StringBuffer(data));
-        //System.out.println(data);
     }
     
     public void sendBuf( StringBuffer data ) throws IOException {
 	iostream.send(data);
-        //System.out.println(data);
     }
     
     /**
@@ -234,7 +217,9 @@ public class JabberStream implements XMLEventListener, Runnable {
      * @param block The data block to send to the server.
      */
     
-    public void send( JabberDataBlock block )  { new SendJabberDataBlock(block); }
+    public void send( JabberDataBlock block )  {
+        new SendJabberDataBlock(block);
+    }
     
     /**
      * Set the listener to this stream.
@@ -441,3 +426,4 @@ public class JabberStream implements XMLEventListener, Runnable {
         }
     }
 }
+

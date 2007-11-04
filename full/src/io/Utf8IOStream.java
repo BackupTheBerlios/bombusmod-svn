@@ -54,7 +54,6 @@ public class Utf8IOStream implements Runnable{
     private int bytesRecv;
 
     private int bytesSent;
-    
 
 //#if (ZLIB)
     public void setStreamCompression(){
@@ -64,50 +63,24 @@ public class Utf8IOStream implements Runnable{
     }
 //#endif
     
-//#if !(USE_UTF8_READER)
-//#     private OutputStreamWriter outputWriter;
-//#     private InputStreamReader inputReader;
-//#endif
-    
     /** Creates a new instance of Utf8IOStream */
     public Utf8IOStream(StreamConnection connection) throws IOException {
 	this.connection=connection;
 //#if !(MIDP1)
         try {
-            Config cf=Config.getInstance();
             SocketConnection sc=(SocketConnection)connection;
             sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
-            /*if (cf.socketLINGER>=0) sc.setSocketOption(SocketConnection.LINGER, cf.socketLINGER);
-            if (cf.socketRCVBUF>=0) sc.setSocketOption(SocketConnection.RCVBUF, cf.socketRCVBUF);
-            if (cf.socketSNDBUF>=0) sc.setSocketOption(SocketConnection.SNDBUF, cf.socketSNDBUF);*/
         } catch (Exception e) {}
 //#endif
 	
 	inpStream = connection.openInputStream();
 	outStream = connection.openOutputStream();	
 
-//#if !(USE_UTF8_READER)
-//#         inputReader = new InputStreamReader(inpStream, "UTF-8");
-//# 	outputWriter = new OutputStreamWriter(outStream,"UTF-8");
-//#else
       length=pbyte=0;
-//#endif
-
-
     }
     
     public void send( StringBuffer data ) throws IOException {
-	
 	synchronized (outStream) {
-//#if !(USE_UTF8_READER)
-//# 	    outputWriter.write(data);
-//#else
-	    //byte a[]=toUTF(data);
-	    //for (int i=0;i<a.length; i++){
-	    //	System.out.print(" "+((char)a[i])+"="+a[i]);
-	    //}
-	    //System.out.println();
-            
             StringBuffer outbuf=strconv.toUTFSb(data);
             int outLen=outbuf.length();
             byte bytes[]=new byte[outLen];
@@ -117,7 +90,6 @@ public class Utf8IOStream implements Runnable{
             
 	    outStream.write(bytes);
             bytesSent+=outLen;
-//#endif
 	    
 //#if OUTSTREAM_FLUSH
 	    outStream.flush();
@@ -129,16 +101,15 @@ public class Utf8IOStream implements Runnable{
 //#endif
     }
     
-//#if USE_UTF8_READER
-    // temporary
-
     byte cbuf[]=new byte[512];
     int length;
     int pbyte;
     
     private int chRead() throws IOException{
         bytesRecv++;
-        if (length>pbyte) return cbuf[pbyte++];
+        if (length>pbyte) {
+            return cbuf[pbyte++];
+        }
 
         int avail=inpStream.available();
         
@@ -150,40 +121,37 @@ public class Utf8IOStream implements Runnable{
 //#if (!ZLIB)
 //#                 && iStreamWaiting
 //#endif
-                ) {
+        ) {
             try { Thread.sleep(100); } catch (Exception e) {};
             avail=inpStream.available();
         }
         
-    //#if !(XML_STREAM_DEBUG)
-	if (avail<2) return inpStream.read() &0xff;
-    //#else
+//#if !(XML_STREAM_DEBUG)
+	if (avail<2) {
+            return inpStream.read() &0xff;
+	}
+//#else
 //#         if (avail<2) {
 //# 	  System.out.println(" single-byte");
 //#           int ch=inpStream.read();
 //# 	  System.out.println("<< "+(char)ch);
 //# 	  return ch;
 //#         }
+//#           
 //#           System.out.println(" prebuffering "+avail);
-    //#endif
-	
-	
-	
+//#endif
+
 	length= inpStream.read(cbuf, 0, (avail<512)?avail:512 );
 	pbyte=1;
 	
-    //#if (XML_STREAM_DEBUG)
+//#if (XML_STREAM_DEBUG)
 //# 	System.out.println("<< "+new String(cbuf, 0, length));
-    //#endif
+//#endif
 	return cbuf[0];
     }
-//#endif
     
     public int getNextCharacter()
     throws IOException {
-//#if !(USE_UTF8_READER)
-//# 	return inputReader.read();
-//#else
 	int chr = chRead() &0xff;
 	if( chr == 0xff ) return -1; // end of stream
 	
@@ -218,15 +186,9 @@ public class Utf8IOStream implements Runnable{
         
         //return ((chr & 0x07)<<18) | ((chr2 &0x3f) <<12) |((chr3 &0x3f) <<6) | (chr4 &0x3f);
         return '?'; // java char type contains only 16-bit symbols
-
-//#endif
     }
     
     public void close() {
-//#if !(USE_UTF8_READER)
-//# 	try { outputWriter.close(); }  catch (Exception e) {};
-//# 	try { inputReader.close();  }  catch (Exception e) {};
-//#endif
 	try { outStream.close();    }  catch (Exception e) {};
 	try { inpStream.close();    }  catch (Exception e) {};
 	// Alcatel temporary bugfix - this method hangs
@@ -306,6 +268,7 @@ public class Utf8IOStream implements Runnable{
         }
         return stats.toString();
     }
+
     public int getBytesR() {
         if (inpStream instanceof ZInputStream) {
             ZInputStream z = (ZInputStream) inpStream;
