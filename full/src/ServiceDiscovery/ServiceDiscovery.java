@@ -220,7 +220,7 @@ public class ServiceDiscovery
             
             XmppError xe=XmppError.findInStanza(data);
             
-            new AlertBox(xe.getName(), xe.getText(), null, display, this);
+            new AlertBox(data.getAttribute("from"), xe.toString(), null, display, this);
 
             return JabberBlockListener.BLOCK_PROCESSED;
         }

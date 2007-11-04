@@ -1436,8 +1436,7 @@ public class Roster
                         }
                     }
                     
-                    if (type.equals("error")) {
-                        
+                    if (type.equals("error")) {                        
                         body=SR.MS_ERROR_+ XmppError.findInStanza(message).toString();
                         //TODO: verify and cleanup
                         //String errCode=message.getChildBlock("error").getAttribute("code");
@@ -1452,27 +1451,30 @@ public class Roster
                 } catch (Exception e) { type="chat"; } //force type to chat
 //#ifndef WMUC
                  try {
-                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
-                     JabberDataBlock error=xmlns.getChildBlock("error");
-                    JabberDataBlock invite=xmlns.getChildBlock("invite");
-                     // FS#657
-                    if (invite !=null) {
-                        if (error!=null ) {
-                            ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
-                            body=XmppError.decodeStanzaError(error).toString(); /*"error: invites are forbidden"*/
-                        } else {
-                            String inviteFrom=invite.getAttribute("from");
-                            String inviteReason=invite.getChildBlockText("reason");
-                            String room=from+'/'+sd.account.getNickName();
-                            String password=xmlns.getChildBlockText("password");
-                            ConferenceGroup invConf=initMuc(room, password);
-                            
-                            if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
-                                invConf.getConference().status=Presence.PRESENCE_OFFLINE;
-                            
-                            body=inviteFrom+SR.MS_IS_INVITING_YOU+from+" ("+inviteReason+')';
-                        }
-                     }
+                    JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
+                    if (xmlns!=null) {
+                        JabberDataBlock error=xmlns.getChildBlock("error");
+                        JabberDataBlock invite=xmlns.getChildBlock("invite");
+                         // FS#657
+                        if (invite !=null) {
+                            if (error!=null ) {
+                                ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
+                                body=XmppError.decodeStanzaError(error).toString(); /*"error: invites are forbidden"*/
+                            } else {
+                                String inviteFrom=invite.getAttribute("from");
+                                String inviteReason=invite.getChildBlockText("reason");
+                                inviteReason=(inviteReason.length()>0)?" ("+inviteReason+")":"";
+                                String room=from+'/'+sd.account.getNickName();
+                                String password=xmlns.getChildBlockText("password");
+                                ConferenceGroup invConf=initMuc(room, password);
+
+                                if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
+                                    invConf.getConference().status=Presence.PRESENCE_OFFLINE;
+
+                                body=inviteFrom+SR.MS_IS_INVITING_YOU+from+inviteReason;
+                            }
+                         }
+                    }
                 } catch (Exception e) { e.printStackTrace(); }
 //#endif
                 Contact c=getContact(from, cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES);
@@ -1480,7 +1482,6 @@ public class Roster
 
                 if (name==null) name=c.getName();
                 // /me
-
                 if (body!=null) {
                     //forme=false;
                     if (body.startsWith("/me ")) start_me=3;
@@ -1499,7 +1500,6 @@ public class Roster
                 }
                 
                 //boolean compose=false;
-
                 if (type.equals("chat")) {
                     if (message.findNamespace("request", "urn:xmpp:receipts")!=null) {
                         sendDeliveryMessage(c, data.getAttribute("id"));
@@ -1648,14 +1648,15 @@ public class Roster
                         MucContact c = mucContact(from);
 
                         if (pr.hasEntityCaps()) {
-                            c.hasEntity=true;
+                            c.hasEntity=true;                             
                             if (pr.getEntityNode()!=null) {
-                                c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                                c.entityNode = strconv.replaceCaps(pr.getEntityNode());
                                 if (c.entityNode.indexOf("#")<0)
                                     c.entityVer=pr.getEntityVer();
+                            } else {
+                                c.entityNode=strconv.replaceCaps(pr.getEntityNode());
                             }
                         }
-
                         JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                         c.setJ2J(j2j!=null);
                         
@@ -1664,19 +1665,23 @@ public class Roster
                         String name=from.substring(rp+1);
 
                         from=from.substring(0, rp);
-
                         Msg chatPresence=new Msg(
                                Msg.MESSAGE_TYPE_PRESENCE,
                                name,
                                null,
-                               c.processPresence(xmuc, pr) );            
+                               c.processPresence(xmuc, pr) );     
+                        
                         c.statusString=pr.getStatus();
+                        
                         if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1) {
                             messageStore(getContact(from, false), chatPresence);
                         }
-                        c.addMessage(m);
+                        messageStore(c,m);
+
                         c.priority=pr.getPriority();
-                    } catch (Exception e) { e.printStackTrace(); }
+                    } catch (Exception e) { 
+                        //e.printStackTrace(); 
+                    }
                 } else {
 //#endif
                     Contact c=null;
@@ -1710,15 +1715,11 @@ public class Roster
                         
                         if (pr.getTypeIndex()!=pr.PRESENCE_ERROR) {
                             if (pr.hasEntityCaps()) {
-                                System.out.println(pr.toString());
                                 c.hasEntity=true;
                                 if (pr.getEntityNode()!=null) {
-                                    String cl = strconv.replaceCaps(pr.getEntityNode());
-                                    
-                                    if (cl.indexOf("#")<0)
+                                    c.entityNode = strconv.replaceCaps(pr.getEntityNode());
+                                    if (c.entityNode.indexOf("#")<0)
                                         c.entityVer=pr.getEntityVer();
-                                    
-                                    c.entityNode=cl;
                                 } else {
                                     c.entityNode=strconv.replaceCaps(pr.getEntityNode());
                                 }
