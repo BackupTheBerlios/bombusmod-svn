@@ -128,8 +128,10 @@ public class Contact extends IconTextElement{
     public String entityNode;
     public String entityVer;
     
-    public boolean redraw=false;
-
+//#if AUTODELETE
+//#     public boolean redraw=false;
+//#endif
+    
 //#ifdef MOOD
 //#     public String mood=null;
 //#     public String moodText=null;
@@ -275,9 +277,10 @@ public class Contact extends IconTextElement{
                 if ( ((Msg)msgs.firstElement()).isPresence())
                     if (origin!=ORIGIN_GROUPCHAT) 
                        first_replace=true;
-        } else {
-            redraw=deleteOldMessages();
         }
+//#if AUTODELETE
+//#             else { redraw=deleteOldMessages(); }
+//#endif
 //#if LAST_MESSAGES
 //#         if (cf.lastMessages
 //#             && (origin!=ORIGIN_GROUPCHAT)
@@ -416,18 +419,19 @@ public class Contact extends IconTextElement{
             }
         } catch (Exception e) { }
     }
-    
-    public final boolean deleteOldMessages() {
-        int limit=cf.msglistLimit;
-        if (msgs.size()<limit)
-            return false;
-        
-        int trash = msgs.size()-limit;
-            for (int i=0; i<trash; i++)
-                msgs.removeElementAt(0);
-        
-        return true;
-    }
+//#if AUTODELETE
+//#     public final boolean deleteOldMessages() {
+//#         int limit=cf.msglistLimit;
+//#         if (msgs.size()<limit)
+//#             return false;
+//#         
+//#         int trash = msgs.size()-limit;
+//#             for (int i=0; i<trash; i++)
+//#                 msgs.removeElementAt(0);
+//#         
+//#         return true;
+//#     }
+//#endif
 /*    
     public final void deleteOld() {
         int limit=cf.msglistLimit;

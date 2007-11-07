@@ -183,7 +183,9 @@ public class ContactMessageList extends MessageList
     }
     
     public void showNotify(){
-        getRedraw(true);
+//#if AUTODELETE
+//#         getRedraw(true);
+//#endif
         super.showNotify();
         if (cmdResume==null) return;
         if (contact.msgSuspended==null) 
@@ -235,21 +237,23 @@ public class ContactMessageList extends MessageList
         }
         
         sd.roster.countNewMsgs();
-        
-        getRedraw(contact.redraw);
-    }
-    
-    private void getRedraw(boolean redraw) {
-        if (redraw) {
-            contact.redraw=false;
-            messages=new Vector();
-            redraw();
-        }
-    }
-
-    private void setRedraw() {
-        contact.redraw=false;
-        messages=new Vector();
+//#if AUTODELETE
+//#         getRedraw(contact.redraw);
+//#     }
+//#     
+//#     private void getRedraw(boolean redraw) {
+//#         if (redraw) {
+//#             contact.redraw=false;
+//#             messages=new Vector();
+//#             redraw();
+//#         }
+//# 
+//#     }
+//#     
+//#     private void setRedraw() {
+//#         contact.redraw=false;
+//#         messages=new Vector();
+//#endif
     }
     
     public int getItemCount(){ return contact.msgs.size(); }

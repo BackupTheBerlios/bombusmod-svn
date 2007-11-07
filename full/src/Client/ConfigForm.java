@@ -203,8 +203,9 @@ public class ConfigForm implements
         this.mv=mv;
  
         message.setSelectedFlags(mv);
-        
-        MessageCountLimit=new NumberField(SR.MS_MESSAGE_COUNT_LIMIT, cf.msglistLimit, 10, 1000);
+//#if AUTODELETE
+//#         MessageCountLimit=new NumberField(SR.MS_MESSAGE_COUNT_LIMIT, cf.msglistLimit, 10, 1000);
+//#endif
         MessageLimit=new NumberField(SR.MS_MESSAGE_COLLAPSE_LIMIT, cf.messageLimit, 200, 1000);
 
 	startup=new ChoiceGroup(SR.MS_STARTUP_ACTIONS, Choice.MULTIPLE);
@@ -272,7 +273,9 @@ public class ConfigForm implements
 
         f.append(message);
         f.append(MessageLimit);
-        f.append(MessageCountLimit);
+//#if AUTODELETE
+//#         f.append(MessageCountLimit);
+//#endif
         f.append(font2);
         
 	String textWraps[]={SR.MS_TEXTWRAP_CHARACTER, SR.MS_TEXTWRAP_WORD};
@@ -465,7 +468,9 @@ public class ConfigForm implements
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
             cf.messageLimit=MessageLimit.getValue();
-            cf.msglistLimit=MessageCountLimit.getValue();
+//#if AUTODELETE
+//#             cf.msglistLimit=MessageCountLimit.getValue();
+//#endif
             
             StaticData.getInstance().roster.setLight(cf.lightState);   
             
