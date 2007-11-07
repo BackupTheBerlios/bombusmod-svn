@@ -574,6 +574,8 @@ public class SR {
     public static String MS_SUBSCR_DROP=loadString("Drop subscription");
     public static String MS_SUBSCR_REJECT=loadString("Deny subscription");  //TODO: correct according to RFC
     
+    public static String MS_VISIBLE_GROUP=loadString("Visible");
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
     

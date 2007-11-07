@@ -81,7 +81,7 @@ public class SearchResult
                 StringBuffer vcard=new StringBuffer();
                 String jid="";
 		
-	        int status=Presence.PRESENCE_ONLINE;
+	        int status=Presence.PRESENCE_OFFLINE;
 
                 // Form vcard=new Form(null);
                 if (!xData) { jid=child.getAttribute("jid"); }
@@ -106,11 +106,12 @@ public class SearchResult
                         vcard.append(value);
                         vcard.append((char)'\n');
                     }
-		    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ jit
-		    if (name.equals("status")) if (value.equals("offline")) status=Presence.PRESENCE_OFFLINE;
+		    // status returned by jit
+		    if (name.equals("status")) if (!value.equals("offline")) status=Presence.PRESENCE_ONLINE;
                 }
                 Contact serv=new DiscoContact(null, jid, status);
                 serv.setGroup(sd.roster.groups.getGroup(Groups.TYPE_SEARCH_RESULT));
+                serv.subscr="search";
                 Msg m=new Msg(Msg.MESSAGE_TYPE_IN, jid, "Short info", vcard.toString());
                 m.unread=false;
                 serv.addMessage(m);

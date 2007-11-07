@@ -231,7 +231,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#endif
         } else {
 	    Group group=(Group)item;
-	    if (group.index==Groups.TYPE_SEARCH_RESULT)
+	    if (group.type==Groups.TYPE_SEARCH_RESULT)
 		addItem(SR.MS_DISCARD,21);
 //#ifndef WMUC
 	    if (group instanceof ConferenceGroup) {
@@ -256,11 +256,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
  		}
 	    } else {
 //#endif
-                if (    group.index!=Groups.TYPE_IGNORE
-                        && group.index!=Groups.TYPE_NOT_IN_LIST
-                        && group.index!=Groups.TYPE_SEARCH_RESULT
-                        && group.index!=Groups.TYPE_SELF
-                        && group.index!=Groups.TYPE_TRANSP)
+                if (    group.type!=Groups.TYPE_IGNORE
+                        && group.type!=Groups.TYPE_NOT_IN_LIST
+                        && group.type!=Groups.TYPE_SEARCH_RESULT
+                        && group.type!=Groups.TYPE_SELF
+                        && group.type!=Groups.TYPE_TRANSP)
                 {
                     addItem(SR.MS_RENAME,1001);
                     addItem(SR.MS_DELETE, DELETE_GROUP);
@@ -619,11 +619,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#endif
             Group sg=(Group)item;
 
-            if (       sg.index!=Groups.TYPE_IGNORE 
-                    && sg.index!=Groups.TYPE_NOT_IN_LIST
-                    && sg.index!=Groups.TYPE_SEARCH_RESULT
-                    && sg.index!=Groups.TYPE_SELF
-                    && sg.index!=Groups.TYPE_TRANSP)
+            if (       sg.type!=Groups.TYPE_IGNORE 
+                    && sg.type!=Groups.TYPE_NOT_IN_LIST
+                    && sg.type!=Groups.TYPE_SEARCH_RESULT
+                    && sg.type!=Groups.TYPE_SELF
+                    && sg.type!=Groups.TYPE_TRANSP)
             {
                 switch (index) {
                     case 1001: //rename

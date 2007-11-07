@@ -478,7 +478,7 @@ public class Contact extends IconTextElement{
     public int getGroupType() {  
         if (group==null) 
             return 0; 
-        return group.index;  
+        return group.type;
     }
     
     public boolean inGroup(Group ingroup) {  

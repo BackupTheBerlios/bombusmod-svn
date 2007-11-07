@@ -37,7 +37,8 @@ import ui.*;
  */
 public class Group extends IconTextElement {
     String name;
-    int index; // group index
+    protected int type; // group index
+    public boolean visible=true;
     protected int nContacts;
     protected int onlines;
     
@@ -89,14 +90,6 @@ public class Group extends IconTextElement {
         collapsed=!collapsed;
     }
 
-    public void setIndex(int index) {
-	this.index = index;
-        if (index==Groups.TYPE_SEARCH_RESULT) 
-            imageExpandedIndex=RosterIcons.ICON_SEARCH_INDEX;
-        if (index==Groups.TYPE_COMMON) 
-            imageCollapsedIndex=RosterIcons.ICON_GROUPCHAT_INDEX;
-    }
-
     public void startCount(){
 	//int size=(contacts==null)?10:contacts.size();
 	tonlines=tncontacts=unreadMessages=0;
@@ -120,9 +113,9 @@ public class Group extends IconTextElement {
 	|| c.getNewMsgsCount()>0
 	//|| gindex==Groups.NIL_INDEX
 	//|| gindex==Groups.TRANSP_INDEX
-	|| index==Groups.TYPE_NOT_IN_LIST
-	|| index==Groups.TYPE_TRANSP
-	|| index==Groups.TYPE_VISIBLE
+	|| type==Groups.TYPE_NOT_IN_LIST
+	|| type==Groups.TYPE_TRANSP
+	|| type==Groups.TYPE_VISIBLE
 	|| c.origin==Contact.ORIGIN_GROUPCHAT
 	)
 	    contacts.addElement(c);
@@ -141,6 +134,12 @@ public class Group extends IconTextElement {
 
     public int getOnlines() {
         return onlines;
+    }
+    
+    public int compare(IconTextElement right) {
+        if (type<((Group)right).type) return -1;
+        if (type>((Group)right).type) return 1;
+        return name.toLowerCase().compareTo(((Group)right).name.toLowerCase());
     }
 
     public String getSecondString() {

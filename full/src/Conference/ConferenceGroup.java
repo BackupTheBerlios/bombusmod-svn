@@ -28,6 +28,7 @@
 package Conference;
 
 import Client.Group;
+import Client.Groups;
 import images.RosterIcons;
 
 /**
@@ -43,6 +44,7 @@ public class ConferenceGroup extends Group{
 	imageExpandedIndex=RosterIcons.ICON_GCJOIN_INDEX;
         imageCollapsedIndex=RosterIcons.ICON_GCCOLLAPSED_INDEX; 
         imageHasMessageIndex=RosterIcons.ICON_MESSAGE_INDEX;
+        this.type=Groups.TYPE_MUC;
     }
 
     String label;
