@@ -301,7 +301,7 @@ public class Contact extends IconTextElement{
 //#             StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
 //#endif
 //#         } else 
-//#             if (cf.msgLog && group.index!=Groups.TYPE_TRANSP && group.index!=Groups.TYPE_SEARCH_RESULT)
+//#             if (cf.msgLog && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT)
 //#         {
 //#             //String histRecord=(nick==null)?getBareJid():nick;
 //#             String fromName=StaticData.getInstance().account.getUserName();

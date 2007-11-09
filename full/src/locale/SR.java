@@ -576,6 +576,10 @@ public class SR {
     
     public static String MS_VISIBLE_GROUP=loadString("Visible");
     
+//2007-11-07
+    public static String MS_SEARCH=loadString("Search");
+    public static String MS_REGISTER=loadString("Register");
+    
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
     
