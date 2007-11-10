@@ -79,17 +79,17 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
         this.action=action;
         this.myNick=myNick;
 		
-		String okName = SR.MS_OK;
+	String okName = SR.MS_OK;
         
         switch (action) {
             case KICK: 
                 f=new Form(SR.MS_KICK);
-				okName=SR.MS_KICK;
+		okName=SR.MS_KICK;
                 break;
 
             case OUTCAST:
                 f=new Form(SR.MS_BAN);
-				okName=SR.MS_BAN;
+		okName=SR.MS_BAN;
                 f.append(SR.MS_CONFIRM_BAN);
                 break;
             case VISITOR:

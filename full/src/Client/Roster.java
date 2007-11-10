@@ -89,6 +89,7 @@ public class Roster
     private Command cmdAdd=new Command(SR.MS_ADD_CONTACT, Command.SCREEN, 12);
     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
     private Command cmdAccount=new Command(SR.MS_ACCOUNT_, Command.SCREEN, 15);
+    private Command cmdMailCheck=new Command("cmdMailCheck", Command.SCREEN, 16);
     private Command cmdCleanAllMessages=new Command(SR.MS_CLEAN_ALL_MESSAGES, Command.SCREEN, 50);
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
@@ -262,6 +263,7 @@ public class Roster
 //#ifdef ARCHIVE
 //#                 addCommand(cmdArchive);
 //#endif
+                addCommand(cmdMailCheck);
                 addCommand(cmdInfo);
                 addCommand(cmdAccount);
                 
@@ -328,7 +330,8 @@ public class Roster
             if (a.useGoogleToken()) {
                 setProgress(SR.MS_TOKEN, 30);
                 token=new SASLAuth(a, null, this, null).responseXGoogleToken();
-                if (token==null) throw new Exception("Can't get Google token");
+                if (token==null) 
+                    throw new Exception("Can't get Google token");
             }
 //#endif
             setProgress(SR.MS_CONNECT_TO+a.getServer(), 30);
@@ -1199,6 +1202,24 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
+                if (id.equals("mail-request")) {
+                        if (type.equals("result")) {
+                            JabberDataBlock mailbox=data.findNamespace("mailbox", "google:mail:notify");
+
+                            for (Enumeration e=mailbox.getChildBlocks().elements(); e.hasMoreElements();) {
+                                JabberDataBlock mail=(JabberDataBlock)e.nextElement();
+                                
+                                String subject=mail.getChildBlock("subject").getText();
+                                String body=mail.getChildBlock("snippet").getText();
+                                String name=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("name");
+                                String address=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("address");
+                                
+                                Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "local", name+"("+address+")\n"+subject, body);
+                                messageStore(selfContact(), m);
+                            }
+                            return JabberBlockListener.BLOCK_PROCESSED;
+                        }
+                    }
                 } // id!=null
                 if ( type.equals( "result" ) ) {
                     if (id.equals("last")) {
@@ -1475,7 +1496,7 @@ public class Roster
                             }
                          }
                     }
-                } catch (Exception e) { e.printStackTrace(); }
+                } catch (Exception e) { /*e.printStackTrace();*/ }
 //#endif
                 Contact c=getContact(from, cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES);
                 if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
@@ -2405,6 +2426,8 @@ public class Roster
 //#ifdef ARCHIVE
 //# 	else if (c==cmdArchive) { cmdArchive(); }
 //#endif
+        else if (c==cmdMailCheck) { cmdMailCheck(); }
+        
         else if (c==cmdInfo) { cmdInfo(); }
 
         else if (c==cmdTools) { cmdTools(); }
@@ -2445,6 +2468,7 @@ public class Roster
 //#ifdef ARCHIVE
 //#     public void cmdArchive() { new ArchiveList(display, null, -1); }
 //#endif
+    public void cmdMailCheck() { sendGmailReq(); }
     public void cmdInfo() { new Info.InfoWindow(display); }
     public void cmdTools() { new RosterToolsMenu(display); }
     public void cmdCleanAllMessages() { cleanupAllHistories(); }    
@@ -2880,6 +2904,12 @@ public class Roster
 //#         VirtualList.setWobble(str.toString());
 //#endif
         str=null;
+    }
+
+    private void sendGmailReq() {
+        JabberDataBlock iq=new Iq(null, Iq.TYPE_GET, "mail-request");
+        JabberDataBlock query=iq.addChildNs("query", "google:mail:notify");
+        theStream.send(iq);
     }
 }
 
