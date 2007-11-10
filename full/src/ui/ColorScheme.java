@@ -38,6 +38,8 @@ import io.file.FileIO;
 //# import java.io.DataOutputStream;
 //# import java.io.IOException;
 //# import java.io.InputStream;
+//#endif
+//#if TRANSLIT
 //# import util.Translit;
 //#endif
 import java.util.Hashtable;
@@ -184,7 +186,7 @@ public class ColorScheme {
 //#             MESSAGE_PRESENCE_S=inputStream.readInt();
 //#   
 //#             CONTACT_J2J=inputStream.readInt();
-//#
+//# 
 //#             BAR_BGND_BOTTOM=inputStream.readInt();
 //# 
 //# 	    inputStream.close();
@@ -244,7 +246,7 @@ public class ColorScheme {
 //# 	    outputStream.writeInt(MESSAGE_IN_S);
 //# 	    outputStream.writeInt(MESSAGE_OUT_S);
 //# 	    outputStream.writeInt(MESSAGE_PRESENCE_S);
-//#
+//# 
 //# 	    outputStream.writeInt(CONTACT_J2J);
 //#    
 //# 	    outputStream.writeInt(BAR_BGND_BOTTOM);

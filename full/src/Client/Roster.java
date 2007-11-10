@@ -89,7 +89,6 @@ public class Roster
     private Command cmdAdd=new Command(SR.MS_ADD_CONTACT, Command.SCREEN, 12);
     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
     private Command cmdAccount=new Command(SR.MS_ACCOUNT_, Command.SCREEN, 15);
-    private Command cmdMailCheck=new Command("cmdMailCheck", Command.SCREEN, 16);
     private Command cmdCleanAllMessages=new Command(SR.MS_CLEAN_ALL_MESSAGES, Command.SCREEN, 50);
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
@@ -149,10 +148,6 @@ public class Roster
 	
     private static long notifyReadyTime=System.currentTimeMillis();
     private static int blockNotifyEvent=-111;
-    
-    //public Contact lastAppearedContact=null;
-
-    //boolean lightState=false;
     
     private int blState=Integer.MAX_VALUE;
 
@@ -263,7 +258,6 @@ public class Roster
 //#ifdef ARCHIVE
 //#                 addCommand(cmdArchive);
 //#endif
-                addCommand(cmdMailCheck);
                 addCommand(cmdInfo);
                 addCommand(cmdAccount);
                 
@@ -285,7 +279,8 @@ public class Roster
 //#         if (useUserMood)
 //#             addCommand(cmdUserMood);
 //#endif
-        if (cf.allowMinimize) addCommand(cmdMinimize);
+        if (cf.allowMinimize) 
+            addCommand(cmdMinimize);
     }
     public void setProgress(String pgs,int percent){
         SplashScreen.getInstance().setProgress(pgs, percent);
@@ -1202,6 +1197,7 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
+//#if SASL_XGOOGLETOKEN
                 if (id.equals("mail-request")) {
                         if (type.equals("result")) {
                             JabberDataBlock mailbox=data.findNamespace("mailbox", "google:mail:notify");
@@ -1220,6 +1216,7 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
+//#endif
                 } // id!=null
                 if ( type.equals( "result" ) ) {
                     if (id.equals("last")) {
@@ -2426,8 +2423,6 @@ public class Roster
 //#ifdef ARCHIVE
 //# 	else if (c==cmdArchive) { cmdArchive(); }
 //#endif
-        else if (c==cmdMailCheck) { cmdMailCheck(); }
-        
         else if (c==cmdInfo) { cmdInfo(); }
 
         else if (c==cmdTools) { cmdTools(); }
@@ -2468,7 +2463,6 @@ public class Roster
 //#ifdef ARCHIVE
 //#     public void cmdArchive() { new ArchiveList(display, null, -1); }
 //#endif
-    public void cmdMailCheck() { sendGmailReq(); }
     public void cmdInfo() { new Info.InfoWindow(display); }
     public void cmdTools() { new RosterToolsMenu(display); }
     public void cmdCleanAllMessages() { cleanupAllHistories(); }    
@@ -2905,11 +2899,12 @@ public class Roster
 //#endif
         str=null;
     }
-
-    private void sendGmailReq() {
+//#if SASL_XGOOGLETOKEN
+    public void sendGmailReq() {
         JabberDataBlock iq=new Iq(null, Iq.TYPE_GET, "mail-request");
         JabberDataBlock query=iq.addChildNs("query", "google:mail:notify");
         theStream.send(iq);
     }
+//#endif
 }
 

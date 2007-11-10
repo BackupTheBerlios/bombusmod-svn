@@ -305,6 +305,10 @@ public class Account extends IconTextElement{
         return sasl;
     }
     
+    public boolean isGmail() {
+        return server.startsWith("gmail");
+    }
+    
     public void setSasl(boolean sasl) {
         this.sasl = sasl;
     }
@@ -313,7 +317,7 @@ public class Account extends IconTextElement{
     
     public boolean useGoogleToken() {
         if (useSSL) return false;
-        if (!server.startsWith("gmail")) return false;
+        if (!isGmail()) return false;
         return isSASL();
     }
 

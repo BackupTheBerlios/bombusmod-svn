@@ -579,6 +579,8 @@ public class SR {
 //2007-11-07
     public static String MS_SEARCH=loadString("Search");
     public static String MS_REGISTER=loadString("Register");
+
+    public static String MS_CHECK_GOOGLE_MAIL=loadString("Check Google mail");
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;

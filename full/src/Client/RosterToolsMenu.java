@@ -88,6 +88,10 @@ public class RosterToolsMenu
 //#         if (Config.getInstance().userKeys)
 //#             addItem(SR.MS_CUSTOM_KEYS, 11, 0x0f03);
 //#endif
+//#if SASL_XGOOGLETOKEN
+        if (StaticData.getInstance().account.isGmail())
+            addItem(SR.MS_CHECK_GOOGLE_MAIL, 12,0x46);
+//#endif        
 /*		
         addItem("ArchiveDump", 10);
 */        
@@ -161,6 +165,11 @@ public class RosterToolsMenu
 //#             case 11:
 //#                 new userKeysList(display);
 //#                 return;
+//#endif
+//#if SASL_XGOOGLETOKEN
+            case 12: //mail check
+                StaticData.getInstance().roster.sendGmailReq();;
+		return; 
 //#endif
 /*
             case 10:
