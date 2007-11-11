@@ -326,7 +326,7 @@ public class Roster
                 setProgress(SR.MS_TOKEN, 30);
                 token=new SASLAuth(a, null, this, null).responseXGoogleToken();
                 if (token==null) 
-                    throw new Exception("Can't get Google token");
+                    throw new SecurityException("Can't get Google token");
             }
 //#endif
             setProgress(SR.MS_CONNECT_TO+a.getServer(), 30);
