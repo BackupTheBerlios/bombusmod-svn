@@ -63,6 +63,19 @@ public class Contact extends IconTextElement{
         ColorScheme.CONTACT_DEFAULT,
         ColorScheme.CONTACT_J2J
     };
+    
+    public int getColor() { 
+        if (j2j)
+            return ColorScheme.CONTACT_J2J;
+        
+        switch (status) {
+            case Presence.PRESENCE_CHAT: return ColorScheme.CONTACT_CHAT;
+            case Presence.PRESENCE_AWAY: return ColorScheme.CONTACT_AWAY;
+            case Presence.PRESENCE_XA: return ColorScheme.CONTACT_XA;
+            case Presence.PRESENCE_DND: return ColorScheme.CONTACT_DND;
+        }
+        return ColorScheme.CONTACT_DEFAULT;
+    };
 
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
@@ -359,13 +372,6 @@ public class Contact extends IconTextElement{
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
         }
-    }
-  
-    public int getColor() {
-        if (j2j)
-            return COLORS[8];
-        
-        return (status>7)?0:COLORS[status];
     }
 
     public int getFontIndex(){

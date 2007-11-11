@@ -81,7 +81,9 @@ public class Msg //implements MessageList.Element
     //private TimeZone tz(){ return StaticData.getInstance().config.tz;}
     
     public int getColor() {
-        if (highlite) return ColorScheme.MSG_HIGHLIGHT;
+        if (highlite) 
+            return ColorScheme.MSG_HIGHLIGHT;
+        
         switch (messageType) {
             case MESSAGE_TYPE_IN: return ColorScheme.MESSAGE_IN;
             case MESSAGE_TYPE_HEADLINE: return ColorScheme.MESSAGE_IN;
@@ -90,10 +92,10 @@ public class Msg //implements MessageList.Element
             case MESSAGE_TYPE_AUTH: return ColorScheme.MESSAGE_AUTH;
             case MESSAGE_TYPE_HISTORY: return ColorScheme.MESSAGE_HISTORY;
             case MESSAGE_TYPE_SUBJ:return ColorScheme.MSG_SUBJ;
-            default: return ColorScheme.MESSAGE_HISTORY;
+            //default: return ColorScheme.MESSAGE_HISTORY;
             //case MESSAGE_TYPE_ERROR: return ColorScheme.MESSAGE_OUT;
         }
-        //return 0;
+        return ColorScheme.LIST_INK;
     }
     public String toString(){
         StringBuffer time=new StringBuffer();
