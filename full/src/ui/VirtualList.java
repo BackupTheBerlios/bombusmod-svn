@@ -342,6 +342,7 @@ public abstract class VirtualList
             if (reverse) {
                 //setInfoBar();
                 if (infobar!=null) {
+                    iHeight=infobar.getVHeight();
                     itemBorder[0]=iHeight;
                     drawInfoPanel(g);
                 }
@@ -510,7 +511,7 @@ public abstract class VirtualList
 
     private void drawInfoPanel (final Graphics g) {
         if (infobar!=null) {
-            int h=infobar.getVHeight();
+            int h=infobar.getVHeight()+1;
 
             g.setClip(0,0, width, h);
 
@@ -529,7 +530,7 @@ public abstract class VirtualList
 
     private void drawMainPanel (final Graphics g) {    
         if (mainbar!=null) {
-            int h=mainbar.getVHeight();
+            int h=mainbar.getVHeight()+1;
             g.setClip(0,0, width, h);
             
             g.setColor(getMainBarBGnd()); //10
