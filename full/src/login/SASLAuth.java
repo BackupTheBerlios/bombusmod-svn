@@ -348,8 +348,7 @@ public class SASLAuth implements JabberBlockListener{
             
             String sid = readLine(is);
             if(!sid.startsWith("SID=")) {
-                listener.loginFailed(sid);
-                return null;
+                throw new SecurityException(SR.MS_LOGIN_FAILED);
             }
             
             String lsid = readLine(is);
@@ -366,8 +365,10 @@ public class SASLAuth implements JabberBlockListener{
             is.close();
             c.close();
             return strconv.toBase64(token);
-       } catch (javax.microedition.pki.CertificateException e) {
-           throw new SecurityException(e.getMessage());
+        } catch (javax.microedition.pki.CertificateException e) {
+            throw new SecurityException(e.getMessage());
+        } catch (SecurityException e) {
+            throw e;
         } catch(Exception e) {
             e.printStackTrace();
             listener.loginFailed("Google token error");
