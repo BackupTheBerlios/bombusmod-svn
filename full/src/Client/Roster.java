@@ -1008,8 +1008,9 @@ public class Roster
 	for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
 	    Contact k=(Contact) e.nextElement();
 	    if (k.jid.isTransport()) continue;
-	    if (k.transport==transportIndex && k.nick==null && k.getGroupType()>=Groups.TYPE_COMMON) {
-		vCardQueue.addElement(VCard.getQueryVCard(k.getJid(), "nickvc"+k.bareJid));
+        int grpType=k.getGroupType();
+        if (k.transport==transportIndex && k.nick==null && (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP)) {
+			vCardQueue.addElement(VCard.getQueryVCard(k.getJid(), "nickvc"+k.bareJid));
 	    }
 	}
 	setQuerySign(true);
@@ -1147,7 +1148,7 @@ public class Roster
                         
                         Contact c=findContact(new Jid(from), false);
                         
-                        String group=(c.getGroupType()==Groups.TYPE_COMMON)?
+                        String group=(c.getGroupType()==Groups.TYPE_NO_GROUP)?
                             null: c.getGroup().name;
                         if (nick!=null)  storeContact(from,nick,group, false);
                         //updateContact( nick, c.rosterJid, group, c.subscr, c.ask_subscribe);
