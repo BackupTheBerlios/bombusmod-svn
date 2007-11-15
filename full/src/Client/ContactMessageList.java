@@ -620,8 +620,9 @@ public class ContactMessageList extends MessageList
     private void Quote() {
         try {
             String msg=new StringBuffer()
-                .append((char)0xbb) // �
+                .append((char)0xbb) //
                 .append(" ")
+			    .append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
                 .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .toString();
