@@ -206,7 +206,8 @@ public class Config {
 	gmtOffset=getIntProperty("time_gmt_offset", gmtloc);
 	
 	short greenKeyCode=-1000;
-
+        
+        //phoneManufacturer=Phone.PhoneManufacturer();
                 
 	if (phoneManufacturer==Phone.SONYE) {
             //prefetch images
@@ -231,7 +232,7 @@ public class Config {
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    //VirtualList.keyClear=0x1000;
-	} else if (phoneManufacturer==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
+	} else if (phoneManufacturer==Phone.SIEMENS || phoneManufacturer==Phone.SIEMENS2) {
             keyLock='#';
             keyVibra='*';
             allowLightControl=true;

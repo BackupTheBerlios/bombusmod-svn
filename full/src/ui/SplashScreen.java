@@ -65,7 +65,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     private TimerTaskClock tc;
     
     //private StaticData sd=StaticData.getInstance();
-    
+    private Config cf=Config.getInstance();
     
     private static SplashScreen instance;
 
@@ -79,7 +79,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     /** Creates a new instance of SplashScreen */
     private SplashScreen() {
-        setFullScreenMode(Config.getInstance().fullscreen);
+        setFullScreenMode(cf.fullscreen);
     }
     
     public SplashScreen(
@@ -101,7 +101,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         
         tc=new TimerTaskClock();
         
-        setFullScreenMode(Config.getInstance().fullscreen);
+        setFullScreenMode(cf.fullscreen);
 
         System.gc();   // heap cleanup
     }
@@ -141,15 +141,11 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         } else {
             Font f=FontCache.getBalloonFont();
 
-            int h=4; // ?????? statusbar
-
-            int xp=pos*width/100;   //?????? statusbar
-
-            int xt=(width/2);       // x ??????? ??? ??????
-
-            int y=height-h-2;         // y ??????? statusbar
-
-            int yt=y-f.getHeight(); // y ??????? ??? ??????
+            int h=4;
+            int xp=pos*width/100;
+            int xt=(width/2);
+            int y=height-h-2;
+            int yt=y-f.getHeight();
 
             g.setColor(ColorScheme.PGS_REMAINED);
             g.fillRect(1, y, width, h);
@@ -258,7 +254,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         tc.stop();
 //#ifdef AUTOSTATUS
 //#         Roster roster=StaticData.getInstance().roster;
-//#         if (roster.autoAway && Config.getInstance().autoAwayType==Config.AWAY_LOCK) {
+//#         if (roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
 //#             int newStatus=roster.oldStatus;
 //#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
 //#             String ms=es.getMessage();

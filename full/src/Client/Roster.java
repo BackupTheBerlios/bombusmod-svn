@@ -95,7 +95,7 @@ public class Roster
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
     private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
     
-    private Config cf;
+    private Config cf=Config.getInstance();
     private StaticData sd=StaticData.getInstance();
     
     
@@ -112,7 +112,7 @@ public class Roster
     boolean reconnect=false;
     boolean querysign=false;
     
-    public int myStatus=Config.getInstance().loginstatus;
+    public int myStatus=cf.loginstatus;
     private String myMessage;
 
     public Vector hContacts;
@@ -176,15 +176,10 @@ public class Roster
      */
     public Roster(Display display /*, boolean selAccount*/) {
         super();
-
-	setProgress(24);
-                
         this.display=display;
-       
-        cf=Config.getInstance();
         
         setLight(cf.lightState);
-        
+
         playNotify(SOUND_START_UP);
         
         MainBar mainbar=new MainBar(4, null, null);
@@ -200,11 +195,10 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
         getKeys();
-
+        
 	updateMainBar();
-        
+
         addMenuCommands();
-        
         SplashScreen.getInstance().setExit(display, this);
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType!=cf.AWAY_OFF)
@@ -214,7 +208,7 @@ public class Roster
 //#             messageActivity();
 //#endif
 //#ifdef POPUPS
-//#         VirtualList.setWobble("");
+//#         //VirtualList.setWobble("");
 //#endif
     }
     
@@ -267,7 +261,6 @@ public class Roster
                 if (cf.phoneManufacturer==Phone.NOKIA_9XXX) {
                     addCommand(cmdQuit);
                 }
-
                 addOptionCommands();
                 setCommandListener(this);
 //#ifdef NEW_MENU

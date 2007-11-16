@@ -113,7 +113,7 @@ public class ArchiveList
 
     private String start_body="<START_BODY>";
     private String end_body="<END_BODY>";
-    
+    private Config cf=Config.getInstance();
 //#endif
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, MessageEdit target, int caretPos) {
@@ -263,7 +263,6 @@ public class ArchiveList
 
 //#if FILE_IO 
     public void importData(String arhPath) {
-            Config cf=Config.getInstance();
             
             byte[] bodyMessage;
             String archive="";
@@ -323,8 +322,6 @@ public class ArchiveList
     
     
     public void exportData(String arhPath) {
-            Config cf=Config.getInstance();
-            
             byte[] bodyMessage;
             int items=getItemCount();
             StringBuffer body=new StringBuffer();

@@ -163,7 +163,7 @@ public class Phone {
         return "MIDP2 Platform=" +getPlatformName();
     }
     
-    public static int PhoneManufacturer() {
+    /*public static int PhoneManufacturer() {
         return phoneManufacturer;
-    }
+    }*/
 }

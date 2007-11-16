@@ -117,7 +117,7 @@ public class ConferenceForm implements CommandListener{
     
     /** Creates a new instance of GroupChatForm */
     public ConferenceForm(Display display) { 
-        String room=Config.getInstance().defGcRoom;
+        String room=cf.defGcRoom;
         String server=null;
         // trying to split string like room@server
         int roomE=room.indexOf('@');

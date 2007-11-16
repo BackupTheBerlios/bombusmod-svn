@@ -104,16 +104,9 @@ public class BombusMod extends MIDlet implements Runnable{
         }
 
         s.setProgress(Version.getVersionNumber(),7);
-        
-        //userKeyExec ue=userKeyExec.getInstance();
-        //s.setProgress(10);
-        
 
 	Config cf=Config.getInstance();
         s.setProgress(12);
-
-       // AlertCustomize ac=AlertCustomize.getInstance();
-        //s.setProgress(15);
 
         ColorScheme cl=ColorScheme.getInstance();
         s.setProgress(20);
@@ -125,16 +118,15 @@ public class BombusMod extends MIDlet implements Runnable{
 
         sd.roster=new Roster(display);
         s.setProgress(25);
-        
+
         if (!selAccount && cf.autoLogin) {
             // connect whithout account select
             selAccount=(Account.loadAccount(cf.autoLogin)==null);
-	    if (!cf.autoLogin) s.close();
+	    if (!cf.autoLogin) 
+                s.close();
         } else {
             new AccountSelect(display, true);
         }
-        
-        //s.img=null;
     }
     
     /**

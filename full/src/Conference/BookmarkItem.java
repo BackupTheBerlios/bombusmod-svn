@@ -45,6 +45,8 @@ public class BookmarkItem extends IconTextElement{
     boolean autojoin=false;
     boolean isUrl;
     
+    private Config cf=Config.getInstance();
+    
     public int getImageIndex(){ 
         if (isUrl) return RosterIcons.ICON_PRIVACY_ACTIVE;
         return (autojoin)? RosterIcons.ICON_GCJOIN_INDEX : RosterIcons.ICON_GROUPCHAT_INDEX;
@@ -72,13 +74,13 @@ public class BookmarkItem extends IconTextElement{
         nick=data.getChildBlockText("nick");
         password=data.getChildBlockText("password");
         
-        if ((autojoin==true) && (Config.getInstance().autoJoinConferences==true)) {
+        if ((autojoin==true) && (cf.autoJoinConferences==true)) {
             //System.out.println(jid+" autojoin");
             StringBuffer gchat=new StringBuffer();
             gchat.append(jid);
             gchat.append('/');
             gchat.append(nick);
-            join(gchat.toString(),password,Config.getInstance().confMessageCount);
+            join(gchat.toString(),password,cf.confMessageCount);
             gchat=null; //for nokia
         }
     }

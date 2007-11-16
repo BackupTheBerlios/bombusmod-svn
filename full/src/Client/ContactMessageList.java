@@ -651,7 +651,7 @@ public class ContactMessageList extends MessageList
 //# 
 //#                 } else if (contact.acceptComposing) comp=(composing)? "composing":"paused";
 //# 
-//#                 if (!Config.getInstance().eventComposing) comp=null;
+//#                 if (!cf.eventComposing) comp=null;
 //# 
 //#                 try {
 //#                     if (text!=null || comp!=null)

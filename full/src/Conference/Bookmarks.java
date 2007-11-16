@@ -48,6 +48,8 @@ public class Bookmarks
 {   
     private BookmarkItem toAdd;
     
+    private Config cf=Config.getInstance();
+    
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
     private Command cmdAdvJoin=new Command (SR.MS_EDIT_JOIN, Command.SCREEN, 2);
@@ -145,7 +147,7 @@ public class Bookmarks
         x.setNameSpace("http://jabber.org/protocol/muc");
         
         JabberDataBlock history=x.addChild("history", null);
-        history.setAttribute("maxstanzas", Integer.toString(Config.getInstance().confMessageCount));
+        history.setAttribute("maxstanzas", Integer.toString(cf.confMessageCount));
         history.setAttribute("maxchars","32768");
         try {
             long last=grp.getConference().lastMessageTime;
@@ -201,7 +203,7 @@ public class Bookmarks
             for (Enumeration e=StaticData.getInstance().roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
                 if (bm.autojoin) 
-                    ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, Config.getInstance().confMessageCount);
+                    ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
             }
             //exitBookmarks();
         }

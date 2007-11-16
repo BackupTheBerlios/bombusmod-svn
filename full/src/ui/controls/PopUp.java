@@ -55,7 +55,6 @@ public class PopUp {
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif
-        
     }
 
     public PopUp() {

@@ -237,7 +237,7 @@ public class MessageEdit
             }
         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
         
-        if (!Config.getInstance().eventComposing) comp=null;
+        if (!cf.eventComposing) comp=null;
         
         try {
             if (body!=null || subj!=null || comp!=null) {
@@ -257,7 +257,7 @@ public class MessageEdit
     public int getCaretPos() {     
         int caretPos=t.getCaretPosition();
         // +MOTOROLA STUB
-        if (Phone.PhoneManufacturer()==Phone.MOTO)
+        if (cf.phoneManufacturer==Phone.MOTO)
             caretPos=-1;
         
         if (caretPos<0) caretPos=t.getString().length();
@@ -270,7 +270,7 @@ public class MessageEdit
         t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
         t.removeCommand(state? cmdABC: cmdAbc);
         t.addCommand(state? cmdAbc: cmdABC);
-        Config.getInstance().capsState=state;
+        cf.capsState=state;
     }
     
     

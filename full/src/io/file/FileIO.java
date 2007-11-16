@@ -27,6 +27,7 @@
 
 package io.file;
 
+import Client.Config;
 import Info.Phone;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +58,7 @@ public abstract class FileIO {
             try {
                 Class.forName("javax.microedition.io.file.FileConnection");
                 fileSystemType=JSR75;
-                if (Phone.PhoneManufacturer()==Phone.SIEMENS) fileSystemType=JSR75_SIEMENS;
+                if (Config.getInstance().phoneManufacturer==Phone.SIEMENS) fileSystemType=JSR75_SIEMENS;
             } catch (Exception e) {}
             try {
                 Class.forName("com.motorola.io.FileConnection");

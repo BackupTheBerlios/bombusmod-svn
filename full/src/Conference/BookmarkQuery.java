@@ -47,6 +47,8 @@ public class BookmarkQuery implements JabberBlockListener{
     public final static boolean SAVE=true;
     public final static boolean LOAD=false;
     
+    private Config cf=Config.getInstance();
+    
     /** Creates a new instance of BookmarkQurery */
     public BookmarkQuery(boolean saveBookmarks) {
         
@@ -70,14 +72,14 @@ public class BookmarkQuery implements JabberBlockListener{
                 JabberDataBlock storage=data.findNamespace("query", "jabber:iq:private").
                         findNamespace("storage", "storage:bookmarks");
                 Vector bookmarks=new Vector();
-				boolean autojoin=Config.getInstance().autoJoinConferences 
+				boolean autojoin=cf.autoJoinConferences 
                         && StaticData.getInstance().roster.myStatus!=Presence.PRESENCE_INVISIBLE;
                 try {
                     for (Enumeration e=storage.getChildBlocks().elements(); e.hasMoreElements(); ){
                         BookmarkItem bm=new BookmarkItem((JabberDataBlock)e.nextElement());
                         bookmarks.addElement(bm);
                         if (bm.autojoin && autojoin) {
-                            ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, Config.getInstance().confMessageCount);
+                            ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
                         }
                     }
                 } catch (Exception e) { /* no any bookmarks */}

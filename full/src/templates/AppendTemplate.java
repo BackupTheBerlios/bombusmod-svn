@@ -95,7 +95,7 @@ public class AppendTemplate
 
     private String start_body="<START_BODY>";
     private String end_body="<END_BODY>";
-    
+    private Config cf=Config.getInstance();
 //#endif
     
     /** Creates a new instance of AccountPicker */
@@ -215,8 +215,6 @@ public class AppendTemplate
     
 //#if FILE_IO 
     public void importData(String arhPath) {
-            Config cf=Config.getInstance();
-            
             byte[] bodyMessage;
             String archive="";
             bodyMessage=readFile(arhPath);
@@ -275,8 +273,6 @@ public class AppendTemplate
     
     
     public void exportData(String arhPath) {
-            Config cf=Config.getInstance();
-            
             byte[] bodyMessage;
             int items=getItemCount();
             StringBuffer body=new StringBuffer();

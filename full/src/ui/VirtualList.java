@@ -1047,7 +1047,7 @@ public abstract class VirtualList
 //#     
 //#     public static void startRotate(int max, VirtualList list){
 //#         //Windows mobile J9 hanging test
-//#         if (Phone.PhoneManufacturer()==Phone.WINDOWS) {
+//#         if (Config.getInstance().phoneManufacturer==Phone.WINDOWS) {
 //#             list.showBalloon=true;
 //#             list.offset=0;
 //#             return;

@@ -60,6 +60,7 @@ public class archiveEdit implements CommandListener
     MessageArchive archive=new MessageArchive();
     
     private ClipBoard clipboard=ClipBoard.getInstance();
+    private Config cf=Config.getInstance();
     
     public archiveEdit(Display display, Msg msg) {
         this.msg=msg;
@@ -86,7 +87,7 @@ public class archiveEdit implements CommandListener
         
         t.addCommand(cmdClearTitle);
         
-        setInitialCaps(Config.getInstance().capsState);
+        setInitialCaps(cf.capsState);
         
         
         t.addCommand(cmdOk);
@@ -101,7 +102,7 @@ public class archiveEdit implements CommandListener
         body=t.getString();
 		
         int caretPos=t.getCaretPosition();
-        if (Phone.PhoneManufacturer()==Phone.MOTO)
+        if (cf.phoneManufacturer==Phone.MOTO)
             caretPos=-1;
         if (caretPos<0) caretPos=body.length();
 		
@@ -142,7 +143,7 @@ public class archiveEdit implements CommandListener
     public int getCaretPos() {     
         int caretPos=t.getCaretPosition();
         // +MOTOROLA STUB
-        if (Phone.PhoneManufacturer()==Phone.MOTO)
+        if (cf.phoneManufacturer==Phone.MOTO)
             caretPos=-1;
         
         if (caretPos<0) caretPos=t.getString().length();
@@ -155,7 +156,7 @@ public class archiveEdit implements CommandListener
         t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
         t.removeCommand(state? cmdABC: cmdAbc);
         t.addCommand(state? cmdAbc: cmdABC);
-        Config.getInstance().capsState=state;
+        cf.capsState=state;
     }
     
     
