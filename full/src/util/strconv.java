@@ -52,6 +52,7 @@ public class strconv {
     private static String KOPETE_REP="http://kopete.kde.org/jabber/caps";
     private static String PIDGIN_REP="http://pidgin.im/caps";
     private static String QIP_REP="http://qip.ru/caps";
+    private static String TKABBER_REP="http://tkabber.jabber.ru/";
    
     public static final String convCp1251ToUnicode(final String s){
         if (s==null) return null;
@@ -247,7 +248,9 @@ public class strconv {
             return stringReplace(src,PIDGIN_REP,"Pidgin");  
         else if (src.indexOf(QIP_REP)>-1)
             return stringReplace(src,QIP_REP,"Qip");  
-        
+        else if (src.indexOf(TKABBER_REP)>-1)
+            return stringReplace(src,TKABBER_REP,"Tkabber"); 
+
         return src;
     }
  
