@@ -34,10 +34,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jzlib;
 
-import Client.StaticData;
-
-public 
-final class Deflate{
+public final class Deflate{
 
   static final private int MAX_MEM_LEVEL=9;
 

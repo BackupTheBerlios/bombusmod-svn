@@ -31,7 +31,6 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.*;
 import java.io.*;
-import javax.microedition.lcdui.Image;
 import util.StringLoader;
 import util.strconv;
 
@@ -102,7 +101,7 @@ public class VCard {
                //System.out.println("error");
            }
            photo=(byte[])photoXML.getChildBlock("BINVAL").getChildBlocks().lastElement();
-       } catch (Exception e) {};
+       } catch (Exception e) {}
     }
 
     public JabberDataBlock constructVCard(){

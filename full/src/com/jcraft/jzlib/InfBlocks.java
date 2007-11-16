@@ -151,7 +151,7 @@ final class InfBlocks{
 	    z.total_in+=p-z.next_in_index;z.next_in_index=p;
 	    write=q;
 	    return inflate_flush(z,r);
-	  };
+	  }
 	  n--;
 	  b|=(z.next_in[p++]&0xff)<<k;
 	  k+=8;
@@ -213,7 +213,7 @@ final class InfBlocks{
 	    z.total_in+=p-z.next_in_index;z.next_in_index=p;
 	    write=q;
 	    return inflate_flush(z,r);
-	  };
+	  }
 	  n--;
 	  b|=(z.next_in[p++]&0xff)<<k;
 	  k+=8;
@@ -284,7 +284,7 @@ final class InfBlocks{
 	    z.total_in+=p-z.next_in_index;z.next_in_index=p;
 	    write=q;
 	    return inflate_flush(z,r);
-	  };
+	  }
 	  n--;
 	  b|=(z.next_in[p++]&0xff)<<k;
 	  k+=8;
@@ -326,7 +326,7 @@ final class InfBlocks{
 	      z.total_in+=p-z.next_in_index;z.next_in_index=p;
 	      write=q;
 	      return inflate_flush(z,r);
-	    };
+	    }
 	    n--;
 	    b|=(z.next_in[p++]&0xff)<<k;
 	    k+=8;
@@ -380,7 +380,7 @@ final class InfBlocks{
 	      z.total_in+=p-z.next_in_index;z.next_in_index=p;
 	      write=q;
 	      return inflate_flush(z,r);
-	    };
+	    }
 	    n--;
 	    b|=(z.next_in[p++]&0xff)<<k;
 	    k+=8;
@@ -411,7 +411,7 @@ final class InfBlocks{
 		z.total_in+=p-z.next_in_index;z.next_in_index=p;
 		write=q;
 		return inflate_flush(z,r);
-	      };
+	      }
 	      n--;
 	      b|=(z.next_in[p++]&0xff)<<k;
 	      k+=8;

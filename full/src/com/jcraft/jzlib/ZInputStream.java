@@ -95,7 +95,7 @@ public class ZInputStream extends FilterInputStream {
         int avail=in.available();
         
         while (avail==0) {
-            try { Thread.sleep(100); } catch (Exception e) { };
+            try { Thread.sleep(100); } catch (Exception e) { }
             avail=in.available();
         }
 

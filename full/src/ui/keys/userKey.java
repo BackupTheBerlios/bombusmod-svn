@@ -59,7 +59,7 @@ public class userKey extends IconTextElement {
     public String toString(){
         StringBuffer s=new StringBuffer("");
         s.append("(* + ");
-        s.append(userKeyExec.getInstance().getKeyDesc(key));
+        s.append(userKeyExec.getKeyDesc(key));
         s.append(") ");
         s.append(getDesc());
         
@@ -67,7 +67,7 @@ public class userKey extends IconTextElement {
     }
     
     public String getDesc(){
-        return userKeyExec.getInstance().getDesc(commandId);
+        return userKeyExec.getDesc(commandId);
     }
     
     public static userKey createFromStorage(int index) {

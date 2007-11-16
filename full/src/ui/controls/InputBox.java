@@ -28,16 +28,16 @@
 package ui.controls;
 
 import Client.Config;
-import Info.Phone;
+//import Info.Phone;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.ColorScheme;
-import ui.FontCache;
+//import ui.FontCache;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import ui.VirtualList;
+//import ui.VirtualList;
 
 /**
  *
@@ -221,7 +221,7 @@ public class InputBox {
                 keycount=0;    
             }
         } else {
-            openedChar=false;;
+            openedChar=false;
             this.lastkey=key;
             keycount=0;
         }
@@ -246,7 +246,7 @@ public class InputBox {
             case -10000: {
                 text="";
             }
-            this.text=text;
+            //this.text=text;
         }
         startTimer();
     }

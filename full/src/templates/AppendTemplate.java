@@ -27,9 +27,6 @@ package templates;
 import Client.MessageEdit;
 
 import Messages.MessageList;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import locale.SR;
 import ui.*;
 import Client.*;
@@ -37,6 +34,9 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.MainBar;
 //#if FILE_IO
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
@@ -103,7 +103,7 @@ public class AppendTemplate
 	super (display);
 	this.target=target;
         this.caretPos=caretPos;
-        enableListWrapping(true); //TEST:переход через конец списка
+        enableListWrapping(true); //TEST:пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	if (target!=null) {
 	    addCommand(cmdSelect);
 	}

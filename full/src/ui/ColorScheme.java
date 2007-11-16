@@ -26,8 +26,11 @@
  */
 
 package ui;
-
-import Client.StaticData;
+//#ifdef COLORS
+//# import Client.StaticData;
+//# import java.util.Hashtable;
+//# import util.StringLoader;
+//#endif
 
 //#if FILE_IO
 import io.file.FileIO;
@@ -42,8 +45,6 @@ import io.file.FileIO;
 //#if TRANSLIT
 //# import util.Translit;
 //#endif
-import java.util.Hashtable;
-import util.StringLoader;
 
 public class ColorScheme {
     private static ColorScheme instance;

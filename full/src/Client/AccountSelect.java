@@ -143,7 +143,6 @@ public class AccountSelect
             new AccountForm(this, display, null);
         }
         if (c==cmdDel) {
-            Config cf=Config.getInstance();
             if (cf.accountIndex>cursor) cf.accountIndex--;
             cf.saveToStorage();
            
@@ -160,7 +159,6 @@ public class AccountSelect
         if (!login) 
             parentView=StaticData.getInstance().roster;
         destroyView();
-	Config cf=Config.getInstance();
         cf.accountIndex=cursor;
         cf.saveToStorage();
         Account.loadAccount(login);

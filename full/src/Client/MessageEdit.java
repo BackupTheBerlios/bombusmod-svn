@@ -43,7 +43,6 @@ import util.ClipBoard;
 //#ifdef TRANSLIT
 //# import util.Translit;
 //#endif
-import ui.Time;
 
 /**
  *
@@ -200,8 +199,7 @@ public class MessageEdit
         if (c==cmdSubj) {
             if (body==null) return;
             subj=body;
-            body="/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
-            body=null; //"/me has set the topic to: "+subj;
+            body=null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
         }
         
         // message/composing sending
@@ -256,15 +254,13 @@ public class MessageEdit
     }
 
 
-    public int getCaretPos() {
-        String body=t.getString();
-        
+    public int getCaretPos() {     
         int caretPos=t.getCaretPosition();
         // +MOTOROLA STUB
         if (Phone.PhoneManufacturer()==Phone.MOTO)
             caretPos=-1;
         
-        if (caretPos<0) caretPos=body.length();
+        if (caretPos<0) caretPos=t.getString().length();
         
         return caretPos;
     }

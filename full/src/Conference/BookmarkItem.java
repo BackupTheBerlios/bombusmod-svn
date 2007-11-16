@@ -120,7 +120,7 @@ public class BookmarkItem extends IconTextElement{
             long last=grp.getConference().lastMessageTime;
             long delay= ( grp.conferenceJoinTime - last ) /1000 ;
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
-        } catch (Exception e) {};
+        } catch (Exception e) {}
 
         sd.roster.sendPresence(name, null, x, false);
         sd.roster.reEnumRoster();

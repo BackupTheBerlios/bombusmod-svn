@@ -28,11 +28,9 @@
 
 package ui;
 import Info.Phone;
-import Info.Version;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
-import ui.InfoBar;
 //#ifdef POPUPS
 //# import ui.controls.PopUp;
 //#endif
@@ -72,8 +70,8 @@ public abstract class VirtualList
     private int additionKeyState = USER_OTHER_KEY_PRESSED;
     
     
-    public Phone ph=Phone.getInstance();
-    private Stats stats=Stats.getInstance();
+    //public Phone ph=Phone.getInstance();
+    //private Stats stats=Stats.getInstance();
     
 //#ifdef USER_KEYS
 //#     public userKeyExec ue=userKeyExec.getInstance();
@@ -164,7 +162,7 @@ public abstract class VirtualList
         for (int index=0; index<size; index++){
             y+=getItemRef(index).getVHeight();
             layout[index+1]=y;
-        };
+        }
         listHeight=y;
         itemLayoutY=layout;
     }
@@ -238,7 +236,7 @@ public abstract class VirtualList
         width=getWidth();
         height=getHeight();
         
-        if (ph.PhoneManufacturer()==ph.WINDOWS) {
+        if (cf.phoneManufacturer==Phone.WINDOWS) {
             setTitle("Bombus CE");
         }
 
@@ -249,11 +247,11 @@ public abstract class VirtualList
 	scrollbar=new ScrollBar();
 	scrollbar.setHasPointerEvents(hasPointerEvents());
         
-        InfoBar infobar=new InfoBar(" ");
-        infobar.addElement(null); //1
-        infobar.addRAlign();
-        infobar.addElement(null); //3
-        setInfoBarItem(infobar);
+        InfoBar secondBar=new InfoBar(" ");
+        secondBar.addElement(null); //1
+        secondBar.addRAlign();
+        secondBar.addElement(null); //3
+        setInfoBarItem(secondBar);
     }
 
     /** Creates a new instance of VirtualList */
@@ -710,14 +708,16 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#         popup.next();
 //#endif
-        if ((keyCode==cf.SOFT_RIGHT || keyCode==cf.KEY_BACK) && ph.PhoneManufacturer()!=ph.SONYE) {
-            if (canBack==true)
-                destroyView();
-            return;
+        if ((keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK)) {
+            if (cf.phoneManufacturer==Phone.SONYE || cf.phoneManufacturer==Phone.SIEMENS || cf.phoneManufacturer==Phone.SIEMENS2) {
+                if (canBack==true)
+                    destroyView();
+                return;
+            }
         }
         
 //#if ALT_INPUT
-//#         if (inputbox==null) {
+//#     if (inputbox==null) {
 //#endif
             switch (keyCode) {
                 case 0: break;
@@ -756,10 +756,19 @@ public abstract class VirtualList
                     break; 
                 }
                 case NOKIA_GREEN: {
-                    if (ph.PhoneManufacturer()==ph.NOKIA) {
+                    if (cf.phoneManufacturer==Phone.NOKIA || cf.phoneManufacturer==Phone.WTK) {
                         keyGreen();
                         break; 
                     }
+                }
+                case KEY_STAR: {
+                    System.gc();
+//#ifdef POPUPS
+//#                     if (cf.popUps) {
+//#                         int freemem=(int)Runtime.getRuntime().freeMemory();
+//#                         setWobble("Free "+(freemem/1000)+" kb");
+//#                     }
+//#endif
                 }
 
                 default:
@@ -778,17 +787,7 @@ public abstract class VirtualList
                             userKeyPressed(keyCode);
                         }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
-
-                    if (keyCode==KEY_STAR) {
-                            System.gc();
-//#ifdef POPUPS
-//#                             if (cf.popUps) {
-//#                                 int freemem=(int)Runtime.getRuntime().freeMemory();
-//#                                 setWobble("Free "+(freemem/1000)+" kb");
-//#                             }
-//#endif
-                    }
-            }
+                }
 //#if ALT_INPUT
 //#         } else {
 //#             if (keyCode==greenKeyCode)
@@ -887,7 +886,7 @@ public abstract class VirtualList
                 if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
             }
             setRotator();
-        } catch (Exception e) {};
+        } catch (Exception e) {}
     }
 
     public void keyRight() { 
@@ -905,7 +904,7 @@ public abstract class VirtualList
                     if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
                 }
             setRotator();
-        } catch (Exception e) {};
+        } catch (Exception e) {}
     }
     
     public boolean cursorInWindow(){
@@ -990,7 +989,7 @@ public abstract class VirtualList
             getInfoBarItem().setElementAt(s.toString(), 1);
             s.setLength(0);
             
-            s.append(strconv.getSizeString(stats.getGPRS()));
+            s.append(strconv.getSizeString(Stats.getGPRS()));
 //#ifdef ELF
 //#             s.append(getNetworkLevel());
 //#             s.append(getAccuLevel());

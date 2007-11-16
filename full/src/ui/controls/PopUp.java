@@ -50,7 +50,7 @@ public class PopUp {
     private Vector messages = new Vector(); 
 
     synchronized public void setMessage(String message){
-        if (message!=null && message!="")
+        if (message!=null)
             messages.addElement(parseMessage(message, width-border-padding));
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);

@@ -72,7 +72,7 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
         if (c==cmdOk) eventOk(); 
         if (c==cmdEdit) {
             new MoodForm( display, getSel() );
-        };
+        }
         if (c==cmdCancel) destroyView();
     }
     

@@ -222,7 +222,7 @@ public class Message extends JabberDataBlock
 		JabberDataBlock adr=(JabberDataBlock) e.nextElement();
 		if (adr.getTypeAttribute().equals("ofrom")) return adr.getAttribute("jid");
 	    }
-	} catch (Exception e) { /* normal case if not forwarded message */ };
+	} catch (Exception e) { /* normal case if not forwarded message */ }
 	
         return getAttribute("from");
     }

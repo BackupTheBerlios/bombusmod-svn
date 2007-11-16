@@ -250,7 +250,7 @@ public class ConferenceForm implements CommandListener{
             long last=grp.getConference().lastMessageTime;
             long delay= ( grp.conferenceJoinTime - last ) /1000 ;
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
-        } catch (Exception e) {};
+        } catch (Exception e) {}
         
         if (sndprs) {
             //sd.roster.sendPresence(name, null, x, false);

@@ -32,7 +32,7 @@
 package util;
 import Info.Version;
 import java.io.ByteArrayOutputStream;
-import java.lang.*;
+//import java.lang.*;
 import ui.Time;
 
 public class strconv {
@@ -188,7 +188,7 @@ public class strconv {
                 ibuf=1;
             }
         }
-        try { baos.close(); } catch (Exception e) {};
+        try { baos.close(); } catch (Exception e) {}
         //System.out.println(ibuf);
         //System.out.println(baos.size());
         return baos.toByteArray();

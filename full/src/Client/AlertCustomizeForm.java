@@ -79,9 +79,29 @@ public class AlertCustomizeForm implements
         f=new Form(SR.MS_OPTIONS);
         
         MessageFile=new ChoiceGroup("Message sound", ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    MessageFile.append( (String)f.nextElement(), null );
+        OnlineFile=new ChoiceGroup("Online "+SR.MS_SOUND, ChoiceGroup.POPUP);
+        OfflineFile=new ChoiceGroup("Offline "+SR.MS_SOUND, ChoiceGroup.POPUP);
+        ForYouFile=new ChoiceGroup(SR.MS_MESSAGE_FOR_ME+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
+        ComposingFile=new ChoiceGroup(SR.MS_COMPOSING_EVENTS+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
+        ConferenceFile=new ChoiceGroup(SR.MS_SOUND+" for conference", ChoiceGroup.POPUP);
+        StartUpFile=new ChoiceGroup(SR.MS_SOUND+" for StartUp", ChoiceGroup.POPUP);
+        OutgoingFile=new ChoiceGroup(SR.MS_SOUND+" for Outgoing", ChoiceGroup.POPUP);
+        VIPFile=new ChoiceGroup(SR.MS_SOUND+" for VIP", ChoiceGroup.POPUP);
+        
+        
+	for (Enumeration file=files[2].elements(); file.hasMoreElements(); ) {
+	    MessageFile.append( (String)file.nextElement(), null );
+            OnlineFile.append( (String)file.nextElement(), null );
+            OfflineFile.append( (String)file.nextElement(), null );
+            ForYouFile.append( (String)file.nextElement(), null );
+            ComposingFile.append( (String)file.nextElement(), null );
+            ConferenceFile.append( (String)file.nextElement(), null );
+            StartUpFile.append( (String)file.nextElement(), null );
+            OutgoingFile.append( (String)file.nextElement(), null );
+            VIPFile.append( (String)file.nextElement(), null );
 	}
+        
+        
         try {
             MessageFile.setSelectedIndex(ac.soundsMsgIndex, true);
         } catch (Exception e) {ac.soundsMsgIndex=0;}
@@ -90,11 +110,7 @@ public class AlertCustomizeForm implements
 	MessageFile.addCommand(cmdMessageSound);
 	MessageFile.setItemCommandListener(this);
         
-        
-        OnlineFile=new ChoiceGroup("Online "+SR.MS_SOUND, ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    OnlineFile.append( (String)f.nextElement(), null );
-	}
+
         try {
             OnlineFile.setSelectedIndex(ac.soundOnlineIndex, true);
         } catch (Exception e) {ac.soundOnlineIndex=0;}
@@ -103,10 +119,6 @@ public class AlertCustomizeForm implements
 	OnlineFile.setItemCommandListener(this);
         
                  
-        OfflineFile=new ChoiceGroup("Offline "+SR.MS_SOUND, ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    OfflineFile.append( (String)f.nextElement(), null );
-	}
         try {
             OfflineFile.setSelectedIndex(ac.soundOfflineIndex, true);
         } catch (Exception e) {ac.soundOfflineIndex=0;}
@@ -114,23 +126,15 @@ public class AlertCustomizeForm implements
         OfflineFile.addCommand(cmdOfflineSound);
 	OfflineFile.setItemCommandListener(this);
         
-    
-        ForYouFile=new ChoiceGroup(SR.MS_MESSAGE_FOR_ME+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    ForYouFile.append( (String)f.nextElement(), null );
-	}
+
         try {
             ForYouFile.setSelectedIndex(ac.soundForYouIndex, true);
         } catch (Exception e) {ac.soundForYouIndex=0;}
 	f.append(ForYouFile);
         ForYouFile.addCommand(cmdForYouSound);
 	ForYouFile.setItemCommandListener(this);
+
         
-            
-        ComposingFile=new ChoiceGroup(SR.MS_COMPOSING_EVENTS+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    ComposingFile.append( (String)f.nextElement(), null );
-	}
         try {
             ComposingFile.setSelectedIndex(ac.soundComposingIndex, true);
         } catch (Exception e) {ac.soundComposingIndex=0;}
@@ -138,11 +142,7 @@ public class AlertCustomizeForm implements
         ComposingFile.addCommand(cmdComposingSound);
 	ComposingFile.setItemCommandListener(this);   
         
-        
-        ConferenceFile=new ChoiceGroup(SR.MS_SOUND+" for conference", ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    ConferenceFile.append( (String)f.nextElement(), null );
-	}
+
         try {
             ConferenceFile.setSelectedIndex(ac.soundConferenceIndex, true);
         } catch (Exception e) {ac.soundConferenceIndex=0;}
@@ -151,10 +151,6 @@ public class AlertCustomizeForm implements
 	ConferenceFile.setItemCommandListener(this);
         
 
-        StartUpFile=new ChoiceGroup(SR.MS_SOUND+" for StartUp", ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    StartUpFile.append( (String)f.nextElement(), null );
-	}
         try {
             StartUpFile.setSelectedIndex(ac.soundStartUpIndex, true);
         } catch (Exception e) {ac.soundStartUpIndex=0;}
@@ -162,23 +158,15 @@ public class AlertCustomizeForm implements
         StartUpFile.addCommand(cmdStartUpSound);
 	StartUpFile.setItemCommandListener(this);   
         
-        
-        OutgoingFile=new ChoiceGroup(SR.MS_SOUND+" for Outgoing", ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    OutgoingFile.append( (String)f.nextElement(), null );
-	}
+
         try {
             OutgoingFile.setSelectedIndex(ac.soundOutgoingIndex, true);
         } catch (Exception e) {ac.soundOutgoingIndex=0;}
 	f.append(OutgoingFile);
         OutgoingFile.addCommand(cmdOutgoingSound);
 	OutgoingFile.setItemCommandListener(this);
+
         
-        
-        VIPFile=new ChoiceGroup(SR.MS_SOUND+" for VIP", ChoiceGroup.POPUP);
-	for (Enumeration f=files[2].elements(); f.hasMoreElements(); ) {
-	    VIPFile.append( (String)f.nextElement(), null );
-	}
         try {
             VIPFile.setSelectedIndex(ac.soundVIPIndex, true);
         } catch (Exception e) {ac.soundVIPIndex=0;}

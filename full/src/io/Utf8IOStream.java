@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import javax.microedition.io.*;
-import Client.Config;
 import util.strconv;
 
 /**
@@ -123,7 +122,7 @@ public class Utf8IOStream implements Runnable{
 //#                 && iStreamWaiting
 //#endif
         ) {
-            try { Thread.sleep(100); } catch (Exception e) {};
+            try { Thread.sleep(100); } catch (Exception e) {}
             avail=inpStream.available();
         }
         
@@ -190,8 +189,8 @@ public class Utf8IOStream implements Runnable{
     }
     
     public void close() {
-	try { outStream.close();    }  catch (Exception e) {};
-	try { inpStream.close();    }  catch (Exception e) {};
+	try { outStream.close();    }  catch (Exception e) {}
+	try { inpStream.close();    }  catch (Exception e) {}
 	// Alcatel temporary bugfix - this method hangs
 	//try { connection.close();   }  catch (Exception e) {};
 	new Thread(this).start();
@@ -199,7 +198,7 @@ public class Utf8IOStream implements Runnable{
 
     public void run() {
 	// Alcatel temporary bugfix - this method hangs
-	try { connection.close();   }  catch (Exception e) {};
+	try { connection.close();   }  catch (Exception e) {}
     }
     
     public String readLine() throws IOException {

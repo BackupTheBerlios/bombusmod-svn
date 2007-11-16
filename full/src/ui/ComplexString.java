@@ -28,7 +28,7 @@
 package ui;
 import java.util.*;
 import javax.microedition.lcdui.*;
-import ui.VirtualElement;
+//import ui.VirtualElement;
 
 /**
  *

@@ -46,7 +46,7 @@ public class IqVersionReply extends Iq{
         query.addChild("name", "BombusMod");
         query.addChild("version", Version.getVersionLang());
         if (Config.getInstance().enableVersionOs) {
-            query.addChild("os", Phone.getInstance().getOs());
+            query.addChild("os", Phone.getOs());
         }
     }
     

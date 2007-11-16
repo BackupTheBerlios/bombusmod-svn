@@ -96,7 +96,7 @@ public class Presence extends JabberDataBlock
           if (type.equals(PRS_OFFLINE)) { 
               presenceCode=PRESENCE_OFFLINE;
               text.append(SR.getPresence(PRS_OFFLINE));
-          };
+          }
           if (type.equals("subscribe")) {
               presenceCode=PRESENCE_AUTH_ASK;
               text.append(SR.MS_USER_REQUEST_AUTORIZATION);

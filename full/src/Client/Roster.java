@@ -40,6 +40,7 @@ import Client.Stats;
 //# import UserMood.MoodSelect;
 //#endif
 //#ifdef ARCHIVE
+//# import Info.Phone;
 //# import archive.ArchiveList;
 //#endif
 import images.RosterIcons;
@@ -228,7 +229,7 @@ public class Roster
 		} catch( Exception e ) { }
          } 
 //#ifdef SE_LIGHT
-//#         else if (ph.PhoneManufacturer()==ph.SONYE) {
+//#         else if (cf.phoneManufacturer==Phone.SONYE) {
 //#             selight.setLight(state);
 //#          }
 //#endif
@@ -239,9 +240,9 @@ public class Roster
 //#         if (!cf.newMenu) {
 //#endif
                 int activeType=Command.SCREEN;
-                if (ph.PhoneManufacturer()==ph.NOKIA) activeType=Command.BACK;
-                if (ph.PhoneManufacturer()==ph.INTENT) activeType=Command.BACK;
-                if (ph.PhoneManufacturer()==ph.J2ME) activeType=Command.BACK;
+                if (cf.phoneManufacturer==Phone.NOKIA) activeType=Command.BACK;
+                if (cf.phoneManufacturer==Phone.INTENT) activeType=Command.BACK;
+                if (cf.phoneManufacturer==Phone.J2ME) activeType=Command.BACK;
 
                 cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
 
@@ -263,7 +264,7 @@ public class Roster
                 
                 addCommand(cmdCleanAllMessages);
 
-                if (ph.PhoneManufacturer()!=ph.NOKIA_9XXX) {
+                if (cf.phoneManufacturer==Phone.NOKIA_9XXX) {
                     addCommand(cmdQuit);
                 }
 
@@ -2286,11 +2287,11 @@ public class Roster
         else if (keyCode==KEY_NUM9) {
             if (cf.allowMinimize)
                 BombusMod.getInstance().hideApp(true);
-            else if (ph.PhoneManufacturer()==ph.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
+            else if (cf.phoneManufacturer==Phone.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
                  try {
                       BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
                  } catch (Exception e) { }     
-            else if (ph.PhoneManufacturer()==ph.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
+            else if (cf.phoneManufacturer==Phone.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
                  try {
                     BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
                  } catch (Exception e) { }   
@@ -2395,7 +2396,7 @@ public class Roster
 //#             autostatus.destroyTask();
 //#endif
 //#ifdef SE_LIGHT
-//#         if (ph.PhoneManufacturer()==ph.SONYE)
+//#         if (cf.phoneManufacturer==Phone.SONYE)
 //#             selight.destroyTask();
 //#endif
         //cf.isbottom=VirtualList.isbottom; //save panels state on exit       
@@ -2812,25 +2813,25 @@ public class Roster
     
     private void getKeys()
     {
-        int pm=ph.PhoneManufacturer();
-        if (pm==ph.SIEMENS || pm==ph.SIEMENS2) {
+        int pm=cf.phoneManufacturer;
+        if (pm==Phone.SIEMENS || pm==Phone.SIEMENS2) {
              cf.SOFT_LEFT=-1;
              cf.SOFT_RIGHT=-4;
              return;
         }
 
-        if (pm==ph.WINDOWS) {
+        if (pm==Phone.WINDOWS) {
              cf.SOFT_LEFT=40;
              cf.SOFT_RIGHT=41;
              return;     
         }
-        if (pm==ph.NOKIA || pm==ph.SONYE) {
+        if (pm==Phone.NOKIA || pm==Phone.SONYE) {
             cf.SOFT_LEFT=-6;
             cf.SOFT_RIGHT=-7;
             return;
         } 
         
-        if (pm==ph.MOTOEZX) {
+        if (pm==Phone.MOTOEZX) {
             cf.SOFT_LEFT=-21;
             cf.SOFT_RIGHT=-22;
             return;

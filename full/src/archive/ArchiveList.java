@@ -28,15 +28,10 @@
 package archive;
 
 import Client.MessageEdit;
-
-import Client.Config;
 import Client.Msg;
 import Client.StaticData;
-import java.io.InputStream;
 import ui.MainBar;
 import Messages.MessageList;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
@@ -46,10 +41,15 @@ import locale.SR;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
+import Client.Config;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import util.strconv;
 //#endif
 import ui.Time;
 import util.ClipBoard;
-import util.strconv;
+
 import ui.YesNoAlert;
 
 /**

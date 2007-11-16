@@ -35,7 +35,9 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.ColorScheme;
+//#ifdef COLORS
+//# import ui.ColorScheme;
+//#endif
 import ui.VirtualElement;
 import ui.VirtualList;
 import ui.FontCache;

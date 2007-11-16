@@ -151,7 +151,7 @@ public class Bookmarks
             long last=grp.getConference().lastMessageTime;
             long delay= ( grp.conferenceJoinTime - last ) /1000 ;
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
-        } catch (Exception e) {};
+        } catch (Exception e) {}
         
         sd.roster.sendPresence(join.toString(), null, x, false);
         sd.roster.reEnumRoster();

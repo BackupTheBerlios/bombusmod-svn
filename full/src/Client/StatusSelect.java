@@ -84,7 +84,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         if (c==cmdOk) eventOk(); 
         if (c==cmdEdit) {
             new StatusForm( display, getSel() );
-        };
+        }
         
         if (c==cmdDef) {
             cf.loginstatus=cursor;

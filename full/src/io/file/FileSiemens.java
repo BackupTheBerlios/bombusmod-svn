@@ -98,7 +98,7 @@ public class FileSiemens extends FileIO {
     }
     
     public void delete() throws IOException{
-        f.delete(fileName);
+        File.delete(fileName);
     }
 }
 

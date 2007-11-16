@@ -26,8 +26,6 @@
  */
 
 package ui;
-import Client.Config;
-import ui.ImageList;
 import javax.microedition.lcdui.*;
 import java.util.*;
 

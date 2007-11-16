@@ -45,7 +45,6 @@ import locale.SR;
 import ui.Time;
 import ui.controls.StringItemEx;
 import ui.controls.TextFieldEx;
-import util.ClipBoard;
 
 /**
  *

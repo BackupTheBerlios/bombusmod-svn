@@ -108,7 +108,7 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
         try {
             Affiliations a=(Affiliations) parentView;
             a.getList();
-        } catch (Exception e) {};
+        } catch (Exception e) {}
         destroyView();
     }
     

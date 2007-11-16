@@ -28,12 +28,12 @@
 package ui;
 
 import Client.Config;
-import Client.ExtendedStatus;
-import Client.Roster;
-import Client.StaticData;
-import Client.StatusList;
-import Info.Phone;
-import com.alsutton.jabber.datablocks.Presence;
+//#ifdef AUTOSTATUS
+//# import Client.ExtendedStatus;
+//# import Client.Roster;
+//# import Client.StaticData;
+//# import Client.StatusList;
+//#endif
 import images.RosterIcons;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,7 +64,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     private TimerTaskClock tc;
     
-    private StaticData sd=StaticData.getInstance();
+    //private StaticData sd=StaticData.getInstance();
     
     
     private static SplashScreen instance;
@@ -209,10 +209,10 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
     public void run() {
         try {
-            img=BombusMod.getInstance().splash;
+            img=BombusMod.splash;
             if (img==null)
                 img=Image.createImage("/images/splash.png");
-        } catch (Exception e) {};
+        } catch (Exception e) {}
         
         display.setCurrent(this);
     }
@@ -257,13 +257,14 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         img=null;
         tc.stop();
 //#ifdef AUTOSTATUS
-//#         if (Roster.autoAway && Config.getInstance().autoAwayType==Config.AWAY_LOCK) {
-//#             int newStatus=sd.roster.oldStatus;
+//#         Roster roster=StaticData.getInstance().roster;
+//#         if (roster.autoAway && Config.getInstance().autoAwayType==Config.AWAY_LOCK) {
+//#             int newStatus=roster.oldStatus;
 //#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
 //#             String ms=es.getMessage();
-//#             Roster.autoAway=false;
-//#             Roster.autoXa=false;
-//#             sd.roster.sendPresence(newStatus, ms);
+//#             roster.autoAway=false;
+//#             roster.autoXa=false;
+//#             roster.sendPresence(newStatus, ms);
 //#         }
 //#endif
         System.gc();

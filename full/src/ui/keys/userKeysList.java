@@ -25,20 +25,21 @@
  */
 
 package ui.keys;
-
-import Client.Config;
-import Client.StaticData;
-import io.NvStorage;
-import java.io.DataOutputStream;
-import java.util.Vector;
+//#ifdef USER_KEYS
+//# import Client.Config;
+//# import Client.StaticData;
+//# import io.NvStorage;
+//# import java.io.DataOutputStream;
+//# import java.util.Vector;
+//# import locale.SR;
+//# import ui.MainBar;
+//# import ui.VirtualElement;
+//# import ui.VirtualList;
+//#endif
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import locale.SR;
-import ui.MainBar;
-import ui.VirtualElement;
-import ui.VirtualList;
 
 public class userKeysList
 //#ifdef USER_KEYS

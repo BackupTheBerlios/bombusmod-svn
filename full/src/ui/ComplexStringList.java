@@ -26,7 +26,7 @@
  */
 
 package ui;
-import ui.ImageList;
+//import ui.ImageList;
 import javax.microedition.lcdui.*;
 import java.util.*;
 

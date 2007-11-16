@@ -35,7 +35,6 @@ package Client;
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryConfig;
 //#endif
-import Client.Stats;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
@@ -46,7 +45,6 @@ import ui.MenuItem;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeysList;
 //#endif
-import util.strconv;
 import vcard.VCard;
 import vcard.vCardForm;
 

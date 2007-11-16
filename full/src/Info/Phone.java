@@ -26,6 +26,8 @@
 
 package Info;
 
+import Client.Config;
+
 public class Phone {
     public final static int NOT_DETECTED=0;
     public final static int NONE=-1;
@@ -96,7 +98,7 @@ public class Phone {
             } else if (platform.startsWith("Intent")) {
                 phoneManufacturer=INTENT;
                 return;
-            } else if (platform.startsWith("wtk-emulator")) {
+            } else if (platform.startsWith("wtk") || platform.endsWith("wtk")) {
                 phoneManufacturer=WTK;
                 return;
             } else if (platform.startsWith("j2me")) {
@@ -106,6 +108,7 @@ public class Phone {
                 phoneManufacturer=OTHER;
             }
         }
+        Config.getInstance().phoneManufacturer=phoneManufacturer;
     }
    
     public static String getPlatformName() {

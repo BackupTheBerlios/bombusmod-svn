@@ -51,10 +51,11 @@ import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.ColorScheme;
+//#ifdef COLORS
+//# import ui.ColorScheme;
+//#endif
 import ui.Menu;
 import ui.MenuItem;
-import ui.Time;
 import ui.YesNoAlert;
 import util.ClipBoard;
 import vcard.VCard;

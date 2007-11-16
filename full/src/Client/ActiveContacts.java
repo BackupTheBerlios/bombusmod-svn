@@ -29,7 +29,6 @@ package Client;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;

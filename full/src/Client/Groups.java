@@ -27,7 +27,6 @@
 
 package Client;
 
-import images.RosterIcons;
 import java.util.*;
 import locale.SR;
 
@@ -91,8 +90,8 @@ public class Groups implements JabberBlockListener{
         }
 	gr.finishCount();
         
-        if (index==Groups.TYPE_SEARCH_RESULT) return; ;//don't count this contacts
-        if (index==Groups.TYPE_NOT_IN_LIST) return; ;//don't count this contacts
+        if (index==Groups.TYPE_SEARCH_RESULT) return;//don't count this contacts
+        if (index==Groups.TYPE_NOT_IN_LIST) return;//don't count this contacts
         
 	rosterContacts+=gr.getNContacts();
 	rosterOnline+=gr.getOnlines();

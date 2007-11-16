@@ -25,9 +25,6 @@
 
 package Client;
 
-import com.alsutton.jabber.JabberDataBlock;
-import com.alsutton.jabber.datablocks.Iq;
-import com.alsutton.jabber.datablocks.IqQueryRoster;
 import java.util.Enumeration;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
@@ -35,9 +32,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.controls.TextFieldCombo;
 
 public class ChangeTransport implements CommandListener{
 

@@ -39,11 +39,14 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+//#if FILE_IO
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
 import javax.microedition.lcdui.TextField;
-import locale.SR;
 import ui.controls.TextFieldEx;
+//#endif
+import locale.SR;
+
 
 public class HistoryConfig implements
 	CommandListener 

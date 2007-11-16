@@ -100,7 +100,7 @@ public class TextFieldCombo
         
         cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
         cmdSelect=new Command(SR.MS_SELECT, Command.OK, 1);
-	cmdClear=new Command(SR.MS_CLEAR, command.SCREEN,2);
+	cmdClear=new Command(SR.MS_CLEAR, Command.SCREEN,2);
         
         list=new List(label, List.IMPLICIT);
         list.addCommand(cmdBack);

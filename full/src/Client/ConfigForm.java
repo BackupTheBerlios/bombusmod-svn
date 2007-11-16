@@ -31,7 +31,9 @@ import Info.Phone;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
-import java.util.Enumeration;
+//#ifdef COLORS 
+//# import java.util.Enumeration;
+//#endif
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;

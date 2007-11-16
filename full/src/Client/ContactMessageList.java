@@ -34,11 +34,11 @@ import Conference.MucContact;
 //#endif
 import Messages.MessageList;
 import images.RosterIcons;
-import io.NvStorage;
+//#if LAST_MESSAGES 
+//# import io.NvStorage;
+//#endif
 import locale.SR;
 import ui.MainBar;
-import ui.Time;
-//import ui.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import util.ClipBoard;
@@ -426,7 +426,8 @@ public class ContactMessageList extends MessageList
     }
     
     public void keyGreen(){
-        if (!sd.roster.isLoggedIn()) return;
+        if (!sd.roster.isLoggedIn()) 
+            return;
 //#if ALT_INPUT   
 //#         if (cf.altInput) {
 //#             if (!startMessage) {
@@ -622,7 +623,7 @@ public class ContactMessageList extends MessageList
             String msg=new StringBuffer()
                 .append((char)0xbb) //
                 .append(" ")
-			    .append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
+		.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n")
                 .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .toString();

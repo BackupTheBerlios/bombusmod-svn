@@ -28,7 +28,6 @@
 package Client;
 
 import Info.Phone;
-import Info.Version;
 import images.RosterIcons;
 import images.SmilesIcons;
 import java.io.*;
@@ -184,7 +183,7 @@ public class Config {
     
     public boolean useTabs=true;
     
-    
+    public int phoneManufacturer;    
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -207,38 +206,39 @@ public class Config {
 	gmtOffset=getIntProperty("time_gmt_offset", gmtloc);
 	
 	short greenKeyCode=-1000;
-	
-	if (ph.PhoneManufacturer()==ph.SONYE) {
+
+                
+	if (phoneManufacturer==Phone.SONYE) {
             //prefetch images
             RosterIcons.getInstance();
             SmilesIcons.getInstance();
             
 			allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
-            if (ph.PhoneManufacturer()==ph.SONYE_M600) {
+            if (phoneManufacturer==Phone.SONYE_M600) {
                 KEY_BACK=-11;
             }
-	} else if (ph.PhoneManufacturer()==ph.NOKIA) {
+	} else if (phoneManufacturer==Phone.NOKIA) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
-	} else if (ph.PhoneManufacturer()==ph.MOTOEZX) {
+	} else if (phoneManufacturer==Phone.MOTOEZX) {
 	    //VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	    KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
-	} else if (ph.PhoneManufacturer()==ph.MOTO) {
+	} else if (phoneManufacturer==Phone.MOTO) {
 	    ghostMotor=true;
 	    blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    //VirtualList.keyClear=0x1000;
-	} else if (ph.PhoneManufacturer()==ph.SIEMENS || ph.PhoneManufacturer()==ph.SIEMENS2) {
+	} else if (phoneManufacturer==Phone.SIEMENS || Phone.PhoneManufacturer()==Phone.SIEMENS2) {
             keyLock='#';
             keyVibra='*';
             allowLightControl=true;
             blFlash=true;
             KEY_BACK=-4; //keyCode==702
             greenKeyCode=VirtualList.SIEMENS_GREEN;
-        } else if (ph.PhoneManufacturer()==ph.WTK) {
+        } else if (phoneManufacturer==Phone.WTK) {
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	}
         

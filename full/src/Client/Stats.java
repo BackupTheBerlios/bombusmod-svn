@@ -50,7 +50,7 @@ public class Stats {
 	if (instance==null) {
 	    instance=new Stats();
             instance.loadFromStorage();
-            instance.getGPRS();
+            getGPRS();
 	}
 	return instance;
     }

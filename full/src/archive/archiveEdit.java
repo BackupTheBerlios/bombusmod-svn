@@ -139,15 +139,13 @@ public class archiveEdit implements CommandListener
     }
     
 
-    public int getCaretPos() {
-        String body=t.getString();
-        
+    public int getCaretPos() {     
         int caretPos=t.getCaretPosition();
         // +MOTOROLA STUB
         if (Phone.PhoneManufacturer()==Phone.MOTO)
             caretPos=-1;
         
-        if (caretPos<0) caretPos=body.length();
+        if (caretPos<0) caretPos=t.getString().length();
         
         return caretPos;
     }

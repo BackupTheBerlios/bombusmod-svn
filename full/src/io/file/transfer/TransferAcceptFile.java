@@ -39,7 +39,6 @@ import javax.microedition.lcdui.StringItem;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.TextFieldCombo;
-import ui.controls.TextFieldEx;
 
 /**
  *

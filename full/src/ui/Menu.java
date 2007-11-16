@@ -26,7 +26,6 @@
  */
 
 package ui;
-import ui.MainBar;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
