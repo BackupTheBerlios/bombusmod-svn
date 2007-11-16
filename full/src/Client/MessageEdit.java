@@ -29,7 +29,6 @@ package Client;
 //#ifndef WMUC
 import Conference.AppendNick;
 //#endif
-import Info.Phone;
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -257,7 +256,7 @@ public class MessageEdit
     public int getCaretPos() {     
         int caretPos=t.getCaretPosition();
         // +MOTOROLA STUB
-        if (cf.phoneManufacturer==Phone.MOTO)
+        if (cf.phoneManufacturer==Config.MOTO)
             caretPos=-1;
         
         if (caretPos<0) caretPos=t.getString().length();

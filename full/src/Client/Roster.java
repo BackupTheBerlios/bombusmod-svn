@@ -40,7 +40,6 @@ import Client.Stats;
 //# import UserMood.MoodSelect;
 //#endif
 //#ifdef ARCHIVE
-//# import Info.Phone;
 //# import archive.ArchiveList;
 //#endif
 import images.RosterIcons;
@@ -234,9 +233,9 @@ public class Roster
 //#         if (!cf.newMenu) {
 //#endif
                 int activeType=Command.SCREEN;
-                if (cf.phoneManufacturer==Phone.NOKIA) activeType=Command.BACK;
-                if (cf.phoneManufacturer==Phone.INTENT) activeType=Command.BACK;
-                if (cf.phoneManufacturer==Phone.J2ME) activeType=Command.BACK;
+                if (cf.phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
+                if (cf.phoneManufacturer==Config.INTENT) activeType=Command.BACK;
+                if (cf.phoneManufacturer==Config.J2ME) activeType=Command.BACK;
 
                 cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
 
@@ -258,9 +257,8 @@ public class Roster
                 
                 addCommand(cmdCleanAllMessages);
 
-                if (cf.phoneManufacturer==Phone.NOKIA_9XXX) {
-                    addCommand(cmdQuit);
-                }
+                addCommand(cmdQuit);
+
                 addOptionCommands();
                 setCommandListener(this);
 //#ifdef NEW_MENU
@@ -2280,11 +2278,11 @@ public class Roster
         else if (keyCode==KEY_NUM9) {
             if (cf.allowMinimize)
                 BombusMod.getInstance().hideApp(true);
-            else if (cf.phoneManufacturer==Phone.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
+            else if (cf.phoneManufacturer==Config.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
                  try {
                       BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
                  } catch (Exception e) { }     
-            else if (cf.phoneManufacturer==Phone.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
+            else if (cf.phoneManufacturer==Config.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
                  try {
                     BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
                  } catch (Exception e) { }   
@@ -2807,24 +2805,24 @@ public class Roster
     private void getKeys()
     {
         int pm=cf.phoneManufacturer;
-        if (pm==Phone.SIEMENS || pm==Phone.SIEMENS2) {
+        if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
              cf.SOFT_LEFT=-1;
              cf.SOFT_RIGHT=-4;
              return;
         }
 
-        if (pm==Phone.WINDOWS) {
+        if (pm==Config.WINDOWS) {
              cf.SOFT_LEFT=40;
              cf.SOFT_RIGHT=41;
              return;     
         }
-        if (pm==Phone.NOKIA || pm==Phone.SONYE) {
+        if (pm==Config.NOKIA || pm==Config.SONYE) {
             cf.SOFT_LEFT=-6;
             cf.SOFT_RIGHT=-7;
             return;
         } 
         
-        if (pm==Phone.MOTOEZX) {
+        if (pm==Config.MOTOEZX) {
             cf.SOFT_LEFT=-21;
             cf.SOFT_RIGHT=-22;
             return;

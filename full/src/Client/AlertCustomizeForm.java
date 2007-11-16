@@ -40,15 +40,16 @@ public class AlertCustomizeForm implements
     private Displayable parentView;
 
     Form f;
-    ChoiceGroup MessageFile;
-    ChoiceGroup OnlineFile;
-    ChoiceGroup OfflineFile;
-    ChoiceGroup ForYouFile;
-    ChoiceGroup ComposingFile;
-    ChoiceGroup ConferenceFile;
-    ChoiceGroup StartUpFile;
-    ChoiceGroup OutgoingFile;
-    ChoiceGroup VIPFile;
+   
+    ChoiceGroup MessageFile=new ChoiceGroup("Message sound", ChoiceGroup.POPUP);
+    ChoiceGroup OnlineFile=new ChoiceGroup("Online "+SR.MS_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup OfflineFile=new ChoiceGroup("Offline "+SR.MS_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup ForYouFile=new ChoiceGroup(SR.MS_MESSAGE_FOR_ME+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup ComposingFile=new ChoiceGroup(SR.MS_COMPOSING_EVENTS+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup ConferenceFile=new ChoiceGroup(SR.MS_SOUND+" for conference", ChoiceGroup.POPUP);
+    ChoiceGroup StartUpFile=new ChoiceGroup(SR.MS_SOUND+" for StartUp", ChoiceGroup.POPUP);
+    ChoiceGroup OutgoingFile=new ChoiceGroup(SR.MS_SOUND+" for Outgoing", ChoiceGroup.POPUP);
+    ChoiceGroup VIPFile=new ChoiceGroup(SR.MS_SOUND+" for VIP", ChoiceGroup.POPUP);
     
     Gauge sndVol;
     
@@ -78,29 +79,9 @@ public class AlertCustomizeForm implements
        
         f=new Form(SR.MS_OPTIONS);
         
-        MessageFile=new ChoiceGroup("Message sound", ChoiceGroup.POPUP);
-        OnlineFile=new ChoiceGroup("Online "+SR.MS_SOUND, ChoiceGroup.POPUP);
-        OfflineFile=new ChoiceGroup("Offline "+SR.MS_SOUND, ChoiceGroup.POPUP);
-        ForYouFile=new ChoiceGroup(SR.MS_MESSAGE_FOR_ME+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
-        ComposingFile=new ChoiceGroup(SR.MS_COMPOSING_EVENTS+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
-        ConferenceFile=new ChoiceGroup(SR.MS_SOUND+" for conference", ChoiceGroup.POPUP);
-        StartUpFile=new ChoiceGroup(SR.MS_SOUND+" for StartUp", ChoiceGroup.POPUP);
-        OutgoingFile=new ChoiceGroup(SR.MS_SOUND+" for Outgoing", ChoiceGroup.POPUP);
-        VIPFile=new ChoiceGroup(SR.MS_SOUND+" for VIP", ChoiceGroup.POPUP);
-        
-        
 	for (Enumeration file=files[2].elements(); file.hasMoreElements(); ) {
-	    MessageFile.append( (String)file.nextElement(), null );
-            OnlineFile.append( (String)file.nextElement(), null );
-            OfflineFile.append( (String)file.nextElement(), null );
-            ForYouFile.append( (String)file.nextElement(), null );
-            ComposingFile.append( (String)file.nextElement(), null );
-            ConferenceFile.append( (String)file.nextElement(), null );
-            StartUpFile.append( (String)file.nextElement(), null );
-            OutgoingFile.append( (String)file.nextElement(), null );
-            VIPFile.append( (String)file.nextElement(), null );
-	}
-        
+            addSoundItem((String)file.nextElement());
+	}        
         
         try {
             MessageFile.setSelectedIndex(ac.soundsMsgIndex, true);
@@ -261,5 +242,17 @@ public class AlertCustomizeForm implements
         int soundVol=sndVol.getValue()*10;
 	new EventNotify(display, soundType, soundFile,soundVol, 0, false).startNotify();
     }   
+    
+    private void addSoundItem(String sound){
+	    MessageFile.append(sound, null );
+            OnlineFile.append(sound, null );
+            OfflineFile.append(sound, null );
+            ForYouFile.append(sound, null );
+            ComposingFile.append(sound, null );
+            ConferenceFile.append(sound, null );
+            StartUpFile.append(sound, null );
+            OutgoingFile.append(sound, null );
+            VIPFile.append(sound, null );
+    }  
     
 }

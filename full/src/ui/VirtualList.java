@@ -27,7 +27,6 @@
  */
 
 package ui;
-import Info.Phone;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
@@ -236,7 +235,7 @@ public abstract class VirtualList
         width=getWidth();
         height=getHeight();
         
-        if (cf.phoneManufacturer==Phone.WINDOWS) {
+        if (cf.phoneManufacturer==Config.WINDOWS) {
             setTitle("Bombus CE");
         }
 
@@ -709,7 +708,7 @@ public abstract class VirtualList
 //#         popup.next();
 //#endif
         if ((keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK)) {
-            if (cf.phoneManufacturer==Phone.SONYE || cf.phoneManufacturer==Phone.SIEMENS || cf.phoneManufacturer==Phone.SIEMENS2) {
+            if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
                 if (canBack==true)
                     destroyView();
                 return;
@@ -756,7 +755,7 @@ public abstract class VirtualList
                     break; 
                 }
                 case NOKIA_GREEN: {
-                    if (cf.phoneManufacturer==Phone.NOKIA || cf.phoneManufacturer==Phone.WTK) {
+                    if (cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.WTK) {
                         keyGreen();
                         break; 
                     }
@@ -1047,7 +1046,7 @@ public abstract class VirtualList
 //#     
 //#     public static void startRotate(int max, VirtualList list){
 //#         //Windows mobile J9 hanging test
-//#         if (Config.getInstance().phoneManufacturer==Phone.WINDOWS) {
+//#         if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
 //#             list.showBalloon=true;
 //#             list.offset=0;
 //#             return;

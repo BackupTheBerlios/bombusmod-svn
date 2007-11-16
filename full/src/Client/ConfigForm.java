@@ -26,7 +26,6 @@
  */
 
 package Client;
-import Info.Phone;
 //#if FILE_IO
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
@@ -96,8 +95,6 @@ public class ConfigForm implements
 //#endif
 //#endif
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-    
-    private Phone ph=Phone.getInstance();
     
     Config cf;
     boolean ra[];

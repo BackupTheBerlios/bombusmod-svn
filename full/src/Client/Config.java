@@ -26,8 +26,6 @@
  */
 
 package Client;
-
-import Info.Phone;
 import images.RosterIcons;
 import images.SmilesIcons;
 import java.io.*;
@@ -62,6 +60,25 @@ public class Config {
     public final static int SUBSCR_DROP=2;
     public final static int SUBSCR_REJECT=3;
     
+    public final static int NOT_DETECTED=0;
+    public final static int NONE=-1;
+    public final static int SONYE=1;
+    public final static int NOKIA=2;
+    public final static int SIEMENS=3;
+    public final static int SIEMENS2=4;
+    public final static int MOTO=5;
+    public final static int MOTOEZX=6;
+    public final static int WINDOWS=7;
+    public final static int INTENT=8;
+    public final static int J2ME=9;
+    public final static int NOKIA_9XXX=10;
+    public final static int SONYE_M600=11;
+    public final static int WTK=50;
+    
+    protected final static int OTHER=99;
+
+    private static String platformName;
+    
     public boolean ghostMotor=getBooleanProperty("moto_e398",false);
     public boolean blFlash=!ghostMotor; //true;
     
@@ -80,8 +97,6 @@ public class Config {
      public boolean cp1251=true;
     
     public String defGcRoom="bombusmod@conference.jabber.ru";
-    
-    Phone ph=Phone.getInstance();
     
     // non-volatile values
     public int accountIndex=-1;
@@ -183,7 +198,7 @@ public class Config {
     
     public boolean useTabs=true;
     
-    public int phoneManufacturer;    
+    public int phoneManufacturer=NOT_DETECTED;    
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -199,47 +214,45 @@ public class Config {
     
     /** Creates a new instance of Config */
     private Config() {
-     
+        getPhoneManufacturer();
         
 	int gmtloc=TimeZone.getDefault().getRawOffset()/3600000;
 	locOffset=getIntProperty( "time_loc_offset", 0);
 	gmtOffset=getIntProperty("time_gmt_offset", gmtloc);
 	
 	short greenKeyCode=-1000;
-        
-        //phoneManufacturer=Phone.PhoneManufacturer();
                 
-	if (phoneManufacturer==Phone.SONYE) {
+	if (phoneManufacturer==SONYE) {
             //prefetch images
             RosterIcons.getInstance();
             SmilesIcons.getInstance();
             
 			allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
-            if (phoneManufacturer==Phone.SONYE_M600) {
+            if (phoneManufacturer==SONYE_M600) {
                 KEY_BACK=-11;
             }
-	} else if (phoneManufacturer==Phone.NOKIA) {
+	} else if (phoneManufacturer==NOKIA) {
 	    blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
-	} else if (phoneManufacturer==Phone.MOTOEZX) {
+	} else if (phoneManufacturer==MOTOEZX) {
 	    //VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	    KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
-	} else if (phoneManufacturer==Phone.MOTO) {
+	} else if (phoneManufacturer==MOTO) {
 	    ghostMotor=true;
 	    blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    //VirtualList.keyClear=0x1000;
-	} else if (phoneManufacturer==Phone.SIEMENS || phoneManufacturer==Phone.SIEMENS2) {
+	} else if (phoneManufacturer==SIEMENS || phoneManufacturer==SIEMENS2) {
             keyLock='#';
             keyVibra='*';
             allowLightControl=true;
             blFlash=true;
             KEY_BACK=-4; //keyCode==702
             greenKeyCode=VirtualList.SIEMENS_GREEN;
-        } else if (phoneManufacturer==Phone.WTK) {
+        } else if (phoneManufacturer==WTK) {
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	}
         
@@ -535,6 +548,108 @@ public class Config {
             return false;
 	} catch (Exception e) { }
         return defvalue;
+    }
+    
+    private final void getPhoneManufacturer() {
+        if (phoneManufacturer==NOT_DETECTED) {
+            String platform=getPlatformName();
+            phoneManufacturer=NONE;
+
+            if (platform.endsWith("(NSG)")) {
+                phoneManufacturer=SIEMENS;
+                return;
+            } else if (platform.startsWith("SIE")) {
+                phoneManufacturer=SIEMENS2;
+                return;
+            } else if (platform.startsWith("Motorola-EZX")) {
+                phoneManufacturer=MOTOEZX;
+                return;
+            } else if (platform.startsWith("Moto")) {
+                phoneManufacturer=MOTO;
+                return;
+            } else if (platform.startsWith("SonyE")) {
+                if (platform.startsWith("SonyEricssonM600")) {
+                    phoneManufacturer=SONYE_M600;
+                    return;
+                }
+                phoneManufacturer=SONYE;
+                return;
+            } else if (platform.startsWith("Windows")) {
+                phoneManufacturer=WINDOWS;
+                return;
+            } else if (platform.startsWith("Nokia9500") || 
+                platform.startsWith("Nokia9300") || 
+                platform.startsWith("Nokia9300i")) {
+                phoneManufacturer=NOKIA_9XXX;
+                return;
+            } else if (platform.startsWith("Nokia")) {
+                phoneManufacturer=NOKIA;
+                return;
+            } else if (platform.startsWith("Intent")) {
+                phoneManufacturer=INTENT;
+                return;
+            } else if (platform.startsWith("wtk") || platform.endsWith("wtk")) {
+                phoneManufacturer=WTK;
+                return;
+            } else if (platform.startsWith("j2me")) {
+                phoneManufacturer=J2ME;
+                return;
+            } else {
+                phoneManufacturer=OTHER;
+            }
+        }
+    }
+    
+    public static String getPlatformName() {
+        if (platformName==null) {
+            platformName=System.getProperty("microedition.platform");
+            
+            String device=System.getProperty("device.model");
+            String firmware=System.getProperty("device.software.version");
+            
+            if (platformName==null) platformName="Motorola";
+            
+             if (platformName.startsWith("j2me")) {
+                if (device!=null) if (device.startsWith("wtk-emulator")) {
+                     platformName=device;
+                     return platformName;
+                }
+                if (device!=null && firmware!=null)
+                    platformName="Motorola"; // buggy v360
+
+		else {
+		    // Motorola EZX phones
+		    String hostname=System.getProperty("microedition.hostname");
+		    if (hostname!=null) {
+		        platformName="Motorola-EZX";
+		        if (device!=null) {
+		    	    // Motorola EZX ROKR
+			    hostname=device;
+                        }
+                     
+                        if (hostname.indexOf("(none)")<0)
+                         platformName+="/"+hostname;
+						 return platformName;
+                    }
+		}
+             }
+ 	    //else 
+		if (platformName.startsWith("Moto")) {
+                if (device==null) device=System.getProperty("funlights.product");
+                if (device!=null) platformName="Motorola-"+device;
+            }
+
+            if (platformName.indexOf("SIE") > -1) {
+                platformName=System.getProperty("microedition.platform")+" (NSG)";
+            } else if (System.getProperty("com.siemens.OSVersion")!=null) {
+                platformName="SIE-"+System.getProperty("microedition.platform")+"/"+System.getProperty("com.siemens.OSVersion");
+            }
+        }
+        return platformName;
+    }
+
+    public static String getOs() {
+        return "MIDP2 Platform=" +getPlatformName();
     }
     
 }

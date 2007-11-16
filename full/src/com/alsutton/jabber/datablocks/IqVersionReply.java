@@ -29,7 +29,6 @@
 package com.alsutton.jabber.datablocks;
 
 import Client.Config;
-import Info.Phone;
 import Info.Version;
 import com.alsutton.jabber.*;
 
@@ -46,7 +45,7 @@ public class IqVersionReply extends Iq{
         query.addChild("name", "BombusMod");
         query.addChild("version", Version.getVersionLang());
         if (Config.getInstance().enableVersionOs) {
-            query.addChild("os", Phone.getOs());
+            query.addChild("os", Config.getOs());
         }
     }
     

@@ -30,7 +30,6 @@ package archive;
 import Client.Config;
 import Client.Msg;
 import Client.StaticData;
-import Info.Phone;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import util.ClipBoard;
@@ -102,7 +101,7 @@ public class archiveEdit implements CommandListener
         body=t.getString();
 		
         int caretPos=t.getCaretPosition();
-        if (cf.phoneManufacturer==Phone.MOTO)
+        if (cf.phoneManufacturer==Config.MOTO)
             caretPos=-1;
         if (caretPos<0) caretPos=body.length();
 		
@@ -143,7 +142,7 @@ public class archiveEdit implements CommandListener
     public int getCaretPos() {     
         int caretPos=t.getCaretPosition();
         // +MOTOROLA STUB
-        if (cf.phoneManufacturer==Phone.MOTO)
+        if (cf.phoneManufacturer==Config.MOTO)
             caretPos=-1;
         
         if (caretPos<0) caretPos=t.getString().length();

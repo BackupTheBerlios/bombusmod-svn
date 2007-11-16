@@ -10,7 +10,6 @@
 package ui.controls;
 
 import Client.Config;
-import Info.Phone;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
@@ -76,7 +75,7 @@ public class TextFieldEx
         
         int caretPos=getCaretPosition();
         // +MOTOROLA STUB
-        if (Config.getInstance().phoneManufacturer==Phone.MOTO)
+        if (Config.getInstance().phoneManufacturer==Config.MOTO)
             caretPos=-1;
         
         if (caretPos<0) caretPos=body.length();
