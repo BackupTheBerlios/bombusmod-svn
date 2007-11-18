@@ -128,7 +128,7 @@ public class ConfigForm implements
         roster.append(SR.MS_SHOW_STATUSES,null);
         roster.append(SR.MS_SHOW_LAST_APPEARED_CONTACTS,null);
 
-        boolean ra[]={
+        boolean rosterA[]={
             cf.showOfflineContacts,
             cf.selfContact,
             cf.showTransports, 
@@ -139,8 +139,8 @@ public class ConfigForm implements
             cf.rosterStatus,
             cf.showLastAppearedContact
         };
-        this.ra=ra;
-        roster.setSelectedFlags(ra);
+        this.ra=rosterA;
+        roster.setSelectedFlags(rosterA);
         
         subscr=new ChoiceGroup(SR.MS_AUTH_NEW, Choice.POPUP);
         subscr.append(SR.MS_SUBSCR_AUTO, null);
@@ -178,7 +178,7 @@ public class ConfigForm implements
 //#endif    
         message.append(SR.MS_DELIVERY, null);
 
-        boolean mv[]={
+        boolean messageV[]={
 //#ifdef SMILES
 //#             cf.smiles,
 //#endif
@@ -199,9 +199,9 @@ public class ConfigForm implements
 //#endif
             ,cf.eventDelivery
         };
-        this.mv=mv;
+        this.mv=messageV;
  
-        message.setSelectedFlags(mv);
+        message.setSelectedFlags(messageV);
 //#if AUTODELETE
 //#         MessageCountLimit=new NumberField(SR.MS_MESSAGE_COUNT_LIMIT, cf.msglistLimit, 10, 1000);
 //#endif
@@ -229,7 +229,7 @@ public class ConfigForm implements
         application.append(SR.MS_FLASHLIGHT,null);
 	application.append(SR.MS_FLASHBACKLIGHT,null);
 
-        boolean ap[]={
+        boolean appP[]={
             cf.fullscreen,
             cf.memMonitor,
             cf.enableVersionOs,
@@ -249,9 +249,9 @@ public class ConfigForm implements
             application.append(SR.MS_ENABLE_POPUP,null);
         }
 
-        this.ap=ap;
+        this.ap=appP;
         
-        application.setSelectedFlags(ap);
+        application.setSelectedFlags(appP);
         
 	//keepAlive=new NumberField(SR.MS_KEEPALIVE_PERIOD, cf.keepAlive, 10, 10000 );
 	fieldGmt=new NumberField(SR.MS_GMT_OFFSET, cf.gmtOffset, -12, 12); 
@@ -331,11 +331,11 @@ public class ConfigForm implements
 //#         awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
 //#         awayStatus.append("AutoStatus Message", null);
 //#         
-//#         boolean aa[]={
+//#         boolean autoAway[]={
 //#             cf.setAutoStatusMessage
 //#         };
-//#         this.aa=aa;
-//#         awayStatus.setSelectedFlags(aa);
+//#         this.aa=autoAway;
+//#         awayStatus.setSelectedFlags(autoAway);
 //#         f.append(awayStatus);
 //#     
 //#         f.append(autoAwayType);

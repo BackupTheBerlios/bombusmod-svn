@@ -35,10 +35,9 @@ import Conference.MucContact;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.ConferenceForm;
 //#endif
-import Client.Stats;
-//#ifdef MOOD
-//# import UserMood.MoodSelect;
-//#endif
+
+//import UserMood.MoodSelect;
+
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -200,7 +199,7 @@ public class Roster
         addMenuCommands();
         SplashScreen.getInstance().setExit(display, this);
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType!=cf.AWAY_OFF)
+//#         if (cf.autoAwayType!=Config.AWAY_OFF)
 //#             autostatus=new AutoStatusTask();
 //#         
 //#         if (myStatus<2)
@@ -222,7 +221,7 @@ public class Roster
 		} catch( Exception e ) { }
          } 
 //#ifdef SE_LIGHT
-//#         else if (cf.phoneManufacturer==Phone.SONYE) {
+//#         else if (cf.phoneManufacturer==Config.SONYE) {
 //#             selight.setLight(state);
 //#          }
 //#endif
@@ -308,7 +307,7 @@ public class Roster
         setProgress(25);
 	if (!reconnect) {
 	    resetRoster();
-	};
+	}
         setProgress(26);
 
         try {
@@ -1236,7 +1235,7 @@ public class Roster
                         c.setIncoming(Contact.INC_NONE);
                         from=data.getAttribute("from");
                         String pong=c.getPing();
-                        if (pong!="") {
+                        if (pong!=null) {
                             Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, "Pong from client", pong);
                             messageStore(getContact(from, false), m);
                             redraw();
@@ -1337,7 +1336,7 @@ public class Roster
                         if (ping.isJabberNameSpace("urn:xmpp:ping")) { //ping
                             from=data.getAttribute("from");
                             String pong=c.getPing();
-                            if (pong!="") {
+                            if (pong!=null) {
                                 Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, "Pong from server", pong);
                                 messageStore(getContact(from, false), m);
                                 redraw();
@@ -1724,7 +1723,7 @@ public class Roster
                         
                         if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
                         
-                        if (pr.getTypeIndex()!=pr.PRESENCE_ERROR) {
+                        if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
                             if (pr.hasEntityCaps()) {
                                 c.hasEntity=true;
                                 if (pr.getEntityNode()!=null) {
@@ -1824,7 +1823,7 @@ public class Roster
             System.gc(); 
 //#endif
 //#ifdef POPUPS
-//#         if (message.messageType==message.MESSAGE_TYPE_AUTH && cf.popUps) {
+//#         if (message.messageType==Msg.MESSAGE_TYPE_AUTH && cf.popUps) {
 //#             setWobbler(message.from+"\n"+message.getBody());
 //#         }
 //#endif
@@ -1853,9 +1852,9 @@ public class Roster
             return;
         }
 //#ifndef WMUC
-        else if (c.origin>=c.ORIGIN_GROUPCHAT) {
-            if (message.messageType==message.MESSAGE_TYPE_IN) {
-                if (c.origin!=c.ORIGIN_GROUPCHAT && c instanceof MucContact) {
+        else if (c.origin>=Contact.ORIGIN_GROUPCHAT) {
+            if (message.messageType==Msg.MESSAGE_TYPE_IN) {
+                if (c.origin!=Contact.ORIGIN_GROUPCHAT && c instanceof MucContact) {
                      playNotify(SOUND_MESSAGE); //private message
                      return;
                 } else {
@@ -1867,7 +1866,7 @@ public class Roster
 //#endif
         else {
 //#ifdef POPUPS
-//#             if (message.messageType==message.MESSAGE_TYPE_IN && 
+//#             if (message.messageType==Msg.MESSAGE_TYPE_IN && 
 //#ifndef WMUC
 //#                     !(c instanceof MucContact) &&  
 //#endif
@@ -2051,11 +2050,11 @@ public class Roster
         if (reconnectCount>=maxReconnect) { errorLog(error); return; }
         {
             reconnectCount++;
-            String mainbar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
-            Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", mainbar, error);
+            String topBar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
+            Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error);
             messageStore(selfContact(), m);
             Stats.getInstance().save();
-            new Reconnect(mainbar, error, display);
+            new Reconnect(topBar, error, display);
          }
      }
     
@@ -2126,13 +2125,13 @@ public class Roster
         }
        
 //#ifdef NEW_MENU
-//#         if (keyCode==cf.SOFT_LEFT) {
+//#         if (keyCode==Config.SOFT_LEFT) {
 //#             new RosterMenu(display, getFocusedObject());
 //#             return;
 //#         }
 //#endif
        
-        if (keyCode==cf.SOFT_RIGHT) {
+        if (keyCode==Config.SOFT_RIGHT) {
             if (isLoggedIn()) 
             new RosterItemActions(display, getFocusedObject(), -1);
             return;
@@ -2383,11 +2382,11 @@ public class Roster
 
     public void quit() {
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType!=cf.AWAY_OFF)
+//#         if (cf.autoAwayType!=Config.AWAY_OFF)
 //#             autostatus.destroyTask();
 //#endif
 //#ifdef SE_LIGHT
-//#         if (cf.phoneManufacturer==Phone.SONYE)
+//#         if (cf.phoneManufacturer==Config.SONYE)
 //#             selight.destroyTask();
 //#endif
         //cf.isbottom=VirtualList.isbottom; //save panels state on exit       
@@ -2786,7 +2785,7 @@ public class Roster
             long last=grp.getConference().lastMessageTime;
             long delay= ( grp.conferenceJoinTime - last ) /1000 ;
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
-        } catch (Exception e) {};
+        } catch (Exception e) {}
 
         sendPresence(conference, null, x, false);
         reEnumRoster();
@@ -2806,25 +2805,25 @@ public class Roster
     {
         int pm=cf.phoneManufacturer;
         if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
-             cf.SOFT_LEFT=-1;
-             cf.SOFT_RIGHT=-4;
+             Config.SOFT_LEFT=-1;
+             Config.SOFT_RIGHT=-4;
              return;
         }
 
         if (pm==Config.WINDOWS) {
-             cf.SOFT_LEFT=40;
-             cf.SOFT_RIGHT=41;
+             Config.SOFT_LEFT=40;
+             Config.SOFT_RIGHT=41;
              return;     
         }
         if (pm==Config.NOKIA || pm==Config.SONYE) {
-            cf.SOFT_LEFT=-6;
-            cf.SOFT_RIGHT=-7;
+            Config.SOFT_LEFT=-6;
+            Config.SOFT_RIGHT=-7;
             return;
         } 
         
         if (pm==Config.MOTOEZX) {
-            cf.SOFT_LEFT=-21;
-            cf.SOFT_RIGHT=-22;
+            Config.SOFT_LEFT=-21;
+            Config.SOFT_RIGHT=-22;
             return;
         } 
         
@@ -2832,21 +2831,21 @@ public class Roster
             // Set Motorola specific keycodes
             Class.forName("com.motorola.phonebook.PhoneBookRecord");
             if (getKeyName(-21).toUpperCase().indexOf("SOFT")>=0) {
-                cf.SOFT_LEFT=-21;
-                cf.SOFT_RIGHT=-22;
+                Config.SOFT_LEFT=-21;
+                Config.SOFT_RIGHT=-22;
             } else {
-                cf.SOFT_LEFT=21;
-                cf.SOFT_RIGHT=22;
+                Config.SOFT_LEFT=21;
+                Config.SOFT_RIGHT=22;
             }
         } catch (ClassNotFoundException ignore2) {
             try {   
                 if (getKeyName(21).toUpperCase().indexOf("SOFT")>=0) {
-                    cf.SOFT_LEFT=21;
-                    cf.SOFT_RIGHT=22;
+                    Config.SOFT_LEFT=21;
+                    Config.SOFT_RIGHT=22;
                 }
                 if (getKeyName(-6).toUpperCase().indexOf("SOFT")>=0) {
-                    cf.SOFT_LEFT=-6;
-                    cf.SOFT_RIGHT=-7;
+                    Config.SOFT_LEFT=-6;
+                    Config.SOFT_RIGHT=-7;
                 }
             } catch(Exception e) {}
 
@@ -2854,8 +2853,8 @@ public class Roster
             // run thru all the keys
                 try {
                    if (getKeyName(i).toUpperCase().indexOf("SOFT")>=0) {         // Check for "SOFT" in name description
-                      if (getKeyName(i).indexOf("1")>=0) cf.SOFT_LEFT=i;         // check for the 1st softkey
-                      if (getKeyName(i).indexOf("2")>=0) cf.SOFT_RIGHT=i;         // check for 2nd softkey
+                      if (getKeyName(i).indexOf("1")>=0) Config.SOFT_LEFT=i;         // check for the 1st softkey
+                      if (getKeyName(i).indexOf("2")>=0) Config.SOFT_RIGHT=i;         // check for 2nd softkey
                    }
                 } catch(Exception e){ }
             }
@@ -2883,7 +2882,7 @@ public class Roster
         str.append(strconv.getSizeString(stats.getLatest()));
 
         str.append("\nCurrent: ");
-        str.append(strconv.getSizeString(stats.getGPRS()));
+        str.append(strconv.getSizeString(Stats.getGPRS()));
 
         if (isLoggedIn())
             str.append(theStream.getStreamStats());
