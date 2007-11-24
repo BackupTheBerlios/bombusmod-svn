@@ -354,7 +354,6 @@ public class Roster
     
     public void errorLog(String s){
         if (s==null) return;
-        if (s.length()==0) return;
         
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Error", s);
         messageStore(selfContact(), m);
@@ -2036,8 +2035,7 @@ public class Roster
     }
 
     private void askReconnect(final Exception e) {
-        String error;
-        error=e.getClass().getName()+"\n"+e.getMessage();
+        String error=e.getClass().getName()+"\n"+e.getMessage();
         e.printStackTrace();
 
         lastOnlineStatus=myStatus;

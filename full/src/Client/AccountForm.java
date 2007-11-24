@@ -56,15 +56,15 @@ class AccountForm implements CommandListener, ItemStateListener {
     private NumberField portbox;
     private TextField resourcebox;
     private TextField nickbox;
-    private TextField proxyHost;
-    private NumberField proxyPort;
+//#if HTTPPOLL || HTTPCONNECT  
+//#     private TextField proxyHost;
+//#     private NumberField proxyPort;
+//#endif
     private ChoiceGroup register;
 	
     private NumberField keepAlive;
     private ChoiceGroup keepAliveType;
-/*
-    private NumberField compressionbox;
-*/  
+
     Command cmdOk = new Command(SR.MS_OK /*"OK"*/, Command.OK, 1);
     Command cmdPwd = new Command(SR.MS_SHOWPWD, Command.SCREEN, 2);
 //#if SERVER_SIDE_CONFIG  
@@ -133,10 +133,9 @@ class AccountForm implements CommandListener, ItemStateListener {
 	resourcebox = new TextField(SR.MS_RESOURCE, account.getResource(), 64, TextField.ANY); f.append(resourcebox);
 	nickbox = new TextField(SR.MS_NICKNAME, account.getNick(), 64, TextField.ANY); f.append(nickbox);
 
-        proxyPort = new NumberField(SR.MS_PROXY_PORT, account.getProxyPort(), 0, 65535);	
 //#if HTTPCONNECT        
 //# 	proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   32, TextField.URL); f.append(proxyHost);
-//#     f.append(proxyPort);
+//#     proxyPort = new NumberField(SR.MS_PROXY_PORT, account.getProxyPort(), 0, 65535); f.append(proxyPort);
 //#elif HTTPPOLL        
 //# 	proxyHost = new TextField("HTTP Polling URL",   account.getProxyHostAddr(),   32, TextField.URL); f.append(proxyHost);
 //#endif
@@ -190,7 +189,11 @@ class AccountForm implements CommandListener, ItemStateListener {
 	    return;
 	}
 	if (c==cmdOk) {
-	    boolean b[] = new boolean[6];
+//#if HTTPPOLL || HTTPCONNECT   
+//# 	    boolean b[] = new boolean[6];
+//#else
+            boolean b[] = new boolean[5];
+//#endif 
 	    register.getSelectedFlags(b);
 	    String user = userbox.getString();
 	    int at = user.indexOf('@');
@@ -219,10 +222,10 @@ class AccountForm implements CommandListener, ItemStateListener {
 	    //account.updateJidCache();
 	    
 	    account.setPort(portbox.getValue());
-
-	    account.setProxyHostAddr(proxyHost.getString());
-            account.setProxyPort(proxyPort.getValue());
-			
+//#if HTTPPOLL || HTTPCONNECT 
+//# 	    account.setProxyHostAddr(proxyHost.getString());
+//#             account.setProxyPort(proxyPort.getValue());
+//#endif
             account.keepAlivePeriod=keepAlive.getValue();
             account.keepAliveType=keepAliveType.getSelectedIndex();
 /*

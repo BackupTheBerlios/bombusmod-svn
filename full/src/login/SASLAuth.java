@@ -198,7 +198,7 @@ public class SASLAuth implements JabberBlockListener{
             
         else if ( data.getTagName().equals("failure")) {
             // first stream - step 4a. not authorized
-            listener.loginFailed( data.getText() );  
+            listener.loginFailed( data.getText()+"failure" );  
         } else if ( data.getTagName().equals("success")) {
             // first stream - step 4b. success.
             try {

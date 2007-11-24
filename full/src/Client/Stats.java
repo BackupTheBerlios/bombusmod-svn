@@ -69,7 +69,6 @@ public class Stats {
     }
     
     public long getCurrentTraffic(){
-        
         return (sessionGPRS==0)?getGPRS():sessionGPRS;
     }
     
@@ -86,7 +85,8 @@ public class Stats {
             inputStream.close();
 	} catch (Exception e) {
             try {
-                if (inputStream!=null) inputStream.close();
+                if (inputStream!=null) 
+                    inputStream.close();
             } catch (IOException ex) {}
 	}
     }
@@ -128,7 +128,8 @@ public class Stats {
 //#endif
         if (StaticData.getInstance().roster.theStream!=null)
             sessionGPRS=StaticData.getInstance().roster.theStream.getBytes();
-        else return 0;
+        else 
+            return 0;
         
         return sessionGPRS;
     }   
