@@ -104,11 +104,18 @@ class AccountForm implements CommandListener, ItemStateListener {
 	register.append(SR.MS_PLAIN_PWD,null);
 	register.append(SR.MS_SASL,null);
 	register.append(SR.MS_CONFERENCES_ONLY,null);
-	register.append(SR.MS_PROXY_ENABLE,null);
+//#if HTTPCONNECT
+//#         register.append(SR.MS_PROXY_ENABLE,null);
+//#elif HTTPPOLL        
+//#         register.append("HTTP Polling",null);
+//#endif
 	register.append(SR.MS_REGISTER_ACCOUNT,null);
         
-	boolean b[] = {account.getUseSSL(), account.getPlainAuth(), account.isSASL(), account.isMucOnly(), account.isEnableProxy(), false};
-	
+	boolean b[] = {account.getUseSSL(), account.getPlainAuth(), account.isSASL(), account.isMucOnly(), 
+//#if HTTPPOLL || HTTPCONNECT        
+//#         account.isEnableProxy(), 
+//#endif        
+        false};
 	register.setSelectedFlags(b);
 	f.append(register);
      
@@ -126,9 +133,13 @@ class AccountForm implements CommandListener, ItemStateListener {
 	resourcebox = new TextField(SR.MS_RESOURCE, account.getResource(), 64, TextField.ANY); f.append(resourcebox);
 	nickbox = new TextField(SR.MS_NICKNAME, account.getNick(), 64, TextField.ANY); f.append(nickbox);
 
-        proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   64, TextField.ANY); f.append(proxyHost);
-
-	proxyPort = new NumberField(SR.MS_PROXY_PORT, account.getProxyPort(), 0, 65535); f.append(proxyPort);
+        proxyPort = new NumberField(SR.MS_PROXY_PORT, account.getProxyPort(), 0, 65535);	
+//#if HTTPCONNECT        
+//# 	proxyHost = new TextField(SR.MS_PROXY_HOST,   account.getProxyHostAddr(),   32, TextField.URL); f.append(proxyHost);
+//#     f.append(proxyPort);
+//#elif HTTPPOLL        
+//# 	proxyHost = new TextField("HTTP Polling URL",   account.getProxyHostAddr(),   32, TextField.URL); f.append(proxyHost);
+//#endif
 /*
         compressionbox = new NumberField(SR.MS_COMPRESSION_LEVEL, account.getCompressionLevel(), 1, 8);	f.append(compressionbox);
 */
@@ -198,7 +209,13 @@ class AccountForm implements CommandListener, ItemStateListener {
             account.setSasl(b[2]);
 //#endif
 	    account.setMucOnly(b[3]);
-	    account.setEnableProxy(b[4]);
+
+//#if HTTPPOLL || HTTPCONNECT            
+//# 	    account.setEnableProxy(b[4]);
+//#             boolean  doRegister=b[5];
+//#else
+            boolean  doRegister=b[4];
+//#endif 
 	    //account.updateJidCache();
 	    
 	    account.setPort(portbox.getValue());
@@ -215,7 +232,7 @@ class AccountForm implements CommandListener, ItemStateListener {
 	    accountSelect.rmsUpdate();
 	    accountSelect.commandState();
 	    
-	    if (b[5])
+	    if (doRegister)
 		new AccountRegister(account, display, parentView); 
 	    else destroyView();
 	}

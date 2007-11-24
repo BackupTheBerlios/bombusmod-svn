@@ -33,7 +33,7 @@ public class Version {
 //#if (!ZLIB)
 //#     public final static String version="$BOMBUSVERSION$";
 //#else
-    public final static String version="0.5.1227.598";
+    public final static String version="$BOMBUSVERSION$";
 //#endif
     
     public final static String url="http://BombusMod.net.ru";
