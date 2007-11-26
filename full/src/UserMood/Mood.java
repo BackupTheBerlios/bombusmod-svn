@@ -33,14 +33,12 @@ public class Mood extends IconTextElement {
     
     private String name;
     private String text;
-    //private String locale;
-    int index;
 
-    public Mood(int index, String name, String text) {
+
+    public Mood(String name, String text) {
         super(SmilesIcons.getInstance());
-        this.text=MoodLocale.loadString(text);
         this.name=name;
-        this.index=index;
+        this.text=text;
         //locale=MoodLocale.loadString(name);
     }
     
@@ -65,22 +63,6 @@ public class Mood extends IconTextElement {
     public String getSecondString() {
         return null;
     }
-    
-    //public String getLocale() { return locale; }
 
     public int getImageIndex(){ return -1;}
-    
-    public static final String[] MOODS = {
-        "afraid", "amazed", "angry", "annoyed", "anxious", "aroused",
-        "ashamed", "bored", "brave", "calm", "cold", "confused",
-        "contented", "cranky", "curious", "depressed", "disappointed", "disgusted", 
-        "distracted", "embarrassed", "excited", "flirtatious", "frustrated", "grumpy",
-        "guilty", "happy", "hot", "humbled", "humiliated", "hungry",
-        "hurt", "impressed", "in_awe", "in_love", "indignant", "interested",
-        "intoxicated", "invincible", "jealous", "lonely", "mean", "moody",
-        "nervous", "neutral", "offended", "playful", "proud", "relieved",
-        "remorseful", "restless", "sad", "sarcastic", "serious", "shocked",
-        "shy", "sick", "sleepy", "stressed", "surprised", "thirsty",
-        "worried"
-    };
 }

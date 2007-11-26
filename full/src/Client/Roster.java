@@ -36,8 +36,6 @@ import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.ConferenceForm;
 //#endif
 
-//import UserMood.MoodSelect;
-
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
 //#endif
@@ -57,6 +55,10 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.*;
 import com.siemens.mp.game.Light;
+
+//#if MOOD
+//# import UserMood.MoodSelect;
+//#endif
 
 //#if FILE_TRANSFER
 //# import io.file.transfer.TransferDispatcher;
@@ -127,6 +129,7 @@ public class Roster
 //#     public boolean useUserMood=false;
 //#     public Vector serverFeatures;
 //#endif
+    
 //#ifdef AUTOSTATUS
 //#     private AutoStatusTask autostatus;
 //#     public static boolean autoAway=false;
@@ -204,9 +207,6 @@ public class Roster
 //#         
 //#         if (myStatus<2)
 //#             messageActivity();
-//#endif
-//#ifdef POPUPS
-//#         //VirtualList.setWobble("");
 //#endif
     }
     
@@ -1372,10 +1372,9 @@ public class Roster
                 
 //#ifdef MOOD
 //#                 try {
-//#                     JabberDataBlock xmlns=data.findNamespace("http://jabber.org/protocol/pubsub#event");
+//#                     JabberDataBlock xmlns=data.findNamespace("event", "http://jabber.org/protocol/pubsub#event");
 //#                     
 //#                     JabberDataBlock items=xmlns.getChildBlock("items");
-//# 
 //#                     if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
 //#                         String from=data.getAttribute("from");
 //#                         Contact c=getContact(from, true);
@@ -1867,10 +1866,10 @@ public class Roster
 //#ifdef POPUPS
 //#             if (message.messageType==Msg.MESSAGE_TYPE_IN && 
 //#ifndef WMUC
-//#                     !(c instanceof MucContact) &&  
+//#                 !(c instanceof MucContact) &&  
 //#endif
-//#                     cf.popUps) {
-//#                 setWobbler(c.toString()+": "+message.getBody());
+//#                 cf.popUps) {
+//#                     setWobbler(c.toString()+": "+message.getBody());
 //#             }
 //#endif
             if (c.getName().endsWith("!")) {
@@ -1972,10 +1971,15 @@ public class Roster
                 if (myStatus>Presence.PRESENCE_CHAT) {
                     message=null;
                     type=null;
+                    blFlashEn=false;
+                    vibraLen=0;
                 }
+                break;
             case AlertCustomize.PLAY_NEVER:
                 message=null;
                 type=null;
+                blFlashEn=false;
+                vibraLen=0;
         }
         
         int profile=cf.profile;

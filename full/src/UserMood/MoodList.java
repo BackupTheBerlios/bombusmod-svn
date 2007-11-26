@@ -25,8 +25,9 @@
 
 package UserMood;
 
-import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Vector;
+import util.StringLoader;
 
 public class MoodList {
 
@@ -38,24 +39,40 @@ public class MoodList {
 	return instance;
     }
 
-    public Vector moodList;
-
+    public Vector moodList=new Vector();
+    
+    public static final String initMoods = "afraid.amazed.angry.annoyed.anxious.aroused.ashamed.bored.brave.calm.cold.confused.contented.cranky.curious.depressed.disappointed.disgusted.distracted.embarrassed.excited.flirtatious.frustrated.grumpy.guilty.happy.hot.humbled.humiliated.hungry.hurt.impressed.in_awe.in_love.indignant.interested.intoxicated.invincible.jealous.lonely.mean.moody.nervous.neutral.offended.playful.proud.relieved.remorseful.restless.sad.sarcastic.serious.shocked.shy.sick.sleepy.stressed.surprised.thirsty.worried.";
+   
     private MoodList() {
-        moodList=new Vector();
-        
         try {
-            for (int i=0; i<Mood.MOODS.length;i++) {
-                moodList.addElement(new Mood(i,Mood.MOODS[i], null));
+            int p=0; int pos=0;
+            while (pos<initMoods.length()) {
+               p=initMoods.indexOf('.', pos);
+               String mood=initMoods.substring(pos, p);
+               moodList.addElement(new Mood(mood, loadString(mood)));
+               pos=p+1;
             }
         } catch (Exception ex) { }
+        localeMood=null;
     }
-    
+/*
     public Mood getStatus(final int mood) {
 	Mood es=null;
 	for (Enumeration e=moodList.elements(); e.hasMoreElements(); ){
 	    es=(Mood)e.nextElement();
-	    if (mood==es.getImageIndex()) break;
+	    if (mood==es.getImageIndex()) 
+                break;
 	}
 	return es;
+    }
+*/
+    private static Hashtable localeMood;
+    
+    private static String loadString(String key) {
+        if (localeMood==null) {
+            localeMood=new StringLoader().hashtableLoader("/moods/moods.txt");
+        }
+        String value=(String)localeMood.get(key);
+        return (value==null)?key:value;
     }
 }

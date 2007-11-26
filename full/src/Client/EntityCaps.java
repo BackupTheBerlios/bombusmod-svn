@@ -24,7 +24,7 @@ public class EntityCaps implements JabberBlockListener{
     /** Creates a new instance of EntityCaps */
     public EntityCaps() {}
 //#ifdef MOOD
-//#     private static String mood="ep-notify";
+//#     private static String mood="cs ep-notify";
 //#endif
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
@@ -33,12 +33,6 @@ public class EntityCaps implements JabberBlockListener{
         JabberDataBlock query=data.findNamespace("query", "http://jabber.org/protocol/disco#info");
         if (query==null) return BLOCK_REJECTED;
         String node=query.getAttribute("node");
-        
-        
-        /*
-         if (!query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) 
-            return BLOCK_REJECTED;
-         */
 
         if (node!=null) 
             if (!node.startsWith(BOMBUS_NAMESPACE))

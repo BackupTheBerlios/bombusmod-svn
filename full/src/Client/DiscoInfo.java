@@ -32,6 +32,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 public class DiscoInfo implements JabberBlockListener{
+    Roster roster = StaticData.getInstance().roster;
     public int blockArrived(JabberDataBlock data) {
         try {
             if (!(data instanceof Iq)) return JabberBlockListener.BLOCK_REJECTED;
@@ -39,7 +40,7 @@ public class DiscoInfo implements JabberBlockListener{
                
                 Vector serverFeatures=new Vector();
                 //System.out.println(data.toString());
-                for (Enumeration e=data.findNamespace("http://jabber.org/protocol/disco#info").getChildBlocks().elements(); e.hasMoreElements(); ){
+                for (Enumeration e=data.findNamespace("query", "http://jabber.org/protocol/disco#info").getChildBlocks().elements(); e.hasMoreElements(); ){
                     JabberDataBlock feature=(JabberDataBlock) e.nextElement();
                     
                     if (feature.getTagName().equals("feature")) {
@@ -50,14 +51,18 @@ public class DiscoInfo implements JabberBlockListener{
 //#ifdef MOOD
 //#                     else if (feature.getTagName().equals("identity")) {
 //#                         if (feature.getAttribute("category").equals("pubsub"))
-//#                             if (feature.getAttribute("type").equals("pep"))
-//#                                 StaticData.getInstance().roster.useUserMood=true;                                
+//#                             if (feature.getAttribute("type").equals("pep")) {
+//#                                 roster.useUserMood=true;
+//#                                 System.out.println("useUserMood=true");
+//#                             } else {
+//#                                 System.out.println("useUserMood=false");
+//#                             }
 //#                     }
 //#endif
                 }
                 
-                StaticData.getInstance().roster.serverFeatures=serverFeatures;
-                StaticData.getInstance().roster.redraw();
+                roster.serverFeatures=serverFeatures;
+                roster.redraw();
                 return JabberBlockListener.NO_MORE_BLOCKS;
             }
         } catch (Exception e) { }
@@ -67,6 +72,6 @@ public class DiscoInfo implements JabberBlockListener{
     public DiscoInfo() {
         JabberDataBlock request=new Iq(StaticData.getInstance().account.getServer(), Iq.TYPE_GET, "getServerFeatures");
         JabberDataBlock query=request.addChildNs("query", "http://jabber.org/protocol/disco#info");
-        StaticData.getInstance().roster.theStream.send(request);
+        roster.theStream.send(request);
     }
 }

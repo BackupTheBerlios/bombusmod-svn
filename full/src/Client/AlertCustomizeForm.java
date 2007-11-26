@@ -80,10 +80,10 @@ public class AlertCustomizeForm implements
        
         f=new Form(SR.MS_OPTIONS);
         
-        playSoundPolicy=new ChoiceGroup("Play sounds policy", ChoiceGroup.POPUP);
+        playSoundPolicy=new ChoiceGroup("Play sounds", ChoiceGroup.POPUP);
+        playSoundPolicy.append("Never", null);
         playSoundPolicy.append("Always", null);
         playSoundPolicy.append("When online", null);
-        playSoundPolicy.append("Never", null);
         playSoundPolicy.setSelectedIndex(ac.silentMode, true);
         f.append(playSoundPolicy);
         

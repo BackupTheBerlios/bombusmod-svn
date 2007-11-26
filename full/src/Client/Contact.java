@@ -35,9 +35,6 @@ import Conference.MucContact;
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryAppend;
 //#endif
-//#if MOOD
-//# import UserMood.MoodLocale;
-//#endif
 import images.RosterIcons;
 import ui.ColorScheme;
 import ui.Time;
@@ -569,7 +566,8 @@ public class Contact extends IconTextElement{
         if (cf.rosterStatus) {
 //#ifdef MOOD
 //#             if (getUserMood()!=null) {
-//#                 s.append(MoodLocale.loadString(getUserMood()));
+//#                 //s.append(MoodLocale.loadString(getUserMood()));
+//#                 s.append(getUserMood());
 //#                 if (getUserMoodText()!=null) {
 //#                     s.append(" (");
 //#                     s.append(getUserMoodText());
