@@ -1967,6 +1967,17 @@ public class Roster
                 break;
         }
         
+        switch (ac.silentMode) {
+            case AlertCustomize.PLAY_IFONLINE:
+                if (myStatus>Presence.PRESENCE_CHAT) {
+                    message=null;
+                    type=null;
+                }
+            case AlertCustomize.PLAY_NEVER:
+                message=null;
+                type=null;
+        }
+        
         int profile=cf.profile;
         if (profile==AlertProfile.AUTO) 
             profile=AlertProfile.ALL;

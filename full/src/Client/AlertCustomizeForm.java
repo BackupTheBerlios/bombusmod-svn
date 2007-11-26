@@ -40,7 +40,8 @@ public class AlertCustomizeForm implements
     private Displayable parentView;
 
     Form f;
-   
+    ChoiceGroup playSoundPolicy;
+    
     ChoiceGroup MessageFile=new ChoiceGroup("Message sound", ChoiceGroup.POPUP);
     ChoiceGroup OnlineFile=new ChoiceGroup("Online "+SR.MS_SOUND, ChoiceGroup.POPUP);
     ChoiceGroup OfflineFile=new ChoiceGroup("Offline "+SR.MS_SOUND, ChoiceGroup.POPUP);
@@ -78,6 +79,13 @@ public class AlertCustomizeForm implements
         ac=AlertCustomize.getInstance();
        
         f=new Form(SR.MS_OPTIONS);
+        
+        playSoundPolicy=new ChoiceGroup("Play sounds policy", ChoiceGroup.POPUP);
+        playSoundPolicy.append("Always", null);
+        playSoundPolicy.append("When online", null);
+        playSoundPolicy.append("Never", null);
+        playSoundPolicy.setSelectedIndex(ac.silentMode, true);
+        f.append(playSoundPolicy);
         
 	for (Enumeration file=files[2].elements(); file.hasMoreElements(); ) {
             addSoundItem((String)file.nextElement());
@@ -170,6 +178,7 @@ public class AlertCustomizeForm implements
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdOk) {
+            ac.silentMode=playSoundPolicy.getSelectedIndex();
 	    ac.soundsMsgIndex=MessageFile.getSelectedIndex();
 	    ac.soundVol=sndVol.getValue()*10;
             ac.soundOnlineIndex=OnlineFile.getSelectedIndex();

@@ -74,9 +74,8 @@ public class Config {
     public final static int NOKIA_9XXX=10;
     public final static int SONYE_M600=11;
     public final static int WTK=50;
+    public final static int OTHER=99;
     
-    protected final static int OTHER=99;
-
     private static String platformName;
     
     public boolean ghostMotor=getBooleanProperty("moto_e398",false);
@@ -198,7 +197,7 @@ public class Config {
     
     public boolean useTabs=true;
     
-    public int phoneManufacturer=NOT_DETECTED;    
+    public int phoneManufacturer=NOT_DETECTED;
     
     public static Config getInstance(){
 	if (instance==null) {
