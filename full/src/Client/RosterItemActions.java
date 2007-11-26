@@ -220,7 +220,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 if (mc.realJid!=null && mc.getStatus()<Presence.PRESENCE_OFFLINE) {
                     
                 }
-            } else if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
+            } else if (contact.getGroupType()!=Groups.TYPE_TRANSP && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT) {
                 // usual contact - invite item check
                  if (onlineConferences) addItem(SR.MS_INVITE,40);
             }

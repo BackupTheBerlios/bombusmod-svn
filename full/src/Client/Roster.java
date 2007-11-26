@@ -140,7 +140,7 @@ public class Roster
     
     private long lastMessageTime=Time.utcTimeMillis();
 	
-    private final static int maxReconnect=5;
+    private final static int maxReconnect=10;
     public int reconnectCount;
     
     public static String startTime=Time.dispLocalTime();

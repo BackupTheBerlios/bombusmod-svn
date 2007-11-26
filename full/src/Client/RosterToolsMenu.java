@@ -93,6 +93,8 @@ public class RosterToolsMenu
 /*		
         addItem("ArchiveDump", 10);
 */        
+        
+        addItem("Break connection", 14);
         attachDisplay(display);
     }
     public void eventOk(){
@@ -174,6 +176,9 @@ public class RosterToolsMenu
                 new archive.DebugDumpArchive(display);
                 return;
 */
+            case 14:
+                StaticData.getInstance().roster.connectionTerminated(new Exception("Simulated break"));
+                return;
         }
     }
 }
