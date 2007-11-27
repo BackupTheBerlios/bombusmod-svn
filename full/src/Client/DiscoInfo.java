@@ -53,9 +53,11 @@ public class DiscoInfo implements JabberBlockListener{
 //#                         if (feature.getAttribute("category").equals("pubsub"))
 //#                             if (feature.getAttribute("type").equals("pep")) {
 //#                                 roster.useUserMood=true;
+//#if DEBUG
 //#                                 System.out.println("useUserMood=true");
 //#                             } else {
 //#                                 System.out.println("useUserMood=false");
+//#endif
 //#                             }
 //#                     }
 //#endif

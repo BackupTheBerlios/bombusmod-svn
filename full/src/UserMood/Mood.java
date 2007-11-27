@@ -43,8 +43,8 @@ public class Mood extends IconTextElement {
     }
     
     public String toString(){ 
-        StringBuffer s=new StringBuffer(text);
-        if (text!=null && text.length()>0) {
+        StringBuffer s=new StringBuffer(name);
+        if (text!=null) {
             s.append(" (");
             s.append(text);
             s.append(")");
@@ -55,10 +55,10 @@ public class Mood extends IconTextElement {
     public int getColor(){ return ColorScheme.LIST_INK;}
 
     public String getName() { return name; }
-    public void setName(String s) { name=s; }
+    public void setName(String s) { this.name=s; }
     
     public String getMessage() { return text; }
-    public void setMessage(String s) { text=s; }
+    public void setMessage(String s) { this.text=s; }
 
     public String getSecondString() {
         return null;

@@ -1372,53 +1372,32 @@ public class Roster
                 
 //#ifdef MOOD
 //#                 try {
-//#                     System.out.println("1");
 //#                     JabberDataBlock xmlns=data.findNamespace("event", "http://jabber.org/protocol/pubsub#event");
 //#                     
 //#                     JabberDataBlock items=xmlns.getChildBlock("items");
 //#                     if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
-//#                         System.out.println("2");
 //#                         String from=data.getAttribute("from");
 //#                         Contact c=getContact(from, true);
-//#                             System.out.println("3");
 //#                             JabberDataBlock mood=items.getChildBlock("item").getChildBlock("mood");
 //# 
 //#                             String userMood="";
 //#                             try {
 //#                                 userMood=((JabberDataBlock)mood.getChildBlocks().firstElement()).getTagName();
-//#                             } catch (Exception e) { System.out.println("no usermood"); }
-//#                             c.setUserMood(userMood);
+//#                             } catch (Exception e) { /*System.out.println("no usermood");*/ }
 //#                             
 //#                             String userMoodText="";
 //#                             try {
 //#                                 userMoodText=mood.getChildBlock("text").getText(); 
-//#                             } catch (Exception e) { System.out.println("no userMoodText"); }
-//#                             c.setUserMoodText(userMoodText);
+//#                             } catch (Exception e) { /*System.out.println("no userMoodText");*/ }
+//#if DEBUG 
+//#                             System.out.println(from+": "+userMood+"("+userMoodText+")");
+//#endif
+//#                             c.setUserMood(userMood, userMoodText);
 //#                             
-//#                             //c.setUserMoodText(mood.getChildBlock("text").getText());
-//#                             System.out.println(userMood+" "+userMoodText);
-//#                             
-//#                             Msg moodmessage=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, userMood, userMoodText);
+//#                             Msg moodmessage=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, SR.MS_USER_MOOD, userMood+"\n"+userMoodText);
 //#                             messageStore(getContact(from, true), moodmessage);
-//# /*
-//#                     } else {
-//#  * <message from="abcd@jabbus.org" to="ad@jabbus.org/adsky" >
-//# <event xmlns="http://jabber.org/protocol/pubsub#event">
-//# <items node="http://jabber.org/protocol/mood" >
-//# <item>
-//# <mood xmlns="http://jabber.org/protocol/mood">
-//# <thirsty/>
-//# </mood>
-//# </item>
-//# </items>
-//# </event>
-//# </message>
-//#                             System.out.println("4 "+items.getChildBlock("item").getAttribute("id"));
-//#                             c.setUserMood(null);
-//#                             c.setUserMoodText(null);
-//#                         }*/
 //#                     }
-//#                 } catch (Exception e) { System.out.println("not mood"); }
+//#                 } catch (Exception e) { /*System.out.println("not mood");*/ }
 //#endif
                 
                 Message message = (Message) data;
@@ -1724,9 +1703,10 @@ public class Roster
                         if (cf.autoSubscribe==Config.SUBSCR_DROP)  return JabberBlockListener.BLOCK_REJECTED;
                         
                         if (cf.autoSubscribe==Config.SUBSCR_REJECT) {
-                            System.out.print(from); 
-                            System.out.println(": decline subscription");
-                            
+//#if DEBUG 
+//#                             System.out.print(from); 
+//#                             System.out.println(": decline subscription");
+//#endif
                             sendPresence(from, "unsubscribed", null, false);
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
@@ -1926,9 +1906,9 @@ public class Roster
    
     public void playNotify(int event) {
         if (!notifyReady(event)) return;
-        
-//        System.out.println("event: "+event);
-	
+//#if DEBUG        
+//#         System.out.println("event: "+event);
+//#endif
         AlertCustomize ac=AlertCustomize.getInstance();
         
         int volume=ac.soundVol;
@@ -2143,7 +2123,9 @@ public class Roster
 //#             || keyCode== SIEMENS_FLIPCLOSE 
 //#             || keyCode==MOTOROLA_FLIP 
 //#             /*|| keyCode=='#' */) {
-//#             //System.out.println("Flip closed");
+//#if DEBUG
+//#             System.out.println("Flip closed");
+//#endif
 //#             if (cf.autoAwayType==Config.AWAY_LOCK) 
 //#                 if (!autoAway) 
 //#                     autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -2386,17 +2368,30 @@ public class Roster
 //#endif
 //#                 mess.append("jid: "+contact.bareJid);
 //#                 mess.append(contact.jid.getResource());
+//#                 mess.append("\nsubscription: "+contact.subscr);
 //#ifndef WMUC
 //#             }
 //#endif
 //#             mess.append((client!=null)?client+clientVer:"");
 //#             clientVer=null;
-//#             String ss=contact.getSecondString();
-//#             if (ss!=null)
-//#                 mess.append((ss.length()>0)?"\n"+ss:"");
-//#             ss=null;
-//#             mess.append((!muc)?"\nsubscription: "+contact.subscr:"");
-//#             
+//# 
+//#              if (contact.statusString!=null) {
+//#                 mess.append("\n");
+//#                 mess.append(SR.MS_STATUS);
+//#                 mess.append(": ");
+//#                 mess.append(contact.statusString);
+//#             } else if (contact.getUserMood()!=null) {
+//#                 //s.append(MoodLocale.loadString(getUserMood()));
+//#                 mess.append("\n");
+//#                 mess.append(SR.MS_USER_MOOD);
+//#                 mess.append(": ");
+//#                 mess.append(contact.getUserMood());
+//#                 if (contact.getUserMoodText()!=null) {
+//#                     mess.append(" (");
+//#                     mess.append(contact.getUserMoodText());
+//#                     mess.append(")");
+//#                 }
+//#             }
 //#         } else {
 //#             mess.append(info);
 //#         }
@@ -2796,7 +2791,9 @@ public class Roster
                         MucContact self=mucGrp.getSelfContact();
                         if (self.status>=Presence.PRESENCE_OFFLINE) {
                             confJoin(mucGrp.getConference().bareJid);
-                            //System.out.println("reconnect "+mucGrp.getConference().bareJid);
+//#if DEBUG 
+//#                             System.out.println("reconnect "+mucGrp.getConference().bareJid);
+//#endif
                         }
                     }
                 }

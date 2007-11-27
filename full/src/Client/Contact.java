@@ -589,15 +589,13 @@ public class Contact extends IconTextElement{
 //#     public String getUserMood() {
 //#         return mood;
 //#     }
-//#     public void setUserMood (String mood) {
+//#     public void setUserMood (String mood, String moodText) {
 //#         this.mood=mood;
+//#         this.moodText=moodText;
 //#     }
 //#     
 //#     public String getUserMoodText() {
 //#         return moodText;
-//#     }
-//#     public void setUserMoodText(String moodText) {
-//#         this.moodText=moodText;
 //#     }
 //#endif
 }
