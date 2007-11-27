@@ -1372,28 +1372,53 @@ public class Roster
                 
 //#ifdef MOOD
 //#                 try {
+//#                     System.out.println("1");
 //#                     JabberDataBlock xmlns=data.findNamespace("event", "http://jabber.org/protocol/pubsub#event");
 //#                     
 //#                     JabberDataBlock items=xmlns.getChildBlock("items");
 //#                     if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
+//#                         System.out.println("2");
 //#                         String from=data.getAttribute("from");
 //#                         Contact c=getContact(from, true);
-//#                         if (items.getChildBlock("item").getAttribute("id")!=null) {
+//#                             System.out.println("3");
 //#                             JabberDataBlock mood=items.getChildBlock("item").getChildBlock("mood");
 //# 
-//#                             String userMood=((JabberDataBlock)mood.getChildBlocks().firstElement()).getTagName();
+//#                             String userMood="";
+//#                             try {
+//#                                 userMood=((JabberDataBlock)mood.getChildBlocks().firstElement()).getTagName();
+//#                             } catch (Exception e) { System.out.println("no usermood"); }
 //#                             c.setUserMood(userMood);
-//# 
-//#                             c.setUserMoodText(mood.getChildBlock("text").getText());
 //#                             
-//#                             Msg moodmessage=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, userMood, mood.getChildBlock("text").getText());
+//#                             String userMoodText="";
+//#                             try {
+//#                                 userMoodText=mood.getChildBlock("text").getText(); 
+//#                             } catch (Exception e) { System.out.println("no userMoodText"); }
+//#                             c.setUserMoodText(userMoodText);
+//#                             
+//#                             //c.setUserMoodText(mood.getChildBlock("text").getText());
+//#                             System.out.println(userMood+" "+userMoodText);
+//#                             
+//#                             Msg moodmessage=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, userMood, userMoodText);
 //#                             messageStore(getContact(from, true), moodmessage);
-//#                         } else {
+//# /*
+//#                     } else {
+//#  * <message from="abcd@jabbus.org" to="ad@jabbus.org/adsky" >
+//# <event xmlns="http://jabber.org/protocol/pubsub#event">
+//# <items node="http://jabber.org/protocol/mood" >
+//# <item>
+//# <mood xmlns="http://jabber.org/protocol/mood">
+//# <thirsty/>
+//# </mood>
+//# </item>
+//# </items>
+//# </event>
+//# </message>
+//#                             System.out.println("4 "+items.getChildBlock("item").getAttribute("id"));
 //#                             c.setUserMood(null);
 //#                             c.setUserMoodText(null);
-//#                         }
+//#                         }*/
 //#                     }
-//#                 } catch (Exception e) { /*System.out.println("not mood");*/ }
+//#                 } catch (Exception e) { System.out.println("not mood"); }
 //#endif
                 
                 Message message = (Message) data;

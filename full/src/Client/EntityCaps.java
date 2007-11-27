@@ -117,7 +117,7 @@ public class EntityCaps implements JabberBlockListener{
         "urn:xmpp:receipts", //xep-0184
         "urn:xmpp:time",
 //#ifdef MOOD
-//#         "http://jabber.org/protocol/mood"
+//#         "http://jabber.org/protocol/mood+notify"
 //#endif
     };
 }
