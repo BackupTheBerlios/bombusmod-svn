@@ -110,4 +110,8 @@ class FileJSR75 extends FileIO{
         }
         return rd;
     }
+
+    public void rename(String newName) throws IOException {
+        fileConnection.rename(newName);
+    }
 }

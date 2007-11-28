@@ -107,4 +107,8 @@ class FileComMotorolaIo extends FileIO{
     public void delete() throws IOException{
         fileConnection.delete();
     }
+
+    public void rename(String newName) throws IOException {
+        fileConnection.rename(newName);
+    }
 }

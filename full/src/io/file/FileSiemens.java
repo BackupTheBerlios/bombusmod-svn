@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
 
+
 public class FileSiemens extends FileIO {
     
     private File f;
@@ -100,8 +101,11 @@ public class FileSiemens extends FileIO {
     public void delete() throws IOException{
         File.delete(fileName);
     }
-}
 
+    public void rename(String newName) throws IOException {
+        File.rename(fileName, newName);
+    }
+}
 class FileSiemensInputStream extends InputStream {
     private int fileDescriptor;
     private File f;
