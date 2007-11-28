@@ -516,3 +516,11 @@ key	кнопка
 reconnect	переподключение
 Sort list	Сортировать список
 Turn on light	Не выключать подсветку
+
+Sun	Вс
+Mon	Пн
+Tue	Вт
+Wed	Ср
+Thu	Чт
+Fri	Пт
+Sat	Сб

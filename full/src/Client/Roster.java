@@ -2380,7 +2380,9 @@ public class Roster
 //#                 mess.append(SR.MS_STATUS);
 //#                 mess.append(": ");
 //#                 mess.append(contact.statusString);
-//#             } else if (contact.getUserMood()!=null) {
+//#             }
+//#if MOOD
+//#             if (contact.getUserMood()!=null) {
 //#                 //s.append(MoodLocale.loadString(getUserMood()));
 //#                 mess.append("\n");
 //#                 mess.append(SR.MS_USER_MOOD);
@@ -2392,6 +2394,7 @@ public class Roster
 //#                     mess.append(")");
 //#                 }
 //#             }
+//#endif
 //#         } else {
 //#             mess.append(info);
 //#         }
