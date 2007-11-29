@@ -1377,7 +1377,8 @@ public class Roster
 //#                     JabberDataBlock items=xmlns.getChildBlock("items");
 //#                     if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
 //#                         String from=data.getAttribute("from");
-//#                         Contact c=getContact(from, true);
+//#                         Contact c=findContact(new Jid(from), false);
+//#                         //Contact c=getContact(from, true);
 //#                             JabberDataBlock mood=items.getChildBlock("item").getChildBlock("mood");
 //# 
 //#                             String userMood="";
@@ -2237,11 +2238,19 @@ public class Roster
 //#endif
                 break;
             case KEY_STAR:
-            if (cf.ghostMotor) {
-                // backlight management
-                blState=(blState==1)? Integer.MAX_VALUE : 1;
-                display.flashBacklight(blState);
-            }
+                if (cf.ghostMotor) {
+                    // backlight management
+                    blState=(blState==1)? Integer.MAX_VALUE : 1;
+                    display.flashBacklight(blState);
+                }
+                break;
+            default:
+                try {
+                    switch (getGameAction(keyCode)){
+                        case LEFT:  {keyLeft(); break; }
+                        case RIGHT: { keyRight(); break; }
+                    }
+                } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
         }
      }
  

@@ -688,7 +688,9 @@ public abstract class VirtualList
 //#     }
 //#endif
     private void key(int keyCode) {
-        //System.out.println(keyCode);
+//#if DEBUG
+//#         System.out.println(keyCode);
+//#endif
 //#ifdef USER_KEYS
 //#         if (userKeys) {
 //#             switch (additionKeyState) {
@@ -707,14 +709,14 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#         popup.next();
 //#endif
-        if ((keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) && cf.phoneManufacturer!=Config.SONYE) {
-            if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
+
+        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+            if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
                 if (canBack==true)
                     destroyView();
                 return;
             }
-        }
-        
+         }
 //#if ALT_INPUT
 //#     if (inputbox==null) {
 //#endif
@@ -885,7 +887,9 @@ public abstract class VirtualList
                 if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
             }
             setRotator();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     public void keyRight() { 
