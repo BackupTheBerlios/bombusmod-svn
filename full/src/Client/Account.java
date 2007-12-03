@@ -310,7 +310,7 @@ public class Account extends IconTextElement{
     }
     
     public boolean isGmail() {
-        return server.startsWith("gmail");
+        return server.startsWith("gmail.com");
     }
     
     public void setSasl(boolean sasl) {
