@@ -62,8 +62,9 @@ public class DiscoInfo implements JabberBlockListener{
 //#                     }
 //#endif
                 }
-                
-                roster.serverFeatures=serverFeatures;
+//#ifdef MOOD
+//#                 roster.serverFeatures=serverFeatures;
+//#endif
                 roster.redraw();
                 return JabberBlockListener.NO_MORE_BLOCKS;
             }
