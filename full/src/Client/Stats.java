@@ -131,6 +131,6 @@ public class Stats {
         else 
             return 0;
         
-        return sessionGPRS;
+        return sessionGPRS*2;
     }   
 }

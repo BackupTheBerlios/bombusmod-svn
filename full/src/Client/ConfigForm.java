@@ -161,6 +161,7 @@ public class ConfigForm implements
 //#endif
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
+        message.append(SR.MS_STORE_PRESENCE,null);
         message.append("AutoScroll", null);
         message.append("Emulate tabs", null);
 //#ifdef ANTISPAM
@@ -184,6 +185,7 @@ public class ConfigForm implements
 //#endif
             cf.eventComposing,
             cf.capsState,
+            cf.storeConfPresence,
             cf.autoScroll,
             cf.useTabs
 //#ifdef ANTISPAM
@@ -412,6 +414,7 @@ public class ConfigForm implements
 //#endif
             cf.eventComposing=mv[mvctr++];
             cf.capsState=mv[mvctr++];
+            cf.storeConfPresence=mv[mvctr++];
             cf.autoScroll=mv[mvctr++];
             cf.useTabs=mv[mvctr++];
 //#ifdef ANTISPAM

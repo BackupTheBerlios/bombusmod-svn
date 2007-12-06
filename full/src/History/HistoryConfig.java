@@ -84,15 +84,13 @@ public class HistoryConfig implements
         f=new Form(SR.MS_HISTORY_OPTIONS);
         
         message=new ChoiceGroup(SR.MS_MESSAGES, Choice.MULTIPLE);
-        message.append(SR.MS_STORE_PRESENCE,null);        
 //#if LAST_MESSAGES
 //#         message.append("Last messages", null);
 //#endif
 
         boolean mv[]={
-            cf.storeConfPresence
 //#if LAST_MESSAGES
-//#             ,cf.lastMessages
+//#             cf.lastMessages
 //#endif
         };
         this.mv=mv;
@@ -148,7 +146,6 @@ public class HistoryConfig implements
 //#endif
 
             int mvctr=0;
-            cf.storeConfPresence=mv[mvctr++];
 //#if LAST_MESSAGES
 //#             cf.lastMessages=mv[mvctr++];
 //#endif
