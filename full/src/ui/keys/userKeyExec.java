@@ -134,6 +134,7 @@ public class userKeyExec {
 //#                     new ServiceDiscovery(display, null, null);
 //#                     return true;
 //#                 }
+//#                 break;
 //#endif
 //#ifdef PRIVACY
 //#             case 9: 
@@ -161,6 +162,11 @@ public class userKeyExec {
                     BombusMod.getInstance().hideApp(true);
                     return true;
                 }
+                break;
+            case 15:
+                roster.connectionTerminated(new Exception("Simulated break"));
+                return true;
+                
         }
         
         return false;
@@ -190,7 +196,8 @@ public class userKeyExec {
             SR.MS_CLEAR_POPUPS,
             SR.MS_FLASHLIGHT,
             SR.MS_ABOUT,
-            SR.MS_APP_MINIMIZE
+            SR.MS_APP_MINIMIZE,
+            "Break connection"
     };
     
     public static final String[] KEYS_NAME = {
