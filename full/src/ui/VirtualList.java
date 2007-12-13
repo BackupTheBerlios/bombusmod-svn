@@ -931,7 +931,10 @@ public abstract class VirtualList
 //#         
 //#         if (cursor>=0) {
 //#             int itemWidth=getItemRef(cursor).getVWidth();
-//#             if (itemWidth>=width-scrollbar.getScrollWidth() ) itemWidth-=width/2; else itemWidth=0;
+//#             if (itemWidth>=width-scrollbar.getScrollWidth()) 
+//#                 itemWidth-=width/2; 
+//#             else 
+//#                 itemWidth=0;
 //#             TimerTaskRotate.startRotate(itemWidth, this);
 //#         }
  //#endif
@@ -1030,21 +1033,17 @@ public abstract class VirtualList
 
 //#if (USE_ROTATOR)    
 //# class TimerTaskRotate extends Thread{
-//#     //private Timer t;
 //#     private int scrollLen;
-//#     private int balloon;
-//#     private int scroll;
-//#     
-//#     private boolean stop;
-//#     private boolean exit;
+//#     private int scroll; //wait before scroll * sleep
+//#     private int balloon; // show balloon time
+//# 
+//#     private boolean scrollline;
 //#     
 //#     private VirtualList attachedList;
 //#     
 //#     private static TimerTaskRotate instance;
 //#     
 //#     private TimerTaskRotate() {
-//#         exit=false;
-//#         stop=true;
 //#         start();
 //#     }
 //#     
@@ -1057,81 +1056,75 @@ public abstract class VirtualList
 //#         }
 //#         if (instance==null) 
 //#             instance=new TimerTaskRotate();
+//# 
 //#         if (max<0) {
-//#             instance.destroyTask(); return;
+//#             instance.destroyTask();
+//#             return;
 //#         }
 //#         
 //#         synchronized (instance) {
 //#             list.offset=0;
 //#             instance.scrollLen=max;
-//#             //list.showBalloon=false; //<< uncomment this to disable keep balloon floating when traversing
-//#             instance.balloon=(list.showBalloon)? 6 : 13; //time to show
-//#             instance.scroll=7;
+//#             instance.scrollline=(max>0);
 //#             instance.attachedList=list;
-//#             instance.stop=false;
+//#             instance.balloon= 15;
+//#             instance.scroll= 10;
 //#         }
 //#     }
 //#     
 //#     public void run() {
-//#         // ��������� ������ ���
-//#         //stickyWindow=false;
-//#     
 //#         while (true) {
-//#             if (exit) return;
-//#             try {  sleep(300);  } catch (Exception e) {}
-//#             if (stop) continue;
-//#             
-//#             boolean redraw = false;
+//#             try {  sleep(100);  } catch (Exception e) {}
+//# 
 //#             synchronized (this) {
-//#                 if (balloon<0) {
-//#                     stop=true;
-//#                     continue;
-//#                 }
-//#                 //System.out.println("b:"+scrollLen+" scroll="+scroll+" balloon="+balloon + " stop=" + stop);
-//#                 
-//#                 if (attachedList==null) 
-//#                     stop=true;
-//#                 
-//#                 if (scrollLen>=0 || balloon>=0) { 
-//#                     stop=false;
-//#                     redraw=true;
-//#                 }
-//#                 
-//#                 if (stop) {
-//#                     if (attachedList!=null) 
-//#                         attachedList.offset=0;
-//#                     attachedList.showBalloon=false;
-//#                     attachedList=null;
-//#                     continue;
-//#                 }
-//#                 
-//#                 //scroll state machine
-//#                 if (scroll>0) scroll--;
 //#                 if (scroll==0) {
-//#                     if (attachedList.offset>=scrollLen) {
-//#                         scrollLen=-1;
-//#                         attachedList.offset=0;
-//#                     } else 
-//#                         attachedList.offset+=20;
+//#                     if (instance.scroll() || instance.balloon())
+//#                         attachedList.redraw();
+//#                 } else {
+//#                     scroll --;                    
 //#                 }
-//#                 
-//#                 //balloon state machine
-//#                 if (balloon>=0) 
-//#                     balloon--;
-//#                 attachedList.showBalloon=(balloon<7 && balloon>0);
-//#                 
 //#             }
-//#             if (redraw) 
-//#                 attachedList.redraw();
-//#             redraw=false;
-//#             
 //#         }
 //#     }
+//# 
+//#     public boolean scroll() {
+//#         synchronized (this) {
+//#             if (scrollline==false || attachedList==null || scrollLen<0) {
+//#                 return false;
+//#             }
+//# 
+//#             //System.out.println("scroll: "+scrollLen);
+//# 
+//#             if (attachedList.offset>=scrollLen) {
+//#                 scrollLen=-1;
+//#                 attachedList.offset=0;
+//#                 scrollline = false;
+//#             } else 
+//#                 attachedList.offset+=10;
+//# 
+//#             return true;
+//#         }
+//#     }
+//#     
+//#     public boolean balloon() {
+//#         synchronized (this) {
+//#             if (attachedList==null || balloon<0)
+//#                 return false;
+//# 
+//#             //System.out.println("balloon: "+bl);
+//# 
+//#             balloon--;
+//# 
+//#             attachedList.showBalloon=(balloon<20 && balloon>0);
+//# 
+//#             return true;
+//#         }
+//#     }
+//#     
 //#     public void destroyTask(){
 //#         synchronized (this) { 
-//#             if (attachedList!=null) attachedList.offset=0;
-//#             stop=true; 
-//#             //attachedList=null;
+//#             if (attachedList!=null) 
+//#                 attachedList.offset=0;
 //#         }
 //#     }
 //# }

@@ -354,12 +354,19 @@ public class ServiceDiscovery
     
     public void commandAction(Command c, Displayable d){
 	if (c==cmdOk) eventOk();
-        if (c==cmdBack){ 
-            if (stackItems.isEmpty()) { 
-                exitDiscovery();
-                return;
-            }
-            
+        if (c==cmdBack) exitDiscovery(false);            
+        if (c==cmdRfsh) { if (service!=null) requestQuery(NS_INFO, "disco"); }
+        if (c==cmdSrv) { new ServerBox(display, service, this); }
+        if (c==cmdFeatures) {new DiscoFeatures(display, service, features); }
+        if (c==cmdCancel) exitDiscovery(true);
+    }
+    
+    private void exitDiscovery(boolean cancel){
+        if (cancel || stackItems.isEmpty()) {
+            stream.cancelBlockListener(this);
+            if (display!=null && parentView!=null /*prevents potential app hiding*/ )   
+                display.setCurrent(parentView);
+        } else {
             State st=(State)stackItems.lastElement();
             stackItems.removeElement(st);
             
@@ -371,18 +378,12 @@ public class ServiceDiscovery
             mainbarUpdate();
             moveCursorTo(st.cursor, true);
             redraw();
-            
         }
-        /*if (c==cmdAdd){
-            exitDiscovery();
-            Contact j=(Contact)getFocusedObject();
-            new ContactEdit(display, j);
-            return;
-        }*/
-        if (c==cmdRfsh) { if (service!=null) requestQuery(NS_INFO, "disco"); }
-        if (c==cmdSrv) { new ServerBox(display, service, this); }
-        if (c==cmdFeatures) {new DiscoFeatures(display, service, features); }
-        if (c==cmdCancel) exitDiscovery();
+    }
+    
+    
+    public void destroyView()	{
+        exitDiscovery(false);
     }
     
     private class DiscoCommand extends IconTextElement {
@@ -428,10 +429,6 @@ public class ServiceDiscovery
         public String getSecondString() {
             return null;
         }
-    }
-    private void exitDiscovery(){
-        stream.cancelBlockListener(this);
-        destroyView();
     }
 }
 class State{
