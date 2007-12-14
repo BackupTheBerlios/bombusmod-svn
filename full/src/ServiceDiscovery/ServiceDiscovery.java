@@ -55,7 +55,7 @@ public class ServiceDiscovery
     private final static String NS_INFO="http://jabber.org/protocol/disco#info";
     private final static String NS_REGS="jabber:iq:register";
     private final static String NS_SRCH="jabber:iq:search";
-	private final static String NS_GATE="jabber:iq:gateway";
+    private final static String NS_GATE="jabber:iq:gateway";
     private final static String NS_MUC="http://jabber.org/protocol/muc";
     private final static String NODE_CMDS="http://jabber.org/protocol/commands";
     

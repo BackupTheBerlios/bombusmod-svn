@@ -771,6 +771,20 @@ public abstract class VirtualList
 //#                     }
 //#endif
                 }
+                
+                case KEY_POUND: {
+//#ifdef POPUPS
+//#                     if (cf.popUps) {
+//#                         try {
+//#                             String text=((VirtualElement)getFocusedObject()).getTipString();
+//#                             if (text!=null) {
+//#                                 setWobble(text);
+//#                                 break;
+//#                             }
+//#                         } catch (Exception e) { }
+//#                     }
+//#endif
+                }
 
                 default:
                     try {
@@ -1067,14 +1081,14 @@ public abstract class VirtualList
 //#             instance.scrollLen=max;
 //#             instance.scrollline=(max>0);
 //#             instance.attachedList=list;
-//#             instance.balloon= 15;
-//#             instance.scroll= 10;
+//#             instance.balloon= 5;
+//#             instance.scroll= 5;
 //#         }
 //#     }
 //#     
 //#     public void run() {
 //#         while (true) {
-//#             try {  sleep(100);  } catch (Exception e) {}
+//#             try {  sleep(200);  } catch (Exception e) {}
 //# 
 //#             synchronized (this) {
 //#                 if (scroll==0) {
@@ -1089,16 +1103,10 @@ public abstract class VirtualList
 //# 
 //#     public boolean scroll() {
 //#         synchronized (this) {
-//#             if (scrollline==false || attachedList==null || scrollLen<0) {
+//#             if (scrollline==false || attachedList==null || scrollLen<0)
 //#                 return false;
-//#             }
-//# 
-//#             //System.out.println("scroll: "+scrollLen);
-//# 
 //#             if (attachedList.offset>=scrollLen) {
-//#                 scrollLen=-1;
-//#                 attachedList.offset=0;
-//#                 scrollline = false;
+//#                 scrollLen=-1; attachedList.offset=0; scrollline = false;
 //#             } else 
 //#                 attachedList.offset+=10;
 //# 
@@ -1110,13 +1118,8 @@ public abstract class VirtualList
 //#         synchronized (this) {
 //#             if (attachedList==null || balloon<0)
 //#                 return false;
-//# 
-//#             //System.out.println("balloon: "+bl);
-//# 
 //#             balloon--;
-//# 
-//#             attachedList.showBalloon=(balloon<20 && balloon>0);
-//# 
+//#             attachedList.showBalloon=(balloon<6 && balloon>0);
 //#             return true;
 //#         }
 //#     }
