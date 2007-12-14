@@ -213,10 +213,9 @@ public class strconv {
     }
 
     public static String toExtendedString(String src){
-        String TIME_REP="%t";
-        String TIME_DEST=Time.dispLocalTime();
-
-        return stringReplace(src,TIME_REP,TIME_DEST);
+        src=stringReplace(src,"%dt",Time.dispLocalTime());
+        src=stringReplace(src,"%t",Time.localTime());
+        return src;
     }
     
     public static String replaceCaps(String src){
