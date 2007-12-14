@@ -779,7 +779,7 @@ public abstract class VirtualList
 //#                             String text=((VirtualElement)getFocusedObject()).getTipString();
 //#                             if (text!=null) {
 //#                                 setWobble(text);
-//#                                 break;
+//#                                 //break;
 //#                             }
 //#                         } catch (Exception e) { }
 //#                     }
