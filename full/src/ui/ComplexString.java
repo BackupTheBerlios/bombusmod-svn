@@ -83,7 +83,7 @@ public class ComplexString extends Vector implements VirtualElement{
 	boolean underline=false;
 	boolean nick=false;
         
-        int w=0;
+        int w=offset;
         int dw;
         int imageYOfs=(( getVHeight()-imgHeight() )>>1);
 //#if ALCATEL_FONT

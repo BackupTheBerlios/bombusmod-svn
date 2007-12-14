@@ -536,7 +536,7 @@ public abstract class VirtualList
             g.fillRect(0, h/2, width, h); //5 10
             
             g.setColor(getMainBarRGB());
-            mainbar.drawItem(g,0,false, false);
+            mainbar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA)?17:0,false, false);
         }
     }
 
