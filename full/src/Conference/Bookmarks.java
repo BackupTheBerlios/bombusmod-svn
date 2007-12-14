@@ -253,9 +253,15 @@ public class Bookmarks
 
     public void userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
-        
-        if (keyCode==keyClear) {
-            new YesNoAlert(display, SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), this);
+
+        switch (keyCode) {
+            case KEY_NUM4:
+                keyLeft(); break;
+            case KEY_NUM6:
+                keyRight(); break;
+            case keyClear:
+                new YesNoAlert(display, SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), this);
+                break;
         }
     }
     

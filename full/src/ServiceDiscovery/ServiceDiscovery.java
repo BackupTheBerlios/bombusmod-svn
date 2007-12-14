@@ -386,6 +386,17 @@ public class ServiceDiscovery
         exitDiscovery(false);
     }
     
+    public void userKeyPressed(int keyCode) {
+        super.userKeyPressed(keyCode);
+        
+        switch (keyCode) {
+            case KEY_NUM4:
+                keyLeft(); break;
+            case KEY_NUM6:
+                keyRight(); break;
+        }
+    }
+    
     private class DiscoCommand extends IconTextElement {
         String name;
         int index;
@@ -425,6 +436,7 @@ public class ServiceDiscovery
                 default:
             }
         }
+        
 
         public String getSecondString() {
             return null;
