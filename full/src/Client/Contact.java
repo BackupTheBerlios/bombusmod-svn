@@ -60,6 +60,8 @@ public class Contact extends IconTextElement{
         ColorScheme.CONTACT_DEFAULT,
         ColorScheme.CONTACT_J2J
     };
+
+    private boolean loaded=false;
     
     public int getColor() { 
         if (j2j)
@@ -267,6 +269,15 @@ public class Contact extends IconTextElement{
         }
         incomingState=i;
     }
+    
+    public void setHistoryLoaded () {
+        loaded=true;
+    }
+    
+    public boolean isHistoryLoaded () {
+        return loaded;
+    }
+    
     
     public int compare(IconTextElement right){
         Contact c=(Contact) right;

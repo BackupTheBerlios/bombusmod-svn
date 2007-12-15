@@ -98,7 +98,7 @@ public class ContactMessageList extends MessageList
     
     private boolean composing=true;
 
-    private Vector history = new Vector();
+    private Vector history=new Vector();
 
 
   
@@ -168,7 +168,7 @@ public class ContactMessageList extends MessageList
         contact.setIncoming(0);
 
 //#if LAST_MESSAGES 
-//#         if (history.isEmpty() && cf.lastMessages)
+//#         if (history.isEmpty() && cf.lastMessages && !contact.isHistoryLoaded())
 //#             loadRecentList();
 //#endif
         
@@ -670,6 +670,7 @@ public class ContactMessageList extends MessageList
 //#             
 //#             contact.addMessage(message);
 //#         }
+//#         contact.setHistoryLoaded();
 //#     }
 //#endif
     
