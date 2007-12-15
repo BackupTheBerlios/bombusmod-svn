@@ -290,20 +290,7 @@ public class Contact extends IconTextElement{
         }
 //#if AUTODELETE
 //#             else { redraw=deleteOldMessages(); }
-//#endif
-//#if LAST_MESSAGES
-//#         if (cf.lastMessages
-//#             && (origin!=ORIGIN_GROUPCHAT)
-//#             && (getGroupType()!=Groups.TYPE_TRANSP)
-//#             && (getGroupType()!=Groups.TYPE_IGNORE)
-//#ifndef WMUC
-//#             && ((this instanceof MucContact)==false)
-//#endif
-//#             && (m.messageType==Msg.MESSAGE_TYPE_IN))
-//#         {
-//#                 new HistoryStorage(getBareJid(), m.getBody(), false);
-//#         }
-//#endif        
+//#endif     
 //#if FILE_IO && HISTORY
 //# 
 //#         if (cf.msgLog && cf.msgPath==null) {
@@ -318,6 +305,9 @@ public class Contact extends IconTextElement{
 //#             if (m.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=toString();
 //#             boolean allowLog=false;
 //#             switch (m.messageType) {
+//#                 case Msg.MESSAGE_TYPE_TEMP:
+//#                     allowLog=false;
+//#                     break;
 //#                 case Msg.MESSAGE_TYPE_PRESENCE:
 //#                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConfPresence) allowLog=true;
 //#                     if (origin<ORIGIN_GROUPCHAT && cf.msgLogPresence) allowLog=true;
@@ -332,15 +322,23 @@ public class Contact extends IconTextElement{
 //#endif
 //#             if (allowLog)
 //#             {
-//#                 StringBuffer body=new StringBuffer(m.getDayTime());
+//#                 StringBuffer body=new StringBuffer("\01");
+//#                 body.append(m.getDayTime());
+//#                 body.append("\01");
 //#                 body.append(" <");
+//#                 body.append("\02");
 //#                 body.append(fromName);
+//#                 body.append("\02");
 //#                 body.append("> ");
 //#                 if (m.subject!=null) {
+//#                     body.append("\03");
 //#                     body.append(m.subject);
+//#                     body.append("\03");
 //#                     body.append("\r\n");
 //#                 }
+//#                 body.append("\04");
 //#                 body.append(m.getBody());
+//#                 body.append("\04");
 //#                 body.append("\r\n");
 //#                 
 //#                 String histRecord=(nick==null)?getBareJid():nick;

@@ -26,64 +26,144 @@
 
 package History;
 
-
-import io.NvStorage;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import Client.Config;
+import Client.Contact;
+import Client.Msg;
+import io.file.FileIO;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Vector;
+import util.Translit;
+import util.strconv;
 
 public class HistoryStorage {
     
-    private String bareJid;
+    final static int SEARCH_DATE  = 0;
+    final static int SEARCH_FROM  = 1;
+    final static int SEARCH_SUBJ  = 2;
+    final static int SEARCH_BODY  = 3;
+    final static int SEARCH_BREAK = 4;
     
     public Vector recentList;
     
     private int count=4;
-    
-    public HistoryStorage(String bareJid, String message, boolean clear) {
 
-            this.bareJid=bareJid.replace('@', '%');
-        
-            recentList=new Vector(count);
-           
-            if (clear==true) {
-                saveRecentList();
+    private int afterEol;
+    
+    private String history;
+    
+    private Config cf=Config.getInstance();
+
+    private int pos=0;
+    
+    public HistoryStorage(String bareJid) {
+        String filename=bareJid;
+//#ifdef TRANSLIT
+//#        filename=cf.msgPath+((cf.transliterateFilenames)?Translit.translit(filename):filename)+".txt";
+//#else
+       filename=cf.msgPath+filename+".txt";
+//#endif
+       
+       this.history = loadHistory(filename);
+   }
+    
+   private String loadHistory(String fileName) {
+        byte[] bodyMessage;
+        String archive="";
+        bodyMessage=readFile(fileName);
+
+        if (bodyMessage!=null) {
+            if (cf.cp1251) {
+                archive=strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
             } else {
-                loadRecentList();
-                
-                if (message==null) return;
-                saveMessage(message);
+                archive=new String(bodyMessage, 0, bodyMessage.length);
             }
-    }
+        }
 
-    public void saveMessage(String message) {
-        if (recentList.size()>count-1)
-            recentList.removeElementAt(0);
+        return archive;
+   }
+
+    public Vector importData() {
+        Vector vector=new Vector();
         
-        recentList.addElement(message);
-        
-        saveRecentList();
+        if (history!=null) {
+            int count = 0;
+            int state = SEARCH_BODY;
+            String date = null; String from = null; String subj = null; String body = null; 
+
+            pos = history.length();
+
+            try {
+                while (true) {
+                    switch (state) {
+                        case SEARCH_BODY:
+                            body = findBlock('\04','\04');
+                            if (body!="") {
+                                state = SEARCH_SUBJ;
+                            } else state = SEARCH_BREAK;
+                            break; 
+                        case SEARCH_SUBJ:
+                            subj = findBlock('\03','\03');
+                            state = SEARCH_FROM;
+                            break;
+                        case SEARCH_FROM:
+                            from = findBlock('\02','\02');
+                            if (from!="") state = SEARCH_DATE; else state = SEARCH_BREAK;
+                            break;
+                        case SEARCH_DATE:
+                            date = findBlock('\01','\01');
+                            if (date!="") {
+                                state = SEARCH_BODY;
+                                //System.out.println(date+" "+from+" "+subj+" "+body);
+                                vector.insertElementAt(new Msg(Msg.MESSAGE_TYPE_TEMP,from,subj,date+"\n"+body), 0);
+                                count++;
+                            } else state = SEARCH_BREAK;
+                            break;
+                    }
+
+                    if (state == SEARCH_BREAK || count>4) {
+                        //System.out.println("end search at "+state+" with count: "+count);
+                        break;
+                    }
+                }
+            } catch (Exception e)	{ System.out.println(e.toString()); }
+        }
+        return vector;
     }
     
-    private void saveRecentList() {
-        DataOutputStream os=NvStorage.CreateDataOutputStream();
-        try {
-            for (Enumeration e=recentList.elements(); e.hasMoreElements(); ) {
-                String s=(String)e.nextElement();
-                os.writeUTF(s);
+    private String findBlock (char start, char end){
+        String block = "";
+        int end_pos=history.lastIndexOf(end, pos);
+        if (end_pos>-1) {
+            pos=end_pos-1;
+            int start_pos=history.lastIndexOf(start, pos);
+            if (start_pos>-1) {
+                pos=start_pos-1;
+                block=history.substring(start_pos+1, end_pos);
             }
-        } catch (Exception e) {}
-        
-        NvStorage.writeFileRecord(os, bareJid, 0, true);
+        }
+        return block;
     }
     
-    private void loadRecentList() {
+    private byte[] readFile(String arhPath){
+        byte[] b = null; int maxSize=1024;
+        FileIO f=FileIO.createConnection(arhPath);
         try {
-            DataInputStream is=NvStorage.ReadFileRecord(bareJid, 0);
-            while (is.available()>0)
-                recentList.addElement(is.readUTF());
-            is.close();
-        } catch (Exception e) {}
-    }
+            InputStream is=f.openInputStream(); 
+            int fileSize = (int)f.fileSize();
+            if (fileSize>maxSize){
+                b=new byte[maxSize];
+                is.skip(fileSize-maxSize);
+                is.read(b);
+            } else {
+                b=new byte[fileSize];
+                is.read(b);
+            }
+            is.close(); f.close();
+        } catch (Exception e) { try { f.close(); } catch (IOException ex2) { } }
+        
+        if (b!=null) { return b; }
+        return null;
+    }    
 }

@@ -172,7 +172,6 @@ public class HistoryConfig implements
     
 //#if FILE_IO
     public void commandAction(Command command, Item item) {
-
         if (command==cmdSetHistFolder) {
             new Browser(null, display, this, true);
         }

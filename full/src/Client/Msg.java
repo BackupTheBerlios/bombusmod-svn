@@ -48,6 +48,7 @@ public class Msg //implements MessageList.Element
     public final static int MESSAGE_TYPE_ERROR=11;
     public final static int MESSAGE_TYPE_SUBJ=12;
     public final static int MESSAGE_TYPE_AUTH=15;
+    public final static int MESSAGE_TYPE_TEMP=100;
 
     private boolean highlite;
     

@@ -768,6 +768,7 @@ public abstract class VirtualList
 //#                     if (cf.popUps) {
 //#                         int freemem=(int)Runtime.getRuntime().freeMemory();
 //#                         setWobble("Free "+(freemem/1000)+" kb");
+//#                         break;
 //#                     }
 //#endif
                 }

@@ -34,9 +34,6 @@ import Conference.MucContact;
 //#endif
 import Messages.MessageList;
 import images.RosterIcons;
-//#if LAST_MESSAGES 
-//# import io.NvStorage;
-//#endif
 import locale.SR;
 import ui.MainBar;
 import java.util.*;
@@ -47,10 +44,12 @@ import util.ClipBoard;
 //# import archive.MessageArchive;
 //#endif
 
+//#if LAST_MESSAGES 
+//# import History.HistoryStorage;
+//#endif
 //#if TEMPLATES
 //# import templates.TemplateContainer;
-//# import History.HistoryStorage;
-//# import java.io.DataInputStream;
+//# 
 //#endif
 
 //#ifdef ALT_INPUT
@@ -71,9 +70,6 @@ public class ContactMessageList extends MessageList
 //#endif
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
     Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,8);
-//#if LAST_MESSAGES
-//#     Command cmdRecent=new Command(SR.MS_LAST_MESSAGES,Command.SCREEN,6);
-//#endif
     //Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,10);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
     Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 12);
@@ -94,9 +90,6 @@ public class ContactMessageList extends MessageList
     StaticData sd;
     
     private Config cf=Config.getInstance();
-//#if LAST_MESSAGES
-//#     private boolean hisStorage=(cf.lastMessages)?true:false;    
-//#endif
     
 //#ifdef ALT_INPUT
 //#     private boolean startMessage=false;
@@ -104,6 +97,8 @@ public class ContactMessageList extends MessageList
 //#endif
     
     private boolean composing=true;
+
+    private Vector history = new Vector();
 
 
   
@@ -144,13 +139,6 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
 //#endif
-//#if LAST_MESSAGES      
-//#         if (hisStorage 
-//#ifndef WMUC
-//#                 && contact instanceof MucContact==false
-//#endif
-//#                 ) addCommand(cmdRecent);
-//#endif        
         addCommand(cmdMessage);
 //#ifndef WMUC
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
@@ -176,12 +164,17 @@ public class ContactMessageList extends MessageList
         addCommand(cmdSaveChat);
 //#endif
         setCommandListener(this);
-
-        moveCursorTo(contact.firstUnread(), true);
         
         contact.setIncoming(0);
+
+//#if LAST_MESSAGES 
+//#         if (history.isEmpty())
+//#             loadRecentList();
+//#endif
+        
+        moveCursorTo(contact.firstUnread(), true);
     }
-    
+
     public void showNotify(){
 //#if AUTODELETE
 //#         getRedraw(true);
@@ -404,18 +397,9 @@ public class ContactMessageList extends MessageList
             }
             redraw();
         }
-//#if LAST_MESSAGES
-//#         if (c==cmdRecent) {
-//#             //new HistoryList(contact.getBareJid(), display);
-//#             loadRecentList();
-//#         }
-//#endif
     }
 
     private void clearReadedMessageList() {
-//#if LAST_MESSAGES
-//#         if (hisStorage) new HistoryStorage(contact.getBareJid(), "", true);
-//#endif
         contact.smartPurge(cursor+1);
         messages=new Vector();
         
@@ -677,13 +661,15 @@ public class ContactMessageList extends MessageList
     
 //#if LAST_MESSAGES 
 //#     private void loadRecentList() {
-//#         try {
-//#             DataInputStream is=NvStorage.ReadFileRecord(contact.bareJid.replace('@', '%'), 0);
-//#             while (is.available()>0) {
-//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_HISTORY, contact.bareJid.replace('@', '%'), null, is.readUTF()));
-//#             }
-//#             is.close();
-//#         } catch (Exception e) {}
+//#         HistoryStorage hs = new HistoryStorage(contact.getBareJid());
+//#         history=hs.importData();
+//#         
+//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); ) 
+//#         {
+//#             Msg message=(Msg) messages.nextElement();
+//#             
+//#             contact.addMessage(message);
+//#         }
 //#     }
 //#endif
     
