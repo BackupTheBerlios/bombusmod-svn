@@ -168,7 +168,7 @@ public class ContactMessageList extends MessageList
         contact.setIncoming(0);
 
 //#if LAST_MESSAGES 
-//#         if (history.isEmpty())
+//#         if (history.isEmpty() && cf.lastMessages)
 //#             loadRecentList();
 //#endif
         
@@ -661,7 +661,7 @@ public class ContactMessageList extends MessageList
     
 //#if LAST_MESSAGES 
 //#     private void loadRecentList() {
-//#         HistoryStorage hs = new HistoryStorage(contact.getBareJid());
+//#         HistoryStorage hs = new HistoryStorage((contact.nick==null)?contact.getBareJid():contact.nick);
 //#         history=hs.importData();
 //#         
 //#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); ) 
