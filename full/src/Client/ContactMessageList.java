@@ -667,10 +667,21 @@ public class ContactMessageList extends MessageList
 //#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); ) 
 //#         {
 //#             Msg message=(Msg) messages.nextElement();
-//#             
-//#             contact.addMessage(message);
+//#             message.setHistory(true);
+//#             if (!checkMsgExists(message))
+//#                 contact.addMessage(message);
 //#         }
 //#         contact.setHistoryLoaded();
+//#     }
+//#     
+//#     private boolean checkMsgExists(Msg msg) {
+//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) 
+//#          {
+//#             Msg message=(Msg) messages.nextElement();
+//#             if (message.messageType==msg.messageType && message.getBody()==msg.getBody())
+//#                 return true;
+//#          }
+//#         return false;
 //#     }
 //#endif
     

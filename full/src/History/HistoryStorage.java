@@ -38,12 +38,12 @@ import util.Translit;
 import util.strconv;
 
 public class HistoryStorage {
-    
-    final static int SEARCH_DATE  = 0;
-    final static int SEARCH_FROM  = 1;
-    final static int SEARCH_SUBJ  = 2;
-    final static int SEARCH_BODY  = 3;
-    final static int SEARCH_BREAK = 4;
+    final static int SEARCH_MARKER= 0;
+    final static int SEARCH_DATE  = 1;
+    final static int SEARCH_FROM  = 2;
+    final static int SEARCH_SUBJ  = 3;
+    final static int SEARCH_BODY  = 4;
+    final static int SEARCH_BREAK = 5;   
     
     public Vector recentList;
     
@@ -89,14 +89,18 @@ public class HistoryStorage {
         
         if (history!=null) {
             int count = 0;
-            int state = SEARCH_BODY;
-            String date = null; String from = null; String subj = null; String body = null; 
+            int state = SEARCH_MARKER;
+            String date = null; String from = null; String subj = null; String body = null;  String marker = "";
 
             pos = history.length();
 
             try {
                 while (true) {
                     switch (state) {
+                        case SEARCH_MARKER:
+                            marker = findBlock('\05','\05');
+                            if (marker!="") state = SEARCH_BODY; else state = SEARCH_BREAK;
+                            break; 
                         case SEARCH_BODY:
                             body = findBlock('\04','\04');
                             if (body!="") {
@@ -114,10 +118,12 @@ public class HistoryStorage {
                         case SEARCH_DATE:
                             date = findBlock('\01','\01');
                             if (date!="") {
-                                state = SEARCH_BODY;
-                                //System.out.println(date+" "+from+" "+subj+" "+body);
-                                vector.insertElementAt(new Msg(Msg.MESSAGE_TYPE_TEMP,from,subj,date+"\n"+body), 0);
-                                count++;
+                                state = SEARCH_MARKER;
+                                if (Integer.parseInt(marker)!=Msg.MESSAGE_MARKER_PRESENCE) {
+                                    //System.out.println(marker+" "+date+" "+from+" "+subj+" "+body);
+                                    vector.insertElementAt(processMessage (marker, date, from, subj, body), 0);
+                                    count++;
+                                }
                             } else state = SEARCH_BREAK;
                             break;
                     }
@@ -127,9 +133,33 @@ public class HistoryStorage {
                         break;
                     }
                 }
-            } catch (Exception e)	{ System.out.println(e.toString()); }
+            } catch (Exception e)	{ /*System.out.println(e.toString()); */}
         }
+        history = null;
         return vector;
+    }
+    
+    private Msg processMessage (String marker, String date, String from, String subj, String body) {
+        int msgType=Msg.MESSAGE_TYPE_HISTORY;
+        
+        int mrk = Integer.parseInt(marker);
+        
+        switch (mrk) {
+            case Msg.MESSAGE_MARKER_IN:
+                msgType=Msg.MESSAGE_TYPE_IN;
+                break;
+            case Msg.MESSAGE_MARKER_OUT:
+                msgType=Msg.MESSAGE_TYPE_OUT;
+                break;
+            case Msg.MESSAGE_MARKER_PRESENCE:
+                msgType=Msg.MESSAGE_TYPE_PRESENCE;
+                break;
+        }
+        
+        Msg msg=new Msg(msgType,from,subj,body);
+        msg.setDayTime(date);
+        
+        return msg;
     }
     
     private String findBlock (char start, char end){
@@ -147,7 +177,7 @@ public class HistoryStorage {
     }
     
     private byte[] readFile(String arhPath){
-        byte[] b = null; int maxSize=1024;
+        byte[] b = null; int maxSize=2048;
         FileIO f=FileIO.createConnection(arhPath);
         try {
             InputStream is=f.openInputStream(); 

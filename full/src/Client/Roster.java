@@ -2111,6 +2111,15 @@ public class Roster
     }
 
     protected void keyPressed(int keyCode) {
+        if (keyCode==KEY_POUND) {
+//#ifndef WSYSTEMGC
+            System.gc();
+//#endif
+//#ifdef POPUPS
+//#             setWobbler(null);
+//#             return;
+//#endif
+      }
        //workaround for SE JP6 - enabling vibra in closed state
         if (keyCode==SE_FLIPCLOSE_JP6) {
             display.setCurrent(null);
@@ -2228,14 +2237,6 @@ public class Roster
                 break;
             case KEY_NUM6:
                 keyRight();
-                break;
-            case KEY_POUND:
-//#ifndef WSYSTEMGC
-                System.gc();
-//#endif
-//#ifdef POPUPS
-//#                 setWobbler(null);
-//#endif
                 break;
             case KEY_STAR:
                 if (cf.ghostMotor) {

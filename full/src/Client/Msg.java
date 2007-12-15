@@ -48,9 +48,16 @@ public class Msg //implements MessageList.Element
     public final static int MESSAGE_TYPE_ERROR=11;
     public final static int MESSAGE_TYPE_SUBJ=12;
     public final static int MESSAGE_TYPE_AUTH=15;
-    public final static int MESSAGE_TYPE_TEMP=100;
+
+    public final static int MESSAGE_MARKER_OUT=1;
+    public final static int MESSAGE_MARKER_PRESENCE=2;
+    public final static int MESSAGE_MARKER_IN=3;
+    public final static int MESSAGE_MARKER_OTHER=0;
+    
 
     private boolean highlite;
+    
+    private boolean history;
     
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
@@ -80,6 +87,10 @@ public class Msg //implements MessageList.Element
         return Time.dayLocalString(dateGmt)+Time.timeLocalString(dateGmt); 
     }
     //private TimeZone tz(){ return StaticData.getInstance().config.tz;}
+    
+    public void setDayTime(String date){
+        this.dateGmt=Time.dateStringToLong(date);
+    }
     
     public int getColor() {
         if (highlite) 
@@ -147,6 +158,9 @@ public class Msg //implements MessageList.Element
     void setHighlite(boolean state) { highlite=state; }
 
     public boolean isHighlited() { return highlite; }
+    
+    public boolean isHistory() { return history; }
+    void setHistory(boolean state) { history=state; }
     
     public String quoteString(){
         StringBuffer out=new StringBuffer(toString());

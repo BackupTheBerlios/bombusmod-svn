@@ -316,9 +316,6 @@ public class Contact extends IconTextElement{
 //#             if (m.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=toString();
 //#             boolean allowLog=false;
 //#             switch (m.messageType) {
-//#                 case Msg.MESSAGE_TYPE_TEMP:
-//#                     allowLog=false;
-//#                     break;
 //#                 case Msg.MESSAGE_TYPE_PRESENCE:
 //#                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConfPresence) allowLog=true;
 //#                     if (origin<ORIGIN_GROUPCHAT && cf.msgLogPresence) allowLog=true;
@@ -327,12 +324,26 @@ public class Contact extends IconTextElement{
 //#                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
 //#                     if (origin<ORIGIN_GROUPCHAT) allowLog=true;
 //#             }
+//#             if (m.isHistory())
+//#                 allowLog=false;
 //#ifndef WMUC
 //#             if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
 //#                  allowLog=false;
 //#endif
 //#             if (allowLog)
 //#             {
+//#                 int marker=Msg.MESSAGE_MARKER_OTHER;
+//#                 switch (m.messageType){
+//#                     case Msg.MESSAGE_TYPE_IN:
+//#                         marker=Msg.MESSAGE_MARKER_IN;
+//#                         break;
+//#                     case Msg.MESSAGE_TYPE_PRESENCE:
+//#                         marker=Msg.MESSAGE_MARKER_PRESENCE;
+//#                         break;
+//#                    case Msg.MESSAGE_MARKER_OUT:
+//#                         marker=Msg.MESSAGE_MARKER_OUT;
+//#                 }
+//#                 
 //#                 StringBuffer body=new StringBuffer("\01");
 //#                 body.append(m.getDayTime());
 //#                 body.append("\01");
@@ -350,6 +361,9 @@ public class Contact extends IconTextElement{
 //#                 body.append("\04");
 //#                 body.append(m.getBody());
 //#                 body.append("\04");
+//#                 body.append("\05");
+//#                 body.append(marker);
+//#                 body.append("\05");
 //#                 body.append("\r\n");
 //#                 
 //#                 String histRecord=(nick==null)?getBareJid():nick;

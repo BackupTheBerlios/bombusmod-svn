@@ -164,6 +164,19 @@ public class Time {
         return c.getTime().getTime(); 
     }
     
+    public static long dateStringToLong(String sdate){
+        int field=0;
+        try {
+            field=Integer.parseInt(sdate.substring(0, 2)); c.set(calFields[2], field); //date
+            field=Integer.parseInt(sdate.substring(3, 5)); c.set(calFields[1], field-1); //month
+            field=Integer.parseInt(sdate.substring(6, 8)); c.set(calFields[0], field+2000); //year
+            field=Integer.parseInt(sdate.substring(9, 11)); c.set(calFields[3], field); //hour
+            field=Integer.parseInt(sdate.substring(12, 14)); c.set(calFields[4], field); //min
+            c.set(calFields[5], 0); //sec
+        } catch (Exception e) {}
+        return c.getTime().getTime(); 
+    }
+    
     public static String secDiffToDate(int seconds){
         String result ="";
         int d = 0,h = 0,m = 0,s = 0;
