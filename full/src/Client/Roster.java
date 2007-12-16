@@ -2112,11 +2112,10 @@ public class Roster
 
     protected void keyPressed(int keyCode) {
         if (keyCode==KEY_POUND) {
-//#ifndef WSYSTEMGC
-            System.gc();
-//#endif
 //#ifdef POPUPS
+//#             VirtualList.popup.next();
 //#             setWobbler(null);
+//#             redraw();
 //#             return;
 //#endif
       }
