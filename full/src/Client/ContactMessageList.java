@@ -439,7 +439,23 @@ public class ContactMessageList extends MessageList
             clearReadedMessageList();
 	else 
             super.keyRepeated(keyCode);
-    }       
+    }  
+    
+    protected void keyPressed(int keyCode) {
+        if (keyCode==KEY_POUND) {
+//#ifndef WMUC
+            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+                Reply();
+            } else {
+//#endif
+                keyGreen();
+//#ifndef WMUC
+            }
+//#endif
+            return;
+        } else
+            super.keyPressed(keyCode);
+    }
 
     public void userKeyPressed(int keyCode) {
 //#if ALT_INPUT  
@@ -542,18 +558,6 @@ public class ContactMessageList extends MessageList
                     clipboard.setClipBoard("");
                     break;
                 }
-            case KEY_POUND:
-//#ifndef WMUC
-                if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-                    Reply();
-                    break;
-                } else {
-//#endif
-                    keyGreen();
-                    break;
-//#ifndef WMUC                    
-                }
-//#endif
             case keyClear:
                 if (!messages.isEmpty()) {
                     clearReadedMessageList();

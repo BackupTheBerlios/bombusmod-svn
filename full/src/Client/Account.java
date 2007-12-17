@@ -252,7 +252,7 @@ public class Account extends IconTextElement{
     public String getResource() { return resource;  }
     public void setResource(String resource) { this.resource = resource;  }
 
-    public String getNickName() { return (nick.length()==0)?getUserName():nick;  }
+    public String getNickName() { return (nick.length()==0)?userName:nick;  }
     public String getNick() { return (nick.length()==0)? null:nick;  }
  
     public void setNick(String nick) { this.nick = nick;  }

@@ -48,6 +48,8 @@ public class Bookmarks
 {   
     private BookmarkItem toAdd;
     
+    private Roster roster = StaticData.getInstance().roster;
+    
     private Config cf=Config.getInstance();
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
@@ -70,8 +72,6 @@ public class Bookmarks
     private Command cmdRoomBanned=new Command (SR.MS_BANNED, Command.SCREEN, 14);
     
     private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 15);
-    
-    Roster roster=StaticData.getInstance().roster;
 
     JabberStream stream=roster.theStream;
     /** Creates a new instance of Bookmarks */
@@ -114,12 +114,12 @@ public class Bookmarks
     }
 
     protected int getItemCount() { 
-        Vector bookmarks=StaticData.getInstance().roster.bookmarks;
+        Vector bookmarks=roster.bookmarks;
         return (bookmarks==null)?0: bookmarks.size(); 
     }
     
     protected VirtualElement getItemRef(int index) { 
-        return (VirtualElement) StaticData.getInstance().roster.bookmarks.elementAt(index); 
+        return (VirtualElement) roster.bookmarks.elementAt(index); 
     }
     
     public void loadBookmarks() {
@@ -127,7 +127,7 @@ public class Bookmarks
 
     private void addBookmark() {
         if (toAdd!=null) {
-            Vector bm=StaticData.getInstance().roster.bookmarks;
+            Vector bm=roster.bookmarks;
             bm.addElement(toAdd);
             //sort(bm);
             saveBookmarks();
@@ -140,9 +140,8 @@ public class Bookmarks
         BookmarkItem join=(BookmarkItem)getFocusedObject();
         if (join==null) return;
         if (join.isUrl) return;
-        
-        StaticData sd=StaticData.getInstance();
-        ConferenceGroup grp=sd.roster.initMuc(join.toString(), join.password);
+
+        ConferenceGroup grp=roster.initMuc(join.toString(), join.password);
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
         
@@ -155,8 +154,8 @@ public class Bookmarks
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
         
-        sd.roster.sendPresence(join.toString(), null, x, false);
-        sd.roster.reEnumRoster();
+        roster.sendPresence(join.toString(), null, x, false);
+        roster.reEnumRoster();
         display.setCurrent(roster);
     }
     
@@ -196,11 +195,11 @@ public class Bookmarks
         else if (c==cmdRoomBanned) new Affiliations(display, roomJid, (short)4);  
         
         else if (c==cmdSort) {
-            sort(StaticData.getInstance().roster.bookmarks);
+            sort(roster.bookmarks);
         }
         
         else if (c==cmdDoAutoJoin) {
-            for (Enumeration e=StaticData.getInstance().roster.bookmarks.elements(); e.hasMoreElements();) {
+            for (Enumeration e=roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
                 if (bm.autojoin) 
                     ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
@@ -225,7 +224,7 @@ public class Bookmarks
         if (del.isUrl) 
             return;
 
-        StaticData.getInstance().roster.bookmarks.removeElement(del);
+        roster.bookmarks.removeElement(del);
         if (getItemCount()<=cursor) 
             moveCursorEnd();
         saveBookmarks();
@@ -246,8 +245,8 @@ public class Bookmarks
             BookmarkItem p1=(BookmarkItem)getItemRef(index);
             BookmarkItem p2=(BookmarkItem)getItemRef(index+offset);
             
-            StaticData.getInstance().roster.bookmarks.setElementAt(p1, index+offset);
-            StaticData.getInstance().roster.bookmarks.setElementAt(p2, index);
+            roster.bookmarks.setElementAt(p1, index+offset);
+            roster.bookmarks.setElementAt(p2, index);
         } catch (Exception e) {/* IndexOutOfBounds */}
     }
 

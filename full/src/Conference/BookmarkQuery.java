@@ -27,6 +27,7 @@
 
 package Conference;
 
+import Client.Roster;
 import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
@@ -47,6 +48,8 @@ public class BookmarkQuery implements JabberBlockListener{
     public final static boolean SAVE=true;
     public final static boolean LOAD=false;
     
+    private Roster roster = StaticData.getInstance().roster;
+    
     private Config cf=Config.getInstance();
     
     /** Creates a new instance of BookmarkQurery */
@@ -57,11 +60,11 @@ public class BookmarkQuery implements JabberBlockListener{
 
         JabberDataBlock storage=query.addChildNs("storage", "storage:bookmarks");
         if (saveBookmarks) 
-            for (Enumeration e=StaticData.getInstance().roster.bookmarks.elements(); e.hasMoreElements(); ) {
+            for (Enumeration e=roster.bookmarks.elements(); e.hasMoreElements(); ) {
             storage.addChild( ((BookmarkItem)e.nextElement()).constructBlock() );
         }
         
-        StaticData.getInstance().roster.theStream.send(request);
+        roster.theStream.send(request);
     }
     
     
@@ -73,7 +76,7 @@ public class BookmarkQuery implements JabberBlockListener{
                         findNamespace("storage", "storage:bookmarks");
                 Vector bookmarks=new Vector();
 				boolean autojoin=cf.autoJoinConferences 
-                        && StaticData.getInstance().roster.myStatus!=Presence.PRESENCE_INVISIBLE;
+                        && roster.myStatus!=Presence.PRESENCE_INVISIBLE;
                 try {
                     for (Enumeration e=storage.getChildBlocks().elements(); e.hasMoreElements(); ){
                         BookmarkItem bm=new BookmarkItem((JabberDataBlock)e.nextElement());
@@ -87,8 +90,8 @@ public class BookmarkQuery implements JabberBlockListener{
                 if (bookmarks.isEmpty()) 
                     loadDefaults(bookmarks);
 					
-                StaticData.getInstance().roster.bookmarks=bookmarks;
-                StaticData.getInstance().roster.redraw();
+                roster.bookmarks=bookmarks;
+                roster.redraw();
                 
                 return JabberBlockListener.NO_MORE_BLOCKS;
             }
@@ -103,6 +106,7 @@ public class BookmarkQuery implements JabberBlockListener{
             String nick=(String) defs[1].elementAt(i);
             String pass=(String) defs[2].elementAt(i);
             if (pass==null) pass="";
+            if (nick==null) nick=StaticData.getInstance().account.getNickName();
             BookmarkItem bm=new BookmarkItem(roomJid, nick, pass, false);
             bookmarks.addElement(bm);
         }

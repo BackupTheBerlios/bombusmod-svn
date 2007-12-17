@@ -327,7 +327,7 @@ public class Roster
             theStream.setJabberListener( this );
             theStream.addBlockListener(new EntityCaps());
         } catch( Exception e ) {
-            setProgress(SR.MS_FAILED, 0);
+            setProgress(SR.MS_FAILED, 100);
             reconnect=false;
             myStatus=Presence.PRESENCE_OFFLINE;
             //e.printStackTrace();
@@ -2041,7 +2041,7 @@ public class Roster
 
     public void connectionTerminated( Exception e ) {
         String error=null;
-        setProgress(SR.MS_DISCONNECTED, 0);
+        setProgress(SR.MS_DISCONNECTED, 100);
          if( e != null ) {
             askReconnect(e);
             
@@ -2345,17 +2345,27 @@ public class Roster
 //#ifdef POPUPS
 //#     public void setWobbler(String info) {
 //#         StringBuffer mess=new StringBuffer();
+//#         
 //#         if (info==null) {
+//#             boolean isContact=(getFocusedObject() instanceof MucContact);
+//#             boolean isMucContact=(getFocusedObject() instanceof MucContact);
+//#             
+//#             if (getFocusedObject() instanceof Group) {
+//#                 mess=null;
+//#                 return;
+//#             }
+//#                 
 //#             Contact contact=(Contact)getFocusedObject();
+//#             
 //#             String client=(contact.hasEntity)?"\nUse: "+contact.entityNode:"";
 //#             String clientVer=(contact.entityVer!=null)?"#"+contact.entityVer:"";
 //#ifndef WMUC
-//#             boolean muc=(contact instanceof MucContact)?true:false;
+//#             
 //#else
-//#             boolean muc=false;
+//#             boolean isMucContact=false;
 //#endif
 //#ifndef WMUC
-//#             if (muc) {
+//#             if (isMucContact) {
 //#                 MucContact mucContact=(MucContact)contact;
 //#                 String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n";
 //#                 String aff=mucContact.affiliation;

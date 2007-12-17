@@ -232,9 +232,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     
     public void keyPressed(int keyCode) { 
-        if (keyCode==-24) {
-            destroyView();
-        } else if (pos>20) 
+        if (pos>24)
             close();
         
         kHold=0;
