@@ -344,27 +344,21 @@ public class Contact extends IconTextElement{
 //#                         marker=Msg.MESSAGE_MARKER_OUT;
 //#                 }
 //#                 
-//#                 StringBuffer body=new StringBuffer("\01");
-//#                 body.append(m.getDayTime());
-//#                 body.append("\01");
-//#                 body.append(" <");
-//#                 body.append("\02");
-//#                 body.append(fromName);
-//#                 body.append("\02");
-//#                 body.append("> ");
-//#                 if (m.subject!=null) {
-//#                     body.append("\03");
-//#                     body.append(m.subject);
-//#                     body.append("\03");
-//#                     body.append("\r\n");
-//#                 }
-//#                 body.append("\04");
-//#                 body.append(m.getBody());
-//#                 body.append("\04");
-//#                 body.append("\05");
+//#                 StringBuffer body=new StringBuffer("<m><t>");
 //#                 body.append(marker);
-//#                 body.append("\05");
-//#                 body.append("\r\n");
+//#                 body.append("</t><d>");
+//#                 body.append(m.getDayTime());
+//#                 body.append("</d><f>");
+//#                 body.append(fromName);
+//#                 body.append("</f>");
+//#                 if (m.subject!=null) {
+//#                     body.append("<s>");
+//#                     body.append(m.subject);
+//#                     body.append("</s>");
+//#                 }
+//#                 body.append("<b>");
+//#                 body.append(m.getBody());
+//#                 body.append("</b></m>\r\n");
 //#                 
 //#                 String histRecord=(nick==null)?getBareJid():nick;
 //#                 

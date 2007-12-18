@@ -2347,9 +2347,10 @@ public class Roster
 //#         StringBuffer mess=new StringBuffer();
 //#         
 //#         if (info==null) {
-//#             boolean isContact=(getFocusedObject() instanceof MucContact);
+//#             boolean isContact=(getFocusedObject() instanceof Contact);
+//#ifndef WMUC
 //#             boolean isMucContact=(getFocusedObject() instanceof MucContact);
-//#             
+//#endif
 //#             if (getFocusedObject() instanceof Group) {
 //#                 mess=null;
 //#                 return;

@@ -88,53 +88,33 @@ public class HistoryStorage {
         Vector vector=new Vector();
         
         if (history!=null) {
-            int count = 0;
-            int state = SEARCH_MARKER;
-            String date = null; String from = null; String subj = null; String body = null;  String marker = "";
-
-            pos = history.length();
-
             try {
-                while (true) {
-                    switch (state) {
-                        case SEARCH_MARKER:
-                            marker = findBlock('\05','\05');
-                            if (marker!="") state = SEARCH_BODY; else state = SEARCH_BREAK;
-                            break; 
-                        case SEARCH_BODY:
-                            body = findBlock('\04','\04');
-                            if (body!="") {
-                                state = SEARCH_SUBJ;
-                            } else state = SEARCH_BREAK;
-                            break; 
-                        case SEARCH_SUBJ:
-                            subj = findBlock('\03','\03');
-                            state = SEARCH_FROM;
-                            break;
-                        case SEARCH_FROM:
-                            from = findBlock('\02','\02');
-                            if (from!="") state = SEARCH_DATE; else state = SEARCH_BREAK;
-                            break;
-                        case SEARCH_DATE:
-                            date = findBlock('\01','\01');
-                            if (date!="") {
-                                state = SEARCH_MARKER;
-                                if (Integer.parseInt(marker)!=Msg.MESSAGE_MARKER_PRESENCE) {
-                                    //System.out.println(marker+" "+date+" "+from+" "+subj+" "+body);
-                                    vector.insertElementAt(processMessage (marker, date, from, subj, body), 0);
-                                    count++;
-                                }
-                            } else state = SEARCH_BREAK;
-                            break;
-                    }
+                int count = 0; int pos=0; int start_pos=0; int end_pos=0;
 
-                    if (state == SEARCH_BREAK || count>4) {
-                        //System.out.println("end search at "+state+" with count: "+count);
+                while (true) {
+                    String type=null; String date=null; String from=null; String subj=null; String body=null; String tempstr=null;
+                    start_pos=history.indexOf("<m>",pos); end_pos=history.indexOf("</m>",pos);
+
+                    if (start_pos>-1) {
+                        tempstr=history.substring(start_pos+3, end_pos);
+                        type=findBlock(tempstr,"t"); date=findBlock(tempstr,"d"); from=findBlock(tempstr,"f"); subj=findBlock(tempstr,"s"); body=findBlock(tempstr,"b");
+
+                        if (Integer.parseInt(type)!=Msg.MESSAGE_MARKER_PRESENCE) {
+                            //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
+                            vector.insertElementAt(processMessage (type, date, from, subj, body), 0);
+                            count++;
+                        }
+                    } else
                         break;
-                    }
+                    
+                    if (count>4)
+                        break;
+                    
+                    pos=end_pos+4;
                 }
-            } catch (Exception e)	{ /*System.out.println(e.toString()); */}
+            } catch (Exception e)	{  }
         }
+
         history = null;
         return vector;
     }
@@ -162,20 +142,15 @@ public class HistoryStorage {
         return msg;
     }
     
-    private String findBlock (char start, char end){
+    private String findBlock(String source, String needle){
         String block = "";
-        int end_pos=history.lastIndexOf(end, pos);
-        if (end_pos>-1) {
-            pos=end_pos-1;
-            int start_pos=history.lastIndexOf(start, pos);
-            if (start_pos>-1) {
-                pos=start_pos-1;
-                block=history.substring(start_pos+1, end_pos);
-            }
-        }
-        return block;
+        int start =source.indexOf("<"+needle+">"); int end = source.indexOf("</"+needle+">");
+        if (start<0 || end<0)
+            return block;
+        
+        return source.substring(start+3, end);
     }
-    
+        
     private byte[] readFile(String arhPath){
         byte[] b = null; int maxSize=2048;
         FileIO f=FileIO.createConnection(arhPath);

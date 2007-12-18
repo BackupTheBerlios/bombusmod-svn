@@ -30,6 +30,7 @@ package archive;
 import Client.MessageEdit;
 import Client.Msg;
 import Client.StaticData;
+import java.util.Enumeration;
 import ui.MainBar;
 import Messages.MessageList;
 import java.util.Vector;
@@ -262,61 +263,61 @@ public class ArchiveList
     }
 
 //#if FILE_IO 
-    public void importData(String arhPath) {
-            
-            byte[] bodyMessage;
-            String archive="";
-            bodyMessage=readFile(arhPath);
-            
-            
-            if (bodyMessage!=null) {
-                if (cf.cp1251) {
-                    archive=strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
-                } else {
-                    archive=new String(bodyMessage, 0, bodyMessage.length);
+    public Vector importData(String arhPath) {
+        Vector vector=new Vector();
+        byte[] bodyMessage;
+        String archive="";
+        bodyMessage=readFile(arhPath);
+
+
+        if (bodyMessage!=null) {
+            if (cf.cp1251) {
+                archive=strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
+            } else {
+                archive=new String(bodyMessage, 0, bodyMessage.length);
+            }
+        }
+        if (archive!=null) {
+            try {
+                int pos=0;
+                int start_pos=0;
+                int end_pos=0;
+
+                while (true) {
+                    String date=null; String from=null; String subj=null; String body=null; String tempstr=null;
+                    start_pos=archive.indexOf(start_item,pos); end_pos=archive.indexOf(end_item,pos);
+
+                    if (start_pos>-1 && end_pos>-1) {
+                        tempstr=archive.substring(start_pos+start_item.length(), end_pos);
+                        date=findBlock(tempstr, start_date, end_date); 
+                        from=findBlock(tempstr, start_from, end_from); 
+                        subj=findBlock(tempstr, start_subj, end_subj);
+                        body=findBlock(tempstr, start_body, end_body);
+                        //System.out.println("["+date+"]"+from+": "+subj+" "+body+"\r\n");
+                        Msg msg = new Msg(Msg.MESSAGE_TYPE_IN,from,subj,body);
+                        msg.setDayTime(date);
+                        vector.insertElementAt(msg,0);
+                    } else
+                        break;
+
+                    pos=end_pos+end_item.length();
                 }
-            }
-            if (archive!=null) {
-                try {
-                    int pos=0;
-                    int start_pos=0;
-                    int end_pos=0;
-                    
-                    String date="";
-                    String from="";
-                    String subj="";
-                    String body="";
-                    
-                    while (true) {
-                        start_pos=archive.indexOf(start_item,pos);
-                        end_pos=archive.indexOf(end_item,pos)+end_item.length();
-                        pos=start_pos;
-                        
-                        if (start_pos>-1) {
-                            date=archive.substring(archive.indexOf(start_date,pos)+start_date.length(), archive.indexOf(end_date,pos));
-                            from=archive.substring(archive.indexOf(start_from,pos)+start_from.length(), archive.indexOf(end_from,pos));
-                            subj=archive.substring(archive.indexOf(start_subj,pos)+start_subj.length(), archive.indexOf(end_subj,pos));
-                            body=archive.substring(archive.indexOf(start_body,pos)+start_body.length(), archive.indexOf(end_body,pos));
-                            
-                            //System.out.println("["+date+"]"+from+":\r\n"+subj+" "+body);
-                            
-                            MessageArchive.store(new Msg(Msg.MESSAGE_TYPE_IN,from,subj,body));
-                        } else {
-                            date=null;
-                            from=null;
-                            subj=null;
-                            body=null;
-                            break;
-                        }
+            } catch (Exception e)	{ System.out.println(e.toString()); }
+        }
 
-                        pos=end_pos;
-                    }
-                } catch (Exception e)	{  }
-            }
-
-            bodyMessage=null;
-            arhPath=null;
-	destroyView();
+        bodyMessage=null;
+        arhPath=null;
+            
+         return vector;
+    }
+    
+    private String findBlock(String source, String _start, String _end){
+        String block = "";
+        int start =source.indexOf(_start); int end = source.indexOf(_end);
+        if (start<0 || end<0)
+            return block;
+        
+        return source.substring(start+_start.length(), end);
     }
     
     
@@ -392,8 +393,6 @@ public class ArchiveList
         return null;
     }
     
-
-    
     void writeFile(byte b[]){
         try {
             os.write(b);
@@ -407,10 +406,20 @@ public class ArchiveList
                 exportData(pathSelected);
                 break;
             case 1:
-                importData(pathSelected);
+                importArchive(pathSelected);
                 break;
         }
         
+    }
+    
+    private void importArchive(String arhPath) {
+        Vector history=importData(arhPath);
+        
+        for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
+            MessageArchive.store((Msg) messages.nextElement());
+        }
+
+        destroyView();
     }
 //#endif
     private String getDate() {
