@@ -26,15 +26,19 @@
  */
 
 package Client;
+
 //#ifndef WMUC
 import Conference.MucContact;
 //#endif
+
 //#if LAST_MESSAGES
 //# import History.HistoryStorage;
 //#endif
+
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryAppend;
 //#endif
+
 import images.RosterIcons;
 import ui.ColorScheme;
 import ui.Time;
@@ -613,6 +617,33 @@ public class Contact extends IconTextElement{
 //#     
 //#     public String getUserMoodText() {
 //#         return moodText;
+//#     }
+//#endif
+    
+    
+//#if LAST_MESSAGES 
+//#     public void loadRecentList() {
+//#         HistoryStorage hs = new HistoryStorage((nick==null)?getBareJid():nick);
+//#         Vector history=hs.importData();
+//#         
+//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
+//#             Msg message=(Msg) messages.nextElement();
+//#             if (!isMsgExists(message)) {
+//#                 message.setHistory(true);
+//#                 msgs.insertElementAt(message, 0);
+//#             }
+//#         }
+//#         setHistoryLoaded();
+//#     }
+//#     
+//#     private boolean isMsgExists(Msg msg) {
+//#          for (Enumeration messages=msgs.elements(); messages.hasMoreElements(); )  {
+//#             Msg message=(Msg) messages.nextElement();
+//#             if (message.getBody().equals(msg.getBody())) {
+//#                 return true;
+//#             }
+//#          }
+//#         return false;
 //#     }
 //#endif
 }

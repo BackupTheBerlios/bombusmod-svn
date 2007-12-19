@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Client.Config;
 import java.util.*;
 import locale.SR;
 
@@ -170,7 +171,7 @@ public class Time {
             field=Integer.parseInt(sdate.substring(0, 2)); c.set(calFields[2], field); //date
             field=Integer.parseInt(sdate.substring(3, 5)); c.set(calFields[1], field-1); //month
             field=Integer.parseInt(sdate.substring(6, 8)); c.set(calFields[0], field+2000); //year
-            field=Integer.parseInt(sdate.substring(9, 11)); c.set(calFields[3], field); //hour
+            field=Integer.parseInt(sdate.substring(9, 11))+(Config.getInstance().gmtOffset)+(Config.getInstance().locOffset); c.set(calFields[3], field); //hour
             field=Integer.parseInt(sdate.substring(12, 14)); c.set(calFields[4], field); //min
             c.set(calFields[5], 0); //sec
         } catch (Exception e) {}

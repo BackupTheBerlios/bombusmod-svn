@@ -44,9 +44,6 @@ import util.ClipBoard;
 //# import archive.MessageArchive;
 //#endif
 
-//#if LAST_MESSAGES 
-//# import History.HistoryStorage;
-//#endif
 //#if TEMPLATES
 //# import templates.TemplateContainer;
 //# 
@@ -98,10 +95,6 @@ public class ContactMessageList extends MessageList
     
     private boolean composing=true;
 
-    private Vector history=new Vector();
-
-
-  
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
         super(display);
@@ -168,8 +161,8 @@ public class ContactMessageList extends MessageList
         contact.setIncoming(0);
 
 //#if LAST_MESSAGES 
-//#         if (history.isEmpty() && cf.lastMessages && !contact.isHistoryLoaded())
-//#             loadRecentList();
+//#         if (cf.lastMessages && !contact.isHistoryLoaded())
+//#             contact.loadRecentList();
 //#endif
         
         moveCursorTo(contact.firstUnread(), true);
@@ -662,33 +655,7 @@ public class ContactMessageList extends MessageList
 //#         }
 //#     } 
 //#endif
-    
-//#if LAST_MESSAGES 
-//#     private void loadRecentList() {
-//#         HistoryStorage hs = new HistoryStorage((contact.nick==null)?contact.getBareJid():contact.nick);
-//#         history=hs.importData();
-//#         
-//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); ) 
-//#         {
-//#             Msg message=(Msg) messages.nextElement();
-//#             message.setHistory(true);
-//#             if (!checkMsgExists(message))
-//#                 contact.addMessage(message);
-//#         }
-//#         contact.setHistoryLoaded();
-//#     }
-//#     
-//#     private boolean checkMsgExists(Msg msg) {
-//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) 
-//#          {
-//#             Msg message=(Msg) messages.nextElement();
-//#             if (message.messageType==msg.messageType && message.getBody()==msg.getBody())
-//#                 return true;
-//#          }
-//#         return false;
-//#     }
-//#endif
-    
+
 //#if (FILE_IO && HISTORY)
 //#     private void saveMessages() {
 //#         if (cf.msgPath==null) {

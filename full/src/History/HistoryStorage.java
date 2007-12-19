@@ -44,10 +44,6 @@ public class HistoryStorage {
     final static int SEARCH_SUBJ  = 3;
     final static int SEARCH_BODY  = 4;
     final static int SEARCH_BREAK = 5;   
-    
-    public Vector recentList;
-    
-    private int count=4;
 
     private int afterEol;
     
@@ -57,8 +53,7 @@ public class HistoryStorage {
 
     private int pos=0;
     
-    public HistoryStorage(String bareJid) {
-        String filename=bareJid;
+    public HistoryStorage(String filename) {
 //#ifdef TRANSLIT
 //#        filename=cf.msgPath+((cf.transliterateFilenames)?Translit.translit(filename):filename)+".txt";
 //#else
@@ -86,10 +81,9 @@ public class HistoryStorage {
 
     public Vector importData() {
         Vector vector=new Vector();
-        
         if (history!=null) {
             try {
-                int count = 0; int pos=0; int start_pos=0; int end_pos=0;
+                int pos=0; int start_pos=0; int end_pos=0;
 
                 while (true) {
                     String type=null; String date=null; String from=null; String subj=null; String body=null; String tempstr=null;
@@ -101,18 +95,14 @@ public class HistoryStorage {
 
                         if (Integer.parseInt(type)!=Msg.MESSAGE_MARKER_PRESENCE) {
                             //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
-                            vector.insertElementAt(processMessage (type, date, from, subj, body), 0);
-                            count++;
+                            vector.insertElementAt(processMessage (type, date, from, subj, body),0);
                         }
                     } else
                         break;
-                    
-                    if (count>4)
-                        break;
-                    
                     pos=end_pos+4;
                 }
-            } catch (Exception e)	{  }
+                vector.setSize(5);
+            } catch (Exception e) {  }
         }
 
         history = null;
