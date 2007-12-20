@@ -72,7 +72,7 @@ public class Affiliations
     
     /** Creates a new instance of AffiliationList */
     public Affiliations(Display display, String room, short affiliationIndex) {
-        super (display);
+        super ();
         this.room=room;
 	
 	//fix for old muc
@@ -94,6 +94,7 @@ public class Affiliations
         addCommand(cmdCopy);
         
         setCommandListener(this);
+        attachDisplay(display);
         getList();
     }
     
@@ -113,9 +114,15 @@ public class Affiliations
                     clipboard.setClipBoard(item.jid);
             } catch (Exception e) {/*no messages*/}
         }
-        if (c!=cmdCancel) return;
-        stream.cancelBlockListener(this);
+        if (c!=cmdCancel) 
+            return;
+        
         destroyView();
+    }
+    
+    public void destroyView(){
+	super.destroyView();
+	stream.cancelBlockListener(this);
     }
     
     public void eventOk(){

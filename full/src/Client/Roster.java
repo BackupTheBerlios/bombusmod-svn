@@ -1671,7 +1671,12 @@ public class Roster
                             }
                         }
                         JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
-                        c.setJ2J(j2j!=null);
+                        if (j2j!=null) {
+                            if (j2j.getChildBlock("jid")!=null)
+                                c.setJ2J(j2j.getChildBlock("jid").getAttribute("gateway"));
+                            else
+                                c.setJ2J("true");
+                        }
                         
                         int rp=from.indexOf('/');
 
@@ -1740,7 +1745,12 @@ public class Roster
                             }
 
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
-                            c.setJ2J(j2j!=null);
+                            if (j2j!=null) {
+                                if (j2j.getChildBlock("jid")!=null)
+                                    c.setJ2J(j2j.getChildBlock("jid").getAttribute("gateway"));
+                                else
+                                    c.setJ2J("true");
+                            }
 
                             c.statusString=pr.getStatus();
                         }
@@ -2392,6 +2402,7 @@ public class Roster
 //#ifndef WMUC
 //#             }
 //#endif
+//#             mess.append((contact.getJ2J()!=null)?"\nJ2J: "+contact.getJ2J():"");
 //#             mess.append((client!=null)?client+clientVer:"");
 //#             clientVer=null;
 //# 

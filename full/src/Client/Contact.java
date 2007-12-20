@@ -68,7 +68,7 @@ public class Contact extends IconTextElement{
     private boolean loaded=false;
     
     public int getColor() { 
-        if (j2j)
+        if (j2j!=null)
             return ColorScheme.CONTACT_J2J;
         
         switch (status) {
@@ -155,7 +155,7 @@ public class Contact extends IconTextElement{
     
     private Config cf=Config.getInstance();
 
-    private boolean j2j=false;
+    private String j2j;
 
     protected Contact (){
         super(RosterIcons.getInstance());
@@ -316,8 +316,6 @@ public class Contact extends IconTextElement{
 //#             if (cf.msgLog && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT)
 //#         {
 //#             //String histRecord=(nick==null)?getBareJid():nick;
-//#             String fromName=StaticData.getInstance().account.getUserName();
-//#             if (m.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=toString();
 //#             boolean allowLog=false;
 //#             switch (m.messageType) {
 //#                 case Msg.MESSAGE_TYPE_PRESENCE:
@@ -336,33 +334,7 @@ public class Contact extends IconTextElement{
 //#endif
 //#             if (allowLog)
 //#             {
-//#                 int marker=Msg.MESSAGE_MARKER_OTHER;
-//#                 switch (m.messageType){
-//#                     case Msg.MESSAGE_TYPE_IN:
-//#                         marker=Msg.MESSAGE_MARKER_IN;
-//#                         break;
-//#                     case Msg.MESSAGE_TYPE_PRESENCE:
-//#                         marker=Msg.MESSAGE_MARKER_PRESENCE;
-//#                         break;
-//#                    case Msg.MESSAGE_MARKER_OUT:
-//#                         marker=Msg.MESSAGE_MARKER_OUT;
-//#                 }
-//#                 
-//#                 StringBuffer body=new StringBuffer("<m><t>");
-//#                 body.append(marker);
-//#                 body.append("</t><d>");
-//#                 body.append(m.getDayTime());
-//#                 body.append("</d><f>");
-//#                 body.append(fromName);
-//#                 body.append("</f>");
-//#                 if (m.subject!=null) {
-//#                     body.append("<s>");
-//#                     body.append(m.subject);
-//#                     body.append("</s>");
-//#                 }
-//#                 body.append("<b>");
-//#                 body.append(m.getBody());
-//#                 body.append("</b></m>\r\n");
+//#                 StringBuffer body = createBody(m);
 //#                 
 //#                 String histRecord=(nick==null)?getBareJid():nick;
 //#                 
@@ -390,6 +362,57 @@ public class Contact extends IconTextElement{
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
         }
+    }
+    
+    private StringBuffer createBody(Msg m) {
+            String fromName=StaticData.getInstance().account.getUserName();
+            if (m.messageType!=Msg.MESSAGE_TYPE_OUT)
+                fromName=toString();
+            
+            int marker=Msg.MESSAGE_MARKER_OTHER;
+            switch (m.messageType){
+                case Msg.MESSAGE_TYPE_IN:
+                    marker=Msg.MESSAGE_MARKER_IN;
+                    break;
+                case Msg.MESSAGE_TYPE_PRESENCE:
+                    marker=Msg.MESSAGE_MARKER_PRESENCE;
+                    break;
+               case Msg.MESSAGE_MARKER_OUT:
+                    marker=Msg.MESSAGE_MARKER_OUT;
+            }
+            
+            StringBuffer body=new StringBuffer();
+            if (cf.lastMessages) {
+                body.append("<m><t>");
+                body.append(marker);
+                body.append("</t><d>");
+                body.append(m.getDayTime());
+                body.append("</d><f>");
+                body.append(fromName);
+                body.append("</f>");
+                if (m.subject!=null) {
+                    body.append("<s>");
+                    body.append(m.subject);
+                    body.append("</s>");
+                }
+                body.append("<b>");
+                body.append(m.getBody());
+                body.append("</b></m>\r\n");
+            } else {
+                body.append("[");
+                body.append(m.getDayTime());
+                body.append("] ");
+                body.append(fromName);
+                body.append(":\r\n");
+                if (m.subject!=null) {
+                    body.append(m.subject);
+                    body.append("\r\n");
+                }
+                body.append(m.getBody());
+                body.append("\r\n\r\n");
+            }
+
+            return body;
     }
 
     public int getFontIndex(){
@@ -517,11 +540,11 @@ public class Contact extends IconTextElement{
         this.group = group; 
     }
     
-    public boolean isJ2J() {  
+    public String getJ2J() {  
         return j2j;  
     }
 
-    public void setJ2J(boolean j2j) { 
+    public void setJ2J(String j2j) { 
         this.j2j = j2j; 
     }
 
@@ -623,6 +646,7 @@ public class Contact extends IconTextElement{
     
 //#if LAST_MESSAGES 
 //#     public void loadRecentList() {
+//#         setHistoryLoaded();
 //#         HistoryStorage hs = new HistoryStorage((nick==null)?getBareJid():nick);
 //#         Vector history=hs.importData();
 //#         
@@ -633,7 +657,6 @@ public class Contact extends IconTextElement{
 //#                 msgs.insertElementAt(message, 0);
 //#             }
 //#         }
-//#         setHistoryLoaded();
 //#     }
 //#     
 //#     private boolean isMsgExists(Msg msg) {

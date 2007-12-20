@@ -100,6 +100,8 @@ public class ActiveContacts
     }
     
     public void keyPressed(int keyCode) {
+        VirtualList.popup.next();
+        
 	if (keyCode==KEY_NUM3) {
             destroyView();
         } else if (keyCode==KEY_NUM0) {
