@@ -133,13 +133,11 @@ public class JabberStream implements XMLEventListener, Runnable {
              XMLParser parser = new XMLParser( this );
              parser.parse( iostream );
              //dispatcher.broadcastTerminatedConnection( null );
-        } catch( IOException e ) {
+        } catch( Exception e ) {
              System.out.println("Exception in parser:");
              e.printStackTrace();
              dispatcher.broadcastTerminatedConnection(e);
-        } catch (EndOfXMLException e) {
-            dispatcher.broadcastTerminatedConnection(e);
-        }
+         }
      }
     
     /**
