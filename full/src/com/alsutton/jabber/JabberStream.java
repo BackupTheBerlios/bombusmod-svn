@@ -130,15 +130,17 @@ public class JabberStream implements XMLEventListener, Runnable {
     
     public void run() {
         try {
-            XMLParser parser = new XMLParser( this );
-            parser.parse( iostream );
-            //dispatcher.broadcastTerminatedConnection( null );
-        } catch( Exception e ) {
-            System.out.println("Exception in parser:");
-            e.printStackTrace();
+             XMLParser parser = new XMLParser( this );
+             parser.parse( iostream );
+             //dispatcher.broadcastTerminatedConnection( null );
+        } catch( IOException e ) {
+             System.out.println("Exception in parser:");
+             e.printStackTrace();
+             dispatcher.broadcastTerminatedConnection(e);
+        } catch (EndOfXMLException e) {
             dispatcher.broadcastTerminatedConnection(e);
         }
-    }
+     }
     
     /**
      * Method to close the connection to the server and tell the listener
@@ -313,9 +315,10 @@ public class JabberStream implements XMLEventListener, Runnable {
                 iostream.close();
                 throw new JabberStreamShutdownException("Normal stream shutdown");
             }
-			if (currentBlock.childBlocks!=null) currentBlock.childBlocks.trimToSize();
             return;
         }
+        
+        if (currentBlock.childBlocks!=null) currentBlock.childBlocks.trimToSize();
         
         JabberDataBlock parent = currentBlock.getParent();
         if( parent == null ) {
