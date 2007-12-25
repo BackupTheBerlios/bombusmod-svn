@@ -31,6 +31,8 @@ import Conference.AppendNick;
 //#endif
 //#ifdef ARCHIVE
 //# import archive.ArchiveList;
+//# import com.alsutton.jabber.JabberDataBlock;
+//# import com.alsutton.jabber.datablocks.Message;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -71,6 +73,10 @@ public class MessageEdit
 //#endif
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
+//#ifdef KILLALL
+//#     private Command cmdKill2=new Command("killall",Command.SCREEN,8);
+//#     private boolean sendKill2=false;
+//#endif
 //#if TEMPLATES
 //#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 97); 
 //#endif  
@@ -129,7 +135,9 @@ public class MessageEdit
 //#endif
         if (!clipboard.isEmpty())
             t.addCommand(cmdPasteText);
-        
+//#ifdef KILLALL
+//#         t.addCommand(cmdKill2);
+//#endif
         t.addCommand(cmdClearTitle);
         
         setInitialCaps(cf.capsState);
@@ -200,13 +208,16 @@ public class MessageEdit
             subj=body;
             body=null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
         }
-        
+//#ifdef KILLALL
+//#         if (c==cmdKill2) {
+//#             sendKill2=true;
+//#         }
+//#endif
         // message/composing sending
         destroyView();
         new Thread(this).start();
         return; 
     }
-    
     
     public void run(){
         Roster r=StaticData.getInstance().roster;
@@ -228,19 +239,24 @@ public class MessageEdit
             String from=StaticData.getInstance().account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
             msg.id=id;
-            // не добавляем в групчат свои сообщения
-            // не шлём composing
+
             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
                 to.addMessage(msg);
                 comp="active"; // composing event in message
             }
         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
         
-        if (!cf.eventComposing) comp=null;
+        if (!cf.eventComposing) 
+            comp=null;
         
         try {
             if (body!=null || subj!=null || comp!=null) {
-                r.sendMessage(to, id, body, subj, comp);
+//#ifdef KILLALL
+//#                 if (sendKill2)
+//#                     sendKill2Message(to, body);
+//#                 else
+//#endif
+                    r.sendMessage(to, id, body, subj, comp);
             }
         } catch (Exception e) { }
 
@@ -251,7 +267,32 @@ public class MessageEdit
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
     }
-
+//#ifdef KILLALL
+//#     public void sendKill2Message(Contact to, final String body) {
+//#         try {
+//#             boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
+//# 
+//#             Message message = new Message( 
+//#                     to.getJid(), 
+//#                     body, 
+//#                     null, 
+//#                     groupchat 
+//#             );
+//#             message.setAttribute("id", "killall2");
+//#             
+//#             if (groupchat && body==null) 
+//#                 return;
+//#             
+//#             JabberDataBlock html=message.addChildNs("html", "http://jabber.org/protocol/xhtml-im");
+//#             JabberDataBlock bodyNS=html.addChildNs("body", "http://www.w3.org/1999/xhtml");
+//#             bodyNS.setText(body);
+//#             JabberDataBlock a=bodyNS.addChild("a", body);
+//#             a.setAttribute("href", "http://");
+//#             
+//#             StaticData.getInstance().roster.theStream.send( message );
+//#         } catch (Exception e) { e.printStackTrace(); }
+//#     }
+//#endif
 
     public int getCaretPos() {     
         int caretPos=t.getCaretPosition();

@@ -26,6 +26,11 @@
  */
 
 package Client;
+//#ifdef CHECKERS
+//# import Checkers.Checkers;
+//# import Checkers.Communicator;
+//#endif
+
 //#ifndef WMUC
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
@@ -39,6 +44,7 @@ import Conference.affiliation.Affiliations;
 //#endif
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
+//# import com.alsutton.jabber.datablocks.Iq;
 //#endif
 import com.alsutton.jabber.datablocks.IqLast;
 import com.alsutton.jabber.datablocks.IqPing;
@@ -60,6 +66,10 @@ import ui.YesNoAlert;
 import util.ClipBoard;
 import vcard.VCard;
 import vcard.vCardForm;
+
+//#ifdef CHECKERS
+//# import com.alsutton.jabber.datablocks.IqCheckers;
+//#endif
 
 
 /**
@@ -101,7 +111,20 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                 addItem("Change transport", 915);
 //#endif
 	    }
-	    
+//#ifdef CHECKERS
+//#             switch (contact.getCheckers()) {
+//#                 case Communicator.END_GAME_FLAG:
+//#                     addItem("new Checkers",777, 0x0f04);
+//#                     break;
+//#                 case Communicator.START_GAME_REQUEST_FLAG:
+//#                     addItem("wait answer Checkers",777, 0x0f04);
+//#                     break;
+//#                 default:
+//#                     addItem("end Checkers",777, 0x0f04);
+//#                     break;
+//#             }
+//#             
+//#endif
 	    addItem(SR.MS_VCARD,1, 0x0f16);
             addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
 //#ifdef SERVICE_DISCOVERY
@@ -307,6 +330,28 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
         if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
 
             switch (index) {
+//#ifdef CHECKERS
+//#                 case 777: // checkers
+//#                             new Checkers(display);
+//#                             return;
+//#                     /*
+//#                     switch (c.getCheckers()) {
+//#                         case Communicator.END_GAME_FLAG:
+//#                             c.setCheckers(-6);
+//#                             roster.theStream.send(new IqCheckers(c.getJid()));
+//#                             break;
+//#                         case Communicator.START_GAME_REQUEST_FLAG:
+//#                             c.setCheckers(-5);
+//#                             roster.theStream.send(new IqCheckers(c.getJid(), true));
+//#                             new Checkers(display);
+//#                             return;
+//#                         default:
+//#                             c.setCheckers(-4);
+//#                             roster.theStream.send(new IqCheckers(c.getJid(), false));
+//#                             break;
+//#                     }
+//#                     break;*/
+//#endif
                 case 0: // info
                     roster.setQuerySign(true);
                     roster.theStream.send(new IqVersionReply(to));

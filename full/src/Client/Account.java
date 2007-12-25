@@ -60,9 +60,7 @@ public class Account extends IconTextElement{
 	
     public int keepAlivePeriod=200;
     public int keepAliveType=1;
-/*
-    public int compressionLevel=1;
-*/
+
     public Account() {
         super(RosterIcons.getInstance());
     }
@@ -74,7 +72,8 @@ public class Account extends IconTextElement{
             if (sd.roster.isLoggedIn())
                 sd.roster.logoff();
 	    sd.roster.resetRoster();
-            if (launch) sd.roster.sendPresence(Presence.PRESENCE_ONLINE, null);
+            if (launch) 
+                sd.roster.sendPresence(Config.getInstance().loginstatus, null);
         }
         return a;
     }

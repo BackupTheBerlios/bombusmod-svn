@@ -27,6 +27,10 @@
 
 package Client;
 
+//#ifdef CHECKERS
+//# import Checkers.Communicator;
+//#endif
+
 //#ifndef WMUC
 import Conference.MucContact;
 //#endif
@@ -66,7 +70,9 @@ public class Contact extends IconTextElement{
     };
 
     private boolean loaded=false;
-    
+//#ifdef CHECKERS
+//#     private int checkers = Communicator.END_GAME_FLAG;
+//#endif
     public int getColor() { 
         if (j2j!=null)
             return ColorScheme.CONTACT_J2J;
@@ -154,6 +160,8 @@ public class Contact extends IconTextElement{
 //#endif
     
     private Config cf=Config.getInstance();
+    private RosterIcons ri = RosterIcons.getInstance();
+    
 
     private String j2j;
 
@@ -181,7 +189,7 @@ public class Contact extends IconTextElement{
         setSortKey((Nick==null)?sJid:Nick);
         
         //calculating transport
-        transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
+        transport=ri.getTransportIndex(jid.getTransport());
     }
     
     public Contact clone(Jid newjid, final int status) {
@@ -194,7 +202,7 @@ public class Contact extends IconTextElement{
         clone.offline_type=offline_type;
         clone.origin=ORIGIN_CLONE; 
         clone.status=status; 
-        clone.transport=RosterIcons.getInstance().getTransportIndex(newjid.getTransport()); //<<<<
+        clone.transport=ri.getTransportIndex(newjid.getTransport()); //<<<<
 
         clone.bareJid=bareJid;
         return clone;
@@ -479,19 +487,7 @@ public class Contact extends IconTextElement{
 //#         return true;
 //#     }
 //#endif
-/*    
-    public final void deleteOld() {
-        int limit=cf.msglistLimit;
-        if (msgs.size()<=limit)
-            return;
-        
-        int trash = msgs.size()-limit;
-            for (int i=0; i<trash; i++)
-                msgs.removeElementAt(0);
-
-        return;
-    }
-*/    
+ 
     public final void smartPurge(int cursor) {
         try {
             if (cursor==msgs.size() && msgs.size()>0)
@@ -574,9 +570,7 @@ public class Contact extends IconTextElement{
         String timePing=Long.toString((Time.utcTimeMillis()-ping)/10);
         int dotpos=timePing.length()-2;
         
-        StringBuffer s=new StringBuffer();
-        
-        s.append( (dotpos==0)? "0":timePing.substring(0, dotpos));
+        StringBuffer s=new StringBuffer((dotpos==0)? "0":timePing.substring(0, dotpos));
         s.append('.');
         s.append(timePing.substring(dotpos));
         s.append(" seconds");
@@ -667,6 +661,16 @@ public class Contact extends IconTextElement{
 //#             }
 //#          }
 //#         return false;
+//#     }
+//#endif
+
+//#ifdef CHECKERS
+//#     public void setCheckers(int checkers) {
+//#         this.checkers=checkers;
+//#     }
+//# 
+//#     public int getCheckers() {
+//#         return checkers;
 //#     }
 //#endif
 }

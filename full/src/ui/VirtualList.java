@@ -1082,7 +1082,7 @@ public abstract class VirtualList
 //#             instance.scrollLen=max;
 //#             instance.scrollline=(max>0);
 //#             instance.attachedList=list;
-//#             instance.balloon= 5;
+//#             instance.balloon= 10;
 //#             instance.scroll= 5;
 //#         }
 //#     }
@@ -1120,7 +1120,7 @@ public abstract class VirtualList
 //#             if (attachedList==null || balloon<0)
 //#                 return false;
 //#             balloon--;
-//#             attachedList.showBalloon=(balloon<6 && balloon>0);
+//#             attachedList.showBalloon=(balloon<11 && balloon>0);
 //#             return true;
 //#         }
 //#     }

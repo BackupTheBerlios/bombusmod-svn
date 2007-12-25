@@ -67,7 +67,6 @@ public class ContactMessageList extends MessageList
 //#endif
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
     Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,8);
-    //Command cmdContact=new Command(SR.MS_CONTACT,Command.SCREEN,10);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
     Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 12);
     Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 13);
@@ -142,7 +141,6 @@ public class ContactMessageList extends MessageList
         
         if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
             addCommand(cmdActions);
-
     
 	addCommand(cmdActive);
         addCommand(cmdQuote);

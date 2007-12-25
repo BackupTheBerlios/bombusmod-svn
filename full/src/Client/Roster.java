@@ -821,6 +821,7 @@ public class Roster
 //#ifndef WMUC
     public void multicastConferencePresence(String message) {
          if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
+         
          ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact c=(Contact) e.nextElement();
@@ -829,23 +830,13 @@ public class Roster
 
             ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
             Contact myself=confGroup.getSelfContact();
-
-            //c.status=Presence.PRESENCE_ONLINE;
             
             if (c.status==Presence.PRESENCE_OFFLINE) {
-               ConferenceForm.join(myself.getJid(), confGroup.password, 20);
+                ConferenceForm.join(myself.getJid(), confGroup.password, 20);
                 continue;
             }
-            
-            //c.status=myStatus;
-            if (message==null)
-                myMessage=es.getMessage();
-            else
-                myMessage=message;
 
-            myMessage=strconv.toExtendedString(myMessage);
-
-            Presence presence = new Presence(myStatus, es.getPriority(), myMessage, null);
+            Presence presence = new Presence(myStatus, es.getPriority(), strconv.toExtendedString((message==null)?es.getMessage():message), null);
             presence.setTo(myself.getJid());
             theStream.send(presence);
          }
@@ -1172,17 +1163,15 @@ public class Roster
 
                             setProgress(SR.MS_CONNECTED,100);
                             reEnumRoster();
-                            //
+                            
                             querysign=reconnect=false;
-
-                            if (cf.autoLogin) {
-                                if (cf.loginstatus>4) {
-                                    sendPresence(Presence.PRESENCE_INVISIBLE, null);    
-                                } else {
-                                    sendPresence(cf.loginstatus, null);
-                                }
-                            } else sendPresence(myStatus, null);
-
+                            
+                            if (cf.loginstatus>4) {
+                                sendPresence(Presence.PRESENCE_INVISIBLE, null);    
+                            } else {
+                                sendPresence(cf.loginstatus, null);
+                            }
+                            
                             SplashScreen.getInstance().close(); // display.setCurrent(this);
                             //loading bookmarks
                             return JabberBlockListener.BLOCK_PROCESSED;
@@ -1307,6 +1296,13 @@ public class Roster
                             theStream.send(new IqLast(data, lastMessageTime));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
+//#ifdef CHECKERS
+//#                         if (query.isJabberNameSpace("checkers")) {
+//#                             c.setCheckers(-6);
+//#                             theStream.send(new IqCheckers(data, true));
+//#                             return JabberBlockListener.BLOCK_PROCESSED;
+//#                         }
+//#endif
                     }
                     // ��������� �� ������ ���������� ������� ������� XEP-0202
                     if (data.findNamespace("time", "urn:xmpp:time")!=null) {
@@ -1772,7 +1768,8 @@ public class Roster
                         (ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT)) {
                             //if (lastAppearedContact!=null) 
                             //    lastAppearedContact.setIncoming(Contact.INC_NONE);
-                            c.setIncoming(Contact.INC_APPEARING);
+                            if (c.getGroupType()!=Groups.TYPE_TRANSP)
+                                c.setIncoming(Contact.INC_APPEARING);
                             //lastAppearedContact=c;
                     }
                     if (ti==Presence.PRESENCE_OFFLINE)  {
@@ -2172,7 +2169,7 @@ public class Roster
        
         if (keyCode==Config.SOFT_RIGHT) {
             if (isLoggedIn()) 
-            new RosterItemActions(display, getFocusedObject(), -1);
+                new RosterItemActions(display, getFocusedObject(), -1);
             return;
         }
         
