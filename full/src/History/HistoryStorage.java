@@ -75,7 +75,6 @@ public class HistoryStorage {
                 archive=new String(bodyMessage, 0, bodyMessage.length);
             }
         }
-
         return archive;
    }
 
@@ -84,15 +83,16 @@ public class HistoryStorage {
         if (history!=null) {
             try {
                 int pos=0; int start_pos=0; int end_pos=0;
-
+                String type=null; String date=null; String from=null; String subj=null; String body=null; String tempstr=null;
+                
                 while (true) {
-                    String type=null; String date=null; String from=null; String subj=null; String body=null; String tempstr=null;
-                    start_pos=history.indexOf("<m>",pos); end_pos=history.indexOf("</m>",pos);
+                    type=null; date=null; from=null; subj=null; body=null; tempstr=null;
+                    start_pos=history.indexOf("<m>",pos);  end_pos=history.indexOf("</m>",start_pos);
 
                     if (start_pos>-1) {
                         tempstr=history.substring(start_pos+3, end_pos);
-                        type=findBlock(tempstr,"t"); date=findBlock(tempstr,"d"); from=findBlock(tempstr,"f"); subj=findBlock(tempstr,"s"); body=findBlock(tempstr,"b");
-
+                        type=findBlock(tempstr,"t"); date=findBlock(tempstr,"d");  from=findBlock(tempstr,"f");  subj=findBlock(tempstr,"s");  body=findBlock(tempstr,"b");                   
+                        
                         if (Integer.parseInt(type)!=Msg.MESSAGE_MARKER_PRESENCE) {
                             //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
                             vector.insertElementAt(processMessage (type, date, from, subj, body),0);
@@ -100,11 +100,11 @@ public class HistoryStorage {
                     } else
                         break;
                     pos=end_pos+4;
-                }
+                }                
                 vector.setSize(5);
-            } catch (Exception e) {  }
+            } catch (Exception e) { }
         }
-
+        
         history = null;
         return vector;
     }
@@ -142,23 +142,20 @@ public class HistoryStorage {
     }
         
     private byte[] readFile(String arhPath){
-        byte[] b = null; int maxSize=2048;
+        int maxSize=2048; byte[] b = new byte[maxSize]; 
         FileIO f=FileIO.createConnection(arhPath);
         try {
             InputStream is=f.openInputStream(); 
             int fileSize = (int)f.fileSize();
             if (fileSize>maxSize){
-                b=new byte[maxSize];
                 is.skip(fileSize-maxSize);
-                is.read(b);
-            } else {
-                b=new byte[fileSize];
-                is.read(b);
             }
-            is.close(); f.close();
-        } catch (Exception e) { try { f.close(); } catch (IOException ex2) { } }
+            is.read(b); is.close(); f.close();
+        } catch (IOException e) { try { f.close(); } catch (IOException ex2) { } }
+
+        if (b!=null)
+            return b;
         
-        if (b!=null) { return b; }
         return null;
     }    
 }
