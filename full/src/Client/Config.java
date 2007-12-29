@@ -79,7 +79,7 @@ public class Config {
     private static String platformName;
     
     public boolean ghostMotor=getBooleanProperty("moto_e398",false);
-    public boolean blFlash=!ghostMotor; //true;
+    //public boolean blFlash=!ghostMotor; //true;
     
     
     public boolean muc119=getBooleanProperty("muc_119",true);	// before muc 1.19 use muc#owner instead of muc#admin
@@ -232,7 +232,7 @@ public class Config {
                 KEY_BACK=-11;
             }
 	} else if (phoneManufacturer==NOKIA) {
-	    blFlash=false;
+	    //blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	} else if (phoneManufacturer==MOTOEZX) {
 	    //VirtualList.keyClear=0x1000;
@@ -240,7 +240,7 @@ public class Config {
 	    KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
 	} else if (phoneManufacturer==MOTO) {
 	    ghostMotor=true;
-	    blFlash=false;
+	    //blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	    //VirtualList.keyClear=0x1000;
@@ -248,7 +248,7 @@ public class Config {
             keyLock='#';
             keyVibra='*';
             allowLightControl=true;
-            blFlash=true;
+            //blFlash=true;
             KEY_BACK=-4; //keyCode==702
             greenKeyCode=VirtualList.SIEMENS_GREEN;
         } else if (phoneManufacturer==WTK) {
@@ -280,7 +280,7 @@ public class Config {
 	    
 	    popupFromMinimized=inputStream.readBoolean();
 	    
-	    blFlash=inputStream.readBoolean();
+	    /*blFlash=*/inputStream.readBoolean();
 	    memMonitor=inputStream.readBoolean();
             
             font1=inputStream.readInt();
@@ -422,7 +422,7 @@ public class Config {
 
             outputStream.writeBoolean(popupFromMinimized);
 	    
-	    outputStream.writeBoolean(blFlash);
+	    outputStream.writeBoolean(false/*blFlash*/);
 	    outputStream.writeBoolean(memMonitor);
             
             outputStream.writeInt(font1);

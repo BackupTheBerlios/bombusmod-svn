@@ -10,7 +10,7 @@
  * of the License, or (at your option) any later version.
  *
  * You can also redistribute and/or modify this program under the
- * terms of the Psi Licens6e, specified in the accompanied COPYING
+ * terms of the Psi License, specified in the accompanied COPYING
  * file, as published by the Psi Project; either dated January 1st,
  * 2005, or (at your option) any later version.
  *
@@ -1355,7 +1355,6 @@ public class Roster
                             }
                         }
                     }
-                    
                 }
             }
             
@@ -1422,6 +1421,7 @@ public class Roster
 				
 		int mType=Msg.MESSAGE_TYPE_IN;
                 
+                
                 try { // type=null
 		    //String type=message.getTypeAttribute();
                     if (type.equals("groupchat")) {
@@ -1441,11 +1441,8 @@ public class Roster
                             start_me=-1;
                             highlite=true;
                             mType=Msg.MESSAGE_TYPE_SUBJ;
-                            //sendConferencePresence();
                         }
-                    }
-                    
-                    if (type.equals("error")) {                        
+                    } else if (type.equals("error")) {
                         body=SR.MS_ERROR_+ XmppError.findInStanza(message).toString();
                         //TODO: verify and cleanup
                         //String errCode=message.getChildBlock("error").getAttribute("code");
@@ -1455,8 +1452,8 @@ public class Roster
                         //    case 503: break;
                         //    default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
                         //}
-                    }
-                    if (type.equals("headline")) mType=Msg.MESSAGE_TYPE_HEADLINE;
+                    } else if (type.equals("headline")) 
+                        mType=Msg.MESSAGE_TYPE_HEADLINE;
                 } catch (Exception e) { type="chat"; } //force type to chat
 //#ifndef WMUC
                  try {
@@ -1537,7 +1534,8 @@ public class Roster
                  
                 redraw();
 
-                if (body==null) return JabberBlockListener.BLOCK_REJECTED;
+                if (body==null) 
+                    return JabberBlockListener.BLOCK_REJECTED;
 
                 Msg m=new Msg(mType, from, subj, body);
                 if (tStamp!=0) 
@@ -1923,7 +1921,7 @@ public class Roster
         int vibraLen=cf.vibraLen;
         String type, message;
                 
-        boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
+        //boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
         
         switch (event) {
             case 0: //online
@@ -1984,14 +1982,14 @@ public class Roster
                 if (myStatus>Presence.PRESENCE_CHAT) {
                     message=null;
                     type=null;
-                    blFlashEn=false;
+                    //blFlashEn=false;
                     vibraLen=0;
                 }
                 break;
             case AlertCustomize.PLAY_NEVER:
                 message=null;
                 type=null;
-                blFlashEn=false;
+                //blFlashEn=false;
                 vibraLen=0;
         }
         
@@ -2002,10 +2000,10 @@ public class Roster
         EventNotify notify=null;
         
         switch (profile) {
-            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen,       blFlashEn); break;
-            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0,              false    ); break;
-            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen,       blFlashEn); break;
-            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0,              blFlashEn); break;
+            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen/*,       blFlashEn*/); break;
+            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0/*,              false    */); break;
+            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen/*,       blFlashEn*/); break;
+            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0/*,              blFlashEn*/); break;
         }
         if (notify!=null) 
             notify.startNotify();
@@ -2427,8 +2425,8 @@ public class Roster
 //#             mess.append(info);
 //#         }
 //#         VirtualList.setWobble(mess.toString());
-//# 
 //#         mess=null;
+//#         redraw();
 //#     }
 //#endif
     

@@ -249,7 +249,7 @@ public class AlertCustomizeForm implements
 	String soundFile=(String)files[1].elementAt(sound);
 	String soundType=(String)files[0].elementAt(sound);
         int soundVol=sndVol.getValue()*10;
-	new EventNotify(display, soundType, soundFile,soundVol, 0, false).startNotify();
+	new EventNotify(display, soundType, soundFile,soundVol, 0/*, false*/).startNotify();
     }   
     
     private void addSoundItem(String sound){

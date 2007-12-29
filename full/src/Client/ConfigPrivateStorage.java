@@ -94,7 +94,7 @@ public class ConfigPrivateStorage
 //#             cs.addChild("autoJoinConferences", (cf.autoJoinConferences)?"1":"0");
 //#             cs.addChild("popupFromMinimized", (cf.popupFromMinimized)?"1":"0");
 //#             
-//#             cs.addChild("blFlash", (cf.blFlash)?"1":"0");
+//#             //cs.addChild("blFlash", (cf.blFlash)?"1":"0");
 //#             cs.addChild("memMonitor", (cf.memMonitor)?"1":"0");
 //#             
 //#             cs.addChild("font1", Integer.toString(cf.font1));
@@ -182,7 +182,7 @@ public class ConfigPrivateStorage
 //# 	    
 //# 	    cf.popupFromMinimized=cf.getBooleanProperty("popupFromMinimized",true);
 //# 	    
-//# 	    cf.blFlash=cf.getBooleanProperty("blFlash",true);
+//# 	    //cf.blFlash=cf.getBooleanProperty("blFlash",true);
 //# 	    cf.memMonitor=cf.getBooleanProperty("memMonitor",true);
 //#             
 //#             cf.font1=cf.getIntProperty("font1",0);

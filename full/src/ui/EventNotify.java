@@ -43,7 +43,7 @@ public class EventNotify
 {
     
     private int lenVibra;
-    private boolean enableLights;
+    //private boolean enableLights;
     private boolean toneSequence;
     private String soundName;
     private String soundType;
@@ -61,14 +61,14 @@ public class EventNotify
 	String soundMediaType, 
 	String soundFileName, 
 	int sndVolume,
-	int vibraLength, 
-	boolean enableLights
+	int vibraLength 
+	//, boolean enableLights
     ) {
         this.display=display;
 	this.soundName=soundFileName;
 	this.soundType=soundMediaType;
 	this.lenVibra=vibraLength;
-	this.enableLights=enableLights;
+	//this.enableLights=enableLights;
 	if (soundType!=null) toneSequence= soundType.equals("tone");
 	this.sndVolume=sndVolume;
     }
@@ -106,7 +106,7 @@ public class EventNotify
         
         //display.flashBacklight(0);
         
-	if (toneSequence || enableLights) new Thread(this).start();
+	if (toneSequence/* || enableLights*/) new Thread(this).start();
     }
     
     public void run(){

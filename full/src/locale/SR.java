@@ -206,7 +206,7 @@ public class SR {
     //public   static String MS_LOGIN = loadString( "Login" );
     public   static String MS_CLOCK_OFFSET = loadString( "Clock offset" );
     public   static String MS_YES = loadString( "Yes" );
-    public   static String MS_FLASHBACKLIGHT = loadString( "flash backlight" );
+    //public   static String MS_FLASHBACKLIGHT = loadString( "flash backlight" );
     public   static String MS_SUSPEND = loadString( "Suspend" );
     public   static String MS_ALERT_PROFILE_CMD = loadString( "Alert Profile >" );
     public   static String MS_MY_VCARD = loadString( "My vCard" );

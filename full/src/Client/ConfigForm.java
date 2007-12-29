@@ -229,7 +229,7 @@ public class ConfigForm implements
 //#         application.append(SR.MS_NEW_MENU,null);
 //#endif
         application.append(SR.MS_FLASHLIGHT,null);
-	application.append(SR.MS_FLASHBACKLIGHT,null);
+	//application.append(SR.MS_FLASHBACKLIGHT,null);
 
         boolean appP[]={
             cf.fullscreen,
@@ -243,7 +243,7 @@ public class ConfigForm implements
 //#             cf.newMenu,
 //#endif
             cf.lightState,
-            cf.blFlash,
+            //cf.blFlash,
             cf.popupFromMinimized
         };
         
@@ -447,10 +447,9 @@ public class ConfigForm implements
 //#             cf.newMenu=ap[apctr++];
 //#endif
             cf.lightState=ap[apctr++];
-            cf.blFlash=ap[apctr++];
-            if (cf.allowMinimize) {
+            //cf.blFlash=ap[apctr++];
+            if (cf.allowMinimize)
                 cf.popupFromMinimized=ap[apctr++];
-            }
             
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();
