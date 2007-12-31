@@ -4,6 +4,7 @@
     <configuration>
         <configurations xmlns="http://www.netbeans.org/ns/project-configurations/1">
             <configuration>adsky</configuration>
+            <configuration>checkers</configuration>
             <configuration>full_ver</configuration>
             <configuration>test</configuration>
             <configuration>withoutmuc</configuration>
