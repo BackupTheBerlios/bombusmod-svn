@@ -125,9 +125,11 @@ public class userKeyExec {
 //#                 new io.file.transfer.TransferManager(display);
 //#                 return true;
 //#endif
-            case 7: 
-                roster.cmdArchive();
-                return true;
+//#ifdef ARCHIVE
+//#             case 7: 
+//#                 roster.cmdArchive();
+//#                 return true;
+//#endif
 //#ifdef SERVICE_DISCOVERY
 //#             case 8: 
 //#                 if (connected) {

@@ -264,7 +264,7 @@ public class ContactMessageList extends MessageList
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
-        else if (c==cmdPurge) {
+        if (c==cmdPurge) {
             if (messages.isEmpty()) return;
             clearReadedMessageList();
         }

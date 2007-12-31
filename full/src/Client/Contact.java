@@ -27,10 +27,6 @@
 
 package Client;
 
-//#ifdef CHECKERS
-//# import Checkers.Communicator;
-//#endif
-
 //#ifndef WMUC
 import Conference.MucContact;
 //#endif
@@ -70,9 +66,11 @@ public class Contact extends IconTextElement{
     };
 
     private boolean loaded=false;
+    
 //#ifdef CHECKERS
-//#     private int checkers = Communicator.END_GAME_FLAG;
+//#     private int checkers = -4; //END_GAME_FLAG
 //#endif
+    
     public int getColor() { 
         if (j2j!=null)
             return ColorScheme.CONTACT_J2J;

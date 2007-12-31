@@ -28,7 +28,6 @@
 package Client;
 //#ifdef CHECKERS
 //# import Checkers.Checkers;
-//# import Checkers.Communicator;
 //#endif
 
 //#ifndef WMUC
@@ -113,14 +112,16 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    }
 //#ifdef CHECKERS
 //#             switch (contact.getCheckers()) {
-//#                 case Communicator.END_GAME_FLAG:
+//#                 case -4: //Communicator.END_GAME_FLAG:
 //#                     addItem("new Checkers",777, 0x0f04);
 //#                     break;
-//#                 case Communicator.START_GAME_REQUEST_FLAG:
-//#                     addItem("wait answer Checkers",777, 0x0f04);
+//#                 case -6: //Communicator.START_GAME_REQUEST_FLAG:
+//#                     addItem("start Checkers",777, 0x0f04);
+//#                     addItem("end Checkers",778, 0x0f04);
 //#                     break;
 //#                 default:
-//#                     addItem("end Checkers",777, 0x0f04);
+//#                     addItem("wait answer Checkers",777, 0x0f04);
+//#                     addItem("end Checkers",778, 0x0f04);
 //#                     break;
 //#             }
 //#             
@@ -332,25 +333,22 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             switch (index) {
 //#ifdef CHECKERS
 //#                 case 777: // checkers
-//#                             new Checkers(display);
-//#                             return;
-//#                     /*
 //#                     switch (c.getCheckers()) {
-//#                         case Communicator.END_GAME_FLAG:
+//#                         case -4: //Communicator.END_GAME_FLAG:
 //#                             c.setCheckers(-6);
 //#                             roster.theStream.send(new IqCheckers(c.getJid()));
 //#                             break;
-//#                         case Communicator.START_GAME_REQUEST_FLAG:
+//#                         case -6: //Communicator.START_GAME_REQUEST_FLAG:
 //#                             c.setCheckers(-5);
 //#                             roster.theStream.send(new IqCheckers(c.getJid(), true));
-//#                             new Checkers(display);
+//#                             new Checkers(display, c);
 //#                             return;
-//#                         default:
-//#                             c.setCheckers(-4);
-//#                             roster.theStream.send(new IqCheckers(c.getJid(), false));
-//#                             break;
 //#                     }
-//#                     break;*/
+//#                     break;
+//#                 case 778: // end checkers
+//#                     c.setCheckers(-4);
+//#                     roster.theStream.send(new IqCheckers(c.getJid(), false));
+//#                     break;
 //#endif
                 case 0: // info
                     roster.setQuerySign(true);
