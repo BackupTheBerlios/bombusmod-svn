@@ -25,13 +25,11 @@
 
 package Checkers;
 import Client.Contact;
-import Client.Group;
 import Client.Roster;
 import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
@@ -40,7 +38,6 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
 
 public class Checkers extends Canvas implements CommandListener, JabberBlockListener {
     public static final int BLACK = 0;
@@ -72,16 +69,11 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
 
     
     public boolean isEndGame = false;
-    //private byte[] myMove;
     private boolean myTurnIsDone = true;
-    //private byte[] turnBytes = new byte[5];
-
             
     Roster roster=StaticData.getInstance().roster;
     
-    //private Command myTestCommand = new Command("test", Command.SCREEN, 96);
-    //private Command myEndTurnCommand = new Command("end turn", Command.SCREEN, 97);
-    //private Command myStartCommand = new Command("start", Command.SCREEN, 98);
+    private Command myEndCommand = new Command("End", Command.SCREEN, 97);
     private Command myExitCommand = new Command("Exit", Command.EXIT, 99);
 
     private Contact contact;
@@ -97,9 +89,7 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
         roster.theStream.addBlockListener(this);
         
         //create the canvas and set up the commands:
-        //addCommand(myTestCommand);
-        //addCommand(myEndTurnCommand);
-        //addCommand(myStartCommand);
+        addCommand(myEndCommand);
         addCommand(myExitCommand);
         setCommandListener(this);
         display.setCurrent(this);
@@ -139,8 +129,8 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
             g.drawString("waiting for another player", (width - fontWidth)/2, (height - fontHeight)/2, g.TOP|g.LEFT);
             return;
         }
-        // now draw the checkerboard:
-        // first the dark squares:
+        // draw the checkerboard:
+        // dark squares:
         byte offset = 0;
         for(byte i = 0; i < 4; i++) {
             for(byte j = 0; j < 8; j++) {
@@ -149,45 +139,41 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
                 } else {
                     offset = 0;
                 }
-                // now if this is a selected square, we draw it lighter:
+                // selected square
                 if(isSelected(i, j)) {
                     g.setColor(LT_GREY);
                     g.fillRect((2*i + offset)*mySquareSize, j*mySquareSize,  mySquareSize, mySquareSize);
                 } else {
-                    // if it's not selected, we draw it dark grey:
+                    // not selected
                     g.setColor(GREY);
                     g.fillRect((2*i + offset)*mySquareSize, j*mySquareSize, mySquareSize, mySquareSize);
                 }
-                // now put the pieces in their places:
+                // put the pieces
                 g.setColor(RED);
                 int piece = getPiece(i, j);
                 int circleOffset = 2;
                 int circleSize = mySquareSize - 2*circleOffset;
                 if(piece < 0) {
-                    // color the piece in black
+                    // black
                     g.setColor(BLACK);
                     g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset, circleSize, circleSize, circleSize, circleSize);
-                    // if the player is a king, draw a crown on:
+                    // king
                     if(piece < -1) {
                         g.setColor(GREEN);
                         g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset, circleSize, circleSize, circleSize, circleSize);
-
-                        //g.drawImage(myWhiteCrown, (2*i + offset)*mySquareSize + mySquareSize/2, j*mySquareSize + 1 + mySquareSize/2, Graphics.VCENTER|Graphics.HCENTER);
                     }
                 } else if(piece > 0) {
-                    // color the piece in red
+                    // red
                     g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset, circleSize, circleSize, circleSize, circleSize);
-                    // if the player is a king, draw a crown on:
+                    // player king
                     if(piece > 1) {
                         g.setColor(BLUE);
                         g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset, circleSize, circleSize, circleSize, circleSize);
-                        //g.drawImage(myBlackCrown, (2*i + offset)*mySquareSize + mySquareSize/2, j*mySquareSize + 1 + mySquareSize/2, Graphics.VCENTER|Graphics.HCENTER);
                     }
                 }
             }
         }
-    // now the blank squares:
-    // actually, this part is probably not necessary...
+    // blank squares
     g.setColor(WHITE);
     for(int i = 0; i < 4; i++) {
       for(int j = 0; j < 8; j++) {
@@ -199,8 +185,6 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
           g.fillRect((2*i + offset)*mySquareSize, j*mySquareSize,  mySquareSize, mySquareSize);
       }
     }
-    // if the player has reached the end of the game, 
-    // we display the end message.
         if(getGameOver()) {
             // perform some calculations to place the text correctly:
             Font font = g.getFont();
@@ -242,6 +226,9 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
         if(c == myExitCommand) {
             destroy();
         }
+        if(c == myEndCommand) {
+            destroyView();
+        }
     }
     
     public void destroy() {
@@ -278,6 +265,7 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
 //#ifdef DEBUG
 //#         System.out.println("end game");
 //#endif
+        sendCommand(END_GAME_FLAG, 0, 0, 0, 0);
         isEndGame = true;
         
         setGameOver();
@@ -298,20 +286,14 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
 //#endif
         myTurnIsDone = true;
     }
-    
-    void sendCommand(int Command) {
-//#ifdef DEBUG
-//#         System.out.println("commandInt "+Command);
-//#endif
-    }
+
     void sendCommand(int state, int sourceX, int sourceY, int destX, int destY) {
         JabberDataBlock iq=new Iq(contact.getJid(), Iq.TYPE_RESULT, "setCheckers");
-        JabberDataBlock query = iq.addChildNs("query", "checkers");
-        query.setAttribute("i0", Integer.toString(state)); //state;
-        query.setAttribute("i1", Integer.toString(sourceX)); //sourceX;
-        query.setAttribute("i2", Integer.toString(sourceY)); //sourceY;
-        query.setAttribute("i3", Integer.toString(destX)); //destinationX;
-        query.setAttribute("i4", Integer.toString(destY)); //destinationY;
+        iq.setAttribute("i0", Integer.toString(state)); //state;
+        iq.setAttribute("i1", Integer.toString(sourceX)); //sourceX;
+        iq.setAttribute("i2", Integer.toString(sourceY)); //sourceY;
+        iq.setAttribute("i3", Integer.toString(destX)); //destinationX;
+        iq.setAttribute("i4", Integer.toString(destY)); //destinationY;
 
         //roster.theStream.addBlockListener(this);
         
@@ -324,17 +306,16 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
 
     public int blockArrived(JabberDataBlock data) {
         if (data instanceof Iq) {
-            if (data.getTypeAttribute().equals("result")) {
-                JabberDataBlock query=data.findNamespace("query", "checkers");
-                if (query==null) 
+            if (data.getTypeAttribute().equals("result") && data.getAttribute("from").equals(contact.getJid())) {
+                
+                if (!data.getAttribute("id").equals("setCheckers")) 
                     return BLOCK_REJECTED;
                 
-
-                int i0 = Integer.parseInt(query.getAttribute("i0"));
-                int i1 = Integer.parseInt(query.getAttribute("i1"));
-                int i2 = Integer.parseInt(query.getAttribute("i2"));
-                int i3 = Integer.parseInt(query.getAttribute("i3"));
-                int i4 = Integer.parseInt(query.getAttribute("i4"));
+                int i0 = Integer.parseInt(data.getAttribute("i0"));
+                int i1 = Integer.parseInt(data.getAttribute("i1"));
+                int i2 = Integer.parseInt(data.getAttribute("i2"));
+                int i3 = Integer.parseInt(data.getAttribute("i3"));
+                int i4 = Integer.parseInt(data.getAttribute("i4"));
 
                 switch (i0) {
                         case START_GAME_FLAG:
@@ -454,16 +435,13 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
     }
 
     void moveOpponent(int sourceX, int sourceY, int destX, int destY) { //moveOpponent(opMove);
-        // since both players appear on their own screens 
-        // as the red side (bottom of the screen), we need 
-        // to invert the opponent's move:
         sourceX = (new Integer(X_LENGTH - sourceX - 1)).byteValue();
         destX = (new Integer(X_LENGTH - destX - 1)).byteValue();
         sourceY = (new Integer(Y_LENGTH - sourceY - 1)).byteValue();
         destY = (new Integer(Y_LENGTH - destY - 1)).byteValue();
         myGrid[destX][destY] = myGrid[sourceX][sourceY];
         myGrid[sourceX][sourceY] = 0;
-        // deal with an opponent's jump:
+
         if((sourceY - destY > 1) ||  (destY - sourceY > 1)) {
             int jumpedY = (sourceY + destY)/2;
             int jumpedX = sourceX;
@@ -487,34 +465,23 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
 
     void endOpponentTurn() {
         myTurn = true;
-        mySelectedX = 0;
-        mySelectedY = 0;
-        myDestinationX = -1;
-        myDestinationY = -1;
+        mySelectedX = 0; mySelectedY = 0; myDestinationX = -1; myDestinationY = -1;
         rightPressed();
-        // the local player's thread has been waiting  for the opponent's turn to end.  
-        //synchronized(this) {
-        //    notify();
-        //}
     }
 
     void leftPressed() {
         if(myDestinationX == -1) {
             selectPrevious();
-            if(myPossibleMoves.size() == 0) {
+            if(myPossibleMoves.size() == 0)
                 endGame();
-            }
         } else {
-            // if the user has already selected a piece to move, 
-            // we give the options of where the piece can move to:
             for(byte i = 0; i < myPossibleMoves.size(); i++) {
                 byte[] coordinates = (byte[])myPossibleMoves.elementAt(i);
                 if((coordinates[0] == myDestinationX) &&  (coordinates[1] == myDestinationY)) {
                     i++;
                     i = (new Integer(i % myPossibleMoves.size())).byteValue();
                     coordinates = (byte[])myPossibleMoves.elementAt(i);
-                    myDestinationX = coordinates[0];
-                    myDestinationY = coordinates[1];
+                    myDestinationX = coordinates[0]; myDestinationY = coordinates[1];
                     break;
                 }
             }
@@ -552,23 +519,17 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
 
     void deselect() {
         if(myIsJumping) {
-            mySelectedX = -1;
-            mySelectedY = -1;
-            myDestinationX = -1;
-            myDestinationY = -1;
-            myIsJumping = false;
-            myTurn = false;
+            mySelectedX = -1; mySelectedY = -1; myDestinationX = -1; myDestinationY = -1;
+            myIsJumping = false; myTurn = false;
             endTurn();
         } else {
-            myDestinationX = -1;
-            myDestinationY = -1;
+            myDestinationX = -1; myDestinationY = -1;
         }
     }
 
     private void fixSelection() {
         byte[] destination = (byte[])myPossibleMoves.elementAt(0);
-        myDestinationX = destination[0];
-        myDestinationY = destination[1];
+        myDestinationX = destination[0]; myDestinationY = destination[1];
     }
 
     private void selectNext() {
@@ -612,44 +573,34 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
     }
 
     private void move() {
-        // the piece that was on the source square is 
-        // now on the destination square:
         myGrid[myDestinationX][myDestinationY]  = myGrid[mySelectedX][mySelectedY];
-        // the source square is emptied:
+
         myGrid[mySelectedX][mySelectedY] = 0;
-        if(myDestinationY == 0) {
+        if(myDestinationY == 0)
             myGrid[myDestinationX][myDestinationY] = 2;
-        }
-        // tell the communicator to inform the other player 
-        // of this move:
-        move(mySelectedX, mySelectedY, 
-        myDestinationX, myDestinationY);
-        // deal with the special rules for jumps::
+
+        move(mySelectedX, mySelectedY,  myDestinationX, myDestinationY);
+
         if((mySelectedY - myDestinationY > 1) ||  (myDestinationY - mySelectedY > 1)) {
             int jumpedY = (mySelectedY + myDestinationY)/2;
             int jumpedX = mySelectedX;
             int parity = mySelectedY % 2;
-            // the coordinates of the jumped square depend on 
-            // what row we're in:
+
             if((parity > 0) && (myDestinationX > mySelectedX)) {
                 jumpedX++;
             } else if((parity == 0) && (mySelectedX > myDestinationX)) {
                 jumpedX--;
             }
-            // remove the piece that was jumped over:
+
             myGrid[jumpedX][jumpedY] = 0;
-            // now get ready to jump again if possible:
+
             mySelectedX = myDestinationX;
             mySelectedY = myDestinationY;
             myDestinationX = -1;
             myDestinationY = -1;
-            // see if another jump is possible.
-            // The "true" argument tells the program to return 
-            // only jumps because the player can go again ONLY 
-            // if there's a jump:
+
             getMoves(mySelectedX, mySelectedY, myPossibleMoves, true);
-            // if there's another jump possible with the same piece, 
-            // allow the player to continue jumping:
+
             if(myPossibleMoves.size() != 0) {
                 myIsJumping = true;
                 byte[] landing = (byte[])myPossibleMoves.elementAt(0);
@@ -660,15 +611,9 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
                 endTurn();
             }
         } else {
-            // since it's not a jump, we just end the turn 
-            // by deselecting everything.
-            mySelectedX = -1;
-            mySelectedY = -1;
-            myDestinationX = -1;
-            myDestinationY = -1;
+            mySelectedX = -1; mySelectedY = -1; myDestinationX = -1; myDestinationY = -1;
             myPossibleMoves.removeAllElements();
             myTurn = false;
-            // tell the other player we're done:
             endTurn();
         }
     }
@@ -697,10 +642,8 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
 
     private void getMoves(byte x, byte y, Vector toFill, boolean jumpsOnly) {
         toFill.removeAllElements();
-        if(myGrid[x][y] <= 0) {
+        if(myGrid[x][y] <= 0)
             return;
-        }
-        // check each of the four corners to see if the piece can move there:
         for(byte i = 0; i < 4; i++) {
             byte[] coordinates = getCornerCoordinates(x, y, i);
             if((coordinates != null) && ((myGrid[x][y] > 1) || (i < 2))) {
@@ -713,7 +656,7 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
                     }
                 }
             }
-        } // end for loop
+        }
     }
     
 }

@@ -112,16 +112,16 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	    }
 //#ifdef CHECKERS
 //#             switch (contact.getCheckers()) {
-//#                 case -4: //Communicator.END_GAME_FLAG:
-//#                     addItem("new Checkers",777, 0x0f04);
+//#                 case -4: //END_GAME_FLAG:
+//#                     addItem("new game",777, 0x0f04);
 //#                     break;
-//#                 case -6: //Communicator.START_GAME_REQUEST_FLAG:
-//#                     addItem("start Checkers",777, 0x0f04);
-//#                     addItem("end Checkers",778, 0x0f04);
+//#                 case -6: //START_GAME_REQUEST_FLAG:
+//#                     addItem("start game",777, 0x0f04);
+//#                     addItem("end game",778, 0x0f04);
 //#                     break;
 //#                 default:
-//#                     addItem("wait answer Checkers",777, 0x0f04);
-//#                     addItem("end Checkers",778, 0x0f04);
+//#                     addItem("resume game",777, 0x0f04);
+//#                     addItem("end game",778, 0x0f04);
 //#                     break;
 //#             }
 //#             
@@ -334,11 +334,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef CHECKERS
 //#                 case 777: // checkers
 //#                     switch (c.getCheckers()) {
-//#                         case -4: //Communicator.END_GAME_FLAG:
+//#                         case -4: //END_GAME_FLAG:
 //#                             c.setCheckers(-6);
 //#                             roster.theStream.send(new IqCheckers(c.getJid()));
 //#                             break;
-//#                         case -6: //Communicator.START_GAME_REQUEST_FLAG:
+//#                         case -6: //START_GAME_REQUEST_FLAG:
 //#                             c.setCheckers(-5);
 //#                             roster.theStream.send(new IqCheckers(c.getJid(), true));
 //#                             new Checkers(display, c);
