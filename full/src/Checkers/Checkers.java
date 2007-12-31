@@ -38,6 +38,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.media.Manager;
 
 public class Checkers extends Canvas implements CommandListener, JabberBlockListener {
     public static final int BLACK = 0;
@@ -46,9 +47,10 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
     public static final int GREY = 0x969696;
     
     public static final int GREEN = 0x00ff00;
+    public static final int YELLOW = 0xffFF00;
     public static final int BLUE = 0x0000ff;
     
-    public static final int LT_GREY = 0xe5e3e3;
+    public static final int LT_GREY = 0xBEFF00;
     public static final int GRID_WIDTH = 8;
     
     public static final byte START_GAME_REQUEST_FLAG = -6;
@@ -159,7 +161,7 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
                     g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset, circleSize, circleSize, circleSize, circleSize);
                     // king
                     if(piece < -1) {
-                        g.setColor(GREEN);
+                        g.setColor(YELLOW);
                         g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset, circleSize, circleSize, circleSize, circleSize);
                     }
                 } else if(piece > 0) {
@@ -464,6 +466,7 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
     }
 
     void endOpponentTurn() {
+        soundPlay(0);
         myTurn = true;
         mySelectedX = 0; mySelectedY = 0; myDestinationX = -1; myDestinationY = -1;
         rightPressed();
@@ -593,6 +596,8 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
             }
 
             myGrid[jumpedX][jumpedY] = 0;
+            
+            soundPlay(1);
 
             mySelectedX = myDestinationX;
             mySelectedY = myDestinationY;
@@ -659,4 +664,16 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
         }
     }
     
+    
+    public void soundPlay(int state){
+        String tone=(state>0)?"E6A6":"A6";
+        try {
+            for (int i=0; i<tone.length(); ) {
+                int note=(tone.charAt(i++)-'A')+12*(tone.charAt(i++)-'0');
+                int duration=150;
+                Manager.playTone(note, duration, 100);
+                Thread.sleep(duration);
+            }
+        } catch (Exception e) { }
+    }
 }
