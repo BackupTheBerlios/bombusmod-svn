@@ -253,7 +253,7 @@ public class strconv {
         return src;
     }
  
-    protected static String stringReplace(String aSearch, String aFind, String aReplace) {
+    public static String stringReplace(String aSearch, String aFind, String aReplace) {
         String result = aSearch;
         if (result != null && result.length() > 0) {
             int a = 0;

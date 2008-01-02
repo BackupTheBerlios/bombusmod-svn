@@ -59,6 +59,7 @@ public class HistoryStorage {
 //#else
        filename=cf.msgPath+filename+".txt";
 //#endif
+       filename = strconv.stringReplace(filename, "%", "@");
        
        this.history = loadHistory(filename);
    }

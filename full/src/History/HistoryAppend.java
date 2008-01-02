@@ -58,6 +58,8 @@ public class HistoryAppend {
 //#else
        String filename=cf.msgPath+histRecord+".txt";
 //#endif
+       
+       filename = strconv.stringReplace(filename, "%", "@");
        file=FileIO.createConnection(filename);
         try {
             os = file.openOutputStream(0);
