@@ -687,10 +687,21 @@ public abstract class VirtualList
 //#         return true;
 //#     }
 //#endif
+    
     private void key(int keyCode) {
 //#if DEBUG
 //#         System.out.println(keyCode);
 //#endif
+//#ifdef POPUPS
+//#         popup.next();
+//#endif
+        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+            if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
+                if (canBack==true)
+                    destroyView();
+                return;
+            }
+         }
 //#ifdef USER_KEYS
 //#         if (userKeys) {
 //#             switch (additionKeyState) {
@@ -706,74 +717,50 @@ public abstract class VirtualList
 //#             }
 //#         }
 //#endif
-//#ifdef POPUPS
-//#         popup.next();
-//#endif
-
-        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-            if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
-                if (canBack==true)
-                    destroyView();
-                return;
-            }
-         }
 //#if ALT_INPUT
 //#     if (inputbox==null) {
 //#endif
             switch (keyCode) {
-                case 0: break;
-                case NOKIA_PEN: { 
+                case 0: 
+                    break;
+                case NOKIA_PEN:
                     if (canBack==true)
                         destroyView(); 
-                    break; 
-                }
+                    break;
                 case MOTOE680_VOL_UP:
-                case MOTOROLA_FLIP: { 
+                case MOTOROLA_FLIP:
                     userKeyPressed(keyCode); 
                     break; 
-                }
-                case KEY_NUM1:  { 
+                case KEY_NUM1:
                     moveCursorHome();    
                     break; 
-                }
-                case KEY_NUM2:  { 
+                case KEY_NUM2:
                     keyUp();    
                     break; 
-                }
-                case KEY_NUM4:  { 
+                case KEY_NUM4:
                     userKeyPressed(keyCode); 
                     break; 
-                }
-                case KEY_NUM6:  { 
+                case KEY_NUM6:
                     userKeyPressed(keyCode); 
                     break; 
-                }
-                case KEY_NUM7:  { 
+                case KEY_NUM7:
                     moveCursorEnd();     
-                    break; 
-                }                
-                case KEY_NUM8:  { 
+                    break;
+                case KEY_NUM8:
                     keyDwn();    
                     break; 
-                }
-                case NOKIA_GREEN: {
-                    if (cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.WTK) {
+                case NOKIA_GREEN:
+                    if (cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.WTK)
                         keyGreen();
-                        break; 
-                    }
-                }
-                case KEY_STAR: {
+                    break;
+                case KEY_STAR:
                     System.gc();
 //#ifdef POPUPS
-//#                     if (cf.popUps) {
-//#                         int freemem=(int)Runtime.getRuntime().freeMemory();
-//#                         setWobble("Free "+(freemem/1000)+" kb");
-//#                         break;
-//#                     }
+//#                     if (cf.popUps)
+//#                         setWobble("Free "+(Runtime.getRuntime().freeMemory()/1000)+" kb");
 //#endif
-                }
-                
-                case KEY_POUND: {
+                    break;
+                case KEY_POUND:
 //#ifdef POPUPS
 //#                     if (cf.popUps) {
 //#                         try {
@@ -785,7 +772,6 @@ public abstract class VirtualList
 //#                         } catch (Exception e) { }
 //#                     }
 //#endif
-                }
 
                 default:
                     try {

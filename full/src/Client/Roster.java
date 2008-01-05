@@ -2116,46 +2116,78 @@ public class Roster
     }
 
     protected void keyPressed(int keyCode) {
-        if (keyCode==KEY_POUND) {
+        switch (keyCode) {
+            case KEY_POUND:
 //#ifdef POPUPS
 //#             VirtualList.popup.next();
 //#             setWobbler(null);
 //#             redraw();
 //#             return;
 //#endif
-      }
-       //workaround for SE JP6 - enabling vibra in closed state
-        if (keyCode==SE_FLIPCLOSE_JP6) {
-            display.setCurrent(null);
-            try {
-                Thread.sleep(300);
-            } catch (Exception ex) {}
-            display.setCurrent(this);
-        }
+            case KEY_NUM1:
+                if (cf.collapsedGroups) { //collapse all groups
+                    for (Enumeration e=groups.elements(); e.hasMoreElements();) {
+                        Group grp=(Group)e.nextElement();
+                        grp.collapsed=true;
+                    }
+                    reEnumRoster();
+                }
+                super.keyPressed(keyCode);
+                break;
+            case KEY_NUM4:
+                super.keyLeft();
+                break;
+            case KEY_NUM6:
+                super.keyRight();
+                break;
+            case keyClear:
+                if (!isLoggedIn()) 
+                    return;
+                try { 
+                    boolean isContact=( getFocusedObject() instanceof Contact );
+//#ifndef WMUC
+                    boolean isMucContact=( getFocusedObject() instanceof MucContact );
+//#else
+//#                     boolean isMucContact=false;
+//#endif
+                    if (isContact && !isMucContact) {
+                       Contact c=(Contact) getFocusedObject();
+                       yesnoAction=ACTION_DELETE; 
+                       new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
+                    }
+//#ifndef WMUC
+                    else if (isContact && isMucContact) {
+                       Contact c=(Contact) getFocusedObject();
+                       ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                       String myNick=mucGrp.getSelfContact().getName();
+                       MucContact mc=(MucContact) c;
+                       new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                    }
+//#endif
+                    
+                } catch (Exception e) { /* NullPointerException */ }
+                break;
 //#ifdef AUTOSTATUS
-//#         if (keyCode==SE_FLIPCLOSE_JP6 
-//#             || keyCode== SIEMENS_FLIPCLOSE 
-//#             || keyCode==MOTOROLA_FLIP 
-//#             /*|| keyCode=='#' */) {
+//#             case SE_FLIPCLOSE_JP6:
+//#             case SIEMENS_FLIPCLOSE:
+//#             case MOTOROLA_FLIP:
+//#                 if (cf.phoneManufacturer!=Config.SONYE) { //workaround for SE JP6 - enabling vibra in closed state
+//#                     display.setCurrent(null);
+//#                     try {
+//#                         Thread.sleep(300);
+//#                     } catch (Exception ex) {}
+//#                     display.setCurrent(this);
+//#                 }
 //#if DEBUG
 //#             System.out.println("Flip closed");
 //#endif
-//#             if (cf.autoAwayType==Config.AWAY_LOCK) 
-//#                 if (!autoAway) 
-//#                     autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
-//#             return;
-//#         } else {
-//#             userActivity();
-//#         }
+//#                 if (cf.autoAwayType==Config.AWAY_LOCK) 
+//#                     if (!autoAway) 
+//#                         autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#                 break;
+//#             default:
+//#                 userActivity();        
 //#endif
-        if (keyCode=='1' && cf.collapsedGroups) { //collapse all groups
-            for (Enumeration e=groups.elements(); e.hasMoreElements();) {
-                Group grp=(Group)e.nextElement();
-                grp.collapsed=true;
-            }
-            reEnumRoster();
-            super.keyPressed(keyCode);
-            return;
         }
        
 //#ifdef NEW_MENU
@@ -2165,39 +2197,12 @@ public class Roster
 //#         }
 //#endif
        
-        if (keyCode==Config.SOFT_RIGHT) {
+        else if (keyCode==Config.SOFT_RIGHT) {
             if (isLoggedIn()) 
                 new RosterItemActions(display, getFocusedObject(), -1);
             return;
         }
-        
-        if (keyCode==keyClear) {
-            if (!isLoggedIn()) return;
-            try { 
-                boolean isContact=( getFocusedObject() instanceof Contact );
-//#ifndef WMUC
-                boolean isMucContact=( getFocusedObject() instanceof MucContact );
-//#else
-//#                 boolean isMucContact=false;
-//#endif
-                if (isContact && !isMucContact) {
-                   Contact c=(Contact) getFocusedObject();
-                   yesnoAction=ACTION_DELETE; 
-                   new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
-                }
-//#ifndef WMUC
-                else if (isContact && isMucContact) {
-                   Contact c=(Contact) getFocusedObject();
-                   ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
-                   String myNick=mucGrp.getSelfContact().getName();
-                   MucContact mc=(MucContact) c;
-                   new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
-                }
-//#endif
-                return;
-            } catch (Exception e) { /* NullPointerException */ }
-        }
-       super.keyPressed(keyCode);
+        super.keyPressed(keyCode);
     }
 
     public void userKeyPressed(int keyCode){
@@ -2235,12 +2240,6 @@ public class Roster
             case KEY_NUM9:
                 searchGroup(1);
                 setRotator();
-                break;
-            case KEY_NUM4:
-                keyLeft();
-                break;
-            case KEY_NUM6:
-                keyRight();
                 break;
             case KEY_STAR:
                 if (cf.ghostMotor) {
