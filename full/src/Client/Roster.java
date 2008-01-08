@@ -2186,6 +2186,12 @@ public class Roster
 //#                         autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#                 break;
 //#             default:
+//#                     try {
+//#                         switch (getGameAction(keyCode)){
+//#                             case LEFT:  { super.keyLeft(); break; }
+//#                             case RIGHT: { super.keyRight(); break; }
+//#                         }
+//#                     } catch (Exception e) {}
 //#                 userActivity();        
 //#endif
         }
@@ -2197,7 +2203,7 @@ public class Roster
 //#         }
 //#endif
        
-        else if (keyCode==Config.SOFT_RIGHT) {
+        if (keyCode==Config.SOFT_RIGHT) {
             if (isLoggedIn()) 
                 new RosterItemActions(display, getFocusedObject(), -1);
             return;
