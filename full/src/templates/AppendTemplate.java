@@ -103,7 +103,7 @@ public class AppendTemplate
 	super (display);
 	this.target=target;
         this.caretPos=caretPos;
-        enableListWrapping(true); //TEST:������� ����� ����� ������
+        //enableListWrapping(true); //TEST:������� ����� ����� ������
 	if (target!=null) {
 	    addCommand(cmdSelect);
 	}
