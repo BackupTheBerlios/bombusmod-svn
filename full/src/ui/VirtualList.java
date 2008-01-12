@@ -140,9 +140,9 @@ public abstract class VirtualList
 
     int width;
     int height;
-
-    private Image offscreen;
-    
+//#ifndef WOFFSCREEN
+    private Image offscreen = null;
+//#endif
     protected int cursor;
 
     protected boolean stickyWindow=true;
@@ -278,22 +278,26 @@ public abstract class VirtualList
     }
 
     protected void hideNotify() {
+//#ifndef WOFFSCREEN
 	offscreen=null;
+//#endif
     }
 
     protected void showNotify() {
-	if (!isDoubleBuffered()) 
-	    offscreen=Image.createImage(width, height);
+//#ifndef WOFFSCREEN
+	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
+//#endif
 //#if (USE_ROTATOR)
 //#         TimerTaskRotate.startRotate(-1, this);
 //#endif
     }
 
     protected void sizeChanged(int w, int h) {
+//#ifndef WOFFSCREEN
         width=w;
         height=h;
-	if (!isDoubleBuffered()) 
-	    offscreen=Image.createImage(width, height);
+	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
+//#endif
     }
 
     protected void beginPaint(){};
@@ -307,8 +311,12 @@ public abstract class VirtualList
         
         int mHeight=0, iHeight=0; // nokia fix
         
-	Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
-
+        Graphics g = graphics;       
+//#ifndef WOFFSCREEN
+        if (offscreen != null)
+            graphics = offscreen.getGraphics();
+//#endif
+        
         switch (isbottom) {
             case 0: paintTop=false; paintBottom=false; reverse=false; break;
             case 1: paintTop=true;  paintBottom=false; reverse=false; break;
@@ -484,7 +492,14 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#         drawPopUp(g);
 //#endif
-	if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
+        
+//#ifndef WOFFSCREEN
+        if (g != graphics)
+            g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
+//#endif
+	//if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
+
+        //g.drawRGB(RotateImage.img(g.),0,0,0,0,width,height,true);
     }
     
 //#ifdef POPUPS
@@ -727,22 +742,18 @@ public abstract class VirtualList
                     if (canBack==true)
                         destroyView(); 
                     break;
-                case MOTOE680_VOL_UP:
-                case MOTOROLA_FLIP:
-                    userKeyPressed(keyCode); 
-                    break; 
                 case KEY_NUM1:
                     moveCursorHome();    
-                    break; 
+                    break;
                 case KEY_NUM2:
                     keyUp();    
                     break; 
-                case KEY_NUM4:
-                    userKeyPressed(keyCode); 
+                /*case KEY_NUM4:
+                    userKeyPressed(keyCode);
                     break; 
                 case KEY_NUM6:
-                    userKeyPressed(keyCode); 
-                    break; 
+                    userKeyPressed(keyCode);
+                    break;*/
                 case KEY_NUM7:
                     moveCursorEnd();     
                     break;
@@ -760,8 +771,8 @@ public abstract class VirtualList
 //#                         setWobble("Free "+(Runtime.getRuntime().freeMemory()/1000)+" kb");
 //#endif
                     break;
-                case KEY_POUND:
 //#ifdef POPUPS
+//#                 case KEY_POUND:
 //#                     if (cf.popUps) {
 //#                         try {
 //#                             String text=((VirtualElement)getFocusedObject()).getTipString();
@@ -771,6 +782,7 @@ public abstract class VirtualList
 //#                             }
 //#                         } catch (Exception e) { }
 //#                     }
+//#                     break;
 //#endif
 
                 default:

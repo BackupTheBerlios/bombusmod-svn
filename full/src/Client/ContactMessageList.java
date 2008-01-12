@@ -496,26 +496,21 @@ public class ContactMessageList extends MessageList
 //#             }
 //#         } else {
 //#endif
-        super.userKeyPressed(keyCode);
+        //super.userKeyPressed(keyCode);
         
         switch (keyCode) {
             case KEY_NUM4:
-                if (cf.useTabs) {
+                if (cf.useTabs)
                     nextContact(-1); //previous contact with messages
-                    break;
-                } else {
-                    keyLeft();
-                    break;
-                }
-                
+                else
+                    super.keyLeft();
+                break;
             case KEY_NUM6:
-                if (cf.useTabs) {
+                if (cf.useTabs)
                     nextContact(1); //next contact with messages
-                    break;
-                } else {
-                    keyRight();
-                    break;
-                }
+                else
+                    super.keyRight();
+                break;
             case KEY_NUM3:
                 new ActiveContacts(display, contact);
                 break;
@@ -541,19 +536,19 @@ public class ContactMessageList extends MessageList
                         clipboard.setClipBoard(clipstr.toString());
                         clipstr=null;
                     } catch (Exception e) {/*no messages*/}
-                    break;
                  }
+                 break;
             case SIEMENS_VOLDOWN:
             case SIEMENS_MPLAYER:
                 if (cf.allowLightControl) { //clear clipboard
                     clipboard.setClipBoard("");
-                    break;
                 }
+                break;
             case keyClear:
                 if (!messages.isEmpty()) {
                     clearReadedMessageList();
-                    break;
                 }
+                break;
             }
 //#if ALT_INPUT  
 //#         }

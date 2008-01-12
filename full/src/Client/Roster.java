@@ -2115,14 +2115,16 @@ public class Roster
         //reEnumRoster();
     }
 
-    protected void keyPressed(int keyCode) {
+    public void keyPressed(int keyCode){
+        Contact c=null;
+        
         switch (keyCode) {
-            case KEY_POUND:
 //#ifdef POPUPS
-//#             VirtualList.popup.next();
-//#             setWobbler(null);
-//#             redraw();
-//#             return;
+//#             case KEY_POUND:
+//#                 VirtualList.popup.next();
+//#                 setWobbler(null);
+//#                 redraw();
+//#                 return;
 //#endif
             case KEY_NUM1:
                 if (cf.collapsedGroups) { //collapse all groups
@@ -2132,40 +2134,6 @@ public class Roster
                     }
                     reEnumRoster();
                 }
-                super.keyPressed(keyCode);
-                break;
-            case KEY_NUM4:
-                super.keyLeft();
-                break;
-            case KEY_NUM6:
-                super.keyRight();
-                break;
-            case keyClear:
-                if (!isLoggedIn()) 
-                    return;
-                try { 
-                    boolean isContact=( getFocusedObject() instanceof Contact );
-//#ifndef WMUC
-                    boolean isMucContact=( getFocusedObject() instanceof MucContact );
-//#else
-//#                     boolean isMucContact=false;
-//#endif
-                    if (isContact && !isMucContact) {
-                       Contact c=(Contact) getFocusedObject();
-                       yesnoAction=ACTION_DELETE; 
-                       new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
-                    }
-//#ifndef WMUC
-                    else if (isContact && isMucContact) {
-                       Contact c=(Contact) getFocusedObject();
-                       ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
-                       String myNick=mucGrp.getSelfContact().getName();
-                       MucContact mc=(MucContact) c;
-                       new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
-                    }
-//#endif
-                    
-                } catch (Exception e) { /* NullPointerException */ }
                 break;
 //#ifdef AUTOSTATUS
 //#             case SE_FLIPCLOSE_JP6:
@@ -2185,34 +2153,7 @@ public class Roster
 //#                     if (!autoAway) 
 //#                         autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#                 break;
-//#             default:
-//#                     try {
-//#                         switch (getGameAction(keyCode)){
-//#                             case LEFT:  { super.keyLeft(); break; }
-//#                             case RIGHT: { super.keyRight(); break; }
-//#                         }
-//#                     } catch (Exception e) {}
-//#                 userActivity();        
 //#endif
-        }
-       
-//#ifdef NEW_MENU
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             new RosterMenu(display, getFocusedObject());
-//#             return;
-//#         }
-//#endif
-       
-        if (keyCode==Config.SOFT_RIGHT) {
-            if (isLoggedIn()) 
-                new RosterItemActions(display, getFocusedObject(), -1);
-            return;
-        }
-        super.keyPressed(keyCode);
-    }
-
-    public void userKeyPressed(int keyCode){
-        switch (keyCode) {
             case KEY_NUM0:
                 cleanMarks();
 //#ifndef WSYSTEMGC
@@ -2220,7 +2161,6 @@ public class Roster
 //#endif
                 if (messageCount==0) return;
                 Object atcursor=getFocusedObject();
-                Contact c=null;
                 if (atcursor instanceof Contact) c=(Contact)atcursor;
                 //
                 else c=(Contact)hContacts.firstElement();
@@ -2236,8 +2176,14 @@ public class Roster
                         setRotator();
                         break; 
                     }
-                    if (p==c) pass++; // полный круг пройден
+                    if (p==c) pass++;
                 }
+                break;
+            case KEY_NUM4:
+                super.keyLeft();
+                break;
+            case KEY_NUM6:
+                super.keyRight();
                 break;
             case KEY_NUM3:
                 searchGroup(-1);
@@ -2254,20 +2200,62 @@ public class Roster
                     display.flashBacklight(blState);
                 }
                 break;
+            case keyClear:
+                if (isLoggedIn()) {
+                    try { 
+                        boolean isContact=( getFocusedObject() instanceof Contact );
+//#ifndef WMUC
+                        boolean isMucContact=( getFocusedObject() instanceof MucContact );
+//#else
+//#                         boolean isMucContact=false;
+//#endif
+                        if (isContact && !isMucContact) {
+                           c=(Contact) getFocusedObject();
+                           yesnoAction=ACTION_DELETE; 
+                           new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
+                        }
+//#ifndef WMUC
+                        else if (isContact && isMucContact) {
+                           c=(Contact) getFocusedObject();
+                           ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                           String myNick=mucGrp.getSelfContact().getName();
+                           MucContact mc=(MucContact) c;
+                           new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                        }
+//#endif 
+                    } catch (Exception e) { /* NullPointerException */ }
+                }
+                break;
             default:
-                try {
-                    switch (getGameAction(keyCode)){
-                        case LEFT:  {keyLeft(); break; }
-                        case RIGHT: { keyRight(); break; }
-                    }
-                } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+                    try {
+                        switch (getGameAction(keyCode)){
+                            case LEFT:  { super.keyLeft(); break; }
+                            case RIGHT: { super.keyRight(); break; }
+                        }
+                    } catch (Exception e) {}
+                    break;
         }
+//#ifdef NEW_MENU
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             new RosterMenu(display, getFocusedObject());
+//#             return;
+//#         }
+//#endif
+       
+        if (keyCode==Config.SOFT_RIGHT) {
+            if (isLoggedIn()) 
+                new RosterItemActions(display, getFocusedObject(), -1);
+                return;
+        }
+//#ifdef AUTOSTATUS
+//#         userActivity();
+//#endif
+        super.keyPressed(keyCode);
      }
  
     protected void keyRepeated(int keyCode) {
         super.keyRepeated(keyCode);
         if (kHold==keyCode) return;
-        //kHold=keyCode;
         kHold=keyCode;
         
         if (keyCode==cf.keyLock) {
