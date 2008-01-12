@@ -97,7 +97,7 @@ public class VCard {
            try {
                 photoType=photoXML.getChildBlock("TYPE").getText();
            } catch (Exception e) {
-                photoType="image/jpeg";
+                //photoType="image/jpeg";
                //System.out.println("error");
            }
            photo=(byte[])photoXML.getChildBlock("BINVAL").getChildBlocks().lastElement();

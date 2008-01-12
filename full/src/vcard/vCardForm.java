@@ -65,12 +65,12 @@ public class vCardForm
     protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK /*Command.SCREEN*/, 1);
     protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
 //#if (FILE_IO)
-    protected Command cmdPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
-    protected Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4); //locale
+    protected Command cmdLoadPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
+    protected Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
 //#endif
-    protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,4);
-    protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,5);
-    protected Command cmdClear = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN, 6);
+    protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
+    protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
+    protected Command cmdDelViewedPhoto = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN, 7);
     
     private Form f;
     private Vector items=new Vector();
@@ -82,9 +82,9 @@ public class vCardForm
     private int st=-1;
 
 //#if FILE_IO    
-    int fileSize;
+    //int fileSize;
     private int filePos;
-    String filePath;
+    //String filePath;
     private FileIO file;
     private OutputStream os;
 //#endif
@@ -135,19 +135,19 @@ public class vCardForm
         if (editable) {
             f.addCommand(cmdPublish);
 //#if (FILE_IO)
-            f.addCommand(cmdPhoto);
+            f.addCommand(cmdLoadPhoto);
 //#endif
             String cameraAvailable=System.getProperty("supports.video.capture");
             if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
                 f.addCommand(cmdCamera);
             f.addCommand(cmdDelPhoto);
         }
-        if (!editable) {
-            f.addCommand(cmdClear);
-        }
+        if (!editable && photo!=null) {
+            f.addCommand(cmdDelViewedPhoto);
 //#if (FILE_IO)
-        f.addCommand(cmdSavePhoto);
+            f.addCommand(cmdSavePhoto);
 //#endif
+        }
         f.setCommandListener(this);
         display.setCurrent(f);
     }
@@ -159,13 +159,13 @@ public class vCardForm
             destroyView();
         }
         
-        if (c==cmdClear) {
+        if (c==cmdDelViewedPhoto) {
             vcard.photo=null;
             destroyView();
         }
         
 //#if (FILE_IO)
-        if (c==cmdPhoto) {
+        if (c==cmdLoadPhoto) {
             st=1;
             new Browser(null, display, this, false);
         }
@@ -175,10 +175,8 @@ public class vCardForm
         }
 //#endif
 
-//#if (!MIDP1)
         if (c==cmdCamera)
             new CameraImage(display, this);
-//#endif
 
         if (c==cmdDelPhoto) {
             photo=null; 
@@ -229,15 +227,8 @@ public class vCardForm
             }
             if (st==2 & photo!=null) {
                 photoType=getPhotoMIMEType();
-                if (photoType!=null) {
-                        int slashPos=photoType.indexOf('/');
-                        if (slashPos>-1) {
-                            photoType=photoType.substring(slashPos+1).toLowerCase();
-                            if (photoType=="jpeg") photoType="jpg";
-                        }
-                }
-
-                file=FileIO.createConnection(pathSelected+"photo_"+vcard.getNickName()+"_"+getDate()+"."+photoType);
+                System.out.println(photoType+"->"+getFileType(photoType));////////////
+                file=FileIO.createConnection(pathSelected+getNickDate()+getFileType(photoType));
                 try {
                     os=file.openOutputStream();
                     writeFile(photo);
@@ -259,6 +250,28 @@ public class vCardForm
         } catch (IOException ex) { }
     }
 //#endif
+    
+    
+    private String getNickDate() {
+        StringBuffer nickDate=new StringBuffer();
+        nickDate.append("photo_");
+        if (vcard.getNickName()!=null) {
+            nickDate.append(vcard.getNickName());
+        } else nickDate.append(vcard.getJid());
+        nickDate.append("_");
+        nickDate.append(Time.dayLocalString(Time.utcTimeMillis()).trim());
+        return nickDate.toString();
+    }
+    
+    private String getFileType(String MIMEtype) {
+        if (MIMEtype!=null) {
+            if (MIMEtype=="image/jpeg") return ".jpg";
+            if (MIMEtype=="image/png") return ".png";
+            if (MIMEtype=="image/gif") return ".gif";
+            if (MIMEtype=="image/x-ms-bmp") return ".bmp";
+        }
+        return ".jpg";
+    }
 
     public void cameraImageNotify(byte[] capturedPhoto) {
         photo=capturedPhoto;
@@ -278,52 +291,42 @@ public class vCardForm
         }
          f.set(photoIndex, photoItem);
      }
-	 
-    private String getDate() {
-        long dateGmt=Time.utcTimeMillis();
-        return Time.dayLocalString(dateGmt).trim(); 
-    }
-   
 	
     public String getPhotoMIMEType() {
         try {
+             if (photo[0]==(byte)0xff &&
+                photo[1]==(byte)0xd8 &&
+                (photo[6]==(byte)'J' || photo[6]==(byte)'E' || photo[6]==(byte)'e') &&
+                (photo[7]==(byte)'F' || photo[7]==(byte)'x' || photo[7]==(byte)'X') &&
+                (photo[8]==(byte)'I' || photo[8]==(byte)'i') &&
+                (photo[9]==(byte)'F' || photo[9]==(byte)'f')) {
+                //System.out.println("image/jpeg");
+                 return "image/jpeg";
+             }
+             
             if (photo[0]==(byte)0x89 &&
-                photo[1]==0x50 &&
-                photo[2]==0x4E &&
-                photo[3]==0x47)
-            {
-                System.out.println("image/png");
+                photo[1]==(byte)'P' &&
+                photo[2]==(byte)'N' &&
+                photo[3]==(byte)'G') {
+                //System.out.println("image/png");
                 return "image/png";
             }
             
-            if (photo[0]==(byte)0xff &&
-                photo[1]==(byte)0xd8 &&
-                photo[6]==(byte)'J' &&
-                photo[7]==(byte)'F' &&
-                photo[8]==(byte)'I' &&
-                photo[9]==(byte)'F')
-            {
-                System.out.println("image/jpeg");
-                return "image/jpeg";
-            }
+            if (photo[0]==(byte)'G' &&
+                photo[1]==(byte)'I' &&
+                photo[2]==(byte)'F') {
+                //System.out.println("image/gif");
+                 return "image/gif";
+             }
+             
+            if (photo[0]==(byte)'B' &&
+                photo[1]==(byte)'M') {
+                //System.out.println("image/x-ms-bmp");
+                 return "image/x-ms-bmp";
+             }
             
-            if (photo[1]==(byte)'G' &&
-                photo[2]==(byte)'I' &&
-                photo[3]==(byte)'F')
-            {
-                System.out.println("image/gif");
-                return "image/gif";
-            }
-            
-            if (photo[1]==(byte)'B' &&
-                photo[2]==(byte)'M')
-            {
-                System.out.println("image/x-ms-bmp");
-                return "image/x-ms-bmp";
-            }
-        } catch (Exception e) {
-            System.out.println("unknown mime");
-        }
+        } catch (Exception e) {}
+        //System.out.println("unknown MIME type");
         return null;
     }
 }
