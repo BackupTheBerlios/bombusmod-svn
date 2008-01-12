@@ -287,7 +287,7 @@ public class vCardForm
 	
     public String getPhotoMIMEType() {
         try {
-            if (photo[0]==0x89 &&
+            if (photo[0]==(byte)0x89 &&
                 photo[1]==0x50 &&
                 photo[2]==0x4E &&
                 photo[3]==0x47)
