@@ -64,7 +64,9 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
         parentView=display.getCurrent();
         
         this.room=room;
-        this.jid=new TextFieldEx(SR.MS_JID /*"Jid"*/ , jid, 80, TextField.ANY);
+        // WARNING!!! 1000 is experimental value. this length is required by RFC (reference?), 
+        // but may not supported by some phones
+        this.jid=new TextField(SR.MS_JID , jid, 1000, TextField.ANY);
         TextFieldCombo.setLowerCaseLatin(this.jid);
         
 	this.reason=new TextFieldCombo("Reason", reason, 256, TextField.ANY, "reason", display);
