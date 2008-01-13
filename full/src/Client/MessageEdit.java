@@ -36,9 +36,6 @@ import Conference.AppendNick;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
-//#if TEMPLATES
-//# import templates.AppendTemplate;
-//#endif
 import ui.VirtualList;
 import util.ClipBoard;
 //#ifdef TRANSLIT
@@ -176,7 +173,7 @@ public class MessageEdit
         if (c==cmdInsNick) { new AppendNick(display, to, this, caretPos); return; }
 //#endif
 //#ifdef ARCHIVE
-//# 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos); return; }
+//# 	if (c==cmdPaste) { new ArchiveList(display, this, caretPos, 1); return; }
 //#endif
         
         if (c==cmdAbc) {setInitialCaps(false); return; }
@@ -186,7 +183,7 @@ public class MessageEdit
         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
                 
 //#if TEMPLATES
-//#         if (c==cmdTemplate) { new AppendTemplate(display,  this, caretPos); return; }
+//#         if (c==cmdTemplate) { new ArchiveList(display,  this, caretPos, 2); return; }
 //#endif
         if (c==cmdCancel) { 
             composing=false;

@@ -69,18 +69,17 @@ public class ArchiveList
     Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
     Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);
     Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
-    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 5);
-    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 5);
+    Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
+    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 6);
+    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 6);
 //#if (FILE_IO)
-    Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE, Command.SCREEN, 6);
-    Command cmdImport=new Command(SR.MS_IMPORT_TO_FILE, Command.SCREEN, 7);
+    Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE, Command.SCREEN, 7);
+    Command cmdImport=new Command(SR.MS_IMPORT_TO_FILE, Command.SCREEN, 8);
 //#endif
-    Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 8);
-    Command cmdDeleteAll=new Command(SR.MS_DELETE_ALL, Command.SCREEN, 9);
-    
+    Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 9);
+    Command cmdDeleteAll=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
 
-    
-    MessageArchive archive=new MessageArchive();
+    MessageArchive archive;
     MessageEdit target;
     
     private int caretPos;
@@ -115,12 +114,16 @@ public class ArchiveList
     private String start_body="<START_BODY>";
     private String end_body="<END_BODY>";
     private Config cf=Config.getInstance();
+
+    private int where=1;
 //#endif
     /** Creates a new instance of ArchiveList */
-    public ArchiveList(Display display, MessageEdit target, int caretPos) {
+    public ArchiveList(Display display, MessageEdit target, int caretPos, int where) {
  	super ();
+        this.where=where;
  	this.target=target;
         this.caretPos=caretPos;
+        archive=new MessageArchive(where);
         //enableListWrapping(true); //TEST:������� ����� ����� ������
 	setCommandListener(this);
 	addCommand(cmdBack);
@@ -134,6 +137,7 @@ public class ArchiveList
         addCommand(cmdImport);
 //#endif
 	addCommand(cmdEdit);
+        addCommand(cmdNew);
         addCommand(cmdDeleteAll);
 	if (target!=null) {
 	    addCommand(cmdPaste);
@@ -147,7 +151,7 @@ public class ArchiveList
             focusedItem(0);
         } catch (Exception e) {}
 	
-	MainBar mainbar=new MainBar(SR.MS_ARCHIVE /*"Archive"*/);
+	MainBar mainbar=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE /*"Archive"*/);
 	mainbar.addElement(null);
 	mainbar.addRAlign();
 	mainbar.addElement(null);
@@ -156,8 +160,8 @@ public class ArchiveList
     }
 
     protected void beginPaint() {
-        getMainBarItem().setElementAt(" ("+String.valueOf(getItemCount())+")",1);
-	getMainBarItem().setElementAt(String.valueOf(archive.freeSpace()),3);
+        getMainBarItem().setElementAt(" ("+getItemCount()+")",1);
+	getMainBarItem().setElementAt(String.valueOf(getFreeSpace()),3);
     }
     
     public int getItemCount() {
@@ -185,6 +189,7 @@ public class ArchiveList
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
 	if (c==cmdJid) { pasteData(2); }
+        if (c==cmdNew) { new NewTemplate(display, where); }
 //#if FILE_IO
         if (c==cmdExport) { 
             returnVal=EXPORT;
@@ -193,7 +198,7 @@ public class ArchiveList
 //#endif
         if (c==cmdEdit) {
             try {
-                new archiveEdit(display,getMessage(cursor)).setParentView(StaticData.getInstance().roster);
+                new archiveEdit(display,getMessage(cursor), where).setParentView(StaticData.getInstance().roster);
                 deleteMessage();
             } catch (Exception e) {/*no messages*/}
         }
@@ -416,7 +421,7 @@ public class ArchiveList
         Vector history=importData(arhPath);
         
         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-            MessageArchive.store((Msg) messages.nextElement());
+            MessageArchive.store((Msg) messages.nextElement(), 1);
         }
 
         destroyView();
@@ -441,6 +446,10 @@ public class ArchiveList
 	
     public void ActionConfirmed() {
         deleteMessage();
+    }
+
+    private int getFreeSpace() {
+        return archive.freeSpace();
     }
 
 }

@@ -45,9 +45,9 @@ public class MessageArchive {
     RecordStore rs;
     Vector indexes;
     /** Creates a new instance of MessageArchive */
-    public MessageArchive() {
+    public MessageArchive(int where) {
 	try {
-	    rs=RecordStore.openRecordStore("archive", true);
+	    rs=RecordStore.openRecordStore((where==1)?"archive":"ad_templates", true);
 	    int size=rs.getNumRecords();
 	    indexes=new Vector(size);
 	    RecordEnumeration re=rs.enumerateRecords(null, null, false);
@@ -121,14 +121,14 @@ public class MessageArchive {
 	rs=null;
     }
     
-    public void add(Msg msg) {
+    public void add(Msg msg, int where) {
 	try {
-            store(msg);
+            store(msg, where);
 	    indexes.insertElementAt(msg,0);
 	} catch (Exception e) {}
     }
     
-    public static void store(Msg msg) {
+    public static void store(Msg msg, int where) {
 	try {
 	    ByteArrayOutputStream bout = new ByteArrayOutputStream();
 	    DataOutputStream dout = new DataOutputStream( bout );
@@ -136,7 +136,7 @@ public class MessageArchive {
 	    dout.close();
 	    byte b[]=bout.toByteArray();
 	    
-	    RecordStore rs=RecordStore.openRecordStore("archive", true);
+	    RecordStore rs=RecordStore.openRecordStore((where==1)?"archive":"ad_templates", true);
 	    rs.addRecord(b, 0, b.length);
 	    rs.closeRecordStore();
 

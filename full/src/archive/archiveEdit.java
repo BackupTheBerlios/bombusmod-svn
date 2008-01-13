@@ -48,27 +48,28 @@ public class archiveEdit implements CommandListener
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/,1);
-    
-    private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
-    private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
-    private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 16);
+
     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);  
 
     private Msg msg;
     
-    MessageArchive archive=new MessageArchive();
+    MessageArchive archive;
     
     private ClipBoard clipboard=ClipBoard.getInstance();
     private Config cf=Config.getInstance();
+
+    private int where=1;
     
-    public archiveEdit(Display display, Msg msg) {
+    public archiveEdit(Display display, Msg msg, int where) {
         this.msg=msg;
+        this.where=where;
         this.display=display;
         parentView=display.getCurrent();
         this.body=msg.getBody();
         
 	t=new TextBox(SR.MS_EDIT, "", 500, TextField.ANY);
-		
+	
+        archive=new MessageArchive(where);
         try {
             //expanding buffer as much as possible
             int maxSize=t.setMaxSize(4096); //must not trow
@@ -83,10 +84,6 @@ public class archiveEdit implements CommandListener
         
         if (!clipboard.isEmpty())
             t.addCommand(cmdPasteText);
-        
-        t.addCommand(cmdClearTitle);
-        
-        setInitialCaps(cf.capsState);
         
         
         t.addCommand(cmdOk);
@@ -106,11 +103,7 @@ public class archiveEdit implements CommandListener
         if (caretPos<0) caretPos=body.length();
 		
         if (body.length()==0) body=null;
-        
-        if (c==cmdAbc) {setInitialCaps(false); return; }
-        if (c==cmdABC) {setInitialCaps(true); return; }
-        
-        if (c==cmdClearTitle) { t.setTitle(t.getTitle()==null?SR.MS_EDIT:null); return; }
+
         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
 
         Msg newmsg=null;
@@ -119,12 +112,13 @@ public class archiveEdit implements CommandListener
         } else if (c==cmdOk) {
             newmsg=new Msg(msg.messageType, msg.from, msg.subject, body);
         }
-        archive.add(newmsg);
         
-        body=null;
+        archive.add(newmsg, where);
         archive.close();
         
-        new ArchiveList(display, null, -1);
+        body=null;
+        
+        new ArchiveList(display, null, -1, where);
 
         destroyView();
         return; 
@@ -148,16 +142,7 @@ public class archiveEdit implements CommandListener
         if (caretPos<0) caretPos=t.getString().length();
         
         return caretPos;
-    }
-    
-    
-    private void setInitialCaps(boolean state) {
-        t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
-        t.removeCommand(state? cmdABC: cmdAbc);
-        t.addCommand(state? cmdAbc: cmdABC);
-        cf.capsState=state;
-    }
-    
+    }    
     
     public void insertText(String s, int caretPos) {
         String src=t.getString();

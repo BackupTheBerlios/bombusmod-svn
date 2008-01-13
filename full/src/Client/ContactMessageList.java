@@ -44,11 +44,6 @@ import util.ClipBoard;
 //# import archive.MessageArchive;
 //#endif
 
-//#if TEMPLATES
-//# import templates.TemplateContainer;
-//# 
-//#endif
-
 //#ifdef ALT_INPUT
 //# import ui.controls.InputBox;
 //#endif
@@ -260,7 +255,7 @@ public class ContactMessageList extends MessageList
 //#ifdef ARCHIVE
 //#         if (c==cmdArch) {
 //#             try {
-//#                 MessageArchive.store(getMessage(cursor));
+//#                 MessageArchive.store(getMessage(cursor),1);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
@@ -332,7 +327,7 @@ public class ContactMessageList extends MessageList
 //#if TEMPLATES
 //#         if (c==cmdTemplate) {
 //#             try {
-//#                 TemplateContainer.store(getMessage(cursor));
+//#                 MessageArchive.store(getMessage(cursor),2);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif

@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package templates;
+package archive;
 
 import Client.Msg;
 import Client.Roster;
@@ -31,7 +31,7 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.controls.TextFieldEx;
 
-public class NewTemplate implements CommandListener, ItemStateListener 
+public class NewTemplate implements CommandListener
 {
     
     private Display display;
@@ -42,18 +42,19 @@ public class NewTemplate implements CommandListener, ItemStateListener
     private Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
     private Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
 
-    public NewTemplate(Display display) {
+    private int where;
+
+    public NewTemplate(Display display, int where) {
         this.display=display;
+        this.where=where;
         parentView=display.getCurrent();         
-        form=new Form(SR.MS_NEW_TEMPLATE);
-        templatebox=new TextFieldEx(SR.MS_NEW_TEMPLATE, null, 1024, TextField.ANY);
+        form=new Form(SR.MS_NEW);
+        templatebox=new TextFieldEx(SR.MS_NEW, null, 1024, TextField.ANY);
         
         form.append(templatebox);
         form.addCommand(cmdOk);
         form.addCommand(cmdCancel);
-	form.setCommandListener(this);
-	form.setItemStateListener(this);
-        
+	form.setCommandListener(this);        
         display.setCurrent(form);
     }
     
@@ -63,11 +64,8 @@ public class NewTemplate implements CommandListener, ItemStateListener
             final Roster roster=StaticData.getInstance().roster;
 	    String reason = templatebox.getString();
             Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "0", "", reason);
-            TemplateContainer.store(m);
+            MessageArchive.store(m, where);
             display.setCurrent(parentView);
 	}
-    }
-
-    public void itemStateChanged(Item item) {
     }
 }
