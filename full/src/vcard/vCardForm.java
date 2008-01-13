@@ -28,6 +28,10 @@
 package vcard;
 import Client.StaticData;
 //#if (FILE_IO)
+//#ifdef TRANSLIT
+//# import Client.Config;
+//# import util.Translit;
+//#endif
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
@@ -226,9 +230,8 @@ public class vCardForm
                 }
             }
             if (st==2 & photo!=null) {
-                photoType=getPhotoMIMEType();
-                System.out.println(photoType+"->"+getFileType(photoType));////////////
-                file=FileIO.createConnection(pathSelected+getNickDate()+getFileType(photoType));
+                //System.out.println(photoType+"->"+getFileType(photoType));
+                file=FileIO.createConnection(pathSelected+getNickDate()+getFileType(getPhotoMIMEType()));
                 try {
                     os=file.openOutputStream();
                     writeFile(photo);
@@ -255,6 +258,18 @@ public class vCardForm
     private String getNickDate() {
         StringBuffer nickDate=new StringBuffer();
         nickDate.append("photo_");
+//#ifdef TRANSLIT
+//#         String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
+//#         if (Config.getInstance().transliterateFilenames) {
+//#             nickDate.append(Translit.translit(userName));
+//#         } else {
+//#             nickDate.append(userName);
+//#         }
+//#else
+         if (vcard.getNickName()!=null) {
+             nickDate.append(vcard.getNickName());
+         } else nickDate.append(vcard.getJid());
+//#endif
         if (vcard.getNickName()!=null) {
             nickDate.append(vcard.getNickName());
         } else nickDate.append(vcard.getJid());

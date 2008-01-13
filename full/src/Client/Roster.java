@@ -2929,7 +2929,7 @@ public class Roster
     }
 
     public void showStats() {
-        StringBuffer str= new StringBuffer("Start time: "+startTime);
+        StringBuffer str= new StringBuffer("Started: "+startTime);
         Stats stats=Stats.getInstance();
         str.append("\nTraffic stats:\nAll(");
         str.append(stats.getSessionsCount());
