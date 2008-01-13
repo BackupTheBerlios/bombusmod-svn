@@ -2164,9 +2164,10 @@ public class Roster
 //#endif
                 if (messageCount==0) return;
                 Object atcursor=getFocusedObject();
-                if (atcursor instanceof Contact) c=(Contact)atcursor;
-                //
-                else c=(Contact)hContacts.firstElement();
+                if (atcursor instanceof Contact) 
+                    c=(Contact)atcursor;
+                else 
+                    c=(Contact)hContacts.firstElement();
 
                 Enumeration i=hContacts.elements();
 
@@ -2183,10 +2184,10 @@ public class Roster
                 }
                 break;
             case KEY_NUM4:
-                super.keyLeft();
+                keyLeft();
                 break;
             case KEY_NUM6:
-                super.keyRight();
+                keyRight();
                 break;
             case KEY_NUM3:
                 searchGroup(-1);
@@ -2232,8 +2233,8 @@ public class Roster
             default:
                     try {
                         switch (getGameAction(keyCode)){
-                            case LEFT:  { super.keyLeft(); break; }
-                            case RIGHT: { super.keyRight(); break; }
+                            case LEFT:  { keyLeft(); break; }
+                            //case RIGHT: { super.keyRight(); break; }
                         }
                     } catch (Exception e) {}
                     break;

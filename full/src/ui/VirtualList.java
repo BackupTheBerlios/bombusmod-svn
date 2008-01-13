@@ -814,7 +814,9 @@ public abstract class VirtualList
     }
 
     public void keyUp() {
-	 
+//#ifdef DEBUG
+//# 	System.out.println("keyUp");
+//#endif
         if (cursor==0) {
             if (wrapping)  moveCursorEnd(); else itemPageUp();
             setRotator();
@@ -829,6 +831,9 @@ public abstract class VirtualList
     }
 
     public void keyDwn() { 
+//#ifdef DEBUG
+//#         System.out.println("keyDwn");
+//#endif
 	if (cursor==getItemCount()-1) 
         { 
             if (wrapping) moveCursorHome(); else itemPageDown();
@@ -888,6 +893,9 @@ public abstract class VirtualList
     }
 
     public void keyLeft() {
+//#ifdef DEBUG
+//#         System.out.println("keyLeft");
+//#endif
         try {
             stickyWindow=false;
             win_top-=winHeight;
@@ -906,6 +914,9 @@ public abstract class VirtualList
     }
 
     public void keyRight() { 
+//#ifdef DEBUG
+//#         System.out.println("keyRight");
+//#endif
         try {
             stickyWindow=false;
             win_top+=winHeight;
