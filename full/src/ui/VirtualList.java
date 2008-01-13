@@ -748,12 +748,12 @@ public abstract class VirtualList
                 case KEY_NUM2:
                     keyUp();    
                     break; 
-                /*case KEY_NUM4:
+                case KEY_NUM4:
                     userKeyPressed(keyCode);
                     break; 
                 case KEY_NUM6:
                     userKeyPressed(keyCode);
-                    break;*/
+                    break;
                 case KEY_NUM7:
                     moveCursorEnd();     
                     break;

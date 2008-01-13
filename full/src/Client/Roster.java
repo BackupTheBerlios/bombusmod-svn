@@ -2230,14 +2230,6 @@ public class Roster
                     } catch (Exception e) { /* NullPointerException */ }
                 }
                 break;
-            default:
-                    try {
-                        switch (getGameAction(keyCode)){
-                            case LEFT:  { keyLeft(); break; }
-                            //case RIGHT: { super.keyRight(); break; }
-                        }
-                    } catch (Exception e) {}
-                    break;
         }
 //#ifdef NEW_MENU
 //#         if (keyCode==Config.SOFT_LEFT) {
