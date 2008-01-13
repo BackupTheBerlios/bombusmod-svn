@@ -2116,6 +2116,8 @@ public class Roster
     }
 
     public void keyPressed(int keyCode){
+        super.keyPressed(keyCode);
+        
         Contact c=null;
         
         switch (keyCode) {
@@ -2156,6 +2158,7 @@ public class Roster
 //#endif
             case KEY_NUM0:
                 cleanMarks();
+                redraw();
 //#ifndef WSYSTEMGC
                 System.gc();
 //#endif
@@ -2250,7 +2253,6 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#         userActivity();
 //#endif
-        super.keyPressed(keyCode);
      }
  
     protected void keyRepeated(int keyCode) {
@@ -2927,9 +2929,9 @@ public class Roster
     }
 
     public void showStats() {
-        StringBuffer str= new StringBuffer();
+        StringBuffer str= new StringBuffer("Start time: "+startTime);
         Stats stats=Stats.getInstance();
-        str.append("Traffic stats:\nAll(");
+        str.append("\nTraffic stats:\nAll(");
         str.append(stats.getSessionsCount());
         str.append("): ");
 
