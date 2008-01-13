@@ -197,6 +197,7 @@ public final class MessageParser implements Runnable{
         addSmile("\01", ComplexString.NICK_ON);
         addSmile("\02", ComplexString.NICK_OFF);
         addSmile("tel://",URL);
+        addSmile("ftp://",URL);
         addSmile("https://",URL);
         addSmile("native:",URL);
     }
