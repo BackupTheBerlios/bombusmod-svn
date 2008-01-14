@@ -53,20 +53,6 @@ import com.alsutton.jabber.datablocks.Presence;
  */
 public class Contact extends IconTextElement{
     
-    private int COLORS[]={
-        ColorScheme.CONTACT_DEFAULT,
-        ColorScheme.CONTACT_CHAT,
-        ColorScheme.CONTACT_AWAY,
-        ColorScheme.CONTACT_XA,
-        ColorScheme.CONTACT_DND,
-        ColorScheme.CONTACT_DEFAULT,
-        ColorScheme.CONTACT_DEFAULT,
-        ColorScheme.CONTACT_DEFAULT,
-        ColorScheme.CONTACT_J2J
-    };
-
-    private boolean loaded=false;
-    
 //#ifdef CHECKERS
 //#     private int checkers = -4; //END_GAME_FLAG
 //#endif
@@ -118,8 +104,6 @@ public class Contact extends IconTextElement{
     public final static short INC_NONE=0;
     public final static short INC_APPEARING=1;
     public final static short INC_VIEWING=2;
-  
-    //public boolean isSelected;
     
     public String msgSuspended;
     
@@ -159,9 +143,12 @@ public class Contact extends IconTextElement{
     
     private Config cf=Config.getInstance();
     private RosterIcons ri = RosterIcons.getInstance();
-    
 
     private String j2j;
+    
+//#if LAST_MESSAGES 
+//#     private boolean loaded=false;
+//#endif
 
     protected Contact (){
         super(RosterIcons.getInstance());
@@ -280,15 +267,6 @@ public class Contact extends IconTextElement{
         incomingState=i;
     }
     
-    public void setHistoryLoaded () {
-        loaded=true;
-    }
-    
-    public boolean isHistoryLoaded () {
-        return loaded;
-    }
-    
-    
     public int compare(IconTextElement right){
         Contact c=(Contact) right;
         int cmp;
@@ -297,7 +275,7 @@ public class Contact extends IconTextElement{
         if ((cmp=key1.compareTo(c.key1)) !=0) return cmp;
         if ((cmp=c.priority-priority) !=0) return cmp;
         return c.transport-transport;
-    };
+    }
     
     public void addMessage(Msg m) {
         
@@ -348,20 +326,14 @@ public class Contact extends IconTextElement{
 //#             }
 //#        }
 //#endif
-
-        if (first_replace) {
-            msgs.setElementAt(m,0);
-            
-            if (cf.autoScroll)
-                moveToLatest=true;
-            
-            return;
-        } 
-        
-        msgs.addElement(m);
-        
         if (cf.autoScroll)
             moveToLatest=true;
+        
+        if (first_replace) {
+            msgs.setElementAt(m,0);
+            return;
+        } 
+        msgs.addElement(m);
         
         if (m.unread) {
             lastUnread=msgs.size()-1;
@@ -402,7 +374,7 @@ public class Contact extends IconTextElement{
                     body.append("</s>");
                 }
                 body.append("<b>");
-                body.append(m.getBody());
+                body.append(m.quoteString());
                 body.append("</b></m>\r\n");
             } else {
                 body.append("[");
@@ -637,8 +609,12 @@ public class Contact extends IconTextElement{
     
     
 //#if LAST_MESSAGES 
+//#     public boolean isHistoryLoaded () {
+//#         return loaded;
+//#     }
+//#     
 //#     public void loadRecentList() {
-//#         setHistoryLoaded();
+//#         loaded=true;
 //#         HistoryStorage hs = new HistoryStorage((nick==null)?getBareJid():nick);
 //#         Vector history=hs.importData();
 //#         

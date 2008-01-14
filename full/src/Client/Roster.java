@@ -2116,6 +2116,18 @@ public class Roster
     }
 
     public void keyPressed(int keyCode){
+//#ifdef NEW_MENU
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             new RosterMenu(display, getFocusedObject());
+//#             return;
+//#         }
+//#endif
+       
+        if (keyCode==Config.SOFT_RIGHT) {
+            if (isLoggedIn()) 
+                new RosterItemActions(display, getFocusedObject(), -1);
+                return;
+        }
         super.keyPressed(keyCode);
         
         Contact c=null;
@@ -2230,18 +2242,6 @@ public class Roster
                     } catch (Exception e) { /* NullPointerException */ }
                 }
                 break;
-        }
-//#ifdef NEW_MENU
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             new RosterMenu(display, getFocusedObject());
-//#             return;
-//#         }
-//#endif
-       
-        if (keyCode==Config.SOFT_RIGHT) {
-            if (isLoggedIn()) 
-                new RosterItemActions(display, getFocusedObject(), -1);
-                return;
         }
 //#ifdef AUTOSTATUS
 //#         userActivity();

@@ -114,9 +114,8 @@ public class ArchiveList
     private String start_body="<START_BODY>";
     private String end_body="<END_BODY>";
     private Config cf=Config.getInstance();
-
-    private int where=1;
 //#endif
+    private int where=1;
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, MessageEdit target, int caretPos, int where) {
  	super ();

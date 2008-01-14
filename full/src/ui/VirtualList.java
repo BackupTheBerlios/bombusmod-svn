@@ -1083,6 +1083,7 @@ public abstract class VirtualList
 //# 
 //#         if (max<0) {
 //#             instance.destroyTask();
+//#             list.offset=0;
 //#             return;
 //#         }
 //#         
