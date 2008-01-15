@@ -149,24 +149,25 @@ public class Groups implements JabberBlockListener{
     }
 
     public int blockArrived(JabberDataBlock data) {
-        if (data instanceof Iq) 
+        if (data instanceof Iq) {
             if (data.getTypeAttribute().equals("result")) {
-            JabberDataBlock query=data.findNamespace("query", "jabber:iq:private");
-            if (query==null) return BLOCK_REJECTED;
-            JabberDataBlock gs=query.findNamespace("gs", GROUPSTATE_NS);
-            if (gs==null) return BLOCK_REJECTED;
-            
-            for (Enumeration e=gs.getChildBlocks().elements(); e.hasMoreElements();) {
-                JabberDataBlock item=(JabberDataBlock)e.nextElement();
-                String groupName=item.getText();
-                boolean collapsed=item.getAttribute("state").equals("collapsed");
-                
-                Group grp=getGroup(groupName);
-                if (grp==null) continue;
-                grp.collapsed=collapsed;
+                JabberDataBlock query=data.findNamespace("query", "jabber:iq:private");
+                if (query==null) return BLOCK_REJECTED;
+                JabberDataBlock gs=query.findNamespace("gs", GROUPSTATE_NS);
+                if (gs==null) return BLOCK_REJECTED;
+
+                for (Enumeration e=gs.getChildBlocks().elements(); e.hasMoreElements();) {
+                    JabberDataBlock item=(JabberDataBlock)e.nextElement();
+                    String groupName=item.getText();
+                    boolean collapsed=item.getAttribute("state").equals("collapsed");
+
+                    Group grp=getGroup(groupName);
+                    if (grp==null) continue;
+                    grp.collapsed=collapsed;
+                }
+                StaticData.getInstance().roster.reEnumRoster();
+                return NO_MORE_BLOCKS;
             }
-            StaticData.getInstance().roster.reEnumRoster();
-            return NO_MORE_BLOCKS;
         }
         return BLOCK_REJECTED;
     }

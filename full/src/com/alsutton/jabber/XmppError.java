@@ -164,6 +164,8 @@ public class XmppError {
     }
     
     public static XmppError decodeStanzaError(JabberDataBlock error) {
+        if (!error.getTagName().equals("error"))
+            throw new IllegalArgumentException();
         return decodeError(error, "urn:ietf:params:xml:ns:xmpp-stanzas");
     }
     

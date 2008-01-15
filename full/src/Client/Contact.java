@@ -57,7 +57,23 @@ public class Contact extends IconTextElement{
 //#     private int checkers = -4; //END_GAME_FLAG
 //#endif
     
-    public int getColor() { 
+    
+    
+//#if SHOW_NEW
+//#     private int isnew=0;
+//#     
+//#     public void setNewContact() {
+//#         this.isnew = 15;        
+//#     }
+//#endif
+    
+    public int getColor() {
+//#if SHOW_NEW
+//#         if (isnew>0){
+//#             isnew--;
+//#             return (isnew%2==0)?0x000000:0xd0d0d0;
+//#         }
+//#endif
         if (j2j!=null)
             return ColorScheme.CONTACT_J2J;
         

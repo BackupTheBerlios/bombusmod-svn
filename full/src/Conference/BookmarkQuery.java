@@ -59,11 +59,11 @@ public class BookmarkQuery implements JabberBlockListener{
         JabberDataBlock query=request.addChildNs("query", "jabber:iq:private");
 
         JabberDataBlock storage=query.addChildNs("storage", "storage:bookmarks");
-        if (saveBookmarks) 
+        if (saveBookmarks) {
             for (Enumeration e=roster.bookmarks.elements(); e.hasMoreElements(); ) {
-            storage.addChild( ((BookmarkItem)e.nextElement()).constructBlock() );
+                storage.addChild( ((BookmarkItem)e.nextElement()).constructBlock() );
+            }
         }
-        
         roster.theStream.send(request);
     }
     

@@ -86,7 +86,7 @@ public class JabberDataBlockDispatcher extends Thread
       synchronized (blockListeners) { 
           try { blockListeners.removeElement(listener); }
           catch (Exception e) {
-              //e.printStackTrace(); 
+              e.printStackTrace(); 
           }
       }
   }
@@ -166,7 +166,7 @@ public class JabberDataBlockDispatcher extends Thread
           }
           
       } catch (Exception e) {
-          //e.printStackTrace();
+          e.printStackTrace();
       }
     }
   }

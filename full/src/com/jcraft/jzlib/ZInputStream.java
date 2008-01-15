@@ -109,25 +109,22 @@ public class ZInputStream extends FilterInputStream {
       if(compress)
 	err=z.deflate(flush);
       else
-	err=z.inflate(flush);
-      if(nomoreinput&&(err==JZlib.Z_BUF_ERROR)) {
-        return(-1);
-      }
-      if(err!=JZlib.Z_OK && err!=JZlib.Z_STREAM_END) {
-	throw new ZStreamException((compress ? "de" : "in")+"flating: "+z.msg);
-      }
-      if((nomoreinput||err==JZlib.Z_STREAM_END)&&(z.avail_out==len)) {
-	return(-1);
-      }
-    } 
-    while(z.avail_out==len&&err==JZlib.Z_OK); //!!!!
-    //System.err.print("("+(len-z.avail_out)+")");
-    /*    for (int i=0; i<len-z.avail_out; i++) {
-            System.out.print((char) b[i]);
-        }
-        //System.out.println();
-     */
-    return(len-z.avail_out);
+ 	err=z.inflate(flush);
+      if(nomoreinput&&(err==JZlib.Z_BUF_ERROR))
+         return(-1);
+      if(err!=JZlib.Z_OK && err!=JZlib.Z_STREAM_END)
+ 	throw new ZStreamException((compress ? "de" : "in")+"flating: "+z.msg);
+      if((nomoreinput||err==JZlib.Z_STREAM_END)&&(z.avail_out==len))
+ 	return(-1);
+     } 
+    while(z.avail_out==len&&err==JZlib.Z_OK);
+     //System.err.print("("+(len-z.avail_out)+")");
+     /*    for (int i=0; i<len-z.avail_out; i++) {
+             System.out.print((char) b[i]);
+         }
+        System.out.println();
+      */
+     return(len-z.avail_out);
   }
 
   public long skip(long n) throws IOException {

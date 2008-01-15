@@ -27,24 +27,25 @@ public class EntityCaps implements JabberBlockListener{
 //#     private static String mood="cs ep-notify";
 //#endif
     public int blockArrived(JabberDataBlock data) {
-        if (!(data instanceof Iq)) return BLOCK_REJECTED;
-        if (!data.getTypeAttribute().equals("get")) return BLOCK_REJECTED;
-        
-        JabberDataBlock query=data.findNamespace("query", "http://jabber.org/protocol/disco#info");
-        if (query==null) return BLOCK_REJECTED;
-        String node=query.getAttribute("node");
+        try {
+            if (!(data instanceof Iq)) return BLOCK_REJECTED;
+            if (!data.getTypeAttribute().equals("get")) return BLOCK_REJECTED;
 
-        if (node!=null) 
-            if (!node.startsWith(BOMBUS_NAMESPACE))
-                return BLOCK_REJECTED;
-        
-        JabberDataBlock result=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-        result.addChild(query);
-        
-        JabberDataBlock identity=query.addChild("identity", null);
-        identity.setAttribute("category","client");
-        identity.setAttribute("type","phone");
-        identity.setAttribute("name", "BombusMod");
+            JabberDataBlock query=data.findNamespace("query", "http://jabber.org/protocol/disco#info");
+            if (query==null) return BLOCK_REJECTED;
+            String node=query.getAttribute("node");
+
+            if (node!=null) 
+                if (!node.startsWith(BOMBUS_NAMESPACE))
+                    return BLOCK_REJECTED;
+
+            JabberDataBlock result=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+            result.addChild(query);
+
+            JabberDataBlock identity=query.addChild("identity", null);
+            identity.setAttribute("category","client");
+            identity.setAttribute("type","phone");
+            identity.setAttribute("name", "BombusMod");
 
 //#ifdef MOOD
 //#         if (node.endsWith("#"+mood)) {
@@ -58,7 +59,8 @@ public class EntityCaps implements JabberBlockListener{
 //#         }
 //#endif
         
-        StaticData.getInstance().roster.theStream.send(result);
+            StaticData.getInstance().roster.theStream.send(result);
+        } catch (Exception e) {}
         
         return BLOCK_PROCESSED;
     }

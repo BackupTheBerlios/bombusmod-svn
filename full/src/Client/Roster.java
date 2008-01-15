@@ -1090,10 +1090,7 @@ public class Roster
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
         }
-//#ifndef WMUC
-        //query bookmarks
-        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-//#endif
+
 //#ifdef MOOD
 //#         theStream.addBlockListener(new DiscoInfo());
 //#endif
@@ -1106,19 +1103,16 @@ public class Roster
 
     public int blockArrived( JabberDataBlock data ) {
         try {
-            if( data instanceof Iq ) {
-                //System.out.println(data.toString());
-                
+            if( data instanceof Iq ) {                
 		String from=data.getAttribute("from");
-                String type = (String) data.getTypeAttribute();
-                String id=(String) data.getAttribute("id");
+                String type =data.getTypeAttribute();
+                String id=data.getAttribute("id");
                 
                 if (id!=null) {
                     if (id.startsWith("ping")) {
                         theStream.pingSent=false; //incomplete, test on jabber:iq:version
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
-				
                     if (id.startsWith("nickvc")) {
                         
                         if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
@@ -1157,7 +1151,7 @@ public class Roster
                             theStream.enableRosterNotify(false);
 
                             processRoster(data);
-                            
+
                             if(!cf.collapsedGroups)
                                 groups.queryGroupState(true);
 
@@ -1173,7 +1167,12 @@ public class Roster
                             }
                             
                             SplashScreen.getInstance().close(); // display.setCurrent(this);
+
                             //loading bookmarks
+//#ifndef WMUC
+                            //query bookmarks
+                            theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                     }
@@ -1761,14 +1760,13 @@ public class Roster
                         if (nick!=null) c.nick=nick.getText();
                         
                     }
-                    
-                    if (cf.showLastAppearedContact && notifyReady(-111) &&
-                        (ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT)) {
-                            //if (lastAppearedContact!=null) 
-                            //    lastAppearedContact.setIncoming(Contact.INC_NONE);
+
+                    if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT) && notifyReady(-111)) {
+                        c.setNewContact();
+                        if (cf.showLastAppearedContact) {
                             if (c.getGroupType()!=Groups.TYPE_TRANSP)
                                 c.setIncoming(Contact.INC_APPEARING);
-                            //lastAppearedContact=c;
+                        }
                     }
                     if (ti==Presence.PRESENCE_OFFLINE)  {
                         c.setIncoming(Contact.INC_NONE);

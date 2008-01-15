@@ -432,6 +432,7 @@ public class JabberDataBlock
     return tagName;
   }
   
+
   /**
    * Method to add a child with namespace
    *
