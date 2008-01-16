@@ -181,6 +181,7 @@ public class ArchiveList
             new Browser(null, display, this, false);
         }
 //#endif
+        if (c==cmdNew) { new NewTemplate(display, where); }
 	if (m==null) return;
         
 	if (c==cmdDelete) { deleteMessage(); redraw(); }
@@ -188,7 +189,6 @@ public class ArchiveList
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
 	if (c==cmdJid) { pasteData(2); }
-        if (c==cmdNew) { new NewTemplate(display, where); }
 //#if FILE_IO
         if (c==cmdExport) { 
             returnVal=EXPORT;
@@ -306,13 +306,15 @@ public class ArchiveList
 
                     pos=end_pos+end_item.length();
                 }
-            } catch (Exception e)	{ System.out.println(e.toString()); }
+            } catch (Exception e)	{ 
+               System.out.println(e.toString());
+            }
         }
 
         bodyMessage=null;
         arhPath=null;
             
-         return vector;
+        return vector;
     }
     
     private String findBlock(String source, String _start, String _end){
@@ -357,7 +359,7 @@ public class ArchiveList
                 bodyMessage=body.toString().getBytes();
             }
 
-            file=FileIO.createConnection(arhPath+"archive_"+getDate()+".txt");
+            file=FileIO.createConnection(arhPath+((where==1)?"archive_":"template_")+getDate()+".txt");
             try {
                 os=file.openOutputStream();
                 writeFile(bodyMessage);
@@ -420,7 +422,7 @@ public class ArchiveList
         Vector history=importData(arhPath);
         
         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-            MessageArchive.store((Msg) messages.nextElement(), 1);
+            MessageArchive.store((Msg) messages.nextElement(), where);
         }
 
         destroyView();
