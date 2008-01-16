@@ -71,7 +71,7 @@ public class AlertProfile extends VirtualList implements CommandListener {
         int p=cf.profile;
         defp=cf.def_profile;
         
-        moveCursorTo(p, true);
+        moveCursorTo(p);
         attachDisplay(d);
     }
     

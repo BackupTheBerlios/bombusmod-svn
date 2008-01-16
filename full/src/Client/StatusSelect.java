@@ -71,7 +71,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         setCommandListener(this);
         
         defp=cf.loginstatus;
-        moveCursorTo(defp, true);
+        moveCursorTo(defp);
         attachDisplay(d);
     }
     public VirtualElement getItemRef(int Index){

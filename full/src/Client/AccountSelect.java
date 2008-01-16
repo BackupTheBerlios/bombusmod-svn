@@ -92,7 +92,7 @@ public class AccountSelect
             }
         }
         
-        moveCursorTo(activeAccount, true);
+        moveCursorTo(activeAccount);
         
         attachDisplay(display);
         addCommand(cmdAdd);

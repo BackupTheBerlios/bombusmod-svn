@@ -76,7 +76,7 @@ public class ActiveContacts
 	
 	try {
             int focus=activeContacts.indexOf(current);
-            moveCursorTo(focus, true);
+            moveCursorTo(focus);
         } catch (Exception e) {}
         //if (current!=null) mov
 	
@@ -134,7 +134,7 @@ public class ActiveContacts
     private void focusToContact(final Contact c) {
         int index=activeContacts.indexOf(c);
         if (index>=0) 
-            moveCursorTo(index, true);
+            moveCursorTo(index);
     }
     
     protected void keyGreen(){

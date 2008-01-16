@@ -158,7 +158,7 @@ public class ContactMessageList extends MessageList
 //#             contact.loadRecentList();
 //#endif
         
-        moveCursorTo(contact.firstUnread(), true);
+        moveCursorTo(contact.firstUnread());
     }
 
     public void showNotify(){

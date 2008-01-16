@@ -576,7 +576,7 @@ public abstract class VirtualList
         setRotator();
     }
 
-    public void moveCursorTo(int index, boolean force){
+    public void moveCursorTo(int index){
         int count=getItemCount();
         if (index<0) index=0;
         if (index>=count) index=count-1; 
@@ -630,7 +630,7 @@ public abstract class VirtualList
 	if (i==0 || i==32) return;
 	//System.out.println(i);
 	if (cursor>=0) {
-            moveCursorTo(getElementIndexAt(win_top)+i-1, true);
+            moveCursorTo(getElementIndexAt(win_top)+i-1);
             setRotator();
         }
 	
@@ -1092,7 +1092,7 @@ public abstract class VirtualList
 //#             instance.scrollLen=max;
 //#             instance.scrollline=(max>0);
 //#             instance.attachedList=list;
-//#             instance.balloon= 10;
+//#             instance.balloon= 14;
 //#             instance.scroll= 5;
 //#         }
 //#     }
@@ -1119,7 +1119,7 @@ public abstract class VirtualList
 //#             if (attachedList.offset>=scrollLen) {
 //#                 scrollLen=-1; attachedList.offset=0; scrollline = false;
 //#             } else 
-//#                 attachedList.offset+=10;
+//#                 attachedList.offset+=14;
 //# 
 //#             return true;
 //#         }
@@ -1130,7 +1130,7 @@ public abstract class VirtualList
 //#             if (attachedList==null || balloon<0)
 //#                 return false;
 //#             balloon--;
-//#             attachedList.showBalloon=(balloon<11 && balloon>0);
+//#             attachedList.showBalloon=(balloon<15 && balloon>0);
 //#             return true;
 //#         }
 //#     }

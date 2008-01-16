@@ -1472,6 +1472,8 @@ public class Roster
                                 String room=from+'/'+sd.account.getNickName();
                                 String password=xmlns.getChildBlockText("password");
                                 ConferenceGroup invConf=initMuc(room, password);
+                                
+                                invConf.getConference().commonPresence=false; //FS#761
 
                                 if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
                                     invConf.getConference().status=Presence.PRESENCE_OFFLINE;
@@ -1530,7 +1532,7 @@ public class Roster
                         c.setComposing(true);
                     }
                 }
-                 
+     
                 redraw();
 
                 if (body==null) 
@@ -1540,6 +1542,7 @@ public class Roster
                 if (tStamp!=0) 
                     m.dateGmt=tStamp;
 //#ifndef WMUC
+                if (m.getBody().indexOf(SR.MS_IS_INVITING_YOU)>-1) m.dateGmt=0;
                 if (groupchat) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
                     if (mucGrp.getSelfContact().getJid().equals(message.getFrom())) {
@@ -1762,7 +1765,9 @@ public class Roster
                     }
 
                     if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT) && notifyReady(-111)) {
-                        c.setNewContact();
+//#if USE_ROTATOR
+//#                         c.setNewContact();
+//#endif
                         if (cf.showLastAppearedContact) {
                             if (c.getGroupType()!=Groups.TYPE_TRANSP)
                                 c.setIncoming(Contact.INC_APPEARING);
@@ -1784,7 +1789,9 @@ public class Roster
                 return JabberBlockListener.BLOCK_PROCESSED;                
             } // if presence
         } catch( Exception e ) {
-            //e.printStackTrace();
+//#if DEBUG
+//#             e.printStackTrace();
+//#endif
         }
         return JabberBlockListener.BLOCK_REJECTED;
     }
@@ -2018,7 +2025,7 @@ public class Roster
 	} else {
 	    
 	    int index=vContacts.indexOf(c);
-	    if (index>=0) moveCursorTo(index, force);
+	    if (index>=0) moveCursorTo(index);
 	}
     }
 
@@ -2594,7 +2601,7 @@ public class Roster
 		    if (pos>=size) pos=0;
 		    if (vContacts.elementAt(pos) instanceof Group) break;
 		}
-		moveCursorTo(pos, true);
+		moveCursorTo(pos);
 	    } catch (Exception e) { }
 	}
     }
@@ -2732,7 +2739,7 @@ public class Roster
 
                     if ( locCursor==cursor && focused!=null ) {
                         int c=vContacts.indexOf(focused);
-                        if (c>=0) moveCursorTo(c, force);
+                        if (c>=0) moveCursorTo(c);
 			force=false;
                     }
 

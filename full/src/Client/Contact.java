@@ -59,7 +59,7 @@ public class Contact extends IconTextElement{
     
     
     
-//#if SHOW_NEW
+//#if USE_ROTATOR
 //#     private int isnew=0;
 //#     
 //#     public void setNewContact() {
@@ -68,12 +68,12 @@ public class Contact extends IconTextElement{
 //#endif
     
     public int getColor() {
-//#if SHOW_NEW
-//#         if (isnew>0){
-//#             isnew--;
-//#             return (isnew%2==0)?0x000000:0xd0d0d0;
-//#         }
+        if (isnew>0){
+            isnew--;
+//#if USE_ROTATOR
+//#             return (isnew%2==0)?0xFF0000:0x0000FF;
 //#endif
+        }
         if (j2j!=null)
             return ColorScheme.CONTACT_J2J;
         
@@ -258,9 +258,7 @@ public class Contact extends IconTextElement{
         return nm;
     }
     
-    public boolean needsCount(){ 
-        return (newMsgCnt<0);  
-    }
+    //public boolean needsCount(){ return (newMsgCnt<0); }
     
     public boolean active(){
 	if (msgs.size()>1) return true;
