@@ -40,17 +40,17 @@ public class AlertCustomizeForm implements
     private Displayable parentView;
 
     Form f;
-    ChoiceGroup playSoundPolicy;
+    ChoiceGroup notify;
     
-    ChoiceGroup MessageFile=new ChoiceGroup("Message sound", ChoiceGroup.POPUP);
-    ChoiceGroup OnlineFile=new ChoiceGroup("Online "+SR.MS_SOUND, ChoiceGroup.POPUP);
-    ChoiceGroup OfflineFile=new ChoiceGroup("Offline "+SR.MS_SOUND, ChoiceGroup.POPUP);
-    ChoiceGroup ForYouFile=new ChoiceGroup(SR.MS_MESSAGE_FOR_ME+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
-    ChoiceGroup ComposingFile=new ChoiceGroup(SR.MS_COMPOSING_EVENTS+" "+SR.MS_SOUND, ChoiceGroup.POPUP);
-    ChoiceGroup ConferenceFile=new ChoiceGroup(SR.MS_SOUND+" for conference", ChoiceGroup.POPUP);
-    ChoiceGroup StartUpFile=new ChoiceGroup(SR.MS_SOUND+" for StartUp", ChoiceGroup.POPUP);
-    ChoiceGroup OutgoingFile=new ChoiceGroup(SR.MS_SOUND+" for Outgoing", ChoiceGroup.POPUP);
-    ChoiceGroup VIPFile=new ChoiceGroup(SR.MS_SOUND+" for VIP", ChoiceGroup.POPUP);
+    ChoiceGroup MessageFile=new ChoiceGroup(SR.MS_MESSAGE_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup OnlineFile=new ChoiceGroup(SR.MS_ONLINE_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup OfflineFile=new ChoiceGroup(SR.MS_OFFLINE_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup ForYouFile=new ChoiceGroup(SR.MS_MESSAGE_FOR_ME_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup ComposingFile=new ChoiceGroup(SR.MS_COMPOSING_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup ConferenceFile=new ChoiceGroup(SR.MS_CONFERENCE_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup StartUpFile=new ChoiceGroup(SR.MS_STARTUP_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup OutgoingFile=new ChoiceGroup(SR.MS_OUTGOING_SOUND, ChoiceGroup.POPUP);
+    ChoiceGroup VIPFile=new ChoiceGroup(SR.MS_VIP_SOUND, ChoiceGroup.POPUP);
     
     Gauge sndVol;
     
@@ -67,6 +67,9 @@ public class AlertCustomizeForm implements
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
     AlertCustomize ac;
+    Config cf;
+    
+    boolean nt[];
     
     Vector files[]=new StringLoader().stringLoader("/sounds/res.txt",3);
 
@@ -77,15 +80,24 @@ public class AlertCustomizeForm implements
         parentView=display.getCurrent();
         
         ac=AlertCustomize.getInstance();
+        cf=Config.getInstance();
        
-        f=new Form(SR.MS_OPTIONS);
+        f=new Form(SR.MS_NOTICES_OPTIONS);
         
-        playSoundPolicy=new ChoiceGroup("Play sounds", ChoiceGroup.POPUP);
-        playSoundPolicy.append("Never", null);
-        playSoundPolicy.append("Always", null);
-        playSoundPolicy.append("When online", null);
-        playSoundPolicy.setSelectedIndex(ac.silentMode, true);
-        f.append(playSoundPolicy);
+        notify=new ChoiceGroup(SR.MS_SHOW_LAST_APPEARED_CONTACTS, ChoiceGroup.MULTIPLE);
+        notify.append(SR.MS_STATUS, null);
+        notify.append(SR.MS_BLINKING, null);
+        notify.append(SR.MS_SOUND, null);
+        
+        boolean notifyA[]={
+            cf.notifyPicture,
+            cf.notifyBlink,
+            cf.notifySound
+        };
+        this.nt=notifyA;
+        notify.setSelectedFlags(notifyA);
+        
+        f.append(notify);
         
 	for (Enumeration file=files[2].elements(); file.hasMoreElements(); ) {
             addSoundItem((String)file.nextElement());
@@ -178,7 +190,6 @@ public class AlertCustomizeForm implements
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdOk) {
-            ac.silentMode=playSoundPolicy.getSelectedIndex();
 	    ac.soundsMsgIndex=MessageFile.getSelectedIndex();
 	    ac.soundVol=sndVol.getValue()*10;
             ac.soundOnlineIndex=OnlineFile.getSelectedIndex();
@@ -189,8 +200,6 @@ public class AlertCustomizeForm implements
             ac.soundStartUpIndex=StartUpFile.getSelectedIndex();
             ac.soundOutgoingIndex=OutgoingFile.getSelectedIndex(); 
             ac.soundVIPIndex=VIPFile.getSelectedIndex(); 
-            
-
 
  	    ac.loadSoundName();
  	    ac.loadOnlineSoundName();
@@ -203,7 +212,14 @@ public class AlertCustomizeForm implements
             ac.loadVIPSoundName();
            
             ac.saveToStorage();
-            StaticData.getInstance().roster.reEnumRoster();
+            
+            notify.getSelectedFlags(nt);
+            cf.notifyPicture=nt[0];
+            cf.notifyBlink=nt[1];
+            cf.notifySound=nt[2];
+            
+            cf.saveToStorage();
+
             destroyView();
         }
             

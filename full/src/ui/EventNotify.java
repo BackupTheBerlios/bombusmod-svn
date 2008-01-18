@@ -43,7 +43,6 @@ public class EventNotify
 {
     
     private int lenVibra;
-    //private boolean enableLights;
     private boolean toneSequence;
     private String soundName;
     private String soundType;
@@ -62,51 +61,44 @@ public class EventNotify
 	String soundFileName, 
 	int sndVolume,
 	int vibraLength 
-	//, boolean enableLights
     ) {
         this.display=display;
 	this.soundName=soundFileName;
 	this.soundType=soundMediaType;
 	this.lenVibra=vibraLength;
-	//this.enableLights=enableLights;
-	if (soundType!=null) toneSequence= soundType.equals("tone");
+	if (soundType!=null) 
+            toneSequence= soundType.equals("tone");
 	this.sndVolume=sndVolume;
     }
     
     public void startNotify (){
         release();
-        
-        
-        //display.flashBacklight(0x7fffffff);  //����� � ��
 
-        if (soundName!=null)
-        try {
-    
-            InputStream is = getClass().getResourceAsStream(soundName);
-            player = Manager.createPlayer(is, soundType);
+        if (soundName!=null) {
+            try {
 
-            player.addPlayerListener(this);
-	    player.realize();
-	    player.prefetch();
-	    
+                InputStream is = getClass().getResourceAsStream(soundName);
+                player = Manager.createPlayer(is, soundType);
 
-	    try {
-		VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
-		vol.setLevel(sndVolume);
-	    } catch (Exception e) { /* e.printStackTrace(); */}
+                player.addPlayerListener(this);
+                player.realize();
+                player.prefetch();
 
-	    player.start();
-        } catch (Exception e) { }
-        
-        //if (enableLights) 
-            //display.flashBacklight(1000);
-        
+
+                try {
+                    VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
+                    vol.setLevel(sndVolume);
+                } catch (Exception e) { /* e.printStackTrace(); */}
+
+                player.start();
+            } catch (Exception e) { }
+        }
+
         if (lenVibra>0)
          display.vibrate(lenVibra);
         
-        //display.flashBacklight(0);
-        
-	if (toneSequence/* || enableLights*/) new Thread(this).start();
+	if (toneSequence) 
+            new Thread(this).start();
     }
     
     public void run(){
@@ -115,7 +107,7 @@ public class EventNotify
 		for (int i=0; i<tone.length(); ) {
 		    int note=(tone.charAt(i++)-'A')+12*(tone.charAt(i++)-'0');
 		    int duration=150;
-		    Manager.playTone(note, duration, 100);
+		    Manager.playTone(note, duration, sndVolume);
 		    Thread.sleep(duration);
 		}
 	    }

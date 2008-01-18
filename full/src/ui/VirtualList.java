@@ -256,8 +256,8 @@ public abstract class VirtualList
     /** Creates a new instance of VirtualList */
     public VirtualList(Display display) {
         this();
-
         attachDisplay(display);
+
     }
 
     public void attachDisplay (Display display) {

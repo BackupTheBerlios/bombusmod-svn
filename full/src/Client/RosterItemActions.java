@@ -131,24 +131,24 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef SERVICE_DISCOVERY
 //# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 //#endif
-
-//#ifdef COLORS
-//# 	    addItem("Send current color scheme",912, 0x0f22);
-//#endif
 	    addItem("Send buffer",914, 0x0f22);
             
             if (contact.getGroupType()!=Groups.TYPE_SELF) {
                 addItem("Copy JID",892, 0x0f22);
-                if (contact.getJid()==contact.getBareJid()) {
+                if (contact.status==Presence.PRESENCE_OFFLINE) {
                     addItem(SR.MS_SEEN,890);    
                 } else {
                     addItem(SR.getPresence("online"),890); 
                 }
             }
             if (contact.getStatus()<Presence.PRESENCE_OFFLINE) {
-                addItem(SR.MS_IDLE,889);
                 addItem("Ping",893);
+                addItem(SR.MS_TIME,891);
+                addItem(SR.MS_IDLE,889);
             }
+//#ifdef COLORS
+//# 	    addItem("Send current color scheme",912, 0x0f22);
+//#endif
                 //if (contact.status>4) //not only for offline&invisible status
                 //    addItem(SR.MS_ONLINE,894); 
             //}
@@ -165,7 +165,8 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 		addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
             
-	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) return;
+	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) 
+                return;
 //#ifndef WMUC
             boolean onlineConferences=false;
             for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
@@ -436,7 +437,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 case 891: //time
                 {
                     roster.setQuerySign(true);
-                    roster.theStream.send(new IqTimeReply(c.getBareJid()));
+                    roster.theStream.send(new IqTimeReply(c.getJid()));
                     break;
                 }
                 

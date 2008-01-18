@@ -63,7 +63,7 @@ public class Contact extends IconTextElement{
 //#     private int isnew=0;
 //#     
 //#     public void setNewContact() {
-//#         this.isnew = 15;        
+//#         this.isnew = 10;        
 //#     }
 //#endif
     

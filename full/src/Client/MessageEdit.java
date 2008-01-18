@@ -59,29 +59,29 @@ public class MessageEdit
     private Contact to;
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
+    private Command cmdSend=new Command(SR.MS_SEND, Command.OK,0);
 //#ifdef SMILES
-//#     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+//#     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,1);
 //#endif
-    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
-    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
+    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,2);
+    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 3); ; // /me
 //#ifdef TRANSLIT
-//#     private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 5);
+//#     private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 4);
 //#endif
-    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
+    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 5);    
+    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 6);
 //#ifdef KILLALL
-//#     private Command cmdKill2=new Command("killall",Command.SCREEN,8);
+//#     private Command cmdKill2=new Command("killall",Command.SCREEN,7);
 //#     private boolean sendKill2=false;
 //#endif
 //#if TEMPLATES
-//#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 97); 
+//#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 8); 
 //#endif  
     
-    private Command cmdABC=new Command("Abc", Command.SCREEN, 15);
-    private Command cmdAbc=new Command("abc", Command.SCREEN, 15);
-    private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 16);
-    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);  
+    private Command cmdABC=new Command("Abc", Command.SCREEN, 9);
+    private Command cmdAbc=new Command("abc", Command.SCREEN, 9);
+    private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 10);
+    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 11);  
 
     private boolean composing=true;
     

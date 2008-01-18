@@ -74,12 +74,6 @@ public class AlertCustomize {
     
     private static int size=0;
     
-    public final static int PLAY_NEVER=0;
-    public final static int PLAY_ALWAYS=1;
-    public final static int PLAY_IFONLINE=2;
-
-    public int silentMode=PLAY_ALWAYS;
-    
     // Singleton
     private static AlertCustomize instance;
 
@@ -118,9 +112,7 @@ public class AlertCustomize {
 	    soundStartUpIndex=inputStream.readInt();
 	    soundOutgoingIndex=inputStream.readInt();
             soundVIPIndex=inputStream.readInt();
-            
-            silentMode=inputStream.readInt();
-            
+           
             inputStream.close();
 	} catch (Exception e) {
             try {
@@ -144,8 +136,6 @@ public class AlertCustomize {
 	    outputStream.writeInt(soundStartUpIndex);
 	    outputStream.writeInt(soundOutgoingIndex);
             outputStream.writeInt(soundVIPIndex);
-            
-            outputStream.writeInt(silentMode);
 
             NvStorage.writeFileRecord(outputStream, "AlertCustomize", 0, true);
 	} catch (IOException e) {

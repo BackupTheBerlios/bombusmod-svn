@@ -75,7 +75,7 @@ public class RosterToolsMenu
 //#ifdef COLORS
 //#         addItem(SR.MS_COLOR_TUNE, 7, 0x0f25);
 //#endif
-        addItem(SR.MS_SOUNDS_OPTIONS, 8, 0x0f17);
+        addItem(SR.MS_NOTICES_OPTIONS, 8, 0x0f17);
 //#ifdef POPUPS
 //#         addItem(SR.MS_STATS, 9, 0x0f30);
 //#endif

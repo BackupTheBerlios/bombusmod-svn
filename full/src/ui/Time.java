@@ -210,6 +210,8 @@ public class Time {
             if ((d>0) || (h>0) || (m>0))  result+=", ";
             result+= s + " " + goodWordForm (s, 0);
         }
+        if (result=="" && s==0)
+            result=s + " " + goodWordForm (s, 0);
         return result;
     }
     

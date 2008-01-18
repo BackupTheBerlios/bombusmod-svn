@@ -581,11 +581,25 @@ public class SR {
     public static String MS_REGISTER=loadString("Register");
 
     public static String MS_CHECK_GOOGLE_MAIL=loadString("Check Google mail");
+   
+//2008-01-18
+    public static String MS_BLINKING=loadString("Blink");
+    public static String MS_NOTICES_OPTIONS=loadString("Notices options");
+
+    public static String MS_MESSAGE_SOUND=loadString("Message sound");
+    public static String MS_ONLINE_SOUND=loadString("Online sound");
+    public static String MS_OFFLINE_SOUND=loadString("Offline sound");
+    public static String MS_MESSAGE_FOR_ME_SOUND=loadString("\"Message for me\" sound");
+    public static String MS_COMPOSING_SOUND=loadString("Composing sound");
+    public static String MS_CONFERENCE_SOUND=loadString("Conference sound");
+    public static String MS_STARTUP_SOUND=loadString("StartUP sound");
+    public static String MS_OUTGOING_SOUND=loadString("Outgoing sound");
+    public static String MS_VIP_SOUND=loadString("Vip sound");
+    
+    private SR() { }
     
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
-    
-    private SR() { }
     
     private static String loadString(String key) {
         if (lang==null) {

@@ -1167,9 +1167,9 @@ public class Roster
                             }
                             
                             SplashScreen.getInstance().close(); // display.setCurrent(this);
-
-                            //loading bookmarks
+                            
 //#ifndef WMUC
+                            //loading bookmarks
                             //query bookmarks
                             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
@@ -1264,18 +1264,6 @@ public class Roster
                         }
                     }
                 } else  if (type.equals("get")) {
-                    /*
-                    JabberDataBlock ping=data.getChildBlock("ping");
-                    if (ping!=null){
-                        Contact c=getContact(from, true);
-                        if (ping.isJabberNameSpace("http://www.xmpp.org/extensions/xep-0199.html#ns")) { //ping
-                            c.setIncoming(Contact.INC_VIEWING);
-                            theStream.send(new IqPing(data));
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        }
-                        return JabberBlockListener.BLOCK_REJECTED;
-                    }*/
-                   
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
                         Contact c=getContact(from, true);
@@ -1766,9 +1754,10 @@ public class Roster
 
                     if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT) && notifyReady(-111)) {
 //#if USE_ROTATOR
-//#                         c.setNewContact();
+//#                         if (cf.notifyBlink)
+//#                             c.setNewContact();
 //#endif
-                        if (cf.showLastAppearedContact) {
+                        if (cf.notifyPicture) {
                             if (c.getGroupType()!=Groups.TYPE_TRANSP)
                                 c.setIncoming(Contact.INC_APPEARING);
                         }
@@ -1930,14 +1919,22 @@ public class Roster
         
         switch (event) {
             case 0: //online
-                message=ac.soundOnline;
-                type=ac.soundOnlineType;
-                vibraLen=0;
+                if (cf.notifySound) {
+                    message=ac.soundOnline;
+                    type=ac.soundOnlineType;
+                    vibraLen=0;
+                } else {
+                    message=null; type=null; vibraLen=0;
+                }
                 break;
             case 1: //chat
-                message=ac.soundOnline;
-                type=ac.soundOnlineType;
-                vibraLen=0;
+                if (cf.notifySound) {
+                    message=ac.soundOnline;
+                    type=ac.soundOnlineType;
+                    vibraLen=0;
+                } else {
+                    message=null; type=null; vibraLen=0;
+                }
                 break;
             case 5: //offline
                 message=ac.soundOffline;
@@ -1981,23 +1978,7 @@ public class Roster
                 vibraLen=0;
                 break;
         }
-        
-        switch (ac.silentMode) {
-            case AlertCustomize.PLAY_IFONLINE:
-                if (myStatus>Presence.PRESENCE_CHAT) {
-                    message=null;
-                    type=null;
-                    //blFlashEn=false;
-                    vibraLen=0;
-                }
-                break;
-            case AlertCustomize.PLAY_NEVER:
-                message=null;
-                type=null;
-                //blFlashEn=false;
-                vibraLen=0;
-        }
-        
+       
         int profile=cf.profile;
         if (profile==AlertProfile.AUTO) 
             profile=AlertProfile.ALL;
@@ -2054,22 +2035,26 @@ public class Roster
         setProgress(SR.MS_DISCONNECTED, 100);
          if( e != null ) {
             askReconnect(e);
-            
         } else {
             try {
                 sendPresence(Presence.PRESENCE_OFFLINE, null);
             } catch (Exception e2) {
-                //e2.printStackTrace();
+//#if DEBUG
+//#                 e2.printStackTrace();
+//#endif
             }
          }
         redraw();
     }
 
     private void askReconnect(final Exception e) {
-        String error=e.getClass().getName()+"\n"+e.getMessage();
-        e.printStackTrace();
+        String error;
+        error=e.getClass().getName()+"\n"+e.getMessage();
+//#if DEBUG
+//#         e.printStackTrace();
+//#endif
 
-        lastOnlineStatus=myStatus;
+        //lastOnlineStatus=myStatus;
          try {
              sendPresence(Presence.PRESENCE_OFFLINE, null);
         } catch (Exception e2) { }
@@ -2077,14 +2062,14 @@ public class Roster
         if (e instanceof SecurityException) { errorLog(error); return; }
         if (e instanceof JabberStreamShutdownException) { errorLog(error); return; }
         if (reconnectCount>=maxReconnect) { errorLog(error); return; }
-        {
-            reconnectCount++;
-            String topBar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
-            Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error);
-            messageStore(selfContact(), m);
-            Stats.getInstance().save();
-            new Reconnect(topBar, error, display);
-         }
+        
+        reconnectCount++;
+        String topBar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
+        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error);
+        messageStore(selfContact(), m);
+        Stats.getInstance().save();
+        new Reconnect(topBar, error, display);
+
      }
     
      private int lastOnlineStatus;

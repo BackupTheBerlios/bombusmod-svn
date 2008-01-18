@@ -185,8 +185,6 @@ public class Config {
     
     public boolean queryExit = false;
     
-    public boolean showLastAppearedContact = false;
-    
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     
     public boolean showBalloons = true;
@@ -198,6 +196,12 @@ public class Config {
     public boolean useTabs=true;
     
     public int phoneManufacturer=NOT_DETECTED;
+
+    public boolean notifyBlink=true;
+
+    public boolean notifySound=false;
+
+    public boolean notifyPicture=false;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -280,7 +284,7 @@ public class Config {
 	    
 	    popupFromMinimized=inputStream.readBoolean();
 	    
-	    /*blFlash=*/inputStream.readBoolean();
+	    notifyBlink=inputStream.readBoolean();
 	    memMonitor=inputStream.readBoolean();
             
             font1=inputStream.readInt();
@@ -319,7 +323,7 @@ public class Config {
             
             lightState=inputStream.readBoolean();
 			
-            /*autoSubscribe=*/inputStream.readBoolean();
+            notifySound=inputStream.readBoolean();
             
             lastMessages=inputStream.readBoolean();
 
@@ -349,7 +353,7 @@ public class Config {
             
             queryExit=inputStream.readBoolean();
             
-            showLastAppearedContact=inputStream.readBoolean();
+            notifyPicture=inputStream.readBoolean();
             
             showBalloons=inputStream.readBoolean();
             
@@ -422,7 +426,7 @@ public class Config {
 
             outputStream.writeBoolean(popupFromMinimized);
 	    
-	    outputStream.writeBoolean(false/*blFlash*/);
+	    outputStream.writeBoolean(notifyBlink);
 	    outputStream.writeBoolean(memMonitor);
             
             outputStream.writeInt(font1);
@@ -462,7 +466,7 @@ public class Config {
             
             outputStream.writeBoolean(lightState);
 			
-            outputStream.writeBoolean(false /*autoSubscribe*/);
+            outputStream.writeBoolean(notifySound);
             
             outputStream.writeBoolean(lastMessages);
             
@@ -492,7 +496,7 @@ public class Config {
             
             outputStream.writeBoolean(queryExit);
            
-            outputStream.writeBoolean(showLastAppearedContact);
+            outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);
             
             outputStream.writeBoolean(userKeys);

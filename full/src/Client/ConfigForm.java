@@ -126,7 +126,6 @@ public class ConfigForm implements
         roster.append(SR.MS_AUTOFOCUS,null);
         roster.append(SR.MS_SHOW_RESOURCES,null);
         roster.append(SR.MS_SHOW_STATUSES,null);
-        roster.append(SR.MS_SHOW_LAST_APPEARED_CONTACTS,null);
 
         boolean rosterA[]={
             cf.showOfflineContacts,
@@ -136,8 +135,7 @@ public class ConfigForm implements
             cf.collapsedGroups,
             cf.autoFocus,
             cf.showResources,
-            cf.rosterStatus,
-            cf.showLastAppearedContact
+            cf.rosterStatus
         };
         this.ra=rosterA;
         roster.setSelectedFlags(rosterA);
@@ -404,7 +402,6 @@ public class ConfigForm implements
             cf.autoFocus=ra[5];
             cf.showResources=ra[6];
             cf.rosterStatus=ra[7];
-            cf.showLastAppearedContact=ra[8];
             
             cf.autoSubscribe=subscr.getSelectedIndex();
             
