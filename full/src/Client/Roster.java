@@ -1090,7 +1090,11 @@ public class Roster
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
         }
-
+//#ifndef WMUC
+        //query bookmarks
+        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
+        
 //#ifdef MOOD
 //#         theStream.addBlockListener(new DiscoInfo());
 //#endif
