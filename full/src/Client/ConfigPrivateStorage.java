@@ -146,7 +146,7 @@ public class ConfigPrivateStorage
 //#             
 //#             cs.addChild("rosterStatus", (cf.rosterStatus)?"1":"0");
 //#             cs.addChild("queryExit", (cf.queryExit)?"1":"0");
-//#             cs.addChild("showLastAppearedContact", (cf.showLastAppearedContact)?"1":"0");
+//#             //cs.addChild("showLastAppearedContact", (cf.showLastAppearedContact)?"1":"0");
 //#             cs.addChild("showBalloons", (cf.showBalloons)?"1":"0");
 //#             
 //#             cs.addChild("userKeys", (cf.userKeys)?"1":"0");
@@ -245,7 +245,7 @@ public class ConfigPrivateStorage
 //#             
 //#             cf.rosterStatus=cf.getBooleanProperty("rosterStatus",true);
 //#             cf.queryExit=cf.getBooleanProperty("queryExit",false);
-//#             cf.showLastAppearedContact=cf.getBooleanProperty("showLastAppearedContact",false);
+//#             //cf.showLastAppearedContact=cf.getBooleanProperty("showLastAppearedContact",false);
 //#             
 //#             VirtualList.showBalloons=cf.showBalloons=cf.getBooleanProperty("showBalloons",false);
 //#             

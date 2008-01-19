@@ -67,25 +67,19 @@ public class ColorScheme {
 	return instance;
     }
     
-
-    static int strong(int color) {
-        if (color==MESSAGE_IN) {
-            return MESSAGE_IN_S;
-        } else if (color==MESSAGE_OUT) {
-            return MESSAGE_OUT_S;
-        } else if (color==MESSAGE_PRESENCE) {
-            return MESSAGE_PRESENCE_S;
-        }
-        /*switch (color) {
-            case MESSAGE_IN: return MESSAGE_IN_S;
-            case MESSAGE_OUT: return MESSAGE_OUT_S;
-            case MESSAGE_PRESENCE: return MESSAGE_PRESENCE_S;
-        }
-        return color;
-         */
-        return color;
-    }
-  
+//#if NICK_COLORS
+//#     static int strong(int color) {
+//#         if (color==MESSAGE_IN) {
+//#             return MESSAGE_IN_S;
+//#         } else if (color==MESSAGE_OUT) {
+//#             return MESSAGE_OUT_S;
+//#         } else if (color==MESSAGE_PRESENCE) {
+//#             return MESSAGE_PRESENCE_S;
+//#         }
+//#         return color;
+//#     }
+//#endif
+    
 //#ifdef NEW_YEAR
 //#     public static int BALLOON_INK=0x4866ad;
 //#     public static int BALLOON_BGND=0xc4dcff;
@@ -164,10 +158,11 @@ public class ColorScheme {
     public static int SCROLL_BRD	=0x950d04;
     public static int SCROLL_BAR	=0xbbbbbb;
     public static int SCROLL_BGND	=0xffffff;
-    public static int MESSAGE_IN_S       =0x0060ff;
-    public static int MESSAGE_OUT_S      =0xff4000;
-    public static int MESSAGE_PRESENCE_S =0x00c040;
-    
+//#if NICK_COLORS
+//#     public static int MESSAGE_IN_S       =0x0060ff;
+//#     public static int MESSAGE_OUT_S      =0xff4000;
+//#     public static int MESSAGE_PRESENCE_S =0x00c040;
+//#endif
     public static int CONTACT_J2J        =0xff0000;
 //#endif
     
@@ -222,11 +217,15 @@ public class ColorScheme {
 //#             SCROLL_BGND=inputStream.readInt();
 //#             
 //#             CURSOR_OUTLINE=inputStream.readInt();
-//#    
+//#if NICK_COLORS
 //#             MESSAGE_IN_S=inputStream.readInt();
 //#             MESSAGE_OUT_S=inputStream.readInt();
 //#             MESSAGE_PRESENCE_S=inputStream.readInt();
-//#   
+//#else
+//#             inputStream.readInt();
+//#             inputStream.readInt();
+//#             inputStream.readInt();
+//#endif
 //#             CONTACT_J2J=inputStream.readInt();
 //# 
 //#             BAR_BGND_BOTTOM=inputStream.readInt();
@@ -284,11 +283,15 @@ public class ColorScheme {
 //# 	    outputStream.writeInt(SCROLL_BGND);
 //#             
 //#             outputStream.writeInt(CURSOR_OUTLINE);
-//#             
+//#if NICK_COLORS
 //# 	    outputStream.writeInt(MESSAGE_IN_S);
 //# 	    outputStream.writeInt(MESSAGE_OUT_S);
 //# 	    outputStream.writeInt(MESSAGE_PRESENCE_S);
-//# 
+//#else
+//#             outputStream.writeInt(0);
+//#             outputStream.writeInt(0);
+//#             outputStream.writeInt(0);
+//#endif
 //# 	    outputStream.writeInt(CONTACT_J2J);
 //#    
 //# 	    outputStream.writeInt(BAR_BGND_BOTTOM);
@@ -324,9 +327,11 @@ public class ColorScheme {
 //#             MESSAGE_IN=loadInt("MESSAGE_IN", MESSAGE_IN);
 //#             MESSAGE_OUT=loadInt("MESSAGE_OUT", MESSAGE_OUT);
 //#             MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE", MESSAGE_PRESENCE);
+//#if NICK_COLORS
 //#             MESSAGE_IN_S=loadInt("MESSAGE_IN_S", MESSAGE_IN_S);
 //#             MESSAGE_OUT_S=loadInt("MESSAGE_OUT_S", MESSAGE_OUT_S);
 //#             MESSAGE_PRESENCE_S=loadInt("MESSAGE_PRESENCE_S", MESSAGE_PRESENCE_S);
+//#endif
 //#             MESSAGE_AUTH=loadInt("MESSAGE_AUTH", MESSAGE_AUTH);
 //#             MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY", MESSAGE_HISTORY);
 //#             PGS_REMAINED=loadInt("PGS_REMAINED", PGS_REMAINED);
@@ -420,9 +425,11 @@ public class ColorScheme {
 //#         body.append("MESSAGE_IN\t"+getColorString(MESSAGE_IN)+"\r\n");
 //#         body.append("MESSAGE_OUT\t"+getColorString(MESSAGE_OUT)+"\r\n");
 //#         body.append("MESSAGE_PRESENCE\t"+getColorString(MESSAGE_PRESENCE)+"\r\n");
+//#if NICK_COLORS
 //#         body.append("MESSAGE_IN_S\t"+getColorString(MESSAGE_IN_S)+"\r\n");
 //#         body.append("MESSAGE_OUT_S\t"+getColorString(MESSAGE_OUT_S)+"\r\n");
 //#         body.append("MESSAGE_PRESENCE_S\t"+getColorString(MESSAGE_PRESENCE_S)+"\r\n");
+//#endif
 //#         body.append("MESSAGE_AUTH\t"+getColorString(MESSAGE_AUTH)+"\r\n");
 //#         body.append("MESSAGE_HISTORY\t"+getColorString(MESSAGE_HISTORY)+"\r\n");
 //#         body.append("PGS_REMAINED\t"+getColorString(PGS_REMAINED)+"\r\n");
@@ -492,3 +499,4 @@ public class ColorScheme {
 //#     }
 //#endif
 }
+

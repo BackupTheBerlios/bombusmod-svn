@@ -1481,9 +1481,14 @@ public class Roster
                     //forme=false;
                     if (body.startsWith("/me ")) start_me=3;
                     if (start_me>=0) {
-                        StringBuffer b=new StringBuffer("\01");
+                        StringBuffer b=new StringBuffer();
+//#if NICK_COLORS
+//#                         b.append("\01");
+//#endif
                         b.append(name);
-                        b.append("\02");
+//#if NICK_COLORS
+//#                         b.append("\02");
+//#endif
                         if (start_me==0) 
                             b.append("> ");
                         else 

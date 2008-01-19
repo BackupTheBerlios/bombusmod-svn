@@ -357,17 +357,19 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                     cl.SCROLL_BGND=value; 
                     break;
                 case 35:
-                    cl.MESSAGE_IN_S=value; 
-                    break;
-                case 36:
-                    cl.MESSAGE_OUT_S=value; 
-                    break;
-                case 37:
-                    cl.MESSAGE_PRESENCE_S=value; 
-                    break;
-                case 38:
                     cl.CONTACT_J2J=value; 
                     break;
+//#if NICK_COLORS
+//#                 case 36:
+//#                     cl.MESSAGE_IN_S=value; 
+//#                     break;
+//#                 case 37:
+//#                     cl.MESSAGE_OUT_S=value; 
+//#                     break;
+//#                 case 38:
+//#                     cl.MESSAGE_PRESENCE_S=value; 
+//#                     break;
+//#endif
             }
 //#if (COLORS)
 //#             cl.saveToStorage();

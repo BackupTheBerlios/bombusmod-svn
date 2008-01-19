@@ -41,8 +41,10 @@ public class ComplexString extends Vector implements VirtualElement{
     public final static int COLOR     = 0x01000000;
     public final static int RALIGN    = 0x02000000;
     public final static int UNDERLINE = 0x03000000;
-    public final static int NICK_ON   = 0x04000000;
-    public final static int NICK_OFF  = 0x05000000;
+//#if NICK_COLORS
+//#     public final static int NICK_ON   = 0x04000000;
+//#     public final static int NICK_OFF  = 0x05000000;
+//#endif
 
     protected Font font=FontCache.getMsgFont();
     private int height;
@@ -81,7 +83,10 @@ public class ComplexString extends Vector implements VirtualElement{
         //g.setColor(0);
         boolean ralign=false;
 	boolean underline=false;
-	boolean nick=false;
+        
+//#if NICK_COLORS
+//# 	boolean nick=false;
+//#endif
         
         int w=offset;
         int dw;
@@ -100,31 +105,33 @@ public class ComplexString extends Vector implements VirtualElement{
                 
                 if (ob instanceof String ){
                     // string element
-					String s=(String) ob;
-                    if (nick) {
-                        int color=g.getColor();
-                        dw=0;
-                        int p1=0; 
-                        while (p1<s.length()) {
-                            int p2=p1;
-                            char c1=s.charAt(p1);
-                            //processing the same cp
-                            while (p2<s.length()) {
-                                char c2=s.charAt(p2);
-                                if ( (c1&0xff00) != (c2 &0xff00) ) break;
-                                p2++;
-                            }
-                            g.setColor( (c1>255) ? ColorScheme.strong(color) : color);
-                            dw=font.substringWidth(s, p1, p2-p1);
-                            if (ralign) w-=dw;
-                            g.drawSubstring( s, p1, p2-p1, 
-                                    w,fontYOfs,Graphics.LEFT|Graphics.TOP);
-                            if (!ralign) w+=dw;
-                            p1=p2;
-                        }
-                        
-                        g.setColor(color);
-                    } else {
+                    String s=(String) ob;
+//#if NICK_COLORS
+//#                     if (nick) {
+//#                         int color=g.getColor();
+//#                         dw=0;
+//#                         int p1=0; 
+//#                         while (p1<s.length()) {
+//#                             int p2=p1;
+//#                             char c1=s.charAt(p1);
+//#                             //processing the same cp
+//#                             while (p2<s.length()) {
+//#                                 char c2=s.charAt(p2);
+//#                                 if ( (c1&0xff00) != (c2 &0xff00) ) break;
+//#                                 p2++;
+//#                             }
+//#                             g.setColor( (c1>255) ? ColorScheme.strong(color) : color);
+//#                             dw=font.substringWidth(s, p1, p2-p1);
+//#                             if (ralign) w-=dw;
+//#                             g.drawSubstring( s, p1, p2-p1, 
+//#                                     w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+//#                             if (!ralign) w+=dw;
+//#                             p1=p2;
+//#                         }
+//#                         
+//#                         g.setColor(color);
+//#                     } else {
+//#endif
                         dw=font.stringWidth(s);
                         if (ralign) w-=dw;
                         g.drawString(s,w,fontYOfs,Graphics.LEFT|Graphics.TOP);
@@ -134,7 +141,9 @@ public class ComplexString extends Vector implements VirtualElement{
                             underline=false;
                         }
                         if (!ralign) w+=dw;
-                    }
+//#if NICK_COLORS
+//#                     }
+//#endif
 
                 } else if ((ob instanceof Integer)) {
                     // image element or color
@@ -156,12 +165,14 @@ public class ComplexString extends Vector implements VirtualElement{
 			case UNDERLINE:
 			    underline=true;
 			    break;
-                        case NICK_ON:
-                            nick=true; 
-                            break;
-                        case NICK_OFF:
-                            nick=false;
-                            break;
+//#if NICK_COLORS
+//#                         case NICK_ON:
+//#                             nick=true; 
+//#                             break;
+//#                         case NICK_OFF:
+//#                             nick=false;
+//#                             break;
+//#endif
                     }
                 } /* Integer*/ else if (ob instanceof VirtualElement) { 
                     int clipw=g.getClipWidth(); 

@@ -91,12 +91,13 @@ public class ColorForm implements CommandListener
             SR.MS_SCROLL_BRD,
             SR.MS_SCROLL_BAR,
             SR.MS_SCROLL_BGND,
-                    
-            SR.MS_MESSAGE_IN_S,
-            SR.MS_MESSAGE_OUT_S,
-            SR.MS_MESSAGE_PRESENCE_S,
             
             SR.MS_CONTACT+"J2J"
+//#if NICK_COLORS   
+//#             ,SR.MS_MESSAGE_IN_S,
+//#             SR.MS_MESSAGE_OUT_S,
+//#             SR.MS_MESSAGE_PRESENCE_S
+//#endif
         };
         
         public static int[] COLORS = {            
@@ -142,11 +143,13 @@ public class ColorForm implements CommandListener
             cl.SCROLL_BAR,
             cl.SCROLL_BGND,
             
-            cl.MESSAGE_IN_S,
-            cl.MESSAGE_OUT_S,
-            cl.MESSAGE_PRESENCE_S,
-            
             cl.CONTACT_J2J
+//#if NICK_COLORS
+//#             ,cl.MESSAGE_IN_S,
+//#             cl.MESSAGE_OUT_S,
+//#             cl.MESSAGE_PRESENCE_S
+//#endif
+            
       };
         
       
@@ -192,12 +195,13 @@ public class ColorForm implements CommandListener
             imageData(cl.SCROLL_BRD),
             imageData(cl.SCROLL_BAR),
             imageData(cl.SCROLL_BGND),
-            
-            imageData(cl.MESSAGE_IN_S),
-            imageData(cl.MESSAGE_OUT_S),
-            imageData(cl.MESSAGE_PRESENCE_S),
-            
             imageData(cl.CONTACT_J2J)
+//#if NICK_COLORS
+//#             ,imageData(cl.MESSAGE_IN_S),
+//#             imageData(cl.MESSAGE_OUT_S),
+//#             imageData(cl.MESSAGE_PRESENCE_S)
+//#endif
+            
       };
 
 
