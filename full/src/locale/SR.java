@@ -595,6 +595,11 @@ public class SR {
     public static String MS_STARTUP_SOUND=loadString("StartUP sound");
     public static String MS_OUTGOING_SOUND=loadString("Outgoing sound");
     public static String MS_VIP_SOUND=loadString("Vip sound");
+
+//2008-01-19
+    public static String MS_COPY_JID=loadString("Copy JID");
+    public static String MS_PING=loadString("Ping request");
+    public static String MS_ONLINE_TIME=loadString("Online time");
     
     private SR() { }
     

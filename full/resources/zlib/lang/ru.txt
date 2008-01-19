@@ -524,3 +524,20 @@ Wed	Ср
 Thu	Чт
 Fri	Пт
 Sat	Сб
+
+Blink	миганием
+Notices options	Настройка уведомлений
+
+Message sound	Звук сообщений
+Online sound	Звук для подключившихся
+Offline sound	Звук для отключившихся
+"Message for me" sound	Звук при обращении
+Composing sound	Звук при наборе
+Conference sound	Звук для конференции
+StartUP sound	Звук при запуске
+Outgoing sound	Звук при отправке
+Vip sound	Звук для VIP
+
+Copy JID	Копировать JID
+Ping request	Время отклика
+Online time	Время в сети

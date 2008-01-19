@@ -131,20 +131,19 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef SERVICE_DISCOVERY
 //# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 //#endif
-	    addItem("Send buffer",914, 0x0f22);
+	    addItem(SR.MS_SEND_BUFFER,914, 0x0f22);
             
             if (contact.getGroupType()!=Groups.TYPE_SELF) {
-                addItem("Copy JID",892, 0x0f22);
+                addItem(SR.MS_COPY_JID,892, 0x0f22);
                 if (contact.status==Presence.PRESENCE_OFFLINE) {
                     addItem(SR.MS_SEEN,890);    
                 } else {
-                    addItem(SR.getPresence("online"),890); 
+                    addItem(SR.MS_PING,893);
+                    addItem(SR.MS_TIME,891);
+                    addItem(SR.MS_IDLE,889);
+                    addItem(SR.MS_ONLINE_TIME,890); 
                 }
-            }
-            if (contact.getStatus()<Presence.PRESENCE_OFFLINE) {
-                addItem("Ping",893);
-                addItem(SR.MS_TIME,891);
-                addItem(SR.MS_IDLE,889);
+
             }
 //#ifdef COLORS
 //# 	    addItem("Send current color scheme",912, 0x0f22);
