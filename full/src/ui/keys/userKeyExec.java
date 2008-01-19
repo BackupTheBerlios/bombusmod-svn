@@ -199,7 +199,7 @@ public class userKeyExec {
             SR.MS_FLASHLIGHT,
             SR.MS_ABOUT,
             SR.MS_APP_MINIMIZE,
-            "Break connection"
+            SR.MS_BREAK_CONECTION
     };
     
     public static final String[] KEYS_NAME = {

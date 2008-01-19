@@ -29,6 +29,7 @@ package locale;
 
 import Client.Config;
 import java.util.Hashtable;
+import javax.microedition.lcdui.Item;
 import util.StringLoader;
 
 public class SR {
@@ -177,7 +178,6 @@ public class SR {
     public   static String MS_CANCEL = loadString( "Cancel" );
     public   static String MS_CLOSE = loadString( "Close" );
     public   static String MS_ARCHIVE = loadString( "Archive" );
-    public   static String MS_FREE = loadString( "free " );
     public   static String MS_CONFERENCE = loadString( "Conference" );
     public   static String MS_SOUND = loadString( "Sound" );
     public   static String MS_LOGIN_FAILED = loadString( "Login failed" );
@@ -600,6 +600,28 @@ public class SR {
     public static String MS_COPY_JID=loadString("Copy JID");
     public static String MS_PING=loadString("Ping request");
     public static String MS_ONLINE_TIME=loadString("Online time");
+
+//2008-01-20
+    public static String MS_BREAK_CONECTION=loadString("Break connection");
+    public static String MS_AUTOSCROLL=loadString("autoScroll");
+    public static String MS_EMULATE_TABS=loadString("emulate tabs");
+    public static String MS_SHOW_BALLONS=loadString("show balloons");
+    public static String MS_POPUPS=loadString("popUps");
+    public static String MS_ANTISPAM_CONFERENCE=loadString("antispam conference");
+    public static String MS_AUTOSTATUS_MESSAGE=loadString("AutoStatus Message");
+
+    public static String MS_STARTED=loadString("Started: ");
+    public static String MS_TRAFFIC_STATS=loadString("Traffic stats: ");
+    public static String MS_ALL=loadString("All: ");
+    public static String MS_PREVIOUS=loadString("Previous: ");
+    public static String MS_CURRENT=loadString("Current: ");
+
+    public static String MS_MEMORY=loadString("Memory:");
+    public static String MS_FREE = loadString("Free: ");
+    public static String MS_TOTAL=loadString("Total: ");
+    public static String MS_IN=loadString("in: ");
+    public static String MS_OUT=loadString("out: ");
+    public static String MS_STREAM=loadString("Stream: ");
     
     private SR() { }
     

@@ -52,30 +52,20 @@ public class InfoWindow implements CommandListener{
 
         form.append("BombusMod v"+Version.getVersionNumber()+"\nMobile Jabber client\n");
         form.append(Config.getOs());
-        form.append("\nCopyright (c) 2005-2007, Eugene Stahov (evgs), ad(modification)\n");
+        form.append("\nCopyright (c) 2005-2008, Eugene Stahov (evgs), ad(modification)\n");
         
-        form.append("\nStart time: "+Roster.startTime);
-        
-        StringBuffer memInfo=new StringBuffer("\nMemory:\n");
-        memInfo.append("Free=");
+        StringBuffer memInfo=new StringBuffer("\n");
+        memInfo.append(SR.MS_MEMORY);
+        memInfo.append("\n");
+        memInfo.append(SR.MS_FREE);
 
         System.gc();
         memInfo.append(Runtime.getRuntime().freeMemory()>>10);
-        memInfo.append("\nTotal=");
+        memInfo.append("\n");
+        memInfo.append(SR.MS_TOTAL);
         memInfo.append(Runtime.getRuntime().totalMemory()>>10);
         form.append(memInfo.toString());
-//#if ZLIB
-/*
-        form.append("\n\n");
-        String conn_stats;
-        try {
-            conn_stats=StaticData.getInstance().roster.theStream.getStreamStats();
-        } catch (Exception e) {
-            conn_stats="disconnected";
-        }
-        form.append(conn_stats);
- */
-//#endif
+        
         memInfo=null;
         form.setCommandListener(this);
         display.setCurrent(form);

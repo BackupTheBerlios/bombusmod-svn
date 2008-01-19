@@ -94,7 +94,7 @@ public class RosterToolsMenu
         addItem("ArchiveDump", 10);
 */        
         
-        addItem("Break connection", 14);
+        addItem(SR.MS_BREAK_CONECTION, 14);
         attachDisplay(display);
     }
     public void eventOk(){

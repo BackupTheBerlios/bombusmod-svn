@@ -2919,29 +2919,36 @@ public class Roster
                 deleteContact(cr);                
         }
     }
-
-    public void showStats() {
-        StringBuffer str= new StringBuffer("Started: "+startTime);
-        Stats stats=Stats.getInstance();
-        str.append("\nTraffic stats:\nAll(");
-        str.append(stats.getSessionsCount());
-        str.append("): ");
-
-        str.append(strconv.getSizeString(stats.getAllTraffic()));
-
-        str.append("\nPrevious: ");
-        str.append(strconv.getSizeString(stats.getLatest()));
-
-        str.append("\nCurrent: ");
-        str.append(strconv.getSizeString(Stats.getGPRS()));
-
-        if (isLoggedIn())
-            str.append(theStream.getStreamStats());
+    
 //#ifdef POPUPS
+//#     public void showStats() {
+//#         StringBuffer str= new StringBuffer(SR.MS_STARTED+startTime);
+//#         Stats stats=Stats.getInstance();
+//#         str.append("\n");
+//#         str.append(SR.MS_TRAFFIC_STATS);
+//#         str.append("\n");
+//#         str.append(SR.MS_ALL);
+//#         str.append(stats.getSessionsCount());
+//#         str.append(" conn., ");
+//# 
+//#         str.append(strconv.getSizeString(stats.getAllTraffic()));
+//# 
+//#         str.append("\n");
+//#         str.append(SR.MS_PREVIOUS);
+//#         str.append(strconv.getSizeString(stats.getLatest()));
+//# 
+//#         str.append("\n");
+//#         str.append(SR.MS_CURRENT);
+//#         str.append(strconv.getSizeString(Stats.getGPRS()));
+//# 
+//#         if (isLoggedIn())
+//#             str.append(theStream.getStreamStats());
+//# 
 //#         VirtualList.setWobble(str.toString());
+//#         str=null;
+//#     }
 //#endif
-        str=null;
-    }
+    
 //#if SASL_XGOOGLETOKEN
     public void sendGmailReq() {
         JabberDataBlock iq=new Iq(null, Iq.TYPE_GET, "mail-request");

@@ -30,6 +30,7 @@ package ui;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
+import locale.SR;
 //#ifdef POPUPS
 //# import ui.controls.PopUp;
 //#endif
@@ -768,7 +769,7 @@ public abstract class VirtualList
                     System.gc();
 //#ifdef POPUPS
 //#                     if (cf.popUps)
-//#                         setWobble("Free "+(Runtime.getRuntime().freeMemory()/1000)+" kb");
+//#                         setWobble(SR.MS_FREE+(Runtime.getRuntime().freeMemory()/1000)+" kb");
 //#endif
                     break;
 //#ifdef POPUPS

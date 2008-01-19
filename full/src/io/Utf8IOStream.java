@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import javax.microedition.io.*;
+import locale.SR;
 import util.strconv;
 
 /**
@@ -224,11 +225,11 @@ public class Utf8IOStream implements Runnable{
                 recv+=z.getTotalIn()-z.getTotalOut();
                 ZOutputStream zo = (ZOutputStream) outStream;
                 sent+=zo.getTotalOut()-zo.getTotalIn();
-                stats.append("\nZLib:\nin="); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
-                stats.append("\nout="); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
+                stats.append("\nZLib:\n"); stats.append(SR.MS_IN); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
+                stats.append("\n"); stats.append(SR.MS_OUT); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
             }
-            stats.append("\nStream:\nin="); stats.append(recv);
-            stats.append(" out="); stats.append(sent);
+            stats.append("\n"); stats.append(SR.MS_STREAM); stats.append("\n");stats.append(SR.MS_IN); stats.append(recv);
+            stats.append(" "); stats.append(SR.MS_OUT); stats.append(sent);
         } catch (Exception e) {
             stats=null;
             return "";

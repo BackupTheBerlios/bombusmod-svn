@@ -160,16 +160,16 @@ public class ConfigForm implements
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
         message.append(SR.MS_STORE_PRESENCE,null);
-        message.append("AutoScroll", null);
-        message.append("Emulate tabs", null);
+        message.append(SR.MS_AUTOSCROLL, null);
+        message.append(SR.MS_EMULATE_TABS, null);
 //#ifdef ANTISPAM
-//#         message.append("Antispam Conference", null);
+//#         message.append(SR.MS_ANTISPAM_CONFERENCE, null);
 //#endif
 //#ifdef POPUPS
-//#         message.append("popUps", null);
+//#         message.append(SR.MS_POPUPS, null);
 //#endif
         
-        message.append("show balloons", null);
+        message.append(SR.MS_SHOW_BALLONS, null);
         
         
 //#if ALT_INPUT
@@ -329,7 +329,7 @@ public class ConfigForm implements
 //#         fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 60);
 //# 
 //#         awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
-//#         awayStatus.append("AutoStatus Message", null);
+//#         awayStatus.append(SR.MS_AUTOSTATUS_MESSAGE, null);
 //#         
 //#         boolean autoAway[]={
 //#             cf.setAutoStatusMessage
