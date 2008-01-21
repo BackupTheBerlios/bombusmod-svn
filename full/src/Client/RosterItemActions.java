@@ -135,13 +135,10 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             
             if (contact.getGroupType()!=Groups.TYPE_SELF) {
                 addItem(SR.MS_COPY_JID,892, 0x0f22);
-                if (contact.status==Presence.PRESENCE_OFFLINE) {
-                    addItem(SR.MS_SEEN,890);    
-                } else {
+                if (contact.status<Presence.PRESENCE_OFFLINE) {
                     addItem(SR.MS_PING,893);
                     addItem(SR.MS_TIME,891);
                     addItem(SR.MS_IDLE,889);
-                    addItem(SR.MS_ONLINE_TIME,890); 
                 }
 
             }
@@ -156,14 +153,22 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             //if (from.indexOf("/")>-1) lastType="idle";
 	    
 	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
-		if (contact.getGroupType()!=Groups.TYPE_TRANSP)
-		addItem(SR.MS_EDIT,2, 0x0f13);
+		if (contact.status<Presence.PRESENCE_OFFLINE) {
+                    addItem(SR.MS_ONLINE_TIME,890);    
+                } else {
+                    addItem(SR.MS_SEEN,890); 
+                }
+                if (contact.getGroupType()!=Groups.TYPE_TRANSP)
+                    addItem(SR.MS_EDIT,2, 0x0f13);
 		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
 		addItem(SR.MS_MOVE,1003);
 		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
 		addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
-            
+//#ifdef COLORS
+//# 	    addItem("Send current color scheme",912, 0x0f22);
+//#endif
+
 	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) 
                 return;
 //#ifndef WMUC
@@ -190,7 +195,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 if (myAffiliation==MucContact.AFFILIATION_OWNER) myAffiliation++; // allow owner to change owner's affiliation
 
             
-                addItem(SR.MS_TIME,891); 
+                //addItem(SR.MS_TIME,891); 
                 
                 if (selfContact.roleCode==MucContact.ROLE_MODERATOR) {
                     if(mc.roleCode<MucContact.ROLE_MODERATOR)

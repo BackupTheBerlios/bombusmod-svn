@@ -49,6 +49,7 @@ import locale.SR;
 import ui.Time;
 import ui.controls.StringItemEx;
 import ui.controls.TextFieldEx;
+import util.strconv;
 
 /**
  *
@@ -231,7 +232,8 @@ public class vCardForm
             }
             if (st==2 & photo!=null) {
                 //System.out.println(photoType+"->"+getFileType(photoType));
-                file=FileIO.createConnection(pathSelected+getNickDate()+getFileType(getPhotoMIMEType()));
+                String filename = strconv.replaceBadChars(getNickDate());
+                file=FileIO.createConnection(pathSelected+filename+getFileType(getPhotoMIMEType()));
                 try {
                     os=file.openOutputStream();
                     writeFile(photo);
@@ -270,9 +272,6 @@ public class vCardForm
              nickDate.append(vcard.getNickName());
          } else nickDate.append(vcard.getJid());
 //#endif
-        if (vcard.getNickName()!=null) {
-            nickDate.append(vcard.getNickName());
-        } else nickDate.append(vcard.getJid());
         nickDate.append("_");
         nickDate.append(Time.dayLocalString(Time.utcTimeMillis()).trim());
         return nickDate.toString();

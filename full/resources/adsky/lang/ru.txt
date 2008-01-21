@@ -541,3 +541,22 @@ Vip sound	Звук для VIP
 Copy JID	Копировать JID
 Ping request	Время отклика
 Online time	Время в сети
+
+
+Break connection	Переподключение
+autoScroll	автопрокрутка сообщений
+emulateTabs	эмулировать вкладки
+antispam conference	антиспам в конференциях
+popUps	всплывающие окна
+Started: 	Запуск: 
+Traffic stats: 	Статистика: 
+All: 	Всего: 
+Previous: 	Пред.: 
+Current: 	Текущ.: 
+Memory:	Память:
+Free: 	Своб.: 
+Total: 	Всего: 
+in: 	вх: 
+out: 	исх: 
+Stream: 	Поток: 
+conn., 	соед., 

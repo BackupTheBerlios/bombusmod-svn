@@ -53,6 +53,8 @@ public class strconv {
     private static String PIDGIN_REP="http://pidgin.im/caps";
     private static String QIP_REP="http://qip.ru/caps";
     private static String TKABBER_REP="http://tkabber.jabber.ru/";
+    
+    private static String[] chars= { "?", "\\", "/", "*", ".", "\"", ":", "%", "@", "|", "<", ">", "COM", "LPT", "NULL", "PRINT"};
    
     public static final String convCp1251ToUnicode(final String s){
         if (s==null) return null;
@@ -309,6 +311,13 @@ public class strconv {
         }
         
         return suffix.toString();
+    }
+    
+    public static String replaceBadChars (String src) {
+        for (int i=0; i<chars.length;i++) {
+            src=stringReplace(src,chars[i],"_");
+        }
+        return src;
     }
     
 /* 

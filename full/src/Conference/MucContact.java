@@ -324,9 +324,13 @@ public class MucContact extends Contact{
     }
     
     private void appendL(StringBuffer sb, String append){
-        sb.append((char)1);
+//#if NICK_COLORS
+//#         sb.append((char)1);
+//#endif
         sb.append(append);
-        sb.append((char)2);
+//#if NICK_COLORS
+//#         sb.append((char)2);
+//#endif
     }
     
     public String getTipString() {
@@ -356,6 +360,7 @@ public class MucContact extends Contact{
          if ( group.getSelfContact() == this ) 
             StaticData.getInstance().roster.roomOffline(group);
     }
+
 //#ifdef POPUPS
 //#     public void setWobble(String reason) {
 //#         ConferenceGroup group=(ConferenceGroup)getGroup();
@@ -364,6 +369,7 @@ public class MucContact extends Contact{
 //#         }
 //#     }
 //#endif
+
     public void addMessage(Msg m) {
         super.addMessage(m);
         switch (m.messageType) {

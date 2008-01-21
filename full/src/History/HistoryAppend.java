@@ -56,10 +56,10 @@ public class HistoryAppend {
 //#ifdef TRANSLIT
 //#        String filename=cf.msgPath+((cf.transliterateFilenames)?Translit.translit(histRecord):histRecord)+".txt";
 //#else
-       String filename=cf.msgPath+histRecord+".txt";
+       String filename=strconv.replaceBadChars(histRecord);
 //#endif
        
-       filename = strconv.stringReplace(filename, "%", "@");
+       filename = cf.msgPath+filename+".txt";
        file=FileIO.createConnection(filename);
         try {
             os = file.openOutputStream(0);

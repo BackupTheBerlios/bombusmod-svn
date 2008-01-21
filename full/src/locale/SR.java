@@ -622,6 +622,8 @@ public class SR {
     public static String MS_IN=loadString("in: ");
     public static String MS_OUT=loadString("out: ");
     public static String MS_STREAM=loadString("Stream: ");
+
+    public static Object MS_CONN=loadString("conn., ");
     
     private SR() { }
     

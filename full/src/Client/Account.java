@@ -72,8 +72,14 @@ public class Account extends IconTextElement{
             if (sd.roster.isLoggedIn())
                 sd.roster.logoff();
 	    sd.roster.resetRoster();
-            if (launch) 
-                sd.roster.sendPresence(Config.getInstance().loginstatus, null);
+            if (launch) {
+                //sd.roster.sendPresence(Config.getInstance().loginstatus, null);
+                if (Config.getInstance().loginstatus==5) {
+                    sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);    
+                } else {
+                    sd.roster.sendPresence(Config.getInstance().loginstatus, null);
+                }
+            }
         }
         return a;
     }

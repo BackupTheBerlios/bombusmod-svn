@@ -63,7 +63,7 @@ public class Translit {
         char ac[] = new char[s.length() * 3];
         char ac1[] = s.toCharArray();
         int l = -1;
-        for(int i = 0; i <= s.length() - 1; i++)
+        for(int i=0; i<s.length(); i++)
         {
             char c = ac1[i];
             if((c >= '\u0410') & (c <= '\u044F') || (c == '\u0401' || c == '\u0451'))
