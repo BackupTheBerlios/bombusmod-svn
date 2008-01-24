@@ -553,11 +553,14 @@ public class Contact extends IconTextElement{
         
         String timePing=Long.toString((Time.utcTimeMillis()-ping)/10);
         int dotpos=timePing.length()-2;
+        String first = (dotpos==0)? "0":timePing.substring(0, dotpos);
+        String second = timePing.substring(dotpos);
         
-        StringBuffer s=new StringBuffer((dotpos==0)? "0":timePing.substring(0, dotpos));
+        StringBuffer s=new StringBuffer(first);
         s.append('.');
-        s.append(timePing.substring(dotpos));
-        s.append(" seconds");
+        s.append(second);
+        s.append(' ');
+        s.append(Time.goodWordForm (Integer.parseInt(second), 0));
 
         this.ping=-1;
         return String.valueOf(s);

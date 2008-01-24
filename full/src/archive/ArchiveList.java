@@ -377,12 +377,10 @@ public class ArchiveList
     
     public byte[] readFile(String arhPath){
         byte[] b = null;
-        int len=0;
         FileIO f=FileIO.createConnection(arhPath);
         try {
             InputStream is=f.openInputStream();
-            len=(int)f.fileSize();
-            b=new byte[len];
+            b=new byte[(int)f.fileSize()];
 
             is.read(b);
             is.close();

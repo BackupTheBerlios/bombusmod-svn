@@ -29,7 +29,6 @@ package locale;
 
 import Client.Config;
 import java.util.Hashtable;
-import javax.microedition.lcdui.Item;
 import util.StringLoader;
 
 public class SR {
@@ -78,7 +77,7 @@ public class SR {
     public   static String MS_ACCOUNTS = loadString( "Accounts" );
     public   static String MS_DELETE_LIST = loadString( "Delete list" );
     public   static String MS_ACCOUNT_= loadString( "Account >" );
-    public   static String MS_SHOWOFFLINES = loadString( "Show Offlines" );
+    //public   static String MS_SHOWOFFLINES = loadString( "Show Offlines" );
     public   static String MS_SELECT = loadString( "Select" );
     public   static String MS_SUBJECT = loadString( "Subject" );
     public   static String MS_GROUP_MENU = loadString( "Group menu" );
@@ -124,7 +123,7 @@ public class SR {
     public   static String MS_DELETE_ASK = loadString( "Delete contact?" );
     public   static String MS_SUBSCRIBE = loadString( "Authorize" );
     public   static String MS_NICKNAMES = loadString( "Nicknames" );
-    public   static String MS_ENT_SETUP = loadString( "Entering setup" );
+    //public   static String MS_ENT_SETUP = loadString( "Entering setup" );
     public   static String MS_ADD_ARCHIVE = loadString( "to Archive" );
     public   static String MS_BACK = loadString( "Back" );
     public   static String MS_HEAP_MONITOR = loadString( "heap monitor" );
@@ -219,9 +218,9 @@ public class SR {
     //public   static String MS_JABBER_TOOLS = loadString( "Jabber Tools" ); //replaced by "Tools"
     public   static String MS_PORT = loadString( "Port" );
     public   static String MS_RESUME = loadString( "Resume Message" );
-    public   static String MS_PROXY_ENABLE = loadString( "proxy CONNECT" );
-    public   static String MS_PROXY_HOST = loadString( "Proxy name/IP" );
-    public   static String MS_PROXY_PORT = loadString( "Proxy port" );
+    //public   static String MS_PROXY_ENABLE = loadString( "proxy CONNECT" );
+    //public   static String MS_PROXY_HOST = loadString( "Proxy name/IP" );
+    //public   static String MS_PROXY_PORT = loadString( "Proxy port" );
     public   static String MS_ARE_YOU_SURE_WANT_TO_DISCARD = loadString( "Are You sure want to discard " );
     public   static String MS_FROM_OWNER_TO = loadString( " from OWNER to " );
     public   static String MS_MODIFY_AFFILIATION = loadString( "Modify affiliation" );
@@ -244,7 +243,7 @@ public class SR {
     public   static String MS_ASK_SUBSCRIPTION=loadString( "Ask subscription");
     public   static String MS_GRANT_SUBSCRIPTION=loadString("Grant subscription");
     public   static String MS_INVITE=loadString("Invite to conference");
-    public   static String MS_INVITE_REASON=loadString("Reason");
+    public   static String MS_REASON=loadString("Reason");
     public   static String MS_YOU_HAVE_BEEN_INVITED=loadString("You have been invited to ");
 
     public   static String MS_DISCO_ROOM=loadString("Participants");
@@ -301,9 +300,6 @@ public class SR {
     public static String MS_CHOOSE_STATUS=loadString("Choose status");
     public static String MS_ADD_STATUS=loadString("Add status");
     public static String MS_REMOVE_STATUS=loadString("Remove status");
-
-    public static String MS_USER=loadString("User");
-    public static String MS_REASON=loadString("Reason");
 
     public static String MS_ADRESS=loadString("Address");
     public static String MS_EXPORT_TO_FILE=loadString("Make BackUp");
@@ -448,7 +444,7 @@ public class SR {
     public   static String MS_NEW_BOOKMARK = loadString( "New conference" );
     public   static String MS_ROOT = loadString( "Root" );
     public   static String MS_DECLINE = loadString( "Decline" );
-    public   static String MS_AUTH_NEW = loadString( "authorize new contacts" );
+    public   static String MS_AUTH_NEW = loadString( "Authorize new contacts" );
     public   static String MS_AUTH_AUTO = loadString( "[auto-subscribe]" );
     public   static String MS_KEEPALIVE = loadString( "Keep-Alive" );
     public   static String MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM = loadString( " has been unaffiliated and kicked from members-only room" );
@@ -467,11 +463,6 @@ public class SR {
 //#     public static String MS_UNLOCK_PRIVATE = loadString( "Allow private" );
 //#     public static String MS_BLOCK_PRIVATE = loadString( "Block private" );
 //#     public static String MS_CONTACT_REQUEST_CHAT = loadString( "Contact request chat, Allow or Block?" );
-//#endif
-    
-//#if SERVER_SIDE_CONFIG
-//#     public static String MS_SAVE_OPTIONS_TO_SERVER = loadString( "Save options to server" );
-//#     public static String MS_RESTORE_OPTIONS_FROM_SERVER = loadString( "Restore options from server" );
 //#endif
     
 //#ifdef TRANSLIT
@@ -518,9 +509,9 @@ public class SR {
     public static String MS_ALERT_PROFILE_AUTO = loadString( "Auto" );
     public static String MS_ALERT_PROFILE_ALLSIGNALS = loadString( "All signals" );
     public static String MS_ALERT_PROFILE_VIBRA = loadString( "Vibra" );
-    public static String MS_ALERT_PROFILE_SOUND = loadString( "Sound" );
+    //public static String MS_ALERT_PROFILE_SOUND = loadString( "Sound" );
     public static String MS_ALERT_PROFILE_NOSIGNALS = loadString( "No signals" );
-    public static String MS_ALERT_PROFILE_DEFAULT = loadString( " (default)" );
+    public static String MS_IS_DEFAULT = loadString( " (default)" );
 
     public static String MS_QUIT_ASK = loadString( "Quit?" );
 
@@ -619,11 +610,17 @@ public class SR {
     public static String MS_MEMORY=loadString("Memory:");
     public static String MS_FREE = loadString("Free: ");
     public static String MS_TOTAL=loadString("Total: ");
-    public static String MS_IN=loadString("in: ");
-    public static String MS_OUT=loadString("out: ");
-    public static String MS_STREAM=loadString("Stream: ");
+    // static String MS_IN=loadString("in: ");
+    //public static String MS_OUT=loadString("out: ");
+    //public static String MS_STREAM=loadString("Stream: ");
 
-    public static Object MS_CONN=loadString("conn., ");
+    public static String MS_CONN=loadString("conn., ");
+    
+//2008-01-24
+    public static String MS_USER = loadString( "User" );
+//#if IMPORT_EXPORT
+//#     public static String MS_IMPORT_EXPORT=loadString("Import/Export");
+//#endif
     
     private SR() { }
     

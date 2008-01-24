@@ -127,7 +127,7 @@ public class JabberDataBlockDispatcher extends Thread
       {
         try
         {
-          Thread.sleep( 100L );
+          Thread.sleep( 300L );
         }
         catch( InterruptedException e )
         {

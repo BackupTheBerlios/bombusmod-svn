@@ -48,7 +48,7 @@ public class XMLParser
 
   private String rootTag = null;
   
-  public static final int MAX_BLOCK_SIZE=8192; //anti-flood limiter
+  public static final int MAX_BLOCK_SIZE=4096; //anti-flood limiter
 
   private final static int MAX_BIN_DATASIZE=64*1024; //64 KB - experimental
 

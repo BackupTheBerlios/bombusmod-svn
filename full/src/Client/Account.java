@@ -47,7 +47,7 @@ public class Account extends IconTextElement{
     private int port=5222;
     public boolean active;
     private boolean useSSL;
-    private boolean sasl;
+    private boolean sasl = true;
     private boolean plainAuth;
     private boolean mucOnly;
     
@@ -112,34 +112,25 @@ public class Account extends IconTextElement{
             a.nick     = inputStream.readUTF();
             a.resource = inputStream.readUTF();
 	    
-            // version и�?пользует�?�? дл�? корректной работы midp1 - аккаунты
-            // хран�?т�?�? в файле без разделени�? на запи�?и
-            if (version>=2) a.useSSL=inputStream.readBoolean();
-            if (version>=3) a.plainAuth=inputStream.readBoolean();
+            a.useSSL=inputStream.readBoolean();
+            a.plainAuth=inputStream.readBoolean();
             
-	    if (version>=4) a.mucOnly=inputStream.readBoolean();
+	    a.mucOnly=inputStream.readBoolean();
             
-            if (version>=5) {
-                a.setEnableProxy(inputStream.readBoolean());
-                a.setProxyHostAddr(inputStream.readUTF());
-                a.setProxyPort(inputStream.readInt());
-            }
-            
-            if (version>=6) 
-//#if SASL
-                a.sasl=inputStream.readBoolean();
-//#else
-//#                 a.sasl=false; inputStream.readBoolean();
+            a.setEnableProxy(inputStream.readBoolean());
+            a.setProxyHostAddr(inputStream.readUTF());
+            a.setProxyPort(inputStream.readInt());
+
+            a.sasl=inputStream.readBoolean();
+//#if !SASL
+//#             a.sasl=false;
 //#endif
-            if (version>=7) {
-                a.keepAliveType=inputStream.readInt();
-                a.keepAlivePeriod=inputStream.readInt();
-            }
+
+            a.keepAliveType=inputStream.readInt();
+            a.keepAlivePeriod=inputStream.readInt();
             
             inputStream.readBoolean(); //firstrun
-/*
-            a.compressionLevel= inputStream.readInt();
-*/
+            
         } catch (IOException e) { /*e.printStackTrace();*/ }
             
         return (a.userName==null)?null:a;
@@ -157,7 +148,6 @@ public class Account extends IconTextElement{
         s.append('/');
         s.append(resource);
         return s.toString();
-        //jid=userName+'@'+server+'/'+resource;
     }
     public String getJid(){
         return userName+'@'+server+'/'+resource;
@@ -212,10 +202,7 @@ public class Account extends IconTextElement{
             outputStream.writeInt(keepAliveType);
             outputStream.writeInt(keepAlivePeriod);
             
-            outputStream.writeBoolean(false);  //firstrun
-/*
-            outputStream.writeInt(compressionLevel);
-*/	    
+            outputStream.writeBoolean(false);  //firstrun    
         } catch (IOException e) {
             //e.printStackTrace();
         }

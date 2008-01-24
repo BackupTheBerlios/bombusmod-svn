@@ -131,12 +131,14 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef SERVICE_DISCOVERY
 //# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 //#endif
+            if (contact.status<Presence.PRESENCE_OFFLINE)
+                addItem(SR.MS_PING,893);
+
 	    addItem(SR.MS_SEND_BUFFER,914, 0x0f22);
             
             if (contact.getGroupType()!=Groups.TYPE_SELF) {
                 addItem(SR.MS_COPY_JID,892, 0x0f22);
                 if (contact.status<Presence.PRESENCE_OFFLINE) {
-                    addItem(SR.MS_PING,893);
                     addItem(SR.MS_TIME,891);
                     addItem(SR.MS_IDLE,889);
                 }
@@ -165,9 +167,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
 		addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
-//#ifdef COLORS
-//# 	    addItem("Send current color scheme",912, 0x0f22);
-//#endif
 
 	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) 
                 return;

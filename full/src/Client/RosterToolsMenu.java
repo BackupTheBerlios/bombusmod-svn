@@ -75,26 +75,29 @@ public class RosterToolsMenu
 //#ifdef COLORS
 //#         addItem(SR.MS_COLOR_TUNE, 7, 0x0f25);
 //#endif
-        addItem(SR.MS_NOTICES_OPTIONS, 8, 0x0f17);
+//#if IMPORT_EXPORT
+//#         addItem(SR.MS_IMPORT_EXPORT, 8, 0x0f03);
+//#endif
+        addItem(SR.MS_NOTICES_OPTIONS, 9, 0x0f17);
 //#ifdef POPUPS
-//#         addItem(SR.MS_STATS, 9, 0x0f30);
+//#         addItem(SR.MS_STATS, 10, 0x0f30);
 //#endif
 //#ifdef CHECK_VERSION
-//#         addItem(SR.MS_CHECK_UPDATE, 10, 0x46);
+//#         addItem(SR.MS_CHECK_UPDATE, 11, 0x46);
 //#endif
 //#ifdef USER_KEYS
 //#         if (Config.getInstance().userKeys)
-//#             addItem(SR.MS_CUSTOM_KEYS, 11, 0x0f03);
+//#             addItem(SR.MS_CUSTOM_KEYS, 12, 0x0f03);
 //#endif
 //#if SASL_XGOOGLETOKEN
         if (StaticData.getInstance().account.isGmail())
-            addItem(SR.MS_CHECK_GOOGLE_MAIL, 12,0x46);
+            addItem(SR.MS_CHECK_GOOGLE_MAIL, 13,0x46);
 //#endif        
 /*		
         addItem("ArchiveDump", 10);
 */        
         
-        addItem(SR.MS_BREAK_CONECTION, 14);
+        addItem(SR.MS_BREAK_CONECTION, 14, 0x13);
         attachDisplay(display);
     }
     public void eventOk(){
@@ -148,26 +151,29 @@ public class RosterToolsMenu
 //#                 return;
 //#endif
             case 8:
+                new IE.IEMenu(display);
+                return;         
+            case 9:
                 new AlertCustomizeForm(display);
                 return;
 //#ifdef POPUPS
-//#             case 9: //traffic stats
+//#             case 10: //traffic stats
 //#                 StaticData.getInstance().roster.showStats();
 //#                 return;
 //#endif
 //#ifdef CHECK_VERSION
-//#             case 10:
+//#             case 11:
 //#                 if (! connected) break;
 //#                 new util.LastVersion(display);
 //#                 return;
 //#endif
 //#ifdef USER_KEYS
-//#             case 11:
+//#             case 12:
 //#                 new userKeysList(display);
 //#                 return;
 //#endif
 //#if SASL_XGOOGLETOKEN
-            case 12: //mail check
+            case 13: //mail check
                 StaticData.getInstance().roster.sendGmailReq();;
 		return; 
 //#endif

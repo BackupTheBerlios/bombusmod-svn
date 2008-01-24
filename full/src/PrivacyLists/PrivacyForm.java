@@ -71,9 +71,9 @@ public class PrivacyForm
         choiceAction.setSelectedIndex(item.action, true);
         
         form.append(choiseType);
+        choiseType.setSelectedIndex(item.type, true);
         
         form.append(textValue);
-        choiseType.setSelectedIndex(item.type, true);
         switchType();
         
         form.append(choiseStanzas);
@@ -113,7 +113,10 @@ public class PrivacyForm
                     int i;
 
                     for (i=0; i<PrivacyItem.subscrs.length; i++)
-                    if (item.value.equals(PrivacyItem.subscrs[i]))   break;
+                    if (item.value.equals(PrivacyItem.subscrs[i])) {
+                         choiceSubscr.setSelectedIndex(i, true);
+                        break;
+                    }
                         choiceSubscr.setSelectedIndex(i, true);
                 }
                     form.set(2, choiceSubscr);

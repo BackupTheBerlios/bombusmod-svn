@@ -179,7 +179,7 @@ public class JabberStream implements XMLEventListener, Runnable {
                 if (pingSent) {
                     dispatcher.broadcastTerminatedConnection(new Exception("Version Ping Timeout"));
                 } else {
-                    System.out.println("Version Ping myself");
+                    //System.out.println("Version Ping myself");
                     versionPing();
                 }
                 break;
@@ -187,7 +187,7 @@ public class JabberStream implements XMLEventListener, Runnable {
                 if (pingSent) {
                     dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
                 } else {
-                    System.out.println("Ping myself");
+                    //System.out.println("Ping myself");
                     ping();
                 }
                 break;
@@ -254,15 +254,10 @@ public class JabberStream implements XMLEventListener, Runnable {
         if (currentBlock!=null){
             
             currentBlock = new JabberDataBlock( name, currentBlock, attributes );
-            // TODO: remove stub
-            // M55 STUB
-//#if !(MIDP1)
             // photo reading
             if ( name.equals("BINVAL") ){
                 return true;
             }
-//#endif
-            
             if (rosterNotify) if (name.equals("item")) dispatcher.rosterNotify();
             
         } else if ( name.equals( "stream:stream" ) ) {
@@ -382,11 +377,9 @@ public class JabberStream implements XMLEventListener, Runnable {
          }
          public void run() {
              try {
-                 System.out.println("Keep-Alive");
+                 //System.out.println("Keep-Alive");
                  sendKeepAlive(type);
-//#ifndef WSYSTEMGC
                  System.gc();
-//#endif
             } catch (Exception e) { 
                 dispatcher.broadcastTerminatedConnection(e);
                 //e.printStackTrace(); 

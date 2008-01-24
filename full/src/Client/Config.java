@@ -44,7 +44,7 @@ import io.NvStorage;
  */
 public class Config {
     
-    public final int vibraLen=getIntProperty("vibra_len",500);
+    public final int vibraLen=500;
 
     public final static int AWAY_OFF=0;
     public final static int AWAY_LOCK=1;
@@ -78,14 +78,14 @@ public class Config {
     
     private static String platformName;
     
-    public boolean ghostMotor=getBooleanProperty("moto_e398",false);
+    public boolean ghostMotor=false;
     //public boolean blFlash=!ghostMotor; //true;
     
     
-    public boolean muc119=getBooleanProperty("muc_119",true);	// before muc 1.19 use muc#owner instead of muc#admin
+    public boolean muc119=true;	// before muc 1.19 use muc#owner instead of muc#admin
     
-    public char keyLock=getCharProperty("key_lock",'*');
-    public char keyVibra=getCharProperty("key_vibra",'#');
+    public char keyLock='*';
+    public char keyVibra='#';
     
 
      public String msgPath="";
@@ -220,8 +220,8 @@ public class Config {
         getPhoneManufacturer();
         
 	int gmtloc=TimeZone.getDefault().getRawOffset()/3600000;
-	locOffset=getIntProperty( "time_loc_offset", 0);
-	gmtOffset=getIntProperty("time_gmt_offset", gmtloc);
+	locOffset=0;
+	gmtOffset=gmtloc;
 	
 	short greenKeyCode=-1000;
                 
@@ -516,42 +516,7 @@ public class Config {
     public void updateTime(){
 	Time.setOffset(gmtOffset, locOffset);
     }
-    
-    
-    public final String getStringProperty(final String key, final String defvalue) {
-	try {
-	    String s=BombusMod.getInstance().getAppProperty(key);
-	    return (s==null)?defvalue:s;
-	} catch (Exception e) {	}
-        return defvalue;
-    }
-    
-    public final int getIntProperty(final String key, final int defvalue) {
-	try {
-	    String s=BombusMod.getInstance().getAppProperty(key);
-	    return Integer.parseInt(s);
-	} catch (Exception e) { }
-	return defvalue;
-    }
-    
-    public final char getCharProperty(final String key, final char defvalue) {
-	try {
-	    String s=BombusMod.getInstance().getAppProperty(key);
-	    return s.charAt(0);
-	} catch (Exception e) {	}
-        return defvalue;
-    }
-    
-    public final boolean getBooleanProperty(final String key, final boolean defvalue) {
-	try {
-	    String s=BombusMod.getInstance().getAppProperty(key);
-	    if (s.equals("true")) return true;
-	    if (s.equals("yes")) return true;
-	    if (s.equals("1")) return true;
-            return false;
-	} catch (Exception e) { }
-        return defvalue;
-    }
+
     
     private final void getPhoneManufacturer() {
         if (phoneManufacturer==NOT_DETECTED) {
@@ -653,6 +618,32 @@ public class Config {
 
     public static String getOs() {
         return "MIDP2 Platform=" +getPlatformName();
+    }
+    
+    
+    public final String getStringProperty(final String key, final String defvalue) {
+	try { return (key==null)?defvalue:key; } catch (Exception e) {	}
+        return defvalue;
+    }
+    
+    public final int getIntProperty(final String key, final int defvalue) {
+	try { return Integer.parseInt(key); } catch (Exception e) { }
+	return defvalue;
+    }
+    
+    public final char getCharProperty(final String key, final char defvalue) {
+	try { return key.charAt(0); } catch (Exception e) {	}
+        return defvalue;
+    }
+    
+    public final boolean getBooleanProperty(final String key, final boolean defvalue) {
+	try {
+	    if (key.equals("true")) return true;
+	    if (key.equals("yes")) return true;
+	    if (key.equals("1")) return true;
+            return false;
+	} catch (Exception e) { }
+        return defvalue;
     }
     
 }

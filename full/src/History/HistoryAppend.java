@@ -44,22 +44,14 @@ public class HistoryAppend {
     private OutputStream os;
 //#endif
     
-    public HistoryAppend(StringBuffer body, String histRecord) {
-                
-       byte[] bodyMessage;
+    public HistoryAppend(StringBuffer body, String filename) {        
+       byte[] bodyMessage=(cf.cp1251)?strconv.convUnicodeToCp1251(body.toString()).getBytes():body.toString().getBytes();
 
-       if (cf.cp1251) {
-            bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
-       } else {
-            bodyMessage=body.toString().getBytes();
-       }
 //#ifdef TRANSLIT
-//#        String filename=cf.msgPath+((cf.transliterateFilenames)?Translit.translit(histRecord):histRecord)+".txt";
-//#else
-       String filename=strconv.replaceBadChars(histRecord);
+//#        filename=(cf.transliterateFilenames)?Translit.translit(histRecord):histRecord;
 //#endif
        
-       filename = cf.msgPath+filename+".txt";
+       filename = cf.msgPath+strconv.replaceBadChars(filename)+".txt";
        file=FileIO.createConnection(filename);
         try {
             os = file.openOutputStream(0);

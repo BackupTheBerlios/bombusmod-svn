@@ -79,9 +79,6 @@ public class ConfigForm implements
 //#     NumberField fieldAwatDelay;
 //#     ChoiceGroup autoAwayType;
 //#endif
-//#if SERVER_SIDE_CONFIG  
-//#     ChoiceGroup settings;
-//#endif
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     
 //#ifdef COLORS
@@ -359,17 +356,6 @@ public class ConfigForm implements
 //# 	SkinFile.setItemCommandListener(this);
 //#endif
     
-//#if SERVER_SIDE_CONFIG  
-//#         settings=new ChoiceGroup(SR.MS_OPTIONS, Choice.MULTIPLE);
-//#         settings.append(SR.MS_SAVE_OPTIONS_TO_SERVER, null);
-//#         
-//#         boolean se[]={
-//#             false
-//#         };
-//#         this.se=se;
-//#         settings.setSelectedFlags(se);
-//#         f.append(settings);
-//#endif
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);       
         f.setCommandListener(this);
@@ -388,9 +374,6 @@ public class ConfigForm implements
 //#ifdef AUTOSTATUS
 //#             awayStatus.getSelectedFlags(aa);
 //#endif
-//#if SERVER_SIDE_CONFIG  
-//#             settings.getSelectedFlags(se);
-//#endif 
             
             cf.notInListDropLevel=nil.getSelectedIndex();
             
@@ -477,11 +460,7 @@ public class ConfigForm implements
             cf.updateTime();
             
             cf.saveToStorage();
-//#if SERVER_SIDE_CONFIG  
-//#             boolean savesettings=se[0];
-//#             if (savesettings)
-//#                 new ConfigPrivateStorage(false);
-//#endif
+
             StaticData.getInstance().roster.reEnumRoster();
             destroyView();
         }
