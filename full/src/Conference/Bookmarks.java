@@ -255,9 +255,9 @@ public class Bookmarks
 
         switch (keyCode) {
             case KEY_NUM4:
-                keyLeft(); break;
+                pageLeft(); break;
             case KEY_NUM6:
-                keyRight(); break;
+                pageRight(); break;
             case keyClear:
                 new YesNoAlert(display, SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), this);
                 break;

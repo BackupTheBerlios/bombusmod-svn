@@ -47,6 +47,7 @@ public class IEMenu
 	int index=me.index;
         if (index==99) {
             destroyView();
+            return;
         }
         choice = index;
         

@@ -101,7 +101,7 @@ public class Roster
     
     private Jid myJid;
 
-    public JabberStream theStream ;
+    public JabberStream theStream;
         
     int messageCount;
     int highliteMessageCount;
@@ -737,13 +737,13 @@ public class Roster
 
         myMessage=strconv.toExtendedString(myMessage);
         
-        Presence presence = new Presence(myStatus, es.getPriority(), myMessage, StaticData.getInstance().account.getNick());
+        Presence presence = new Presence(myStatus, es.getPriority(), myMessage, sd.account.getNick());
 		
         if (isLoggedIn()) {
             if (status==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
                 groups.queryGroupState(false);
             
-            if (!StaticData.getInstance().account.isMucOnly() )
+            if (!sd.account.isMucOnly() )
 				theStream.send( presence );
 //#ifndef WMUC
             multicastConferencePresence(myMessage); //null
@@ -791,7 +791,7 @@ public class Roster
 
         myMessage=strconv.toExtendedString(myMessage);
 
-        Presence presence = new Presence(status, es.getPriority(), myMessage, StaticData.getInstance().account.getNick());
+        Presence presence = new Presence(status, es.getPriority(), myMessage, sd.account.getNick());
         
         presence.setTo(to);
         
@@ -1050,10 +1050,6 @@ public class Roster
     }
     
     public void loginSuccess() {
-        // enable File transfers
-//#if (FILE_IO && FILE_TRANSFER)
-//#             theStream.addBlockListener(TransferDispatcher.getInstance());
-//#endif
         //enable keep-alive packets
         theStream.startKeepAliveTask();
 		
@@ -1076,7 +1072,7 @@ public class Roster
         rpercent=60;
         //AutoAway=new TimerTaskAutoAway();
         //if (cf.autoAwayType==cf.AWAY_IDLE) TimerTaskAutoAway.startRotate(5,this);
-        if (StaticData.getInstance().account.isMucOnly()) {
+        if (sd.account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
             try {
                 reEnumRoster();
@@ -1089,6 +1085,11 @@ public class Roster
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
         }
+        
+//#if FILE_TRANSFER
+//#      // enable File transfers
+//#      theStream.addBlockListener(TransferDispatcher.getInstance());
+//#endif
 //#ifndef WMUC
         //query bookmarks
         theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
@@ -2158,6 +2159,12 @@ public class Roster
                     reEnumRoster();
                 }
                 break;
+            case KEY_NUM4:
+                super.pageLeft();
+                break;
+            case KEY_NUM6:
+                super.pageRight();
+                break;
 //#ifdef AUTOSTATUS
 //#             case SE_FLIPCLOSE_JP6:
 //#             case SIEMENS_FLIPCLOSE:
@@ -2203,12 +2210,6 @@ public class Roster
                     }
                     if (p==c) pass++;
                 }
-                break;
-            case KEY_NUM4:
-                keyLeft();
-                break;
-            case KEY_NUM6:
-                keyRight();
                 break;
             case KEY_NUM3:
                 searchGroup(-1);

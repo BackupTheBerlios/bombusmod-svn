@@ -45,13 +45,11 @@ import midlet.BombusMod;
 public class userKeyExec {
     
     private static userKeyExec instance;
-    
-    static Config cf;
+    static Config cf=Config.getInstance();
     
     public static userKeyExec getInstance(){
 	if (instance==null) {
 	    instance=new userKeyExec();
-            cf=Config.getInstance();
             instance.initCommands();
 	}
 	return instance;
@@ -91,7 +89,7 @@ public class userKeyExec {
         return commandNum;
     }
     
-    public boolean commandExecute(Display display, int command) { //return false if key not executed
+    public void commandExecute(Display display, int command) { //return false if key not executed
         this.display=display;
 
         int commandId=getCommandByKey(command);
@@ -107,71 +105,64 @@ public class userKeyExec {
                 break;
             case 1: 
                 new ConfigForm(display);
-                return true;
+                break;
             case 2: 
                 roster.cleanupAllHistories();
-                return true;
+                break;
             case 3: 
                 roster.connectionTerminated(new Exception("reconnect by user"));
-                return true;
+                break;
             case 4: 
                 roster.showStats();
-                return true;
+                break;
             case 5:
                 roster.cmdStatus();
-                return true;
-//#if (FILE_IO && FILE_TRANSFER)
-//#             case 6: 
+                break;
+            case 6: 
+//#if (FILE_TRANSFER)
 //#                 new io.file.transfer.TransferManager(display);
-//#                 return true;
 //#endif
+                break;
+            case 7: 
 //#ifdef ARCHIVE
-//#             case 7: 
 //#                 roster.cmdArchive();
-//#                 return true;
 //#endif
+                break;
+            case 8: 
 //#ifdef SERVICE_DISCOVERY
-//#             case 8: 
-//#                 if (connected) {
-//#                     new ServiceDiscovery(display, null, null);
-//#                     return true;
-//#                 }
-//#                 break;
+//#                 if (connected) new ServiceDiscovery(display, null, null);
 //#endif
+                break;
+            case 9: 
 //#ifdef PRIVACY
-//#             case 9: 
 //#                 if (connected) new PrivacySelect(display);
-//#                 return true;
 //#endif
+                break;
             case 10: //key pound
                 new userKeysList(display);
-                return true;
+                break;
+            case 11:
 //#ifdef POPUPS
-//#             case 11:
 //#                 roster.cmdClearPopups();
-//#                 return true;
 //#endif
+                break;
             case 12:
                 cf.lightState=!cf.lightState;
                 roster.setLight(cf.lightState);
                 cf.saveToStorage();
-                return true;
+                break;
             case 13:
                 new Info.InfoWindow(display);
-                return true;
+                break;
             case 14:
-                if (cf.allowMinimize) {
+                if (cf.allowMinimize)
                     BombusMod.getInstance().hideApp(true);
-                    return true;
-                }
                 break;
             case 15:
                 roster.connectionTerminated(new Exception("Simulated break"));
-                return true;
+                break;
                 
         }
-        
-        return false;
     } 
 
 

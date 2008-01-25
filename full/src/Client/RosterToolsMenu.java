@@ -130,7 +130,7 @@ public class RosterToolsMenu
             case 3:
                 new ConfigForm(display);
                 return;
-//#if (FILE_IO && HISTORY)
+//#if (HISTORY)
 //#             case 4: //history
 //#                 new HistoryConfig(display);
 //#                 return;
@@ -140,7 +140,7 @@ public class RosterToolsMenu
                 new io.file.browse.Browser(null, display, null, false);
                 return;
 //#endif
-//#if (FILE_IO && FILE_TRANSFER)
+//#if (FILE_TRANSFER)
 //#             case 6:
 //#                 new io.file.transfer.TransferManager(display);
 //#                 return;
@@ -150,9 +150,11 @@ public class RosterToolsMenu
 //#                 new ColorForm(display);
 //#                 return;
 //#endif
-            case 8:
-                new IE.IEMenu(display);
-                return;         
+//#if IMPORT_EXPORT
+//#             case 8:
+//#                 new IE.IEMenu(display);
+//#                 return; 
+//#endif
             case 9:
                 new AlertCustomizeForm(display);
                 return;

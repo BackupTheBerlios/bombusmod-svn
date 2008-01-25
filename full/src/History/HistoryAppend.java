@@ -48,7 +48,7 @@ public class HistoryAppend {
        byte[] bodyMessage=(cf.cp1251)?strconv.convUnicodeToCp1251(body.toString()).getBytes():body.toString().getBytes();
 
 //#ifdef TRANSLIT
-//#        filename=(cf.transliterateFilenames)?Translit.translit(histRecord):histRecord;
+//#        filename=(cf.transliterateFilenames)?Translit.translit(filename):filename;
 //#endif
        
        filename = cf.msgPath+strconv.replaceBadChars(filename)+".txt";

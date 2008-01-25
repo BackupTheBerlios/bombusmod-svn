@@ -137,7 +137,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
             setRotator();
         }
     }
-    public void keyRight(){ 
+    public void pageRight(){ 
         if ( xCursor < ( (cursor<lines-1)?(xCnt-1):(xLastCnt-1) ) ) {
             xCursor++;
             setRotator();
@@ -201,13 +201,13 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         
         switch (keyCode) {
             case KEY_NUM3 :
-                super.keyLeft(); keyDwn(); break;
+                super.pageLeft(); keyDwn(); break;
             case KEY_NUM9:
-                super.keyRight(); break;
+                super.pageRight(); break;
             case KEY_NUM4:
                 keyLeft(); break;
             case KEY_NUM6:
-                keyRight(); break;
+                pageRight(); break;
         }
     }
 }

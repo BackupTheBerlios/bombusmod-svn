@@ -491,20 +491,18 @@ public class ContactMessageList extends MessageList
 //#             }
 //#         } else {
 //#endif
-        //super.userKeyPressed(keyCode);
-        
         switch (keyCode) {
             case KEY_NUM4:
                 if (cf.useTabs)
                     nextContact(-1); //previous contact with messages
                 else
-                    super.keyLeft();
+                    super.pageLeft();
                 break;
             case KEY_NUM6:
                 if (cf.useTabs)
                     nextContact(1); //next contact with messages
                 else
-                    super.keyRight();
+                    super.pageRight();
                 break;
             case KEY_NUM3:
                 new ActiveContacts(display, contact);

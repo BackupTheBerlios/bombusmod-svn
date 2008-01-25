@@ -61,21 +61,17 @@ public abstract class VirtualList
     private boolean reverse=false;
 
     public static int isbottom=2; //default state both panels show, reverse disabled
-
-    private static final int USER_OTHER_KEY_PRESSED = 0;
-    private static final int USER_STAR_KEY_PRESSED = 1;
-    private static final int USER_KEY_EXECUTED = 2;
-    
-    private int lastKeyPressed = 0;
-    private int additionKeyState = USER_OTHER_KEY_PRESSED;
-    
-    
-    //public Phone ph=Phone.getInstance();
-    //private Stats stats=Stats.getInstance();
     
 //#ifdef USER_KEYS
+//#     private static final int USER_OTHER_KEY_PRESSED = 1;
+//#     private static final int USER_STAR_KEY_PRESSED = 2;
+//#     private static final int USER_KEY_EXECUTED = 3;
+//#     
+//#     private int additionKeyState = USER_OTHER_KEY_PRESSED;
+//#    
 //#     public userKeyExec ue=userKeyExec.getInstance();
 //#endif
+
 //#ifdef POPUPS
 //#     public static PopUp popup = new PopUp();
 //# 
@@ -132,7 +128,7 @@ public abstract class VirtualList
     public static short keyVolDown=0x1000;
     public static short keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;
-    public static boolean fullscreen=false;
+    public static boolean fullscreen=true;
     public static boolean memMonitor;
     public static boolean showBalloons;
     public static boolean userKeys;
@@ -616,7 +612,7 @@ public abstract class VirtualList
     
     protected void keyRepeated(int keyCode){ key(keyCode); }
     protected void keyReleased(int keyCode) { kHold=0; }
-    protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  lastKeyPressed=keyCode; }
+    protected void keyPressed(int keyCode) { kHold=0; key(keyCode); }
     
     protected void pointerPressed(int x, int y) {
 	if (scrollbar.pointerPressed(x, y, this)) {
@@ -660,47 +656,11 @@ public abstract class VirtualList
     protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
     
 //#ifdef USER_KEYS
-//#     private boolean additionKeyPressed(int keyCode) {
-//#         int userCMD=-1;
-//#         switch (keyCode) {
-//#             case KEY_NUM0: 
-//#                 userCMD=0;
-//#                 break;
-//#             case KEY_NUM1: 
-//#                 userCMD=1;
-//#                 break;
-//#             case KEY_NUM2: 
-//#                 userCMD=2;
-//#                 break;
-//#             case KEY_NUM3: 
-//#                 userCMD=3;
-//#                 break;
-//#             case KEY_NUM4: 
-//#                 userCMD=4;
-//#                 break;
-//#             case KEY_NUM5: 
-//#                 userCMD=5;
-//#                 break;
-//#             case KEY_NUM6: 
-//#                 userCMD=6;
-//#                 break;
-//#             case KEY_NUM7: 
-//#                 userCMD=7;
-//#                 break;
-//#             case KEY_NUM8: 
-//#                 userCMD=8;
-//#                 break;
-//#             case KEY_NUM9: 
-//#                 userCMD=9;
-//#                 break;
-//#             case KEY_POUND: 
-//#                 userCMD=10;
-//#                 break;
-//#         }
-//#         if (userCMD>-1)
-//#             return ue.commandExecute(display, userCMD);
-//#         
-//#         return true;
+//#     private void additionKeyPressed(int keyCode) {
+//#         if (keyCode>-1 && keyCode<10)
+//#             ue.commandExecute(display, keyCode);
+//#         else if (keyCode==KEY_POUND)
+//#             ue.commandExecute(display, 10);
 //#     }
 //#endif
     
@@ -722,17 +682,17 @@ public abstract class VirtualList
 //#         if (userKeys) {
 //#             switch (additionKeyState) {
 //#                 case USER_OTHER_KEY_PRESSED:
-//#                 case USER_KEY_EXECUTED:                
+//#                 case USER_KEY_EXECUTED:
 //#                     additionKeyState=(keyCode==KEY_STAR)?USER_STAR_KEY_PRESSED:USER_OTHER_KEY_PRESSED;
 //#                     break;
 //#                 case USER_STAR_KEY_PRESSED:
 //#                     additionKeyState=(keyCode!=KEY_STAR)?USER_KEY_EXECUTED:USER_STAR_KEY_PRESSED;
-//#                     if (!additionKeyPressed(keyCode))
-//#                         return;
+//#                     additionKeyPressed(keyCode);
 //#                     break;
 //#             }
 //#         }
 //#endif
+        
 //#if ALT_INPUT
 //#     if (inputbox==null) {
 //#endif
@@ -789,11 +749,21 @@ public abstract class VirtualList
                 default:
                     try {
                         switch (getGameAction(keyCode)){
-                            case UP:    { keyUp(); break; }
-                            case DOWN:  { keyDwn(); break; }
-                            case LEFT:  { keyLeft(); break; }
-                            case RIGHT: { keyRight(); break; }
-                            case FIRE:  { eventOk(); break; }
+                            case UP:
+                                keyUp();
+                                break;
+                            case DOWN:
+                                keyDwn();
+                                break;
+                            case LEFT:
+                                pageLeft();
+                                break;
+                            case RIGHT:
+                                pageRight();
+                                break;
+                            case FIRE:
+                                eventOk();
+                                break;
                         default:
                             if (keyCode==greenKeyCode) { keyGreen(); break; }
                             if (keyCode==keyVolDown) { moveCursorEnd(); break; }
@@ -893,7 +863,7 @@ public abstract class VirtualList
         return false;
     }
 
-    public void keyLeft() {
+    public void pageLeft() {
 //#ifdef DEBUG
 //#         System.out.println("keyLeft");
 //#endif
@@ -906,15 +876,14 @@ public abstract class VirtualList
             }
             if (!cursorInWindow()) {
                 cursor=getElementIndexAt(itemLayoutY[cursor]-winHeight);
-                if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
+                if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) 
+                    fitCursorByTop();
             }
             setRotator();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
+        } catch (Exception e) { }
     }
 
-    public void keyRight() { 
+    public void pageRight() { 
 //#ifdef DEBUG
 //#         System.out.println("keyRight");
 //#endif

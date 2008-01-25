@@ -391,9 +391,9 @@ public class ServiceDiscovery
         
         switch (keyCode) {
             case KEY_NUM4:
-                keyLeft(); break;
+                pageLeft(); break;
             case KEY_NUM6:
-                keyRight(); break;
+                pageRight(); break;
         }
     }
     
