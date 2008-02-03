@@ -127,6 +127,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#             
 //#endif
 	    addItem(SR.MS_VCARD,1, 0x0f16);
+            addItem(SR.MS_INFO,86, 0x0f04);
             addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
 //#ifdef SERVICE_DISCOVERY
 //# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
@@ -358,6 +359,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     roster.setQuerySign(true);
                     roster.theStream.send(new IqVersionReply(to));
                     break;
+                case 86: // info
+                    roster.showInfo();
+                    break;
                 case 1: // vCard
                     if (c.vcard!=null) {
                         new vCardForm(display, c.vcard, c.getGroupType()==Groups.TYPE_SELF);
@@ -365,7 +369,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     }
                     VCard.request(c.getBareJid(), c.getJid());
                     break;
-                    
                 case 2:
                     (new ContactEdit(display, c )).parentView=roster;
                     return; //break;

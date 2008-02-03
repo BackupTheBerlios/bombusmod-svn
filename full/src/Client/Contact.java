@@ -60,8 +60,7 @@ public class Contact extends IconTextElement{
     
     
 //#if USE_ROTATOR
-//#     private int isnew=0;
-//#     
+//#     private int isnew=0;    
 //#     public void setNewContact() {
 //#         this.isnew = 10;        
 //#     }
@@ -408,8 +407,8 @@ public class Contact extends IconTextElement{
     }
 
     public int getFontIndex(){
-        if (!cf.showResources)
-            return active()?1:0;
+        if (cf.useBoldFont)
+            return 1;
         return (status<5)?1:0;
     }
     

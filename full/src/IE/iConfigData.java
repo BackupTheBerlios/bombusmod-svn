@@ -101,7 +101,8 @@ public class iConfigData {
 
         cf.autoSubscribe=cf.getIntProperty(getValue("autoSubscribe"), cf.SUBSCR_ASK);
         cf.notInListDropLevel=cf.getIntProperty(getValue("notInListDropLevel"), cf.SUBSCR_ASK);
-             
+           
+        cf.useBoldFont=cf.getBooleanProperty(getValue("useBoldFont"),false);
              
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 

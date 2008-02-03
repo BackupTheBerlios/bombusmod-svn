@@ -81,6 +81,7 @@ public class eConfigData {
         array.addElement(new keyValue("useTabs", (cf.useTabs)?"1":"0"));  
         array.addElement(new keyValue("autoSubscribe", Integer.toString(cf.autoSubscribe)));
         array.addElement(new keyValue("notInListDropLevel", Integer.toString(cf.notInListDropLevel)));
+        array.addElement(new keyValue("useBoldFont", (cf.useBoldFont)?"1":"0"));
         
         new eData(array, path+"config.txt");
         array = null;

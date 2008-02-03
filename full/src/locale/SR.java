@@ -622,6 +622,9 @@ public class SR {
 //#     public static String MS_IMPORT_EXPORT=loadString("Import/Export");
 //#endif
     
+//2008-02-03
+    public static String MS_BOLD_FONT=loadString("bold font for contacts");
+    
     private SR() { }
     
     public static String MS_XMLLANG;

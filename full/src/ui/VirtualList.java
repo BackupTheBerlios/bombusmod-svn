@@ -615,6 +615,9 @@ public abstract class VirtualList
     protected void keyPressed(int keyCode) { kHold=0; key(keyCode); }
     
     protected void pointerPressed(int x, int y) {
+//#ifdef POPUPS
+//#         popup.next();
+//#endif        
 	if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
             return;

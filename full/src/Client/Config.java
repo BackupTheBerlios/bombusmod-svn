@@ -202,6 +202,8 @@ public class Config {
     public boolean notifySound=false;
 
     public boolean notifyPicture=false;
+
+    public boolean useBoldFont=false;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -365,6 +367,8 @@ public class Config {
             
             autoSubscribe=inputStream.readInt();
             
+            useBoldFont=inputStream.readBoolean();
+                    
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -506,6 +510,8 @@ public class Config {
             outputStream.writeBoolean(useTabs);
             
             outputStream.writeInt(autoSubscribe);
+            
+            outputStream.writeBoolean(useBoldFont);
             
 	} catch (Exception e) { }
 	

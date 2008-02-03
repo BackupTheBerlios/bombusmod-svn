@@ -394,9 +394,20 @@ public class Roster
             mainbar.setElementAt(null,1);
         } else {
             messageIcon=new Integer(RosterIcons.ICON_MESSAGE_INDEX);
-            mainbar.setElementAt(((highliteMessageCount==0)?" ":" "+highliteMessageCount+"/")+messageCount+" ",1);
+            mainbar.setElementAt(getHeaderString(),1);
         }
         mainbar.setElementAt(messageIcon, 0);
+        if (cf.phoneManufacturer==Config.WINDOWS) {
+            if (messageCount==0) {
+                setTitle("Bombus CE");
+            } else {
+                setTitle("Bombus "+getHeaderString());
+            }
+        }
+    }
+    
+    public String getHeaderString() {
+        return ((highliteMessageCount==0)?" ":" "+highliteMessageCount+"/")+messageCount+" ";
     }
     
     boolean countNewMsgs() {
@@ -2145,9 +2156,7 @@ public class Roster
         switch (keyCode) {
 //#ifdef POPUPS
 //#             case KEY_POUND:
-//#                 VirtualList.popup.next();
-//#                 setWobbler(null);
-//#                 redraw();
+//#                 showInfo();
 //#                 return;
 //#endif
             case KEY_NUM1:
@@ -2252,6 +2261,17 @@ public class Roster
                     } catch (Exception e) { /* NullPointerException */ }
                 }
                 break;
+            default:
+                    try {
+                        switch (getGameAction(keyCode)){
+                            case LEFT:
+                                super.pageLeft();
+                                break;
+                            case RIGHT:
+                                super.pageRight();
+                                break;
+                        }
+                    } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
         }
 //#ifdef AUTOSTATUS
 //#         userActivity();
@@ -2345,29 +2365,30 @@ public class Roster
 //#     }
 //#endif
     
+    
+//#ifdef POPUPS
+//#     public void showInfo() {
+//#         VirtualList.popup.next();
+//#         setWobbler(null);
+//#         redraw();
+//#     }
+//#endif
+    
 //#ifdef POPUPS
 //#     public void setWobbler(String info) {
 //#         StringBuffer mess=new StringBuffer();
 //#         
 //#         if (info==null) {
 //#             boolean isContact=(getFocusedObject() instanceof Contact);
+//#             
 //#ifndef WMUC
 //#             boolean isMucContact=(getFocusedObject() instanceof MucContact);
 //#endif
-//#             if (getFocusedObject() instanceof Group) {
-//#                 mess=null;
+//#             if (getFocusedObject() instanceof Group)
 //#                 return;
-//#             }
 //#                 
 //#             Contact contact=(Contact)getFocusedObject();
-//#             
-//#             String client=(contact.hasEntity)?"\nUse: "+contact.entityNode:"";
-//#             String clientVer=(contact.entityVer!=null)?"#"+contact.entityVer:"";
-//#ifndef WMUC
-//#             
-//#else
-//#             boolean isMucContact=false;
-//#endif
+//# 
 //#ifndef WMUC
 //#             if (isMucContact) {
 //#                 MucContact mucContact=(MucContact)contact;
@@ -2396,10 +2417,10 @@ public class Roster
 //#             }
 //#endif
 //#             mess.append((contact.getJ2J()!=null)?"\nJ2J: "+contact.getJ2J():"");
-//#             mess.append((client!=null)?client+clientVer:"");
-//#             clientVer=null;
+//#             mess.append((contact.hasEntity)?"\nUse: "+contact.entityNode:"");
+//#             mess.append((contact.entityVer!=null)?"#"+contact.entityVer:"");
 //# 
-//#              if (contact.statusString!=null) {
+//#             if (contact.statusString!=null) {
 //#                 mess.append("\n");
 //#                 mess.append(SR.MS_STATUS);
 //#                 mess.append(": ");
@@ -2412,7 +2433,7 @@ public class Roster
 //#                 mess.append(SR.MS_USER_MOOD);
 //#                 mess.append(": ");
 //#                 mess.append(contact.getUserMood());
-//#                 if (contact.getUserMoodText()!=null) {
+//#                 if (contact.getUserMoodText()!="") {
 //#                     mess.append(" (");
 //#                     mess.append(contact.getUserMoodText());
 //#                     mess.append(")");

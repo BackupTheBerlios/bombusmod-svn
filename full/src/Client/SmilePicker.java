@@ -121,14 +121,14 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         g.translate(-x,0);
     } 
     
-    public void keyLeft(){ 
+    public void pageLeft(){ 
         if (xCursor>0) xCursor--; 
         else {
             //if (cursor==0) return;
             //
             if (cursor==0) {
                 keyDwn();
-                keyLeft();
+                pageLeft();
                 return;
             }
             //
@@ -205,9 +205,9 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
             case KEY_NUM9:
                 super.pageRight(); break;
             case KEY_NUM4:
-                keyLeft(); break;
+                super.pageLeft(); break;
             case KEY_NUM6:
-                pageRight(); break;
+                super.pageRight(); break;
         }
     }
 }
